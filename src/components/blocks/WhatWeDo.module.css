@@ -1,0 +1,319 @@
+.section {
+  position: relative;
+  padding: clamp(72px, 9vw, 112px) 0;
+  overflow: hidden;
+  color: var(--fg);
+  background-color: var(--black-950);
+  background-image:
+    radial-gradient(
+      ellipse 130% 95% at 0% 100%,
+      var(--ya35) 0%,
+      transparent 52%
+    ),
+    radial-gradient(ellipse 80% 70% at 100% 0%, var(--ya20) 0%, transparent 52%),
+    radial-gradient(ellipse 85% 65% at 50% 50%, var(--ya13) 0%, transparent 58%),
+    radial-gradient(
+      ellipse 50% 40% at 50% 100%,
+      var(--ya08) 0%,
+      transparent 55%
+    ),
+    linear-gradient(var(--ya04) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    44px 44px,
+    44px 44px;
+  isolation: isolate;
+}
+
+.section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--ya04) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0, black, transparent 78%);
+  mask-image: radial-gradient(ellipse at 50% 0, black, transparent 78%);
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 56px);
+  position: relative;
+  z-index: 1;
+}
+
+.head {
+  max-width: 720px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.h {
+  font-size: clamp(30px, 4.6vw, 56px);
+  font-weight: 900;
+  color: var(--fg);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.lede {
+  font-size: clamp(15px, 1.6vw, 18px);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--fg-muted);
+  max-width: 52ch;
+  margin: 14px auto 0;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+
+.tab {
+  padding: 12px 22px;
+  border: 1px solid var(--border-strong);
+  border-radius: 40px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  color: var(--fg);
+  font-family: inherit;
+  transition:
+    border-color 0.22s,
+    background 0.22s;
+}
+
+.tab:hover {
+  border-color: var(--border-accent);
+}
+
+.tabOn {
+  background: var(--accent-muted);
+  border-color: var(--accent);
+  box-shadow: 0 0 18px var(--ya13);
+}
+
+.tabKey {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.tabTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--fg);
+  transition: color 0.2s;
+}
+
+.tabOn .tabTitle {
+  color: var(--accent);
+}
+
+.panel {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-accent);
+  border-radius: 20px;
+  padding: clamp(30px, 4vw, 52px);
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 30px 60px -42px rgba(0, 0, 0, 0.7),
+    0 0 0 1px var(--border-accent);
+  animation: wwdPanelIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes wwdPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--gradient-accent);
+  animation: wwdSweep 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  transform-origin: left;
+}
+
+@keyframes wwdSweep {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 100%,
+    var(--ya08) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+}
+
+.panelKick {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.panelPromise {
+  font-size: clamp(22px, 2.8vw, 36px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  line-height: 1.1;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.panelHow {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--fg-muted);
+  line-height: 1.72;
+  margin: 0 auto 26px;
+  max-width: 52ch;
+  position: relative;
+  z-index: 1;
+}
+
+.forLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.chips {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.chip {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg);
+  background: var(--accent-muted);
+  border: 1px solid var(--border-accent);
+  border-radius: 8px;
+  padding: 9px 16px;
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--border-accent);
+  padding-top: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.statN {
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.statL {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+
+.more {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--fg);
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.more:hover {
+  color: var(--accent);
+}
+
+.arr {
+  transition: transform 0.18s;
+  color: var(--accent);
+}
+
+.more:hover .arr {
+  transform: translateX(4px);
+}
