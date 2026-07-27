@@ -1,26 +1,343 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Layer 1 — Raw palette
+   The only place raw hex may live. Semantic tokens (L2) consume these.
+   ========================================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --yellow-400: #fbbf24;
+  --yellow-500: #f59e0b;
+  --yellow-600: #d97706;
+  --gradient-yellow-start: #fcd34d;
+
+  --black-950: #080808;
+  --black-900: #0c0c0c;
+  --black-800: #141414;
+  --black-700: #1c1c1c;
+  --gray-800: #2a2a2a;
+  --gray-700: #3a3a3a;
+  --gray-200: #e5e5e5;
+  --gray-100: #f5f5f5;
+  --white: #ffffff;
+
+  --ya04: rgba(245, 158, 11, 0.04);
+  --ya08: rgba(245, 158, 11, 0.08);
+  --ya13: rgba(245, 158, 11, 0.13);
+  --ya20: rgba(245, 158, 11, 0.2);
+  --ya35: rgba(245, 158, 11, 0.35);
+
+  --wa05: rgba(255, 255, 255, 0.05);
+  --wa08: rgba(255, 255, 255, 0.08);
+  --wa15: rgba(255, 255, 255, 0.15);
+  --wa40: rgba(255, 255, 255, 0.4);
+  --wa60: rgba(255, 255, 255, 0.6);
+  --wa88: rgba(255, 255, 255, 0.88);
+
+  --ba05: rgba(8, 8, 8, 0.05);
+  --ba08: rgba(8, 8, 8, 0.08);
+  --ba60: rgba(8, 8, 8, 0.6);
+  --ba75: rgba(8, 8, 8, 0.75);
+}
+
+/* ==========================================================================
+   Layer 2 ★ — Semantic tokens. EDIT ONLY HERE TO RETHEME.
+   Dark theme is the default. .light overrides.
+   ========================================================================== */
+:root {
+  --fg: var(--white);
+  --fg-muted: var(--wa60);
+  --fg-subtle: var(--wa40);
+  --bg: var(--black-950);
+  --surface: var(--black-800);
+  --surface-raised: var(--black-700);
+
+  --accent: var(--yellow-500);
+  --accent-hover: var(--yellow-400);
+  --accent-muted: var(--ya08);
+  --accent-strong: var(--ya20);
+
+  --border: var(--wa08);
+  --border-strong: var(--wa15);
+  --border-accent: var(--ya13);
+
+  --hero-overlay: var(--ba75);
+  --gradient-accent: linear-gradient(
+    120deg,
+    var(--gradient-yellow-start),
+    var(--yellow-500)
+  );
+
+  --font-display:
+    var(--font-plus-jakarta), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:
+    var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+:root.light {
+  --fg: var(--black-950);
+  --fg-muted: var(--ba60);
+  --fg-subtle: rgba(8, 8, 8, 0.4);
+  --bg: var(--white);
+  --surface: var(--gray-100);
+  --surface-raised: var(--gray-200);
+
+  --border: var(--ba08);
+  --border-strong: rgba(8, 8, 8, 0.15);
+  --border-accent: var(--ya20);
+
+  --hero-overlay: rgba(255, 255, 255, 0.75);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ==========================================================================
+   Layer 3 — Element defaults
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--fg);
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(38px, 5.5vw, 72px);
+  letter-spacing: -0.04em;
+}
+
+h2 {
+  font-size: clamp(24px, 3.2vw, 44px);
+}
+
+p {
+  color: var(--fg-muted);
+  line-height: 1.75;
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-hover);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--black-950);
+}
+
+/* ==========================================================================
+   Layer 4 — Component classes
+   ========================================================================== */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.role-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.4px;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.vendor-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  background: var(--accent-muted);
+  border: 1px solid var(--border-accent);
+  border-radius: 4px;
+}
+
+.bench-signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.bench-signal::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6ee7b7;
+  box-shadow: 0 0 8px rgba(110, 231, 183, 0.6);
+}
+
+.forced-dark {
+  color-scheme: dark;
+}
+
+.forced-light {
+  color-scheme: light;
+}
+
+/* Container width */
+.container-narrow {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Dot-grid for dark sections (break rule 07) */
+.dot-grid {
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+/* ==========================================================================
+   Layer 5 — Spacing scale
+   ========================================================================== */
+.section-xl {
+  padding: 140px 0;
+}
+.section-lg {
+  padding: 100px 0;
+}
+.section-md {
+  padding: 72px 0;
+}
+.section-sm {
+  padding: 48px 0;
+}
+
+@media (max-width: 768px) {
+  .section-xl {
+    padding: 80px 0;
+  }
+  .section-lg {
+    padding: 64px 0;
+  }
+  .section-md {
+    padding: 48px 0;
+  }
+  .section-sm {
+    padding: 32px 0;
+  }
+}
+
+/* ==========================================================================
+   Layer 6 — Animations (all respect prefers-reduced-motion)
+   ========================================================================== */
+@keyframes ken-burns-1 {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.08) translate(-1%, -0.5%);
+  }
+}
+
+@keyframes ken-burns-2 {
+  0% {
+    transform: scale(1.06) translate(-2%, 1%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes logo-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes counter-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
