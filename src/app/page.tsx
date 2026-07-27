@@ -1,5 +1,6 @@
 import { HeroSlider } from "@/components/blocks/HeroSlider";
 import { HowItWorks } from "@/components/blocks/HowItWorks";
+import { OurPartners } from "@/components/blocks/OurPartners";
 import { PlatformTalent } from "@/components/blocks/PlatformTalent";
 import { TheProblem } from "@/components/blocks/TheProblem";
 import { WhatWeDo } from "@/components/blocks/WhatWeDo";
@@ -14,6 +15,7 @@ export default function Home() {
       <WhatWeDo />
       <WhereWePlace />
       <PlatformTalent />
+      <OurPartners />
     </>
   );
 }
