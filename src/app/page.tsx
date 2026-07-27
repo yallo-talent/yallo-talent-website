@@ -1,3 +1,4 @@
+import { BriefForm } from "@/components/blocks/BriefForm";
 import { CaseStudies } from "@/components/blocks/CaseStudies";
 import { HeroSlider } from "@/components/blocks/HeroSlider";
 import { HowItWorks } from "@/components/blocks/HowItWorks";
@@ -26,6 +27,7 @@ export default function Home() {
       <Metrics />
       <LatestInsights />
       <YalloFamily />
+      <BriefForm />
     </>
   );
 }
