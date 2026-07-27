@@ -3,11 +3,19 @@
   padding: clamp(80px, 10vw, 128px) 0;
   overflow: hidden;
   color: var(--fg);
-  background: var(--black-950);
+  background: var(--ink-800);
   background-image:
-    linear-gradient(var(--ya04) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
-  background-size: 44px 44px;
+    radial-gradient(ellipse 60% 50% at 50% 0%, var(--ya20), transparent 60%),
+    radial-gradient(
+      ellipse 40% 40% at 15% 100%,
+      var(--hue-teal-20),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 40% 40% at 85% 100%,
+      var(--hue-blue-20),
+      transparent 60%
+    );
   isolation: isolate;
 }
 

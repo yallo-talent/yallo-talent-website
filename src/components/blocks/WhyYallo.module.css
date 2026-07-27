@@ -3,22 +3,40 @@
   padding: clamp(88px, 10vw, 140px) 0;
   overflow: hidden;
   color: var(--fg);
-  background-color: var(--black-950);
+  background: var(--ink-950);
   background-image:
     radial-gradient(
-      ellipse 120% 90% at 0% 100%,
-      var(--ya13) 0%,
+      ellipse 90% 70% at 5% 25%,
+      var(--hue-blue-20),
       transparent 55%
     ),
-    radial-gradient(ellipse 60% 60% at 100% 0%, var(--ya08) 0%, transparent 55%),
-    linear-gradient(var(--ya04) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    44px 44px,
-    44px 44px;
+    radial-gradient(
+      ellipse 70% 60% at 95% 85%,
+      var(--hue-rose-20),
+      transparent 55%
+    ),
+    radial-gradient(ellipse 40% 40% at 50% 50%, var(--ya13), transparent 60%);
   isolation: isolate;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    var(--wa05) 0.6px,
+    transparent 0.6px
+  );
+  background-size: 32px 32px;
+  -webkit-mask-image: radial-gradient(
+    ellipse at 50% 50%,
+    black 30%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .wrap {

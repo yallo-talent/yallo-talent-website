@@ -1,9 +1,10 @@
 .section {
-  background: var(--black-950);
-  background-image:
-    linear-gradient(var(--wa05) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wa05) 1px, transparent 1px);
-  background-size: 44px 44px;
+  background: linear-gradient(
+    180deg,
+    var(--ink-950) 0%,
+    var(--ink-900) 50%,
+    var(--ink-950) 100%
+  );
   padding: 56px 0;
   overflow: hidden;
   width: 100%;
@@ -15,11 +16,13 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 75% 110% at 50% 50%,
-    var(--ya08) 0%,
-    transparent 68%
-  );
+  background:
+    radial-gradient(
+      ellipse 40% 60% at 20% 50%,
+      var(--hue-blue-08),
+      transparent 60%
+    ),
+    radial-gradient(ellipse 40% 60% at 80% 50%, var(--ya08), transparent 60%);
   pointer-events: none;
 }
 

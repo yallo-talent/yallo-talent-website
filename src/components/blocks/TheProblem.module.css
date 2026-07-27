@@ -2,15 +2,23 @@
   position: relative;
   padding: clamp(72px, 9vw, 120px) 0;
   overflow: hidden;
-  background: var(--black-950);
+  background: var(--ink-950);
   background-image:
     radial-gradient(
       ellipse 120% 90% at 0% 100%,
       var(--ya20) 0%,
       transparent 52%
     ),
-    radial-gradient(ellipse 70% 60% at 100% 0%, var(--ya13) 0%, transparent 52%),
-    radial-gradient(ellipse 65% 50% at 50% 50%, var(--ya08) 0%, transparent 60%);
+    radial-gradient(
+      ellipse 70% 60% at 100% 0%,
+      var(--hue-rose-20) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 65% 50% at 50% 50%,
+      var(--hue-orange-08) 0%,
+      transparent 60%
+    );
   color: var(--fg);
   isolation: isolate;
 }

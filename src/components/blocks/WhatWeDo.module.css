@@ -3,29 +3,14 @@
   padding: clamp(72px, 9vw, 112px) 0;
   overflow: hidden;
   color: var(--fg);
-  background-color: var(--black-950);
+  background: var(--ink-900);
   background-image:
     radial-gradient(
-      ellipse 130% 95% at 0% 100%,
-      var(--ya35) 0%,
-      transparent 52%
-    ),
-    radial-gradient(ellipse 80% 70% at 100% 0%, var(--ya20) 0%, transparent 52%),
-    radial-gradient(ellipse 85% 65% at 50% 50%, var(--ya13) 0%, transparent 58%),
-    radial-gradient(
-      ellipse 50% 40% at 50% 100%,
-      var(--ya08) 0%,
+      ellipse 60% 50% at 15% 20%,
+      var(--hue-violet-20),
       transparent 55%
     ),
-    linear-gradient(var(--ya04) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    44px 44px,
-    44px 44px;
+    radial-gradient(ellipse 70% 50% at 85% 80%, var(--ya20), transparent 55%);
   isolation: isolate;
 }
 
@@ -33,13 +18,17 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(var(--ya04) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
-  background-size: 44px 44px;
+  background: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--hue-blue-08),
+    transparent 25%,
+    var(--hue-rose-08) 50%,
+    transparent 75%,
+    var(--hue-teal-08)
+  );
+  filter: blur(90px);
+  opacity: 0.55;
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse at 50% 0, black, transparent 78%);
-  mask-image: radial-gradient(ellipse at 50% 0, black, transparent 78%);
 }
 
 .wrap {

@@ -25,7 +25,7 @@
   height: 620px;
   top: -18%;
   right: -8%;
-  background: radial-gradient(circle, var(--ya20), transparent 65%);
+  background: radial-gradient(circle, var(--hue-teal-20), transparent 65%);
   animation: ywD1 22s ease-in-out infinite;
 }
 
@@ -34,7 +34,7 @@
   height: 520px;
   bottom: -22%;
   left: -6%;
-  background: radial-gradient(circle, var(--ya13), transparent 65%);
+  background: radial-gradient(circle, var(--ya20), transparent 65%);
   animation: ywD2 26s ease-in-out infinite;
 }
 
@@ -43,7 +43,7 @@
   height: 380px;
   top: 42%;
   left: 42%;
-  background: radial-gradient(circle, var(--wa08), transparent 65%);
+  background: radial-gradient(circle, var(--hue-blue-20), transparent 65%);
   animation: ywD3 31s ease-in-out infinite;
 }
 
