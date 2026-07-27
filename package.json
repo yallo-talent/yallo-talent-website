@@ -1,0 +1,37 @@
+{
+  "name": "talent.yallo.co",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "framer-motion": "12",
+    "next": "16.2.12",
+    "next-mdx-remote": "^6.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "resend": "^6.18.0",
+    "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.5",
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@playwright/test": "^1.62.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.12",
+    "husky": "^9.1.7",
+    "tailwindcss": "^4",
+    "typescript": "^5.9.3"
+  }
+}
