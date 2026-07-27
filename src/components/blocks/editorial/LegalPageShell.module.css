@@ -1,0 +1,138 @@
+.meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin-top: 20px;
+}
+
+.body {
+  position: relative;
+  padding: clamp(56px, 8vw, 96px) 0;
+  background: var(--ink-950);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.toc {
+  position: sticky;
+  top: 96px;
+  padding: 24px 20px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.tocTitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sector-accent);
+  margin-bottom: 14px;
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tocLink {
+  display: block;
+  padding: 8px 10px;
+  margin: 0 -10px;
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  letter-spacing: -0.005em;
+  border-radius: 8px;
+  border-left: 2px solid transparent;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.tocLink:hover {
+  color: var(--sector-accent);
+  background: var(--sector-accent-08);
+  border-left-color: var(--sector-accent);
+}
+
+.content {
+  max-width: 780px;
+}
+
+.section {
+  padding: 32px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section:first-child {
+  padding-top: 0;
+}
+
+.section:last-child {
+  border-bottom: 0;
+}
+
+.sectionNum {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sector-accent);
+  margin-bottom: 12px;
+}
+
+.sectionH {
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--fg);
+  margin: 0 0 20px;
+}
+
+.para {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--fg-muted);
+  margin: 0 0 14px;
+}
+
+.para:last-child {
+  margin-bottom: 0;
+}
+
+.para a {
+  color: var(--sector-accent);
+}
+
+.footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .toc {
+    position: relative;
+    top: 0;
+  }
+}
