@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { NavBar } from "@/components/layout/NavBar";
+import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -57,6 +58,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <StickyBriefCTA />
       </body>
     </html>
   );
