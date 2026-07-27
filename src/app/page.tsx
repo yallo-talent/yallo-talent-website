@@ -1,3 +1,4 @@
+import { CaseStudies } from "@/components/blocks/CaseStudies";
 import { HeroSlider } from "@/components/blocks/HeroSlider";
 import { HowItWorks } from "@/components/blocks/HowItWorks";
 import { OurPartners } from "@/components/blocks/OurPartners";
@@ -18,6 +19,7 @@ export default function Home() {
       <PlatformTalent />
       <OurPartners />
       <WhyYallo />
+      <CaseStudies />
     </>
   );
 }
