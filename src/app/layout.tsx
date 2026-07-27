@@ -24,6 +24,16 @@ export const metadata: Metadata = {
     "Architect-screened contractor shortlists in 72 hours. UK · ME · India. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
 };
 
+const themeInitScript = `
+(function(){try{
+  var stored=localStorage.getItem('yallo-theme');
+  var theme=(stored==='light'||stored==='dark')?stored:(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
+  var root=document.documentElement;
+  root.classList.toggle('light',theme==='light');
+  root.classList.toggle('dark',theme==='dark');
+}catch(e){}})();
+`.trim();
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +43,14 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${plusJakarta.variable} ${dmMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: pre-hydration theme script — trusted static string, sets class on <html> before body paint to prevent FOUC
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         <NavBar />
         <main id="main" className="flex-1">

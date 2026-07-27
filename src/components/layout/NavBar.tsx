@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./NavBar.module.css";
 import { jobSeekersHref, primaryCTAHref, primaryNav } from "./nav-config";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function NavBar() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -114,6 +115,7 @@ export function NavBar() {
           </nav>
 
           <div className={styles.actions}>
+            <ThemeToggle />
             <Link href={primaryCTAHref} className={styles.ctaPrimary}>
               Request a contractor
               <span aria-hidden="true">→</span>
