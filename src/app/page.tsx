@@ -6,6 +6,7 @@ import { LatestInsights } from "@/components/blocks/LatestInsights";
 import { Metrics } from "@/components/blocks/Metrics";
 import { OurPartners } from "@/components/blocks/OurPartners";
 import { PlatformTalent } from "@/components/blocks/PlatformTalent";
+import { TalentBridge } from "@/components/blocks/TalentBridge";
 import { TheProblem } from "@/components/blocks/TheProblem";
 import { WhatWeDo } from "@/components/blocks/WhatWeDo";
 import { WhereWePlace } from "@/components/blocks/WhereWePlace";
@@ -22,6 +23,7 @@ export default function Home() {
       <WhereWePlace />
       <PlatformTalent />
       <OurPartners />
+      <TalentBridge />
       <WhyYallo />
       <CaseStudies />
       <Metrics />
