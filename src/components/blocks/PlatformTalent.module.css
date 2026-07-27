@@ -1,20 +1,82 @@
 .section {
   position: relative;
-  padding: clamp(56px, 8vw, 100px) 0;
+  padding: clamp(72px, 9vw, 120px) 0;
   overflow: hidden;
   color: var(--fg);
-  background-color: var(--black-900);
-  background-image:
-    radial-gradient(ellipse 70% 60% at 0% 100%, var(--ya20) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 50% at 100% 0%, var(--ya13) 0%, transparent 55%),
-    linear-gradient(var(--ya04) 1px, transparent 1px),
-    linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
-  background-size:
-    100% 100%,
-    100% 100%,
-    44px 44px,
-    44px 44px;
+  background: linear-gradient(
+    180deg,
+    var(--ink-950) 0%,
+    var(--ink-900) 55%,
+    var(--ink-950) 100%
+  );
   isolation: isolate;
+}
+
+/* Animated blur orbs — three colours to break monotony */
+.orbA,
+.orbB,
+.orbC {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(88px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+
+.orbA {
+  width: 620px;
+  height: 620px;
+  top: -18%;
+  right: -8%;
+  background: radial-gradient(circle, var(--hue-blue-20), transparent 65%);
+  animation: orbA 22s ease-in-out infinite;
+}
+
+.orbB {
+  width: 520px;
+  height: 520px;
+  bottom: -22%;
+  left: -6%;
+  background: radial-gradient(circle, var(--hue-rose-20), transparent 65%);
+  animation: orbB 26s ease-in-out infinite;
+}
+
+.orbC {
+  width: 380px;
+  height: 380px;
+  top: 42%;
+  left: 42%;
+  background: radial-gradient(circle, var(--hue-teal-20), transparent 65%);
+  animation: orbC 31s ease-in-out infinite;
+}
+
+@keyframes orbA {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-26px, 20px) scale(1.08);
+  }
+}
+@keyframes orbB {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(22px, -16px) scale(1.06);
+  }
+}
+@keyframes orbC {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(14px, 12px) scale(1.1);
+  }
 }
 
 .wrap {
@@ -26,8 +88,16 @@
 }
 
 .hd {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
   margin-bottom: clamp(36px, 5vw, 56px);
+}
+
+.hdText {
   max-width: 720px;
+  flex: 1;
 }
 
 .eye {
@@ -43,12 +113,12 @@
   margin-bottom: 16px;
 }
 
-.dot {
+.eyeDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 8px var(--ya35);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .h {
@@ -68,25 +138,125 @@
   max-width: 56ch;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+/* Nav arrows top-right — glass */
+.nav {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
+.navBtn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid var(--wa25);
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease,
+    opacity 0.15s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  padding: 0;
+  color: var(--accent);
+}
+
+.navBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.navBtn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-muted);
+  box-shadow:
+    0 6px 28px rgba(0, 0, 0, 0.45),
+    0 0 22px var(--accent-strong);
+}
+
+.navBtn:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.navBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.navBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Scroll track */
+.trackWrap {
+  position: relative;
+  margin: 0 calc(-1 * clamp(20px, 5vw, 48px));
+  padding: 0 clamp(20px, 5vw, 48px);
+}
+
+.trackWrap::before,
+.trackWrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(24px, 5vw, 80px);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.trackWrap::before {
+  left: 0;
+  background: linear-gradient(to right, var(--ink-950), transparent);
+}
+
+.trackWrap::after {
+  right: 0;
+  background: linear-gradient(to left, var(--ink-950), transparent);
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 320px;
+  gap: 20px;
+  padding: 4px 4px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding: clamp(20px, 5vw, 48px);
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* Glass card */
 .card {
   position: relative;
   isolation: isolate;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  min-height: 260px;
-  padding: 28px 26px 24px;
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
-  border: 1px solid var(--border);
+  min-height: 300px;
+  padding: 28px 26px 26px;
+  color: var(--fg);
   border-radius: 20px;
   overflow: hidden;
-  color: var(--fg);
+  background: var(--glass-bg);
+  backdrop-filter: saturate(160%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
   box-shadow:
     0 4px 24px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 var(--wa05);
@@ -96,35 +266,54 @@
     transform 0.3s ease;
 }
 
-.glow {
+.cardGlow {
   position: absolute;
   top: -60px;
   left: -60px;
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--ya13) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    var(--sector-accent-20) 0%,
+    transparent 70%
+  );
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
   transition: background 0.3s ease;
+}
+
+.cardHighlight {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, var(--wa05), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .card:hover,
 .card:focus-visible {
-  border-color: var(--border-accent);
+  border-color: var(--sector-accent-35);
   transform: translateY(-4px);
   box-shadow:
     0 8px 48px rgba(0, 0, 0, 0.6),
-    0 0 36px var(--ya13),
+    0 0 36px var(--sector-accent-20),
     inset 0 1px 0 var(--wa08);
   outline: none;
 }
 
-.card:hover .glow {
-  background: radial-gradient(circle, var(--ya20) 0%, transparent 70%);
+.card:hover .cardGlow {
+  background: radial-gradient(
+    circle,
+    var(--sector-accent-35) 0%,
+    transparent 70%
+  );
 }
 
-.top {
+.cardTop {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -137,18 +326,18 @@
   justify-content: center;
   min-width: 44px;
   height: 44px;
-  padding: 0 10px;
-  border-radius: 10px;
-  background: var(--accent-muted);
-  border: 1px solid var(--border-accent);
-  color: var(--accent);
+  padding: 0 12px;
+  border-radius: 12px;
+  background: var(--sector-accent-08);
+  border: 1px solid var(--sector-accent-35);
+  color: var(--sector-accent);
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
 }
 
-.arrow {
+.cardArrow {
   color: var(--fg-subtle);
   transition:
     color 0.2s ease,
@@ -156,12 +345,14 @@
   font-size: 18px;
 }
 
-.card:hover .arrow {
-  color: var(--accent);
+.card:hover .cardArrow {
+  color: var(--sector-accent);
   transform: translateX(4px);
 }
 
-.name {
+.cardName {
+  position: relative;
+  z-index: 1;
   font-size: 22px;
   font-weight: 900;
   color: var(--fg);
@@ -169,7 +360,9 @@
   margin-bottom: 10px;
 }
 
-.desc {
+.cardDesc {
+  position: relative;
+  z-index: 1;
   font-size: 13.5px;
   font-weight: 300;
   line-height: 1.7;
@@ -178,13 +371,15 @@
   flex-grow: 1;
 }
 
-.tags {
+.cardTags {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.tag {
+.cardTag {
   display: inline-flex;
   align-items: center;
   padding: 5px 11px;
@@ -198,14 +393,15 @@
   border-radius: 999px;
 }
 
-@media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
 @media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
+  .hd {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav {
+    align-self: flex-end;
+  }
+  .track {
+    grid-auto-columns: 88%;
   }
 }
