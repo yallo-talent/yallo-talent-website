@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>yallo.co v2 — Virtual Team Discussion</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0C0C0C;--sf:#141414;--sf2:#1C1C1C;
+  --y4:#F59E0B;--y3:#FCD34D;--g3:#6EE7B7;--g4:#10B981;
+  --b3:#93C5FD;--b4:#3B82F6;--r3:#FCA5A5;--p3:#D8B4FE;
+  --o3:#FED7AA;--pk3:#FBCFE8;
+  --w1:#fff;--w8:rgba(255,255,255,.88);--w6:rgba(255,255,255,.6);
+  --w4:rgba(255,255,255,.4);--w2:rgba(255,255,255,.15);--wa:rgba(255,255,255,.05);
+  --bdr:rgba(245,158,11,.12);--bdr2:rgba(255,255,255,.08);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--w1);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:99;background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);padding:14px 48px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{font-size:15px;font-weight:800;color:var(--y4)}
+.nav-tag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-top:2px}
+.nav-items{display:flex;gap:4px;list-style:none}
+.nav-items a{font-size:11px;color:var(--w4);padding:5px 10px;border-radius:6px;text-decoration:none;transition:all .15s}
+.nav-items a:hover{color:var(--y4);background:rgba(245,158,11,.06)}
+
+/* HERO */
+.page-hero{padding:60px 48px 44px;border-bottom:1px solid var(--bdr2)}
+.ey{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ey::before{content:'';width:16px;height:1px;background:var(--y4);opacity:.6}
+h1{font-size:clamp(26px,4vw,50px);font-weight:800;letter-spacing:-2px;line-height:1.06;margin-bottom:10px}
+.gy{background:linear-gradient(120deg,var(--y3),var(--y4));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:13.5px;color:var(--w4);max-width:660px;line-height:1.75;font-weight:300}
+
+/* SECTION */
+.section{padding:52px 48px}
+.sl{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sl::before{content:'';width:16px;height:1px;background:var(--y4);opacity:.6}
+h2{font-size:clamp(18px,2.6vw,32px);font-weight:800;letter-spacing:-1.4px;line-height:1.1;margin-bottom:8px}
+.ssub{font-size:13px;color:var(--w4);max-width:580px;line-height:1.7;font-weight:300;margin-bottom:28px}
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07) 30%,rgba(255,255,255,.07) 70%,transparent);margin:0 48px}
+
+/* TEAM ROSTER */
+.team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:0}
+.team-member{border-radius:14px;padding:18px 16px;text-align:center;position:relative}
+.tm-avatar{width:52px;height:52px;border-radius:14px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;position:relative}
+.tm-online{position:absolute;bottom:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:var(--g4);border:2px solid var(--sf);box-shadow:0 0 6px rgba(16,185,129,.5)}
+.tm-name{font-size:12px;font-weight:800;letter-spacing:-.2px;margin-bottom:3px}
+.tm-role{font-family:var(--mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
+.tm-skills{font-size:9.5px;color:var(--w4);line-height:1.5;font-weight:300}
+
+/* AGENDA */
+.agenda{display:flex;flex-direction:column;gap:6px}
+.ag-item{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:10px 14px;background:var(--sf);border:1px solid var(--bdr2);border-radius:8px}
+.ag-n{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--y4);text-align:center}
+.ag-title{font-size:11.5px;font-weight:600;color:var(--w8)}
+.ag-sub{font-size:10px;color:var(--w4);margin-top:2px}
+.ag-status{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.ag-open{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+.ag-closed{background:rgba(16,185,129,.08);color:var(--g3);border:1px solid rgba(16,185,129,.18)}
+.ag-flag{background:rgba(239,68,68,.1);color:var(--r3);border:1px solid rgba(239,68,68,.2)}
+
+/* DISCUSSION THREAD */
+.thread{display:flex;flex-direction:column;gap:0}
+.topic-header{background:var(--sf2);border:1px solid var(--bdr2);border-radius:12px 12px 0 0;padding:14px 20px;display:flex;align-items:center;gap:12px;margin-top:20px}
+.topic-num{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.topic-title{font-size:13px;font-weight:800;letter-spacing:-.3px}
+.messages{border:1px solid var(--bdr2);border-top:none;border-radius:0 0 12px 12px;padding:20px;display:flex;flex-direction:column;gap:16px;background:rgba(14,14,14,.6)}
+
+/* MESSAGE */
+.msg{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.msg.right{grid-template-columns:1fr 40px}
+.msg-avatar{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.msg-bubble{border-radius:12px;padding:14px 16px;max-width:780px}
+.msg.right .msg-bubble{margin-left:auto}
+.msg-name{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;font-weight:500}
+.msg-text{font-size:12.5px;line-height:1.7;font-weight:300}
+.msg-text strong{font-weight:700}
+.msg-text code{font-family:var(--mono);font-size:10.5px;background:rgba(0,0,0,.4);padding:2px 6px;border-radius:4px}
+.msg-text ul{margin:8px 0 6px 16px;display:flex;flex-direction:column;gap:4px}
+.msg-text ul li{font-size:12px;line-height:1.5}
+.msg-decision{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:11.5px;color:var(--y3);font-weight:600}
+.msg-decision::before{content:'✓ Decision: ';font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:3px}
+.msg-flag{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:11.5px;color:var(--r3);font-weight:600}
+.msg-flag::before{content:'⚠ Flag: ';font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;opacity:.7;display:block;margin-bottom:3px}
+
+/* Member colour schemes */
+.arc-av{background:linear-gradient(135deg,#3B82F6,#1D4ED8);color:#fff}
+.arc-bub{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.15)}
+.arc-bub .msg-name{color:var(--b3)}
+
+.uix-av{background:linear-gradient(135deg,#8B5CF6,#7C3AED);color:#fff}
+.uix-bub{background:rgba(139,92,246,.07);border:1px solid rgba(139,92,246,.15)}
+.uix-bub .msg-name{color:var(--p3)}
+
+.seo-av{background:linear-gradient(135deg,#10B981,#059669);color:#fff}
+.seo-bub{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15)}
+.seo-bub .msg-name{color:var(--g3)}
+
+.cnt-av{background:linear-gradient(135deg,#F59E0B,#D97706);color:#000}
+.cnt-bub{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15)}
+.cnt-bub .msg-name{color:var(--y3)}
+
+.prf-av{background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff}
+.prf-bub{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15)}
+.prf-bub .msg-name{color:var(--r3)}
+
+.rph-av{background:linear-gradient(135deg,#F59E0B,#F97316);color:#000}
+.rph-bub{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25)}
+.rph-bub .msg-name{color:var(--y4)}
+
+/* DECISIONS BOARD */
+.decisions-board{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dec{border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
+.dec::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px}
+.dec-confirmed{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18)}.dec-confirmed::before{background:var(--g4)}
+.dec-open{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18)}.dec-open::before{background:var(--y4)}
+.dec-flag{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.18)}.dec-flag::before{background:#EF4444}
+.dec-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.dec-confirmed .dec-label{color:var(--g3)}
+.dec-open .dec-label{color:var(--y3)}
+.dec-flag .dec-label{color:var(--r3)}
+.dec-val{font-size:12px;font-weight:700;color:var(--w8);margin-bottom:4px;line-height:1.35}
+.dec-note{font-size:10px;color:var(--w4);font-weight:300;line-height:1.5}
+
+/* LIGHT/DARK BLOCK MAP */
+.block-map{display:flex;flex-direction:column;gap:4px}
+.bm-row{display:grid;grid-template-columns:32px 1fr 140px;gap:10px;align-items:center;padding:9px 14px;border-radius:8px}
+.bm-n{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--w4);text-align:center}
+.bm-name{font-size:12px;font-weight:600;color:var(--w8)}
+.bm-sub{font-size:10px;color:var(--w4);margin-top:1px}
+.bm-dark{background:rgba(8,8,8,.8);border:1px solid rgba(255,255,255,.08)}
+.bm-light{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+.bm-mid{background:rgba(20,20,20,.6);border:1px solid rgba(255,255,255,.07)}
+.bm-tag{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;text-align:center}
+.bm-dark-tag{background:rgba(255,255,255,.06);color:var(--w4);border:1px solid rgba(255,255,255,.1)}
+.bm-light-tag{background:rgba(245,245,245,.12);color:var(--w6);border:1px solid rgba(255,255,255,.2)}
+.bm-amber-tag{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+
+/* PATTERN CARDS */
+.pattern-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pc{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden}
+.pc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.pc-arch::after{background:linear-gradient(90deg,var(--b4),var(--b3))}
+.pc-uix::after{background:linear-gradient(90deg,#8B5CF6,var(--p3))}
+.pc-new::after{background:linear-gradient(90deg,var(--y4),var(--y3))}
+.pc-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
+.pc-title{font-size:12px;font-weight:800;letter-spacing:-.2px;color:var(--w8);margin-bottom:6px}
+.pc-body{font-size:10.5px;color:var(--w6);line-height:1.6;font-weight:300}
+
+/* MISSED ITEMS */
+.missed-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.mi-item{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.14);border-radius:10px;padding:14px 16px}
+.mi-tag{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;color:var(--r3);margin-bottom:5px}
+.mi-title{font-size:12px;font-weight:700;color:var(--w8);margin-bottom:4px}
+.mi-body{font-size:10px;color:var(--w4);line-height:1.5;font-weight:300}
+
+footer{border-top:1px solid rgba(255,255,255,.05);padding:20px 48px;display:flex;align-items:center;justify-content:space-between}
+.fl{font-size:14px;font-weight:800;color:var(--y4)}
+.fm{font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+
+@media(max-width:1000px){
+  .section,.page-hero,footer,.nav{padding-left:24px;padding-right:24px}
+  .div{margin:0 24px}
+  .team-grid{grid-template-columns:repeat(2,1fr)}
+  .decisions-board,.pattern-grid,.missed-grid{grid-template-columns:1fr}
+  .nav-items{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div>
+    <div class="nav-brand">YALLO</div>
+    <div class="nav-tag">Virtual Team Discussion · GTM.02</div>
+  </div>
+  <ul class="nav-items">
+    <li><a href="#team">Team</a></li>
+    <li><a href="#agenda">Agenda</a></li>
+    <li><a href="#separation">Data/UI/Content</a></li>
+    <li><a href="#taste">Taste + Impeccable</a></li>
+    <li><a href="#darklight">Dark + Light</a></li>
+    <li><a href="#patterns">Patterns</a></li>
+    <li><a href="#missed">Missed Items</a></li>
+    <li><a href="#decisions">Decisions Board</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <div class="ey">Virtual Team · System Design Discussion</div>
+  <h1>Everyone in the room.<br><span class="gy">Nothing left unresolved.</span></h1>
+  <p class="hero-sub">Raphy called the team. Five disciplines at the table. The agenda: content/UI/data separation, taste and impeccable design skills, dark/light block rhythm, pattern library, and everything that was missed. This is the discussion before any build decision locks. Raphy has final call on everything.</p>
+</div>
+
+<!-- TEAM ROSTER -->
+<section id="team">
+  <div class="sl">The Room</div>
+  <h2>Five disciplines. One brief.</h2>
+  <p class="ssub">Everyone speaks freely. Raphy decides. No build happens until Raphy signs off the outcomes of this session.</p>
+
+  <div class="team-grid">
+    <div class="team-member" style="background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.15)">
+      <div class="tm-avatar arc-av">
+        A
+        <div class="tm-online"></div>
+      </div>
+      <div class="tm-name" style="color:var(--b3)">Architect</div>
+      <div class="tm-role">System Design</div>
+      <div class="tm-skills">Content/UI/data separation · generateStaticParams · CMS migration contract · API routes · TypeScript interfaces · Performance budget</div>
+    </div>
+    <div class="team-member" style="background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.15)">
+      <div class="tm-avatar uix-av">
+        U
+        <div class="tm-online"></div>
+      </div>
+      <div class="tm-name" style="color:var(--p3)">UI/UX — Emil Standard</div>
+      <div class="tm-role">Design + Interaction</div>
+      <div class="tm-skills">Taste skills · impeccable patterns · dark/light rhythm · animation spec · typography · whitespace · micro-interactions · mobile UX</div>
+    </div>
+    <div class="team-member" style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15)">
+      <div class="tm-avatar cnt-av">
+        C
+        <div class="tm-online"></div>
+      </div>
+      <div class="tm-name" style="color:var(--y3)">Content Strategist</div>
+      <div class="tm-role">Copy + Voice</div>
+      <div class="tm-skills">Contract-first voice · SEO copy · talent pain points · Sumeet's mission · page-by-page content rules · FAQ patterns · case study framing</div>
+    </div>
+    <div class="team-member" style="background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.15)">
+      <div class="tm-avatar seo-av">
+        S
+        <div class="tm-online"></div>
+      </div>
+      <div class="tm-name" style="color:var(--g3)">SEO/GEO/AEO</div>
+      <div class="tm-role">Discovery + Ranking</div>
+      <div class="tm-skills">Technical SEO · schema markup · GEO signals · AEO patterns · internal linking · sitemap · CWV targets · page-level keyword strategy</div>
+    </div>
+    <div class="team-member" style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15)">
+      <div class="tm-avatar prf-av">
+        P
+        <div class="tm-online"></div>
+      </div>
+      <div class="tm-name" style="color:var(--r3)">Performance + QA</div>
+      <div class="tm-role">Speed + Accessibility</div>
+      <div class="tm-skills">LCP CLS INP targets · image pipeline · bundle size · WCAG 2.2 AA · mobile-first · iOS Safari · animation budget · Ken Burns GPU validation</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="sl">Session Agenda</div>
+  <h2>Six topics. Raphy decides each.</h2>
+  <div class="agenda">
+    <div class="ag-item"><div class="ag-n">01</div><div><div class="ag-title">Content / UI / Data separation — system design level</div><div class="ag-sub">How do we structure this so the CMS drops in later without touching components?</div></div><div class="ag-status ag-open">Open</div></div>
+    <div class="ag-item"><div class="ag-n">02</div><div><div class="ag-title">Taste skills + Impeccable — do we add them? How?</div><div class="ag-sub">Are these surface-level extras or structural design principles? Where do they live?</div></div><div class="ag-status ag-open">Open</div></div>
+    <div class="ag-item"><div class="ag-n">03</div><div><div class="ag-title">Dark + Light block mixing — strategy and rhythm</div><div class="ag-sub">Which sections dark? Which light? Does it feel intentional or random?</div></div><div class="ag-status ag-open">Open</div></div>
+    <div class="ag-item"><div class="ag-n">04</div><div><div class="ag-title">Pattern library — what patterns do we build?</div><div class="ag-sub">Which UI patterns make this feel new and premium? Which ones are traps?</div></div><div class="ag-status ag-open">Open</div></div>
+    <div class="ag-item"><div class="ag-n">05</div><div><div class="ag-title">What did Raphy miss?</div><div class="ag-sub">Gaps in the architecture, missing pages, compliance items, experience gaps.</div></div><div class="ag-status ag-flag">Flags raised</div></div>
+    <div class="ag-item"><div class="ag-n">06</div><div><div class="ag-title">Decisions board — lock what's confirmed</div><div class="ag-sub">Every resolved item written here before the session closes.</div></div><div class="ag-status ag-closed">Summary below</div></div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TOPIC 1: CONTENT/UI/DATA SEPARATION -->
+<section id="separation">
+  <div class="sl">Topic 01</div>
+  <h2>Content / UI / Data separation.<br>System design level.</h2>
+
+  <div class="topic-header" style="background:rgba(59,130,246,.06);border-color:rgba(59,130,246,.2)">
+    <span class="topic-num" style="background:rgba(59,130,246,.1);color:var(--b3);border:1px solid rgba(59,130,246,.2)">01</span>
+    <span class="topic-title" style="color:var(--b3)">Content / UI / Data separation — can the CMS drop in later without touching components?</span>
+  </div>
+
+  <div class="messages">
+
+    <div class="msg">
+      <div class="msg-avatar arc-av">A</div>
+      <div class="msg-bubble arc-bub">
+        <div class="msg-name" style="color:var(--b3)">Architect</div>
+        <div class="msg-text">Raphy, good call raising this at system design level — not after the build. Here's how I see the three layers and exactly where the line sits between them:<br><br>
+        <strong>Content layer</strong> — what Tanzil and Sumeet own. Lives in <code>src/data/</code> and <code>src/content/</code>. TypeScript data files (<code>retail.ts</code>, <code>sap.ts</code>) and MDX articles. This layer knows nothing about components or CSS. Every field is typed against an interface. Wrong shape = build fails. This layer is CMS-ready from day one — the CMS API just replaces these files.<br><br>
+        <strong>Data layer</strong> — the API routes in <code>src/app/api/</code>. These are the single source of truth for any consumer. The website, a mobile app, the saasinator chatbot — they all call the same routes. <code>/api/content/[page]</code>, <code>/api/jobs</code>, <code>/api/insights/[slug]</code>. When the CMS arrives, only the data source behind these routes changes. The route interface stays identical. No consumer notices.<br><br>
+        <strong>UI layer</strong> — components in <code>src/components/</code>. They accept props. They know nothing about where the data came from. A VendorCard doesn't know if its data came from <code>retail.ts</code> or a CMS API response. It just renders what it receives. Zero hardcoded content. Zero hardcoded colours.
+        <div class="msg-decision">Three-layer separation: Content (data files + MDX) → API routes (single interface) → UI components (props only). CMS replaces content layer only. API routes and components never change at migration.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar uix-av">U</div>
+      <div class="msg-bubble uix-bub">
+        <div class="msg-name" style="color:var(--p3)">UI/UX</div>
+        <div class="msg-text">I want to add a fourth layer the Architect didn't mention — <strong>the design layer</strong>. That's <code>globals.css</code> and nothing else. Not Tailwind utilities scattered in component files. Not inline styles. Not hardcoded colours anywhere in a component. The design layer is L1–L6 of globals.css and the semantic tokens in L2 specifically.<br><br>
+        When Sumeet wants to rebrand — change the accent colour from yellow to something else — that's one value change in L2 of globals.css. Every component updates automatically. That only works if we're strict about the colour gate hook on every commit.<br><br>
+        So the full separation is actually four layers: <strong>Content → Data API → Design tokens (globals.css) → UI components (consuming both)</strong>. The components sit at the intersection of design and data but own neither.</div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar prf-av">P</div>
+      <div class="msg-bubble prf-bub">
+        <div class="msg-name" style="color:var(--r3)">Performance</div>
+        <div class="msg-text">One flag from me on the API routes. Edge runtime on <code>/api/content/[page]</code> and <code>/api/insights</code> — not Node.js runtime. Edge runtime has no cold start, sub-millisecond response at CDN edge. Cache headers: <code>s-maxage=3600</code> for content, <code>s-maxage=300</code> for jobs (ATS data, changes more frequently). This is critical — if these API routes are slow, every consumer is slow.<br><br>
+        Also: <code>/api/jobs</code> should return a <code>Last-Modified</code> header so the browser can use conditional requests. When the ATS hasn't changed in 5 minutes, the client gets a 304 and doesn't re-render the job list.</div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar rph-av">R</div>
+      <div class="msg-bubble rph-bub">
+        <div class="msg-name" style="color:var(--y4)">Raphy</div>
+        <div class="msg-text">Confirmed — four layers: Content, Data API, Design tokens, UI. Edge runtime on all API routes. Colour gate enforced on every commit. That's the architecture. Architect — write this as a section in DESIGN_SYSTEM.md so the team can't accidentally violate it.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TOPIC 2: TASTE + IMPECCABLE -->
+<section id="taste">
+  <div class="sl">Topic 02</div>
+  <h2>Taste skills + Impeccable.<br>Decoration or structural principle?</h2>
+
+  <div class="topic-header" style="background:rgba(139,92,246,.06);border-color:rgba(139,92,246,.2)">
+    <span class="topic-num" style="background:rgba(139,92,246,.1);color:var(--p3);border:1px solid rgba(139,92,246,.2)">02</span>
+    <span class="topic-title" style="color:var(--p3)">Do we add taste skills and impeccable? Where do they live in the build?</span>
+  </div>
+
+  <div class="messages">
+
+    <div class="msg">
+      <div class="msg-avatar uix-av">U</div>
+      <div class="msg-bubble uix-bub">
+        <div class="msg-name" style="color:var(--p3)">UI/UX — Emil Standard</div>
+        <div class="msg-text">Raphy, "taste" and "impeccable" aren't features you add at the end. They're discipline applied from the first component. Let me be specific about what they actually mean in code and design decisions — not abstract terms:<br><br>
+        <strong>Taste is knowing what to leave out.</strong> The temptation on a site like this is to fill every block with content, calls to action, icons, and colour. A CIO visiting from Korn Ferry has seen everything. What stops them is restraint — a section that breathes, whitespace that signals confidence, a single amber CTA that isn't competing with five others.<br><br>
+        <strong>Impeccable is the gap between 90% and 100%.</strong> It's the hover state that feels satisfying rather than functional. It's the Ken Burns that uses ease-in-out instead of linear. It's the amber left-border that appears at exactly 0.2s — not 0s (jumpy) and not 0.5s (slow). It's the counter that eases-out — not linear. These are 2-hour decisions that last 5 years.<br><br>
+        Here's where they concretely live in this build:<br>
+        <ul>
+          <li><strong>Typography:</strong> H1 at –0.04em, not –0.03em. The difference is visible at 72px. Emil always went tighter.</li>
+          <li><strong>Whitespace:</strong> Section padding at 100px minimum on desktop. Don't compress it to 72px to fit more above the fold. The CIO should feel arrival, not urgency.</li>
+          <li><strong>Hover states:</strong> Every interactive element has a hover state. No exceptions. No bare anchor tags without transition.</li>
+          <li><strong>Image treatment:</strong> Vendor logos: white monochrome at 45% opacity. Not 100% (too loud), not 30% (unreadable). 45% exactly.</li>
+          <li><strong>Dark/light transitions:</strong> Where a dark section meets a light section, the transition is not a hard line — it's a 2px gradient fade. Invisible when present, jarring when absent.</li>
+        </ul></div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar cnt-av">C</div>
+      <div class="msg-bubble cnt-bub">
+        <div class="msg-name" style="color:var(--y3)">Content Strategist</div>
+        <div class="msg-text">I want to add the content equivalent of taste and impeccable because it applies equally to copy.<br><br>
+        <strong>Content taste:</strong> One idea per sentence. One primary keyword per page. One CTA per section — not three. The discipline to not say "world-class specialist experts who deliver excellence" when you can say "contractors who have run this programme." Less copy, more signal.<br><br>
+        <strong>Content impeccable:</strong> The H1 on the homepage needs to be the best sentence on the site. Right now in home-3 it's "Enterprise tech talent, shortlisted in 72 hours." That's good. But Raphy confirmed the positioning as "contractors screened by architects, not keyword-matched." I'd push the H1 to something like:<br><br>
+        <em>"The contractor in that seat will make or break your go-live. We screen them like architects."</em><br><br>
+        That's impeccable copy — it addresses the fear, not the feature. Raphy, I'd like to workshop the H1 with you separately before it's written into the homepage component.</div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar seo-av">S</div>
+      <div class="msg-bubble seo-bub">
+        <div class="msg-name" style="color:var(--g3)">SEO/GEO/AEO</div>
+        <div class="msg-text">From SEO: taste and impeccable also means not over-optimising. The worst thing we can do is have clearly keyword-stuffed copy that reads like it was written for a search engine. A CIO reads the meta description before clicking. If it reads like "SAP contractor recruitment specialist enterprise technology UAE GCC India" — they don't click.<br><br>
+        Impeccable meta descriptions are 150 characters, benefit-led, human-written, with one location signal at the end. That's it. The keyword is there naturally. Not repeated. Not bolted on.</div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar rph-av">R</div>
+      <div class="msg-bubble rph-bub">
+        <div class="msg-name" style="color:var(--y4)">Raphy</div>
+        <div class="msg-text">Yes — taste and impeccable are structural, not decorative. They go into DESIGN_SYSTEM.md as a named section: "Taste and Impeccable Standards — these are not optional." Content team: workshop the H1 copy before Phase 2 starts. UI: the specific values (45% logo opacity, 0.2s hover, –0.04em tracking) go into the component spec, not left to judgment during build.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TOPIC 3: DARK + LIGHT -->
+<section id="darklight">
+  <div class="sl">Topic 03</div>
+  <h2>Dark + Light block mixing.<br>Rhythm, not randomness.</h2>
+
+  <div class="topic-header" style="background:rgba(245,158,11,.05);border-color:rgba(245,158,11,.18)">
+    <span class="topic-num" style="background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)">03</span>
+    <span class="topic-title" style="color:var(--y3)">Dark + Light mixing — what's the strategy? Does it feel intentional?</span>
+  </div>
+
+  <div class="messages">
+
+    <div class="msg">
+      <div class="msg-avatar uix-av">U</div>
+      <div class="msg-bubble uix-bub">
+        <div class="msg-name" style="color:var(--p3)">UI/UX</div>
+        <div class="msg-text">Raphy, this is one of the most important decisions on the site and most teams get it wrong by treating dark/light as decoration rather than rhythm. Here's the principle:<br><br>
+        <strong>Dark sections carry weight and authority.</strong> Hero, problem/pain, CTA, Yallo Family panel — these should be dark. The visitor should feel gravity. Dark signals: "this is serious." These are the sections where Yallo speaks with confidence about what it does and why it matters.<br><br>
+        <strong>Light sections create trust and clarity.</strong> How it works, service pillars, case studies, partner logos — these are light. Light signals: "we're transparent about the process." A process flow on a dark background feels like a threat. On white or near-white, it feels like an honest explanation.<br><br>
+        <strong>The alternation must be intentional and rhythmic.</strong> Dark → light → dark → light. Never two darks in a row. Never two lights in a row. The eye needs relief to reset before the next heavy message.<br><br>
+        Here's the exact rhythm I recommend for the homepage:</div>
+      </div>
+    </div>
+
+    <div style="margin:0 0 0 52px">
+      <div class="block-map">
+        <div class="bm-row bm-dark"><div class="bm-n">01</div><div><div class="bm-name">Ken Burns Hero Slider</div><div class="bm-sub">Full-bleed photography. H1. Primary CTA. Dark overlay on image.</div></div><div class="bm-tag bm-dark-tag">DARK · #080808</div></div>
+        <div class="bm-row bm-light"><div class="bm-n">02</div><div><div class="bm-name">Client Logo Marquee</div><div class="bm-sub">CSS marquee. White surface. Monochrome logos. Trust signal.</div></div><div class="bm-tag bm-light-tag">LIGHT · #F8F8F6</div></div>
+        <div class="bm-row bm-dark"><div class="bm-n">03</div><div><div class="bm-name">The Problem — Persona Cycle</div><div class="bm-sub">Pain. CHRO/CIO/etc. Dark forces the weight of the problem.</div></div><div class="bm-tag bm-dark-tag">DARK · #080808</div></div>
+        <div class="bm-row bm-light"><div class="bm-n">04</div><div><div class="bm-name">How It Works — 4 Steps</div><div class="bm-sub">Process transparency. Light = honest, clear explanation.</div></div><div class="bm-tag bm-light-tag">LIGHT · #FFFFFF</div></div>
+        <div class="bm-row bm-light"><div class="bm-n">05</div><div><div class="bm-name">Four Service Pillars</div><div class="bm-sub">Slight canvas tone (#F5F4EF). Warm off-white. Cards on surface. Not pure white — avoids clinical feel.</div></div><div class="bm-tag bm-light-tag">CANVAS · #F5F4EF</div></div>
+        <div class="bm-row bm-dark"><div class="bm-n">06</div><div><div class="bm-name">Sectors Hiring Now</div><div class="bm-sub">Full-bleed sector photography needs dark to support image overlays.</div></div><div class="bm-tag bm-dark-tag">DARK · #0C0C0C</div></div>
+        <div class="bm-row bm-mid"><div class="bm-n">07</div><div><div class="bm-name">Platform Talent Cards</div><div class="bm-sub">Dark surface (#141414). Vendor cards on near-black. Amber hover. Drama without full black.</div></div><div class="bm-tag bm-dark-tag">SURFACE · #141414</div></div>
+        <div class="bm-row bm-light"><div class="bm-n">08</div><div><div class="bm-name">Why Yallo — 4 Differentiators</div><div class="bm-sub">Light section breaks the dark run. Four clear proof points need breathing room.</div></div><div class="bm-tag bm-light-tag">LIGHT · #FFFFFF</div></div>
+        <div class="bm-row bm-light"><div class="bm-n">09</div><div><div class="bm-name">Case Studies</div><div class="bm-sub">Canvas tone. Cards float on warm off-white. Proof points need calm.</div></div><div class="bm-tag bm-light-tag">CANVAS · #F5F4EF</div></div>
+        <div class="bm-row bm-dark"><div class="bm-n">10</div><div><div class="bm-name">Stats Counter Strip</div><div class="bm-sub">Dark accent section. DM Mono numbers in amber. Impact moment.</div></div><div class="bm-tag bm-amber-tag">DARK + AMBER</div></div>
+        <div class="bm-row bm-dark"><div class="bm-n">11</div><div><div class="bm-name">Yallo Family Panel</div><div class="bm-sub">Dark close. Group brand. Saasinator + Academy cross-sell. Bookends the page.</div></div><div class="bm-tag bm-dark-tag">DARK · #080808</div></div>
+      </div>
+    </div>
+
+    <div class="messages" style="margin-top:0;border-top:none;border-radius:0 0 12px 12px">
+      <div class="msg">
+        <div class="msg-avatar arc-av">A</div>
+        <div class="msg-bubble arc-bub">
+          <div class="msg-name" style="color:var(--b3)">Architect</div>
+          <div class="msg-text">One implementation note on the light sections. The "light" tone is not pure white (<code>#FFFFFF</code>) everywhere. We use three light tones: pure white for process/transparency sections, canvas (<code>#F5F4EF</code> — warm off-white) for cards-on-surface sections, and near-white (<code>#FAFAF8</code>) for alternating within a light run. This prevents the eye from reading it as a single flat light expanse — there's still micro-variation within the light zones.<br><br>
+          These three tones need to be semantic tokens in L2 of globals.css: <code>--bg-light</code>, <code>--bg-canvas</code>, <code>--bg-near-white</code>. Never hardcoded as hex in a section wrapper.</div>
+        </div>
+      </div>
+
+      <div class="msg">
+        <div class="msg-avatar rph-av">R</div>
+        <div class="msg-bubble rph-bub">
+          <div class="msg-name" style="color:var(--y4)">Raphy</div>
+          <div class="msg-text">Confirmed. The block map is the spec. Three light tones as semantic tokens. Dark/light rhythm: intentional alternation, never two darks in a row except 10+11 at the close of the page (that's deliberate — it's the brand close). UI — write this into HOMEPAGE_SPEC.md as "Section Colour Rhythm — locked."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TOPIC 4: PATTERNS -->
+<section id="patterns">
+  <div class="sl">Topic 04</div>
+  <h2>Pattern library.<br>What we build. What we avoid.</h2>
+
+  <div class="topic-header" style="background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.18)">
+    <span class="topic-num" style="background:rgba(16,185,129,.1);color:var(--g3);border:1px solid rgba(16,185,129,.2)">04</span>
+    <span class="topic-title" style="color:var(--g3)">Pattern library — which patterns make this feel new? Which are traps?</span>
+  </div>
+
+  <div class="messages">
+    <div class="msg">
+      <div class="msg-avatar uix-av">U</div>
+      <div class="msg-bubble uix-bub">
+        <div class="msg-name" style="color:var(--p3)">UI/UX</div>
+        <div class="msg-text">I'll go through what we build, what we avoid, and why. Some of these patterns are industry traps that make a site look like every other recruitment agency — we need to be explicit about avoiding them.<br><br>
+        <strong>Patterns we build:</strong> Ken Burns hero (already confirmed) · left-border amber on card hover · magnetic CTA button · scroll-triggered counters · horizontal role pill scroll on mobile · sticky sidebar with shared layout indicator · persona cycle on problem section · process steps with animated connector · asymmetric grid on intro sections · noise texture on dark heroes · logo monochrome at 45% opacity · bench signal (green dot + "Active bench · UK · ME · India") · split-screen vendor cards (role-dominant + small logo badge)<br><br>
+        <strong>Patterns we avoid:</strong> Hero carousel with slide dots (outdated, not Ken Burns) · generic "Our Services" card grid with stock icons · timeline with vertical line and dots (every recruitment site has this) · accordion FAQ that looks like an FAQ (ours is minimal, inline expand) · hero with a split 50/50 image right, text left (cliché in B2B) · gradient text on every heading (reserve it for one moment per page) · box shadows everywhere (use them sparingly — only on interactive lift) · purple/blue gradients that scream "tech startup" — we are yellow/black/white only</div>
+      </div>
+    </div>
+    <div class="msg">
+      <div class="msg-avatar prf-av">P</div>
+      <div class="msg-bubble prf-bub">
+        <div class="msg-name" style="color:var(--r3)">Performance</div>
+        <div class="msg-text">Every pattern the UI team builds needs to pass a three-question performance check before it goes into the component library: <strong>1. Does it use GPU-composited properties only?</strong> (transform, opacity — never width, height, top, left). <strong>2. Does it respect prefers-reduced-motion?</strong> (L6 of globals.css global rule). <strong>3. Does it have a meaningful fallback?</strong> (Ken Burns falls back to a static image, not a broken slider).<br><br>
+        The magnetic CTA button is the one I want to flag — if it's implemented with getBoundingClientRect() on every mousemove, it will tank performance on lower-end devices. It needs to use Framer Motion's useMotionValue which is optimised for this. And it must be desktop-only — on mobile, the touch equivalent is a simple scale(0.97) on press.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <h4>Pattern library — confirmed builds</h4>
+    <div class="pattern-grid">
+      <div class="pc pc-arch">
+        <div class="pc-label">Architect-approved</div>
+        <div class="pc-title">Vendor Card — Role Dominant</div>
+        <div class="pc-body">Logo: small badge top-left (monochrome, 45% opacity). Tool name: 18px 800 weight white. Label: "Contractor roles" DM Mono amber 8px. Roles: 4–6 amber pills. Bench signal: green dot + text. CTA: "Request a contractor →". Left-border amber on hover (0.2s). Lift 4px translateY. No box-shadow.</div>
+      </div>
+      <div class="pc pc-uix">
+        <div class="pc-label">UI/UX-designed</div>
+        <div class="pc-title">Persona Cycle — Problem Section</div>
+        <div class="pc-body">5 cards (CHRO/CIO/Head of Talent/Delivery Director/CFO). Auto-cycles 3s. Framer Motion AnimatePresence + layoutId. Active card: scale 1.02, amber border-left, full opacity. Inactive: scale 1, 40% opacity. Parallax dark background behind. Click to select manually. Stops cycling on click.</div>
+      </div>
+      <div class="pc pc-new">
+        <div class="pc-label">Breaking usual pattern</div>
+        <div class="pc-title">Horizontal Role Scroll (Mobile)</div>
+        <div class="pc-body">On mobile: role pills scroll horizontally with scroll-snap. Overflow-x auto, touch-action pan-x. Amber gradient fade on right edge signals more content. DM Mono 9px pills. On desktop: wrapping flex. The horizontal scroll signals depth — "more than you can see at once." No competitor does this.</div>
+      </div>
+      <div class="pc pc-arch">
+        <div class="pc-label">Architect-approved</div>
+        <div class="pc-title">Sticky Sidebar — L2 Pages</div>
+        <div class="pc-body">position:sticky top:nav-height. height:calc(100vh - nav). All L2 functions listed for that sector. Active item: amber left-border (3px), Framer Motion shared layoutId="sidebar-indicator" slides smoothly on active change. Scrollbar: thin, amber thumb. Back link to L1 at top. Sector name as section header.</div>
+      </div>
+      <div class="pc pc-uix">
+        <div class="pc-label">UI/UX-designed</div>
+        <div class="pc-title">Magnetic CTA Button</div>
+        <div class="pc-body">Primary amber button only. Framer useMotionValue(x,y) + useSpring({stiffness:150,damping:15}). Max ±8px displacement. On mouseleave: springs to 0. Desktop only — mobile uses scale(0.97) on press. Never on secondary CTAs. Feels premium, not gimmicky. Performance: useMotionValue, never getBoundingClientRect.</div>
+      </div>
+      <div class="pc pc-new">
+        <div class="pc-label">Breaking usual pattern</div>
+        <div class="pc-title">Dark Section Noise Texture</div>
+        <div class="pc-body">SVG noise pattern (fractalNoise, baseFrequency 0.65, numOctaves 3) at 3% opacity as background-image on hero and CTA sections. background-blend-mode: overlay. One CSS property, zero JS, zero performance cost. Imperceptible to most users, impossible to miss when removed. The difference between premium dark and flat dark.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TOPIC 5: MISSED ITEMS -->
+<section id="missed">
+  <div class="sl">Topic 05 — Flags Raised</div>
+  <h2>What Raphy missed.<br>The team flagged these.</h2>
+
+  <div class="messages" style="border:1px solid rgba(239,68,68,.2);border-radius:12px;background:rgba(239,68,68,.03)">
+
+    <div class="msg">
+      <div class="msg-avatar arc-av">A</div>
+      <div class="msg-bubble arc-bub">
+        <div class="msg-name" style="color:var(--b3)">Architect — 5 flags</div>
+        <div class="msg-text">
+          <ul>
+            <li><strong>WordPress redirect strategy missing.</strong> When DNS switches from WordPress to Next.js, every old URL needs a redirect rule. The old site has URLs like <code>/tsea-as-a-service/</code>, <code>/talent-in-a-box/</code>, <code>/managed-it-coe/</code> — these need 301 redirects to the new service pages or Vercel rewrites. Without this, every inbound link, every Google-indexed URL, returns 404. Critical for SEO.</li>
+            <li><strong>Cookie consent not in scope.</strong> UK (GDPR), UAE (PDPL), India (DPDPA) — all require cookie consent before GA4 fires. Need a cookie consent solution (Cookiebar or equivalent, lightweight). This must be in Phase 2 before DNS switch — not an afterthought.</li>
+            <li><strong>OG images not generated — they're just described.</strong> Every page needs a real 1200×630 OG image. These can be generated via <code>next/og</code> (Vercel Edge Image Generation) — dynamic, no manual Figma exports needed. One OG template per page type. This is in the architecture spec but not in the execution plan commits.</li>
+            <li><strong>404 and 500 pages not specced.</strong> The 404 page is the most-visited page no one designs. For a talent site, a well-designed 404 with a search bar and "Request a contractor →" CTA converts lost visitors. Add it to Phase 6.</li>
+            <li><strong>Print stylesheet for case studies and white papers.</strong> A CIO who wants to share a case study will print it. If there's no print stylesheet, it prints the nav, the dark background, and looks broken. Two hours of CSS that protects the brand every time someone prints.</li>
+          </ul>
+          <div class="msg-flag">5 architectural gaps need adding to the execution plan before Phase 2 starts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar uix-av">U</div>
+      <div class="msg-bubble uix-bub">
+        <div class="msg-name" style="color:var(--p3)">UI/UX — 4 flags</div>
+        <div class="msg-text">
+          <ul>
+            <li><strong>Skeleton loading states for jobs listing.</strong> The <code>/api/jobs</code> route fetches from an ATS stub. When it loads, there's a flash of empty content. Need skeleton loading cards (animated shimmer) that match the job card dimensions. One component, used on <code>/jobs</code> page. Without this the page feels broken on first load.</li>
+            <li><strong>Image aspect ratio consistency not enforced.</strong> Sector photography needs to be consistently 16:9 for heroes and 4:5 for sector cards. If someone drops a 1:1 square image, it breaks the layout. next/image has an <code>aspectRatio</code> prop — we need to enforce this in the image component and document it in DESIGN_SYSTEM.md.</li>
+            <li><strong>The comparison table needs updated service names.</strong> The "Yallo vs Pure Recruitment vs Pure Consulting" table on <code>/why-yallo</code> was designed with the old service naming. It now needs "Contract Workforce · Permanent Hiring · EOR · Managed Delivery" applied. This is a content change but also changes the table column structure.</li>
+            <li><strong>Scrollbar styling missing from spec.</strong> Default browser scrollbars on the sidebar and the role pill horizontal scroll look broken on Windows Chrome. Two CSS lines: thin scrollbar, amber thumb, transparent track. Minor but the kind of thing that makes a site feel unfinished to a detail-conscious CIO.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar seo-av">S</div>
+      <div class="msg-bubble seo-bub">
+        <div class="msg-name" style="color:var(--g3)">SEO/GEO/AEO — 3 flags</div>
+        <div class="msg-text">
+          <ul>
+            <li><strong>No newsletter capture strategy.</strong> The architecture has a newsletter mention but no implementation plan. For GEO — capturing email addresses and delivering ME-specific market briefings (SAP talent scarcity, new programme activity in Riyadh, Dubai) builds the Yallo brand in the region over time. Need: a newsletter form, Resend list segment (UK vs ME vs India), and a monthly cadence plan. This is a Phase 3 item but needs to be in the plan now.</li>
+            <li><strong>The saasinator cross-sell link — where does it go?</strong> The Yallo Family panel links to saasinator.ai but saasinator.ai is the old site. Does it link to the new saasinator.ai v2 (if live) or to a holding page? This affects OG image, canonical, and the user experience for anyone who clicks. Need Raphy to confirm the saasinator.ai status.</li>
+            <li><strong>Social meta images for insight articles are not the same as page OG images.</strong> When Sumeet shares an insight article on LinkedIn, the preview image should be article-specific — not the generic site OG. next/og can generate these dynamically from the MDX frontmatter (title + author + category). Needs a dedicated article OG template. 4 hours of build time, long-term social sharing returns.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar prf-av">P</div>
+      <div class="msg-bubble prf-bub">
+        <div class="msg-name" style="color:var(--r3)">Performance — 2 flags</div>
+        <div class="msg-text">
+          <ul>
+            <li><strong>Hero image loading sequence not specced.</strong> Before the Ken Burns hero image loads, there's a moment where the user sees dark background and no image. This needs: a low-quality image placeholder (LQIP) generated by next/image's blurDataURL, applied to slide 1 only (priority:true). Slides 2–5 load lazily. The transition from LQIP to full image should be invisible — opacity cross-fade, not a pop.</li>
+            <li><strong>Mobile hero needs a different image crop than desktop.</strong> A 1920px landscape hero image cropped for 16:9 looks great on desktop. On mobile (9:16 portrait viewport), the same image shows a tiny sliver. We need: object-position specified per slide for mobile (usually center-top on people images, center-center on landscape shots). One CSS property per slide. Missing from the hero spec.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar cnt-av">C</div>
+      <div class="msg-bubble cnt-bub">
+        <div class="msg-name" style="color:var(--y3)">Content — 2 flags</div>
+        <div class="msg-text">
+          <ul>
+            <li><strong>Sumeet's bio page is not in the architecture.</strong> The /leadership page lists the team but Sumeet's bio is the single most important trust signal on the site — Richemont, Landmark, Alshaya EMEA, Chief Architect, Gartner Peer Community. This deserves its own page or a prominently featured section. Every insight article should link to it. It's the reason a GCC CIO trusts Yallo over a generic recruiter.</li>
+            <li><strong>The H1 on the homepage is not workshopped.</strong> Right now the plan says "Contractors screened by architects. Shortlisted in 72 hours." That's functional but not memorable. The best H1 on a site like this addresses the fear, not the feature. I want to workshop this with Raphy before it's locked. Request a 20-minute call.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg">
+      <div class="msg-avatar rph-av">R</div>
+      <div class="msg-bubble rph-bub">
+        <div class="msg-name" style="color:var(--y4)">Raphy</div>
+        <div class="msg-text">Good flags. Taking all of these. Adding to the execution plan:<br><br>
+        Architect: WordPress redirects go into Phase 2 (before DNS switch). Cookie consent (lightweight, GDPR/PDPL) Phase 2. OG images via next/og — add to Phase 2 commit list. 404/500 pages Phase 6. Print stylesheet Phase 6.<br><br>
+        UI/UX: Skeleton states on jobs page Phase 3. Aspect ratio enforcement in image component spec. Comparison table — content update Phase 3. Scrollbar styling Phase 1 (globals.css).<br><br>
+        SEO: Newsletter — Phase 3 implementation, cadence plan from Tanzil. Saasinator link — I need to confirm status before Phase 2. Article OG templates Phase 3.<br><br>
+        Performance: LQIP on hero slide 1 in Phase 2 hero build. Mobile image crops specified per slide in hero data.<br><br>
+        Content: Sumeet's bio — dedicated /about/sumeet page added to Phase 3. H1 workshop — Content and I will do this before Phase 2 sprint starts.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Missed items grid -->
+  <div style="margin-top:20px">
+    <h4>All flagged items — added to execution plan</h4>
+    <div class="missed-grid">
+      <div class="mi-item"><div class="mi-tag">Architect · Phase 2</div><div class="mi-title">WordPress → Next.js 301 redirects</div><div class="mi-body">Old URLs: /tsea-as-a-service/, /talent-in-a-box/, /managed-it-coe/. Add to next.config.ts redirects array before DNS switch. Every inbound link preserved.</div></div>
+      <div class="mi-item"><div class="mi-tag">Architect · Phase 2</div><div class="mi-title">Cookie consent (GDPR + PDPL + DPDPA)</div><div class="mi-body">Lightweight cookie banner. GA4 fires only after consent. UK / UAE / India legal coverage. Use @cookie-consent/core or equivalent — no heavy CMP.</div></div>
+      <div class="mi-item"><div class="mi-tag">Architect · Phase 2</div><div class="mi-title">OG images via next/og</div><div class="mi-body">Dynamic Edge Image Generation. One template per page type: L0/L1/L2/Service/Article. Auto-generates from metadata. No manual Figma exports needed.</div></div>
+      <div class="mi-item"><div class="mi-tag">Architect · Phase 6</div><div class="mi-title">404 + 500 error pages</div><div class="mi-body">404: search bar + "Request a contractor →" CTA + 3 most popular sector links. 500: "We're working on it" + contact link. Both on-brand, not default Next.js.</div></div>
+      <div class="mi-item"><div class="mi-tag">UI/UX · Phase 3</div><div class="mi-title">Skeleton loading — jobs listing</div><div class="mi-body">Animated shimmer skeleton cards matching job card dimensions. Shown while /api/jobs fetches. Prevents empty flash. One reusable SkeletonCard component.</div></div>
+      <div class="mi-item"><div class="mi-tag">Performance · Phase 2</div><div class="mi-title">Hero LQIP + mobile crop spec</div><div class="mi-body">blurDataURL on hero slide 1 (priority). Opacity crossfade from LQIP to full image. object-position specified per slide for mobile portrait viewport.</div></div>
+      <div class="mi-item"><div class="mi-tag">SEO · Confirm before Phase 2</div><div class="mi-title">saasinator.ai link destination</div><div class="mi-body">Yallo Family panel links to saasinator.ai. Is the v2 site live? Or does it link to a holding page? Raphy to confirm before homepage is built.</div></div>
+      <div class="mi-item"><div class="mi-tag">Content · Phase 3</div><div class="mi-title">/about/sumeet — dedicated bio page</div><div class="mi-body">Sumeet's full operator biography. Richemont / Landmark / Alshaya EMEA. Chief Architect credentials. Gartner Peer Community. Linked from every insight article. Primary trust signal.</div></div>
+      <div class="mi-item"><div class="mi-tag">Content · Before Phase 2</div><div class="mi-title">H1 copy workshop — homepage</div><div class="mi-body">Raphy + Content Strategist workshop the homepage H1 before it's written into the component. Addresses the fear, not the feature. Locked before Phase 2 sprint starts.</div></div>
+      <div class="mi-item"><div class="mi-tag">Architect · Phase 6</div><div class="mi-title">Print stylesheet — case studies + white papers</div><div class="mi-body">@media print hides nav, footer, CTAs. Shows logo, title, content, and contact. Dark backgrounds removed. Two hours of CSS that protects brand on every printed page.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- DECISIONS BOARD -->
+<section id="decisions">
+  <div class="sl">Decisions Board</div>
+  <h2>Everything resolved this session.<br>Raphy signed off each one.</h2>
+
+  <div class="decisions-board">
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">Four-layer separation: Content → Data API → Design tokens → UI components</div>
+      <div class="dec-note">CMS replaces content layer only at Phase 4. API routes and components never change at migration. Edge runtime on all API routes. Colour gate enforced every commit.</div>
+    </div>
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">Taste and Impeccable are structural, not decorative</div>
+      <div class="dec-note">Named section in DESIGN_SYSTEM.md. Specific values locked: –0.04em H1 tracking, 45% logo opacity, 0.2s hover transitions, 100px+ section padding desktop. Not left to judgment during build.</div>
+    </div>
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">Dark/Light rhythm: intentional alternation. Never two darks in a row.</div>
+      <div class="dec-note">Block map confirmed and locked (11 homepage sections). Three light tones as semantic tokens: --bg-light, --bg-canvas, --bg-near-white. Written into HOMEPAGE_SPEC.md as locked.</div>
+    </div>
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">Pattern library: build list and avoid list both confirmed</div>
+      <div class="dec-note">Build: Ken Burns, left-border amber hover, magnetic CTA, counter animation, horizontal role scroll, sticky sidebar with Framer shared layout, noise texture, bench signal. Avoid: slide dots, stock icon grids, vertical timeline, 50/50 hero split, gradient text everywhere.</div>
+    </div>
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">10 flagged items added to execution plan with assigned phases</div>
+      <div class="dec-note">WordPress redirects, cookie consent, OG images, 404/500, skeleton states, LQIP hero, scrollbar styling, comparison table update, newsletter, Sumeet bio page, H1 workshop.</div>
+    </div>
+    <div class="dec dec-open">
+      <div class="dec-label">⚠ Needs Raphy's answer</div>
+      <div class="dec-val">saasinator.ai link destination — is v2 live?</div>
+      <div class="dec-note">The Yallo Family panel on the homepage links to saasinator.ai. Raphy to confirm before Phase 2 homepage build starts: link to live saasinator.ai v2, or a "Launching soon" holding page with an email capture?</div>
+    </div>
+    <div class="dec dec-open">
+      <div class="dec-label">⚠ Workshop before Phase 2</div>
+      <div class="dec-val">Homepage H1 copy — not yet locked</div>
+      <div class="dec-note">Raphy + Content Strategist workshop the H1 before the homepage component is built. The H1 must address the hiring leader's fear, not the service feature. "The contractor in that seat will make or break your go-live" direction to explore.</div>
+    </div>
+    <div class="dec dec-confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-val">Ken Burns hero · Managed Delivery · Architect-vetted positioning</div>
+      <div class="dec-note">All three from previous session. Still locked. Not revisited. Hero: Framer AnimatePresence + CSS ken-burns keyframes. Service pillar 4: Managed Delivery. H1 anchor: architect-vetted, not keyword-matched.</div>
+    </div>
+  </div>
+
+  <!-- Session close -->
+  <div style="margin-top:20px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18);border-radius:14px;padding:28px 32px">
+    <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:10px">Session close — Raphy</div>
+    <div style="font-size:14px;font-weight:800;letter-spacing:-.3px;color:var(--w8);margin-bottom:10px">Two things before Phase 0 scaffold starts:</div>
+    <div style="font-size:12px;color:var(--w6);line-height:1.7;font-weight:300">
+      1. <strong style="color:var(--w8)">Answer the saasinator.ai question</strong> — holding page or live link. This affects the Yallo Family panel component and the OG image for that section.<br>
+      2. <strong style="color:var(--w8)">H1 workshop scheduled</strong> — 20 minutes with the content team before Phase 2. The H1 is the most important sentence on the site. It deserves the time.<br><br>
+      Everything else is locked. The team has what it needs. Phase 0 scaffold can run in parallel with the H1 workshop — that doesn't block the CLI commands.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fl">YALLO</div>
+  <div class="fm">Virtual Team Discussion · yallo.co v2 · GTM.02 · July 2026</div>
+</footer>
+
+</body>
+</html>

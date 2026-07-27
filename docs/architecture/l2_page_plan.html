@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Experience Contractors — Retail | Yallo Talent</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0C0C0C;--sf:#141414;--sf2:#1C1C1C;
+  --y4:#F59E0B;--y3:#FCD34D;--y2:#FDE68A;
+  --g3:#6EE7B7;--g4:#10B981;--b3:#93C5FD;--r3:#FCA5A5;
+  --w1:#fff;--w8:rgba(255,255,255,.88);--w6:rgba(255,255,255,.6);
+  --w4:rgba(255,255,255,.4);--w2:rgba(255,255,255,.18);--wa:rgba(255,255,255,.06);
+  --bdr:rgba(245,158,11,.13);--bdr2:rgba(255,255,255,.08);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+  --nav-h:64px;--sb-w:264px
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--w1);-webkit-font-smoothing:antialiased}
+a{color:var(--y4);text-decoration:none}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 36px}
+.nav-left{display:flex;align-items:center;gap:32px}
+.nav-brand{font-size:17px;font-weight:800;color:var(--y4);letter-spacing:-.4px}
+.nav-tag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4)}
+.nav-links{display:flex;gap:22px;list-style:none}
+.nav-links a{font-size:12px;color:var(--w4);font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--w8)}
+.nav-cta{background:var(--y4);color:#000;font-size:11.5px;font-weight:800;padding:9px 20px;border-radius:6px;letter-spacing:-.1px;transition:opacity .2s}
+.nav-cta:hover{opacity:.85}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:var(--sb-w) 1fr;margin-top:var(--nav-h);min-height:calc(100vh - var(--nav-h))}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:var(--nav-h);height:calc(100vh - var(--nav-h));overflow-y:auto;background:var(--bg2);border-right:1px solid var(--bdr2);padding:0 0 40px;scrollbar-width:thin;scrollbar-color:rgba(245,158,11,.2) transparent}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(245,158,11,.2);border-radius:2px}
+.sb-top{padding:24px 20px 18px;border-bottom:1px solid var(--bdr2)}
+.sb-back{font-family:var(--mono);font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--w4);display:flex;align-items:center;gap:5px;margin-bottom:12px;transition:color .2s}
+.sb-back:hover{color:var(--y4)}
+.sb-sector-label{font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--y4);margin-bottom:5px}
+.sb-sector-name{font-size:14px;font-weight:800;color:var(--w8);letter-spacing:-.3px}
+.sb-section{padding:14px 20px 8px}
+.sb-heading{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
+.sb-list{list-style:none}
+.sb-item a{display:block;padding:8px 20px;font-size:11.5px;font-weight:400;color:var(--w6);text-decoration:none;border-left:2px solid transparent;transition:all .15s;line-height:1.35}
+.sb-item a:hover{color:var(--w8);background:rgba(255,255,255,.03);border-left-color:rgba(245,158,11,.3)}
+.sb-item.active a{color:var(--w1);font-weight:700;background:rgba(245,158,11,.07);border-left-color:var(--y4)}
+
+/* MAIN */
+.main{min-width:0}
+
+/* HERO */
+.hero{position:relative;height:360px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 52px 40px}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&auto=format&fit=crop&q=80');background-size:cover;background-position:center;opacity:.2}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.75) 45%,rgba(8,8,8,.3) 100%)}
+.hero-content{position:relative;z-index:1}
+.breadcrumb{display:flex;align-items:center;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+.breadcrumb a{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--w4);text-decoration:none;transition:color .2s}
+.breadcrumb a:hover{color:var(--y4)}
+.breadcrumb .sep{font-family:var(--mono);font-size:9px;color:var(--w2)}
+.breadcrumb .cur{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--y4)}
+.hero h1{font-size:clamp(22px,2.8vw,36px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px;max-width:600px}
+.hero h1 em{font-style:normal;color:var(--y3)}
+.hero-sub{font-size:13px;font-weight:300;color:var(--w6);max-width:540px;line-height:1.65;margin-bottom:22px}
+.hero-stats{display:flex;gap:20px;flex-wrap:wrap}
+.hst{display:flex;align-items:center;gap:7px}
+.hst-dot{width:6px;height:6px;border-radius:50%;background:var(--g4);flex-shrink:0;box-shadow:0 0 6px rgba(16,185,129,.5)}
+.hst-txt{font-family:var(--mono);font-size:8.5px;letter-spacing:.5px;color:var(--w6);text-transform:uppercase}
+
+/* CONTENT */
+.content{padding:48px 52px 64px}
+.sec-label{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--y4);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.sec-label::before{content:'';width:14px;height:1px;background:var(--y4);opacity:.6}
+.div-line{height:1px;background:linear-gradient(90deg,rgba(245,158,11,.12),rgba(245,158,11,.05) 60%,transparent);margin:44px 0}
+
+/* INTRO */
+.fn-intro{max-width:660px;margin-bottom:44px}
+.fn-intro h2{font-size:clamp(17px,2vw,24px);font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
+.fn-intro p{font-size:13.5px;color:var(--w6);line-height:1.75;font-weight:300}
+
+/* ROLES STRIP */
+.roles-wrap{margin-bottom:48px}
+.roles-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.role-pill{font-family:var(--mono);font-size:10px;letter-spacing:.4px;font-weight:500;padding:8px 14px;border-radius:5px;background:rgba(245,158,11,.07);color:var(--y3);border:1px solid rgba(245,158,11,.2);transition:all .18s;cursor:default;line-height:1}
+.role-pill:hover{background:rgba(245,158,11,.14);border-color:rgba(245,158,11,.4);transform:translateY(-1px)}
+
+/* VENDOR CARDS */
+.vendors-wrap{margin-bottom:48px}
+.vendors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.vc{background:var(--sf);border:1px solid var(--bdr2);border-radius:14px;padding:26px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,box-shadow .25s}
+.vc::before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:3px;background:var(--y4);border-radius:0 3px 3px 0;opacity:0;transition:opacity .25s}
+.vc:hover{transform:translateY(-5px);border-color:rgba(245,158,11,.32);box-shadow:0 16px 48px rgba(0,0,0,.5),0 0 0 1px rgba(245,158,11,.08)}
+.vc:hover::before{opacity:1}
+.vc-badge{display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;margin-bottom:18px;align-self:flex-start}
+.vc-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--w4)}
+.vc-badge-name{font-family:var(--mono);font-size:9px;font-weight:500;color:var(--w6);letter-spacing:1px;text-transform:uppercase}
+/* When real logos added: */
+/* .vc-badge img{height:15px;filter:brightness(0) invert(1);opacity:.65} */
+.vc-tool-name{font-size:18px;font-weight:800;letter-spacing:-.5px;color:var(--w1);margin-bottom:20px;line-height:1.2}
+.vc-roles-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:10px}
+.vc-roles{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;flex:1;align-content:flex-start}
+.vc-role{font-family:var(--mono);font-size:9px;letter-spacing:.2px;padding:6px 10px;border-radius:4px;background:rgba(245,158,11,.07);color:var(--y3);border:1px solid rgba(245,158,11,.18);line-height:1;transition:background .15s}
+.vc:hover .vc-role{background:rgba(245,158,11,.11)}
+.vc-bench{display:flex;align-items:center;gap:7px;margin-bottom:18px}
+.vc-bench-dot{width:7px;height:7px;border-radius:50%;background:var(--g4);flex-shrink:0;box-shadow:0 0 6px rgba(16,185,129,.4)}
+.vc-bench-txt{font-family:var(--mono);font-size:8.5px;letter-spacing:.3px;color:var(--w4)}
+.vc-cta{display:block;text-align:center;padding:11px 16px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:-.1px;text-decoration:none;transition:all .2s;background:rgba(245,158,11,.09);color:var(--y4);border:1px solid rgba(245,158,11,.22)}
+.vc-cta:hover{background:var(--y4);color:#000;border-color:var(--y4)}
+
+/* SCREENING */
+.screening{background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.14);border-left:3px solid var(--y4);border-radius:14px;padding:24px 28px;margin-bottom:48px;display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:start}
+.screening-ico{width:44px;height:44px;background:rgba(245,158,11,.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.screening-title{font-size:13.5px;font-weight:800;letter-spacing:-.3px;color:var(--w8);margin-bottom:6px}
+.screening-body{font-size:12.5px;color:var(--w6);line-height:1.7;font-weight:300}
+
+/* MODELS STRIP */
+.models-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:48px}
+.model-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:10px;padding:16px 18px;transition:border-color .2s}
+.model-card:hover{border-color:rgba(245,158,11,.25)}
+.model-name{font-size:12px;font-weight:800;letter-spacing:-.2px;color:var(--w8);margin-bottom:4px}
+.model-desc{font-size:10px;color:var(--w4);font-weight:300;line-height:1.5}
+.model-tag{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.18);display:inline-block;margin-top:7px}
+.model-tag.primary{background:rgba(245,158,11,.2);border-color:rgba(245,158,11,.4)}
+
+/* BRIEF CTA */
+.brief-cta{background:linear-gradient(135deg,rgba(20,14,4,.8),rgba(8,8,8,1));border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:28px;position:relative;overflow:hidden}
+.brief-cta::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,158,11,.08),transparent 65%);pointer-events:none}
+.brief-cta-left h3{font-size:clamp(18px,2vw,26px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.brief-cta-left p{font-size:12.5px;color:var(--w6);font-weight:300;line-height:1.6;max-width:400px}
+.brief-cta-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0}
+.brief-cta-btn-primary{background:var(--y4);color:#000;font-size:13px;font-weight:800;letter-spacing:-.2px;padding:14px 28px;border-radius:8px;text-decoration:none;white-space:nowrap;transition:opacity .2s;text-align:center}
+.brief-cta-btn-primary:hover{opacity:.85}
+.brief-cta-btn-sec{background:transparent;color:var(--w6);font-size:11px;font-weight:500;padding:10px 28px;border-radius:8px;text-decoration:none;white-space:nowrap;border:1px solid var(--bdr2);transition:all .2s;text-align:center}
+.brief-cta-btn-sec:hover{color:var(--w8);border-color:rgba(255,255,255,.2)}
+
+/* RELATED */
+.related-wrap{margin-top:48px;padding-top:40px;border-top:1px solid var(--bdr2)}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.related-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:10px;padding:16px 18px;transition:all .2s;text-decoration:none;display:block}
+.related-card:hover{border-color:rgba(245,158,11,.25);transform:translateY(-2px)}
+.related-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-bottom:6px}
+.related-name{font-size:12.5px;font-weight:700;color:var(--w8);margin-bottom:3px;letter-spacing:-.2px}
+.related-count{font-family:var(--mono);font-size:9px;color:var(--y4)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 36px;background:var(--bg2);display:flex;align-items:center;justify-content:space-between}
+.fl{font-size:15px;font-weight:800;color:var(--y4)}
+.fm{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+
+@media(max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:relative;top:0;height:auto;border-right:none;border-bottom:1px solid var(--bdr2)}
+  .sb-list{display:grid;grid-template-columns:repeat(2,1fr)}
+  .vendors-grid{grid-template-columns:1fr}
+  .models-strip{grid-template-columns:repeat(2,1fr)}
+  .hero{height:auto;padding:48px 24px 32px}
+  .content{padding:32px 24px 48px}
+  .brief-cta{flex-direction:column;padding:28px 24px}
+  .related-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:8px;text-align:center;padding:20px 24px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div>
+      <div class="nav-brand">YALLO</div>
+      <div class="nav-tag">Talent · UK · ME · India</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/industries">Industries</a></li>
+      <li><a href="/platforms">Platforms</a></li>
+      <li><a href="/capabilities">Capabilities</a></li>
+      <li><a href="/permanent">Permanent</a></li>
+      <li><a href="/contract">Contract</a></li>
+      <li><a href="/jobs">Jobs</a></li>
+    </ul>
+  </div>
+  <a href="/contact" class="nav-cta">Request a contractor →</a>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <a href="/industries/retail" class="sb-back">← Retail &amp; Consumer</a>
+      <div class="sb-sector-label">Industry</div>
+      <div class="sb-sector-name">Retail &amp; Consumer</div>
+    </div>
+    <div class="sb-section">
+      <div class="sb-heading">Our expertise</div>
+    </div>
+    <ul class="sb-list">
+      <li class="sb-item active"><a href="#">Customer Experience</a></li>
+      <li class="sb-item"><a href="#">Store Operations</a></li>
+      <li class="sb-item"><a href="#">Merchandising</a></li>
+      <li class="sb-item"><a href="#">Omnichannel Fulfillment</a></li>
+      <li class="sb-item"><a href="#">E-commerce</a></li>
+      <li class="sb-item"><a href="#">Loyalty &amp; Rewards</a></li>
+      <li class="sb-item"><a href="#">Point-of-Sale (POS)</a></li>
+      <li class="sb-item"><a href="#">Inventory Management</a></li>
+      <li class="sb-item"><a href="#">Supply Chain Analytics</a></li>
+      <li class="sb-item"><a href="#">Warehousing &amp; Transportation</a></li>
+      <li class="sb-item"><a href="#">Pricing &amp; Promotions</a></li>
+      <li class="sb-item"><a href="#">Customer Service</a></li>
+      <li class="sb-item"><a href="#">Retail Planning &amp; Optimisation</a></li>
+      <li class="sb-item"><a href="#">Financial Planning</a></li>
+      <li class="sb-item"><a href="#">Financial Operations</a></li>
+      <li class="sb-item"><a href="#">Human Capital Management</a></li>
+      <li class="sb-item"><a href="#">Procurement &amp; Vendor Management</a></li>
+      <li class="sb-item"><a href="#">Property Management</a></li>
+      <li class="sb-item"><a href="#">Retail Data Analytics</a></li>
+      <li class="sb-item"><a href="#">Cloud, Infrastructure &amp; Operations</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="breadcrumb">
+          <a href="/industries">Industries</a>
+          <span class="sep">/</span>
+          <a href="/industries/retail">Retail &amp; Consumer</a>
+          <span class="sep">/</span>
+          <span class="cur">Customer Experience</span>
+        </div>
+        <h1>Customer Experience contractors,<br><em>deployed in 72 hours.</em></h1>
+        <p class="hero-sub">SAP CX, Salesforce Marketing Cloud and Oracle Retail specialists for retail programmes across UK, ME and India. Architect-screened. Available now.</p>
+        <div class="hero-stats">
+          <div class="hst"><div class="hst-dot"></div><div class="hst-txt">72h brief to shortlist</div></div>
+          <div class="hst"><div class="hst-dot"></div><div class="hst-txt">Active contractor bench</div></div>
+          <div class="hst"><div class="hst-dot"></div><div class="hst-txt">UK · ME · India</div></div>
+          <div class="hst"><div class="hst-dot"></div><div class="hst-txt">Contract · EOR · Subcontract</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- INTRO -->
+      <div class="fn-intro">
+        <div class="sec-label">Function overview</div>
+        <h2>Finding CX contractors who understand retail context is harder than it looks.</h2>
+        <p>Most platforms have CVs. Few have contractors who have delivered live retail CX implementations under programme pressure. Yallo's contractor bench spans SAP Customer Experience, Salesforce Marketing Cloud and Oracle Retail Customer Engagement — every candidate assessed for implementation depth and delivery track record, not platform familiarity alone. Contract, EOR or subcontracted — matched to how you need to hold the risk.</p>
+      </div>
+
+      <div class="div-line"></div>
+
+      <!-- ROLES STRIP -->
+      <div class="roles-wrap">
+        <div class="sec-label">Contractor roles we deploy in this function</div>
+        <div class="roles-grid">
+          <span class="role-pill">SAP CX Functional Consultant</span>
+          <span class="role-pill">SAP Commerce Architect</span>
+          <span class="role-pill">Salesforce SFMC Developer</span>
+          <span class="role-pill">Oracle Retail CX Consultant</span>
+          <span class="role-pill">CX Solutions Architect</span>
+          <span class="role-pill">Digital Experience Lead</span>
+          <span class="role-pill">Personalisation Engineer</span>
+          <span class="role-pill">CRM Programme Manager</span>
+          <span class="role-pill">Customer Data Platform Specialist</span>
+          <span class="role-pill">CX Technical Lead</span>
+          <span class="role-pill">Loyalty Programme Architect</span>
+          <span class="role-pill">Marketing Technology Lead</span>
+        </div>
+      </div>
+
+      <div class="div-line"></div>
+
+      <!-- ENGAGEMENT MODELS -->
+      <div class="sec-label">How we engage</div>
+      <div class="models-strip">
+        <div class="model-card">
+          <div class="model-name">Contract</div>
+          <div class="model-desc">Interim specialists deployed against programme milestones. Day rate. You manage directly.</div>
+          <div class="model-tag primary">Primary model</div>
+        </div>
+        <div class="model-card">
+          <div class="model-name">EOR</div>
+          <div class="model-desc">You choose the contractor, Yallo employs them. UAE visa or India payroll handled.</div>
+          <div class="model-tag">Available</div>
+        </div>
+        <div class="model-card">
+          <div class="model-name">Subcontracting</div>
+          <div class="model-desc">Scoped deliverable. Outcome-owned. Fixed commitment. Yallo holds the risk.</div>
+          <div class="model-tag">Available</div>
+        </div>
+        <div class="model-card">
+          <div class="model-name">Permanent</div>
+          <div class="model-desc">Long-term placement for senior CX roles. Architect-screened. 72h shortlist.</div>
+          <div class="model-tag">Available</div>
+        </div>
+      </div>
+
+      <div class="div-line"></div>
+
+      <!-- VENDOR CARDS -->
+      <div class="vendors-wrap">
+        <div class="sec-label">Platforms we staff in this function</div>
+        <div class="vendors-grid">
+
+          <!-- SAP CX -->
+          <div class="vc">
+            <div class="vc-badge">
+              <div class="vc-badge-dot" style="background:#1478C8"></div>
+              <div class="vc-badge-name">SAP</div>
+              <!-- Replace with: <img src="/logos/sap.svg" alt="SAP"> -->
+            </div>
+            <div class="vc-tool-name">SAP Customer Experience</div>
+            <div class="vc-roles-label">Contractor roles</div>
+            <div class="vc-roles">
+              <span class="vc-role">Functional Consultant</span>
+              <span class="vc-role">Commerce Architect</span>
+              <span class="vc-role">Technical Architect</span>
+              <span class="vc-role">Business Analyst</span>
+              <span class="vc-role">Personalisation Lead</span>
+            </div>
+            <div class="vc-bench">
+              <div class="vc-bench-dot"></div>
+              <div class="vc-bench-txt">Active bench · UK · ME · India</div>
+            </div>
+            <a href="/contact" class="vc-cta">Request a contractor →</a>
+          </div>
+
+          <!-- Salesforce MC -->
+          <div class="vc">
+            <div class="vc-badge">
+              <div class="vc-badge-dot" style="background:#00A1E0"></div>
+              <div class="vc-badge-name">Salesforce</div>
+              <!-- Replace with: <img src="/logos/salesforce.svg" alt="Salesforce"> -->
+            </div>
+            <div class="vc-tool-name">Salesforce Marketing Cloud</div>
+            <div class="vc-roles-label">Contractor roles</div>
+            <div class="vc-roles">
+              <span class="vc-role">SFMC Developer</span>
+              <span class="vc-role">Journey Builder Specialist</span>
+              <span class="vc-role">Marketing Cloud Architect</span>
+              <span class="vc-role">Campaign Analyst</span>
+              <span class="vc-role">Data Extension Specialist</span>
+            </div>
+            <div class="vc-bench">
+              <div class="vc-bench-dot"></div>
+              <div class="vc-bench-txt">Active bench · UK · ME · India</div>
+            </div>
+            <a href="/contact" class="vc-cta">Request a contractor →</a>
+          </div>
+
+          <!-- Oracle Retail CX -->
+          <div class="vc">
+            <div class="vc-badge">
+              <div class="vc-badge-dot" style="background:#C74634"></div>
+              <div class="vc-badge-name">Oracle</div>
+              <!-- Replace with: <img src="/logos/oracle.svg" alt="Oracle"> -->
+            </div>
+            <div class="vc-tool-name">Oracle Retail Customer Engagement</div>
+            <div class="vc-roles-label">Contractor roles</div>
+            <div class="vc-roles">
+              <span class="vc-role">Oracle Retail CX Consultant</span>
+              <span class="vc-role">Loyalty Programme Lead</span>
+              <span class="vc-role">Functional Consultant</span>
+              <span class="vc-role">CX Technical Analyst</span>
+              <span class="vc-role">Marketing Data Specialist</span>
+            </div>
+            <div class="vc-bench">
+              <div class="vc-bench-dot"></div>
+              <div class="vc-bench-txt">Active bench · UK · ME · India</div>
+            </div>
+            <a href="/contact" class="vc-cta">Request a contractor →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SCREENING CALLOUT -->
+      <div class="screening">
+        <div class="screening-ico">🔍</div>
+        <div>
+          <div class="screening-title">Architect-led screening — not keyword matching.</div>
+          <div class="screening-body">Every CX contractor on our bench is assessed by specialists who have run retail CX implementations. We screen for delivery track record and genuine implementation depth. You get a shortlist of contractors who have done the work at pace — not people who have listed the platform on a CV.</div>
+        </div>
+      </div>
+
+      <!-- BRIEF CTA -->
+      <div class="brief-cta">
+        <div class="brief-cta-left">
+          <h3>Need a Customer Experience contractor?</h3>
+          <p>Tell us your platform, programme timeline and engagement model. We return an architect-screened shortlist within 72 hours. No CVs until we understand the role.</p>
+        </div>
+        <div class="brief-cta-actions">
+          <a href="/contact" class="brief-cta-btn-primary">Send us a brief →</a>
+          <a href="/contact" class="brief-cta-btn-sec">Or call us directly</a>
+        </div>
+      </div>
+
+      <!-- RELATED FUNCTIONS -->
+      <div class="related-wrap">
+        <div class="sec-label">Related expertise in retail</div>
+        <div class="related-grid">
+          <a href="/industries/retail/store-operations" class="related-card">
+            <div class="related-label">Retail function</div>
+            <div class="related-name">Store Operations</div>
+            <div class="related-count">Oracle Retail · SAP S/4HANA · D365 Commerce</div>
+          </a>
+          <a href="/industries/retail/loyalty-rewards" class="related-card">
+            <div class="related-label">Retail function</div>
+            <div class="related-name">Loyalty &amp; Rewards</div>
+            <div class="related-count">Oracle Loyalty · Salesforce Loyalty · MS Dynamics</div>
+          </a>
+          <a href="/industries/retail/customer-service" class="related-card">
+            <div class="related-label">Retail function</div>
+            <div class="related-name">Customer Service</div>
+            <div class="related-count">Zendesk · Salesforce Service Cloud · Oracle Service</div>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="fl">YALLO</div>
+  <div class="fm">Talent · UK · ME · India · yallo.co</div>
+</footer>
+
+</body>
+</html>

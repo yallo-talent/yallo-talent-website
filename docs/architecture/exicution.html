@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>yallo.co v2 — Full Execution Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0C0C0C;--sf:#141414;--sf2:#1C1C1C;
+  --y4:#F59E0B;--y3:#FCD34D;--y2:#FDE68A;
+  --g3:#6EE7B7;--g4:#10B981;--b3:#93C5FD;--b4:#3B82F6;
+  --r3:#FCA5A5;--p3:#D8B4FE;
+  --w1:#fff;--w8:rgba(255,255,255,.88);--w6:rgba(255,255,255,.6);
+  --w4:rgba(255,255,255,.4);--w2:rgba(255,255,255,.15);--wa:rgba(255,255,255,.05);
+  --bdr:rgba(245,158,11,.13);--bdr2:rgba(255,255,255,.08);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+  --nav-h:60px
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--w1);-webkit-font-smoothing:antialiased;line-height:1.6}
+a{color:var(--y4);text-decoration:none}
+code{font-family:var(--mono);font-size:.88em;background:rgba(0,0,0,.4);padding:2px 6px;border-radius:4px;color:var(--b3)}
+pre{font-family:var(--mono);font-size:11px;background:rgba(0,0,0,.5);border:1px solid var(--bdr2);border-radius:10px;padding:18px;overflow-x:auto;line-height:1.8;color:var(--w6)}
+pre .cmd{color:var(--g3)}
+pre .cmt{color:rgba(255,255,255,.3)}
+pre .y{color:var(--y3)}
+pre .b{color:var(--b3)}
+pre .g{color:var(--g3)}
+pre .p{color:var(--p3)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:99;height:var(--nav-h);background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.nav-brand{display:flex;align-items:center;gap:14px}
+.nav-name{font-size:15px;font-weight:800;color:var(--y4)}
+.nav-tag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4)}
+.nav-links{display:flex;gap:4px;list-style:none}
+.nav-links a{font-size:11px;color:var(--w4);padding:5px 11px;border-radius:6px;transition:all .15s}
+.nav-links a:hover{color:var(--y4);background:rgba(245,158,11,.06)}
+
+/* HERO */
+.hero{padding:64px 60px 52px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:400px;background:radial-gradient(ellipse,rgba(245,158,11,.06),transparent 65%);pointer-events:none}
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--y4);opacity:.6}
+h1{font-size:clamp(28px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.06;margin-bottom:10px}
+.gy{background:linear-gradient(120deg,var(--y3),var(--y4));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:13.5px;color:var(--w4);max-width:640px;line-height:1.75;font-weight:300;margin-bottom:36px}
+
+/* LOCKED DECISIONS */
+.locked-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.locked-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.lock{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.2);border-left:3px solid var(--g4);border-radius:10px;padding:14px 16px}
+.lock-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--g3);margin-bottom:5px}
+.lock-val{font-size:12px;font-weight:700;color:var(--w8);line-height:1.4}
+.lock-note{font-size:10px;color:var(--w4);font-weight:300;margin-top:3px}
+
+/* SECTION */
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07) 30%,rgba(255,255,255,.07) 70%,transparent);margin:0 60px}
+section{padding:52px 60px}
+.sl{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sl::before{content:'';width:16px;height:1px;background:var(--y4);opacity:.6}
+h2{font-size:clamp(20px,2.8vw,34px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:8px}
+.ssub{font-size:13px;color:var(--w4);max-width:600px;line-height:1.7;font-weight:300;margin-bottom:28px}
+h3{font-size:15px;font-weight:800;letter-spacing:-.4px;color:var(--w8);margin-bottom:8px}
+h4{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px;margin-top:16px}
+
+/* PHASE CARDS */
+.phase-strip{display:flex;flex-direction:column;gap:14px}
+.phase{border-radius:14px;overflow:hidden}
+.phase-hd{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:18px 24px;cursor:pointer}
+.phase-num{font-family:var(--mono);font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;flex-shrink:0}
+.phase-info h3{font-size:14px;font-weight:800;letter-spacing:-.3px;margin-bottom:2px}
+.phase-meta{font-family:var(--mono);font-size:9px;color:var(--w4)}
+.phase-timeline{font-family:var(--mono);font-size:10px;font-weight:700;text-align:right;flex-shrink:0}
+.phase-body{padding:0 24px 24px;display:flex;flex-direction:column;gap:14px}
+
+/* Phase colours */
+.ph0{background:rgba(168,85,247,.05);border:1px solid rgba(168,85,247,.18)}
+.ph0 .phase-num{background:rgba(168,85,247,.12);color:var(--p3)}
+.ph0 .phase-hd h3{color:var(--p3)}
+.ph0 .phase-timeline{color:var(--p3)}
+
+.ph1{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.18)}
+.ph1 .phase-num{background:rgba(245,158,11,.1);color:var(--y3)}
+.ph1 .phase-hd h3{color:var(--y3)}
+.ph1 .phase-timeline{color:var(--y4)}
+
+.ph2{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.18)}
+.ph2 .phase-num{background:rgba(59,130,246,.1);color:var(--b3)}
+.ph2 .phase-hd h3{color:var(--b3)}
+.ph2 .phase-timeline{color:var(--b3)}
+
+.ph3{background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18)}
+.ph3 .phase-num{background:rgba(16,185,129,.1);color:var(--g3)}
+.ph3 .phase-hd h3{color:var(--g3)}
+.ph3 .phase-timeline{color:var(--g3)}
+
+.ph4{background:rgba(249,115,22,.05);border:1px solid rgba(249,115,22,.18)}
+.ph4 .phase-num{background:rgba(249,115,22,.1);color:#FED7AA}
+.ph4 .phase-hd h3{color:#FED7AA}
+.ph4 .phase-timeline{color:#FED7AA}
+
+.ph5{background:rgba(236,72,153,.05);border:1px solid rgba(236,72,153,.18)}
+.ph5 .phase-num{background:rgba(236,72,153,.1);color:#FBCFE8}
+.ph5 .phase-hd h3{color:#FBCFE8}
+.ph5 .phase-timeline{color:#FBCFE8}
+
+.ph6{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1)}
+.ph6 .phase-num{background:rgba(255,255,255,.07);color:var(--w6)}
+.ph6 .phase-hd h3{color:var(--w8)}
+.ph6 .phase-timeline{color:var(--w6)}
+
+/* COMMIT LIST */
+.commit-list{display:flex;flex-direction:column;gap:5px}
+.commit{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;font-size:11px;padding:8px 12px;background:rgba(0,0,0,.3);border-radius:7px;border:1px solid rgba(255,255,255,.06)}
+.commit-type{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;flex-shrink:0;margin-top:1px}
+.ct-feat{background:rgba(16,185,129,.1);color:var(--g3);border:1px solid rgba(16,185,129,.2)}
+.ct-refactor{background:rgba(59,130,246,.1);color:var(--b3);border:1px solid rgba(59,130,246,.2)}
+.ct-style{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+.ct-data{background:rgba(168,85,247,.1);color:var(--p3);border:1px solid rgba(168,85,247,.2)}
+.ct-chore{background:rgba(255,255,255,.07);color:var(--w4);border:1px solid rgba(255,255,255,.1)}
+.ct-fix{background:rgba(239,68,68,.1);color:var(--r3);border:1px solid rgba(239,68,68,.2)}
+.commit-msg{color:var(--w6);font-weight:300;line-height:1.45}
+.commit-msg strong{color:var(--w8);font-weight:600}
+
+/* FOLDER TREE */
+.tree{font-family:var(--mono);font-size:10.5px;line-height:1.9;background:rgba(0,0,0,.45);border:1px solid var(--bdr2);border-radius:12px;padding:20px 22px;overflow-x:auto}
+.tree .dir{color:var(--y3);font-weight:500}
+.tree .file{color:var(--w6)}
+.tree .cmt{color:rgba(255,255,255,.28)}
+.tree .imp{color:var(--g3)}
+
+/* DESIGN RULES */
+.design-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.design-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px}
+.design-card.break-rule{border-left:3px solid var(--y4)}
+.dc-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px}
+.dc-title{font-size:12px;font-weight:700;color:var(--w8);margin-bottom:6px}
+.dc-body{font-size:10.5px;color:var(--w6);line-height:1.6;font-weight:300}
+.dc-code{font-family:var(--mono);font-size:9px;color:var(--b3);background:rgba(0,0,0,.3);border-radius:5px;padding:6px 10px;margin-top:8px;display:block}
+
+/* ANIMATION PLAN */
+.anim-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.anim-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:16px 18px}
+.anim-section{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--b3);margin-bottom:4px}
+.anim-name{font-size:12px;font-weight:700;color:var(--w8);margin-bottom:6px}
+.anim-spec{font-size:10px;color:var(--w6);line-height:1.55;font-weight:300}
+.anim-perf{font-family:var(--mono);font-size:8px;color:var(--g3);margin-top:6px}
+
+/* EXPERT ROLES */
+.expert-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.expert-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:10px;padding:14px}
+.expert-icon{font-size:20px;margin-bottom:8px}
+.expert-title{font-size:11px;font-weight:800;letter-spacing:-.2px;color:var(--w8);margin-bottom:5px}
+.expert-owns{font-size:9.5px;color:var(--w4);line-height:1.5;font-weight:300}
+
+/* SEO TABLE */
+.seo-table{width:100%;border-collapse:collapse;font-size:11px}
+.seo-table th{text-align:left;font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);padding:8px 12px;border-bottom:1px solid var(--bdr);font-weight:500}
+.seo-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--w6);vertical-align:top;line-height:1.5}
+.seo-table td:first-child{color:var(--w8);font-weight:600;font-family:var(--mono);font-size:10px;white-space:nowrap}
+.seo-table tr:hover td{background:rgba(245,158,11,.02)}
+
+/* HOME SECTIONS */
+.home-sections{display:flex;flex-direction:column;gap:8px}
+.hs{display:grid;grid-template-columns:32px auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;background:var(--sf);border:1px solid var(--bdr2);border-radius:10px}
+.hs-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--y4);text-align:center}
+.hs-name{font-size:12px;font-weight:700;color:var(--w8)}
+.hs-desc{font-size:10.5px;color:var(--w4);font-weight:300}
+.hs-comp{font-family:var(--mono);font-size:8px;color:var(--b3);text-align:right;white-space:nowrap}
+
+/* COWORK STEPS */
+.cowork-steps{display:flex;flex-direction:column;gap:10px}
+.cw-step{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:start}
+.cw-n{width:28px;height:28px;border-radius:50%;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--y4);flex-shrink:0;margin-top:2px}
+.cw-content h4{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:5px;margin-top:0}
+.cw-content p{font-size:11px;color:var(--w6);line-height:1.6;font-weight:300;margin-bottom:8px}
+
+/* PILLARS */
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pillar{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px;text-align:center}
+.pillar-num{font-family:var(--mono);font-size:22px;font-weight:700;color:var(--y4);line-height:1}
+.pillar-name{font-size:12px;font-weight:800;letter-spacing:-.2px;color:var(--w8);margin:6px 0 4px}
+.pillar-desc{font-size:9.5px;color:var(--w4);font-weight:300;line-height:1.5}
+
+/* HOME SECTION ORDER */
+.section-order{counter-reset:sec}
+.so-item{counter-increment:sec;display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.so-item:last-child{border-bottom:none}
+.so-num::before{content:counter(sec,decimal-leading-zero);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--y4)}
+.so-name{font-size:12px;font-weight:600;color:var(--w8)}
+.so-sub{font-size:10px;color:var(--w4);font-weight:300;margin-top:2px}
+.so-tag{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.so-new{background:rgba(16,185,129,.1);color:var(--g3);border:1px solid rgba(16,185,129,.2)}
+.so-keep{background:rgba(255,255,255,.06);color:var(--w4);border:1px solid rgba(255,255,255,.1)}
+.so-enhance{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+
+/* PERFORMANCE TARGETS */
+.perf-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.perf-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:10px;padding:14px;text-align:center}
+.perf-n{font-size:22px;font-weight:800;letter-spacing:-1px;color:var(--y4);line-height:1}
+.perf-l{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--w4);margin-top:4px}
+.perf-note{font-size:9px;color:var(--w4);margin-top:3px;font-weight:300}
+
+footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 60px;display:flex;align-items:center;justify-content:space-between}
+.fl{font-size:14px;font-weight:800;color:var(--y4)}
+.fm{font-family:var(--mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+
+@media(max-width:1000px){
+  section,.hero,footer{padding-left:24px;padding-right:24px}
+  .div{margin:0 24px}
+  .locked-grid,.design-grid,.anim-grid,.expert-grid,.pillars,.perf-grid{grid-template-columns:1fr 1fr}
+  .locked-grid-2{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div>
+      <div class="nav-name">YALLO</div>
+      <div class="nav-tag">Execution Plan · v2 · Raphy</div>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#locked">Decisions</a></li>
+    <li><a href="#scaffold">Scaffolding</a></li>
+    <li><a href="#design">Design System</a></li>
+    <li><a href="#home">Homepage</a></li>
+    <li><a href="#phases">Phases</a></li>
+    <li><a href="#commits">Commits</a></li>
+    <li><a href="#seo">SEO/GEO/AEO</a></li>
+    <li><a href="#perf">Performance</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="eyebrow">Full Execution Plan · yallo.co v2</div>
+  <h1>Build it right.<br><span class="gy">Ship it fast.</span></h1>
+  <p class="hero-sub">Contract-first talent site. Ken Burns hero. Architect-vetted positioning. UK · ME · India. ~280 pages, 3 templates, CoWork + CLI scaffold. All commits from Raphy. Every design decision locked, every expert role assigned.</p>
+</div>
+
+<!-- LOCKED DECISIONS -->
+<section id="locked" style="padding-top:0">
+  <div class="sl">All Confirmed Decisions</div>
+  <h2>Locked. Nothing changes without Raphy.</h2>
+  <p class="ssub">Every decision below is ratified. Build proceeds from these — any deviation needs Raphy sign-off before the PR opens.</p>
+
+  <div class="locked-grid" style="margin-bottom:8px">
+    <div class="lock">
+      <div class="lock-label">✓ Hero Animation</div>
+      <div class="lock-val">Ken Burns full-bleed slider</div>
+      <div class="lock-note">Framer Motion + next/image · 3–5 slides · 6s auto · pan effect</div>
+    </div>
+    <div class="lock">
+      <div class="lock-label">✓ Positioning</div>
+      <div class="lock-val">Architect-vetted, not keyword-matched</div>
+      <div class="lock-note">H1 anchor line across all hero, meta and OG content</div>
+    </div>
+    <div class="lock">
+      <div class="lock-label">✓ Primary Focus</div>
+      <div class="lock-val">Contract placement first</div>
+      <div class="lock-note">All CTAs read "Request a contractor →". Permanent is secondary.</div>
+    </div>
+  </div>
+  <div class="locked-grid" style="margin-bottom:8px">
+    <div class="lock">
+      <div class="lock-label">✓ Service Pillar 4</div>
+      <div class="lock-val">Managed Delivery</div>
+      <div class="lock-note">Replaces "Subcontracting" / "Outcome-based" across site</div>
+    </div>
+    <div class="lock">
+      <div class="lock-label">✓ Region</div>
+      <div class="lock-val">UK · ME · India</div>
+      <div class="lock-note">In that order, always. No GCC. ME = Middle East.</div>
+    </div>
+    <div class="lock">
+      <div class="lock-label">✓ Vendor Cards</div>
+      <div class="lock-val">Role-dominant. Logo = badge only.</div>
+      <div class="lock-note">4–6 contractor role pills dominant. Logo top-left reference signal.</div>
+    </div>
+  </div>
+  <div class="locked-grid-2">
+    <div class="lock">
+      <div class="lock-label">✓ Page Hierarchy</div>
+      <div class="lock-val">L0 Hub → L1 Sector → L2 Function · No L3</div>
+      <div class="lock-note">~280 pages total. 3 templates. generateStaticParams drives all taxonomy pages.</div>
+    </div>
+    <div class="lock">
+      <div class="lock-label">✓ Tech Stack</div>
+      <div class="lock-val">Next.js 15 · TypeScript 5 strict · Tailwind 4 · pnpm 9 · Framer Motion 12</div>
+      <div class="lock-note">Golden path shared with saasinator. Separate repo: yallo-co. Biome + Husky + Commitlint.</div>
+    </div>
+  </div>
+
+  <!-- Service Pillars -->
+  <div style="margin-top:20px">
+    <h4>Four service pillars — locked names</h4>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div class="pillar-name">Contract Workforce</div>
+        <div class="pillar-desc">Interim specialists. Day rate. Programme-aligned. Fastest to deploy.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div class="pillar-name">Permanent Hiring</div>
+        <div class="pillar-desc">Long-term placement. Architect-screened. 72h shortlist SLA.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div class="pillar-name">Employer of Record</div>
+        <div class="pillar-desc">You choose the hire. Yallo employs them. UAE visa or India payroll.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <div class="pillar-name">Managed Delivery</div>
+        <div class="pillar-desc">Scoped outcome. Yallo owns delivery. Fixed commitment, risk transferred.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- COWORK + CLI SCAFFOLDING -->
+<section id="scaffold">
+  <div class="sl">CoWork + CLI Scaffold</div>
+  <h2>Phase 0 — Scaffolding.<br>Day 1. Before any component work.</h2>
+  <p class="ssub">Run these commands in order from CoWork terminal or CLI. Every folder created here is the permanent home for every asset in the project. Do not deviate from this structure.</p>
+
+  <div class="cowork-steps">
+
+    <div class="cw-step">
+      <div class="cw-n">1</div>
+      <div class="cw-content">
+        <h4>CoWork — Create repo + initialise Next.js golden path</h4>
+        <p>Open CoWork. New project. Connect to GitHub. Run in terminal:</p>
+<pre><span class="cmd">pnpm create next-app@latest yallo-co \
+  --typescript \
+  --tailwind \
+  --app \
+  --src-dir \
+  --import-alias "@/*" \
+  --no-eslint</span>
+
+<span class="cmd">cd yallo-co</span>
+
+<span class="cmt"># Install core dependencies</span>
+<span class="cmd">pnpm add framer-motion@12 next-mdx-remote @next/mdx</span>
+<span class="cmd">pnpm add resend @vercel/analytics sharp</span>
+
+<span class="cmt"># Install dev tools</span>
+<span class="cmd">pnpm add -D @biomejs/biome husky lint-staged \
+  @commitlint/cli @commitlint/config-conventional</span>
+
+<span class="cmt"># Init Biome</span>
+<span class="cmd">pnpm biome init</span>
+
+<span class="cmt"># Init Husky</span>
+<span class="cmd">pnpm exec husky init</span></pre>
+      </div>
+    </div>
+
+    <div class="cw-step">
+      <div class="cw-n">2</div>
+      <div class="cw-content">
+        <h4>CLI — Create complete folder structure</h4>
+        <p>Run this single command block to create every folder the project needs:</p>
+<pre><span class="cmt"># Application routes</span>
+<span class="cmd">mkdir -p src/app/{industries,platforms,capabilities}
+mkdir -p src/app/industries/\[sector\]/\[function\]
+mkdir -p src/app/platforms/\[platform\]/\[module\]
+mkdir -p src/app/capabilities/\[cap\]/\[sub\]
+mkdir -p src/app/{contract,permanent,eor,managed-delivery}
+mkdir -p src/app/{contact,jobs,join,about,why-yallo,leadership}
+mkdir -p src/app/{insights,case-studies,white-papers}
+mkdir -p src/app/insights/\[slug\]
+mkdir -p src/app/case-studies/\[slug\]
+mkdir -p src/app/api/{content,jobs,insights}</span>
+
+<span class="cmt"># Components — atomic structure</span>
+<span class="cmd">mkdir -p src/components/{ui,blocks,layout,motion,forms}</span>
+
+<span class="cmt"># Data layer</span>
+<span class="cmd">mkdir -p src/data/industries
+mkdir -p src/data/platforms
+mkdir -p src/data/capabilities
+mkdir -p src/data/pages</span>
+
+<span class="cmt"># MDX content</span>
+<span class="cmd">mkdir -p src/content/{insights,case-studies}</span>
+
+<span class="cmt"># Lib + types</span>
+<span class="cmd">mkdir -p src/{lib,types,hooks}</span>
+
+<span class="cmt"># Public assets</span>
+<span class="cmd">mkdir -p public/{images,logos,fonts}
+mkdir -p public/images/{hero,sectors,team,clients,partners}</span>
+
+<span class="cmt"># Docs (architecture reference — not served)</span>
+<span class="cmd">mkdir -p docs/{architecture,designs,content}
+mkdir -p docs/designs/home</span>
+
+<span class="cmt"># Claude hooks</span>
+<span class="cmd">mkdir -p .claude/hooks</span></pre>
+      </div>
+    </div>
+
+    <div class="cw-step">
+      <div class="cw-n">3</div>
+      <div class="cw-content">
+        <h4>CLI — Create config files</h4>
+<pre><span class="cmt"># Commitlint config</span>
+<span class="cmd">cat > commitlint.config.js << 'EOF'
+module.exports = {
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    'type-enum': [2, 'always', [
+      'feat','fix','refactor','style','chore',
+      'docs','data','perf','test','build'
+    ]],
+    'subject-case': [2, 'always', 'lower-case'],
+    'header-max-length': [2, 'always', 90],
+    'scope-empty': [1, 'never']
+  }
+}
+EOF</span>
+
+<span class="cmt"># Husky pre-commit gate</span>
+<span class="cmd">cat > .husky/pre-commit << 'EOF'
+#!/bin/sh
+pnpm biome check --write .
+npx tsc --noEmit
+node .claude/hooks/check-colours.js
+EOF</span>
+
+<span class="cmt"># Colour hook — enforces no hardcoded hex in components</span>
+<span class="cmd">cat > .claude/hooks/check-colours.js << 'EOF'
+const fs = require('fs'), path = require('path')
+const HEX = /#([0-9a-fA-F]{3,8})\b/g
+const dirs = ['src/components','src/app']
+let fail = false
+dirs.forEach(d => {
+  if(!fs.existsSync(d)) return
+  fs.readdirSync(d,{recursive:true}).forEach(f => {
+    if(!/\.(tsx|css)$/.test(f)) return
+    const full = path.join(d,f), src = fs.readFileSync(full,'utf8')
+    if(HEX.test(src)) {
+      console.error(`COLOUR GATE: hardcoded hex in ${full}`)
+      fail = true
+    }
+  })
+})
+if(fail) process.exit(1)
+EOF</span>
+
+<span class="cmt"># Architecture doc + design md placeholder</span>
+<span class="cmd">cp docs/architecture/arc_v10.html docs/architecture/arc_v10.html 2>/dev/null || echo "Add arc_v10.html to docs/architecture/"
+touch docs/designs/DESIGN_SYSTEM.md
+touch docs/designs/ANIMATION_SPEC.md
+touch docs/designs/home/HOMEPAGE_SPEC.md</span></pre>
+      </div>
+    </div>
+
+    <div class="cw-step">
+      <div class="cw-n">4</div>
+      <div class="cw-content">
+        <h4>CoWork — First commit (chore: scaffold)</h4>
+<pre><span class="cmd">git add -A
+git commit -m "chore(scaffold): initialise yallo-co golden path repo
+
+- Next.js 15 App Router + TypeScript 5 strict + Tailwind 4
+- pnpm 9 workspace + Framer Motion 12
+- Biome lint/format, Husky pre-commit, Commitlint conventional
+- Colour hook enforces zero hardcoded hex in components
+- Full folder structure: app routes, components, data, content, public
+- docs/ reference folder: architecture, designs, content"
+
+git push origin main</span></pre>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Full folder tree -->
+  <div style="margin-top:20px">
+    <h4>Complete folder structure — locked</h4>
+    <div class="tree">
+<span class="dir">yallo-co/</span>
+├── <span class="dir">.claude/hooks/</span>
+│   └── <span class="file">check-colours.js</span>       <span class="cmt"># enforces no hardcoded hex</span>
+├── <span class="dir">.husky/</span>
+│   └── <span class="file">pre-commit</span>              <span class="cmt"># biome + tsc + colour gate</span>
+├── <span class="dir">docs/</span>                          <span class="cmt"># NOT served — reference only</span>
+│   ├── <span class="dir">architecture/</span>
+│   │   └── <span class="imp">arc_v10.html</span>           <span class="cmt"># paste your architecture HTML here</span>
+│   ├── <span class="dir">designs/</span>
+│   │   ├── <span class="imp">DESIGN_SYSTEM.md</span>
+│   │   ├── <span class="imp">ANIMATION_SPEC.md</span>
+│   │   └── <span class="dir">home/</span>
+│   │       └── <span class="imp">HOMEPAGE_SPEC.md</span>
+│   └── <span class="dir">content/</span>
+│       └── <span class="file">sitemap.xlsx</span>           <span class="cmt"># drop the XLS here</span>
+├── <span class="dir">public/</span>
+│   ├── <span class="dir">images/</span>
+│   │   ├── <span class="dir">hero/</span>                  <span class="cmt"># 5 hero slides, WebP, 1920px</span>
+│   │   ├── <span class="dir">sectors/</span>               <span class="cmt"># one image per sector</span>
+│   │   ├── <span class="dir">clients/</span>               <span class="cmt"># logo marquee images</span>
+│   │   ├── <span class="dir">team/</span>
+│   │   └── <span class="dir">partners/</span>
+│   └── <span class="dir">logos/</span>                     <span class="cmt"># vendor SVGs: sap.svg oracle.svg etc</span>
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">app/</span>
+│   │   ├── <span class="file">globals.css</span>            <span class="cmt"># 6-layer design system — L2 = semantic tokens ONLY</span>
+│   │   ├── <span class="file">layout.tsx</span>             <span class="cmt"># ThemeProvider → MotionConfig → NavBar → main</span>
+│   │   ├── <span class="file">page.tsx</span>               <span class="cmt"># Homepage — Ken Burns hero + 11 sections</span>
+│   │   ├── <span class="dir">industries/</span>
+│   │   │   ├── <span class="file">page.tsx</span>           <span class="cmt"># L0 hub</span>
+│   │   │   └── <span class="dir">[sector]/</span>
+│   │   │       ├── <span class="file">page.tsx</span>       <span class="cmt"># L1 — SectorPage template</span>
+│   │   │       └── <span class="dir">[function]/</span>
+│   │   │           └── <span class="file">page.tsx</span>   <span class="cmt"># L2 — FunctionPage template + sidebar</span>
+│   │   ├── <span class="dir">platforms/[platform]/[module]/</span>
+│   │   ├── <span class="dir">capabilities/[cap]/[sub]/</span>
+│   │   ├── <span class="dir">contract/page.tsx</span>
+│   │   ├── <span class="dir">permanent/page.tsx</span>
+│   │   ├── <span class="dir">eor/page.tsx</span>
+│   │   ├── <span class="dir">managed-delivery/page.tsx</span>
+│   │   ├── <span class="dir">contact/page.tsx</span>
+│   │   ├── <span class="dir">jobs/page.tsx</span>
+│   │   ├── <span class="dir">join/page.tsx</span>
+│   │   ├── <span class="dir">about/page.tsx</span>
+│   │   ├── <span class="dir">why-yallo/page.tsx</span>
+│   │   ├── <span class="dir">leadership/page.tsx</span>
+│   │   ├── <span class="dir">insights/[slug]/page.tsx</span>
+│   │   ├── <span class="dir">case-studies/[slug]/page.tsx</span>
+│   │   └── <span class="dir">api/</span>
+│   │       ├── <span class="dir">content/[page]/route.ts</span>
+│   │       ├── <span class="dir">jobs/route.ts</span>        <span class="cmt"># ATS proxy</span>
+│   │       └── <span class="dir">insights/route.ts</span>
+│   ├── <span class="dir">components/</span>
+│   │   ├── <span class="dir">ui/</span>                    <span class="cmt"># atoms: Button Badge RolePill ThemeToggle</span>
+│   │   ├── <span class="dir">blocks/</span>                <span class="cmt"># HeroSlider ServiceGrid VendorCard StatsBar etc</span>
+│   │   ├── <span class="dir">layout/</span>                <span class="cmt"># NavBar MegaMenu Footer StickySidebar</span>
+│   │   ├── <span class="dir">motion/</span>                <span class="cmt"># ScrollReveal ParallaxSection CounterAnimate</span>
+│   │   └── <span class="dir">forms/</span>                 <span class="cmt"># BriefForm CVUpload JobSearch</span>
+│   ├── <span class="dir">data/</span>
+│   │   ├── <span class="dir">industries/</span>            <span class="cmt"># retail.ts finance.ts etc</span>
+│   │   ├── <span class="dir">platforms/</span>             <span class="cmt"># sap.ts oracle.ts etc</span>
+│   │   ├── <span class="dir">capabilities/</span>          <span class="cmt"># data.ts digital.ts etc</span>
+│   │   ├── <span class="dir">pages/</span>                 <span class="cmt"># homepage.ts contact.ts etc</span>
+│   │   └── <span class="file">types.ts</span>               <span class="cmt"># IndustrySector FunctionCategory VendorCard</span>
+│   ├── <span class="dir">content/</span>
+│   │   ├── <span class="dir">insights/</span>              <span class="cmt"># *.mdx — Sumeet + Tanzil</span>
+│   │   └── <span class="dir">case-studies/</span>         <span class="cmt"># *.mdx</span>
+│   ├── <span class="dir">lib/</span>
+│   │   ├── <span class="file">utils.ts</span>
+│   │   ├── <span class="file">seo.ts</span>                 <span class="cmt"># generateMetadata factory</span>
+│   │   └── <span class="file">data.ts</span>                <span class="cmt"># getAllSectors getPlatform etc</span>
+│   ├── <span class="dir">types/</span>
+│   │   └── <span class="file">index.ts</span>
+│   └── <span class="dir">hooks/</span>
+│       ├── <span class="file">useScrollReveal.ts</span>
+│       └── <span class="file">useParallax.ts</span>
+├── <span class="file">biome.json</span>
+├── <span class="file">commitlint.config.js</span>
+├── <span class="file">next.config.ts</span>
+├── <span class="file">package.json</span>
+├── <span class="file">tailwind.config.ts</span>
+└── <span class="file">tsconfig.json</span>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- DESIGN SYSTEM -->
+<section id="design">
+  <div class="sl">Design System — Breaking the Usual Patterns</div>
+  <h2>Not a typical recruitment site.<br>Emil Kovacs standard throughout.</h2>
+  <p class="ssub">Contract hiring managers are CIOs, IT Directors and Programme Managers. They visit Michael Page, Korn Ferry, Robert Half daily. Yallo needs to feel categorically different — premium, editorial, confident. These are the rules that achieve it.</p>
+
+  <h4>6-Layer globals.css — semantic tokens only in L2</h4>
+  <pre><span class="cmt">/* globals.css — src/app/globals.css */</span>
+
+<span class="cmt">/* Layer 1 — Raw palette */</span>
+<span class="y">:root {
+  --yellow-400: #FBBF24; --yellow-500: #F59E0B; --yellow-600: #D97706;
+  --black-950: #080808;  --black-900: #0C0C0C;  --black-800: #141414;
+  --black-700: #1C1C1C;  --white: #FFFFFF;
+  --gray-800: #2A2A2A;   --gray-700: #3A3A3A;
+  /* Alpha tokens */
+  --ya04: rgba(245,158,11,.04);  --ya08: rgba(245,158,11,.08);
+  --ya13: rgba(245,158,11,.13);  --ya20: rgba(245,158,11,.20);
+  --ya35: rgba(245,158,11,.35);  --wa05: rgba(255,255,255,.05);
+  --wa08: rgba(255,255,255,.08); --wa15: rgba(255,255,255,.15);
+}</span>
+
+<span class="cmt">/* Layer 2 ★ — Semantic tokens. EDIT ONLY HERE TO RETHEME */</span>
+<span class="g">:root {
+  --fg: var(--white);              --bg: var(--black-950);
+  --surface: var(--black-800);     --surface-raised: var(--black-700);
+  --accent: var(--yellow-500);     --accent-muted: var(--ya08);
+  --fg-muted: rgba(255,255,255,.6);--fg-subtle: rgba(255,255,255,.4);
+  --border: var(--wa08);           --border-accent: var(--ya13);
+  --hero-overlay: rgba(8,8,8,.75);
+  --gradient-accent: linear-gradient(120deg, #FCD34D, #F59E0B);
+}</span>
+
+<span class="cmt">/* Layer 3 — Element defaults */</span>
+<span class="b">body  { background: var(--bg);  color: var(--fg); }
+h1-h6 { color: var(--fg);  letter-spacing: -0.04em; }
+p     { color: var(--fg-muted); }
+a     { color: var(--accent); }</span>
+
+<span class="cmt">/* Layer 4 — Component classes */</span>
+<span class="p">.eyebrow { font-family: 'DM Mono'; font-size: 10px; letter-spacing: 4px; }
+.role-pill { ... } .vendor-badge { ... } .bench-signal { ... }
+.forced-dark { color-scheme: dark; }
+.forced-light { color-scheme: light; }</span>
+
+<span class="cmt">/* Layer 5 — Spacing scale */</span>
+<span class="y">.section-xl { padding: 140px 0; }  .section-lg { padding: 100px 0; }
+.section-md { padding: 72px 0; }   .section-sm { padding: 48px 0; }</span>
+
+<span class="cmt">/* Layer 6 — Animations (all respect prefers-reduced-motion) */</span>
+<span class="g">@keyframes ken-burns-1 { 0%{transform:scale(1) translate(0,0)} 100%{transform:scale(1.08) translate(-1%,-.5%)} }
+@keyframes ken-burns-2 { 0%{transform:scale(1.06) translate(-2%,1%)} 100%{transform:scale(1) translate(0,0)} }
+@keyframes logo-scroll { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes counter-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+@media(prefers-reduced-motion:reduce){ *, *::before, *::after { animation-duration:.01ms!important } }</span></pre>
+
+  <h4 style="margin-top:20px">Pattern-breaking design rules — the Emil Kovacs list</h4>
+  <div class="design-grid">
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 01</div>
+      <div class="dc-title">Oversized display type on dark sections</div>
+      <div class="dc-body">H1 at 5–6vw, letter-spacing –3px, weight 800. Text fills its container — not padded away from edges. Hiring leaders in the GCC respond to confidence signals. Small type feels like a small company.</div>
+      <code class="dc-code">font-size: clamp(38px, 5.5vw, 72px); letter-spacing: -0.04em;</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 02</div>
+      <div class="dc-title">Asymmetric grid — 7:5, not 1:1</div>
+      <div class="dc-body">Avoid the equal-column trap. The "how it works" section uses 7 columns for the content, 5 for the visual callout. The sector grid uses 4-wide on desktop, breaking to 2+1 on mid. Nothing is perfectly centred at large viewport.</div>
+      <code class="dc-code">grid-template-columns: 7fr 5fr; /* not 1fr 1fr */</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 03</div>
+      <div class="dc-title">Horizontal scroll for role pills</div>
+      <div class="dc-body">Role pill strips on L2 pages and the homepage talent section scroll horizontally on mobile rather than wrapping into an ugly block. On desktop they display as a wrapping flex. Horizontal scroll signals depth — more than you can see at once.</div>
+      <code class="dc-code">overflow-x: auto; scroll-snap-type: x mandatory; white-space: nowrap;</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 04</div>
+      <div class="dc-title">Noise texture on dark hero sections</div>
+      <div class="dc-body">A subtle SVG noise overlay (opacity 0.03) on the hero and dark CTA sections adds tactility and stops the flat dark background feeling like a void. One CSS filter, zero performance cost. The difference between premium and generic.</div>
+      <code class="dc-code">background-image: url('/images/noise.svg'); background-blend-mode: overlay;</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 05</div>
+      <div class="dc-title">Magnetic CTA hover effect</div>
+      <div class="dc-body">The primary "Request a contractor →" button tracks the cursor position slightly (–6px to +6px translate) on hover. Framer Motion useMotionValue + useSpring. Feels premium and interactive. Only on desktop — touch devices get standard hover state.</div>
+      <code class="dc-code">const x = useSpring(useMotionValue(0), {stiffness:150,damping:15})</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 06</div>
+      <div class="dc-title">Left-border glow on card hover</div>
+      <div class="dc-body">Vendor cards and expertise cards use a 3px amber left-border that is invisible at rest and fades in on hover alongside a 4px translateY lift. No box-shadow theatrics — one precise amber line signals selection. Emil Kovacs' most consistent pattern.</div>
+      <code class="dc-code">border-left: 3px solid transparent; &:hover { border-left-color: var(--accent); }</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 07</div>
+      <div class="dc-title">Exposed dot-grid on dark sections</div>
+      <div class="dc-body">A radial-gradient dot pattern (rgba(255,255,255,.03), 20px × 20px) covers dark hero and CTA sections. Too subtle to notice directly, impossible to miss when removed. It gives depth without images and signals craft to anyone who pays attention.</div>
+      <code class="dc-code">background-image: radial-gradient(rgba(255,255,255,.03) 1px, transparent 1px); background-size: 20px 20px;</code>
+    </div>
+    <div class="design-card break-rule">
+      <div class="dc-label">Break rule 08</div>
+      <div class="dc-title">Scroll-triggered number counters</div>
+      <div class="dc-body">Stats (72h, 2:1, 3 regions) animate from zero when they enter the viewport. Framer Motion useInView + a count-up function. DM Mono font for numbers — monospaced numbers prevent layout shift during count. Counters stop on prefers-reduced-motion.</div>
+      <code class="dc-code">const count = useMotionValue(0); animate(count, target, {duration:1.4})</code>
+    </div>
+  </div>
+
+  <h4 style="margin-top:20px">Typography — Plus Jakarta Sans + DM Mono</h4>
+  <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:10px">Plus Jakarta Sans — Display + Body</div>
+      <div style="font-size:13px;color:var(--w6);line-height:1.7;font-weight:300">H1: 800 weight, –0.04em spacing, clamp(38px,5.5vw,72px)<br>H2: 800 weight, –0.03em spacing, clamp(24px,3.2vw,44px)<br>Body: 300/400 weight, 1.75 line-height<br>Nav links: 500 weight, 12px<br>CTAs: 700 weight, 13–14px, –0.1px spacing</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:10px">DM Mono — Labels, Stats, Tags, Code</div>
+      <div style="font-size:13px;color:var(--w6);line-height:1.7;font-weight:300">Eyebrows: 9–10px, 4px letter-spacing, uppercase<br>Role pills: 9–10px, 0.4px spacing<br>Stats numbers: 24–32px, 700 weight<br>Stat labels: 8–9px, 2px spacing<br>Breadcrumbs: 9px, 1.5px spacing<br>Bench signal: 8.5px, green dot + text</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ANIMATION SPEC -->
+<section>
+  <div class="sl">Animation Specification</div>
+  <h2>Every animation. Every section.<br>Performance budget enforced.</h2>
+  <p class="ssub">Ken Burns on the hero. Parallax on inner blocks. Scroll-reveal on content. All animations run under 16ms per frame. prefers-reduced-motion respected globally in L6 of globals.css.</p>
+
+  <div class="anim-grid">
+    <div class="anim-card">
+      <div class="anim-section">Hero</div>
+      <div class="anim-name">Ken Burns Slider</div>
+      <div class="anim-spec">5 full-bleed slides. Each slide: CSS animation `ken-burns-1` or `ken-burns-2` (alternating), 8s duration, ease-in-out. Framer Motion AnimatePresence handles crossfade (opacity 0→1, 0.8s). Auto-advance 6s. Pause on hover. next/image with priority on slide 1. WebP, 1920px. Dark overlay gradient bottom-up.</div>
+      <div class="anim-perf">→ GPU composited · zero layout shift · LCP &lt;2.5s target</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Homepage</div>
+      <div class="anim-name">Logo Cloud Marquee</div>
+      <div class="anim-spec">CSS-only infinite horizontal scroll. Two identical sets of logos in one row, translateX(0→-50%) at 35s linear infinite. No JavaScript. No Framer Motion. Pauses on hover via animation-play-state. Monochrome logos (filter: brightness(0) invert(1) opacity(.45)).</div>
+      <div class="anim-perf">→ CSS only · zero JS · no reflow</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Homepage</div>
+      <div class="anim-name">Stats Counter</div>
+      <div class="anim-spec">Framer Motion useInView triggers when stat strip enters viewport (once:true). DM Mono numbers animate from 0 to target via animate(count, target, {duration:1.4, ease:'easeOut'}). Formatted with useTransform. Stops on prefers-reduced-motion — shows final value immediately.</div>
+      <div class="anim-perf">→ Runs once · no repeat · 60fps smooth</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">All pages</div>
+      <div class="anim-name">Scroll Reveal</div>
+      <div class="anim-spec">Framer Motion motion.div with variants: hidden={opacity:0, y:24}, visible={opacity:1, y:0}. useInView(ref,{once:true,margin:'-80px'}). Duration 0.5s, ease [0.2,0.8,0.2,1]. Applied to: section intros, card grids, vendor cards, expertise cards. Stagger 0.06s between grid items.</div>
+      <div class="anim-perf">→ once:true · no scroll janks · GPU opacity+transform only</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Inner blocks</div>
+      <div class="anim-name">Parallax Sections</div>
+      <div class="anim-spec">Framer Motion useScroll + useTransform on the Problem section and the screening callout block. Background image moves at 0.4× scroll rate. Text moves at 1× (normal). Creates depth without 3D transforms. Only on desktop (window.innerWidth > 768). Disabled on mobile.</div>
+      <div class="anim-perf">→ will-change:transform · desktop only · no scroll blocking</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Cards</div>
+      <div class="anim-name">Magnetic CTA Button</div>
+      <div class="anim-spec">Primary CTA "Request a contractor →" uses Framer Motion useMotionValue for x,y tracking. useSpring({stiffness:150,damping:15}) smooths movement. On mouseleave: spring back to 0. Max displacement ±8px. Only fires on the primary amber button — not secondary CTAs. Desktop only.</div>
+      <div class="anim-perf">→ spring physics · GPU transform · no layout change</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">L2 Sidebar</div>
+      <div class="anim-name">Active Item Highlight</div>
+      <div class="anim-spec">Framer Motion layoutId="sidebar-indicator" shared layout animation. As user scrolls and the active section changes, the amber left-border indicator slides smoothly to the new active item. No CSS transitions — Framer layout animation handles it. Feels native, not scripted.</div>
+      <div class="anim-perf">→ shared layout · 0ms perceived lag · smooth</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Nav</div>
+      <div class="anim-name">Scroll Transform</div>
+      <div class="anim-spec">Nav starts at height 72px, background transparent. After 80px scroll: height reduces to 60px, background rgba(8,8,8,.97) with backdrop-filter:blur(20px), border-bottom appears. Framer Motion useScroll + useTransform. Smooth, not jarring. The amber CTA button always stays visible.</div>
+      <div class="anim-perf">→ CSS composited · no paint · 60fps</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-section">Problem section</div>
+      <div class="anim-name">Persona Cycle (home-3 pattern)</div>
+      <div class="anim-spec">Five persona cards (CHRO, CIO, Head of Talent, Delivery Director, CFO) cycle auto on 3s interval. Active card: scale 1.02, amber left border, opacity 1. Inactive: scale 1, opacity 0.5. Framer Motion AnimatePresence + layoutId per card. Click to select manually.</div>
+      <div class="anim-perf">→ Framer layout · smooth reorder · no FOUC</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- HOMEPAGE SECTION ORDER -->
+<section id="home">
+  <div class="sl">Homepage — Section Order</div>
+  <h2>11 sections. Mirrors home-3.<br>Content upgraded. Design rebuilt.</h2>
+  <p class="ssub">The section order follows home-3 exactly. Content is rewritten for the contract-first audience. Design breaks from the WordPress/Elementor version on every block.</p>
+
+  <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:14px;overflow:hidden">
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Ken Burns Hero Slider</div><div class="so-sub">5 slides. Industry photography. H1: "Contractors screened by architects. Shortlisted in 72 hours." + 4 service model pills. Primary CTA: "Send us a brief →". Secondary: "See how we place talent".</div></div>
+      <div class="so-tag so-enhance">Ken Burns new</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Client Logo Marquee</div><div class="so-sub">CSS-only infinite scroll. Monochrome logos. TCS, Wickes, Landmark, MAF, Blue Yonder, Al Futtaim, Chalhoub, Al Tayer + more. Replaces static grid.</div></div>
+      <div class="so-tag so-enhance">CSS marquee</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">The Problem — Persona Cycle</div><div class="so-sub">Home-3 pattern: CHRO / CIO / Head of Talent / Delivery Director / CFO. Each persona: their pain in one line. Cycles auto. "Sound like your week? Send us a brief →". Parallax background.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">How It Works — 4 Steps</div><div class="so-sub">Brief & calibrate → Architect-led screening → Shortlist delivered (72h) → Interview & place. Animated connector line. Stats: 72h / 2:1 / UK·ME·India / Contract·Perm·EOR·Managed Delivery.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Four Ways We Place Talent</div><div class="so-sub">Contract Workforce · Permanent Hiring · Employer of Record · Managed Delivery. Each: service name, 1-line definition, key signal (speed / screening / compliance / outcome). Primary amber on Contract.</div></div>
+      <div class="so-tag so-enhance">Updated pillars</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Sectors Hiring Now</div><div class="so-sub">6 sector cards. Full-bleed photography per sector. Hover: amber overlay + "View roles →". Links to L1 industry pages. "Banking, public sector, manufacturing and logistics are hiring hard right now." — from home-3.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Platform Talent</div><div class="so-sub">6 platform cards. Deep benches across enterprise stack. Logo + top 3 contractor roles per platform. Links to L1 platform pages. Scroll-reveal stagger on cards.</div></div>
+      <div class="so-tag so-enhance">Role-dominant</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Why Yallo Talent — 4 Differentiators</div><div class="so-sub">01 Architect-led screening · 02 72h shortlist · 03 Four ways to hire · 04 Deep in the region. Counter animations on numbers. "0 CVs without a brief first" as the credibility hook. Dark section with parallax.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Case Studies — Proof</div><div class="so-sub">Two case study cards. 72h / 2:1 metrics prominent. Platform + sector + region tags. "Shortlists that became hires." Full case study links. Scroll-reveal on cards.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Animated Stats Strip</div><div class="so-sub">4 counters: 72 (Brief to Shortlist, hours), 2:1 (CV-to-Interview), 3 (Delivery Regions), 50+ (Platform Ecosystems). DM Mono. Count-up on viewport entry. Dark section.</div></div>
+      <div class="so-tag so-new">Counter animation</div>
+    </div>
+    <div class="so-item">
+      <div class="so-num"></div>
+      <div><div class="so-name">Yallo Family Panel</div><div class="so-sub">Yallo Talent (here) · saasinator (AI advisory & build, launching soon) · Yallo AI Academy (AI enablement, launching soon). Dark surface, amber accent links. Vision: when hiring isn't enough.</div></div>
+      <div class="so-tag so-keep">From home-3</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- EXPERT ROLES -->
+<section>
+  <div class="sl">Expert Roles — Who Owns What</div>
+  <h2>Every discipline assigned.<br>Nothing falls through.</h2>
+
+  <div class="expert-grid">
+    <div class="expert-card">
+      <div class="expert-icon">🏗️</div>
+      <div class="expert-title">Solution Architect</div>
+      <div class="expert-owns">TypeScript data model. generateStaticParams 3-level. API routes. CMS migration contract. Next.js config. Build pipeline. Performance budget enforcement.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">🎨</div>
+      <div class="expert-title">UI/UX Pro — Emil Standard</div>
+      <div class="expert-owns">globals.css 6-layer system. Component design consistency audit. Animation spec enforcement. Mobile-first layout review. Design pattern breaks applied. Vendor card design. Sidebar UX on L2.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">✍️</div>
+      <div class="expert-title">Subject Expert — Talent Copy</div>
+      <div class="expert-owns">All L1/L2 contractor-framed descriptions. Service page copy (Contract, EOR, Managed Delivery). FAQ entries. Insight articles (800–1,200w, Sumeet voice). Case study outcomes. Pain-to-solution narrative throughout.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">🔍</div>
+      <div class="expert-title">SEO Specialist</div>
+      <div class="expert-owns">generateMetadata factory for all 280 pages. Sitemap.xml. Robots.txt. JSON-LD schemas (Organization, JobPosting, Article, FAQ, BreadcrumbList). Internal link map. Keyword matrix per page type.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">🌍</div>
+      <div class="expert-title">GEO Specialist</div>
+      <div class="expert-owns">hreflang (en-GB primary, en-AE secondary). LocalBusiness JSON-LD (London/Dubai/Bengaluru). Regional content signals in copy. ME-specific market context in sector pages. No GCC — ME only.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">🤖</div>
+      <div class="expert-title">AEO Specialist</div>
+      <div class="expert-owns">Answer Engine Optimisation. Structured FAQ content on all L1 and service pages. Conversational query targeting ("how to find SAP contractor Dubai"). Position-zero snippet formatting. HowTo and FAQ schemas.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">⚡</div>
+      <div class="expert-title">Speed / Performance</div>
+      <div class="expert-owns">LCP &lt;2.5s gate. next/image priority on hero. WebP conversion. Font preloading. CSS-only marquee (no JS). Lighthouse mobile 90+ before DNS. Bundle size audit. Edge CDN config on Vercel.</div>
+    </div>
+    <div class="expert-card">
+      <div class="expert-icon">📱</div>
+      <div class="expert-title">Mobile / Responsive</div>
+      <div class="expert-owns">Mobile-first CSS. Hamburger drawer nav. Sidebar collapses to top bar on mobile. Ken Burns works on mobile (no JS). Horizontal role scroll on mobile. Touch-friendly tap targets (44px min). iOS Safari cross-check.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- PHASE-BY-PHASE EXECUTION -->
+<section id="phases">
+  <div class="sl">Phase Execution Plan</div>
+  <h2>7 phases. 28 working days.<br>DNS switch at Phase 1 close.</h2>
+  <p class="ssub">Every phase is a shippable state. Data model first — templates after. No page is built without its data file complete. All commits from Raphy.</p>
+
+  <div class="phase-strip">
+
+    <!-- PHASE 0 -->
+    <div class="phase ph0">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 0</div>
+        <div class="phase-info">
+          <h3>CoWork + CLI Scaffold</h3>
+          <div class="phase-meta">CoWork terminal · pnpm · git init · Biome · Husky · Commitlint · colour hook · folder tree</div>
+        </div>
+        <div class="phase-timeline">Day 1</div>
+      </div>
+      <div class="phase-body">
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-chore">chore</span><div class="commit-msg"><strong>chore(scaffold):</strong> initialise yallo-co next.js 15 golden path — typescript strict, tailwind 4, pnpm 9, app router, src-dir</div></div>
+          <div class="commit"><span class="commit-type ct-chore">chore</span><div class="commit-msg"><strong>chore(tooling):</strong> add biome lint/format, husky pre-commit gate, commitlint conventional config — data: type added</div></div>
+          <div class="commit"><span class="commit-type ct-chore">chore</span><div class="commit-msg"><strong>chore(hooks):</strong> add colour-gate hook — enforces zero hardcoded hex in src/components and src/app on every commit</div></div>
+          <div class="commit"><span class="commit-type ct-chore">chore</span><div class="commit-msg"><strong>chore(structure):</strong> create complete folder tree — app routes, components/ui/blocks/layout/motion/forms, data, content, public/images/logos, docs</div></div>
+          <div class="commit"><span class="commit-type ct-docs">docs</span><div class="commit-msg"><strong>docs(architecture):</strong> add arc_v10.html to docs/architecture, DESIGN_SYSTEM.md, ANIMATION_SPEC.md, HOMEPAGE_SPEC.md stubs</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase ph1">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-info">
+          <h3>Design System + TypeScript Foundation</h3>
+          <div class="phase-meta">globals.css 6-layer · types.ts · lib/data.ts · nav + footer · ThemeToggle · sitemap · robots</div>
+        </div>
+        <div class="phase-timeline">Days 2–4</div>
+      </div>
+      <div class="phase-body">
+        <pre><span class="cmt"># globals.css — build all 6 layers in one session
+# types.ts — IndustrySector, FunctionCategory, VendorCard interfaces
+# lib/data.ts — getAllSectors(), getFunctions(), getVendors() helpers
+# lib/seo.ts — generateMetadata factory used by all 280 pages</span></pre>
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-style">style</span><div class="commit-msg"><strong>style(tokens):</strong> add globals.css 6-layer design system — yellow/black/white semantic tokens, spacing scale, animation keyframes including ken-burns-1/2, logo-scroll, counter-up</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(types):</strong> add IndustrySector, FunctionCategory, VendorCard, PlatformPage, CapabilityPage, SEOMeta interfaces to src/types/index.ts — wrong shape = build fails</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(lib):</strong> add src/lib/data.ts — getAllSectors, getSector, getFunctions, getFunction, getAllPlatforms typed helpers for generateStaticParams</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(lib):</strong> add src/lib/seo.ts — generateMetadata factory with title pattern, description, og:image, twitter:card, canonical, hreflang en-GB + en-AE</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(layout):</strong> add NavBar with sticky scroll-transform, mega-menu (What we do / How we serve / Knowledge / About / Job seekers), mobile hamburger drawer</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(layout):</strong> add Footer — logo, service links, quick links, Yallo family cross-links, social, London/Dubai/Bengaluru, copyright</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(seo):</strong> add sitemap.xml generation (next-sitemap), robots.txt — disallow /api/ and /users/, allow all others</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(layout):</strong> add ThemeToggle — persisted via localStorage, applies .dark/.light to :root, all components inherit via CSS vars, no FOUC</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase ph2">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-info">
+          <h3>Homepage + Core Atoms</h3>
+          <div class="phase-meta">Ken Burns HeroSlider · all 11 home sections · Button RolePill Badge BenchSignal atoms · BriefForm CVUpload · Resend wired · Vercel deploy · DNS switch</div>
+        </div>
+        <div class="phase-timeline">Days 5–10</div>
+      </div>
+      <div class="phase-body">
+        <pre><span class="cmt"># Hero: 5 slides, Ken Burns CSS animation, Framer Motion AnimatePresence crossfade
+# Slide images: /public/images/hero/slide-{1-5}.webp — drop real photography here
+# All 11 homepage sections built to spec — see section order table above
+# Magnetic CTA button on primary "Request a contractor →"
+# Persona cycle component (CHRO, CIO, Head of Talent, Delivery Director, CFO)
+# Stats counter (useInView + Framer animate)
+# Logo cloud marquee (CSS only — no JS)
+# Contact form + Resend server action wired
+# Vercel deploy → Lighthouse mobile 90+ → DNS switch from WordPress</span></pre>
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(hero):</strong> add HeroSlider component — ken burns CSS animation (ken-burns-1/2 alternating), Framer AnimatePresence crossfade, 5 slides, 6s auto, pause on hover, next/image priority slide 1, dark overlay</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add LogoCloud — CSS-only infinite marquee, monochrome client logos, pauses on hover, dual-set duplicate for seamless loop</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add PersonaCycle component — CHRO/CIO/Head of Talent/Delivery Director/CFO auto-cycle 3s, Framer layoutId, parallax background section</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add ProcessSteps — 4-step how it works, animated connector line, stats strip (72h/2:1/UK·ME·India/Contract·Perm·EOR·Managed Delivery)</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add ServiceGrid — 4 pillars (Contract Workforce, Permanent Hiring, EOR, Managed Delivery), primary amber accent on Contract card, magnetic CTA button</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add SectorImageGrid — 6 sectors, full-bleed photography, amber overlay on hover, scroll-reveal stagger, links to /industries/[sector]</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add PlatformTalentGrid — 6 platforms, role-dominant cards, logo badge, top 3 contractor roles, links to /platforms/[platform]</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add WhyYallo — 4 differentiators, architect-led screening positioning, counter animations on scroll entry, dark section + parallax</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add CaseStudyCards — 2 proof cards with 72h/2:1 metrics, platform tags, sector tags, scroll-reveal</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add StatsCounterStrip — 4 counters (72/2:1/3/50+), DM Mono, count-up on viewport entry, prefers-reduced-motion shows final value immediately</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(home):</strong> add YalloFamilyPanel — Yallo Talent (here), saasinator (launching soon), Yallo AI Academy (launching soon), dark surface, amber cross-sell links</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(atoms):</strong> add Button, Badge, RolePill, BenchSignal, ThemeToggle atoms — zero hardcoded colours, all CSS vars, WCAG AA contrast verified</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(forms):</strong> add BriefForm — Name/Company/Role/Platform/Region/Engagement Type/Message, Resend server action, field-level validation, success state, Zod schema</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(forms):</strong> add CVUploadForm — file input (.pdf .doc .docx), role interest checkboxes, Resend confirm, ATS push stub for Phase 4</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(sticky):</strong> add StickyBriefCTA — appears after 40% scroll depth, bottom bar mobile/right rail desktop, amber bg, contractor_request GA4 event</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(deploy):</strong> vercel deploy preview — DNS switch from WordPress, GA4 + GTM wired, Lighthouse mobile 90+ confirmed, sitemap submitted to Search Console</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase ph3">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-info">
+          <h3>Service Pages + Templates Built</h3>
+          <div class="phase-meta">4 service pages · 3 templates (HubPage, SectorPage, FunctionPage) · SectorHub + SectorPage for Retail · All Retail L2 pages live · About cluster</div>
+        </div>
+        <div class="phase-timeline">Days 11–16</div>
+      </div>
+      <div class="phase-body">
+        <pre><span class="cmt"># Build Template 1 (HubPage), Template 2 (SectorPage), Template 3 (FunctionPage) — ONCE
+# retail.ts data file — all 20 functions + vendor cards from sitemap.xlsx
+# All 3 templates rendering from retail data before writing other sector files
+# 4 service pages: Contract, Permanent, EOR, Managed Delivery — authored, not templated
+# About, Why Yallo, Leadership pages
+# StickyBriefCTA sitewide
+# Full GA4/GTM event layer wired</span></pre>
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(template):</strong> add HubPage template — 6-card sector/platform/capability image grid, single CTA, no sidebar, used for /industries /platforms /capabilities</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(template):</strong> add SectorPage template — full-bleed FullBleedBanner, 80w contractor-framed intro, FunctionCardGrid auto from functions[], stats strip, partner logos, brief CTA</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(template):</strong> add FunctionPage template — StickySidebar (Framer layoutId active indicator), sector hero image, roles strip, VendorCardGrid (role-dominant), ScreeningCallout, BriefCTA, RelatedFunctions</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(retail):</strong> add src/data/industries/retail.ts — all 20 functions, vendor cards with contractor roles, bench signals, seo metadata — sourced from sitemap.xlsx</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(pages):</strong> add /contract service page — contractor framing, 72h SLA, how it works, scarce roles, FAQ (FAQPage JSON-LD), BriefForm inline</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(pages):</strong> add /permanent service page — architect-screened, long-term fit, role examples, comparison callout vs contract, FAQPage JSON-LD</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(pages):</strong> add /eor service page — UAE visa + India payroll, compliance detail, how EOR differs from contract, process timeline, FAQPage JSON-LD</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(pages):</strong> add /managed-delivery service page — scope-defined, outcome-owned, Yallo holds delivery risk, when to use vs contract, FAQPage JSON-LD</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(pages):</strong> add /about /why-yallo /leadership pages — Sumeet Goenka bio first, Richemont/Landmark/Alshaya EMEA operator credentials, comparison table, team grid</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(analytics):</strong> add GA4/GTM full event layer — contractor_request, role_pill_click, bench_signal_view, brief_form_submit, cv_upload, job_apply_click, scroll_depth</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(jsonld):</strong> add Organization JSON-LD (homepage), BreadcrumbList (all L1/L2), FAQPage (service pages), LocalBusiness (London/Dubai/Bengaluru)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase ph4">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-info">
+          <h3>Full Industry + Platform Taxonomy</h3>
+          <div class="phase-meta">5 remaining industry data files · all 6 platform data files · all L1 + L2 pages live · ~240 pages from data files alone</div>
+        </div>
+        <div class="phase-timeline">Days 17–21</div>
+      </div>
+      <div class="phase-body">
+        <pre><span class="cmt"># Templates already built — this phase is pure data work
+# One data file per sector/platform = N pages automatically rendered
+# Tanzil populates .ts files from sitemap.xlsx — Raphy reviews before merge
+# All commits type: data(sector-name) for clean git log</span></pre>
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(finance):</strong> add src/data/industries/finance.ts — all functions, vendor cards, contractor roles, seo — all L1+L2 finance pages live from this file</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(manufacturing):</strong> add src/data/industries/manufacturing.ts — supply chain, WMS, TMS, MES, EWM specialist functions</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(healthcare):</strong> add src/data/industries/healthcare.ts — EHR, clinical trials, regulatory, pharma supply chain functions</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(government):</strong> add src/data/industries/government.ts — citizen services, smart city, digital transformation, public safety functions</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(telco):</strong> add src/data/industries/telco.ts — network ops, OSS/BSS, 5G, billing, OTT functions</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(sap):</strong> add src/data/platforms/sap.ts — S/4HANA, BTP, IBP, SuccessFactors, Ariba, EWM, TM, Fieldglass modules + contractor roles</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(oracle):</strong> add src/data/platforms/oracle.ts — Fusion ERP/SCM/HCM/CX, E-Business Suite, OCI, Hospitality modules</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(microsoft):</strong> add src/data/platforms/microsoft.ts — Azure, D365, Power Platform, M365 Copilot areas</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(salesforce):</strong> add src/data/platforms/salesforce.ts — Sales Cloud, Service Cloud, Marketing Cloud, MuleSoft, Commerce Cloud</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(blueyonder):</strong> add src/data/platforms/blueyonder.ts — SCM, WMS, TMS, Luminate, MFP, assortment modules</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(workday):</strong> add src/data/platforms/workday.ts — HCM, Payroll, Recruiting, Adaptive Planning, Learning modules</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase ph5">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 5</div>
+        <div class="phase-info">
+          <h3>Capabilities + Knowledge Hub</h3>
+          <div class="phase-meta">6 capability data files · Insights MDX pipeline · Case studies · White papers gated · 3+ seed articles · Lighthouse audit</div>
+        </div>
+        <div class="phase-timeline">Days 22–25</div>
+      </div>
+      <div class="phase-body">
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(capabilities):</strong> add all 6 capability data files — data.ts, digital.ts, cloud.ts, cybersecurity.ts, integration.ts, innovation.ts</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(insights):</strong> add MDX pipeline — next-mdx-remote, InsightCard component, /insights hub auto-populated from frontmatter, /insights/[slug] article template with Article JSON-LD</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(insights):</strong> add 3 seed insight articles — Blue Yonder Luminate scarcity, SAP Commerce Cloud ME, Anaplan Model Builder demand — Sumeet voice</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(case-studies):</strong> add case study MDX template — metric-first H1, proof callouts (72h/2:1), platform/sector tags, BriefCTA, CaseStudy JSON-LD</div></div>
+          <div class="commit"><span class="commit-type ct-data">data</span><div class="commit-msg"><strong>data(case-studies):</strong> add 3 seed case studies — SAP bank 72h, Blue Yonder manufacturing deadline, Oracle retail EOR</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(white-papers):</strong> add white papers hub with gated download form — Resend delivery, 4 white papers seeded</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase ph6">
+      <div class="phase-hd">
+        <div class="phase-num">Phase 6</div>
+        <div class="phase-info">
+          <h3>Jobs Portal + QA + Performance Gate</h3>
+          <div class="phase-meta">Jobs ATS stub · CV upload · Lighthouse mobile 90+ · CWV remediation · Search Console · JobPosting JSON-LD</div>
+        </div>
+        <div class="phase-timeline">Days 26–28</div>
+      </div>
+      <div class="phase-body">
+        <div class="commit-list">
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(jobs):</strong> add /jobs page — JobSearchWidget with static ATS seed, filters (platform/sector/region/type), job cards, apply deeplink, 5min edge cache via /api/jobs</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(jobs):</strong> add /join page — CVUploadForm, role interest checkboxes (Leadership/Architecture/AI/Data/ERP/Digital/Cloud/Cyber), Resend confirm, ATS push stub</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(jsonld):</strong> add JobPosting JSON-LD per job listing in /jobs, Article JSON-LD on all insight pages, HowTo on EOR service page</div></div>
+          <div class="commit"><span class="commit-type ct-perf">perf</span><div class="commit-msg"><strong>perf(images):</strong> audit all next/image usage — priority flag on hero slide 1, blur placeholder on all images, WebP confirmed, sizes prop on all images</div></div>
+          <div class="commit"><span class="commit-type ct-perf">perf</span><div class="commit-msg"><strong>perf(bundle):</strong> analyse bundle — move heavy components to dynamic imports, code-split Framer Motion, verify LCP &lt;2.5s CLS &lt;0.1 INP &lt;200ms</div></div>
+          <div class="commit"><span class="commit-type ct-fix">fix</span><div class="commit-msg"><strong>fix(a11y):</strong> audit WCAG 2.2 AA — focus-visible rings, aria-labels on icon buttons, skip-to-content, keyboard nav on mega-menu and sidebar, prefers-reduced-motion all animations</div></div>
+          <div class="commit"><span class="commit-type ct-feat">feat</span><div class="commit-msg"><strong>feat(seo):</strong> submit sitemap to Google Search Console, verify robots.txt, confirm all hreflang tags, check canonical on every page type</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- SEO / GEO / AEO -->
+<section id="seo">
+  <div class="sl">SEO · GEO · AEO Strategy</div>
+  <h2>Three disciplines.<br>One site that ranks and answers.</h2>
+
+  <table class="seo-table">
+    <thead><tr><th>Discipline</th><th>What it is</th><th>What Yallo does</th><th>Implementation</th></tr></thead>
+    <tbody>
+      <tr><td>SEO · Technical</td><td>Search engine crawlability, indexability and page signals</td><td>All 280 pages statically generated. sitemap.xml auto-built. BreadcrumbList, FAQPage, JobPosting, Article, Organization schemas. Canonical on every page. noindex only /api/ and /users/.</td><td>next-sitemap · generateMetadata factory · JSON-LD per page type</td></tr>
+      <tr><td>SEO · Content</td><td>On-page keyword relevance for enterprise talent queries</td><td>One primary keyword per page used naturally 2–3×. H1 contractor-framed. L2 pages target "[Tool] contractor [sector] [region]" — highest-intent query on the site. L1 pages target "[Function] recruitment specialist".</td><td>Tanzil follows keyword matrix from sitemap.xlsx · Sumeet ratifies L1 descriptions</td></tr>
+      <tr><td>SEO · Internal links</td><td>Link graph signals authority and crawl priority</td><td>Every L2 page links up to L1, across to /platforms/[vendor], sideways to 2–3 sibling functions. Every insight article links to ≥2 L1/L2 pages. No orphan pages. Sitemap includes all L2 slugs.</td><td>Link rules enforced in template components — RelatedFunctions, VendorCrossLink</td></tr>
+      <tr><td>GEO · Geographic</td><td>Regional search signals for UK, ME and India markets</td><td>hreflang en-GB (primary) + en-AE (ME signal). LocalBusiness JSON-LD with three offices: London/Dubai/Bengaluru. "UK · ME · India" in all meta descriptions. ME-specific copy in sector pages where relevant.</td><td>lib/seo.ts injects hreflang · LocalBusiness in layout.tsx JSON-LD block</td></tr>
+      <tr><td>GEO · Market copy</td><td>Content that signals local knowledge to ME buyers</td><td>Sector pages for Finance and Government reference UAE PDPL, Saudi NCA context where relevant. Retail sector references GCC retail landscape. Insight articles reference ME-specific programme experience (Landmark, Alshaya, MAF).</td><td>Tanzil adds ME-specific paragraphs on Finance, Government, Retail L1 pages</td></tr>
+      <tr><td>AEO · FAQ schema</td><td>Position-zero answers in AI search engines (Perplexity, Google AI Overview, Bing Copilot)</td><td>FAQPage JSON-LD on all 4 service pages (Contract, Permanent, EOR, Managed Delivery) and all L1 function pages. 3–5 real questions per page, answered in 40–80 words. Questions framed as the buyer would type them.</td><td>faqs[] array in data files · FAQAccordion component · FAQPage schema auto-generated</td></tr>
+      <tr><td>AEO · Conversational queries</td><td>Capturing "how to..." and "what is..." query patterns</td><td>EOR page answers: "What is employer of record in UAE?" Managed Delivery answers: "What is the difference between subcontracting and managed delivery?" Insight articles target: "Why are SAP EWM contractors hard to find in Dubai?"</td><td>HowTo JSON-LD on EOR and Managed Delivery pages · Article schema on insights</td></tr>
+      <tr><td>AEO · Entity signals</td><td>Building Yallo as a recognised entity in AI search</td><td>Organization JSON-LD with sameAs links (LinkedIn, yallo.co, saasinator.ai). Consistent NAP (Name/Address/Phone) across all pages. Sumeet Goenka as a named expert entity linked to authored content. Gartner Peer Community reference where appropriate.</td><td>Organization schema in layout.tsx · author schema on insight articles</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="div"></div>
+
+<!-- PERFORMANCE TARGETS -->
+<section id="perf">
+  <div class="sl">Performance Targets</div>
+  <h2>Gates that must pass<br>before DNS switches.</h2>
+
+  <div class="perf-grid">
+    <div class="perf-card">
+      <div class="perf-n">90+</div>
+      <div class="perf-l">Lighthouse Mobile</div>
+      <div class="perf-note">Required before DNS switch</div>
+    </div>
+    <div class="perf-card">
+      <div class="perf-n">&lt;2.5s</div>
+      <div class="perf-l">LCP Target</div>
+      <div class="perf-note">next/image priority on hero slide 1</div>
+    </div>
+    <div class="perf-card">
+      <div class="perf-n">&lt;0.1</div>
+      <div class="perf-l">CLS Score</div>
+      <div class="perf-note">Explicit image dimensions + font preload</div>
+    </div>
+    <div class="perf-card">
+      <div class="perf-n">&lt;200ms</div>
+      <div class="perf-l">INP Target</div>
+      <div class="perf-note">Framer animations GPU-only, no layout</div>
+    </div>
+    <div class="perf-card">
+      <div class="perf-n">AA</div>
+      <div class="perf-l">WCAG 2.2</div>
+      <div class="perf-note">4.5:1 contrast · focus-visible · aria-labels</div>
+    </div>
+  </div>
+
+  <div style="margin-top:16px;background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px">Image pipeline</div>
+      <div style="font-size:10.5px;color:var(--w6);font-weight:300;line-height:1.6">All images WebP. Hero slides: 1920px max. Sector images: 800px. Client logos: SVG preferred. next/image with priority on hero, lazy elsewhere. blur placeholder on all.</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px">Font strategy</div>
+      <div style="font-size:10.5px;color:var(--w6);font-weight:300;line-height:1.6">Plus Jakarta Sans + DM Mono via next/font/google (automatic subset + swap). Preloaded. No external font requests after initial load. Font-display: swap globally.</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px">Animation budget</div>
+      <div style="font-size:10.5px;color:var(--w6);font-weight:300;line-height:1.6">Ken Burns: CSS keyframes on GPU (transform + opacity only). Framer animations: transform + opacity only — no layout properties. Logo marquee: CSS only, no JS. Budget: 16ms/frame max.</div>
+    </div>
+    <div>
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:6px">Bundle targets</div>
+      <div style="font-size:10.5px;color:var(--w6);font-weight:300;line-height:1.6">Dynamic import Framer Motion on motion components. Code-split by route — Next.js App Router handles this automatically. Total first load JS target: &lt;120KB. API routes edge runtime.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- SUMEET VISION + MISSION -->
+<section>
+  <div class="sl">Sumeet's Vision — Planted in Every Page</div>
+  <h2>The mission isn't stated.<br>It's felt in every interaction.</h2>
+  <p class="ssub">Sumeet's vision from his operator experience at Richemont, Landmark Group and Alshaya across EMEA: enterprise tech programmes fail because of people, not technology. The right contractor in the right seat changes the outcome. Yallo exists to close that gap.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+    <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--y4);border-radius:12px;padding:20px 22px">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:8px">Mission</div>
+      <div style="font-size:13px;font-weight:700;color:var(--w8);line-height:1.4;margin-bottom:8px">Put the right specialist in the right seat, fast.</div>
+      <div style="font-size:11px;color:var(--w6);line-height:1.65;font-weight:300">Not the most available contractor. Not the nearest keyword match. The one who has run this specific programme, on this specific platform, under this specific kind of pressure. That contractor changes the outcome.</div>
+    </div>
+    <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--y4);border-radius:12px;padding:20px 22px">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:8px">Vision</div>
+      <div style="font-size:13px;font-weight:700;color:var(--w8);line-height:1.4;margin-bottom:8px">Architect-vetted talent as the standard — not the exception.</div>
+      <div style="font-size:11px;color:var(--w6);line-height:1.65;font-weight:300">Every enterprise technology programme across the UK, ME and India should have access to contractors who have been assessed by people who have done the work. Not CVs. Not keywords. Programme track records.</div>
+    </div>
+    <div style="background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.2);border-left:3px solid var(--y4);border-radius:12px;padding:20px 22px">
+      <div style="font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:8px">What this means for the site</div>
+      <div style="font-size:13px;font-weight:700;color:var(--w8);line-height:1.4;margin-bottom:8px">Every page earns the booking call.</div>
+      <div style="font-size:11px;color:var(--w6);line-height:1.65;font-weight:300">The hiring leader who lands on a Yallo L2 page should leave thinking: "these people understand what I'm trying to do." Not: "another recruitment agency." That is the design brief. That is the content brief. That is the positioning brief.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- DESIGN MD FILES TO CREATE -->
+<section>
+  <div class="sl">Design Documentation — MD Files to Create</div>
+  <h2>Plant these in docs/designs/<br>before build starts.</h2>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px">
+      <div style="font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--b3);margin-bottom:8px">docs/designs/DESIGN_SYSTEM.md</div>
+      <div style="font-size:10.5px;color:var(--w6);line-height:1.65;font-weight:300">6-layer CSS specification. Colour tokens (raw + semantic). Typography scale. Spacing scale. Animation keyframes. Component class list. Colour gate rule (zero hardcoded hex). Dark/light mode implementation. Font loading strategy.</div>
+    </div>
+    <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px">
+      <div style="font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--b3);margin-bottom:8px">docs/designs/ANIMATION_SPEC.md</div>
+      <div style="font-size:10.5px;color:var(--w6);line-height:1.65;font-weight:300">Every animation on the site. Component, technique, duration, easing, performance note. Ken Burns spec (ken-burns-1/2 keyframes + AnimatePresence). Scroll reveal (useInView variants). Counter (useMotionValue + animate). Magnetic CTA (useSpring). prefers-reduced-motion rules.</div>
+    </div>
+    <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px">
+      <div style="font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--b3);margin-bottom:8px">docs/designs/home/HOMEPAGE_SPEC.md</div>
+      <div style="font-size:10.5px;color:var(--w6);line-height:1.65;font-weight:300">11 sections in order. Per section: components used, content data fields, animation applied, CTA wording, mobile behaviour, reference to home-3 pattern. H1 copy: "Contractors screened by architects. Shortlisted in 72 hours." Service pillars: locked names.</div>
+    </div>
+    <div style="background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px">
+      <div style="font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--b3);margin-bottom:8px">docs/designs/COMPONENT_INVENTORY.md</div>
+      <div style="font-size:10.5px;color:var(--w6);line-height:1.65;font-weight:300">38 components listed. Per component: file path, props interface, animation used, accessibility notes, which pages it appears on, zero-hardcoded-colour confirmed. Raphy's reference before any component is built.</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="fl">YALLO</div>
+  <div class="fm">yallo.co v2 · Full Execution Plan · GTM.02 · All commits from Raphy · July 2026</div>
+</footer>
+
+</body>
+</html>

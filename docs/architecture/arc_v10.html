@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>yallo.co v2 — Architecture & Execution</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0C0C0C;--sf:#141414;
+  --y4:#F59E0B;--y3:#FCD34D;--y2:#FDE68A;
+  --g3:#6EE7B7;--g4:#10B981;--b3:#93C5FD;--r3:#FCA5A5;
+  --w1:#fff;--w8:rgba(255,255,255,.88);--w6:rgba(255,255,255,.6);
+  --w4:rgba(255,255,255,.4);--w2:rgba(255,255,255,.16);--wa:rgba(255,255,255,.06);
+  --bdr:rgba(245,158,11,.13);--bdr2:rgba(255,255,255,.08);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--w1);-webkit-font-smoothing:antialiased}
+a{color:var(--y4);text-decoration:none}
+.w{max-width:1300px;margin:0 auto;padding:0 40px}
+nav{position:sticky;top:0;z-index:99;background:rgba(8,8,8,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);padding:14px 40px;display:flex;align-items:center;justify-content:space-between}
+.nb{font-size:16px;font-weight:800;color:var(--y4)}
+.ns{font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--w4);margin-top:2px}
+.nl{display:flex;gap:18px;list-style:none}
+.nl a{font-size:11px;color:var(--w4);font-weight:500;transition:color .2s}.nl a:hover{color:var(--y4)}
+.hero{padding:64px 0 48px;text-align:center;position:relative;overflow:hidden}
+.hglow{position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:700px;height:320px;background:radial-gradient(ellipse,rgba(245,158,11,.07),transparent 65%);pointer-events:none}
+.ey{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:14px}
+.ey::before,.ey::after{content:'';width:28px;height:1px;background:var(--y4);opacity:.5}
+h1{font-size:clamp(30px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1.06;margin-bottom:8px}
+.gy{background:linear-gradient(120deg,var(--y3),var(--y4));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hsub{font-size:13.5px;font-weight:300;color:var(--w4);max-width:520px;margin:0 auto 30px;line-height:1.7}
+.mr{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.mi{text-align:center}
+.mn{font-size:22px;font-weight:800;letter-spacing:-1px;color:var(--y4)}
+.ml{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-top:2px}
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(245,158,11,.15) 40%,transparent);margin:0}
+section{padding:56px 0}
+.sl{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sl::before{content:'';width:18px;height:1px;background:var(--y4);opacity:.6}
+h2{font-size:clamp(20px,2.8vw,34px);font-weight:800;letter-spacing:-1.4px;line-height:1.1;margin-bottom:8px}
+.ssub{font-size:13px;color:var(--w4);max-width:580px;margin-bottom:32px;line-height:1.7;font-weight:300}
+
+/* DECISION BOXES */
+.decisions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:32px}
+.dec{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px}
+.dec.confirmed{border-left:3px solid var(--g4)}
+.dec-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--g3);margin-bottom:6px}
+.dec-title{font-size:12px;font-weight:700;color:var(--w8);margin-bottom:5px}
+.dec-body{font-size:10.5px;color:var(--w6);line-height:1.6;font-weight:300}
+
+/* HIERARCHY DIAGRAM */
+.hier{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;border-radius:14px;overflow:hidden;background:var(--bdr2);margin-bottom:20px}
+.hier-col{background:var(--sf);padding:0;overflow:hidden}
+.hier-hd{padding:14px 18px;font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:center}
+.hier-body{padding:18px}
+.hier-item{border-radius:8px;padding:12px 14px;margin-bottom:8px}
+.hier-item:last-child{margin-bottom:0}
+.hier-item-t{font-size:11px;font-weight:700;margin-bottom:4px}
+.hier-item-s{font-size:9.5px;color:var(--w4);line-height:1.45;font-weight:300}
+.hier-item-eg{font-family:var(--mono);font-size:8px;color:var(--w4);margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,.06)}
+.hier-item-count{font-family:var(--mono);font-size:10px;font-weight:700;margin-top:6px}
+
+/* ARCH DIAGRAM */
+.arch{background:rgba(14,14,14,.9);border:1px solid var(--bdr);border-radius:16px;padding:28px 22px}
+.arow{display:flex;align-items:stretch;gap:3px;margin-bottom:3px}
+.albl{writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);font-family:var(--mono);font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);padding:0 6px;display:flex;align-items:center;justify-content:center;min-width:22px;flex-shrink:0}
+.ablks{display:flex;flex:1;gap:3px}
+.ab{border-radius:9px;padding:9px 11px;flex:1;min-width:0;transition:transform .2s}
+.ab:hover{transform:translateY(-2px)}
+.abt{font-size:10px;font-weight:700;letter-spacing:-.2px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.abs{font-size:8px;color:var(--w4);line-height:1.4;font-weight:300}
+.abs span{display:block}
+.ay{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.17)}.ay .abt{color:var(--y3)}
+.aw{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}.aw .abt{color:var(--w8)}
+.ag{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15)}.ag .abt{color:var(--g3)}
+.ab2{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.17)}.ab2 .abt{color:var(--b3)}
+.aarr{display:flex;height:14px;gap:24px;margin:2px 0}
+.aarr span{color:rgba(245,158,11,.3);font-size:11px;flex:1;text-align:center}
+
+/* DATA MODEL */
+.dm-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.dm-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:16px 18px}
+.dm-title{font-size:11px;font-weight:700;color:var(--y3);margin-bottom:10px}
+.dm-code{font-family:var(--mono);font-size:9px;color:var(--b3);line-height:1.7;background:rgba(0,0,0,.35);border-radius:7px;padding:12px;overflow-x:auto;white-space:pre}
+
+/* TEMPLATES */
+.tpl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tpl{border-radius:12px;padding:18px 20px}
+.t1{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2)}
+.t2{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18)}
+.t3{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.16)}
+.tpl-badge{font-family:var(--mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;padding:2px 7px;border-radius:20px;display:inline-block;margin-bottom:8px}
+.tpl-title{font-size:13px;font-weight:800;letter-spacing:-.3px;margin-bottom:6px}
+.tpl-routes{font-family:var(--mono);font-size:8.5px;color:var(--b3);margin-bottom:10px}
+.tpl-desc{font-size:10px;color:var(--w6);line-height:1.55;font-weight:300}
+.tpl-list{list-style:none;margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.tpl-list li{font-size:9.5px;color:var(--w4);display:flex;gap:5px;line-height:1.4;font-weight:300}
+.tpl-list li::before{content:'→';color:var(--y4);font-size:8px;flex-shrink:0;margin-top:1px}
+.tpl-count{font-family:var(--mono);font-size:10px;font-weight:700;margin-top:10px}
+
+/* PAGE COUNTS */
+.pc-table{width:100%;border-collapse:collapse;font-size:11px}
+.pc-table th{text-align:left;font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);padding:8px 12px;border-bottom:1px solid var(--bdr);font-weight:500}
+.pc-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:top;color:var(--w6);line-height:1.45}
+.pc-table td:first-child{color:var(--w8);font-family:var(--mono);font-size:9.5px;font-weight:600}
+.pc-table tr:hover td{background:rgba(245,158,11,.02)}
+.pc-gr td{background:rgba(245,158,11,.05)!important;color:var(--y4)!important;font-family:var(--mono)!important;font-size:8px!important;letter-spacing:2px!important;text-transform:uppercase!important;padding:5px 12px!important;font-weight:600!important}
+.pc-total td{background:rgba(245,158,11,.08)!important;color:var(--y3)!important;font-weight:700!important}
+.tg{font-family:var(--mono);font-size:7.5px;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:20px;display:inline-block;margin:1px}
+.tp0{background:rgba(239,68,68,.1);color:var(--r3);border:1px solid rgba(239,68,68,.2)}
+.tp1{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+.tp2{background:rgba(59,130,246,.1);color:var(--b3);border:1px solid rgba(59,130,246,.2)}
+
+/* CONTENT RULES */
+.cr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.cr{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:17px 18px}
+.cr-title{font-size:11.5px;font-weight:700;color:var(--w8);margin-bottom:8px}
+.cr-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.cr-list li{font-size:10px;color:var(--w6);font-weight:300;line-height:1.5;display:flex;gap:6px}
+.cr-list li::before{content:'→';color:var(--y4);font-size:8px;flex-shrink:0;margin-top:2px}
+.cr.good{border-left:3px solid var(--g4)}
+.cr.bad{border-left:3px solid rgba(239,68,68,.5)}
+.cr.bad .cr-list li::before{color:var(--r3)}
+
+/* PHASES */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.pc2{border-radius:12px;padding:18px}
+.ph1{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2)}
+.ph2{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18)}
+.ph3{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15)}
+.ph4{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09)}
+.pn{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.pt{font-size:12.5px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px}
+.pd{font-family:var(--mono);font-size:8px;color:var(--w4);margin-bottom:9px}
+.pi{list-style:none;display:flex;flex-direction:column;gap:4px}
+.pi li{font-size:9.5px;color:var(--w6);font-weight:300;display:flex;gap:5px;line-height:1.4}
+.pi li::before{content:'→';color:var(--y4);font-size:8px;flex-shrink:0;margin-top:1px}
+
+footer{border-top:1px solid rgba(255,255,255,.05);padding:24px 0;text-align:center}
+.fl{font-size:14px;font-weight:800;color:var(--y4)}
+.fm{font-family:var(--mono);font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2);margin-top:5px}
+@media(max-width:900px){
+  .w{padding:0 20px}.pgrid,.tpl-grid,.decisions,.dm-grid,.cr-grid{grid-template-columns:1fr}
+  .nl{gap:10px}.hier{grid-template-columns:1fr}
+  .arow{flex-direction:column}.albl{writing-mode:horizontal-tb;transform:none;padding:3px 0;min-width:unset}.ablks{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div><div class="nb">YALLO</div><div class="ns">yallo.co v2 · Architecture & Execution · File 1 of 2</div></div>
+  <ul class="nl">
+    <li><a href="#decisions">Decisions</a></li>
+    <li><a href="#hierarchy">Hierarchy</a></li>
+    <li><a href="#arch">Stack</a></li>
+    <li><a href="#datamodel">Data Model</a></li>
+    <li><a href="#templates">Templates</a></li>
+    <li><a href="#pages">Page Counts</a></li>
+    <li><a href="#content">Content Rules</a></li>
+    <li><a href="#phases">Phases</a></li>
+  </ul>
+</nav>
+<div class="w">
+
+<div class="hero">
+  <div class="hglow"></div>
+  <div class="ey">Architecture & Execution · File 1 of 2</div>
+  <h1>yallo.co <span class="gy">v2</span></h1>
+  <p class="hsub">Contract-first talent site. L0 → L1 → L2. Three templates. ~280 pages. UK · ME · India.</p>
+  <div class="mr">
+    <div class="mi"><div class="mn">~280</div><div class="ml">Total pages</div></div>
+    <div class="mi"><div class="mn">3</div><div class="ml">Templates</div></div>
+    <div class="mi"><div class="mn">3</div><div class="ml">Page levels</div></div>
+    <div class="mi"><div class="mn">Contract-first</div><div class="ml">Primary focus</div></div>
+    <div class="mi"><div class="mn">Role-dominant</div><div class="ml">Card design</div></div>
+    <div class="mi"><div class="mn">4</div><div class="ml">Build phases</div></div>
+  </div>
+</div>
+
+<div class="div"></div>
+
+<!-- CONFIRMED DECISIONS -->
+<section id="decisions">
+  <div class="sl">All Confirmed Decisions</div>
+  <h2>Locked. Build from these.</h2>
+  <p class="ssub">Every design, content and architecture decision confirmed by Raphy before build. Nothing in this document is an assumption.</p>
+  <div class="decisions">
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Two-level taxonomy only. No L3.</div>
+      <div class="dec-body">L0 = hubs. L1 = sector/platform/capability pages. L2 = function pages with full tool detail on-page. No deeper pages. Tool vendors live as cards on the L2 page — not their own routes.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Contract-first audience. Language matches.</div>
+      <div class="dec-body">Primary buyer: Programme Manager / IT Director with an open contract seat and a deadline. Every CTA reads "Request a contractor →". Speed signals (72h) and availability signals dominate. Permanent placement is secondary.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Role-dominant cards. Logo as reference badge.</div>
+      <div class="dec-body">Vendor logo is a small badge top-left — a familiarity signal for domain visitors. Role titles are the dominant visual element inside each card. 4–5 contractor role pills per card. This is what the hiring leader scans for first.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Sector-level hero image on L2 pages.</div>
+      <div class="dec-body">One hero image per sector (e.g. retail trading floor), applied consistently across all L2 pages within that sector. The H1 and breadcrumb provide function-level specificity. No need for per-function photography.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Sticky left sidebar on L2 — all functions listed.</div>
+      <div class="dec-body">Shows all L2 function pages for that sector. Active item: amber left-border + highlighted. Serves dual purpose: navigation + credibility signal (visitor sees full sector coverage at a glance).</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">UK · ME · India — in that order. No GCC.</div>
+      <div class="dec-body">Applied consistently across: hero stats, meta descriptions, card bench signals, JSON-LD LocalBusiness schema, footer, and all content copy. ME = Middle East. Never GCC.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">L1 page: different approach from L2. No sidebar.</div>
+      <div class="dec-body">L1 (/industries/retail) is a sector landing page. Full-bleed hero. Function categories as image-led cards in a grid. Each card links to its L2 page. Confident and broad — no sidebar clutter at this level.</div>
+    </div>
+    <div class="dec confirmed">
+      <div class="dec-label">✓ Confirmed</div>
+      <div class="dec-title">Content shift: stop describing tools, deploy talent.</div>
+      <div class="dec-body">No vendor marketing copy. No "SAP CX delivers real-time data insights." Only: what roles Yallo places, how screening works, why the contractor has implementation depth. The visitor already knows what the tool is.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- HIERARCHY -->
+<section id="hierarchy">
+  <div class="sl">Page Hierarchy — L0 / L1 / L2</div>
+  <h2>Three levels. No deeper pages.</h2>
+  <p class="ssub">Same structure applies identically to Industries, Platforms and Capabilities. The data model and templates are shared — only the data files differ.</p>
+
+  <div class="hier">
+    <div class="hier-col">
+      <div class="hier-hd" style="background:rgba(245,158,11,.08);color:var(--y3)">L0 — Hub pages</div>
+      <div class="hier-body">
+        <div class="hier-item" style="background:rgba(245,158,11,.06)">
+          <div class="hier-item-t" style="color:var(--y3)">What it does</div>
+          <div class="hier-item-s">Lists all sectors / platforms / capabilities as image-led cards. No sidebar. Broad and confident. One brief CTA. No deep content here.</div>
+          <div class="hier-item-eg">/industries<br>/platforms<br>/capabilities</div>
+          <div class="hier-item-count" style="color:var(--y4)">3 pages total</div>
+        </div>
+        <div class="hier-item" style="background:rgba(245,158,11,.06)">
+          <div class="hier-item-t" style="color:var(--y3)">Target reader</div>
+          <div class="hier-item-s">CIO / CTO searching broadly. They don't know yet which sector or platform page they need. The hub helps them self-select.</div>
+        </div>
+        <div class="hier-item" style="background:rgba(245,158,11,.06)">
+          <div class="hier-item-t" style="color:var(--y3)">Template</div>
+          <div class="hier-item-s">HubPage template. Grid of sector/platform cards. No sidebar. Full-bleed top image.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hier-col">
+      <div class="hier-hd" style="background:rgba(59,130,246,.08);color:var(--b3)">L1 — Sector pages</div>
+      <div class="hier-body">
+        <div class="hier-item" style="background:rgba(59,130,246,.06)">
+          <div class="hier-item-t" style="color:var(--b3)">What it does</div>
+          <div class="hier-item-s">Sector landing page. Full-bleed hero. ALL L2 function categories shown as cards in a grid. Each card → L2 page. Stats strip. Related platforms. Brief CTA. No sidebar.</div>
+          <div class="hier-item-eg">/industries/retail<br>/platforms/sap<br>/capabilities/data</div>
+          <div class="hier-item-count" style="color:var(--b3)">18 pages total (6+6+6)</div>
+        </div>
+        <div class="hier-item" style="background:rgba(59,130,246,.06)">
+          <div class="hier-item-t" style="color:var(--b3)">Target reader</div>
+          <div class="hier-item-s">CIO at a retail org. Or SAP Programme Director. They know their sector — they need to see Yallo's full coverage depth before trusting a brief.</div>
+        </div>
+        <div class="hier-item" style="background:rgba(59,130,246,.06)">
+          <div class="hier-item-t" style="color:var(--b3)">Template</div>
+          <div class="hier-item-s">SectorPage template. Function card grid auto-rendered from data. No sidebar.</div>
+        </div>
+      </div>
+    </div>
+    <div class="hier-col">
+      <div class="hier-hd" style="background:rgba(16,185,129,.07);color:var(--g3)">L2 — Function pages</div>
+      <div class="hier-body">
+        <div class="hier-item" style="background:rgba(16,185,129,.06)">
+          <div class="hier-item-t" style="color:var(--g3)">What it does</div>
+          <div class="hier-item-s">Function landing page. Sticky left sidebar (all L2 functions for this sector). H1 contractor-framed. Roles strip. Vendor cards on-page (role-dominant, logo badge). Screening callout. Brief CTA. NO deeper pages.</div>
+          <div class="hier-item-eg">/industries/retail/customer-experience<br>/platforms/sap/successfactors<br>/capabilities/data/data-engineering</div>
+          <div class="hier-item-count" style="color:var(--g3)">~204 pages (see count table)</div>
+        </div>
+        <div class="hier-item" style="background:rgba(16,185,129,.06)">
+          <div class="hier-item-t" style="color:var(--g3)">Target reader</div>
+          <div class="hier-item-s">Programme Manager / IT Director with an open contract seat in this function. They searched "[Tool] contractor [city]". Highest-intent visitor on the site. Needs to see roles and request a contractor immediately.</div>
+        </div>
+        <div class="hier-item" style="background:rgba(16,185,129,.06)">
+          <div class="hier-item-t" style="color:var(--g3)">Template</div>
+          <div class="hier-item-s">FunctionPage template. Sticky sidebar + vendor cards rendered from data. Sector-level hero image shared across all L2 in same sector.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- STACK -->
+<section id="arch">
+  <div class="sl">Tech Stack</div>
+  <h2>Golden path. Shared with saasinator.<br>Separate repo.</h2>
+  <div class="arch">
+    <div class="arow">
+      <div class="albl" style="color:var(--y3)">Framework</div>
+      <div class="ablks">
+        <div class="ab ay" style="flex:1.4"><div class="abt">Next.js 15 · App Router</div><div class="abs"><span>Static gen · RSC · Turbopack</span><span>generateStaticParams L0→L1→L2</span></div></div>
+        <div class="ab ay"><div class="abt">React 19 + TypeScript 5</div><div class="abs"><span>Strict mode · satisfies</span><span>Wrong data = build fails</span></div></div>
+        <div class="ab ay"><div class="abt">Tailwind 4</div><div class="abs"><span>@theme block · CSS vars</span><span>.forced-dark/light</span></div></div>
+        <div class="ab ay" style="flex:.7"><div class="abt">pnpm 9</div><div class="abs"><span>Workspace-ready</span></div></div>
+        <div class="ab ay"><div class="abt">Framer Motion 12</div><div class="abs"><span>Hero slider · card hover</span><span>reduced-motion ✓</span></div></div>
+      </div>
+    </div>
+    <div class="aarr"><span>↓</span><span>↓</span><span>↓</span><span>↓</span></div>
+    <div class="arow">
+      <div class="albl" style="color:var(--w6)">Design</div>
+      <div class="ablks">
+        <div class="ab aw" style="flex:.6"><div class="abt" style="font-size:9px">L1 Raw palette</div><div class="abs"><span>--yellow-* --black-*</span></div></div>
+        <div class="ab ay" style="flex:.9"><div class="abt" style="font-size:9px">L2 Semantic ★</div><div class="abs"><span>--fg --bg --accent</span><span>EDIT TO RETHEME</span></div></div>
+        <div class="ab aw" style="flex:.65"><div class="abt" style="font-size:9px">L3 Elements</div><div class="abs"><span>h1–h6 body a p</span></div></div>
+        <div class="ab aw" style="flex:.9"><div class="abt" style="font-size:9px">L4 Classes</div><div class="abs"><span>.vendor-card .role-pill</span><span>.bench-signal .sidebar</span></div></div>
+        <div class="ab aw" style="flex:.6"><div class="abt" style="font-size:9px">L5 Spacing</div><div class="abs"><span>xl lg md sm</span></div></div>
+        <div class="ab aw" style="flex:.55"><div class="abt" style="font-size:9px">L6 Motion</div><div class="abs"><span>card-lift sidebar-scroll</span></div></div>
+      </div>
+    </div>
+    <div class="aarr"><span>↓</span><span>↓</span><span>↓</span><span>↓</span></div>
+    <div class="arow">
+      <div class="albl" style="color:var(--b3)">Components</div>
+      <div class="ablks">
+        <div class="ab ab2"><div class="abt">Page components</div><div class="abs"><span>HeroSlider StickySidebar</span><span>FunctionCardGrid VendorCard</span><span>RolePill BenchSignal</span></div></div>
+        <div class="ab ab2"><div class="abt">Shared blocks</div><div class="abs"><span>NavBar MegaMenu Footer</span><span>LogoCloud StatsBar</span><span>ScreeningCallout BriefCTA</span></div></div>
+        <div class="ab ab2"><div class="abt">Forms</div><div class="abs"><span>BriefForm CVUpload</span><span>JobSearch CompactCTA</span></div></div>
+        <div class="ab ab2"><div class="abt">Atoms</div><div class="abs"><span>Button Badge ThemeToggle</span><span>Breadcrumb SectorCard</span></div></div>
+      </div>
+    </div>
+    <div class="aarr"><span>↓</span><span>↓</span><span>↓</span><span>↓</span></div>
+    <div class="arow">
+      <div class="albl" style="color:var(--y3)">Data</div>
+      <div class="ablks">
+        <div class="ab ay"><div class="abt">Industry data</div><div class="abs"><span>src/data/industries/</span><span>retail.ts finance.ts…</span><span>Functions[] + VendorCards[]</span></div></div>
+        <div class="ab ay"><div class="abt">Platform data</div><div class="abs"><span>src/data/platforms/</span><span>sap.ts oracle.ts…</span><span>Modules[] + tools on-page</span></div></div>
+        <div class="ab ay"><div class="abt">Capability data</div><div class="abs"><span>src/data/capabilities/</span><span>data.ts digital.ts…</span></div></div>
+        <div class="ab ay"><div class="abt">Core + MDX</div><div class="abs"><span>src/data/pages/*.ts</span><span>src/content/insights/*.mdx</span></div></div>
+      </div>
+    </div>
+    <div class="aarr"><span>↓</span><span>↓</span><span>↓</span><span>↓</span></div>
+    <div class="arow">
+      <div class="albl" style="color:var(--g3)">Ops</div>
+      <div class="ablks">
+        <div class="ab ag"><div class="abt">Vercel Edge CDN</div><div class="abs"><span>~280 static pages</span><span>Image CDN · next/image</span></div></div>
+        <div class="ab ag"><div class="abt">Biome ~50ms</div><div class="abs"><span>Lint + format</span><span>Pre-commit gated</span></div></div>
+        <div class="ab ag"><div class="abt">Husky + tsc</div><div class="abs"><span>Colour hook shared</span><span>data: commit type</span></div></div>
+        <div class="ab ag"><div class="abt">GA4 + GTM</div><div class="abs"><span>contractor_request event</span><span>role_pill_click · scroll</span></div></div>
+        <div class="ab ag"><div class="abt">Resend</div><div class="abs"><span>Brief form · CV confirm</span></div></div>
+        <div class="ab ag" style="border-style:dashed;opacity:.65"><div class="abt">CMS Phase 4</div><div class="abs"><span>Project 23 consumer</span><span>API replaces .ts files</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- DATA MODEL -->
+<section id="datamodel">
+  <div class="sl">TypeScript Data Model</div>
+  <h2>The data drives everything.<br>Wrong shape = build fails.</h2>
+  <p class="ssub">One typed file per sector. Functions array drives both the L1 card grid and the L2 sidebar. Vendor cards live inside each function — no separate routes needed.</p>
+  <div class="dm-grid">
+    <div class="dm-card">
+      <div class="dm-title">src/data/types.ts — Core interfaces</div>
+      <div class="dm-code">interface VendorCard {
+  slug: string
+  name: string            // "SAP Customer Experience"
+  vendorName: string      // "SAP" — shown in logo badge
+  vendorLogo: string      // "/logos/sap.svg"
+  contractorRoles: string[] // 4-6 role titles — DOMINANT
+  benchNote: string       // "Active bench · UK · ME · India"
+}
+
+interface FunctionCategory {
+  slug: string
+  title: string           // "Customer Experience"
+  sidebarTitle: string    // shorter if needed for sidebar
+  intro: string           // 120w — contractor-framed
+  contractorRoles: string[] // roles strip on L2 page
+  vendors: VendorCard[]   // renders vendor cards on-page
+  seo: SEOMeta
+}
+
+interface IndustrySector {
+  slug: string
+  title: string           // "Retail &amp; Consumer"
+  heroImage: string       // sector-level, shared across L2s
+  intro: string           // 80w for L1 page
+  functions: FunctionCategory[] // drives L1 cards + L2 sidebar
+  seo: SEOMeta
+}</div>
+    </div>
+    <div class="dm-card">
+      <div class="dm-title">src/data/industries/retail.ts — excerpt</div>
+      <div class="dm-code">export const retail: IndustrySector = {
+  slug: "retail",
+  title: "Retail &amp; Consumer",
+  heroImage: "/images/sectors/retail.jpg",
+  intro: "Retail tech programmes stall...",
+  functions: [
+    {
+      slug: "customer-experience",
+      title: "Customer Experience",
+      sidebarTitle: "Customer Experience",
+      intro: "Finding CX contractors who...",
+      contractorRoles: [
+        "SAP CX Functional Consultant",
+        "SAP Commerce Architect",
+        "Salesforce SFMC Developer",
+        "Oracle Retail CX Consultant",
+        "CX Solutions Architect",
+        "Personalisation Engineer",
+        "CRM Programme Manager",
+        "Customer Data Platform Specialist"
+      ],
+      vendors: [
+        {
+          slug: "sap-customer-experience",
+          name: "SAP Customer Experience",
+          vendorName: "SAP",
+          vendorLogo: "/logos/sap.svg",
+          contractorRoles: [
+            "Functional Consultant",
+            "Commerce Architect",
+            "Technical Architect",
+            "Business Analyst",
+            "Personalisation Lead"
+          ],
+          benchNote: "Active bench · UK · ME · India"
+        },
+        // Salesforce MC, Oracle Retail CX...
+      ]
+    },
+    // 19 more functions...
+  ]
+}</div>
+    </div>
+    <div class="dm-card">
+      <div class="dm-title">app/industries/[sector]/[fn]/page.tsx — L2 route</div>
+      <div class="dm-code">// Generates all L2 pages from data
+export async function generateStaticParams() {
+  return getAllSectors().flatMap(sector =>
+    sector.functions.map(fn => ({
+      sector: sector.slug,
+      fn: fn.slug
+    }))
+  )
+}
+
+// SEO — contractor-framed per function
+export async function generateMetadata({ params }) {
+  const fn = getFunction(params.sector, params.fn)
+  return {
+    title: `${fn.title} Contractors — ${sector.title} | Yallo`,
+    description: `${fn.contractorRoles.slice(0,3).join(', ')} and more. Architect-screened contractor shortlists in 72 hours. UK · ME · India.`,
+  }
+}
+
+// Page renders:
+// → StickySidebar (all sector functions)
+// → HeroSection (sector image + H1)
+// → FunctionIntro (contractor-framed copy)
+// → RolesStrip (fn.contractorRoles[])
+// → VendorCardGrid (fn.vendors[])
+// → ScreeningCallout
+// → BriefCTA</div>
+    </div>
+    <div class="dm-card">
+      <div class="dm-title">Vendor logos — swap-in rule for Raphy</div>
+      <div class="dm-code">// Logo badge component — two states:
+// 1. Text badge (until logo added)
+// 2. Image badge (once logo file present)
+
+function VendorLogoBadge({ vendor }: Props) {
+  return (
+    &lt;div className="vendor-badge"&gt;
+      {vendor.vendorLogo ? (
+        &lt;img
+          src={vendor.vendorLogo}
+          alt={vendor.vendorName}
+          // Filter to white mono on dark bg:
+          className="h-4 brightness-0 invert opacity-70"
+        /&gt;
+      ) : (
+        // Fallback text badge
+        &lt;span className="vendor-text-badge"&gt;
+          {vendor.vendorName}
+        &lt;/span&gt;
+      )}
+    &lt;/div&gt;
+  )
+}
+
+// Add logos to /public/logos/:
+// sap.svg, oracle.svg, salesforce.svg
+// microsoft.svg, blueyonder.svg, workday.svg
+// magento.svg, shopify.svg, manhattan.svg
+// zendesk.svg, anaplan.svg, coupa.svg, etc.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- TEMPLATES -->
+<section id="templates">
+  <div class="sl">Template Types</div>
+  <h2>3 templates. Every page covered.</h2>
+  <p class="ssub">Raphy builds 3 templates. Data drives all ~280 pages. A new sector = a new data file. No new template work ever required.</p>
+  <div class="tpl-grid">
+    <div class="tpl t1">
+      <div class="tpl-badge" style="background:rgba(245,158,11,.15);color:var(--y3);border:1px solid rgba(245,158,11,.25)">Template 1</div>
+      <div class="tpl-title" style="color:var(--y3)">HubPage</div>
+      <div class="tpl-routes">/industries · /platforms · /capabilities</div>
+      <div class="tpl-desc">Lists all 6 sectors / platforms / capabilities as large image-led cards. Minimal copy. No sidebar. One CTA. Purpose: self-selection for the visitor.</div>
+      <ul class="tpl-list">
+        <li>Full-bleed top section with tagline</li>
+        <li>6-card grid (SectorCard component)</li>
+        <li>Partner logos strip</li>
+        <li>Brief CTA block</li>
+      </ul>
+      <div class="tpl-count" style="color:var(--y4)">3 pages total</div>
+    </div>
+    <div class="tpl t2">
+      <div class="tpl-badge" style="background:rgba(59,130,246,.15);color:var(--b3);border:1px solid rgba(59,130,246,.25)">Template 2</div>
+      <div class="tpl-title" style="color:var(--b3)">SectorPage (L1)</div>
+      <div class="tpl-routes">/industries/[sector] · /platforms/[platform] · /capabilities/[cap]</div>
+      <div class="tpl-desc">Sector landing. Full-bleed hero. All L2 function categories as cards — each card shows title, 1-line desc, top 3 contractor role pills. No sidebar. Grid layout.</div>
+      <ul class="tpl-list">
+        <li>FullBleedBanner with sector hero image</li>
+        <li>80-word contractor-framed intro</li>
+        <li>FunctionCardGrid — auto from functions[] array</li>
+        <li>Stats strip · Partner logos · Brief CTA</li>
+      </ul>
+      <div class="tpl-count" style="color:var(--b3)">18 pages (6+6+6)</div>
+    </div>
+    <div class="tpl t3">
+      <div class="tpl-badge" style="background:rgba(16,185,129,.12);color:var(--g3);border:1px solid rgba(16,185,129,.25)">Template 3</div>
+      <div class="tpl-title" style="color:var(--g3)">FunctionPage (L2)</div>
+      <div class="tpl-routes">/industries/[sector]/[fn] · /platforms/[p]/[module] · /capabilities/[c]/[sub]</div>
+      <div class="tpl-desc">The primary conversion page. Sticky left sidebar. Sector hero. Role-dominant vendor cards on-page. Contractor-framed throughout. No deeper pages.</div>
+      <ul class="tpl-list">
+        <li>StickySidebar — all sector L2 functions</li>
+        <li>Hero — sector image + H1 + stats strip</li>
+        <li>Roles strip — contractorRoles[] as pills</li>
+        <li>VendorCardGrid — vendors[] from data</li>
+        <li>ScreeningCallout · BriefCTA</li>
+      </ul>
+      <div class="tpl-count" style="color:var(--g3)">~204 pages (see table)</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- PAGE COUNTS -->
+<section id="pages">
+  <div class="sl">Page Count by Section</div>
+  <h2>~280 pages total.<br>All statically generated at build.</h2>
+  <table class="pc-table">
+    <thead><tr><th>Section</th><th>L0 hubs</th><th>L1 sector pages</th><th>L2 function pages</th><th>Total</th><th>Priority</th></tr></thead>
+    <tbody>
+      <tr class="pc-gr"><td colspan="6">INDUSTRIES</td></tr>
+      <tr><td>/industries</td><td>1</td><td>—</td><td>—</td><td>1</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/industries/retail</td><td>—</td><td>1</td><td>20 functions</td><td>21</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/industries/finance</td><td>—</td><td>1</td><td>~17 functions</td><td>18</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/industries/manufacturing</td><td>—</td><td>1</td><td>~15 functions</td><td>16</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/industries/healthcare</td><td>—</td><td>1</td><td>~14 functions</td><td>15</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/industries/government</td><td>—</td><td>1</td><td>~14 functions</td><td>15</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/industries/telco</td><td>—</td><td>1</td><td>~15 functions</td><td>16</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr class="pc-gr"><td colspan="6">PLATFORMS</td></tr>
+      <tr><td>/platforms</td><td>1</td><td>—</td><td>—</td><td>1</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/platforms/sap</td><td>—</td><td>1</td><td>~22 modules</td><td>23</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/platforms/oracle</td><td>—</td><td>1</td><td>~18 modules</td><td>19</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>/platforms/microsoft</td><td>—</td><td>1</td><td>~6 areas</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/platforms/salesforce</td><td>—</td><td>1</td><td>~10 clouds</td><td>11</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/platforms/blueyonder</td><td>—</td><td>1</td><td>~9 modules</td><td>10</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/platforms/workday</td><td>—</td><td>1</td><td>~8 modules</td><td>9</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr class="pc-gr"><td colspan="6">CAPABILITIES</td></tr>
+      <tr><td>/capabilities</td><td>1</td><td>—</td><td>—</td><td>1</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/data</td><td>—</td><td>1</td><td>~6 subcategories</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/digital</td><td>—</td><td>1</td><td>~6</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/cloud</td><td>—</td><td>1</td><td>~6</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/cybersecurity</td><td>—</td><td>1</td><td>~6</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/integration</td><td>—</td><td>1</td><td>~6</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>/capabilities/innovation</td><td>—</td><td>1</td><td>~6</td><td>7</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr class="pc-gr"><td colspan="6">CORE + SERVICE + KNOWLEDGE + ABOUT</td></tr>
+      <tr><td>Homepage, contact, jobs, join</td><td>—</td><td>—</td><td>—</td><td>4</td><td><span class="tg tp0">P0</span></td></tr>
+      <tr><td>Service pages (/permanent /contract /eor /subcontracting)</td><td>—</td><td>—</td><td>—</td><td>4</td><td><span class="tg tp1">P1</span></td></tr>
+      <tr><td>About cluster (/about /why-yallo /leadership)</td><td>—</td><td>—</td><td>—</td><td>3</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr><td>Knowledge (/insights /case-studies /white-papers + MDX articles)</td><td>—</td><td>—</td><td>—</td><td>3 + articles</td><td><span class="tg tp2">P2</span></td></tr>
+      <tr class="pc-total"><td>GRAND TOTAL</td><td>3</td><td>18</td><td>~204</td><td>~280 pages</td><td>—</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<div class="div"></div>
+
+<!-- CONTENT RULES -->
+<section id="content">
+  <div class="sl">Content Rules — Contract-First Voice</div>
+  <h2>What to write. What never to write.</h2>
+  <p class="ssub">Every page on the site speaks to a contract hiring leader who already knows the technology. These are the rules Tanzil follows for every content file.</p>
+  <div class="cr-grid">
+    <div class="cr good">
+      <div class="cr-title">✓ Write this — contractor-framed</div>
+      <ul class="cr-list">
+        <li>"Finding SAP EWM contractors who have delivered in live retail environments is harder than it looks."</li>
+        <li>"Every contractor on our bench is assessed for implementation depth — not just platform certification."</li>
+        <li>"Contract, EOR or subcontracted — matched to how you need to hold the risk."</li>
+        <li>"We return a shortlist within 72 hours of the brief."</li>
+        <li>"Contractor roles we deploy in this function:" (then role titles — not job descriptions)</li>
+        <li>Specific role titles: "SAP CX Functional Consultant" not "SAP specialists"</li>
+      </ul>
+    </div>
+    <div class="cr bad">
+      <div class="cr-title">✗ Never write this — vendor marketing voice</div>
+      <ul class="cr-list">
+        <li>"SAP Customer Experience delivers personalised experiences using real-time data insights."</li>
+        <li>"Salesforce Marketing Cloud drives engagement with scalable customer-centric marketing tools."</li>
+        <li>"Our world-class specialists deliver excellence across enterprise technology platforms."</li>
+        <li>Any sentence that describes what the tool does — not what Yallo deploys</li>
+        <li>Generic claims: "We have the best talent" without specifics</li>
+        <li>Pricing, rate cards, or fee references of any kind</li>
+      </ul>
+    </div>
+    <div class="cr good">
+      <div class="cr-title">✓ H1 patterns that convert</div>
+      <ul class="cr-list">
+        <li>"Customer Experience contractors, deployed in 72 hours."</li>
+        <li>"SAP EWM specialists for retail programmes — contract and EOR."</li>
+        <li>"Salesforce Marketing Cloud contractors. Architect-screened. Available now."</li>
+        <li>Formula: [Function/tool] + contractors + speed or availability signal</li>
+        <li>Never: "[Function] Management — Yallo's Expertise" (brochure language)</li>
+      </ul>
+    </div>
+    <div class="cr good">
+      <div class="cr-title">✓ Vendor card copy rules</div>
+      <ul class="cr-list">
+        <li>Logo: small badge (monochrome) — reference signal only, not hero</li>
+        <li>Tool name: large, bold, white — the anchor</li>
+        <li>Label: "Contractor roles" in DM Mono amber — explicit</li>
+        <li>Roles: 4–6 specific contractor titles as pills — DOMINANT visual</li>
+        <li>Bench signal: green dot + "Active bench · UK · ME · India"</li>
+        <li>CTA: "Request a contractor →" — not "Find a specialist" or "Learn more"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- PHASES -->
+<section id="phases">
+  <div class="sl">Execution Phases</div>
+  <h2>Data model first. Templates second.<br>DNS switch at Phase 1 close.</h2>
+  <p class="ssub">The data model is the critical foundation. Once retail.ts is complete, every other sector follows the same pattern. Raphy builds templates once — Tanzil fills data files.</p>
+  <div class="pgrid">
+    <div class="pc2 ph1">
+      <div class="pn" style="color:var(--y4)">Phase 1 · Sprint 1–2</div>
+      <div class="pt" style="color:var(--y3)">Foundation + Core</div>
+      <div class="pd">Weeks 1–3 → DNS switch</div>
+      <ul class="pi">
+        <li>Repo scaffold — golden path, Biome, Husky, Commitlint, colour hook, data: commit type</li>
+        <li>globals.css 6-layer yellow/black/white system</li>
+        <li>TypeScript interfaces — IndustrySector, FunctionCategory, VendorCard</li>
+        <li>retail.ts data file — all 20 functions + vendor cards complete</li>
+        <li>NavBar (mega-menu, 3 levels) + Footer + ThemeToggle</li>
+        <li>Homepage — HeroSlider, ServiceGrid (4 models), ProcessSteps, StatsBar, SectorImageGrid, LogoCloud, YalloFamilyPanel</li>
+        <li>Template 1 (HubPage) — /industries, /platforms, /capabilities</li>
+        <li>Template 2 (SectorPage) — /industries/retail rendering</li>
+        <li>Template 3 (FunctionPage) — all 20 retail L2 pages rendering</li>
+        <li>Contact (BriefForm + Resend) · Join · Jobs (static seed)</li>
+        <li>generateMetadata + sitemap + robots → Vercel → Lighthouse 90+ → DNS</li>
+      </ul>
+    </div>
+    <div class="pc2 ph2">
+      <div class="pn" style="color:var(--b3)">Phase 2 · Sprint 3–4</div>
+      <div class="pt" style="color:var(--b3)">Finance + Services + About</div>
+      <div class="pd">Weeks 4–6</div>
+      <ul class="pi">
+        <li>finance.ts data file — all functions + vendor cards</li>
+        <li>All finance L1 + L2 pages rendering (templates already built)</li>
+        <li>4 service pages — Permanent / Contract / EOR / Subcontracting</li>
+        <li>SAP + Oracle platform data files + L1 + L2 pages</li>
+        <li>About + Why Yallo + Leadership pages</li>
+        <li>StickyBriefCTA deployed sitewide</li>
+        <li>GA4 / GTM full event layer — contractor_request, role_pill_click, bench_signal_view</li>
+        <li>JSON-LD: Organization, FAQPage on service pages, BreadcrumbList on all L2s</li>
+        <li>Logo swap-in: all vendor logos to /public/logos/</li>
+      </ul>
+    </div>
+    <div class="pc2 ph3">
+      <div class="pn" style="color:var(--g3)">Phase 3 · Sprint 5–6</div>
+      <div class="pt" style="color:var(--g3)">Full taxonomy</div>
+      <div class="pd">Weeks 7–9</div>
+      <ul class="pi">
+        <li>Remaining 4 industry data files (Manufacturing / Healthcare / Government / Telco)</li>
+        <li>All L2 pages for remaining industries — zero template work, data only</li>
+        <li>Microsoft / Salesforce / Blue Yonder / Workday platform data files + pages</li>
+        <li>All 6 capability data files + L1 + L2 pages</li>
+        <li>Insights MDX pipeline — hub + article template + 3 seed articles</li>
+        <li>Case studies hub + 3 seed cases + white papers gated page</li>
+        <li>Full Lighthouse audit + CWV remediation</li>
+        <li>Search Console sitemap submission</li>
+      </ul>
+    </div>
+    <div class="pc2 ph4">
+      <div class="pn" style="color:var(--w4)">Phase 4 · Roadmap</div>
+      <div class="pt" style="color:var(--w6)">CMS + Live integrations</div>
+      <div class="pd">Q4 2026+</div>
+      <ul class="pi">
+        <li>Live ATS integration — JobAdder API key needed</li>
+        <li>CMS strangler-fig — Project 23 Phase 3; .ts files → CMS API; routes unchanged</li>
+        <li>saasinator chatbot cross-site embed</li>
+        <li>ABM pages — /go/[account] Tanzil-trigger</li>
+        <li>Candidate account management — /users/* auth layer</li>
+        <li>Neon / Drizzle — white-paper gate log, CRM capture</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</div>
+<footer>
+  <div class="w" style="display:flex;justify-content:space-between;align-items:center">
+    <div class="fl">YALLO</div>
+    <div class="fm">yallo.co v2 · Architecture · File 1 of 2 · GTM.02 · July 2026</div>
+  </div>
+</footer>
+</body>
+</html>

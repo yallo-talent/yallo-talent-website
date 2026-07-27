@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retail & Consumer Tech Contractors — Yallo Talent</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080808;--bg2:#0C0C0C;--sf:#141414;--sf2:#1A1A1A;
+  --y4:#F59E0B;--y3:#FCD34D;--y2:#FDE68A;
+  --g3:#6EE7B7;--g4:#10B981;--b3:#93C5FD;--r3:#FCA5A5;
+  --w1:#fff;--w8:rgba(255,255,255,.88);--w6:rgba(255,255,255,.6);
+  --w4:rgba(255,255,255,.4);--w2:rgba(255,255,255,.15);--wa:rgba(255,255,255,.05);
+  --bdr:rgba(245,158,11,.13);--bdr2:rgba(255,255,255,.08);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'DM Mono',monospace;
+  --nav-h:64px
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--w1);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--y4);text-decoration:none}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);background:rgba(8,8,8,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--bdr);display:flex;align-items:center;justify-content:space-between;padding:0 40px}
+.nav-left{display:flex;align-items:center;gap:36px}
+.nav-brand{font-size:17px;font-weight:800;color:var(--y4);letter-spacing:-.4px}
+.nav-tag{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--w4)}
+.nav-links{display:flex;gap:24px;list-style:none}
+.nav-links a{font-size:12px;color:var(--w4);font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--w8)}
+.nav-cta{background:var(--y4);color:#000;font-size:12px;font-weight:800;padding:10px 22px;border-radius:6px;letter-spacing:-.1px;transition:opacity .2s;white-space:nowrap}
+.nav-cta:hover{opacity:.85}
+
+/* HERO */
+.hero{position:relative;height:580px;margin-top:var(--nav-h);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=1600&auto=format&fit=crop&q=80');background-size:cover;background-position:center 35%;opacity:.25}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,1) 0%,rgba(8,8,8,.8) 40%,rgba(8,8,8,.2) 100%)}
+.hero-content{position:relative;z-index:1;padding:0 80px 56px;max-width:1300px;width:100%}
+.hero-crumb{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+.hero-crumb a,.hero-crumb span{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--w4)}
+.hero-crumb a:hover{color:var(--y4)}.hero-crumb .sep{color:var(--w2)}.hero-crumb .cur{color:var(--y4)}
+.hero h1{font-size:clamp(28px,4vw,58px);font-weight:800;letter-spacing:-2.5px;line-height:1.05;margin-bottom:18px;max-width:700px}
+.hero h1 em{font-style:normal;color:var(--y3)}
+.hero-sub{font-size:15px;font-weight:300;color:var(--w6);max-width:580px;line-height:1.75;margin-bottom:32px}
+.hero-actions{display:flex;gap:12px;align-items:center;margin-bottom:36px}
+.btn-primary{background:var(--y4);color:#000;font-size:13px;font-weight:800;padding:14px 28px;border-radius:7px;letter-spacing:-.2px;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-sec{background:transparent;color:var(--w6);font-size:13px;font-weight:500;padding:14px 28px;border-radius:7px;border:1px solid var(--bdr2);transition:all .2s}
+.btn-sec:hover{color:var(--w8);border-color:rgba(255,255,255,.2)}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap}
+.hst{display:flex;align-items:center;gap:8px}
+.hst-dot{width:7px;height:7px;border-radius:50%;background:var(--g4);box-shadow:0 0 8px rgba(16,185,129,.5)}
+.hst-txt{font-family:var(--mono);font-size:9px;letter-spacing:.5px;color:var(--w6);text-transform:uppercase}
+
+/* STATS BAR */
+.stats-bar{background:var(--sf);border-top:1px solid var(--bdr2);border-bottom:1px solid var(--bdr2);padding:0 80px}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);max-width:1300px;margin:0 auto}
+.stat-item{padding:24px 0;text-align:center;border-right:1px solid var(--bdr2);position:relative}
+.stat-item:last-child{border-right:none}
+.stat-n{font-size:30px;font-weight:800;letter-spacing:-1.5px;color:var(--y4);line-height:1}
+.stat-l{font-family:var(--mono);font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--w4);margin-top:5px}
+
+/* SECTION COMMON */
+.section{padding:72px 80px;max-width:1300px;margin:0 auto}
+.sec-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sec-eyebrow::before{content:'';width:18px;height:1px;background:var(--y4);opacity:.6}
+.sec-h2{font-size:clamp(22px,3vw,40px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:10px}
+.sec-sub{font-size:14px;color:var(--w4);max-width:580px;line-height:1.7;font-weight:300;margin-bottom:40px}
+.div-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07) 30%,rgba(255,255,255,.07) 70%,transparent);margin:0 80px}
+
+/* INTRO BLOCK */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.intro-left h2{font-size:clamp(22px,2.8vw,36px);font-weight:800;letter-spacing:-1.5px;line-height:1.15;margin-bottom:16px}
+.intro-left p{font-size:14px;color:var(--w6);line-height:1.8;font-weight:300;margin-bottom:14px}
+.intro-right{display:flex;flex-direction:column;gap:10px}
+.intro-stat-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:12px;padding:18px 20px;border-left:3px solid var(--y4)}
+.isc-n{font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--y4);line-height:1}
+.isc-l{font-size:11px;color:var(--w6);font-weight:300;margin-top:4px;line-height:1.5}
+
+/* HARD TO FIND ROLES */
+.hard-roles{background:linear-gradient(135deg,rgba(20,14,4,.9),rgba(12,12,12,1));border:1px solid rgba(245,158,11,.18);border-radius:18px;padding:44px 48px;margin-bottom:0}
+.hard-roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.hard-roles-left h3{font-size:clamp(18px,2.5vw,30px);font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:12px}
+.hard-roles-left p{font-size:13px;color:var(--w6);line-height:1.75;font-weight:300}
+.hard-roles-right{display:flex;flex-direction:column;gap:8px}
+.role-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.12);border-radius:8px;transition:all .2s}
+.role-row:hover{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25)}
+.role-row-name{font-size:12px;font-weight:600;color:var(--w8)}
+.role-row-tags{display:flex;gap:5px}
+.rtag{font-family:var(--mono);font-size:7.5px;letter-spacing:.8px;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.rtag.scarce{background:rgba(239,68,68,.1);color:var(--r3);border:1px solid rgba(239,68,68,.2)}
+.rtag.contract{background:rgba(245,158,11,.1);color:var(--y3);border:1px solid rgba(245,158,11,.2)}
+.rtag.perm{background:rgba(59,130,246,.1);color:var(--b3);border:1px solid rgba(59,130,246,.18)}
+
+/* EXPERTISE GRID */
+.exp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.exp-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:13px;padding:22px 20px;display:flex;flex-direction:column;transition:all .25s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;text-decoration:none}
+.exp-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--y4);opacity:0;transition:opacity .25s}
+.exp-card:hover{transform:translateY(-4px);border-color:rgba(245,158,11,.3);box-shadow:0 12px 36px rgba(0,0,0,.4)}
+.exp-card:hover::before{opacity:1}
+.exp-num{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--w2);margin-bottom:10px}
+.exp-title{font-size:13.5px;font-weight:800;letter-spacing:-.3px;color:var(--w8);margin-bottom:12px;line-height:1.3}
+.exp-roles{display:flex;flex-direction:column;gap:4px;flex:1}
+.exp-role{font-size:10px;color:var(--w4);font-weight:300;display:flex;align-items:flex-start;gap:5px;line-height:1.4}
+.exp-role::before{content:'—';color:var(--y4);font-family:var(--mono);font-size:9px;flex-shrink:0;margin-top:1px}
+.exp-link{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--y4);margin-top:14px;display:flex;align-items:center;gap:5px;opacity:0;transform:translateY(4px);transition:all .2s}
+.exp-card:hover .exp-link{opacity:1;transform:translateY(0)}
+
+/* SEGMENTS */
+.segments-wrap{display:grid;grid-template-columns:420px 1fr;gap:0;background:var(--sf);border:1px solid var(--bdr2);border-radius:18px;overflow:hidden}
+.seg-list{border-right:1px solid var(--bdr2);padding:8px 0}
+.seg-item{display:flex;align-items:center;padding:14px 24px;cursor:pointer;border-left:3px solid transparent;transition:all .15s;gap:12px}
+.seg-item:hover{background:rgba(255,255,255,.03);border-left-color:rgba(245,158,11,.3)}
+.seg-item.active{background:rgba(245,158,11,.07);border-left-color:var(--y4)}
+.seg-item-name{font-size:13px;font-weight:500;color:var(--w6);transition:color .15s}
+.seg-item.active .seg-item-name,.seg-item:hover .seg-item-name{color:var(--w8)}
+.seg-item-dot{width:6px;height:6px;border-radius:50%;background:var(--bdr2);flex-shrink:0;transition:background .15s}
+.seg-item.active .seg-item-dot{background:var(--y4)}
+.seg-panel{display:none;flex-direction:column}
+.seg-panel.active{display:flex}
+.seg-img-wrap{height:280px;overflow:hidden;position:relative}
+.seg-img{width:100%;height:100%;object-fit:cover;opacity:.7}
+.seg-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,14,4,.95) 0%,transparent 60%)}
+.seg-content{padding:28px 32px;flex:1}
+.seg-content h3{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+.seg-content p{font-size:13px;color:var(--w6);line-height:1.7;font-weight:300;margin-bottom:16px}
+.seg-roles-label{font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:8px}
+.seg-roles-pills{display:flex;flex-wrap:wrap;gap:6px}
+.seg-role-pill{font-family:var(--mono);font-size:9px;padding:5px 11px;border-radius:4px;background:rgba(245,158,11,.08);color:var(--y3);border:1px solid rgba(245,158,11,.18)}
+
+/* PARTNERS */
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bdr2);border:1px solid var(--bdr2);border-radius:16px;overflow:hidden}
+.partner-cell{background:var(--sf);display:flex;align-items:center;justify-content:center;padding:32px 20px;transition:background .2s}
+.partner-cell:hover{background:var(--sf2)}
+.partner-cell img{max-height:24px;max-width:120px;filter:brightness(0) invert(1);opacity:.45;transition:opacity .2s;object-fit:contain}
+.partner-cell:hover img{opacity:.75}
+.partner-name{font-family:var(--mono);font-size:11px;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.partner-cell:hover .partner-name{color:rgba(255,255,255,.65)}
+
+/* INSIGHTS */
+.insights-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.ins-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:14px;overflow:hidden;transition:all .25s;display:flex;flex-direction:column;text-decoration:none}
+.ins-card:hover{transform:translateY(-4px);border-color:rgba(245,158,11,.25);box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.ins-img{height:180px;position:relative;overflow:hidden}
+.ins-img img{width:100%;height:100%;object-fit:cover;opacity:.6;transition:opacity .3s}
+.ins-card:hover .ins-img img{opacity:.8}
+.ins-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(20,14,4,1) 0%,transparent 60%)}
+.ins-cat{position:absolute;bottom:12px;left:16px;font-family:var(--mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:rgba(245,158,11,.15);color:var(--y3);border:1px solid rgba(245,158,11,.25)}
+.ins-body{padding:20px 22px;flex:1;display:flex;flex-direction:column}
+.ins-title{font-size:14px;font-weight:800;letter-spacing:-.3px;line-height:1.35;color:var(--w8);margin-bottom:10px}
+.ins-excerpt{font-size:11.5px;color:var(--w4);line-height:1.65;font-weight:300;flex:1}
+.ins-meta{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--bdr2)}
+.ins-author{font-family:var(--mono);font-size:8.5px;letter-spacing:.5px;color:var(--w4)}
+.ins-read{font-family:var(--mono);font-size:8px;color:var(--y4)}
+
+/* WHITE PAPERS */
+.wp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.wp-card{background:var(--sf);border:1px solid var(--bdr2);border-radius:14px;padding:28px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;transition:all .22s;text-decoration:none}
+.wp-card:hover{border-color:rgba(245,158,11,.25);transform:translateY(-3px);box-shadow:0 10px 32px rgba(0,0,0,.4)}
+.wp-icon{width:48px;height:48px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.wp-tag{font-family:var(--mono);font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--y4);margin-bottom:8px}
+.wp-title{font-size:14px;font-weight:800;letter-spacing:-.3px;color:var(--w8);margin-bottom:8px;line-height:1.35}
+.wp-desc{font-size:11.5px;color:var(--w4);line-height:1.65;font-weight:300;margin-bottom:14px}
+.wp-cta{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--y4);display:flex;align-items:center;gap:5px}
+.wp-cta::after{content:'→'}
+
+/* BRIEF CTA */
+.brief-section{background:linear-gradient(135deg,rgba(30,18,4,.95),rgba(8,8,8,1));border:1px solid rgba(245,158,11,.2);border-radius:20px;padding:56px 60px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;position:relative;overflow:hidden}
+.brief-section::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(245,158,11,.07),transparent 65%);pointer-events:none}
+.brief-section::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,158,11,.04),transparent 65%);pointer-events:none}
+.brief-left h2{font-size:clamp(22px,3vw,36px);font-weight:800;letter-spacing:-1.5px;line-height:1.15;margin-bottom:12px}
+.brief-left p{font-size:14px;color:var(--w6);line-height:1.75;font-weight:300;max-width:520px}
+.brief-actions{display:flex;flex-direction:column;gap:10px;flex-shrink:0;min-width:200px}
+
+footer{border-top:1px solid rgba(255,255,255,.05);background:var(--bg2);padding:32px 80px;display:flex;align-items:center;justify-content:space-between}
+.fl{font-size:16px;font-weight:800;color:var(--y4)}
+.fm{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+
+@media(max-width:1100px){
+  .section{padding:56px 32px}.div-line{margin:0 32px}
+  .stats-bar{padding:0 32px}.brief-section{padding:40px 36px}
+  footer{padding:24px 32px}
+  .hero-content{padding:0 32px 40px}
+  .exp-grid{grid-template-columns:repeat(2,1fr)}
+  .intro-grid{grid-template-columns:1fr}
+  .segments-wrap{grid-template-columns:280px 1fr}
+  .partners-grid{grid-template-columns:repeat(3,1fr)}
+  .insights-grid{grid-template-columns:1fr}
+  .wp-grid{grid-template-columns:1fr}
+  .brief-section{grid-template-columns:1fr}
+  .hard-roles-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-left">
+    <div>
+      <div class="nav-brand">YALLO</div>
+      <div class="nav-tag">Talent · UK · ME · India</div>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/industries">Industries</a></li>
+      <li><a href="/platforms">Platforms</a></li>
+      <li><a href="/capabilities">Capabilities</a></li>
+      <li><a href="/contract">Contract</a></li>
+      <li><a href="/eor">EOR</a></li>
+      <li><a href="/jobs">Jobs</a></li>
+    </ul>
+  </div>
+  <a href="/contact" class="nav-cta">Request a contractor →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-crumb">
+      <a href="/industries">Industries</a>
+      <span class="sep">/</span>
+      <span class="cur">Retail &amp; Consumer</span>
+    </div>
+    <h1>Retail tech contractors.<br><em>Shortlisted in 72 hours.</em></h1>
+    <p class="hero-sub">SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across UK, ME and India. Architect-screened for implementation depth — not just platform familiarity.</p>
+    <div class="hero-actions">
+      <a href="/contact" class="btn-primary">Send us a brief →</a>
+      <a href="#expertise" class="btn-sec">View our expertise</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hst"><div class="hst-dot"></div><div class="hst-txt">72h brief to shortlist</div></div>
+      <div class="hst"><div class="hst-dot"></div><div class="hst-txt">Active contractor bench</div></div>
+      <div class="hst"><div class="hst-dot"></div><div class="hst-txt">UK · ME · India</div></div>
+      <div class="hst"><div class="hst-dot"></div><div class="hst-txt">Contract · EOR · Subcontract</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-n">72h</div>
+      <div class="stat-l">Brief to shortlist</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n">2:1</div>
+      <div class="stat-l">CV to interview ratio</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n">20</div>
+      <div class="stat-l">Retail function areas</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-n">3</div>
+      <div class="stat-l">Active delivery markets</div>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="intro-grid">
+    <div class="intro-left">
+      <div class="sec-eyebrow">Why Yallo for retail</div>
+      <h2>Retail programmes stall when the right contractor isn't in the seat.</h2>
+      <p>Every SAP S/4HANA go-live, every Blue Yonder WMS cutover, every Salesforce Commerce Cloud launch — they all have one thing in common: the implementation depends entirely on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records.</p>
+      <p>Our contractor bench is assessed by specialists who have run retail tech delivery. We screen for the specific retail context — high transaction volumes, seasonal peaks, multi-market rollouts — not just certification badges.</p>
+    </div>
+    <div class="intro-right">
+      <div class="intro-stat-card">
+        <div class="isc-n">68%</div>
+        <div class="isc-l">of retail CIOs report that contractor quality — not budget — is the primary reason programmes slip past go-live.</div>
+      </div>
+      <div class="intro-stat-card">
+        <div class="isc-n">4–6 wks</div>
+        <div class="isc-l">Average time lost when a specialist contractor is placed without sector-specific screening. Yallo's shortlist is in your inbox in 72 hours.</div>
+      </div>
+      <div class="intro-stat-card">
+        <div class="isc-n">Contract-first</div>
+        <div class="isc-l">Primary focus is interim and contract deployment. Available in Contract, EOR or Subcontract models — matched to how you hold the risk.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- HARD TO FIND ROLES -->
+<div style="background:var(--bg);padding:72px 80px">
+  <div style="max-width:1300px;margin:0 auto">
+    <div class="hard-roles">
+      <div class="hard-roles-grid">
+        <div class="hard-roles-left">
+          <div class="sec-eyebrow">Scarce talent</div>
+          <h3>The roles every retail programme needs — and struggles to find.</h3>
+          <p style="font-size:13px;color:var(--w6);line-height:1.75;font-weight:300;margin-top:12px">These are the specialists that appear on every retail programme brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have 6 weeks.</p>
+        </div>
+        <div class="hard-roles-right">
+          <div class="role-row">
+            <div class="role-row-name">SAP CAR / Customer Activity Repository Specialist</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Blue Yonder Luminate Data Scientist</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Oracle Xstore POS Architect</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Manhattan WMS Functional Consultant</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Retail Assortment Planning Lead (Anaplan/BY)</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag perm">Perm / Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">SAP Commerce Cloud Architect</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Retail EWM / WMS Technical Lead</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+          <div class="role-row">
+            <div class="role-row-name">Omnichannel OMS Architect (Oracle / SAP)</div>
+            <div class="role-row-tags"><span class="rtag scarce">High scarcity</span><span class="rtag contract">Contract</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- EXPERTISE GRID -->
+<div style="background:var(--bg)">
+<div class="section" id="expertise">
+  <div class="sec-eyebrow">Our expertise</div>
+  <h2 class="sec-h2">20 retail function areas.<br>Contractor bench across all of them.</h2>
+  <p class="sec-sub">Click any function to see the contractor roles we deploy and the platforms we staff within it.</p>
+
+  <div class="exp-grid">
+    <a href="/industries/retail/customer-experience" class="exp-card">
+      <div class="exp-num">01</div>
+      <div class="exp-title">Customer Experience</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP CX Functional Consultant</span>
+        <span class="exp-role">SFMC Developer</span>
+        <span class="exp-role">Oracle Retail CX Consultant</span>
+        <span class="exp-role">Personalisation Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/store-operations" class="exp-card">
+      <div class="exp-num">02</div>
+      <div class="exp-title">Store Operations</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Retail Consultant</span>
+        <span class="exp-role">SAP S/4HANA Retail Functional</span>
+        <span class="exp-role">D365 Commerce Specialist</span>
+        <span class="exp-role">Store Systems Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/merchandising" class="exp-card">
+      <div class="exp-num">03</div>
+      <div class="exp-title">Merchandising</div>
+      <div class="exp-roles">
+        <span class="exp-role">Blue Yonder MFP Specialist</span>
+        <span class="exp-role">Oracle Retail MOM Consultant</span>
+        <span class="exp-role">SAP MM Functional Lead</span>
+        <span class="exp-role">Merch Systems Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/omnichannel-fulfillment" class="exp-card">
+      <div class="exp-num">04</div>
+      <div class="exp-title">Omnichannel Fulfillment</div>
+      <div class="exp-roles">
+        <span class="exp-role">OMS Architect</span>
+        <span class="exp-role">Blue Yonder Fulfillment Lead</span>
+        <span class="exp-role">SAP OMS Functional</span>
+        <span class="exp-role">Omnichannel Programme Manager</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/ecommerce" class="exp-card">
+      <div class="exp-num">05</div>
+      <div class="exp-title">E-commerce</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP Commerce Architect</span>
+        <span class="exp-role">Magento 2 Developer</span>
+        <span class="exp-role">Shopify Plus Specialist</span>
+        <span class="exp-role">Digital Experience Lead</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/loyalty-rewards" class="exp-card">
+      <div class="exp-num">06</div>
+      <div class="exp-title">Loyalty &amp; Rewards</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Loyalty Cloud Consultant</span>
+        <span class="exp-role">Salesforce Loyalty Specialist</span>
+        <span class="exp-role">CRM Programme Manager</span>
+        <span class="exp-role">Loyalty Platform Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/point-of-sale" class="exp-card">
+      <div class="exp-num">07</div>
+      <div class="exp-title">Point-of-Sale (POS)</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Xstore Architect</span>
+        <span class="exp-role">NCR Aloha Consultant</span>
+        <span class="exp-role">SAP Customer Checkout Lead</span>
+        <span class="exp-role">POS Systems Specialist</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/inventory-management" class="exp-card">
+      <div class="exp-num">08</div>
+      <div class="exp-title">Inventory Management</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Retail Inventory Lead</span>
+        <span class="exp-role">SAP MM/WM Functional</span>
+        <span class="exp-role">D365 Supply Chain Specialist</span>
+        <span class="exp-role">Stock Planning Analyst</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/supply-chain-analytics" class="exp-card">
+      <div class="exp-num">09</div>
+      <div class="exp-title">Supply Chain Analytics</div>
+      <div class="exp-roles">
+        <span class="exp-role">Blue Yonder Luminate Specialist</span>
+        <span class="exp-role">Oracle Retail Insights Lead</span>
+        <span class="exp-role">SAC Supply Chain Consultant</span>
+        <span class="exp-role">Demand Forecasting Analyst</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/warehousing-transportation" class="exp-card">
+      <div class="exp-num">10</div>
+      <div class="exp-title">Warehousing &amp; Transportation</div>
+      <div class="exp-roles">
+        <span class="exp-role">Manhattan WMS Functional</span>
+        <span class="exp-role">SAP EWM Technical Lead</span>
+        <span class="exp-role">Oracle TM Functional</span>
+        <span class="exp-role">WMS Implementation PM</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/pricing-promotions" class="exp-card">
+      <div class="exp-num">11</div>
+      <div class="exp-title">Pricing &amp; Promotions</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Retail Pricing Specialist</span>
+        <span class="exp-role">SAP TPM Functional</span>
+        <span class="exp-role">Revionics Consultant</span>
+        <span class="exp-role">Pricing Systems Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/customer-service" class="exp-card">
+      <div class="exp-num">12</div>
+      <div class="exp-title">Customer Service</div>
+      <div class="exp-roles">
+        <span class="exp-role">Zendesk Solutions Architect</span>
+        <span class="exp-role">Salesforce Service Cloud Dev</span>
+        <span class="exp-role">Oracle Service Functional</span>
+        <span class="exp-role">Contact Centre Specialist</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/retail-planning-optimization" class="exp-card">
+      <div class="exp-num">13</div>
+      <div class="exp-title">Retail Planning &amp; Optimisation</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP CAR Specialist</span>
+        <span class="exp-role">Anaplan Model Builder</span>
+        <span class="exp-role">Blue Yonder MFP Lead</span>
+        <span class="exp-role">Assortment Planning Analyst</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/financial-planning" class="exp-card">
+      <div class="exp-num">14</div>
+      <div class="exp-title">Financial Planning</div>
+      <div class="exp-roles">
+        <span class="exp-role">Oracle Hyperion Consultant</span>
+        <span class="exp-role">IBM Cognos Specialist</span>
+        <span class="exp-role">SAC Finance Functional</span>
+        <span class="exp-role">EPM Programme Manager</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/financial-operations" class="exp-card">
+      <div class="exp-num">15</div>
+      <div class="exp-title">Financial Operations</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP FICO Functional Lead</span>
+        <span class="exp-role">Oracle Financials Cloud Lead</span>
+        <span class="exp-role">D365 Finance Specialist</span>
+        <span class="exp-role">Finance Systems Architect</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/human-capital-management" class="exp-card">
+      <div class="exp-num">16</div>
+      <div class="exp-title">Human Capital Management</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP SuccessFactors Consultant</span>
+        <span class="exp-role">Oracle HCM Cloud Functional</span>
+        <span class="exp-role">Workday HCM Specialist</span>
+        <span class="exp-role">HCM Integration Developer</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/procurement-vendor-management" class="exp-card">
+      <div class="exp-num">17</div>
+      <div class="exp-title">Procurement &amp; Vendor Management</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP Ariba S2C Specialist</span>
+        <span class="exp-role">Oracle Procurement Functional</span>
+        <span class="exp-role">Coupa Implementation Lead</span>
+        <span class="exp-role">Procurement Systems PM</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/property-management" class="exp-card">
+      <div class="exp-num">18</div>
+      <div class="exp-title">Property Management</div>
+      <div class="exp-roles">
+        <span class="exp-role">SAP REFX Consultant</span>
+        <span class="exp-role">Yardi Voyager Specialist</span>
+        <span class="exp-role">MRI Software Functional</span>
+        <span class="exp-role">Real Estate Systems Analyst</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/retail-data-analytics" class="exp-card">
+      <div class="exp-num">19</div>
+      <div class="exp-title">Retail Data Analytics</div>
+      <div class="exp-roles">
+        <span class="exp-role">GCP Retail Data Engineer</span>
+        <span class="exp-role">Azure Synapse Specialist</span>
+        <span class="exp-role">Tableau Retail Developer</span>
+        <span class="exp-role">AWS Redshift Analyst</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+    <a href="/industries/retail/cloud-infrastructure-operations" class="exp-card">
+      <div class="exp-num">20</div>
+      <div class="exp-title">Cloud, Infrastructure &amp; Operations</div>
+      <div class="exp-roles">
+        <span class="exp-role">Google Cloud Retail Architect</span>
+        <span class="exp-role">AWS Retail Solutions Engineer</span>
+        <span class="exp-role">Azure Retail Platform Lead</span>
+        <span class="exp-role">ServiceNow ITSM Specialist</span>
+      </div>
+      <div class="exp-link">View contractors</div>
+    </a>
+  </div>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- SEGMENTS WE SUPPORT -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="sec-eyebrow">Segments we support</div>
+  <h2 class="sec-h2">Every retail segment.<br>Specialists who know the context.</h2>
+  <p class="sec-sub">Luxury retail runs different programmes from grocery. Our contractors understand the specific operating context — not just the platform.</p>
+
+  <div class="segments-wrap">
+    <div class="seg-list" id="seg-list">
+      <div class="seg-item active" data-seg="apparel" onclick="selectSeg(this,'apparel')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Apparel, Luxury &amp; Accessories</div>
+      </div>
+      <div class="seg-item" data-seg="grocery" onclick="selectSeg(this,'grocery')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Grocery &amp; Hypermarkets</div>
+      </div>
+      <div class="seg-item" data-seg="electronics" onclick="selectSeg(this,'electronics')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Consumer Electronics</div>
+      </div>
+      <div class="seg-item" data-seg="beauty" onclick="selectSeg(this,'beauty')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Drugstore, Health &amp; Beauty</div>
+      </div>
+      <div class="seg-item" data-seg="massmerchandise" onclick="selectSeg(this,'massmerchandise')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Mass Merchandise &amp; Department Stores</div>
+      </div>
+      <div class="seg-item" data-seg="homeimprovement" onclick="selectSeg(this,'homeimprovement')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Home Improvement &amp; Furnishings</div>
+      </div>
+      <div class="seg-item" data-seg="fnb" onclick="selectSeg(this,'fnb')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Restaurants, Food &amp; Beverage Chains</div>
+      </div>
+      <div class="seg-item" data-seg="airline" onclick="selectSeg(this,'airline')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Airline Retail &amp; Duty-Free</div>
+      </div>
+      <div class="seg-item" data-seg="fmcg" onclick="selectSeg(this,'fmcg')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">FMCG (Fast-Moving Consumer Goods)</div>
+      </div>
+      <div class="seg-item" data-seg="offprice" onclick="selectSeg(this,'offprice')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Off-Price / Discounts</div>
+      </div>
+      <div class="seg-item" data-seg="hotels" onclick="selectSeg(this,'hotels')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Hotels &amp; Resorts</div>
+      </div>
+      <div class="seg-item" data-seg="convenience" onclick="selectSeg(this,'convenience')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Convenience &amp; Fuel</div>
+      </div>
+      <div class="seg-item" data-seg="specialty" onclick="selectSeg(this,'specialty')">
+        <div class="seg-item-dot"></div>
+        <div class="seg-item-name">Specialty Retail</div>
+      </div>
+    </div>
+    <div style="position:relative">
+      <div class="seg-panel active" id="seg-apparel">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=800&auto=format&fit=crop&q=80" alt="Apparel retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Apparel, Luxury &amp; Accessories</h3>
+          <p>High-SKU, multi-market, seasonally volatile. Luxury programmes demand contractors who understand clienteling, single-view-of-customer and complex omnichannel fulfillment — not just ERP basics.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">SAP CX Consultant</span>
+            <span class="seg-role-pill">Retail Planning Lead</span>
+            <span class="seg-role-pill">OMS Architect</span>
+            <span class="seg-role-pill">Clienteling Specialist</span>
+            <span class="seg-role-pill">E-commerce Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-grocery">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop&q=80" alt="Grocery retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Grocery &amp; Hypermarkets</h3>
+          <p>Ultra-high transaction volumes, perishable supply chains and complex promotions. Contractors need SAP CAR, Blue Yonder demand planning and WMS depth to make an impact from week one.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">SAP CAR Specialist</span>
+            <span class="seg-role-pill">Blue Yonder WMS Lead</span>
+            <span class="seg-role-pill">Demand Planner</span>
+            <span class="seg-role-pill">Promotions Systems Lead</span>
+            <span class="seg-role-pill">EWM Consultant</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-electronics">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80" alt="Electronics retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Consumer Electronics</h3>
+          <p>Rapid product cycles, omnichannel complexity and high-return volumes. Programmes require contractors with strong inventory management and reverse logistics depth alongside core ERP skills.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Inventory Systems Specialist</span>
+            <span class="seg-role-pill">Oracle Retail Consultant</span>
+            <span class="seg-role-pill">SAP WM Functional</span>
+            <span class="seg-role-pill">Returns Management Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-beauty">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=80" alt="Health and beauty">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Drugstore, Health &amp; Beauty</h3>
+          <p>Loyalty programme complexity, pharmacy integration and multi-channel fulfillment. CRM and loyalty specialists are consistently the hardest roles to fill in this segment.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Loyalty Programme Lead</span>
+            <span class="seg-role-pill">CRM Functional Consultant</span>
+            <span class="seg-role-pill">Salesforce Loyalty Specialist</span>
+            <span class="seg-role-pill">D365 Commerce Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-massmerchandise">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&auto=format&fit=crop&q=80" alt="Department stores">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Mass Merchandise &amp; Department Stores</h3>
+          <p>Complex assortment planning, multi-format operations and large-scale SAP landscapes. Programmes often run parallel workstreams — breadth of contractor bench matters here more than any other segment.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">SAP Retail Functional</span>
+            <span class="seg-role-pill">Assortment Planning Lead</span>
+            <span class="seg-role-pill">Oracle Retail Specialist</span>
+            <span class="seg-role-pill">Space Planning Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-homeimprovement">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&auto=format&fit=crop&q=80" alt="Home improvement">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Home Improvement &amp; Furnishings</h3>
+          <p>High-value, low-frequency purchases with complex delivery and installation logistics. WMS, TMS and order management specialists are consistently in demand across this segment.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">WMS Functional Lead</span>
+            <span class="seg-role-pill">TMS Specialist</span>
+            <span class="seg-role-pill">OMS Architect</span>
+            <span class="seg-role-pill">SAP EWM Consultant</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-fnb">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&auto=format&fit=crop&q=80" alt="Food and beverage">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Restaurants, Food &amp; Beverage Chains</h3>
+          <p>POS, kitchen management, franchise systems and loyalty at scale. NCR, Oracle Hospitality and Salesforce loyalty specialists are the most in-demand contractors across this segment.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Oracle Hospitality Lead</span>
+            <span class="seg-role-pill">NCR Aloha Specialist</span>
+            <span class="seg-role-pill">POS Systems Architect</span>
+            <span class="seg-role-pill">Loyalty Platform Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-airline">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop&q=80" alt="Airline duty free">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Airline Retail &amp; Duty-Free</h3>
+          <p>Multi-currency, multi-jurisdiction and integrated with airline reservation systems. A niche that demands contractors who understand both retail systems and the specific regulatory context of travel retail.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Duty-Free Systems Lead</span>
+            <span class="seg-role-pill">POS Integration Specialist</span>
+            <span class="seg-role-pill">Inventory Systems Analyst</span>
+            <span class="seg-role-pill">CRM Functional Consultant</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-fmcg">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80" alt="FMCG">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>FMCG — Fast-Moving Consumer Goods</h3>
+          <p>Trade promotions management, demand planning and supply chain optimisation at volume. SAP IBP and Blue Yonder specialists are consistently the hardest roles to place in this segment.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">SAP IBP Specialist</span>
+            <span class="seg-role-pill">Blue Yonder Demand Lead</span>
+            <span class="seg-role-pill">TPM Functional Consultant</span>
+            <span class="seg-role-pill">Supply Planning Lead</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-offprice">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80" alt="Off-price retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Off-Price / Discounts</h3>
+          <p>Opportunistic buying, rapid markdown decisions and high inventory turnover. Pricing and promotions systems expertise — particularly Oracle Retail Pricing and Revionics — is the core requirement.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Pricing Systems Lead</span>
+            <span class="seg-role-pill">Markdown Optimisation Specialist</span>
+            <span class="seg-role-pill">Oracle Retail Pricing Lead</span>
+            <span class="seg-role-pill">Inventory Analyst</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-hotels">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80" alt="Hotels and resorts">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Hotels &amp; Resorts</h3>
+          <p>Property management, F&amp;B integration and guest experience platforms. Oracle Hospitality and Salesforce Service Cloud specialists are consistently in demand across this segment in the Middle East.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Oracle Hospitality Specialist</span>
+            <span class="seg-role-pill">SAP REFX Consultant</span>
+            <span class="seg-role-pill">CX Platform Lead</span>
+            <span class="seg-role-pill">Property Systems Analyst</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-convenience">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=800&auto=format&fit=crop&q=80" alt="Convenience retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Convenience &amp; Fuel</h3>
+          <p>POS integration, fuel management systems and high-frequency loyalty programmes. A segment where speed of contractor deployment matters most — programmes run on tight timelines.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">POS Systems Lead</span>
+            <span class="seg-role-pill">Loyalty Programme Specialist</span>
+            <span class="seg-role-pill">SAP Retail Functional</span>
+            <span class="seg-role-pill">Fuel Systems Analyst</span>
+          </div>
+        </div>
+      </div>
+      <div class="seg-panel" id="seg-specialty">
+        <div class="seg-img-wrap">
+          <img class="seg-img" src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80" alt="Specialty retail">
+          <div class="seg-img-overlay"></div>
+        </div>
+        <div class="seg-content">
+          <h3>Specialty Retail</h3>
+          <p>Niche assortments, expert-led service models and strong clienteling requirements. Contractors need to understand how specialised retail operates differently from volume retail — the systems are the same, the context is not.</p>
+          <div class="seg-roles-label">Roles in demand now</div>
+          <div class="seg-roles-pills">
+            <span class="seg-role-pill">Clienteling Platform Lead</span>
+            <span class="seg-role-pill">CX Functional Consultant</span>
+            <span class="seg-role-pill">E-commerce Specialist</span>
+            <span class="seg-role-pill">Assortment Planning Lead</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- PARTNER LOGOS -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="sec-eyebrow">Technology partners</div>
+  <h2 class="sec-h2">The platforms we staff.</h2>
+  <p class="sec-sub">Active contractor benches across every major enterprise retail technology platform.</p>
+  <div class="partners-grid">
+    <div class="partner-cell"><span class="partner-name">SAP</span></div>
+    <div class="partner-cell"><span class="partner-name">ORACLE</span></div>
+    <div class="partner-cell"><span class="partner-name">Salesforce</span></div>
+    <div class="partner-cell"><span class="partner-name">Anaplan</span></div>
+    <div class="partner-cell"><span class="partner-name">Microsoft</span></div>
+    <div class="partner-cell"><span class="partner-name">BlueYonder</span></div>
+    <div class="partner-cell"><span class="partner-name">Workday</span></div>
+    <div class="partner-cell"><span class="partner-name">Manhattan Associates</span></div>
+    <div class="partner-cell"><span class="partner-name">Google Cloud</span></div>
+    <div class="partner-cell"><span class="partner-name">Shopify</span></div>
+    <div class="partner-cell"><span class="partner-name">IBM</span></div>
+    <div class="partner-cell"><span class="partner-name">Informatica</span></div>
+    <div class="partner-cell"><span class="partner-name">AWS</span></div>
+    <div class="partner-cell"><span class="partner-name">Magento</span></div>
+    <div class="partner-cell"><span class="partner-name">Coupa</span></div>
+    <div class="partner-cell"><span class="partner-name">Infor</span></div>
+  </div>
+  <p style="font-family:var(--mono);font-size:9px;color:var(--w4);margin-top:14px;letter-spacing:.5px">Replace partner-name spans with partner logo images when available — see /public/logos/ drop-in spec in Architecture file.</p>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- WHITE PAPERS -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="sec-eyebrow">Thought leadership</div>
+  <h2 class="sec-h2">What we know about retail tech talent<br>that most recruiters don't.</h2>
+  <p class="sec-sub">Written by people who have run retail technology programmes — not marketing teams.</p>
+  <div class="wp-grid">
+    <a href="/white-papers/retail-cx-contractor-retention" class="wp-card">
+      <div class="wp-icon">📋</div>
+      <div>
+        <div class="wp-tag">White Paper</div>
+        <div class="wp-title">Why retail CX contractors walk at go-live — and how to keep them.</div>
+        <div class="wp-desc">The highest-risk moment in any retail CX programme is the 30 days before and after go-live. This paper looks at why contractors exit at exactly the wrong moment, what the commercial triggers are, and what hiring leaders can do to structure engagement to prevent it.</div>
+        <div class="wp-cta">Download PDF</div>
+      </div>
+    </a>
+    <a href="/white-papers/72-hour-talent-benchmark" class="wp-card">
+      <div class="wp-icon">⏱️</div>
+      <div>
+        <div class="wp-tag">White Paper</div>
+        <div class="wp-title">The 72-hour benchmark: what enterprise retailers get wrong about contractor speed.</div>
+        <div class="wp-desc">Most retail IT leaders accept 4–6 weeks as normal for contractor shortlisting. It isn't. This paper covers what makes rapid shortlisting possible, why it requires architect-led screening rather than keyword matching, and how to brief a talent partner to activate it.</div>
+        <div class="wp-cta">Download PDF</div>
+      </div>
+    </a>
+    <a href="/white-papers/sap-retail-talent-scarcity" class="wp-card">
+      <div class="wp-icon">📊</div>
+      <div>
+        <div class="wp-tag">Market Briefing</div>
+        <div class="wp-title">SAP S/4HANA retail talent in the Gulf: what the scarcity data says.</div>
+        <div class="wp-desc">SAP retail contractor supply in the Middle East tightened significantly through 2024–25. This briefing covers which modules are most affected, where the available bench is concentrated geographically, and what programme directors are doing to protect their timelines.</div>
+        <div class="wp-cta">Download PDF</div>
+      </div>
+    </a>
+    <a href="/white-papers/eor-vs-contract-retail" class="wp-card">
+      <div class="wp-icon">⚖️</div>
+      <div>
+        <div class="wp-tag">Guide</div>
+        <div class="wp-title">EOR vs Contract vs Subcontract: choosing the right model for retail tech programmes.</div>
+        <div class="wp-desc">The engagement model you choose for a contractor affects programme risk, contractor loyalty and commercial liability in ways most hiring leaders don't fully see until a problem occurs. This guide maps each model to retail programme scenarios and helps you pick the right one before the brief goes out.</div>
+        <div class="wp-cta">Download PDF</div>
+      </div>
+    </a>
+  </div>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- INSIGHTS -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="sec-eyebrow">Insights</div>
+  <h2 class="sec-h2">What's happening in retail tech talent right now.</h2>
+  <p class="sec-sub">Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.</p>
+  <div class="insights-grid">
+    <a href="/insights/blue-yonder-luminate-scarcity-2025" class="ins-card">
+      <div class="ins-img">
+        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&auto=format&fit=crop&q=80" alt="Supply chain">
+        <div class="ins-img-overlay"></div>
+        <span class="ins-cat">Supply Chain</span>
+      </div>
+      <div class="ins-body">
+        <div class="ins-title">Blue Yonder Luminate contractors: why the bench dried up and what retail programmes are doing about it.</div>
+        <div class="ins-excerpt">Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months — here's what we know about where the available contractors are and what they cost.</div>
+        <div class="ins-meta">
+          <span class="ins-author">Sumeet Goenka · 6 min read</span>
+          <span class="ins-read">Read →</span>
+        </div>
+      </div>
+    </a>
+    <a href="/insights/sap-commerce-cloud-middle-east" class="ins-card">
+      <div class="ins-img">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&auto=format&fit=crop&q=80" alt="E-commerce">
+        <div class="ins-img-overlay"></div>
+        <span class="ins-cat">E-commerce</span>
+      </div>
+      <div class="ins-body">
+        <div class="ins-title">SAP Commerce Cloud in the Gulf: implementation contractors are being hired six months too late.</div>
+        <div class="ins-excerpt">Every SAP Commerce programme in the ME region that slipped in 2024 had one thing in common: the technical architect was confirmed after the project structure was already locked. The fix isn't faster hiring — it's earlier briefing.</div>
+        <div class="ins-meta">
+          <span class="ins-author">Yallo Talent · 5 min read</span>
+          <span class="ins-read">Read →</span>
+        </div>
+      </div>
+    </a>
+    <a href="/insights/retail-planning-anaplan-demand" class="ins-card">
+      <div class="ins-img">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&auto=format&fit=crop&q=80" alt="Retail planning">
+        <div class="ins-img-overlay"></div>
+        <span class="ins-cat">Planning & Analytics</span>
+      </div>
+      <div class="ins-body">
+        <div class="ins-title">Anaplan Model Builders in retail: the role that's reshaping how large retailers plan — and why there aren't enough of them.</div>
+        <div class="ins-excerpt">Anaplan has moved from finance tool to enterprise planning platform faster than the talent pool has followed. In retail specifically, the demand for Model Builders outstrips supply by a ratio we haven't seen since SAP HANA launched in 2015.</div>
+        <div class="ins-meta">
+          <span class="ins-author">Sumeet Goenka · 7 min read</span>
+          <span class="ins-read">Read →</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+</div>
+
+<div class="div-line"></div>
+
+<!-- BRIEF CTA -->
+<div style="background:var(--bg)">
+<div class="section">
+  <div class="brief-section">
+    <div class="brief-left">
+      <div class="sec-eyebrow">Ready to brief us?</div>
+      <h2>Tell us the role, the platform and when you need them.</h2>
+      <p>No CVs until we understand your programme. A focused working session to pin down the role, the stack and what good looks like. Architect-screened shortlist in your inbox within 72 hours.</p>
+    </div>
+    <div class="brief-actions">
+      <a href="/contact" class="btn-primary" style="text-align:center">Send us a brief →</a>
+      <a href="/contract" class="btn-sec" style="text-align:center">Contract model →</a>
+      <a href="/eor" class="btn-sec" style="text-align:center">EOR model →</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<footer>
+  <div class="fl">YALLO</div>
+  <div class="fm">Retail &amp; Consumer · Talent · UK · ME · India · yallo.co</div>
+</footer>
+
+<script>
+function selectSeg(el, id) {
+  document.querySelectorAll('.seg-item').forEach(i => i.classList.remove('active'));
+  document.querySelectorAll('.seg-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('seg-' + id).classList.add('active');
+}
+</script>
+</body>
+</html>
