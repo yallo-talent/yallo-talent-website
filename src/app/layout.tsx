@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { NavBar } from "@/components/layout/NavBar";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -32,7 +33,12 @@ export default function RootLayout({
       lang="en"
       className={`${plusJakarta.variable} ${dmMono.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <NavBar />
+        <main id="main" className="flex-1">
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
