@@ -132,32 +132,62 @@ function ServiceBenefits({ data }: Props) {
 }
 
 function ServiceProcess({ data }: Props) {
+  const total = data.process.length;
   return (
     <section className={styles.process}>
+      <div className={styles.processOrbA} aria-hidden="true" />
+      <div className={styles.processOrbB} aria-hidden="true" />
       <div className={styles.wrap}>
         <div className={styles.processHead}>
+          <div className={styles.processEyebrow}>
+            The Yallo operating rhythm
+          </div>
           <h2 className={styles.sectionH}>{data.processHeading}</h2>
           <p className={styles.processLede}>{data.processLede}</p>
         </div>
         <ol className={styles.steps}>
+          {/* Vertical connecting line running through step numbers */}
+          <div className={styles.stepsLine} aria-hidden="true" />
           {data.process.map((s, i) => (
             <motion.li
               key={s.title}
               className={styles.step}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.45, delay: i * 0.08 }}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
             >
-              <div className={styles.stepNum}>
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              <div className={styles.stepBody}>
-                <div className={styles.stepTitleRow}>
-                  <h3 className={styles.stepTitle}>{s.title}</h3>
-                  {s.tag && <span className={styles.stepTag}>{s.tag}</span>}
+              <div className={styles.stepMarker}>
+                <div className={styles.stepMarkerRing} aria-hidden="true" />
+                <div className={styles.stepNum}>
+                  {String(i + 1).padStart(2, "0")}
                 </div>
-                <p className={styles.stepCopy}>{s.copy}</p>
+                <div className={styles.stepMarkerLabel} aria-hidden="true">
+                  Step {i + 1} of {total}
+                </div>
+              </div>
+              <div className={styles.stepCard}>
+                <div className={styles.stepCardInner}>
+                  <div className={styles.stepTitleRow}>
+                    <h3 className={styles.stepTitle}>{s.title}</h3>
+                    {s.tag && <span className={styles.stepTag}>{s.tag}</span>}
+                  </div>
+                  <p className={styles.stepCopy}>{s.copy}</p>
+                </div>
+                <div className={styles.stepArrow} aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    role="presentation"
+                  >
+                    <title>Continue</title>
+                    <path d="M12 5v14M5 12l7 7 7-7" />
+                  </svg>
+                </div>
               </div>
             </motion.li>
           ))}
@@ -190,51 +220,75 @@ function ServiceFaq({ data }: Props) {
   const [openIdx, setOpenIdx] = useState<number | null>(0);
   return (
     <section className={styles.faq}>
+      <div className={styles.faqOrb} aria-hidden="true" />
       <div className={styles.wrap}>
-        <h2 className={styles.sectionH}>{data.faqHeading}</h2>
-        <div className={styles.faqList}>
-          {data.faqs.map((f, i) => {
-            const isOpen = openIdx === i;
-            return (
-              <div
-                key={f.q}
-                className={`${styles.faqItem} ${isOpen ? styles.faqOpen : ""}`}
-              >
-                <button
-                  type="button"
-                  className={styles.faqQ}
-                  aria-expanded={isOpen}
-                  onClick={() => setOpenIdx(isOpen ? null : i)}
-                >
-                  <span>{f.q}</span>
-                  <span className={styles.faqChev} aria-hidden="true">
-                    <svg
-                      viewBox="0 0 12 12"
-                      role="presentation"
-                      strokeWidth="1.4"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <title>Toggle</title>
-                      <path d="M3 5l3 3 3-3" />
-                    </svg>
-                  </span>
-                </button>
-                {isOpen && (
-                  <motion.div
-                    className={styles.faqA}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <p>{f.a}</p>
-                  </motion.div>
-                )}
+        <div className={styles.faqLayout}>
+          <div className={styles.faqAside}>
+            <div className={styles.faqEyebrow}>Quick answers</div>
+            <h2 className={styles.sectionH}>{data.faqHeading}</h2>
+            <p className={styles.faqAsideCopy}>
+              The questions we get most often — answered directly. Anything not
+              covered? Send us a brief and we'll pick it up.
+            </p>
+            <div className={styles.faqAsideStats}>
+              <div className={styles.faqAsideStat}>
+                <span className={styles.faqAsideStatN}>{data.faqs.length}</span>
+                <span className={styles.faqAsideStatL}>questions answered</span>
               </div>
-            );
-          })}
+              <div className={styles.faqAsideStat}>
+                <span className={styles.faqAsideStatN}>72h</span>
+                <span className={styles.faqAsideStatL}>reply on briefs</span>
+              </div>
+            </div>
+          </div>
+          <div className={styles.faqList}>
+            {data.faqs.map((f, i) => {
+              const isOpen = openIdx === i;
+              return (
+                <div
+                  key={f.q}
+                  className={`${styles.faqItem} ${isOpen ? styles.faqOpen : ""}`}
+                >
+                  <button
+                    type="button"
+                    className={styles.faqQ}
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                  >
+                    <span className={styles.faqQNum}>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className={styles.faqQText}>{f.q}</span>
+                    <span className={styles.faqChev} aria-hidden="true">
+                      <svg
+                        viewBox="0 0 16 16"
+                        role="presentation"
+                        strokeWidth="1.6"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <title>Toggle</title>
+                        <path d="M4 6l4 4 4-4" />
+                      </svg>
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <motion.div
+                      className={styles.faqA}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.28, ease: [0.2, 0.8, 0.2, 1] }}
+                    >
+                      <p>{f.a}</p>
+                    </motion.div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
