@@ -154,9 +154,9 @@
   z-index: 1;
   background: linear-gradient(
     168deg,
-    rgba(5, 9, 21, 0.06) 0%,
-    rgba(5, 9, 21, 0.4) 36%,
-    rgba(5, 9, 21, 0.97) 100%
+    rgba(10, 11, 16, 0.06) 0%,
+    rgba(10, 11, 16, 0.4) 36%,
+    rgba(10, 11, 16, 0.97) 100%
   );
   pointer-events: none;
 }
@@ -219,7 +219,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--sector-accent);
-  background: rgba(5, 9, 21, 0.72);
+  background: rgba(10, 11, 16, 0.72);
   border: 1px solid var(--sector-accent-35);
   border-radius: 999px;
   padding: 5px 12px;
@@ -244,7 +244,7 @@
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(5, 9, 21, 0.55);
+  background: rgba(10, 11, 16, 0.55);
   border: 1px solid var(--sector-accent-35);
   box-shadow: 0 0 52px var(--sector-accent-20);
   color: var(--sector-accent);
@@ -438,8 +438,8 @@
   z-index: 1;
   background: linear-gradient(
     168deg,
-    rgba(5, 9, 21, 0.08) 0%,
-    rgba(5, 9, 21, 0.88) 100%
+    rgba(10, 11, 16, 0.08) 0%,
+    rgba(10, 11, 16, 0.88) 100%
   );
   pointer-events: none;
 }
@@ -502,7 +502,7 @@
   white-space: nowrap;
   line-height: 1;
   margin-top: 3px;
-  background: rgba(5, 9, 21, 0.35);
+  background: rgba(10, 11, 16, 0.35);
 }
 
 .miniRoles {

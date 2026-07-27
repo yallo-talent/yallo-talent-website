@@ -11,13 +11,13 @@
   --yellow-600: #d97706;
   --gradient-yellow-start: #fcd34d;
 
-  /* Bluish-black base (replaces pitch black) */
-  --ink-950: #050915;
-  --ink-900: #070c1c;
-  --ink-800: #0b1225;
-  --ink-700: #121a30;
-  --ink-600: #1a2340;
-  --ink-500: #232d4d;
+  /* Near-black with a whisper of blue (charcoal, not navy) */
+  --ink-950: #0a0b10;
+  --ink-900: #0e0f16;
+  --ink-800: #14161f;
+  --ink-700: #1b1d28;
+  --ink-600: #23262f;
+  --ink-500: #2c2f38;
 
   /* Legacy black aliases (retained during migration; equal to ink) */
   --black-950: var(--ink-950);
@@ -50,10 +50,10 @@
   --wa88: rgba(255, 255, 255, 0.88);
 
   /* Ink alphas (for light theme + shadow tints) */
-  --ba05: rgba(5, 9, 21, 0.05);
-  --ba08: rgba(5, 9, 21, 0.08);
-  --ba60: rgba(5, 9, 21, 0.6);
-  --ba75: rgba(5, 9, 21, 0.75);
+  --ba05: rgba(10, 11, 16, 0.05);
+  --ba08: rgba(10, 11, 16, 0.08);
+  --ba60: rgba(10, 11, 16, 0.6);
+  --ba75: rgba(10, 11, 16, 0.75);
 
   /* Supporting hue palette — sections opt into these for tint variety.
      Each hue exposes 500 solid + 08/20/35 alpha for glow / muted / active. */
@@ -152,19 +152,19 @@
 :root.light {
   --fg: var(--ink-950);
   --fg-muted: var(--ba60);
-  --fg-subtle: rgba(5, 9, 21, 0.4);
+  --fg-subtle: rgba(10, 11, 16, 0.4);
   --bg: var(--white);
   --surface: var(--gray-100);
   --surface-raised: var(--gray-200);
-  --surface-glass: rgba(5, 9, 21, 0.04);
-  --surface-glass-strong: rgba(5, 9, 21, 0.08);
+  --surface-glass: rgba(10, 11, 16, 0.04);
+  --surface-glass-strong: rgba(10, 11, 16, 0.08);
 
   --border: var(--ba08);
-  --border-strong: rgba(5, 9, 21, 0.15);
+  --border-strong: rgba(10, 11, 16, 0.15);
   --border-accent: var(--ya20);
 
   --glass-bg: color-mix(in oklab, var(--surface) 65%, transparent);
-  --glass-border: rgba(5, 9, 21, 0.08);
+  --glass-border: rgba(10, 11, 16, 0.08);
   --glass-highlight: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.5),
