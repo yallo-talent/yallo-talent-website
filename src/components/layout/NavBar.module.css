@@ -120,17 +120,16 @@
   top: 76px;
   left: 50%;
   /* transform: translateX(-50%) — owned by Framer motion for animation */
-  width: min(1360px, calc(100vw - 32px));
+  width: min(1200px, calc(100vw - 32px));
   padding: 28px 32px;
-  background: color-mix(in oklab, var(--surface-raised) 94%, transparent);
-  backdrop-filter: saturate(180%) blur(24px);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  border: 1px solid var(--wa15);
+  /* Fully opaque surface for text legibility on any bg */
+  background: var(--ink-800);
+  border: 1px solid var(--wa25);
   border-radius: 24px;
   box-shadow:
     0 40px 120px -30px rgba(0, 0, 0, 0.85),
-    0 0 0 1px var(--wa08),
-    inset 0 1px 0 var(--wa08);
+    0 0 0 1px var(--wa12),
+    inset 0 1px 0 var(--wa12);
   z-index: 55;
 }
 
@@ -155,16 +154,22 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
+/* 1 items col + 1 featured — split roughly 55/45 so items don't stretch too wide */
 .megaGrid[data-cols="2"] {
-  grid-template-columns: 1fr 320px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
 }
 
+/* 2 items cols + 1 featured — 3-equal-ish columns */
 .megaGrid[data-cols="3"] {
-  grid-template-columns: 1fr 1fr 320px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.1fr);
 }
 
+/* 3 items cols + 1 featured — What we do / How we serve level */
 .megaGrid[data-cols="4"] {
-  grid-template-columns: 1fr 1fr 1fr 320px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+      0,
+      1.1fr
+    );
 }
 
 .megaCol {
@@ -252,6 +257,23 @@
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.005em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.externalMark {
+  display: inline-flex;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--item-hue, var(--accent));
+  opacity: 0.7;
+  transition: transform 0.15s ease;
+}
+
+.megaLink:hover .externalMark {
+  transform: translate(2px, -2px);
+  opacity: 1;
 }
 
 .itemDescription {

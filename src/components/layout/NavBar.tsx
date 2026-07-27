@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./NavBar.module.css";
 import {
-  jobSeekersHref,
+  jobSeekersGroup,
   type NavItem,
   primaryCTAHref,
   primaryNav,
@@ -72,7 +72,7 @@ export function NavBar() {
               }
             }}
           >
-            {primaryNav.map((group) => (
+            {[...primaryNav, jobSeekersGroup].map((group) => (
               // biome-ignore lint/a11y/noStaticElementInteractions: hover opens mega-menu; keyboard uses button focus handler
               <div
                 key={group.label}
@@ -131,19 +131,23 @@ export function NavBar() {
                               {col.heading}
                             </div>
                             <ul className={styles.megaList}>
-                              {col.items.map((item) => (
-                                <li key={item.href}>
-                                  <Link
-                                    href={item.href}
-                                    className={styles.megaLink}
-                                    style={hueStyle(item.hue)}
-                                  >
+                              {col.items.map((item) => {
+                                const inner = (
+                                  <>
                                     <span className={styles.itemIcon}>
                                       <NavItemIcon icon={item.icon} />
                                     </span>
                                     <span className={styles.itemBody}>
                                       <span className={styles.itemLabel}>
                                         {item.label}
+                                        {item.external && (
+                                          <span
+                                            className={styles.externalMark}
+                                            aria-hidden="true"
+                                          >
+                                            ↗
+                                          </span>
+                                        )}
                                       </span>
                                       {item.description && (
                                         <span
@@ -153,9 +157,32 @@ export function NavBar() {
                                         </span>
                                       )}
                                     </span>
-                                  </Link>
-                                </li>
-                              ))}
+                                  </>
+                                );
+                                return (
+                                  <li key={item.href}>
+                                    {item.external ? (
+                                      <a
+                                        href={item.href}
+                                        className={styles.megaLink}
+                                        style={hueStyle(item.hue)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        {inner}
+                                      </a>
+                                    ) : (
+                                      <Link
+                                        href={item.href}
+                                        className={styles.megaLink}
+                                        style={hueStyle(item.hue)}
+                                      >
+                                        {inner}
+                                      </Link>
+                                    )}
+                                  </li>
+                                );
+                              })}
                             </ul>
                           </div>
                         ))}
@@ -199,9 +226,6 @@ export function NavBar() {
                 </AnimatePresence>
               </div>
             ))}
-            <Link href={jobSeekersHref} className={styles.groupTrigger}>
-              Job seekers
-            </Link>
           </nav>
 
           <div className={styles.actions}>
@@ -235,31 +259,37 @@ export function NavBar() {
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
             <div className={styles.mobileInner}>
-              {primaryNav.map((group) => (
+              {[...primaryNav, jobSeekersGroup].map((group) => (
                 <div key={group.label} className={styles.mobileGroup}>
                   <div className="eyebrow">{group.label}</div>
                   {group.columns.flatMap((col) =>
-                    col.items.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className={styles.mobileLink}
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {item.label}
-                      </Link>
-                    )),
+                    col.items.map((item) =>
+                      item.external ? (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className={styles.mobileLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {item.label} ↗
+                        </a>
+                      ) : (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          className={styles.mobileLink}
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {item.label}
+                        </Link>
+                      ),
+                    ),
                   )}
                 </div>
               ))}
               <div className={styles.mobileGroup}>
-                <Link
-                  href={jobSeekersHref}
-                  className={styles.mobileLink}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Job seekers
-                </Link>
                 <Link
                   href={primaryCTAHref}
                   className={styles.mobileCTA}

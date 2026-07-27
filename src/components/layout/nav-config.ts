@@ -26,7 +26,10 @@ type IconKey =
   | "cloud"
   | "security"
   | "integration"
-  | "emerging";
+  | "emerging"
+  | "uploadCv"
+  | "manageAccount"
+  | "jobSearch";
 
 export interface NavItem {
   label: string;
@@ -34,6 +37,7 @@ export interface NavItem {
   description?: string;
   icon?: IconKey;
   hue?: "blue" | "green" | "orange" | "teal" | "violet" | "rose";
+  external?: boolean;
 }
 
 export interface NavColumn {
@@ -64,7 +68,7 @@ export const primaryNav: NavGroup[] = [
     description: "Engagement models — how you hold the risk",
     columns: [
       {
-        heading: "Engagement models",
+        heading: "Interim & permanent",
         items: [
           {
             label: "Contract Workforce",
@@ -80,6 +84,11 @@ export const primaryNav: NavGroup[] = [
             icon: "permanent",
             hue: "blue",
           },
+        ],
+      },
+      {
+        heading: "Compliance & outcomes",
+        items: [
           {
             label: "EOR",
             href: "/eor",
@@ -247,7 +256,7 @@ export const primaryNav: NavGroup[] = [
     description: "Insights, research, case studies",
     columns: [
       {
-        heading: "Latest",
+        heading: "Published",
         items: [
           {
             label: "Insights",
@@ -262,6 +271,32 @@ export const primaryNav: NavGroup[] = [
             description: "Programmes we've helped staff",
             icon: "cases",
             hue: "teal",
+          },
+        ],
+      },
+      {
+        heading: "By topic",
+        items: [
+          {
+            label: "Market data",
+            href: "/insights?topic=market-data",
+            description: "Compensation windows, availability",
+            icon: "dataAi",
+            hue: "blue",
+          },
+          {
+            label: "Capability build",
+            href: "/insights?topic=capability-build",
+            description: "GCC engineering centres, delivery ops",
+            icon: "capabilities",
+            hue: "green",
+          },
+          {
+            label: "Engagement models",
+            href: "/insights?topic=engagement",
+            description: "Contract vs permanent vs EOR guides",
+            icon: "contract",
+            hue: "orange",
           },
         ],
       },
@@ -282,7 +317,7 @@ export const primaryNav: NavGroup[] = [
     description: "The team behind the shortlist",
     columns: [
       {
-        heading: "Yallo Talent",
+        heading: "Company",
         items: [
           {
             label: "About Yallo",
@@ -307,6 +342,34 @@ export const primaryNav: NavGroup[] = [
           },
         ],
       },
+      {
+        heading: "Yallo family",
+        items: [
+          {
+            label: "Yallo Talent",
+            href: "/",
+            description: "Where you are · enterprise IT talent",
+            icon: "capabilities",
+            hue: "orange",
+          },
+          {
+            label: "saasinator",
+            href: "https://saasinator.ai",
+            description: "AI advisory & build · launching soon",
+            icon: "emerging",
+            hue: "violet",
+            external: true,
+          },
+          {
+            label: "Yallo AI Academy",
+            href: "https://yallo.co/academy",
+            description: "Role-based AI enablement · soon",
+            icon: "dataAi",
+            hue: "teal",
+            external: true,
+          },
+        ],
+      },
     ],
     featured: {
       eyebrow: "Meet the operator",
@@ -323,3 +386,49 @@ export const primaryNav: NavGroup[] = [
 
 export const jobSeekersHref = "/jobs";
 export const primaryCTAHref = "/brief";
+
+export const jobSeekersGroup: NavGroup = {
+  label: "Job seekers",
+  description: "For specialists · candidate portal",
+  columns: [
+    {
+      heading: "Candidate services",
+      items: [
+        {
+          label: "Upload your CV",
+          href: "https://www.yallo.co/join-us/",
+          description: "Submit your CV to apply for relevant job roles",
+          icon: "uploadCv",
+          hue: "green",
+          external: true,
+        },
+        {
+          label: "Manage Account",
+          href: "https://www.yallo.co/users/login",
+          description: "Customise your account settings to fit your needs",
+          icon: "manageAccount",
+          hue: "blue",
+          external: true,
+        },
+        {
+          label: "Job search",
+          href: "https://www.yallo.co/jobs",
+          description: "Discover the perfect job opportunities for your career",
+          icon: "jobSearch",
+          hue: "teal",
+          external: true,
+        },
+      ],
+    },
+  ],
+  featured: {
+    eyebrow: "Not registered yet?",
+    title: "Send us your CV.",
+    copy: "Our architect team screens every submission — we tell you before you're put forward.",
+    href: "https://www.yallo.co/join-us/",
+    ctaLabel: "Upload CV →",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Job seeker at a workstation",
+  },
+};

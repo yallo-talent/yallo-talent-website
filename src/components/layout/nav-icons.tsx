@@ -248,4 +248,31 @@ export const navIcons = {
       </>,
       p.className,
     ),
+  uploadCv: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+        <path d="M17 8l-5-5-5 5" />
+        <path d="M12 3v12" />
+      </>,
+      p.className,
+    ),
+  manageAccount: (p: IconProps) =>
+    wrap(
+      <>
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21c0-4 3.5-6 8-6s8 2 8 6" />
+        <circle cx="19" cy="19" r="2" />
+      </>,
+      p.className,
+    ),
+  jobSearch: (p: IconProps) =>
+    wrap(
+      <>
+        <circle cx="11" cy="11" r="7" />
+        <path d="M21 21l-4.35-4.35" />
+        <path d="M8 11h6M11 8v6" />
+      </>,
+      p.className,
+    ),
 } as const;
