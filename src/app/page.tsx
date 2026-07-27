@@ -5,6 +5,7 @@ import { PlatformTalent } from "@/components/blocks/PlatformTalent";
 import { TheProblem } from "@/components/blocks/TheProblem";
 import { WhatWeDo } from "@/components/blocks/WhatWeDo";
 import { WhereWePlace } from "@/components/blocks/WhereWePlace";
+import { WhyYallo } from "@/components/blocks/WhyYallo";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <WhereWePlace />
       <PlatformTalent />
       <OurPartners />
+      <WhyYallo />
     </>
   );
 }
