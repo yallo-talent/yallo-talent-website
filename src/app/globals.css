@@ -37,6 +37,9 @@
   --ba08: rgba(8, 8, 8, 0.08);
   --ba60: rgba(8, 8, 8, 0.6);
   --ba75: rgba(8, 8, 8, 0.75);
+
+  --success-500: #6ee7b7;
+  --success-glow: rgba(110, 231, 183, 0.6);
 }
 
 /* ==========================================================================
@@ -219,8 +222,8 @@ a:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6ee7b7;
-  box-shadow: 0 0 8px rgba(110, 231, 183, 0.6);
+  background: var(--success-500);
+  box-shadow: 0 0 8px var(--success-glow);
 }
 
 .forced-dark {
