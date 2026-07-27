@@ -1,0 +1,212 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: clamp(560px, 84vh, 820px);
+  overflow: hidden;
+  color: var(--fg);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.image {
+  position: absolute;
+  inset: -4%;
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+
+.variant1 {
+  background-image:
+    radial-gradient(1200px 600px at 15% 20%, var(--ya35), transparent 60%),
+    linear-gradient(160deg, var(--black-800) 0%, var(--black-950) 60%);
+}
+
+.variant2 {
+  background-image:
+    radial-gradient(900px 700px at 85% 30%, var(--ya20), transparent 55%),
+    linear-gradient(200deg, var(--black-900) 0%, var(--black-950) 70%);
+}
+
+.variant3 {
+  background-image:
+    radial-gradient(1000px 500px at 50% 80%, var(--ya35), transparent 55%),
+    linear-gradient(180deg, var(--black-950) 0%, var(--black-800) 100%);
+}
+
+.variant4 {
+  background-image:
+    radial-gradient(1100px 600px at 20% 80%, var(--ya20), transparent 55%),
+    linear-gradient(140deg, var(--black-800) 0%, var(--black-950) 70%);
+}
+
+.variant5 {
+  background-image:
+    radial-gradient(1200px 700px at 70% 40%, var(--ya35), transparent 60%),
+    linear-gradient(170deg, var(--black-900) 0%, var(--black-950) 65%);
+}
+
+.image.ken-burns-1 {
+  animation: ken-burns-1 12s ease-in-out both;
+}
+
+.image.ken-burns-2 {
+  animation: ken-burns-2 12s ease-in-out both;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--hero-overlay) 0%,
+    color-mix(in oklab, var(--bg) 55%, transparent) 55%,
+    var(--bg) 100%
+  );
+}
+
+.dotGrid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1240px;
+  height: 100%;
+  min-height: inherit;
+  margin: 0 auto;
+  padding: 96px 24px 72px;
+}
+
+.contentInner {
+  max-width: 780px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  font-size: clamp(38px, 5.5vw, 76px);
+  letter-spacing: -0.04em;
+  line-height: 1.03;
+  font-weight: 800;
+}
+
+.emphasis {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.copy {
+  max-width: 60ch;
+  color: var(--fg-muted);
+  font-size: clamp(14px, 1.2vw, 17px);
+  line-height: 1.7;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  background: var(--accent);
+  color: var(--black-950);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  transition:
+    background 0.15s ease,
+    transform 0.2s ease;
+}
+
+.ctaPrimary:hover {
+  background: var(--accent-hover);
+  color: var(--black-950);
+  transform: translateY(-1px);
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 20px;
+  color: var(--fg);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 14px;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.ctaGhost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 28px;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  background: var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    width 0.3s ease;
+}
+
+.dotActive {
+  background: var(--accent);
+  width: 44px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: clamp(520px, 90vh, 720px);
+  }
+  .content {
+    padding: 88px 20px 60px;
+  }
+  .ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ctaPrimary,
+  .ctaGhost {
+    justify-content: center;
+  }
+}
