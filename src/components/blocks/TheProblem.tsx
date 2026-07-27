@@ -138,7 +138,7 @@ export function TheProblem() {
                 </span>
                 sound like your week?
               </span>
-              <Link href="/#brief" className={styles.btn}>
+              <Link href="/brief" className={styles.btn}>
                 Send us a brief
                 <span className={styles.arr} aria-hidden="true">
                   →

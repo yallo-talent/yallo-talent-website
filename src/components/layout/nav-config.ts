@@ -99,4 +99,4 @@ export const primaryNav: NavGroup[] = [
 ];
 
 export const jobSeekersHref = "/jobs";
-export const primaryCTAHref = "/#brief";
+export const primaryCTAHref = "/brief";

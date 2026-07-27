@@ -40,7 +40,7 @@ export function StickyBriefCTA() {
               <span className={styles.eyebrow}>72h shortlists</span>
               <span className={styles.lede}>Need a contractor?</span>
             </div>
-            <Link href="/#brief" className={styles.button}>
+            <Link href="/brief" className={styles.button}>
               Send a brief
               <span aria-hidden="true">→</span>
             </Link>
