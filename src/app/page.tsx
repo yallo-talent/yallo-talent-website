@@ -1,6 +1,7 @@
 import { CaseStudies } from "@/components/blocks/CaseStudies";
 import { HeroSlider } from "@/components/blocks/HeroSlider";
 import { HowItWorks } from "@/components/blocks/HowItWorks";
+import { LatestInsights } from "@/components/blocks/LatestInsights";
 import { Metrics } from "@/components/blocks/Metrics";
 import { OurPartners } from "@/components/blocks/OurPartners";
 import { PlatformTalent } from "@/components/blocks/PlatformTalent";
@@ -22,6 +23,7 @@ export default function Home() {
       <WhyYallo />
       <CaseStudies />
       <Metrics />
+      <LatestInsights />
     </>
   );
 }
