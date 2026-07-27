@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Footer } from "@/components/layout/Footer";
 import { NavBar } from "@/components/layout/NavBar";
 import "./globals.css";
 
@@ -38,6 +39,7 @@ export default function RootLayout({
         <main id="main" className="flex-1">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
