@@ -1,0 +1,644 @@
+<!--
+  YALLO TALENT — CASE STUDIES  |  Premium redesign
+  Content: identical to screenshot.
+  Presentation: premium 3D floating glass cards,
+  animated shimmer metrics, mouse-follow spotlight,
+  spinning border light, scroll reveal, particle canvas.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<section id="cs2">
+<style>
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+#cs2 {
+  --g:    #D4A843;
+  --gl:   #F0C866;
+  --gd:   #A07830;
+  --gs:   #F5DC80;    /* shimmer highlight */
+  --w:    #FFFFFF;
+  --off:  #EDEBE7;
+  --mu:   #909090;
+  --dim:  #555;
+  --bg:   #07090f;
+  --card: #0c1422;
+  --eas:  cubic-bezier(.22,.61,.36,1);
+
+  /* Section background — dark navy + layered gold glows */
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 90%  65%  at 50%  50%,  rgba(212,168,67,.055) 0%,  transparent 65%),
+    radial-gradient(ellipse 60%  50%  at  8%  85%,  rgba(212,168,67,.08)  0%,  transparent 55%),
+    radial-gradient(ellipse 50%  40%  at 92%  15%,  rgba(212,168,67,.045) 0%,  transparent 55%),
+    linear-gradient(rgba(212,168,67,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+
+  padding: clamp(88px, 10vw, 140px) 0 clamp(80px, 9vw, 120px);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Lato', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--off);
+}
+#cs2 *, #cs2 *::before, #cs2 *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+#cs2 a { color: inherit; text-decoration: none; }
+#cs2 svg { display: block; }
+
+/* Breathing background glow overlay */
+#cs2 .cs2-breathe {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 55%,
+    rgba(212,168,67,.04) 0%, transparent 65%);
+  animation: cs2BG 9s ease-in-out infinite;
+}
+@keyframes cs2BG {
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%      { opacity:1;  transform:scale(1.12); }
+}
+
+/* Particle canvas — top-layer, pointer-events:none */
+#cs2Canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── WRAPPER ───────────────────────────────────────── */
+.cs2-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,5vw,64px);
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  gap: clamp(52px,6vw,72px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════════ */
+.cs2-eye {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10.5px !important; font-weight: 700 !important;
+  letter-spacing: .26em !important; text-transform: uppercase;
+  color: var(--g); margin-bottom: 20px;
+}
+.cs2-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--g);
+  animation: cs2Dot 2.6s ease-in-out infinite;
+}
+@keyframes cs2Dot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,168,67,.55); }
+  50%      { box-shadow: 0 0 0 9px rgba(212,168,67, 0); }
+}
+#cs2 .cs2-h2 {
+  font-size: clamp(38px,5.5vw,72px) !important;
+  font-weight: 900 !important;
+  line-height: 1.0 !important;
+  letter-spacing: -.04em !important;
+  color: var(--w) !important;
+  margin: 0 0 20px !important;
+  padding: 0 !important;
+  max-width: 700px;
+}
+#cs2 .cs2-sub {
+  font-size: clamp(15px,1.4vw,17px) !important;
+  font-weight: 300 !important;
+  line-height: 1.78 !important;
+  color: var(--mu) !important;
+  max-width: 50ch;
+  margin: 0 !important; padding: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CARD GRID
+═══════════════════════════════════════════════════════ */
+.cs2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+/* ── CARD OUTER — spinning-light gradient border ───── */
+.cs2-co {
+  position: relative;
+  border-radius: 26px;
+  padding: 1.5px;
+  /* Static gradient border fallback */
+  background: linear-gradient(145deg,
+    rgba(212,168,67,.5) 0%,
+    rgba(212,168,67,.12) 30%,
+    rgba(212,168,67,.06) 55%,
+    rgba(212,168,67,.12) 75%,
+    rgba(212,168,67,.42) 100%
+  );
+  /* Entrance animation start */
+  opacity: 0; transform: translateY(44px);
+  transition: opacity .75s var(--eas), transform .75s var(--eas), background .3s;
+}
+.cs2-co:nth-child(2) { transition-delay: .18s; }
+
+.cs2-co.cs2-in {
+  opacity: 1; transform: translateY(0);
+}
+.cs2-co:hover {
+  background: linear-gradient(145deg,
+    rgba(212,168,67,.85) 0%,
+    rgba(212,168,67,.25) 30%,
+    rgba(212,168,67,.12) 55%,
+    rgba(212,168,67,.22) 75%,
+    rgba(212,168,67,.75) 100%
+  );
+}
+
+/* Spinning border-light (::before = rotating conic element) */
+.cs2-co::before {
+  content: '';
+  position: absolute; inset: -1px; border-radius: inherit; z-index: 0;
+  background: conic-gradient(
+    from var(--cs2-a, 0deg),
+    transparent 0%, transparent 68%,
+    rgba(240,200,102,.0) 74%,
+    rgba(240,200,102,.9) 78%,
+    rgba(255,235,150,1)  81%,
+    rgba(240,200,102,.9) 84%,
+    rgba(240,200,102,.0) 90%,
+    transparent 100%
+  );
+  animation: cs2BorderSpin 5s linear infinite;
+  opacity: 0; transition: opacity .4s;
+}
+.cs2-co:hover::before { opacity: 1; }
+@keyframes cs2BorderSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Ambient glow orb below each card — floats */
+.cs2-co::after {
+  content: '';
+  position: absolute; bottom: -40px; left: 10%; right: 10%; height: 80px;
+  background: radial-gradient(ellipse, rgba(212,168,67,.12) 0%, transparent 70%);
+  filter: blur(16px);
+  border-radius: 50%;
+  animation: cs2GlowLift 5s ease-in-out infinite;
+  pointer-events: none; z-index: -1;
+}
+.cs2-co:nth-child(2)::after { animation-delay: 1.8s; }
+@keyframes cs2GlowLift {
+  0%,100% { transform:translateY(0) scaleX(1); opacity:.7; }
+  50%      { transform:translateY(-12px) scaleX(.85); opacity:1; }
+}
+
+/* ── CARD INNER — the glass surface ───────────────── */
+.cs2-card {
+  background:
+    linear-gradient(145deg,
+      rgba(255,255,255,.055) 0%,   /* top-left light catch */
+      rgba(255,255,255,.01)  35%,
+      rgba(0,0,0,.15)        100%  /* bottom-right shadow */
+    ),
+    var(--card);
+  border-radius: 24.5px;
+  padding: clamp(36px,4vw,52px) clamp(32px,3.5vw,48px) clamp(32px,3.5vw,44px);
+  position: relative; overflow: hidden; z-index: 1;
+  display: flex; flex-direction: column; gap: 0;
+  /* Layered shadows: physical depth illusion */
+  box-shadow:
+    inset 0  1px 0 rgba(255,255,255,.1),   /* top highlight edge */
+    inset 0 -1px 0 rgba(0,0,0,.35),         /* bottom shadow edge */
+    0 2px  0   rgba(0,0,0,.4),              /* card edge */
+    0 12px 40px  rgba(0,0,0,.7),            /* depth shadow */
+    0 40px 120px rgba(0,0,0,.85),           /* deep atmospheric */
+    0 0    60px  rgba(212,168,67,.03);       /* ambient gold */
+  /* Idle float animation */
+  animation: cs2Float 5.5s ease-in-out infinite;
+  will-change: transform;
+  transition: box-shadow .35s var(--eas);
+}
+.cs2-co:nth-child(2) .cs2-card { animation-delay: 1.8s; }
+@keyframes cs2Float {
+  0%,100% { transform: translateY(0px);  }
+  50%      { transform: translateY(-9px); }
+}
+/* Hover: pause float + tilt (JS sets transform directly) */
+.cs2-co:hover .cs2-card {
+  animation-play-state: paused;
+  box-shadow:
+    inset 0  1px 0 rgba(255,255,255,.14),
+    inset 0 -1px 0 rgba(0,0,0,.4),
+    0 2px  0   rgba(0,0,0,.5),
+    0 20px 60px  rgba(0,0,0,.85),
+    0 60px 160px rgba(0,0,0,.95),
+    0 0    80px  rgba(212,168,67,.07);
+}
+
+/* Mouse-follow light on card surface */
+.cs2-light {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--lx,50%) var(--ly,50%),
+    rgba(212,168,67,.14) 0%,
+    rgba(212,168,67,.04) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0; transition: opacity .2s;
+}
+.cs2-co:hover .cs2-light { opacity: 1; }
+
+/* Card inner ambient glow (constant) */
+.cs2-card-glow {
+  position: absolute; top: -60px; left: -40px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(212,168,67,.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════
+   METRIC — hero number with animated shimmer
+═══════════════════════════════════════════════════════ */
+.cs2-metric {
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+  display: flex; align-items: flex-end; gap: 0;
+  line-height: 1;
+}
+.cs2-metric-n {
+  font-size: clamp(72px, 9vw, 108px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.05em;
+  line-height: .92;
+  /* Metallic gold shimmer gradient */
+  background: linear-gradient(
+    92deg,
+    var(--gd)  0%,
+    var(--g)  18%,
+    var(--gl) 35%,
+    var(--gs) 50%,
+    var(--gl) 65%,
+    var(--g)  82%,
+    var(--gd) 100%
+  );
+  background-size: 280% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: cs2Shimmer 4s linear infinite;
+  /* Soft glow under the number */
+  filter: drop-shadow(0 4px 24px rgba(212,168,67,.35));
+}
+@keyframes cs2Shimmer {
+  from { background-position: 280% center; }
+  to   { background-position: -280% center; }
+}
+
+/* ── Meta row (PERMANENT · BANKING · GCC) ─────────── */
+.cs2-meta {
+  font-size: 10px !important; font-weight: 700 !important;
+  letter-spacing: .18em !important; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 26px;
+  position: relative; z-index: 1;
+}
+.cs2-meta span { color: rgba(212,168,67,.35); margin: 0 8px; }
+
+/* ── Type tags (SAP  PROGRAMME) ─────────────────── */
+.cs2-tags {
+  display: flex; gap: 8px; margin-bottom: 20px;
+  position: relative; z-index: 1;
+}
+.cs2-tag {
+  font-size: 9.5px !important; font-weight: 700 !important;
+  letter-spacing: .14em !important; text-transform: uppercase;
+  color: var(--g) !important;
+  background: rgba(212,168,67,.07);
+  border: 1px solid rgba(212,168,67,.18);
+  border-radius: 5px; padding: 4px 10px;
+}
+
+/* ── Gold divider line ───────────────────────────── */
+.cs2-rule {
+  height: 1px; margin-bottom: 22px;
+  background: linear-gradient(to right,
+    rgba(212,168,67,.4), rgba(212,168,67,.1) 55%, transparent);
+  position: relative; z-index: 1;
+}
+.cs2-rule::before {
+  content: ''; position: absolute; left: 0; top: -3px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--g); box-shadow: 0 0 12px rgba(212,168,67,.7);
+}
+
+/* ── Title ───────────────────────────────────────── */
+.cs2-title {
+  font-size: clamp(18px,2.2vw,24px) !important;
+  font-weight: 900 !important;
+  color: var(--w) !important;
+  line-height: 1.18; letter-spacing: -.02em;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+
+/* ── Description ─────────────────────────────────── */
+.cs2-desc {
+  font-size: 14.5px !important; font-weight: 300 !important;
+  line-height: 1.82 !important; color: var(--mu) !important;
+  flex: 1; position: relative; z-index: 1;
+}
+
+/* ── Link ────────────────────────────────────────── */
+.cs2-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 30px;
+  font-size: 13.5px !important; font-weight: 700 !important;
+  color: var(--g) !important;
+  position: relative; z-index: 1;
+  transition: gap .22s;
+}
+.cs2-link:hover { gap: 14px; }
+.cs2-link-arr { transition: transform .22s; }
+.cs2-link:hover .cs2-link-arr { transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER CTA
+═══════════════════════════════════════════════════════ */
+.cs2-footer {
+  text-align: center;
+}
+.cs2-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px !important; font-weight: 700 !important;
+  color: var(--off);
+  border: 1px solid rgba(212,168,67,.28);
+  border-radius: 40px; padding: 15px 34px;
+  background: rgba(212,168,67,.06);
+  transition: background .25s, border-color .25s, color .25s, transform .22s;
+}
+.cs2-cta:hover {
+  background: rgba(212,168,67,.13);
+  border-color: var(--g);
+  color: var(--w);
+  transform: translateY(-2px);
+}
+.cs2-cta-arr { color: var(--g); transition: transform .2s; }
+.cs2-cta:hover .cs2-cta-arr { transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .cs2-grid { grid-template-columns: 1fr; gap: 24px; }
+  .cs2-metric-n { font-size: clamp(64px,12vw,88px) !important; }
+}
+@media (max-width: 600px) {
+  .cs2-co::before { display: none; } /* spinning border off on mobile */
+}
+@media (prefers-reduced-motion: reduce) {
+  #cs2 *, #cs2 *::before, #cs2 *::after {
+    animation: none !important; transition: none !important;
+  }
+  .cs2-co { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<!-- ── MARKUP ──────────────────────────────────────── -->
+<canvas id="cs2Canvas"></canvas>
+<div class="cs2-breathe"></div>
+
+<div class="cs2-wrap">
+
+  <!-- Section header -->
+  <header>
+    <div class="cs2-eye"><span class="cs2-eye-dot"></span>Case Studies</div>
+    <h2 class="cs2-h2">Shortlists that became hires.</h2>
+    <p class="cs2-sub">A few of the programmes we've helped staff across the region.</p>
+  </header>
+
+  <!-- Cards -->
+  <div class="cs2-grid">
+
+    <!-- Card 1 -->
+    <div class="cs2-co" id="cs2c1">
+      <div class="cs2-card" id="cs2card1">
+        <div class="cs2-card-glow"></div>
+        <div class="cs2-light" id="cs2l1"></div>
+
+        <div class="cs2-metric">
+          <span class="cs2-metric-n">72h</span>
+        </div>
+
+        <div class="cs2-meta">
+          PERMANENT<span>·</span>BANKING<span>·</span>GCC
+        </div>
+
+        <div class="cs2-tags">
+          <span class="cs2-tag">SAP</span>
+          <span class="cs2-tag">Programme</span>
+        </div>
+
+        <div class="cs2-rule"></div>
+
+        <h3 class="cs2-title">Three SAP specialists, shortlisted in 72 hours</h3>
+        <p class="cs2-desc">A GCC bank needed a core-banking programme staffed at pace. We calibrated the brief and returned an architect-screened shortlist within 72 hours — the team moved two candidates to offer.</p>
+
+        <a href="#" class="cs2-link">
+          Read the story
+          <span class="cs2-link-arr">&#8594;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="cs2-co" id="cs2c2">
+      <div class="cs2-card" id="cs2card2">
+        <div class="cs2-card-glow"></div>
+        <div class="cs2-light" id="cs2l2"></div>
+
+        <div class="cs2-metric">
+          <span class="cs2-metric-n">2:1</span>
+        </div>
+
+        <div class="cs2-meta">
+          CONTRACT<span>·</span>MANUFACTURING<span>·</span>UAE
+        </div>
+
+        <div class="cs2-tags">
+          <span class="cs2-tag">Delivery</span>
+          <span class="cs2-tag">Programme</span>
+        </div>
+
+        <div class="cs2-rule"></div>
+
+        <h3 class="cs2-title">A delivery team staffed against a hard deadline</h3>
+        <p class="cs2-desc">A manufacturing group had a fixed go-live and a gap in its delivery team. A calibrated contract shortlist — a 2:1 CV-to-interview ratio — put the right specialists on the programme in days, not weeks.</p>
+
+        <a href="#" class="cs2-link">
+          Read the story
+          <span class="cs2-link-arr">&#8594;</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /cs2-grid -->
+
+  <!-- Footer CTA -->
+  <div class="cs2-footer">
+    <a href="#" class="cs2-cta">
+      See all case studies
+      <span class="cs2-cta-arr">&#8594;</span>
+    </a>
+  </div>
+
+</div><!-- /cs2-wrap -->
+</section>
+
+<script>
+((() => {
+  'use strict';
+
+  /* ── FLOATING PARTICLE CANVAS ────────────────────── */
+  ((() => {
+    var canvas = document.getElementById('cs2Canvas');
+    var ctx    = canvas.getContext('2d');
+    var dots   = [];
+    var N = 28;
+    var GOLD = [212, 168, 67];
+
+    function resize() {
+      var sec = document.getElementById('cs2');
+      canvas.width  = sec.offsetWidth;
+      canvas.height = sec.offsetHeight;
+      build();
+    }
+    function build() {
+      dots = [];
+      for (var i = 0; i < N; i++) {
+        dots.push({
+          x:  Math.random() * canvas.width,
+          y:  Math.random() * canvas.height,
+          r:  Math.random() * 1.3 + 0.3,
+          vx: (Math.random() - .5) * .18,
+          vy: (Math.random() - .5) * .18,
+          a:  Math.random() * .5 + .1
+        });
+      }
+    }
+    function rgba(a) {
+      return 'rgba(' + GOLD[0] + ',' + GOLD[1] + ',' + GOLD[2] + ',' + a + ')';
+    }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      /* connector lines */
+      for (var i = 0; i < dots.length; i++) {
+        for (var j = i + 1; j < dots.length; j++) {
+          var dx = dots[i].x - dots[j].x;
+          var dy = dots[i].y - dots[j].y;
+          var d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < 140) {
+            ctx.beginPath();
+            ctx.strokeStyle = rgba(.055 * (1 - d / 140));
+            ctx.lineWidth   = .5;
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      /* dots */
+      dots.forEach((d) => {
+        ctx.beginPath();
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(d.a);
+        ctx.fill();
+        d.x += d.vx; d.y += d.vy;
+        if (d.x < 0 || d.x > canvas.width)  d.vx *= -1;
+        if (d.y < 0 || d.y > canvas.height) d.vy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    resize();
+    draw();
+    var t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t); t = setTimeout(resize, 200);
+    });
+  })());
+
+  /* ── MOUSE-FOLLOW LIGHT + TILT PER CARD ─────────── */
+  var pairs = [
+    { wrap: document.getElementById('cs2c1'), card: document.getElementById('cs2card1'), light: document.getElementById('cs2l1') },
+    { wrap: document.getElementById('cs2c2'), card: document.getElementById('cs2card2'), light: document.getElementById('cs2l2') }
+  ];
+
+  pairs.forEach((p) => {
+    if (!p.wrap || !p.card) return;
+
+    p.wrap.addEventListener('mousemove', (e) => {
+      var r  = p.card.getBoundingClientRect();
+      /* Light position */
+      var lx = ((e.clientX - r.left) / r.width  * 100).toFixed(1);
+      var ly = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+      p.light.style.setProperty('--lx', lx + '%');
+      p.light.style.setProperty('--ly', ly + '%');
+
+      /* Magnetic 3D tilt */
+      var tx = ((e.clientX - r.left) / r.width  - .5) * 10;  /* -5 to +5 deg */
+      var ty = ((e.clientY - r.top)  / r.height - .5) * -8;  /* -4 to +4 deg */
+      p.card.style.transform =
+        'perspective(1000px) rotateX(' + ty.toFixed(2) + 'deg) rotateY(' + tx.toFixed(2) + 'deg) translateY(-8px)';
+    });
+
+    p.wrap.addEventListener('mouseleave', () => {
+      p.card.style.transform = '';
+    });
+  });
+
+  /* ── SCROLL REVEAL ───────────────────────────────── */
+  var cards = document.querySelectorAll('.cs2-co');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('cs2-in');
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+    cards.forEach((c) => { io.observe(c); });
+  } else {
+    cards.forEach((c) => { c.classList.add('cs2-in'); });
+  }
+
+  /* ── SPINNING BORDER: @property progressive enhancement */
+  /* Inject @property if supported */
+  try {
+    var style = document.createElement('style');
+    style.textContent = [
+      '@property --cs2-a {',
+      '  syntax: "<angle>";',
+      '  initial-value: 0deg;',
+      '  inherits: false;',
+      '}',
+      '.cs2-co:hover::before {',
+      '  animation: cs2BorderSpin 5s linear infinite;',
+      '}',
+      '@keyframes cs2BorderSpin {',
+      '  from { --cs2-a: 0deg; }',
+      '  to   { --cs2-a: 360deg; }',
+      '}'
+    ].join('\n');
+    /* Test support first */
+    if (window.CSS && CSS.registerProperty) {
+      document.head.appendChild(style);
+    }
+  } catch (e) { /* silent fail */ }
+
+})());
+</script>

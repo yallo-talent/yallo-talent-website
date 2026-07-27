@@ -1,0 +1,297 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+  /* ── GLOBAL: Lato on every element in this section ── */
+  .logo-scroll-section,
+  .logo-scroll-section * {
+    font-family: 'Lato', sans-serif !important;
+  }
+  /* ── SECTION: black + subtle grid lines ── */
+  .logo-scroll-section {
+    background: #000000;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 44px 44px;
+    padding: 56px 0;
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+
+  /* Warm radial glow */
+  .logo-scroll-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse 75% 110% at 50% 50%,
+      rgba(212,168,67,.07) 0%,
+      transparent 68%
+    );
+    pointer-events: none;
+  }
+
+  /* ── TITLE ── */
+  .logo-scroll-title {
+    text-align: center;
+    color: rgba(255,255,255,.72);
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ── TRACK WRAPPER: left/right fade masks ── */
+  .logo-scroll-track-wrapper {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    padding-top: 20px;   /* buffer so hovered card doesn't clip at top */
+    margin-top: -20px;   /* pull layout back so no extra gap appears */
+  }
+  .logo-scroll-track-wrapper::before,
+  .logo-scroll-track-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 140px;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .logo-scroll-track-wrapper::before {
+    left: 0;
+    background: linear-gradient(to right, #000 0%, transparent 100%);
+  }
+  .logo-scroll-track-wrapper::after {
+    right: 0;
+    background: linear-gradient(to left, #000 0%, transparent 100%);
+  }
+
+  /* ── SCROLLING TRACK ── */
+  .logo-scroll-track {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    animation: logoScroll 32s linear infinite;
+    padding: 8px 0 12px;
+  }
+  .logo-scroll-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* ── CARD: dark gray floats on black ── */
+  .logo-card {
+    background: #242424;
+    border: 1px solid rgba(255,255,255,.09);
+    border-radius: 18px;
+    width: 200px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: default;
+    position: relative;
+    box-shadow:
+      0 2px 0 rgba(255,255,255,.06),
+      0 4px 28px rgba(0,0,0,.6);
+    transition:
+      transform .28s cubic-bezier(.22,.61,.36,1),
+      box-shadow .28s cubic-bezier(.22,.61,.36,1),
+      border-color .22s ease;
+    will-change: transform;
+    overflow: hidden;
+  }
+
+  /* Gold top-bar on hover */
+  .logo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 18px; right: 18px;
+    height: 2px;
+    border-radius: 0 0 2px 2px;
+    background: linear-gradient(90deg, transparent, #D4A843, transparent);
+    opacity: 0;
+    transition: opacity .22s ease;
+  }
+
+  /* Hover: lift + gold glow */
+  .logo-card:hover {
+    transform: translateY(-8px) scale(1.05);
+    border-color: rgba(212,168,67,.5);
+    box-shadow:
+      0 0 0 1px rgba(212,168,67,.2),
+      0 20px 52px rgba(0,0,0,.75),
+      0 0 32px rgba(212,168,67,.16);
+  }
+  .logo-card:hover::before {
+    opacity: 1;
+  }
+
+  /* ── LOGO IMAGE — white monochrome like reference ── */
+  .logo-card img {
+    width: 165px;
+    height: 75px;
+    object-fit: contain;
+    display: block;
+    opacity: .78;
+    transition: opacity .22s ease;
+  }
+  .logo-card:hover img { opacity: 1; }
+
+
+
+  /* ── OPTICAL CENTERING — per-logo offset ──────────────
+     Uses alt-attribute selector so no HTML changes needed.
+     transform: translateX() shifts the image without
+     affecting box model or other cards.
+  ── */
+  .logo-card img[alt="SAP"]        { transform: translateX(25px);  }
+  .logo-card img[alt="Salesforce"] { transform: translateX(25px);  }
+  .logo-card img[alt="Shopify"]    { transform: translateX(20px);  }
+  .logo-card img[alt="Workday"]    { transform: translateX(20px);  }
+  .logo-card img[alt="IBM"]        { transform: translateX(25px);  }
+  .logo-card img[alt="Coupa"]      { transform: translateX(25px); }
+  .logo-card img[alt="AWS"]        { transform: translateX(25px);  }
+  .logo-card img[alt="Magento"]    { transform: translateX(20px);  }
+  .logo-card img[alt="Infor"]      { transform: translateX(20px);  }
+
+  /* Preserve opacity transition alongside the translateX */
+  .logo-card img[alt="SAP"],
+  .logo-card img[alt="Salesforce"],
+  .logo-card img[alt="Shopify"],
+  .logo-card img[alt="Workday"],
+  .logo-card img[alt="IBM"],
+  .logo-card img[alt="Coupa"],
+  .logo-card img[alt="AWS"],
+  .logo-card img[alt="Magento"],
+  .logo-card img[alt="Infor"] {
+    transition: opacity .22s ease;
+  }
+
+  /* ── ANIMATION ── */
+  @keyframes logoScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+
+<section class="logo-scroll-section">
+  <p class="logo-scroll-title">our partners</p>
+
+  <div class="logo-scroll-track-wrapper">
+    <div class="logo-scroll-track">
+      <!-- ─── SET 1 ─────────────────────────────────────── -->
+
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/sap-bw-logo-270x100-1.png" alt="SAP">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/Salesforce-bw-logo-270x100-2.png" alt="Salesforce">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/Oracle-bw-logo.png" alt="Oracle">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/anaplan-bw-logo-270x100-1.png" alt="Anaplan">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/microsoft-bw-logo-270x100-1.png" alt="Microsoft">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/blueyonder-bw-logo-270x100-1.png" alt="BlueYonder">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/workaday-bw-logo-270x100-1.png" alt="Workday">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/manhattan-bw-logo-270x100-1.png" alt="Manhattan">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/gcloud-bw-logo-270x100-1.png" alt="Google Cloud">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/shopifybw-logo-270x100-1.png" alt="Shopify">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/ibm-bw-logo-270x100-1.png" alt="IBM">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2025/02/Telco-and-Media.png" alt="Telco & Media">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/aws-bw-logo-270x100-1.png" alt="AWS">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/majento-bw-logo-270x100-1.png" alt="Magento">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/coupa-bw-logo-270x100-1.png" alt="Coupa">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2025/02/Telco-and-Media-4.png" alt="Infor">
+      </div>
+
+      <!-- ─── SET 2 — duplicate for seamless loop ───────── -->
+
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/sap-bw-logo-270x100-1.png" alt="SAP">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/Salesforce-bw-logo-270x100-2.png" alt="Salesforce">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/Oracle-bw-logo.png" alt="Oracle">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/anaplan-bw-logo-270x100-1.png" alt="Anaplan">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/microsoft-bw-logo-270x100-1.png" alt="Microsoft">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/blueyonder-bw-logo-270x100-1.png" alt="BlueYonder">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/workaday-bw-logo-270x100-1.png" alt="Workday">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/manhattan-bw-logo-270x100-1.png" alt="Manhattan">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/gcloud-bw-logo-270x100-1.png" alt="Google Cloud">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/shopifybw-logo-270x100-1.png" alt="Shopify">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/ibm-bw-logo-270x100-1.png" alt="IBM">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2025/02/Telco-and-Media.png" alt="Telco & Media">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/aws-bw-logo-270x100-1.png" alt="AWS">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/majento-bw-logo-270x100-1.png" alt="Magento">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2024/12/coupa-bw-logo-270x100-1.png" alt="Coupa">
+      </div>
+      <div class="logo-card">
+        <img src="https://www.yallo.co/wp-content/uploads/2025/02/Telco-and-Media-4.png" alt="Infor">
+      </div>
+
+    </div>
+  </div>
+</section>

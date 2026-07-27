@@ -1,0 +1,450 @@
+<!--
+  YALLO TALENT — METRICS  |  Clean modern redesign
+  Large editorial numbers · Gold shimmer · Count-up · Particle canvas
+  No cards · No HUD · No corner brackets · Pure typographic stat row
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<section id="statSec">
+<style>
+/* ═══════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════ */
+#statSec {
+  --g:   #D4A843;
+  --gl:  #F0C866;
+  --gd:  #A07830;
+  --gs:  #F8E090;
+  --w:   #FFFFFF;
+  --mu:  #707070;
+  --dim: #444;
+  --eas: cubic-bezier(.22,.61,.36,1);
+
+  background-color: #060c18;
+  background-image:
+    radial-gradient(ellipse 90% 80% at 50% 50%, rgba(212,168,67,.08) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 60% at 0%  100%, rgba(212,168,67,.10) 0%, transparent 55%),
+    radial-gradient(ellipse 45% 50% at 100%  0%, rgba(212,168,67,.06) 0%, transparent 55%),
+    linear-gradient(rgba(212,168,67,.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.02) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+
+  padding: clamp(10px, 10vw, 10px) 0;
+  position: relative; overflow: hidden;
+  font-family: 'Lato', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+#statSec *, #statSec *::before, #statSec *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+
+/* Breathing radial glow */
+#statSec .st-breathe {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%,
+    rgba(212,168,67,.05) 0%, transparent 62%);
+  animation: stBreathe 9s ease-in-out infinite;
+}
+@keyframes stBreathe {
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%      { opacity:1;  transform:scale(1.12); }
+}
+
+/* Particle canvas */
+#statCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+
+/* ── WRAPPER ─────────────────────────────────────── */
+.st-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,5vw,64px);
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: clamp(52px, 7vw, 80px);
+}
+
+/* ── HEADER ─────────────────────────────────────── */
+.st-head { text-align: center; }
+
+.st-eye {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10.5px !important; font-weight: 700 !important;
+  letter-spacing: .26em !important; text-transform: uppercase;
+  color: var(--g); margin-bottom: 22px;
+}
+.st-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--g);
+  animation: stDot 2.4s ease-in-out infinite;
+}
+@keyframes stDot {
+  0%,100% { box-shadow: 0 0 0 0   rgba(212,168,67,.55); }
+  50%      { box-shadow: 0 0 0 9px rgba(212,168,67,  0); }
+}
+
+#statSec .st-h2 {
+  font-size: clamp(28px, 4vw, 52px) !important;
+  font-weight: 900 !important;
+  color: var(--w) !important;
+  letter-spacing: -.03em !important;
+  line-height: 1.06;
+  margin: 0 !important; padding: 0 !important;
+}
+.st-gold {
+  background: linear-gradient(92deg, var(--g) 0%, var(--gl) 55%, var(--g) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Decorative thin rule below heading */
+.st-head-rule {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--g), transparent);
+  margin: 22px auto 0;
+  position: relative;
+}
+.st-head-rule::before {
+  content: '';
+  position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--g); box-shadow: 0 0 10px rgba(212,168,67,.8);
+}
+
+/* ── STATS GRID ─────────────────────────────────── */
+.st-grid {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0;
+}
+
+/* ── INDIVIDUAL STAT ────────────────────────────── */
+.st-stat {
+  flex: 1;
+  text-align: center;
+  padding: clamp(20px, 3vw, 48px) clamp(16px, 3vw, 40px);
+  position: relative;
+  cursor: default;
+  /* Entrance */
+  opacity: 0; transform: translateY(32px);
+  transition: opacity .7s var(--eas), transform .7s var(--eas);
+}
+.st-stat.st-in { opacity: 1; transform: translateY(0); }
+.st-stat:nth-child(2) { transition-delay: .12s; }
+.st-stat:nth-child(4) { transition-delay: .24s; }
+.st-stat:nth-child(6) { transition-delay: .36s; }
+
+/* Hover: stat brightens */
+.st-stat:hover .st-num {
+  filter: drop-shadow(0 0 48px rgba(212,168,67,.5));
+}
+
+/* ── NUMBER ROW ─────────────────────────────────── */
+.st-num-row {
+  display: flex; align-items: baseline;
+  justify-content: center;
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+/* The metric number — BIG, white */
+.st-num {
+  font-size: clamp(100px, 10.5vw, 60px) !important;
+  font-weight: 900 !important;
+  color: var(--w) !important;
+  letter-spacing: -.05em;
+  line-height: .9;
+  filter: drop-shadow(0 0 32px rgba(212,168,67,.22));
+  transition: filter .3s;
+}
+
+/* Gold suffix with travelling shimmer */
+.st-sfx {
+  font-size: clamp(32px, 4.5vw, 50px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.04em;
+  background: linear-gradient(90deg,
+    var(--gd) 0%, var(--g) 18%, var(--gl) 38%,
+    var(--gs) 50%, var(--gl) 62%, var(--g) 82%, var(--gd) 100%);
+  background-size: 280% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: stShimmer 4.5s linear infinite;
+  margin-left: 4px;
+}
+@keyframes stShimmer {
+  from { background-position: 280% center; }
+  to   { background-position: -280% center; }
+}
+/* Stagger shimmers so they don't sync */
+.st-stat:nth-child(2) .st-sfx { animation-delay: -1s; }
+.st-stat:nth-child(4) .st-sfx { animation-delay: -2s; }
+.st-stat:nth-child(6) .st-sfx { animation-delay: -3s; }
+
+/* Thin gold underline below number */
+.st-rule {
+  width: 32px; height: 1.5px;
+  background: linear-gradient(to right, transparent, var(--g), transparent);
+  margin: 0 auto 16px;
+  opacity: .6;
+}
+
+/* Label */
+.st-lbl {
+  font-size: clamp(10px, 1vw, 12px) !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--mu) !important;
+  line-height: 1.5;
+  transition: color .25s;
+}
+.st-stat:hover .st-lbl { color: rgba(212,168,67,.6) !important; }
+
+/* ── VERTICAL SEPARATOR BETWEEN STATS ───────────── */
+.st-sep {
+  flex-shrink: 0;
+  width: 1px;
+  height: clamp(60px, 8vw, 100px);
+  background: linear-gradient(to bottom,
+    transparent, rgba(212,168,67,.3), transparent);
+}
+
+/* ── BOTTOM CAPTION ─────────────────────────────── */
+.st-caption {
+  font-size: 13px !important; font-weight: 300 !important;
+  color: var(--dim) !important; letter-spacing: .04em;
+  text-align: center; max-width: 52ch;
+  opacity: 0; transition: opacity .8s var(--eas) .6s;
+}
+.st-caption.st-in { opacity: 1; }
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 900px) {
+  .st-grid { flex-wrap: wrap; }
+  .st-stat { flex: 1 1 calc(50% - 1px); min-width: 140px; }
+  .st-sep.st-v { display: none; }
+  /* Show horizontal separators between rows */
+}
+@media (max-width: 500px) {
+  .st-stat { flex: 1 1 100%; }
+  .st-sep  { display: none; }
+  .st-num  { font-size: clamp(64px, 18vw, 90px) !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #statSec *, #statSec *::before, #statSec *::after {
+    animation: none !important; transition: none !important;
+  }
+  .st-stat, .st-caption { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<!-- Background -->
+<div class="st-breathe"></div>
+<canvas id="statCanvas"></canvas>
+
+<div class="st-wrap">
+
+  <!-- 4 stats -->
+  <div class="st-grid">
+
+    <div class="st-stat" data-delay="0">
+      <div class="st-num-row">
+        <span class="st-num" data-target="72">0</span><span class="st-sfx">hrs</span>
+      </div>
+      <div class="st-rule"></div>
+      <p class="st-lbl">Brief to Shortlist</p>
+    </div>
+
+    <div class="st-sep st-v"></div>
+
+    <div class="st-stat" data-delay=".12">
+      <div class="st-num-row">
+        <span class="st-num" data-target="2">0</span><span class="st-sfx">:1</span>
+      </div>
+      <div class="st-rule"></div>
+      <p class="st-lbl">CV-to-Interview Ratio</p>
+    </div>
+
+    <div class="st-sep st-v"></div>
+
+    <div class="st-stat" data-delay=".24">
+      <div class="st-num-row">
+        <span class="st-num" data-target="3">0</span>
+      </div>
+      <div class="st-rule"></div>
+      <p class="st-lbl">Delivery Regions</p>
+    </div>
+
+    <div class="st-sep st-v"></div>
+
+    <div class="st-stat" data-delay=".36">
+      <div class="st-num-row">
+        <span class="st-num" data-target="6">0</span><span class="st-sfx">+</span>
+      </div>
+      <div class="st-rule"></div>
+      <p class="st-lbl">Platform Ecosystems</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<script>
+((() => {
+  'use strict';
+
+  var sec = document.getElementById('statSec');
+
+  /* ── COUNT-UP ─────────────────────────────────── */
+  function countUp(el, target, duration) {
+    var start = performance.now();
+    (function run(now) {
+      var p = Math.min((now - start) / duration, 1);
+      var e = 1 - (1 - p) ** 4; /* easeOutQuart */
+      el.textContent = Math.round(target * e);
+      if (p < 1) requestAnimationFrame(run);
+      else el.textContent = target;
+    }(start));
+  }
+
+  /* ── SCROLL REVEAL + COUNT-UP TRIGGER ─────────── */
+  var stats    = Array.prototype.slice.call(document.querySelectorAll('#statSec .st-stat'));
+  var caption  = document.getElementById('stCaption');
+  var fired    = false;
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+
+        if (el === caption) {
+          el.classList.add('st-in');
+        } else {
+          var delay = parseFloat(el.getAttribute('data-delay') || '0') * 1000;
+          setTimeout(() => { el.classList.add('st-in'); }, delay);
+
+          if (!fired) {
+            fired = true;
+            stats.forEach((s) => {
+              var numEl = s.querySelector('.st-num');
+              if (!numEl) return;
+              var d = parseFloat(s.getAttribute('data-delay') || '0') * 1000;
+              setTimeout(() => {
+                countUp(numEl, parseInt(numEl.getAttribute('data-target'), 10), 1800);
+              }, d + 100);
+            });
+          }
+        }
+        io.unobserve(el);
+      });
+    }, { threshold: 0.2 });
+
+    stats.forEach((s) => { io.observe(s); });
+    if (caption) io.observe(caption);
+  } else {
+    stats.forEach((s) => {
+      s.classList.add('st-in');
+      var n = s.querySelector('.st-num');
+      if (n) n.textContent = n.getAttribute('data-target');
+    });
+    if (caption) caption.classList.add('st-in');
+  }
+
+  /* ── SUBTLE PARTICLE CANVAS ───────────────────── */
+  ((() => {
+    var cv  = document.getElementById('statCanvas');
+    var ctx = cv.getContext('2d');
+    var pts = [], N = 22, G = [212, 168, 67];
+    var pmx = -9999, pmy = -9999;
+
+    function resize() {
+      cv.width  = sec.offsetWidth;
+      cv.height = sec.offsetHeight;
+      build();
+    }
+    function build() {
+      pts = [];
+      for (var i = 0; i < N; i++) {
+        pts.push({
+          x:  Math.random() * cv.width,
+          y:  Math.random() * cv.height,
+          r:  Math.random() * 1.2 + .3,
+          vx: (Math.random() - .5) * .15,
+          vy: (Math.random() - .5) * .15,
+          a:  Math.random() * .35 + .06
+        });
+      }
+    }
+    function rgba(a) {
+      return 'rgba(' + G[0] + ',' + G[1] + ',' + G[2] + ',' + a + ')';
+    }
+    function draw() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      /* Connector lines */
+      for (var i = 0; i < pts.length; i++) {
+        for (var j = i + 1; j < pts.length; j++) {
+          var dx = pts[i].x - pts[j].x;
+          var dy = pts[i].y - pts[j].y;
+          var d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < 110) {
+            ctx.beginPath();
+            ctx.strokeStyle = rgba(.04 * (1 - d / 110));
+            ctx.lineWidth   = .4;
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      /* Dots + repulsion */
+      pts.forEach((p) => {
+        var dx = pmx - p.x, dy = pmy - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 130 && dist > 0) {
+          var f = (130 - dist) / 130 * .5;
+          p.vx -= (dx / dist) * f * .5;
+          p.vy -= (dy / dist) * f * .5;
+        }
+        var spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > .55) { p.vx = (p.vx / spd) * .55; p.vy = (p.vy / spd) * .55; }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(p.a);
+        ctx.fill();
+
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > cv.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > cv.height) p.vy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+
+    sec.addEventListener('mousemove', (e) => {
+      var r = sec.getBoundingClientRect();
+      pmx = e.clientX - r.left;
+      pmy = e.clientY - r.top;
+    });
+    sec.addEventListener('mouseleave', () => { pmx = -9999; pmy = -9999; });
+
+    resize(); draw();
+    var t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t); t = setTimeout(resize, 200);
+    });
+  })());
+
+})());
+</script>

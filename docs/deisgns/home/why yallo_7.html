@@ -1,0 +1,569 @@
+<!--
+  YALLO TALENT — WHY YALLO TALENT  |  Premium redesign
+  Asymmetric bento · Magnetic tilt · Animated gradient border
+  Mouse spotlight · Breathing glow · Stagger entrance
+  Content: identical. Design: entirely new.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<section id="whyYT">
+<style>
+/* ═══════════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════════ */
+#whyYT {
+  --g:   #D4A843;
+  --gl:  #F0C866;
+  --gd:  #B8912F;
+  --w:   #FFFFFF;
+  --off: #EDEBE7;
+  --mu:  #A0A0A0;
+  --dim: #606060;
+  --base:#060c18;
+  --c1:  #0d1421;
+  --c2:  #111b2d;
+  --gap: 18px;
+  --r:   22px;
+  --eas: cubic-bezier(.22,.61,.36,1);
+
+  background-color: var(--base);
+  background-image:
+    /* Pattern C — large bottom-left gold glow */
+    radial-gradient(ellipse 120% 90% at 0% 100%, rgba(212,168,67,.13) 0%, transparent 55%),
+    /* Pattern C — top-right accent */
+    radial-gradient(ellipse 60% 60%  at 100% 0%,  rgba(212,168,67,.06) 0%, transparent 55%),
+    /* Pattern B-large — gold grid 44px */
+    linear-gradient(rgba(212,168,67,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.022) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+
+  padding: clamp(88px,10vw,140px) 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Lato', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--off);
+}
+#whyYT *, #whyYT *::before, #whyYT *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+#whyYT a { color: inherit; text-decoration: none; }
+#whyYT svg { display: block; }
+
+/* Mouse spotlight — follows cursor */
+#whyYT .wyt-spotlight {
+  position: absolute;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(212,168,67,.055) 0%,
+    transparent 65%
+  );
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  top: var(--my, 50%);
+  left: var(--mx, 50%);
+  transition: top .08s ease, left .08s ease;
+  z-index: 0;
+}
+
+/* ── WRAPPER ───────────────────────────────────────── */
+.wyt-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,5vw,64px);
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  gap: clamp(56px,7vw,88px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HEADER — editorial left-rail
+═══════════════════════════════════════════════════════ */
+.wyt-hdr {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: end;
+}
+.wyt-hdr-l { max-width: 600px; }
+
+/* Eyebrow */
+.wyt-eye {
+  display: inline-flex;
+  align-items: center; gap: 10px;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: .26em !important;
+  text-transform: uppercase;
+  color: var(--g);
+  margin-bottom: 22px;
+}
+.wyt-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--g);
+  box-shadow: 0 0 0 0 rgba(212,168,67,.6);
+  animation: wytDot 2.6s ease-in-out infinite;
+}
+@keyframes wytDot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,168,67,.55); }
+  50%      { box-shadow: 0 0 0 9px rgba(212,168,67,0); }
+}
+
+/* Heading — oversized, gold gradient on second line */
+#whyYT .wyt-h2 {
+  font-size: clamp(34px, 5vw,64px) !important;
+  font-weight: 900 !important;
+  line-height: 1.02 !important;
+  letter-spacing: -.035em !important;
+  color: var(--w) !important;
+  margin: 0 0 22px !important; padding: 0 !important;
+}
+.wyt-gold-text {
+  display: block;
+  background: linear-gradient(92deg, var(--g) 0%, var(--gl) 55%, var(--g) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sub */
+#whyYT .wyt-sub {
+  font-size: clamp(15px,1.4vw,17px) !important;
+  font-weight: 300 !important;
+  line-height: 1.78 !important;
+  color: var(--mu) !important;
+  max-width: 46ch;
+  margin: 0 !important; padding: 0 !important;
+}
+
+/* Right-side decorative rule */
+.wyt-hdr-r {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 6px;
+}
+.wyt-hdr-rule {
+  width: 100%; height: 1px;
+  background: linear-gradient(to right,
+    rgba(212,168,67,.35), rgba(212,168,67,.08) 60%, transparent);
+  position: relative;
+}
+.wyt-hdr-rule::before {
+  content: '';
+  position: absolute;
+  right: 0; top: -3px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--g);
+  box-shadow: 0 0 12px rgba(212,168,67,.6);
+  animation: wytDot 2.6s ease-in-out infinite;
+  animation-delay: .8s;
+}
+
+/* ═══════════════════════════════════════════════════════
+   BENTO GRID — asymmetric 3-col 2-row
+═══════════════════════════════════════════════════════ */
+.wyt-bento {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: var(--gap);
+}
+
+/* ── Card outer: gradient border wrapper ─────────── */
+.wyt-co {
+  border-radius: calc(var(--r) + 2px);
+  padding: 1.5px;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(212,168,67,.42) 0%,
+    rgba(212,168,67,.06) 40%,
+    rgba(212,168,67,.04) 60%,
+    rgba(212,168,67,.28) 100%
+  );
+  transition: background .4s var(--eas);
+}
+/* Animated border glow on hover */
+.wyt-co:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(212,168,67,.7) 0%,
+    rgba(212,168,67,.15) 40%,
+    rgba(212,168,67,.12) 60%,
+    rgba(212,168,67,.55) 100%
+  );
+}
+
+/* BENTO positions */
+.wyt-co:nth-child(1) { grid-column: 1; grid-row: 1 / 3; }   /* Tall left */
+.wyt-co:nth-child(2) { grid-column: 2 / 4; grid-row: 1; }   /* Wide top-right */
+.wyt-co:nth-child(3) { grid-column: 2; grid-row: 2; }        /* Bottom-mid */
+.wyt-co:nth-child(4) { grid-column: 3; grid-row: 2; }        /* Bottom-right */
+
+/* ── Card inner ──────────────────────────────────── */
+.wyt-card {
+  background: var(--c1);
+  border-radius: calc(var(--r) - 1px);
+  height: 100%;
+  display: flex; flex-direction: column;
+  padding: 36px 32px 32px;
+  position: relative; overflow: hidden;
+  /* Breathing glow */
+  box-shadow: 0 0 0 0 rgba(212,168,67,.0);
+  animation: wytBreathe 5s ease-in-out infinite;
+  transition: transform .35s var(--eas);
+  will-change: transform;
+}
+
+/* Stagger breathing offset per card */
+.wyt-co:nth-child(2) .wyt-card { animation-delay: 1.2s; }
+.wyt-co:nth-child(3) .wyt-card { animation-delay: 2.4s; }
+.wyt-co:nth-child(4) .wyt-card { animation-delay: 3.6s; }
+
+@keyframes wytBreathe {
+  0%,100% { box-shadow: 0 6px 40px rgba(0,0,0,.35), 0 0 0 rgba(212,168,67,.0); }
+  50%      { box-shadow: 0 6px 40px rgba(0,0,0,.45), 0 0 28px rgba(212,168,67,.06); }
+}
+
+/* Light sweep on hover */
+.wyt-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    108deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(212,168,67,.055) 50%,
+    transparent 62%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+  pointer-events: none;
+}
+.wyt-co:hover .wyt-card::before { transform: translateX(120%); }
+
+/* Gold top-bar that slides from left on card hover */
+.wyt-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--g), var(--gl) 60%, transparent);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .45s var(--eas);
+}
+.wyt-co:hover .wyt-card::after { transform: scaleX(1); }
+
+/* Entrance animation */
+.wyt-co {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity .6s var(--eas),
+    transform .6s var(--eas),
+    background .4s var(--eas);
+}
+.wyt-co.wyt-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Faint watermark number top-right ────────────── */
+.wyt-wm {
+  position: absolute; top: -14px; right: 18px;
+  font-size: 130px !important; font-weight: 900 !important;
+  letter-spacing: -.08em; line-height: 1;
+  color: rgba(212,168,67,.04);
+  user-select: none; pointer-events: none;
+}
+
+/* ── Card inner glow (colour per card via --cg) ── */
+.wyt-glow {
+  position: absolute; top: -60px; left: -40px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle,
+    var(--cg, rgba(212,168,67,.07)) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Icon ─────────────────────────────────────────── */
+.wyt-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(212,168,67,.28);
+  background: rgba(212,168,67,.07);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-bottom: 28px;
+  position: relative; z-index: 1;
+  box-shadow: 0 0 20px rgba(212,168,67,.12);
+  transition: box-shadow .3s, border-color .3s, background .3s;
+}
+.wyt-co:hover .wyt-icon {
+  border-color: rgba(212,168,67,.6);
+  background: rgba(212,168,67,.13);
+  box-shadow: 0 0 32px rgba(212,168,67,.28);
+}
+.wyt-icon svg {
+  width: 22px; height: 22px; fill: none;
+  stroke: var(--g); stroke-width: 1.65;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ── Title ────────────────────────────────────────── */
+.wyt-title {
+  font-size: 19px !important; font-weight: 900 !important;
+  color: var(--w) !important;
+  line-height: 1.2; letter-spacing: -.02em;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+/* Tall card: bigger title */
+.wyt-co:nth-child(1) .wyt-title { font-size: clamp(22px,2.4vw,28px) !important; }
+
+/* ── Description ────────────────────────────────── */
+.wyt-desc {
+  font-size: 14px !important; font-weight: 300 !important;
+  line-height: 1.78 !important; color: var(--mu) !important;
+  flex: 1;
+  position: relative; z-index: 1;
+}
+/* Tall card: bigger description */
+.wyt-co:nth-child(1) .wyt-desc { font-size: 15px !important; }
+
+/* Wide card (card 2): side-by-side layout */
+.wyt-co:nth-child(2) .wyt-card {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 40px 40px;
+}
+.wyt-co:nth-child(2) .wyt-card-body { flex: 1; }
+.wyt-co:nth-child(2) .wyt-icon { margin-bottom: 0; flex-shrink: 0; }
+
+/* ── Stat pill (tall card only) ─────────────────── */
+.wyt-stat {
+  display: inline-flex; align-items: baseline; gap: 10px;
+  margin-top: 32px; padding-top: 24px;
+  border-top: 1px solid rgba(212,168,67,.1);
+  position: relative; z-index: 1;
+}
+.wyt-stat-n {
+  font-size: 36px !important; font-weight: 900 !important;
+  color: var(--g) !important; letter-spacing: -.03em; line-height: 1;
+}
+.wyt-stat-l {
+  font-size: 11px !important; font-weight: 400 !important;
+  color: var(--dim) !important; letter-spacing: .04em;
+}
+
+/* ── Arrow chip ─────────────────────────────────── */
+.wyt-arr-chip {
+  position: absolute; bottom: 28px; right: 28px;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid rgba(212,168,67,.2);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(212,168,67,.5); font-size: 15px;
+  transition: border-color .22s, color .22s, background .22s, transform .22s;
+  z-index: 1;
+}
+.wyt-co:hover .wyt-arr-chip {
+  border-color: rgba(212,168,67,.7);
+  color: var(--g);
+  background: rgba(212,168,67,.1);
+  transform: translate(2px, -2px);
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════ */
+@media (max-width: 1080px) {
+  .wyt-bento {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  .wyt-co:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+  .wyt-co:nth-child(2) { grid-column: 1 / 3; grid-row: 2; }
+  .wyt-co:nth-child(3) { grid-column: 1;     grid-row: 3; }
+  .wyt-co:nth-child(4) { grid-column: 2;     grid-row: 3; }
+  .wyt-co:nth-child(1) .wyt-card { min-height: 320px; }
+}
+@media (max-width: 768px) {
+  .wyt-hdr { grid-template-columns: 1fr; }
+  .wyt-hdr-r { display: none; }
+  .wyt-bento {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+  .wyt-co:nth-child(1),
+  .wyt-co:nth-child(2),
+  .wyt-co:nth-child(3),
+  .wyt-co:nth-child(4) {
+    grid-column: 1; grid-row: auto;
+  }
+  .wyt-co:nth-child(2) .wyt-card {
+    flex-direction: column; gap: 0;
+  }
+  .wyt-co:nth-child(2) .wyt-icon { margin-bottom: 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #whyYT *, #whyYT *::before, #whyYT *::after {
+    animation: none !important; transition: none !important;
+  }
+  .wyt-co { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<!-- ── MARKUP ──────────────────────────────────────── -->
+<div class="wyt-spotlight" id="wytSpot"></div>
+<div class="wyt-wrap">
+
+  <!-- Header -->
+  <div class="wyt-hdr">
+    <div class="wyt-hdr-l">
+      <div class="wyt-eye">
+        <span class="wyt-eye-dot"></span>
+        Why Yallo Talent
+      </div>
+      <h2 class="wyt-h2">
+        A specialist partner,
+        <span class="wyt-gold-text">not a generalist agency.</span>
+      </h2>
+      <p class="wyt-sub">The difference between a stack of CVs and a shortlist you can actually hire from.</p>
+    </div>
+    <div class="wyt-hdr-r">
+      <div class="wyt-hdr-rule"></div>
+    </div>
+  </div>
+
+  <!-- Bento feature grid -->
+  <div class="wyt-bento" id="wytBento">
+
+    <!-- Card 1: Architect-led — tall, left -->
+    <div class="wyt-co" style="--cg:rgba(212,168,67,.09)">
+      <div class="wyt-card">
+        <div class="wyt-glow"></div>
+        <div class="wyt-wm">01</div>
+        <div class="wyt-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5"/></svg>
+        </div>
+        <h3 class="wyt-title">Architect-led screening</h3>
+        <p class="wyt-desc">Specialists are screened by people who have built enterprise tech — for depth and delivery risk, not keywords.</p>
+        <div class="wyt-stat">
+          <span class="wyt-stat-n">0</span>
+          <span class="wyt-stat-l">CVs without a brief first</span>
+        </div>
+        <div class="wyt-arr-chip">&#8599;</div>
+      </div>
+    </div>
+
+    <!-- Card 2: 72h — wide, top-right -->
+    <div class="wyt-co" style="--cg:rgba(212,168,67,.07)">
+      <div class="wyt-card">
+        <div class="wyt-glow"></div>
+        <div class="wyt-wm">02</div>
+        <div class="wyt-icon" style="flex-shrink:0">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="wyt-card-body">
+          <h3 class="wyt-title">Shortlists in 72 hours</h3>
+          <p class="wyt-desc">A calibrated shortlist within 72 hours of the brief, so your programme does not wait on hiring.</p>
+        </div>
+        <div class="wyt-arr-chip" style="bottom:24px;right:24px">&#8599;</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Four ways -->
+    <div class="wyt-co" style="--cg:rgba(212,168,67,.07)">
+      <div class="wyt-card">
+        <div class="wyt-glow"></div>
+        <div class="wyt-wm">03</div>
+        <div class="wyt-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="wyt-title">Four ways to hire</h3>
+        <p class="wyt-desc">Permanent, contract, EOR or subcontracting — matched to how you need to hold the risk.</p>
+        <div class="wyt-arr-chip">&#8599;</div>
+      </div>
+    </div>
+
+    <!-- Card 4: Region -->
+    <div class="wyt-co" style="--cg:rgba(212,168,67,.07)">
+      <div class="wyt-card">
+        <div class="wyt-glow"></div>
+        <div class="wyt-wm">04</div>
+        <div class="wyt-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/><path d="M2.5 12h19M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+        </div>
+        <h3 class="wyt-title">Deep in the region</h3>
+        <p class="wyt-desc">GCC, India and the UK, with recruiters who know the sectors that are actually hiring.</p>
+        <div class="wyt-arr-chip">&#8599;</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<script>
+((() => {
+  'use strict';
+
+  var section = document.getElementById('whyYT');
+  var spot    = document.getElementById('wytSpot');
+  var cards   = document.querySelectorAll('#wytBento .wyt-co');
+
+  /* ── Mouse spotlight ─────────────────────────────── */
+  section.addEventListener('mousemove', (e) => {
+    var r = section.getBoundingClientRect();
+    section.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    section.style.setProperty('--my', (e.clientY - r.top)  + 'px');
+  });
+
+  /* ── Magnetic tilt per card ──────────────────────── */
+  cards.forEach((outer) => {
+    var inner = outer.querySelector('.wyt-card');
+    if (!inner) return;
+
+    outer.addEventListener('mousemove', (e) => {
+      var r  = outer.getBoundingClientRect();
+      var x  = (e.clientX - r.left) / r.width  - 0.5;
+      var y  = (e.clientY - r.top)  / r.height - 0.5;
+      var rx = (-y * 7).toFixed(2);
+      var ry = ( x * 7).toFixed(2);
+      inner.style.transform =
+        'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-6px)';
+    });
+
+    outer.addEventListener('mouseleave', () => {
+      inner.style.transform = '';
+    });
+  });
+
+  /* ── Stagger entrance via IntersectionObserver ───── */
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        var el  = entry.target;
+        var idx = Array.prototype.indexOf.call(cards, el);
+        setTimeout(() => {
+          el.classList.add('wyt-in');
+        }, idx * 130);
+        io.unobserve(el);
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach((c) => { io.observe(c); });
+  } else {
+    cards.forEach((c) => { c.classList.add('wyt-in'); });
+  }
+
+})());
+</script>

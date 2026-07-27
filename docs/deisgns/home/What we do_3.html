@@ -1,0 +1,300 @@
+<div class="yp-wrap" id="ypPillars">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════════════════
+   FOUR WAYS — YALLO gradient background (Pattern C + B)
+   Font updated to Lato. Layout/JS untouched.
+═══════════════════════════════════════════════════════ */
+#ypPillars{
+  /* ── Tokens ─────────────────────────────────────── */
+  --gold:#d4a843; --gold-l:#f0c866; --gold-d:#b8912f;
+  --white:#fff;   --off:#f0ede8;    --muted:#a9a9a9; --dim:#6a6a6a;
+
+  /* Navy-tinted surfaces to match the gradient base */
+  --surface:#1a1714;   /* tab background          */
+  --card:#211e18;      /* panel background        */
+  --line:#2e2820;      /* subtle border           */
+  --line2:#3a3326;     /* tab border              */
+
+  /* Font: Lato throughout */
+  --fh:'Lato',system-ui,sans-serif;
+  --fb:'Lato',system-ui,sans-serif;
+  --fm:'Lato',ui-monospace,sans-serif;
+
+  --gg:linear-gradient(135deg,#d4a843,#f0c866);
+  --ease:cubic-bezier(.22,.61,.36,1);
+
+  /* ── YALLO gradient background
+       Pattern C (full hero) — large gold glow, bottom-left at 20%,
+       top-right at 8% — layered over deep-navy base (#060c18).
+       Pattern B-large — gold fine-grid 44px at 2.5% opacity.    */
+  background-color: #0a0905;
+  background-image:
+    radial-gradient(ellipse 130% 95% at 0%   100%, rgba(212,168,67,.38) 0%, transparent 52%),
+    radial-gradient(ellipse  80% 70% at 100%   0%, rgba(212,168,67,.22) 0%, transparent 52%),
+    radial-gradient(ellipse  85% 65% at  50%  50%, rgba(212,168,67,.10) 0%, transparent 58%),
+    radial-gradient(ellipse  50% 40% at  50% 100%, rgba(240,200,100,.08) 0%, transparent 55%),
+    linear-gradient(rgba(212,168,67,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.04) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    44px 44px,
+    44px 44px;
+
+  font-family: var(--fb);
+  color: var(--off);
+  padding: clamp(72px,9vw,112px) 0;
+  position: relative;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+/* Lato on every child */
+#ypPillars *, #ypPillars *::before, #ypPillars *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+#ypPillars a { color: inherit; text-decoration: none; }
+
+/* Heading reset — Lato 900 */
+#ypPillars h2 {
+  color: var(--white);
+  font-weight: 900;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+/* Gold grid overlay (Pattern B) — top-masked, same as original */
+#ypPillars::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(212,168,67,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 0, #000, transparent 78%);
+  mask-image: radial-gradient(ellipse at 50% 0, #000, transparent 78%);
+}
+
+/* ── Layout ────────────────────────────────────────── */
+#ypPillars .yp-w {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 clamp(20px,5vw,56px);
+  position: relative; z-index: 1;
+}
+#ypPillars .yp-sec-head {
+  max-width: 720px; margin: 0 auto 48px; text-align: center;
+}
+#ypPillars .yp-arr { color: var(--gold); }
+
+/* ── Eyebrow ────────────────────────────────────────── */
+#ypPillars .yp-eyebrow {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); display: inline-block; margin-bottom: 18px;
+}
+
+/* ── Heading ────────────────────────────────────────── */
+#ypPillars .yp-h-lg { font-size: clamp(30px,4.6vw,56px); }
+
+/* ── Lede ───────────────────────────────────────────── */
+#ypPillars .yp-lede {
+  font-size: clamp(15px,1.6vw,18px); font-weight: 300;
+  line-height: 1.7; color: var(--muted);
+  max-width: 52ch; margin: 14px auto 0;
+}
+
+/* ── TABS ───────────────────────────────────────────── */
+#ypPillars .yp-ptabs {
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 10px; margin-bottom: 36px;
+}
+#ypPillars .yp-ptab {
+  padding: 12px 22px;
+  border: 1px solid var(--line2); border-radius: 40px;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+  background: var(--surface);
+  transition: border-color .22s, background .22s;
+}
+#ypPillars .yp-ptab:hover  { border-color: var(--gold-d); }
+#ypPillars .yp-ptab.on     {
+  background: rgba(212,168,67,.12);
+  border-color: var(--gold);
+  box-shadow: 0 0 18px rgba(212,168,67,.1);
+}
+#ypPillars .yp-ptab .yp-pk {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; color: var(--gold);
+}
+#ypPillars .yp-ptab .yp-pt {
+  font-size: 14px; font-weight: 700;
+  color: var(--off); transition: color .2s;
+}
+#ypPillars .yp-ptab.on .yp-pt { color: var(--gold); }
+
+/* ── PANEL ──────────────────────────────────────────── */
+#ypPillars .yp-ppanel {
+  background: var(--card);
+  border: 1px solid rgba(212,168,67,.18);
+  border-radius: 20px;
+  padding: clamp(30px,4vw,52px);
+  max-width: 860px; margin: 0 auto;
+  text-align: center; position: relative; overflow: hidden;
+  box-shadow:
+    0 30px 60px -42px rgba(0,0,0,.7),
+    0 0 0 1px rgba(212,168,67,.06);
+}
+/* Gold top-bar sweep */
+#ypPillars .yp-ppanel::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--gg);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .5s var(--ease);
+}
+#ypPillars .yp-ppanel.reflow::before { transform: scaleX(1); }
+
+/* Panel background glow (inner) */
+#ypPillars .yp-ppanel::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 100%,
+    rgba(212,168,67,.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Panel content ──────────────────────────────────── */
+#ypPillars .yp-pp-kick {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+#ypPillars .yp-pp-promise {
+  font-size: clamp(22px,2.8vw,36px); font-weight: 900;
+  letter-spacing: -.02em; color: #fff; line-height: 1.1; margin-bottom: 16px;
+}
+#ypPillars .yp-pp-how {
+  font-size: 16px; font-weight: 300;
+  color: var(--muted); line-height: 1.72;
+  margin: 0 auto 26px; max-width: 52ch;
+}
+#ypPillars .yp-pp-forlbl {
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 12px;
+}
+#ypPillars .yp-pp-chips {
+  display: flex; gap: 9px; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 28px;
+}
+#ypPillars .yp-pp-chip {
+  font-size: 13px; font-weight: 400;
+  color: var(--off);
+  background: rgba(212,168,67,.06);
+  border: 1px solid rgba(212,168,67,.18);
+  border-radius: 8px; padding: 9px 16px;
+}
+#ypPillars .yp-pp-foot {
+  display: flex; align-items: center; justify-content: center;
+  gap: 40px; flex-wrap: wrap;
+  border-top: 1px solid rgba(212,168,67,.14); padding-top: 24px;
+}
+#ypPillars .yp-pp-stat {
+  display: flex; align-items: baseline; gap: 12px;
+}
+#ypPillars .yp-pp-stat .yp-n {
+  font-size: 30px; font-weight: 900; color: var(--gold);
+  letter-spacing: -.02em; line-height: 1;
+}
+#ypPillars .yp-pp-stat .yp-l {
+  font-size: 11px; font-weight: 400; color: var(--muted);
+}
+#ypPillars .yp-pp-more {
+  font-size: 13.5px; font-weight: 700; color: #fff;
+  display: inline-flex; gap: 8px; align-items: center;
+}
+#ypPillars .yp-pp-more:hover .yp-arr { transform: translateX(4px); }
+#ypPillars .yp-pp-more .yp-arr { transition: transform .18s; }
+
+/* ── Entrance animation (unchanged logic) ───────────── */
+#ypPillars .yp-reflow .yp-pp-kick,
+#ypPillars .yp-reflow .yp-pp-promise,
+#ypPillars .yp-reflow .yp-pp-how,
+#ypPillars .yp-reflow .yp-pp-chips,
+#ypPillars .yp-reflow .yp-pp-foot { animation: ypFade .5s var(--ease) both; }
+#ypPillars .yp-reflow .yp-pp-promise { animation-delay: .05s; }
+#ypPillars .yp-reflow .yp-pp-how    { animation-delay: .1s; }
+#ypPillars .yp-reflow .yp-pp-chips  { animation-delay: .15s; }
+#ypPillars .yp-reflow .yp-pp-foot   { animation-delay: .2s; }
+@keyframes ypFade {
+  from { opacity:0; transform:translateY(8px); }
+  to   { opacity:1; transform:none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #ypPillars * { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="yp-w">
+  <div class="yp-sec-head">
+    <span class="yp-eyebrow">what we do</span>
+    <h2 class="yp-h-lg">Four ways we place talent.</h2>
+    <p class="yp-lede">One focus — the right tech specialists for enterprise. Four ways to bring them in, depending on how you need to hold the risk.</p>
+  </div>
+  <div class="yp-ptabs" id="ypTabs"></div>
+  <div class="yp-ppanel" id="ypPanel"></div>
+</div>
+</div>
+
+<script>
+(()=> {
+  var DATA=[
+    {k:'Permanent',kick:'Permanent placement',promise:'Specialists, placed to stay.',how:'Architect-screened permanent hires for enterprise IT — a brief-to-shortlist in 72 hours, and a 2:1 CV-to-interview ratio so your team reviews fits, not filler.',forr:['Programme-critical roles','Leadership & architecture','Long-term capability'],stat:{n:'72h',l:'brief to shortlist'},more:'Brief us on a permanent role'},
+    {k:'Contractors',kick:'Contract & interim',promise:'Interim skills, deployed fast.',how:'Contract and interim specialists for programme peaks, delivery gaps and fixed-term work — mobilised quickly, screened to the same architect-led bar as our permanent bench.',forr:['Programme surges','Fixed-term delivery','Specialist gaps'],stat:{n:'2:1',l:'CV-to-interview'},more:'Cover a delivery gap'},
+    {k:'EOR',kick:'Employer of Record',promise:'You choose. We employ them.',how:'Found your own hire? We take on the employment — UAE visa sponsorship or India payroll on a service fee. You direct the work, we carry the compliance.',forr:['Your own hires','Visa & sponsorship','Payroll in India'],stat:{n:'2',l:'regions · UAE & India'},more:'Set up an EOR arrangement'},
+    {k:'Subcontracting',kick:'Scoped delivery',promise:'Scoped delivery, outcome-owned.',how:'Hand us a defined slice of delivery and we run it — not just staffed, but owned to an agreed outcome, with our specialists accountable for the result.',forr:['Defined work packages','Outcome accountability','Managed capacity'],stat:{n:'End-to-end',l:'scoped to the work'},more:'Scope a delivery package'}
+  ];
+
+  var ptabs=document.getElementById('ypTabs'),ppanel=document.getElementById('ypPanel');
+
+  function paintPillar(i){
+    var p=DATA[i];
+    ppanel.classList.remove('yp-reflow');
+    void ppanel.offsetWidth;
+    ppanel.innerHTML=
+      '<div class="yp-pp-kick">'+p.kick+'</div>'+
+      '<div class="yp-pp-promise">'+p.promise+'</div>'+
+      '<p class="yp-pp-how">'+p.how+'</p>'+
+      '<div class="yp-pp-forlbl">Best for</div>'+
+      '<div class="yp-pp-chips">'+p.forr.map((f)=> '<span class="yp-pp-chip">'+f+'</span>').join('')+'</div>'+
+      '<div class="yp-pp-foot"><div class="yp-pp-stat"><span class="yp-n">'+p.stat.n+'</span><span class="yp-l">'+p.stat.l+'</span></div>'+
+      '<a class="yp-pp-more" href="#">'+p.more+' <span class="yp-arr">→</span></a></div>';
+    ppanel.classList.add('yp-reflow');
+    Array.prototype.forEach.call(ptabs.children,(el,j)=> {el.classList.toggle('on',j===i);});
+  }
+
+  DATA.forEach((p,i)=> {
+    var b=document.createElement('button');
+    b.className='yp-ptab'+(i===0?' on':'');
+    b.type='button';
+    b.innerHTML='<span class="yp-pk">0'+(i+1)+'</span><span class="yp-pt">'+p.k+'</span>';
+    b.addEventListener('mouseenter',()=> {paintPillar(i);});
+    b.addEventListener('click',()=> {paintPillar(i);});
+    b.addEventListener('focus',()=> {paintPillar(i);});
+    ptabs.appendChild(b);
+  });
+
+  paintPillar(0);
+})();
+</script>

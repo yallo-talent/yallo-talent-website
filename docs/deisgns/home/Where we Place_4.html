@@ -1,0 +1,814 @@
+<!--
+  YALLO TALENT — WHERE WE PLACE  |  v3.1
+  Lato font · Mobile-first responsive · Production quality
+  Paste entire block into one Elementor HTML widget.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<section id="ytwp" aria-label="Sectors where we place talent">
+<style>
+/* ═══════════════════════════════════════════════════════
+   1. DESIGN TOKENS
+═══════════════════════════════════════════════════════ */
+#ytwp {
+  --gold:   #D4A843;  --gold-l: #f0c866;
+  --white:  #FFFFFF;  --grey:   #A8A8A8;
+  --bg:     #000000;  --surf:   #0e0e0e;
+  --bdr:    #1e1e1e;  --bdr2:   #2a2a2a;
+
+  /* LATO used everywhere */
+  --ff-h: 'Lato', system-ui, sans-serif;
+  --ff-m: 'DM Mono', ui-monospace, monospace;
+
+  /* 8-pt spacing */
+  --s1:8px; --s2:16px; --s3:24px;
+  --s4:32px; --s6:48px; --s8:64px;
+
+  /* Card padding tokens */
+  --feat-p:  32px;
+  --mini-pt: 28px;
+  --mini-ps: 24px;
+  --role-pv: 32px;
+  --role-ph: 28px;
+
+  /* Layout */
+  --mw:  1400px;
+  --gap: 20px;
+  --px:  clamp(20px, 5vw, 64px);
+
+  /* Radii */
+  --r-s:8px; --r-m:16px; --r-l:22px;
+
+  /* Transitions */
+  --tr: .26s cubic-bezier(.22,.61,.36,1);
+  --tf: .18s ease;
+}
+
+/* ═══════════════════════════════════════════════════════
+   2. SCOPED RESET
+═══════════════════════════════════════════════════════ */
+#ytwp, #ytwp *, #ytwp *::before, #ytwp *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+#ytwp a      { color: inherit; text-decoration: none; }
+#ytwp button { cursor: pointer; border: none; background: none;
+               font-family: var(--ff-h); }
+#ytwp ul     { list-style: none; }
+#ytwp svg    { display: block; }
+
+/* ═══════════════════════════════════════════════════════
+   3. SECTION SHELL
+═══════════════════════════════════════════════════════ */
+#ytwp {
+  width: 100%;
+  background: var(--bg);
+  padding: clamp(60px, 9vw, 120px) 0;
+  font-family: var(--ff-h);
+  color: var(--grey);
+  position: relative;
+  overflow-x: hidden;
+}
+#ytwp::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(212,168,67,.11) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 55% at 72% 18%, #000 20%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 55% at 72% 18%, #000 20%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   4. CONTENT WRAPPER
+═══════════════════════════════════════════════════════ */
+.ytwp-wrap {
+  width: 100% !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+    position: relative;
+    z-index: 1;
+  display: flex; flex-direction: column;
+  gap: var(--s6);
+}
+
+/* ═══════════════════════════════════════════════════════
+   5. HEADER
+═══════════════════════════════════════════════════════ */
+.ytwp-hd {
+  display: flex; flex-direction: column;
+  gap: 28px; max-width: 720px;
+}
+.ytwp-eye {
+  display: inline-flex; align-items: center;
+  gap: 10px;
+  font-family: var(--ff-h);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: .22em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 18px;
+}
+.ytwp-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(212,168,67,.6);
+  flex-shrink: 0;
+  animation: ytwp-pulse 2.2s ease-in-out infinite;
+}
+@keyframes ytwp-pulse {
+  0%,100% { box-shadow: 0 0 0 0   rgba(212,168,67,.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(212,168,67, 0); }
+}
+#ytwp .ytwp-h2 {
+  font-family:    var(--ff-h) !important;
+  font-size:      clamp(28px, 5vw, 62px) !important;
+  font-weight:    900 !important;
+  line-height:    1.05 !important;
+  letter-spacing: -.02em !important;
+  color:          var(--white) !important;
+  text-align:     left !important;
+  padding:        0 !important; margin: 0 !important;
+}
+#ytwp .ytwp-sub {
+  font-family: var(--ff-h) !important;
+  font-size:   clamp(14px, 1.5vw, 18px) !important;
+  font-weight: 300 !important;
+  line-height: 1.75 !important;
+  color:       var(--grey) !important;
+  padding:     0 !important; margin: 20px 0 0 !important;
+  max-width: 58ch;
+}
+
+/* ═══════════════════════════════════════════════════════
+   6. MAIN GRID (Desktop: featured | mini)
+═══════════════════════════════════════════════════════ */
+.ytwp-grid {
+  display: grid;
+  grid-template-columns: 1fr .88fr;
+  gap: var(--gap);
+  align-items: stretch;
+}
+#ytwp-feat { display: flex; flex-direction: column; }
+
+/* ═══════════════════════════════════════════════════════
+   7. FEATURED CARD
+═══════════════════════════════════════════════════════ */
+.ytwp-feat {
+  position: relative;
+  border-radius: var(--r-l); overflow: hidden;
+  flex: 1; display: flex; flex-direction: column;
+  border: 1px solid rgba(255,255,255,.07);
+  will-change: opacity;
+  animation: ytwp-in .42s var(--tr) both;
+  min-height: 540px;
+}
+@keyframes ytwp-in {
+  from { opacity:0; transform:scale(.983); }
+  to   { opacity:1; transform:scale(1); }
+}
+.ytwp-feat-bg, .ytwp-feat-art, .ytwp-feat-ov {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.ytwp-feat-art { width:100%; height:100%; }
+.ytwp-feat-ov {
+  background: linear-gradient(168deg,
+    rgba(0,0,0,.06) 0%, rgba(0,0,0,.40) 36%, rgba(0,0,0,.97) 100%);
+}
+.ytwp-feat-bar {
+  position: absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-l) 45%, transparent 100%);
+}
+.ytwp-feat-wm {
+  position: absolute; bottom:-20px; right: var(--feat-p);
+  font-family: var(--ff-m); font-size:160px; font-weight:700;
+  line-height:1; color:rgba(255,255,255,.04);
+  pointer-events:none; letter-spacing:-.06em; user-select:none;
+}
+.ytwp-feat-meta {
+  position: absolute; top:26px;
+  left: var(--feat-p); right: var(--feat-p);
+  z-index:2; display:flex; align-items:center;
+  justify-content:space-between; gap: var(--s2);
+}
+.ytwp-feat-cat {
+  font-family: var(--ff-h); font-size:10px;
+  font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  color:rgba(255,255,255,.42);
+}
+.ytwp-feat-badge {
+  font-family: var(--ff-h); font-size:9px;
+  font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color: var(--gold);
+  background: rgba(0,0,0,.72);
+  border: 1px solid rgba(212,168,67,.35); border-radius:99px;
+  padding: 5px 12px !important;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.ytwp-feat-ctr {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  position:relative; z-index:1;
+  padding-top:68px !important; padding-bottom: var(--s3) !important;
+  min-height:0;
+}
+.ytwp-feat-ico {
+  width:88px; height:88px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.55);
+  border:1px solid var(--ic-c, rgba(212,168,67,.3));
+  box-shadow:0 0 52px var(--ic-g, rgba(212,168,67,.22));
+  flex-shrink:0;
+}
+.ytwp-feat-ico svg {
+  width:34px; height:34px; fill:none;
+  stroke: var(--ic-s,#D4A843); stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.ytwp-feat-body {
+  position:relative; z-index:1;
+  padding: var(--s3) var(--feat-p) var(--feat-p) !important;
+  display:flex; flex-direction:column; gap:14px;
+}
+.ytwp-feat-name {
+  font-family: var(--ff-h);
+  font-size: clamp(20px, 2.6vw, 34px);
+  font-weight:900; color: var(--white);
+  letter-spacing:-.02em; line-height:1.1;
+}
+.ytwp-feat-desc {
+  font-family: var(--ff-h);
+  font-size: clamp(13px, 1.15vw, 15px);
+  font-weight:300; line-height:1.78;
+  color:rgba(255,255,255,.62); max-width:50ch;
+}
+.ytwp-feat-chips { display:flex; flex-wrap:wrap; gap:8px; }
+.ytwp-feat-chip {
+  font-family: var(--ff-h); font-size:10px;
+  font-weight:700; letter-spacing:.06em;
+  padding: 6px 13px !important; border-radius:99px;
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.13);
+  color:rgba(255,255,255,.62);
+}
+.ytwp-feat-foot {
+  display:flex; align-items:center; gap: var(--s2);
+  flex-wrap:wrap;
+  border-top:1px solid rgba(255,255,255,.1);
+  padding-top: 20px !important; margin-top:4px;
+}
+.ytwp-feat-stat { display:flex; align-items:baseline; gap:8px; }
+.ytwp-feat-stat-n {
+  font-family: var(--ff-h);
+  font-size:28px; font-weight:900; color: var(--gold);
+  letter-spacing:-.02em; line-height:1;
+}
+.ytwp-feat-stat-l {
+  font-family: var(--ff-h); font-size:11px; font-weight:400;
+  color: var(--grey); letter-spacing:.05em;
+}
+.ytwp-feat-cta {
+  margin-left:auto;
+  display:inline-flex; align-items:center; gap:10px;
+  font-family: var(--ff-h); font-size:13px; font-weight:700;
+  color: var(--white);
+  border:1px solid rgba(255,255,255,.2); border-radius: var(--r-s);
+  padding: 11px 20px !important;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  transition:border-color var(--tf), background var(--tf);
+  white-space:nowrap;
+}
+.ytwp-feat-cta:hover { border-color: var(--gold); background:rgba(212,168,67,.12); }
+.ytwp-cta-arr { color: var(--gold); display:inline-block; transition:transform var(--tf); }
+.ytwp-feat-cta:hover .ytwp-cta-arr { transform:translateX(4px); }
+
+/* ═══════════════════════════════════════════════════════
+   8. MINI SECTOR GRID
+═══════════════════════════════════════════════════════ */
+.ytwp-secs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 1fr;
+  gap: var(--gap);
+}
+
+/* ═══════════════════════════════════════════════════════
+   9. MINI SECTOR CARD
+═══════════════════════════════════════════════════════ */
+.ytwp-sec {
+  position: relative; border-radius: var(--r-m);
+  overflow: hidden; cursor: pointer;
+  display: flex; flex-direction: column;
+  min-height: 185px;
+  border: 1px solid rgba(255,255,255,.07);
+  transition: border-color var(--tr), box-shadow var(--tr), transform var(--tr);
+  will-change: transform;
+}
+.ytwp-sec:hover {
+  border-color: rgba(212,168,67,.32);
+  box-shadow: 0 16px 44px -18px rgba(0,0,0,.95);
+  transform: translateY(-3px);
+}
+.ytwp-sec:focus-visible { outline:2px solid var(--gold); outline-offset:2px; }
+.ytwp-sec--last { grid-column: 1 / -1; }
+
+.ytwp-sec-bg, .ytwp-sec-art, .ytwp-sec-ov {
+  position:absolute; inset:0; pointer-events:none;
+}
+.ytwp-sec-art { width:100%; height:100%; opacity:.72; }
+.ytwp-sec-ov  { background:linear-gradient(168deg, rgba(0,0,0,.08) 0%, rgba(0,0,0,.88) 100%); }
+.ytwp-sec-bar {
+  position:absolute; top:0; left:0; right:0; height:1.5px;
+  background:linear-gradient(90deg, var(--gold), transparent 70%);
+  opacity:0; transition:opacity var(--tf);
+}
+.ytwp-sec:hover .ytwp-sec-bar { opacity:1; }
+
+.ytwp-sec-body {
+  position:relative; z-index:1;
+  flex:1; box-sizing:border-box;
+  display:flex; flex-direction:column;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  padding: var(--mini-pt) var(--mini-ps) var(--mini-ps) !important;
+}
+.ytwp-sec-top {
+  width:100%; display:flex;
+  align-items:flex-start; justify-content:space-between; gap:12px;
+}
+.ytwp-sec-name {
+  font-family: var(--ff-h);
+  font-size:19px; font-weight:700;
+  color: var(--white); line-height:1.35; letter-spacing:-.01em;
+  min-width:0; overflow-wrap:break-word; word-break:break-word;
+}
+.ytwp-sec-hot {
+  font-family: var(--ff-h); font-size:8px;
+  font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color: var(--gold);
+  border:1px solid rgba(212,168,67,.3); border-radius:99px;
+  padding: 4px 10px !important;
+  flex-shrink:0; white-space:nowrap; line-height:1; margin-top:3px;
+}
+.ytwp-sec-roles { width:100%; display:flex; flex-direction:column; gap:8px; }
+.ytwp-sec-role {
+  display:flex; align-items:center; gap:9px;
+  font-family: var(--ff-h); font-size:15px; font-weight:400;
+  line-height:1.65; color:rgba(255,255,255,.50);
+  letter-spacing:.01em; overflow-wrap:break-word; word-break:break-word;
+}
+.ytwp-sec-role::before {
+  content:''; flex-shrink:0;
+  width:3px; height:3px; border-radius:50%;
+  background: var(--gold); opacity:.8;
+}
+
+/* ═══════════════════════════════════════════════════════
+   10. ROLE DETAIL CARDS
+═══════════════════════════════════════════════════════ */
+.ytwp-roles {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: var(--gap); align-items:stretch;
+}
+.ytwp-roles.anim { animation:ytwp-up .38s var(--tr) both; }
+@keyframes ytwp-up {
+  from { opacity:0; transform:translateY(10px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.ytwp-rc {
+  background: var(--surf);
+  border:1px solid var(--bdr2);
+  border-left:2px solid rgba(212,168,67,.25);
+  border-radius: var(--r-m);
+  padding: var(--role-pv) var(--role-ph) !important;
+  display:flex; flex-direction:column; gap:0;
+  transition:border-left-color var(--tf);
+}
+.ytwp-rc:hover { border-left-color:rgba(212,168,67,.7); }
+.ytwp-rc-num {
+  font-family: var(--ff-h); font-size:11px; font-weight:700;
+  color: var(--gold); letter-spacing:.12em; margin-bottom:10px;
+}
+.ytwp-rc-title {
+  font-family: var(--ff-h); font-size:18px; font-weight:700;
+  color: var(--white); line-height:1.3; letter-spacing:-.01em;
+  margin-bottom:12px;
+}
+.ytwp-rc-desc {
+  font-family: var(--ff-h); font-size:16px; font-weight:300;
+  line-height:1.72; color: var(--grey);
+}
+
+/* ═══════════════════════════════════════════════════════
+   11. MOBILE NAV TABS
+═══════════════════════════════════════════════════════ */
+.ytwp-tabs {
+  display: none;
+  overflow-x: auto;
+  gap: 8px;
+  padding: 0 var(--px) 4px !important;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.ytwp-tabs::-webkit-scrollbar { display:none; }
+.ytwp-tab {
+  font-family: var(--ff-h); font-size:12px; font-weight:700;
+  letter-spacing:.05em; white-space:nowrap; flex-shrink:0;
+  padding: 10px 18px !important;
+  border:1px solid var(--bdr2); border-radius:99px;
+  color:#777;
+  transition:border-color var(--tf), color var(--tf), background var(--tf);
+}
+.ytwp-tab:hover { border-color:#3a3a3a; color:#bbb; }
+.ytwp-tab.on    { border-color:var(--gold); color:var(--gold); background:rgba(212,168,67,.08); }
+
+/* ═══════════════════════════════════════════════════════
+   12. MOBILE PANEL
+═══════════════════════════════════════════════════════ */
+.ytwp-mp { display:none; }
+
+.ytwp-m-card {
+  position:relative; border-radius: var(--r-l); overflow:hidden;
+  min-height:420px; display:flex; flex-direction:column;
+  border:1px solid rgba(255,255,255,.07);
+  animation:ytwp-in .4s var(--tr) both;
+}
+.ytwp-m-roles {
+  display:grid; grid-template-columns:1fr;
+  gap:10px; margin-top: var(--s2) !important;
+}
+.ytwp-m-rc {
+  background: var(--surf); border:1px solid var(--bdr);
+  border-left:2px solid rgba(212,168,67,.25); border-radius: var(--r-s);
+  padding: 18px 22px !important;
+  display:flex; flex-direction:column; gap:0;
+}
+.ytwp-m-rt {
+  font-family: var(--ff-h); font-size:14px; font-weight:700;
+  color: var(--white); line-height:1.3; margin-bottom:6px;
+}
+.ytwp-m-rd {
+  font-family: var(--ff-h); font-size:13px; font-weight:300;
+  line-height:1.68; color: var(--grey);
+}
+
+/* ═══════════════════════════════════════════════════════
+   13. RESPONSIVE
+═══════════════════════════════════════════════════════ */
+
+/* 1440px — laptop */
+@media (max-width:1440px) {
+  .ytwp-feat { min-height:500px; }
+}
+
+/* 1280px — narrower laptop */
+@media (max-width:1280px) {
+  .ytwp-sec-name { font-size:16px; }
+  .ytwp-sec-role { font-size:11.5px; }
+}
+
+/* 1024px — tablet: stack layout */
+@media (max-width:1024px) {
+  .ytwp-grid { grid-template-columns:1fr; align-items:start; }
+  #ytwp-feat { flex:none; }
+  .ytwp-feat { flex:none; min-height:440px; }
+  .ytwp-secs {
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:auto;
+  }
+  .ytwp-sec--last { grid-column:auto; }
+  .ytwp-sec { min-height:155px; }
+  /* Role cards: 2-col on tablet */
+  .ytwp-roles { grid-template-columns:repeat(2,1fr); }
+}
+
+/* 768px — MOBILE */
+@media (max-width:768px) {
+  /* Section */
+  #ytwp { padding: clamp(48px, 8vw, 72px) 0; }
+  .ytwp-wrap { gap: var(--s4); }
+
+  /* Hide desktop grid + role cards */
+  .ytwp-grid  { display:none; }
+  .ytwp-roles { display:none; }
+
+  /* Show mobile UI */
+  .ytwp-tabs { display:flex; }
+  .ytwp-mp   {
+    display:block;
+    padding: 0 var(--px) !important;
+  }
+
+  /* Mobile featured card */
+  .ytwp-m-card { min-height:400px; }
+  .ytwp-feat-body {
+    padding: var(--s3) var(--s3) var(--s3) !important;
+  }
+  .ytwp-feat-name { font-size:clamp(20px,6vw,28px); }
+  .ytwp-feat-desc { font-size:14px; }
+
+  /* Mobile role cards: side-by-side on larger phones */
+  .ytwp-m-roles {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+/* 480px — small mobile */
+@media (max-width:480px) {
+  #ytwp { --px: 16px; }
+  .ytwp-wrap { gap: var(--s3); }
+  .ytwp-m-card { min-height:380px; }
+
+  /* Stack role cards single-col on small phones */
+  .ytwp-m-roles { grid-template-columns:1fr; }
+
+  /* CTA + footer stack */
+  .ytwp-feat-foot {
+    flex-direction:column; align-items:flex-start; gap:12px;
+  }
+  .ytwp-feat-cta {
+    margin-left:0 !important; width:100%; justify-content:center;
+  }
+
+  /* Mini cards 2-col on tablet re-used above, 
+     but header text tighter */
+  .ytwp-hd { max-width:100%; }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion:reduce) {
+  #ytwp *, #ytwp *::before, #ytwp *::after {
+    animation-duration:.01ms !important;
+    transition-duration:.01ms !important;
+  }
+}
+</style>
+
+<!-- ── MARKUP ─────────────────────────────────────────── -->
+<div class="ytwp-wrap">
+
+  <header class="ytwp-hd">
+    <div class="ytwp-eye" aria-hidden="true">
+      <span class="ytwp-dot"></span>
+      <span>Where we place</span>
+    </div>
+    <h2 class="ytwp-h2">The sectors hiring —<br>and the skills they need.</h2>
+    <p class="ytwp-sub">Banking, public sector, manufacturing and logistics are hiring hard right now. Click any sector to explore the roles in demand.</p>
+  </header>
+
+  <div class="ytwp-grid">
+    <div id="ytwp-feat" aria-live="polite" aria-label="Featured sector"></div>
+    <ul class="ytwp-secs" id="ytwp-secs" role="list" aria-label="Select a sector"></ul>
+  </div>
+
+  <div class="ytwp-roles" id="ytwp-roles" aria-live="polite"></div>
+  <nav class="ytwp-tabs"  id="ytwp-tabs"  aria-label="Sector navigation"></nav>
+  <div class="ytwp-mp"    id="ytwp-mp"    aria-live="polite"></div>
+
+</div>
+</section>
+
+<!-- ── JAVASCRIPT (unchanged logic) ──────────────────── -->
+<script>
+((()=> {
+'use strict';
+
+var D=[
+  /* 0 — Featured (large card): Retail & Consumer — moved to position 0 */
+  {id:'07',name:'Retail & Consumer',s:'Retail',hot:false,cat:'Retail & Commerce',
+   bg1:'#100c05',bg2:'#221c0a',glow:'rgba(210,170,70,.34)',col:'rgba(210,170,70,.44)',st:'#d4aa44',
+   ic:'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0',
+   desc:'Commerce, POS and supply-chain transformation as the retail sector reshapes across the GCC and UK.',
+   stat:{n:'3',l:'delivery regions'},
+   roles:['Commerce & POS','Supply chain','Data & personalisation'],
+   uc:[{t:'Commerce & POS',d:'Platform and store-systems talent.'},
+       {t:'Supply chain',d:'Planning and fulfilment specialists.'},
+       {t:'Data & personalisation',d:'Analytics and CDP engineers.'}]},
+  /* 1 */
+  {id:'01',name:'Banking & Financial Services',s:'Banking',hot:true,cat:'Financial Services',
+   bg1:'#030912',bg2:'#081d46',glow:'rgba(74,143,210,.44)',col:'rgba(74,143,210,.52)',st:'#6aaae0',
+   ic:'M12 2l10 6.5v7L12 22 2 15.5v-7L12 2zM12 22v-7M2 8.5l10 7 10-7',
+   desc:'Core banking, payments, risk and data programmes across the GCC. Open banking is driving platform and integration demand at significant scale.',
+   stat:{n:'72h',l:'to shortlist'},
+   roles:['Core banking & payments','Risk, data & regulatory','Cloud platform engineering'],
+   uc:[{t:'Core banking & payments',d:'Platform, integration and delivery leads for transformation programmes.'},
+       {t:'Risk, data & regulatory',d:'Data engineers and risk-tech specialists for regulatory change.'},
+       {t:'Cloud & platform engineering',d:'Azure and AWS engineers across banking estate migrations.'}]},
+  /* 2 */
+  {id:'02',name:'Public Sector',s:'Gov & public',hot:true,cat:'Government',
+   bg1:'#040e07',bg2:'#0b2818',glow:'rgba(74,196,130,.38)',col:'rgba(74,196,130,.46)',st:'#5ac89a',
+   ic:'M3 21h18M5 21V7l7-4 7 4v14M9 21v-5h6v5',
+   desc:'Government digital, smart services and national transformation across the GCC and UK. Multi-year programmes sustain deep and consistent demand.',
+   stat:{n:'GCC',l:'primary region'},
+   roles:['Digital government delivery','Data & platform','Cybersecurity & GRC'],
+   uc:[{t:'Digital government delivery',d:'Programme and delivery leadership for national transformation.'},
+       {t:'Data & platform engineering',d:'Engineers building citizen-facing systems at scale.'},
+       {t:'Cybersecurity & GRC',d:'Security architects and compliance specialists.'}]},
+  /* 3 — Manufacturing & Logistics: merged from Manufacturing (03) + Logistics (04) */
+  {id:'03',name:'Manufacturing & Logistics',s:'Mfg & Logistics',hot:true,cat:'Industry & Supply Chain',
+   bg1:'#0e0904',bg2:'#2c1c08',glow:'rgba(210,140,70,.42)',col:'rgba(210,140,70,.52)',st:'#d48c44',
+   ic:'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5',
+   desc:'ERP, Industry 4.0, warehouse and transport transformation across plants and logistics networks in the UAE and KSA.',
+   stat:{n:'SAP',l:'primary platform'},
+   roles:['ERP & supply chain','WMS & TMS specialists','Plant & OT systems'],
+   uc:[{t:'ERP & supply chain',d:'SAP and Oracle functional and technical consultants for manufacturing programmes.'},
+       {t:'WMS / TMS specialists',d:'Blue Yonder and Manhattan talent for warehouse and transport transformation.'},
+       {t:'Plant & OT systems',d:'Automation, shop-floor and logistics integration specialists.'}]},
+  /* 4 */
+  {id:'05',name:'Healthcare & Life Sciences',s:'Healthcare',hot:false,cat:'Health & Life Sci',
+   bg1:'#050e0c',bg2:'#0b2424',glow:'rgba(70,200,180,.34)',col:'rgba(70,200,180,.44)',st:'#46c8b4',
+   ic:'M22 12h-4l-3 9L9 3l-3 9H2',
+   desc:'Clinical systems and compliance-grade delivery — from EMR implementations to regulated data platforms across GCC and UK.',
+   stat:{n:'GCC+UK',l:'active markets'},
+   roles:['Clinical & EMR systems','Data platforms','Security & compliance'],
+   uc:[{t:'Clinical & EMR systems',d:'Functional and integration specialists for hospital systems.'},
+       {t:'Regulated data platforms',d:'Engineers building and governing healthcare data estates.'},
+       {t:'Security & compliance',d:'GRC and cybersecurity specialists for healthcare.'}]},
+  /* 5 */
+  {id:'06',name:'Telco & Media',s:'Telco & Media',hot:false,cat:'Telecommunications',
+   bg1:'#050712',bg2:'#0c1430',glow:'rgba(80,120,210,.38)',col:'rgba(80,120,210,.48)',st:'#6080d8',
+   ic:'M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01',
+   desc:'OSS/BSS, network and data engineering across major telco transformation programmes in the GCC and UK.',
+   stat:{n:'6+',l:'platform ecosystems'},
+   roles:['OSS / BSS','Network engineering','Data engineering'],
+   uc:[{t:'OSS / BSS',d:'Platform and integration talent for telco transformation.'},
+       {t:'Network engineering',d:'Core and edge network specialists.'},
+       {t:'Data engineering',d:'Analytics and platform engineers at telco scale.'}]},
+  /* 6 */
+  {id:'08',name:'GCCs of Global Firms',s:'GCCs',hot:true,cat:'Capability Centres',
+   bg1:'#07090e',bg2:'#10182e',glow:'rgba(100,140,210,.38)',col:'rgba(100,140,210,.48)',st:'#7090d4',
+   ic:'M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zM2.5 12h19M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20',
+   desc:'Standing up and scaling Global Capability Centres in India and the GCC — from leadership through to full engineering bench.',
+   stat:{n:'India',l:'primary GCC hub'},
+   roles:['Capability-centre build','Engineering benches','Platform & data'],
+   uc:[{t:'Capability-centre build',d:'Leadership and strategy to establish the centre of excellence.'},
+       {t:'Engineering benches',d:'Full squads across the engineering stack.'},
+       {t:'Platform & data',d:'The specialist teams that carry delivery.'}]}
+];
+
+var fi=0, busy=false;
+
+function get(id){return document.getElementById(id);}
+
+function buildArt(sec,vw,vh,cls,sfx){
+  var gid='ytwpg'+sfx+sec.id;
+  return['<svg class="'+cls+'" viewBox="0 0 '+vw+' '+vh+'" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
+    '<defs><radialGradient id="'+gid+'" cx="55%" cy="40%" r="58%">',
+    '<stop offset="0%" stop-color="'+sec.glow.replace(/[\d.]+\)$/,'.48)')+'"/>',
+    '<stop offset="100%" stop-color="transparent"/></radialGradient></defs>',
+    '<rect width="'+vw+'" height="'+vh+'" fill="url(#'+gid+')"/>',
+    '<g stroke="'+sec.st+'" stroke-width=".6" opacity=".1">',
+    '<line x1="0" y1="'+Math.round(vh*.32)+'" x2="'+vw+'" y2="'+Math.round(vh*.32)+'"/>',
+    '<line x1="0" y1="'+Math.round(vh*.64)+'" x2="'+vw+'" y2="'+Math.round(vh*.64)+'"/>',
+    '<line x1="'+Math.round(vw*.33)+'" y1="0" x2="'+Math.round(vw*.33)+'" y2="'+Math.round(vh*.75)+'"/>',
+    '<line x1="'+Math.round(vw*.66)+'" y1="0" x2="'+Math.round(vw*.66)+'" y2="'+Math.round(vh*.75)+'"/>',
+    '</g></svg>'].join('');
+}
+
+function buildFeat(sec,vw,vh,sfx,showWm){
+  return[
+    '<div class="ytwp-feat-bg" style="background:linear-gradient(160deg,'+sec.bg1+','+sec.bg2+')"></div>',
+    buildArt(sec,vw,vh,'ytwp-feat-art',sfx),
+    '<div class="ytwp-feat-ov"></div>',
+    '<div class="ytwp-feat-bar"></div>',
+    showWm?'<div class="ytwp-feat-wm" aria-hidden="true">'+sec.id+'</div>':'',
+    '<div class="ytwp-feat-meta">',
+    '  <span class="ytwp-feat-cat">'+sec.cat+'</span>',
+    sec.hot?'<span class="ytwp-feat-badge">Hiring now</span>':'',
+    '</div>',
+    '<div class="ytwp-feat-ctr">',
+    '  <div class="ytwp-feat-ico" style="--ic-g:'+sec.glow+';--ic-c:'+sec.col+';--ic-s:'+sec.st+'">',
+    '    <svg viewBox="0 0 24 24"><path d="'+sec.ic+'"/></svg>',
+    '  </div>',
+    '</div>',
+    '<div class="ytwp-feat-body">',
+    '  <div class="ytwp-feat-name">'+sec.name+'</div>',
+    '  <p class="ytwp-feat-desc">'+sec.desc+'</p>',
+    '  <div class="ytwp-feat-chips">',
+    sec.roles.map((r)=> '<span class="ytwp-feat-chip">'+r+'</span>').join(''),
+    '  </div>',
+    '  <div class="ytwp-feat-foot">',
+    '    <div class="ytwp-feat-stat">',
+    '      <span class="ytwp-feat-stat-n">'+sec.stat.n+'</span>',
+    '      <span class="ytwp-feat-stat-l">'+sec.stat.l+'</span>',
+    '    </div>',
+    '    <a href="#cta" class="ytwp-feat-cta">',
+    '      Brief us on a '+sec.s+' role',
+    '      <span class="ytwp-cta-arr" aria-hidden="true">&#8594;</span>',
+    '    </a>',
+    '  </div>',
+    '</div>'
+  ].join('');
+}
+
+function renderFeat(){
+  var w=get('ytwp-feat'); if(!w) return;
+  var sec=D[fi];
+  var card=document.createElement('div');
+  card.className='ytwp-feat';
+  card.innerHTML=buildFeat(sec,600,600,'f',true);
+  w.innerHTML=''; w.appendChild(card);
+}
+
+function renderMini(){
+  var grid=get('ytwp-secs'); if(!grid) return;
+  var others=D.map((s,i)=> ({s:s,i:i})).filter((o)=> o.i!==fi);
+  var frag=document.createDocumentFragment();
+  others.forEach((o,j)=> {
+    var sec=o.s;
+    var li=document.createElement('li');
+    li.className='ytwp-sec'+((sec.id==='01'||sec.id==='08')?' ytwp-sec--last':'');
+    li.setAttribute('role','listitem');
+    li.setAttribute('tabindex','0');
+    li.setAttribute('aria-label','View '+sec.name);
+    li.innerHTML=[
+      '<div class="ytwp-sec-bg" style="background:linear-gradient(160deg,'+sec.bg1+','+sec.bg2+')"></div>',
+      buildArt(sec,280,185,'ytwp-sec-art','m'+j),
+      '<div class="ytwp-sec-ov"></div>',
+      '<div class="ytwp-sec-bar" aria-hidden="true"></div>',
+      '<div class="ytwp-sec-body">',
+      '  <div class="ytwp-sec-top">',
+      '    <span class="ytwp-sec-name">'+sec.name+'</span>',
+      sec.hot?'<span class="ytwp-sec-hot">HOT</span>':'',
+      '  </div>',
+      '  <div class="ytwp-sec-roles">',
+      sec.roles.slice(0,2).map((r)=> '<div class="ytwp-sec-role">'+r+'</div>').join(''),
+      '  </div>',
+      '</div>'
+    ].join('');
+    (((idx)=> {
+      li.addEventListener('click',()=> {setFeat(idx);});
+      li.addEventListener('keydown',(e)=> {
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();setFeat(idx);}
+      });
+    })(o.i));
+    frag.appendChild(li);
+  });
+  grid.innerHTML=''; grid.appendChild(frag);
+}
+
+function renderRoles(){
+  var w=get('ytwp-roles'); if(!w) return;
+  var sec=D[fi];
+  w.classList.remove('anim'); void w.offsetWidth;
+  w.innerHTML=sec.uc.map((u,i)=> '<div class="ytwp-rc">'+
+      '<div class="ytwp-rc-num">0'+(i+1)+'</div>'+
+      '<div class="ytwp-rc-title">'+u.t+'</div>'+
+      '<div class="ytwp-rc-desc">'+u.d+'</div>'+
+      '</div>').join('');
+  w.classList.add('anim');
+}
+
+function renderTabs(){
+  var nav=get('ytwp-tabs'); if(!nav) return;
+  nav.innerHTML=D.map((s,i)=> '<button class="ytwp-tab'+(i===fi?' on':'')+'" data-i="'+i+'"'+
+      ' aria-pressed="'+(i===fi?'true':'false')+'">'+s.s+'</button>').join('');
+  nav.querySelectorAll('.ytwp-tab').forEach((b)=> {
+    b.addEventListener('click',()=> {setFeat(+b.getAttribute('data-i'));});
+  });
+}
+
+function syncTabs(){
+  var nav=get('ytwp-tabs'); if(!nav) return;
+  nav.querySelectorAll('.ytwp-tab').forEach((b,j)=> {
+    b.classList.toggle('on',j===fi);
+    b.setAttribute('aria-pressed',j===fi?'true':'false');
+  });
+}
+
+function renderMp(){
+  var w=get('ytwp-mp'); if(!w) return;
+  var sec=D[fi];
+  var card=document.createElement('div');
+  card.className='ytwp-m-card';
+  card.innerHTML=buildFeat(sec,480,490,'mb',false);
+  var roles=document.createElement('div');
+  roles.className='ytwp-m-roles';
+  roles.innerHTML=sec.uc.map((u)=> '<div class="ytwp-m-rc">'+
+      '<div class="ytwp-m-rt">'+u.t+'</div>'+
+      '<div class="ytwp-m-rd">'+u.d+'</div>'+
+      '</div>').join('');
+  w.innerHTML=''; w.appendChild(card); w.appendChild(roles);
+}
+
+function setFeat(idx){
+  if(idx===fi||busy) return;
+  busy=true; fi=idx;
+  renderFeat(); renderMini(); renderRoles(); syncTabs(); renderMp();
+  setTimeout(()=> {busy=false;},460);
+}
+
+function init(){
+  renderFeat(); renderMini(); renderRoles(); renderTabs(); renderMp();
+}
+
+document.readyState==='loading'
+  ?document.addEventListener('DOMContentLoaded',init)
+  :init();
+})());
+</script>

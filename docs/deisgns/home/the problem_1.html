@@ -1,0 +1,664 @@
+<!--
+  YALLO TALENT — THE PROBLEM SECTION
+  Rose-gold gradient background · Diagonal lines · Glass panel
+  Lato font · All JS logic preserved exactly
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<section id="probSection">
+<style>
+/* ═══════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════ */
+#probSection {
+  --gold:   #D4A843;
+  --gold-l: #F0C866;
+  --gold-d: #A07830;
+  --rose:   #D4A843;        /* pink/rose accent — the new element */
+  --rose-l: #F0C866;
+  --rose-d: #A07830;
+  --white:  #FFFFFF;
+  --off:    #F0EDE8;
+  --muted:  #9A9A9A;
+  --dim:    #555;
+  --line:   #252020;
+  --line2:  #302828;
+  --card:   #0f0b0d;
+  --eas:    cubic-bezier(.22,.61,.36,1);
+
+  /* ── BACKGROUND: deep warm-dark + large rose glow + gold accent + diagonal lines */
+  background-color: #090508;
+  background-image:
+    /* Large rose/pink glow — bottom-left */
+    radial-gradient(ellipse 120% 90% at 0%   100%, rgba(212,168,67,.18) 0%, transparent 52%),
+    /* Warm amber top-right */
+    radial-gradient(ellipse  70% 60% at 100%   0%, rgba(212,168,67,.10) 0%, transparent 52%),
+    /* Centre warmth */
+    radial-gradient(ellipse  65% 50% at  50%  50%, rgba(212,168,67,.05) 0%, transparent 60%);
+
+  padding: clamp(72px, 9vw, 120px) 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Lato', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.65;
+  color: var(--off);
+}
+#probSection *, #probSection *::before, #probSection *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+#probSection a { color: inherit; text-decoration: none; }
+
+
+/* Particle canvas */
+#pbCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Breathing centre glow — very subtle */
+#probSection .pb-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 30% 60%,
+    rgba(212,168,67,.06) 0%, transparent 60%);
+  animation: pbBreath 10s ease-in-out infinite;
+}
+@keyframes pbBreath {
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%      { opacity:1;  transform:scale(1.1); }
+}
+
+/* Moving scan line across section */
+#probSection .pb-scan {
+  position: absolute; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right,
+    transparent, rgba(212,168,67,.25) 20%,
+    rgba(240,200,102,.5) 50%,
+    rgba(212,168,67,.25) 80%, transparent);
+  pointer-events: none; z-index: 0;
+  animation: pbScan 16s linear infinite;
+}
+@keyframes pbScan {
+  from { top: -2px; opacity:0; }
+  5%   { opacity:1; }
+  95%  { opacity:1; }
+  to   { top:100%; opacity:0; }
+}
+
+/* ── CONTENT WRAPPER ─────────────────────────────── */
+.pb-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,5vw,64px);
+  position: relative; z-index: 1;
+}
+
+/* Eyebrow */
+.pb-eye {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 10.5px !important; font-weight: 700 !important;
+  letter-spacing: .24em !important; text-transform: uppercase;
+  color: var(--rose-l); margin-bottom: 36px;
+}
+.pb-eye-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--rose-l);
+  box-shadow: 0 0 10px rgba(240,200,102,.7);
+  animation: pbDot 2.4s ease-in-out infinite;
+}
+@keyframes pbDot {
+  0%,100% { box-shadow: 0 0 0 0 rgba(240,200,102,.6); }
+  50%      { box-shadow: 0 0 0 9px rgba(240,200,102,0); }
+}
+
+/* ── 2-COL GRID ──────────────────────────────────── */
+.pb-grid {
+  display: grid;
+  grid-template-columns: .86fr 1.14fr;
+  gap: clamp(28px,4vw,60px);
+  align-items: stretch;
+}
+
+/* ═══════════════════════════════════════════════════
+   LEFT — persona selector
+═══════════════════════════════════════════════════ */
+.pb-left { display: flex; flex-direction: column; }
+
+#probSection .pb-h {
+  font-size: clamp(22px,2.5vw,30px) !important;
+  font-weight: 900 !important;
+  color: var(--white) !important;
+  letter-spacing: -.02em !important;
+  line-height: 1.12;
+  margin-bottom: 28px;
+  max-width: 16ch;
+}
+
+/* Persona list */
+.pb-list { display: flex; flex-direction: column; flex-grow: 1; }
+
+.pb-row {
+  width: 100%; background: none; border: none;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 8px 18px 6px;
+  text-align: left;
+  transition: padding-left .22s var(--eas);
+  position: relative;
+}
+.pb-row:last-of-type { border-bottom: 1px solid var(--line); }
+
+/* Rose-to-gold gradient left accent bar */
+.pb-row::before {
+  content: '';
+  position: absolute; left: 0; top: -1px; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, var(--rose-l), var(--gold));
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .28s var(--eas);
+}
+.pb-row:hover  { padding-left: 14px; }
+.pb-row.on     { padding-left: 14px; }
+.pb-row.on::before { transform: scaleY(1); }
+
+.pb-num {
+  font-size: 10.5px !important; font-weight: 700 !important;
+  letter-spacing: .1em; color: var(--dim);
+  flex-shrink: 0; width: 18px;
+  transition: color .2s;
+}
+.pb-title {
+  font-size: 18px !important; font-weight: 700 !important;
+  color: var(--off); letter-spacing: -.01em;
+  white-space: nowrap;
+  transition: color .2s;
+}
+.pb-sub {
+  font-size: 10px !important; font-weight: 400 !important;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--dim); margin-left: auto; text-align: right;
+  line-height: 1.3;
+  transition: color .2s;
+}
+
+/* Active state */
+.pb-row.on .pb-num   { color: var(--rose-l); }
+.pb-row.on .pb-title {
+  background: linear-gradient(90deg, var(--rose-l), var(--gold-l));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.pb-row.on .pb-sub   { color: var(--gold); }
+.pb-row:hover .pb-title { color: var(--white); }
+
+/* Left footer */
+.pb-foot {
+  margin-top: 32px;
+  display: flex; flex-direction: column;
+  gap: 16px; align-items: flex-start;
+}
+.pb-cue {
+  font-size: 11px !important; font-weight: 700 !important;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.pb-cue .c { color: var(--rose-l); }
+
+/* CTA button */
+.pb-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px !important; font-weight: 700 !important;
+  padding: 14px 26px;
+  border-radius: 10px; cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--gold) 100%);
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(212,168,67,.28);
+  transition: transform .2s, box-shadow .2s, filter .2s;
+}
+.pb-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 14px 40px rgba(212,168,67,.38);
+}
+.pb-btn .arr { transition: transform .18s; }
+.pb-btn:hover .arr { transform: translateX(4px); }
+
+/* ═══════════════════════════════════════════════════
+   RIGHT — conversation panel
+═══════════════════════════════════════════════════ */
+.pb-right {
+  /* Glass dark surface with rose top border */
+  background: linear-gradient(160deg, #131018 0%, #0e0b0d 100%);
+  border: 1px solid var(--line2);
+  border-radius: 22px;
+  padding: clamp(28px,3.5vw,44px);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow:
+    0 40px 100px -50px rgba(0,0,0,.9),
+    0 0 0 1px rgba(212,168,67,.06);
+}
+
+/* Rose-to-gold top bar */
+.pb-right::before {
+  content: '';
+  position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg,
+    var(--rose) 0%, var(--rose-l) 30%, var(--gold) 60%, var(--gold-l) 100%);
+  opacity: .9;
+}
+
+/* Inner ambient glow */
+.pb-right::after {
+  content: '';
+  position: absolute; top: -60px; right: -40px;
+  width: 280px; height: 280px; border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(212,168,67,.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Panel tag */
+.pb-tag {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px !important; font-weight: 700 !important;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 18px;
+  position: relative; z-index: 1;
+}
+.pb-tag .d {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--rose-l);
+  box-shadow: 0 0 10px rgba(240,200,102,.8);
+}
+
+/* Headline */
+#probSection .pb-hl {
+  font-size: clamp(20px,2.3vw,28px) !important;
+  font-weight: 900 !important;
+  color: var(--white) !important;
+  letter-spacing: -.02em !important;
+  line-height: 1.15;
+  margin-bottom: 28px;
+  min-height: 2.4em;
+  position: relative; z-index: 1;
+}
+
+/* Chat bubbles */
+.pb-chat {
+  display: flex; flex-direction: column;
+  gap: 12px; margin-bottom: 28px;
+  position: relative; z-index: 1;
+}
+.bub {
+  font-size: 14px !important; font-weight: 300 !important;
+  line-height: 1.65 !important;
+  color: var(--off) !important;
+  padding: 14px 18px;
+  border-radius: 14px;
+  max-width: 88%;
+}
+.bub.in {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-bottom-left-radius: 4px;
+  align-self: flex-start;
+}
+.bub.out {
+  background: rgba(212,168,67,.07);
+  border: 1px solid rgba(212,168,67,.2);
+  border-bottom-right-radius: 4px;
+  align-self: flex-end;
+}
+.pb-chat.anim .bub {
+  opacity: 0; transform: translateY(10px);
+  animation: pbBub .5s var(--eas) forwards;
+}
+.pb-chat.anim .bub:nth-child(1) { animation-delay: .04s; }
+.pb-chat.anim .bub:nth-child(2) { animation-delay: .16s; }
+.pb-chat.anim .bub:nth-child(3) { animation-delay: .28s; }
+@keyframes pbBub {
+  to { opacity:1; transform:none; }
+}
+
+/* Stat area */
+.pb-stat {
+  border-top: 1px solid rgba(212,168,67,.14);
+  padding-top: 22px; margin-top: auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 20px; align-items: baseline;
+  position: relative; z-index: 1;
+}
+.pb-num-big {
+  font-size: clamp(28px,3.4vw,42px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.03em; line-height: .95;
+  white-space: nowrap;
+  /* Rose-to-gold gradient number */
+  background: linear-gradient(135deg, var(--rose-l) 0%, var(--gold-l) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  grid-row: span 2;
+}
+.pb-stat-txt {
+  font-size: 13px !important; font-weight: 300 !important;
+  line-height: 1.55 !important; color: var(--muted) !important;
+}
+.pb-stat-src {
+  font-size: 10px !important; font-weight: 400 !important;
+  letter-spacing: .04em; color: var(--dim) !important;
+  grid-column: 2;
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .pb-grid { grid-template-columns: 1fr; gap: 36px; }
+  .pb-hl   { min-height: 0; }
+  .pb-title { font-size: 16px !important; }
+}
+@media (max-width: 560px) {
+  .pb-row { flex-wrap: wrap; gap: 6px 14px; }
+  .pb-sub { margin-left: 28px; width: 100%; text-align: left; }
+  .bub    { max-width: 96%; }
+  .pb-stat { grid-template-columns: 1fr; }
+  .pb-num-big { grid-row: auto; }
+  .pb-stat-src { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #probSection *, #probSection *::before, #probSection *::after {
+    animation: none !important; transition: none !important;
+  }
+  .pb-chat.anim .bub { opacity: 1 !important; transform: none !important; }
+}
+</style>
+
+<!-- Background layers -->
+<canvas id="pbCanvas"></canvas>
+<div class="pb-bg"></div>
+<div class="pb-scan"></div>
+
+<div class="pb-wrap">
+
+  <!-- Eyebrow -->
+  <div class="pb-eye"><span class="pb-eye-dot"></span>The Problem</div>
+
+  <div class="pb-grid">
+
+    <!-- LEFT: Persona selector -->
+    <div class="pb-left">
+      <h2 class="pb-h">Find the seat at the table that's yours.</h2>
+
+      <div class="pb-list" id="pbList" role="tablist" aria-label="Choose your role">
+        <button class="pb-row on" role="tab" aria-selected="true"  data-i="0">
+          <span class="pb-num">01</span><span class="pb-title">CHRO</span><span class="pb-sub">The hard roles stay open</span>
+        </button>
+        <button class="pb-row" role="tab" aria-selected="false" data-i="1">
+          <span class="pb-num">02</span><span class="pb-title">CIO</span><span class="pb-sub">Delivery slips on open seats</span>
+        </button>
+        <button class="pb-row" role="tab" aria-selected="false" data-i="2">
+          <span class="pb-num">03</span><span class="pb-title">Head of Talent</span><span class="pb-sub">Buried in CVs, not fit</span>
+        </button>
+        <button class="pb-row" role="tab" aria-selected="false" data-i="3">
+          <span class="pb-num">04</span><span class="pb-title">Delivery Director</span><span class="pb-sub">Can't staff fast enough</span>
+        </button>
+        <button class="pb-row" role="tab" aria-selected="false" data-i="4">
+          <span class="pb-num">05</span><span class="pb-title">CFO</span><span class="pb-sub">Empty seats bleed budget</span>
+        </button>
+      </div>
+
+      <div class="pb-foot">
+        <span class="pb-cue"><span class="c">›</span> sound like your week?</span>
+        <a class="pb-btn" href="#cta">Send us a brief <span class="arr">&#8594;</span></a>
+      </div>
+    </div>
+
+    <!-- RIGHT: Conversation panel -->
+    <div class="pb-right" role="tabpanel" aria-live="polite">
+      <div class="pb-tag"><span class="d"></span><span id="pbRole">CHRO</span>&nbsp;· in their words</div>
+      <h3 class="pb-hl" id="pbHl"></h3>
+      <div class="pb-chat" id="pbChat"></div>
+      <div class="pb-stat">
+        <span class="pb-num-big" id="pbNum"></span>
+        <span class="pb-stat-txt" id="pbTxt"></span>
+        <span class="pb-stat-src" id="pbSrc"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<script>
+((() => {
+  'use strict';
+
+  /* ── DATA (identical to original) ── */
+  var PERSONAS = [
+    { role:'CHRO',
+      headline:"The roles you need most are the ones you can't fill.",
+      chat:[
+        "Every tech and digital seat takes months to fill — and the best people are gone in days.",
+        "We keep raising the offer and still lose candidates to faster movers.",
+        "My recruiters are buried, and the hardest roles just stay open."
+      ],
+      num:"72%",
+      txt:"of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      src:"Source: ManpowerGroup Talent Shortage Survey, 2026" },
+
+    { role:'CIO',
+      headline:"Every open seat is a roadmap slipping.",
+      chat:[
+        "A programme stalls for months while we wait on two or three specialist hires.",
+        "Agencies send me volume — I need people who can actually deliver.",
+        "By the time the seat is filled, the delivery date has already moved."
+      ],
+      num:"~63 days",
+      txt:"median time to fill a role today — and specialist tech roles routinely run longer, dragging every milestone behind them.",
+      src:"Source: Employ Recruiting Benchmarks Report, 2026" },
+
+    { role:'Head of Talent',
+      headline:"Drowning in CVs, starving for fit.",
+      chat:[
+        "Two hundred applications a role, and maybe five worth a call.",
+        "I spend more time filtering noise than talking to real candidates.",
+        "The good ones drop off before I've even finished screening."
+      ],
+      num:"250+",
+      txt:"applications land on the average corporate opening, yet only four to six are worth interviewing.",
+      src:"Source: SHRM" },
+
+    { role:'Delivery Director',
+      headline:"You win the work faster than you can staff it.",
+      chat:[
+        "We've signed the programme — now I need a team on the ground, fast.",
+        "Contractor churn keeps resetting delivery every few months.",
+        "Half the budget sits benched, waiting on the right specialists."
+      ],
+      num:"95%",
+      txt:"of UAE employers now hire tech talent from abroad because senior specialists can't be found locally; 83% have turned to offshoring.",
+      src:"Source: UAE Ministry of Economy, 2024" },
+
+    { role:'CFO',
+      headline:"Empty seats and bad hires quietly bleed the budget.",
+      chat:[
+        "Every vacant month is delivery we've paid for and aren't getting.",
+        "Contractor day rates keep climbing and I can't see the value.",
+        "One wrong senior hire, and we pay for it long after they've gone."
+      ],
+      num:"up to 30%",
+      txt:"of first-year salary is the cost of a single bad hire — and replacing a senior specialist can reach two times salary.",
+      src:"Source: U.S. Department of Labor; SHRM" }
+  ];
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var list    = document.getElementById('pbList');
+  var roleEl  = document.getElementById('pbRole');
+  var hlEl    = document.getElementById('pbHl');
+  var chatEl  = document.getElementById('pbChat');
+  var numEl   = document.getElementById('pbNum');
+  var txtEl   = document.getElementById('pbTxt');
+  var srcEl   = document.getElementById('pbSrc');
+
+  function render(i) {
+    var p = PERSONAS[i];
+    roleEl.textContent = p.role;
+    hlEl.textContent   = p.headline;
+    numEl.textContent  = p.num;
+    txtEl.textContent  = p.txt;
+    srcEl.textContent  = p.src;
+    chatEl.innerHTML   = p.chat.map((c, idx) => '<div class="bub ' + (idx % 2 ? 'out' : 'in') + '">' + c + '</div>').join('');
+    if (!reduced) {
+      chatEl.classList.remove('anim');
+      void chatEl.offsetWidth;
+      chatEl.classList.add('anim');
+    }
+  }
+
+  Array.prototype.forEach.call(list.children, (btn) => {
+    btn.addEventListener('mouseenter', () => {
+      Array.prototype.forEach.call(list.children, (b) => {
+        b.classList.remove('on');
+        b.setAttribute('aria-selected', 'false');
+      });
+      btn.classList.add('on');
+      btn.setAttribute('aria-selected', 'true');
+      render(+btn.getAttribute('data-i'));
+    });
+  });
+
+  render(0);
+
+  /* ── MOVING PARTICLE CANVAS ──────────────────────────
+     Dual-colour particles: gold + rose, with connecting
+     lines and mouse-repulsion. Runs in its own closure.  */
+  ((() => {
+    var cv  = document.getElementById('pbCanvas');
+    if (!cv) return;
+    var ctx = cv.getContext('2d');
+    var sec = document.getElementById('probSection');
+    var pts = [];
+    var N   = 40;                       /* particle count */
+    var pmx = -9999, pmy = -9999;       /* mouse position */
+
+    /* Colour pool: mix of rose and gold */
+    var COLOURS = [
+      [232,116,154],   /* rose-l */
+      [212,168,67],    /* gold   */
+      [232,116,154],   /* rose-l (weighted) */
+      [240,200,102],   /* gold-l */
+      [196, 78,120],   /* rose   */
+    ];
+
+    function resize() {
+      cv.width  = sec.offsetWidth;
+      cv.height = sec.offsetHeight;
+      build();
+    }
+
+    function build() {
+      pts = [];
+      for (var i = 0; i < N; i++) {
+        var c = COLOURS[Math.floor(Math.random() * COLOURS.length)];
+        pts.push({
+          x:  Math.random() * cv.width,
+          y:  Math.random() * cv.height,
+          r:  Math.random() * 1.6 + 0.3,
+          vx: (Math.random() - .5) * .28,
+          vy: (Math.random() - .5) * .28,
+          c:  c,
+          a:  Math.random() * .55 + .12
+        });
+      }
+    }
+
+    function rgba(c, a) {
+      return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')';
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+
+      /* Connector lines between nearby pairs */
+      for (var i = 0; i < pts.length; i++) {
+        for (var j = i + 1; j < pts.length; j++) {
+          var dx = pts[i].x - pts[j].x;
+          var dy = pts[i].y - pts[j].y;
+          var d  = Math.sqrt(dx * dx + dy * dy);
+          if (d < 120) {
+            var alpha = .06 * (1 - d / 120);
+            /* blend colours of the two endpoints */
+            var ci = pts[i].c, cj = pts[j].c;
+            var r = Math.round((ci[0] + cj[0]) / 2);
+            var g = Math.round((ci[1] + cj[1]) / 2);
+            var b = Math.round((ci[2] + cj[2]) / 2);
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+            ctx.lineWidth   = .5;
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      /* Particles + mouse repulsion */
+      pts.forEach((p) => {
+        /* Repulsion */
+        var dx = pmx - p.x, dy = pmy - p.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 160 && dist > 0) {
+          var f = (160 - dist) / 160 * .6;
+          p.vx -= (dx / dist) * f * .55;
+          p.vy -= (dy / dist) * f * .55;
+        }
+        /* Speed cap */
+        var spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > .7) { p.vx = (p.vx / spd) * .7; p.vy = (p.vy / spd) * .7; }
+
+        /* Draw */
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = rgba(p.c, p.a);
+        ctx.fill();
+
+        /* Move */
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > cv.width)  p.vx *= -1;
+        if (p.y < 0 || p.y > cv.height) p.vy *= -1;
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    /* Track mouse for repulsion */
+    sec.addEventListener('mousemove', (e) => {
+      var r = sec.getBoundingClientRect();
+      pmx = e.clientX - r.left;
+      pmy = e.clientY - r.top;
+    });
+    sec.addEventListener('mouseleave', () => {
+      pmx = -9999; pmy = -9999;
+    });
+
+    resize();
+    draw();
+
+    var t;
+    window.addEventListener('resize', () => {
+      clearTimeout(t); t = setTimeout(resize, 200);
+    });
+  })());
+})());
+</script>

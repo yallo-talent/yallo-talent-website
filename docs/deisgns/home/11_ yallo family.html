@@ -1,0 +1,399 @@
+<!--
+  YALLO FAMILY SECTION
+  The Yallo group cross-sell block
+  3 company cards: Talent · saasinator · AI Academy
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+<section id="yalloFamily">
+<style>
+/* ═══════════════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════════════ */
+#yalloFamily {
+  --g:    #D4A843;
+  --gl:   #F0C866;
+  --teal: #3A9E8A;
+  --w:    #FFFFFF;
+  --off:  #E8E6E2;
+  --mu:   #888;
+  --dim:  #555;
+  --bg:   #0d0b09;
+  --card: #1a1814;
+  --bdr:  #2a2720;
+  --eas:  cubic-bezier(.22,.61,.36,1);
+
+  background-color: var(--bg);
+  /* Strong gold gradient + grid lines */
+  background-image:
+    radial-gradient(ellipse 110% 90% at 0%   100%, rgba(212,168,67,.20) 0%, transparent 52%),
+    radial-gradient(ellipse  70% 65% at 100%   0%, rgba(212,168,67,.12) 0%, transparent 52%),
+    radial-gradient(ellipse  65% 55% at  50%  50%, rgba(212,168,67,.07) 0%, transparent 60%),
+    linear-gradient(rgba(212,168,67,.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,67,.03) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+
+  padding: clamp(80px,10vw,130px) 0;
+  position: relative; overflow: hidden;
+  font-family: 'Lato', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: var(--off);
+}
+#yalloFamily *, #yalloFamily *::before, #yalloFamily *::after {
+  box-sizing: border-box;
+  font-family: 'Lato', system-ui, sans-serif !important;
+}
+#yalloFamily a { text-decoration: none; color: inherit; }
+
+/* Particle canvas */
+#yfCanvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+}
+/* Breathing centre glow */
+#yalloFamily .yf-breathe {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%,
+    rgba(212,168,67,.06) 0%, transparent 62%);
+  animation: yfGlow 9s ease-in-out infinite;
+}
+@keyframes yfGlow {
+  0%,100% { opacity:.5; transform:scale(1); }
+  50%      { opacity:1;  transform:scale(1.1); }
+}
+
+/* ── WRAPPER ─────────────────────────────────────── */
+.yf-wrap {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,5vw,64px);
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column;
+  gap: clamp(48px,6vw,72px);
+}
+
+/* ═══════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════ */
+.yf-hdr { max-width: 580px; }
+
+.yf-eye {
+  font-size: 10.5px !important; font-weight: 700 !important;
+  letter-spacing: .26em !important; text-transform: uppercase;
+  color: var(--g); display: block; margin-bottom: 20px;
+}
+
+#yalloFamily .yf-h2 {
+  font-size: clamp(32px,5vw,60px) !important;
+  font-weight: 900 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -.035em !important;
+  color: var(--w) !important;
+  margin: 0 0 22px !important; padding: 0 !important;
+}
+
+#yalloFamily .yf-sub {
+  font-size: clamp(14px,1.4vw,16px) !important;
+  font-weight: 300 !important; line-height: 1.78 !important;
+  color: var(--mu) !important;
+  margin: 0 !important; padding: 0 !important;
+  max-width: 52ch;
+}
+
+/* ═══════════════════════════════════════════════════
+   CARD GRID
+═══════════════════════════════════════════════════ */
+.yf-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* ── CARD ─────────────────────────────────────────── */
+.yf-card {
+  background: var(--card);
+  border: 1px solid var(--bdr);
+  border-radius: 16px;
+  padding: 32px 28px 28px;
+  display: flex; flex-direction: column;
+  gap: 0; position: relative; overflow: hidden;
+  transition: border-color .28s, box-shadow .28s;
+}
+.yf-card:hover {
+  border-color: rgba(212,168,67,.25);
+  box-shadow: 0 16px 48px rgba(0,0,0,.45);
+}
+
+/* Top accent bar */
+.yf-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent, transparent);
+  transition: opacity .28s;
+}
+
+/* Card-specific accents */
+.yf-card--saasinator { --accent: var(--g); }
+.yf-card--academy    { --accent: var(--teal); }
+
+/* ── ICON BOX ─────────────────────────────────────── */
+.yf-icon-box {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 26px; flex-shrink: 0;
+}
+.yf-icon-box--gold {
+  background: rgba(212,168,67,.14);
+  border: 1px solid rgba(212,168,67,.28);
+}
+.yf-icon-box--teal {
+  background: rgba(58,158,138,.14);
+  border: 1px solid rgba(58,158,138,.28);
+}
+.yf-icon-box svg {
+  width: 22px; height: 22px; fill: none;
+  stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round;
+}
+.yf-icon-box--gold svg { stroke: var(--g); }
+.yf-icon-box--teal svg { stroke: var(--teal); }
+
+/* ── CATEGORY LABEL ───────────────────────────────── */
+.yf-cat {
+  font-size: 9.5px !important; font-weight: 700 !important;
+  letter-spacing: .2em !important; text-transform: uppercase;
+  color: var(--dim); margin-bottom: 10px;
+}
+
+/* ── TITLE ROW ────────────────────────────────────── */
+.yf-title-row {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; margin-bottom: 16px;
+}
+
+.yf-title {
+  font-size: 25px !important; font-weight: 900 !important;
+  color: var(--w) !important; line-height: 1.15;
+  letter-spacing: -.02em;
+}
+/* saasinator gets gold */
+.yf-card--saasinator .yf-title { color: var(--g) !important; }
+
+/* Badges */
+.yf-badge {
+  font-size: 9px !important; font-weight: 700 !important;
+  letter-spacing: .1em !important; text-transform: uppercase;
+  border-radius: 99px; padding: 4px 10px;
+  white-space: nowrap; flex-shrink: 0; line-height: 1;
+}
+.yf-badge--here {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.5) !important;
+}
+.yf-badge--soon {
+  background: rgba(212,168,67,.1);
+  border: 1px solid rgba(212,168,67,.3);
+  color: var(--g) !important;
+}
+
+/* ── DESCRIPTION ──────────────────────────────────── */
+.yf-desc {
+  font-size: 16px !important; font-weight: 300 !important;
+  line-height: 1.78 !important; color: var(--mu) !important;
+  flex: 1; margin-bottom: 28px;
+}
+
+/* ── FOOTER LINK ──────────────────────────────────── */
+.yf-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.yf-link {
+  font-size: 13px !important; font-weight: 700 !important;
+  color: var(--mu) !important; letter-spacing: .02em;
+}
+.yf-link--gold { color: var(--g) !important; }
+.yf-link-arr { display: inline-block; margin-left: 4px; transition: transform .18s; }
+.yf-link:hover .yf-link-arr { transform: translateX(4px); }
+.yf-link--gold:hover { color: var(--gl) !important; }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .yf-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+@media (max-width: 640px) {
+  .yf-card { padding: 28px 22px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #yalloFamily *, #yalloFamily *::before, #yalloFamily *::after {
+    transition: none !important;
+  }
+}
+</style>
+
+<canvas id="yfCanvas"></canvas>
+<div class="yf-breathe"></div>
+
+<div class="yf-wrap">
+
+  <!-- Header -->
+  <div class="yf-hdr">
+    <span class="yf-eye">The Yallo Family</span>
+    <h2 class="yf-h2">When the challenge goes beyond hiring.</h2>
+    <p class="yf-sub">Yallo Talent is one arm of the Yallo group. When you need more than people, our sister companies pick up where talent leaves off — advisory and build, and AI enablement.</p>
+  </div>
+
+  <!-- Cards -->
+  <div class="yf-grid">
+
+    <!-- ── Card 1: Yallo Talent ── -->
+    <div class="yf-card">
+      <div class="yf-icon-box yf-icon-box--gold">
+        <svg viewBox="0 0 24 24">
+          <!-- 4-squares / apps icon -->
+          <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+        </svg>
+      </div>
+      <div class="yf-cat">Talent</div>
+      <div class="yf-title-row">
+        <span class="yf-title">Yallo Talent</span>
+        <span class="yf-badge yf-badge--here">You&rsquo;re here</span>
+      </div>
+      <p class="yf-desc">Specialist enterprise tech talent — permanent, contract, EOR and subcontracting across the GCC, India and the UK.</p>
+      <div class="yf-footer">
+        <span class="yf-link">Enterprise tech talent</span>
+      </div>
+    </div>
+
+    <!-- ── Card 2: saasinator ── -->
+    <div class="yf-card yf-card--saasinator">
+      <div class="yf-icon-box yf-icon-box--gold">
+        <svg viewBox="0 0 24 24">
+          <!-- Sparkle / asterisk icon -->
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+      </div>
+      <div class="yf-cat">AI Advisory &amp; Build</div>
+      <div class="yf-title-row">
+        <span class="yf-title">saasinator</span>
+        <span class="yf-badge yf-badge--soon">Launching soon</span>
+      </div>
+      <p class="yf-desc">Enterprise AI, designed, built and run — from strategy to production. Advisory, delivery and managed AI services, brief to deploy.</p>
+      <div class="yf-footer">
+        <a href="https://saasinator.ai" class="yf-link yf-link--gold" target="_blank" rel="noopener">
+          Explore saasinator<span class="yf-link-arr">&#8594;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Card 3: Yallo AI Academy ── -->
+    <div class="yf-card yf-card--academy">
+      <div class="yf-icon-box yf-icon-box--teal">
+        <svg viewBox="0 0 24 24">
+          <!-- Graduation cap icon -->
+          <path d="M22 10.5L12 5 2 10.5l10 5.5 10-5.5z"/>
+          <path d="M6 13v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/>
+          <path d="M22 10.5v5"/>
+        </svg>
+      </div>
+      <div class="yf-cat">AI Enablement</div>
+      <div class="yf-title-row">
+        <span class="yf-title">Yallo AI Academy</span>
+        <span class="yf-badge yf-badge--soon">Launching soon</span>
+      </div>
+      <p class="yf-desc">Build the AI capability of your leaders and teams — practical, role-based enablement designed by people who have run it.</p>
+      <div class="yf-footer">
+        <a href="#academy" class="yf-link" target="_blank" rel="noopener">
+          Explore the Academy<span class="yf-link-arr">&#8594;</span>
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /yf-grid -->
+</div>
+<script>
+((() => {
+  var cv  = document.getElementById('yfCanvas');
+  if (!cv) return;
+  var ctx = cv.getContext('2d');
+  var sec = document.getElementById('yalloFamily');
+  var pts = [], N = 32, G = [212,168,67];
+  var pmx = -9999, pmy = -9999;
+
+  function resize() {
+    cv.width  = sec.offsetWidth;
+    cv.height = sec.offsetHeight;
+    build();
+  }
+  function build() {
+    pts = [];
+    for (var i = 0; i < N; i++) pts.push({
+      x:  Math.random() * cv.width,
+      y:  Math.random() * cv.height,
+      r:  Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - .5) * .22,
+      vy: (Math.random() - .5) * .22,
+      a:  Math.random() * .45 + .08
+    });
+  }
+  function rgba(a) { return 'rgba('+G[0]+','+G[1]+','+G[2]+','+a+')'; }
+  function draw() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    for (var i = 0; i < pts.length; i++) {
+      for (var j = i + 1; j < pts.length; j++) {
+        var dx = pts[i].x - pts[j].x, dy = pts[i].y - pts[j].y;
+        var d  = Math.sqrt(dx*dx + dy*dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.strokeStyle = rgba(.055 * (1 - d/130));
+          ctx.lineWidth   = .45;
+          ctx.moveTo(pts[i].x, pts[i].y);
+          ctx.lineTo(pts[j].x, pts[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+    pts.forEach((p) => {
+      var dx = pmx - p.x, dy = pmy - p.y;
+      var dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 150 && dist > 0) {
+        var f = (150 - dist) / 150;
+        p.vx -= (dx/dist) * f * .55;
+        p.vy -= (dy/dist) * f * .55;
+      }
+      var spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (spd > .65) { p.vx = (p.vx/spd)*.65; p.vy = (p.vy/spd)*.65; }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = rgba(p.a);
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > cv.width)  p.vx *= -1;
+      if (p.y < 0 || p.y > cv.height) p.vy *= -1;
+    });
+    requestAnimationFrame(draw);
+  }
+  sec.addEventListener('mousemove', (e) => {
+    var r = sec.getBoundingClientRect();
+    pmx = e.clientX - r.left;
+    pmy = e.clientY - r.top;
+  });
+  sec.addEventListener('mouseleave', () => { pmx = -9999; pmy = -9999; });
+  resize(); draw();
+  var t;
+  window.addEventListener('resize', () => {
+    clearTimeout(t); t = setTimeout(resize, 200);
+  });
+})());
+</script>
+</section>
