@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./LatestInsights.module.css";
 
@@ -9,10 +10,11 @@ interface Insight {
   title: string;
   type: InsightType;
   label: string;
-  hueA: Hue;
-  hueB: Hue;
+  hue: Hue;
   readTime: string;
   eyebrow: string;
+  image: string;
+  imageAlt: string;
 }
 
 const insights: Insight[] = [
@@ -21,59 +23,69 @@ const insights: Insight[] = [
     title: "How GCC enterprises are closing the AI skills gap",
     type: "article",
     label: "Article",
-    hueA: "blue",
-    hueB: "violet",
+    hue: "blue",
     readTime: "6 min read",
     eyebrow: "AI · Talent",
+    image:
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "AI abstract data visualisation",
   },
   {
     slug: "2-to-1-cv-ratio",
     title: "Why the 2:1 CV ratio matters more than volume hiring",
     type: "article",
     label: "Article",
-    hueA: "orange",
-    hueB: "rose",
+    hue: "orange",
     readTime: "5 min read",
     eyebrow: "Screening",
+    image:
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Business team in a strategy meeting",
   },
   {
     slug: "sap-talent-gcc",
     title: "SAP talent in the GCC: what the market tells us",
     type: "research",
     label: "Research",
-    hueA: "blue",
-    hueB: "teal",
+    hue: "teal",
     readTime: "12 min read",
     eyebrow: "Market data",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Analytics dashboard on laptop screen",
   },
   {
     slug: "gcc-engineering-centre-90-days",
     title: "Building a GCC engineering centre: the first 90 days",
     type: "paper",
     label: "White Paper",
-    hueA: "green",
-    hueB: "teal",
+    hue: "green",
     readTime: "20 min read",
     eyebrow: "Capability build",
+    image:
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Modern engineering office space",
   },
   {
     slug: "cio-hiring-problem",
     title: "Open seats, stalled roadmaps: the CIO's hiring problem",
     type: "article",
     label: "Article",
-    hueA: "rose",
-    hueB: "orange",
+    hue: "rose",
     readTime: "7 min read",
     eyebrow: "Delivery",
+    image:
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80",
+    imageAlt: "Enterprise leadership meeting",
   },
 ];
 
-const hueStyle = (hueA: Hue, hueB: Hue): React.CSSProperties =>
+const hueStyle = (hue: Hue): React.CSSProperties =>
   ({
-    "--hue-a": `var(--hue-${hueA}-500)`,
-    "--hue-a-35": `var(--hue-${hueA}-35)`,
-    "--hue-b": `var(--hue-${hueB}-500)`,
-    "--hue-b-35": `var(--hue-${hueB}-35)`,
+    "--hue-a": `var(--hue-${hue}-500)`,
+    "--hue-a-08": `var(--hue-${hue}-08)`,
+    "--hue-a-20": `var(--hue-${hue}-20)`,
+    "--hue-a-35": `var(--hue-${hue}-35)`,
   }) as React.CSSProperties;
 
 export function LatestInsights() {
@@ -101,45 +113,30 @@ export function LatestInsights() {
                 key={c.slug}
                 href={`/insights/${c.slug}`}
                 className={styles.card}
-                style={hueStyle(c.hueA, c.hueB)}
+                style={hueStyle(c.hue)}
               >
-                <div className={styles.image} aria-hidden="true">
-                  <div className={styles.imageA} />
-                  <div className={styles.imageB} />
-                  <div className={styles.imageNoise} />
-                  <div className={styles.imageOverlay} />
-                  <svg
-                    viewBox="0 0 200 220"
-                    className={styles.imageSvg}
-                    aria-hidden="true"
-                  >
-                    <g
-                      stroke="var(--hue-a)"
-                      strokeWidth="0.5"
-                      opacity="0.35"
-                      fill="none"
-                    >
-                      <circle cx="100" cy="110" r="40" />
-                      <circle cx="100" cy="110" r="70" />
-                      <circle cx="100" cy="110" r="100" />
-                    </g>
-                    <g fill="var(--hue-b)" opacity="0.7">
-                      <circle cx="100" cy="70" r="3" />
-                      <circle cx="140" cy="110" r="3" />
-                      <circle cx="100" cy="150" r="3" />
-                      <circle cx="60" cy="110" r="3" />
-                    </g>
-                  </svg>
-                </div>
-                <div className={styles.body}>
-                  <div className={styles.topRow}>
+                <div className={styles.image}>
+                  <Image
+                    src={c.image}
+                    alt={c.imageAlt}
+                    fill
+                    sizes="(max-width: 640px) 88vw, 320px"
+                    className={styles.imageImg}
+                  />
+                  <div className={styles.imageTint} aria-hidden="true" />
+                  <div className={styles.imageOverlay} aria-hidden="true" />
+                  <div className={styles.imageChip}>
                     <span className={styles.chip} data-type={c.type}>
                       <span className={styles.chipDot} aria-hidden="true" />
                       {c.label}
                     </span>
+                  </div>
+                </div>
+                <div className={styles.body}>
+                  <div className={styles.topRow}>
+                    <span className={styles.eyebrowText}>{c.eyebrow}</span>
                     <span className={styles.readTime}>{c.readTime}</span>
                   </div>
-                  <span className={styles.eyebrowText}>{c.eyebrow}</span>
                   <h3 className={styles.title}>{c.title}</h3>
                   <span className={styles.read}>
                     Read

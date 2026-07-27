@@ -6,11 +6,33 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "./NavBar.module.css";
-import { jobSeekersHref, primaryCTAHref, primaryNav } from "./nav-config";
+import {
+  jobSeekersHref,
+  type NavItem,
+  primaryCTAHref,
+  primaryNav,
+} from "./nav-config";
+import { navIcons } from "./nav-icons";
 import { ThemeToggle } from "./ThemeToggle";
+
+function NavItemIcon({ icon }: { icon?: NavItem["icon"] }) {
+  if (!icon) return null;
+  const IconComp = navIcons[icon];
+  return <IconComp className={styles.itemIconSvg} />;
+}
+
+const hueStyle = (hue?: NavItem["hue"]): React.CSSProperties | undefined => {
+  if (!hue) return undefined;
+  return {
+    "--item-hue": `var(--hue-${hue}-500)`,
+    "--item-hue-08": `var(--hue-${hue}-08)`,
+    "--item-hue-35": `var(--hue-${hue}-35)`,
+  } as React.CSSProperties;
+};
 
 export function NavBar() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -51,7 +73,7 @@ export function NavBar() {
             }}
           >
             {primaryNav.map((group) => (
-              // biome-ignore lint/a11y/noStaticElementInteractions: hover opens mega-menu; keyboard users use the child button's focus handler
+              // biome-ignore lint/a11y/noStaticElementInteractions: hover opens mega-menu; keyboard uses button focus handler
               <div
                 key={group.label}
                 className={styles.groupWrap}
@@ -66,43 +88,111 @@ export function NavBar() {
                   onFocus={() => setOpenGroup(group.label)}
                 >
                   {group.label}
+                  <svg
+                    viewBox="0 0 12 12"
+                    className={styles.triggerCaret}
+                    aria-hidden="true"
+                    role="presentation"
+                  >
+                    <title>Chevron</title>
+                    <path
+                      d="M2 4l4 4 4-4"
+                      stroke="currentColor"
+                      strokeWidth="1.4"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 </button>
                 <AnimatePresence>
                   {openGroup === group.label && (
                     <motion.div
                       className={styles.megaPanel}
-                      initial={{ opacity: 0, y: -4 }}
+                      initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -4 }}
-                      transition={{ duration: 0.16, ease: "easeOut" }}
+                      exit={{ opacity: 0, y: -8 }}
+                      transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
                     >
-                      <div className={styles.megaGrid}>
+                      {group.description && (
+                        <div className={styles.megaDescription}>
+                          {group.description}
+                        </div>
+                      )}
+                      <div
+                        className={styles.megaGrid}
+                        data-cols={
+                          group.columns.length + (group.featured ? 1 : 0)
+                        }
+                      >
                         {group.columns.map((col) => (
                           <div key={col.heading} className={styles.megaCol}>
-                            <div className="eyebrow">{col.heading}</div>
+                            <div className={styles.megaColHeading}>
+                              {col.heading}
+                            </div>
                             <ul className={styles.megaList}>
                               {col.items.map((item) => (
                                 <li key={item.href}>
                                   <Link
                                     href={item.href}
                                     className={styles.megaLink}
+                                    style={hueStyle(item.hue)}
                                   >
-                                    <span className={styles.megaLinkLabel}>
-                                      {item.label}
+                                    <span className={styles.itemIcon}>
+                                      <NavItemIcon icon={item.icon} />
                                     </span>
-                                    {item.description && (
-                                      <span
-                                        className={styles.megaLinkDescription}
-                                      >
-                                        {item.description}
+                                    <span className={styles.itemBody}>
+                                      <span className={styles.itemLabel}>
+                                        {item.label}
                                       </span>
-                                    )}
+                                      {item.description && (
+                                        <span
+                                          className={styles.itemDescription}
+                                        >
+                                          {item.description}
+                                        </span>
+                                      )}
+                                    </span>
                                   </Link>
                                 </li>
                               ))}
                             </ul>
                           </div>
                         ))}
+                        {group.featured && (
+                          <Link
+                            href={group.featured.href}
+                            className={styles.featured}
+                          >
+                            <div className={styles.featuredImage}>
+                              <Image
+                                src={group.featured.image}
+                                alt={group.featured.imageAlt}
+                                fill
+                                sizes="280px"
+                                className={styles.featuredImageImg}
+                              />
+                              <div
+                                className={styles.featuredImageTint}
+                                aria-hidden="true"
+                              />
+                            </div>
+                            <div className={styles.featuredBody}>
+                              <span className={styles.featuredEyebrow}>
+                                {group.featured.eyebrow}
+                              </span>
+                              <span className={styles.featuredTitle}>
+                                {group.featured.title}
+                              </span>
+                              <span className={styles.featuredCopy}>
+                                {group.featured.copy}
+                              </span>
+                              <span className={styles.featuredCta}>
+                                {group.featured.ctaLabel}
+                              </span>
+                            </div>
+                          </Link>
+                        )}
                       </div>
                     </motion.div>
                   )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./HeroSlider.module.css";
@@ -69,16 +70,8 @@ const slides: HeroSlide[] = [
   },
 ];
 
-const clientStrip = [
-  "SAP",
-  "Oracle",
-  "Microsoft",
-  "Salesforce",
-  "Blue Yonder",
-  "Workday",
-  "ServiceNow",
-  "AWS",
-];
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1400&q=80";
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -123,22 +116,6 @@ export function HeroSlider() {
         </motion.div>
       </AnimatePresence>
 
-      <div className={styles.clientStrip}>
-        <span className={styles.clientLabel}>Trusted across</span>
-        <div className={styles.clientTrack}>
-          {[...clientStrip, ...clientStrip].map((c, i) => (
-            <span
-              // biome-ignore lint/suspicious/noArrayIndexKey: duplicate list for seamless marquee
-              key={`${c}-${i}`}
-              className={styles.clientItem}
-              aria-hidden={i >= clientStrip.length ? "true" : undefined}
-            >
-              {c}
-            </span>
-          ))}
-        </div>
-      </div>
-
       <div className={styles.content}>
         <div className={styles.contentInner}>
           <span className="eyebrow">{active.eyebrow}</span>
@@ -157,9 +134,42 @@ export function HeroSlider() {
               How it works
             </Link>
           </div>
+
+          <div className={styles.trustRow}>
+            <div className={styles.trustAvatars} aria-hidden="true">
+              <span
+                className={styles.trustAvatar}
+                style={{ background: "var(--hue-blue-500)" }}
+              >
+                SG
+              </span>
+              <span
+                className={styles.trustAvatar}
+                style={{ background: "var(--hue-rose-500)" }}
+              >
+                AK
+              </span>
+              <span
+                className={styles.trustAvatar}
+                style={{ background: "var(--hue-teal-500)" }}
+              >
+                RM
+              </span>
+              <span
+                className={styles.trustAvatar}
+                style={{ background: "var(--accent)", color: "var(--ink-950)" }}
+              >
+                12+
+              </span>
+            </div>
+            <p className={styles.trustText}>
+              Architect team led by operators from{" "}
+              <strong>Richemont · Landmark · Alshaya EMEA</strong>
+            </p>
+          </div>
         </div>
 
-        <HeroGraphic />
+        <HeroVisual />
       </div>
 
       <div
@@ -182,144 +192,96 @@ export function HeroSlider() {
   );
 }
 
-/**
- * Right-side animated constellation — represents the shortlist mesh:
- * a central "brief" node with radiating candidate nodes and connectors.
- */
-function HeroGraphic() {
-  const nodes = [
-    { cx: 220, cy: 220, r: 40, hue: "blue" as const, delay: 0 },
-    { cx: 80, cy: 90, r: 14, hue: "teal" as const, delay: 0.2 },
-    { cx: 340, cy: 70, r: 18, hue: "orange" as const, delay: 0.4 },
-    { cx: 380, cy: 260, r: 12, hue: "violet" as const, delay: 0.6 },
-    { cx: 60, cy: 320, r: 20, hue: "rose" as const, delay: 0.8 },
-    { cx: 300, cy: 380, r: 15, hue: "green" as const, delay: 1.0 },
-    { cx: 150, cy: 380, r: 10, hue: "blue" as const, delay: 1.2 },
-  ];
-  const hueVar = (h: string) => `var(--hue-${h}-500)`;
-
+function HeroVisual() {
   return (
     <motion.div
-      className={styles.graphic}
-      aria-hidden="true"
-      initial={{ opacity: 0, scale: 0.94 }}
-      animate={{ opacity: 1, scale: 1 }}
+      className={styles.visual}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
     >
-      <svg
-        viewBox="0 0 440 440"
-        xmlns="http://www.w3.org/2000/svg"
-        className={styles.graphicSvg}
-        role="img"
-        aria-label="Yallo shortlist mesh — one brief, many specialists"
-      >
-        <title>Yallo shortlist mesh</title>
-        <defs>
-          <radialGradient id="hero-core" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--yellow-400)" />
-            <stop
-              offset="70%"
-              stopColor="var(--yellow-500)"
-              stopOpacity="0.5"
-            />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-        </defs>
+      <div className={styles.visualFrame}>
+        <Image
+          src={HERO_IMAGE}
+          alt="Enterprise team collaborating on a delivery programme"
+          fill
+          priority
+          sizes="(max-width: 900px) 92vw, 520px"
+          className={styles.visualImg}
+        />
+        <div className={styles.visualOverlay} aria-hidden="true" />
+        <div className={styles.visualGrain} aria-hidden="true" />
 
-        {/* Concentric orbit rings */}
-        <g className={styles.orbits} opacity="0.15">
-          <circle cx="220" cy="220" r="90" fill="none" stroke="var(--wa25)" />
-          <circle cx="220" cy="220" r="150" fill="none" stroke="var(--wa15)" />
-          <circle cx="220" cy="220" r="200" fill="none" stroke="var(--wa08)" />
-        </g>
-
-        {/* Connectors radiating from center to each node */}
-        <g className={styles.connectors}>
-          {nodes.slice(1).map((n) => (
-            <motion.line
-              key={`c-${n.cx}-${n.cy}`}
-              x1={220}
-              y1={220}
-              x2={n.cx}
-              y2={n.cy}
-              stroke={hueVar(n.hue)}
-              strokeWidth="0.8"
-              strokeOpacity="0.35"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.5 }}
-              transition={{
-                duration: 0.7,
-                ease: "easeOut",
-                delay: 0.4 + n.delay,
-              }}
-            />
-          ))}
-        </g>
-
-        {/* Nodes */}
-        {nodes.map((n, i) => (
-          <motion.g
-            key={`n-${n.cx}-${n.cy}`}
-            initial={{ opacity: 0, scale: 0.4 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.5,
-              ease: "easeOut",
-              delay: 0.3 + n.delay,
-            }}
-          >
-            {i === 0 && (
-              <circle
-                cx={n.cx}
-                cy={n.cy}
-                r={n.r * 2.4}
-                fill="url(#hero-core)"
-              />
-            )}
-            <circle
-              cx={n.cx}
-              cy={n.cy}
-              r={n.r}
-              fill={hueVar(n.hue)}
-              fillOpacity={i === 0 ? "0.4" : "0.85"}
-              stroke={hueVar(n.hue)}
-              strokeWidth={i === 0 ? "2" : "1"}
-            />
-            {i === 0 && (
-              <motion.circle
-                cx={n.cx}
-                cy={n.cy}
-                r={n.r}
-                fill="none"
-                stroke="var(--yellow-500)"
-                strokeWidth="1.5"
-                initial={{ scale: 1, opacity: 0.4 }}
-                animate={{ scale: 2, opacity: 0 }}
-                transition={{
-                  duration: 2.4,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: "easeOut",
-                }}
-                style={{ transformOrigin: `${n.cx}px ${n.cy}px` }}
-              />
-            )}
-          </motion.g>
-        ))}
-
-        {/* Center label */}
-        <text
-          x="220"
-          y="226"
-          textAnchor="middle"
-          fontFamily="var(--font-mono)"
-          fontSize="10"
-          letterSpacing="2"
-          fill="var(--ink-950)"
-          fontWeight="700"
+        {/* Floating stat card top */}
+        <motion.div
+          className={`${styles.floatCard} ${styles.floatCardTop}`}
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
         >
-          BRIEF
-        </text>
-      </svg>
+          <div className={styles.floatIcon} aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              role="presentation"
+            >
+              <title>Clock</title>
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+          </div>
+          <div className={styles.floatText}>
+            <div className={styles.floatNum}>72h</div>
+            <div className={styles.floatLabel}>brief to shortlist</div>
+          </div>
+        </motion.div>
+
+        {/* Floating candidate row */}
+        <motion.div
+          className={`${styles.floatCard} ${styles.floatCardBottom}`}
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <div className={styles.floatHeader}>
+            <span className={styles.floatDot} aria-hidden="true" />
+            Active bench
+          </div>
+          <div className={styles.floatCandidates}>
+            <span className={styles.floatCand}>
+              <span
+                className={styles.floatCandDot}
+                style={{ background: "var(--hue-blue-500)" }}
+                aria-hidden="true"
+              />
+              SAP FICO Lead · Dubai
+            </span>
+            <span className={styles.floatCand}>
+              <span
+                className={styles.floatCandDot}
+                style={{ background: "var(--hue-teal-500)" }}
+                aria-hidden="true"
+              />
+              Oracle EPM · Bengaluru
+            </span>
+            <span className={styles.floatCand}>
+              <span
+                className={styles.floatCandDot}
+                style={{ background: "var(--hue-orange-500)" }}
+                aria-hidden="true"
+              />
+              Blue Yonder WMS · London
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Corner geometric marker */}
+        <div className={styles.visualCorner} aria-hidden="true" />
+      </div>
     </motion.div>
   );
 }

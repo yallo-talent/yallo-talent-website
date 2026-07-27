@@ -1,9 +1,18 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import styles from "./TalentBridge.module.css";
+
+/**
+ * Dubai/GCC skyline at sunset — sets the "region we deliver into"
+ * frame for the parallax scroll. High-quality Unsplash asset;
+ * next/image will re-optimise and blur-placeholder at build time.
+ */
+const PARALLAX_IMAGE =
+  "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1900&q=80";
 
 export function TalentBridge() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -12,12 +21,16 @@ export function TalentBridge() {
     offset: ["start end", "end start"],
   });
 
-  // Background parallax — slower than viewport (~ 40% of scroll speed)
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
-  // Content moves at ~1x (normal scroll) — parallax comes from bg being slower
-  const contentY = useTransform(scrollYProgress, [0, 1], ["-2%", "2%"]);
-  // Foreground shapes drift the other way for depth
-  const orbY = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
+  // Background parallax — slower than scroll (bg drifts opposite of viewport)
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-18%", "18%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["-3%", "3%"]);
+  const orbY = useTransform(scrollYProgress, [0, 1], ["12%", "-12%"]);
+  // Subtle scale-out as content leaves — cinematic
+  const bgScale = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    [1.12, 1.05, 1.12],
+  );
 
   return (
     <section
@@ -26,70 +39,23 @@ export function TalentBridge() {
       className={styles.section}
       aria-label="Talent bridge CTA"
     >
-      {/* Parallax background — will be swapped for real photography */}
-      <motion.div className={styles.bg} style={{ y: bgY }} aria-hidden="true">
-        <div className={styles.bgImage} />
-        <div className={styles.bgGrid} />
-        <svg
-          viewBox="0 0 1600 900"
-          className={styles.bgArt}
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-        >
-          <defs>
-            <radialGradient id="tb-glow-a" cx="20%" cy="30%" r="55%">
-              <stop
-                offset="0%"
-                stopColor="var(--hue-blue-500)"
-                stopOpacity="0.55"
-              />
-              <stop offset="100%" stopColor="transparent" />
-            </radialGradient>
-            <radialGradient id="tb-glow-b" cx="85%" cy="70%" r="55%">
-              <stop
-                offset="0%"
-                stopColor="var(--yellow-500)"
-                stopOpacity="0.45"
-              />
-              <stop offset="100%" stopColor="transparent" />
-            </radialGradient>
-            <radialGradient id="tb-glow-c" cx="50%" cy="10%" r="30%">
-              <stop
-                offset="0%"
-                stopColor="var(--hue-rose-500)"
-                stopOpacity="0.35"
-              />
-              <stop offset="100%" stopColor="transparent" />
-            </radialGradient>
-          </defs>
-          <rect width="1600" height="900" fill="url(#tb-glow-a)" />
-          <rect width="1600" height="900" fill="url(#tb-glow-b)" />
-          <rect width="1600" height="900" fill="url(#tb-glow-c)" />
-
-          {/* Constellation grid — decorative "network" pattern */}
-          <g stroke="var(--wa15)" strokeWidth="0.5" opacity="0.35" fill="none">
-            <path d="M 100 200 L 400 350 L 700 180 L 1050 400 L 1400 250" />
-            <path d="M 200 700 L 500 550 L 800 720 L 1150 500 L 1500 680" />
-            <path d="M 300 100 L 300 850" strokeDasharray="4 8" />
-            <path d="M 900 60 L 900 840" strokeDasharray="4 8" />
-            <path d="M 1300 100 L 1300 800" strokeDasharray="4 8" />
-          </g>
-          <g fill="var(--wa25)">
-            <circle cx="100" cy="200" r="3" />
-            <circle cx="400" cy="350" r="4" />
-            <circle cx="700" cy="180" r="3" />
-            <circle cx="1050" cy="400" r="5" />
-            <circle cx="1400" cy="250" r="3" />
-            <circle cx="200" cy="700" r="3" />
-            <circle cx="500" cy="550" r="4" />
-            <circle cx="800" cy="720" r="3" />
-            <circle cx="1150" cy="500" r="5" />
-            <circle cx="1500" cy="680" r="3" />
-          </g>
-        </svg>
+      {/* Parallax image layer */}
+      <motion.div
+        className={styles.bg}
+        style={{ y: bgY, scale: bgScale }}
+        aria-hidden="true"
+      >
+        <Image
+          src={PARALLAX_IMAGE}
+          alt=""
+          fill
+          sizes="100vw"
+          className={styles.bgImage}
+          quality={85}
+        />
       </motion.div>
 
-      {/* Depth-mid orbs (drift opposite the bg for parallax depth) */}
+      {/* Depth-mid orbs — drift opposite the bg for parallax depth */}
       <motion.div
         className={`${styles.orb} ${styles.orbA}`}
         style={{ y: orbY }}
@@ -101,11 +67,12 @@ export function TalentBridge() {
         aria-hidden="true"
       />
 
-      {/* Legibility overlay above bg, below content */}
+      {/* Legibility overlay (darkens + tints image) */}
       <div className={styles.overlay} aria-hidden="true" />
       <div className={styles.grain} aria-hidden="true" />
+      <div className={styles.vignette} aria-hidden="true" />
 
-      {/* Content — sits on top */}
+      {/* Content */}
       <motion.div className={styles.wrap} style={{ y: contentY }}>
         <div className={styles.eye}>
           <span className={styles.eyeDot} aria-hidden="true" />

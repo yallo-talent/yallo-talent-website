@@ -28,7 +28,6 @@
   animation: ken-burns-2 12s ease-in-out both;
 }
 
-/* Variant backgrounds — bluish-black + hue radial per slide */
 .variant1 {
   background-image:
     radial-gradient(
@@ -107,73 +106,17 @@
   pointer-events: none;
 }
 
-/* Client logo strip — top of hero */
-.clientStrip {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 88px clamp(20px, 5vw, 40px) 0;
-  overflow: hidden;
-}
-
-.clientLabel {
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--fg-subtle);
-  padding-right: 20px;
-  border-right: 1px solid var(--border);
-}
-
-.clientTrack {
-  display: flex;
-  flex: 1;
-  gap: 36px;
-  overflow: hidden;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    black 6%,
-    black 94%,
-    transparent 100%
-  );
-  animation: logo-scroll 40s linear infinite;
-  min-width: 0;
-  width: max-content;
-}
-
-.clientItem {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  color: var(--fg-muted);
-  white-space: nowrap;
-  transition: color 0.2s ease;
-}
-
-.clientItem:hover {
-  color: var(--accent);
-}
-
-/* Two-column content */
+/* ================ CONTENT (two-column) ================ */
 .content {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 48px;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px;
   align-items: center;
-  max-width: 1240px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 40px clamp(20px, 5vw, 40px) 40px;
+  padding: 128px clamp(20px, 5vw, 48px) 88px;
 }
 
 .contentInner {
@@ -258,23 +201,262 @@
   color: var(--accent);
 }
 
-/* Right-side graphic */
-.graphic {
-  position: relative;
-  aspect-ratio: 1;
-  width: 100%;
-  max-width: 520px;
-  justify-self: end;
+/* Social proof row below CTAs */
+.trustRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  max-width: 560px;
 }
 
-.graphicSvg {
+.trustAvatars {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.trustAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--ink-950);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 2px solid var(--ink-950);
+  margin-left: -8px;
+}
+
+.trustAvatar:first-child {
+  margin-left: 0;
+}
+
+.trustText {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+.trustText strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+/* ================ RIGHT-SIDE VISUAL ================ */
+.visual {
+  position: relative;
+  justify-self: end;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 5;
+}
+
+.visualFrame {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: block;
-  overflow: visible;
+  border-radius: 28px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid var(--wa15);
+  box-shadow:
+    0 40px 90px -30px rgba(0, 0, 0, 0.75),
+    0 0 0 1px var(--wa08),
+    inset 0 1px 0 var(--wa15);
 }
 
-/* Controls (dots) — positioned bottom of hero */
+.visualImg {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.visualOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(
+      215deg,
+      transparent 0%,
+      color-mix(in oklab, var(--ink-950) 25%, transparent) 55%,
+      color-mix(in oklab, var(--ink-950) 65%, transparent) 100%
+    ),
+    radial-gradient(
+      ellipse 60% 40% at 20% 20%,
+      var(--accent-strong),
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+.visualGrain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: radial-gradient(var(--wa08) 1px, transparent 1px);
+  background-size: 3px 3px;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Floating info cards over the image */
+.floatCard {
+  position: absolute;
+  z-index: 3;
+  padding: 14px 18px;
+  background: color-mix(in oklab, var(--ink-800) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border: 1px solid var(--wa15);
+  border-radius: 16px;
+  box-shadow:
+    0 20px 40px -20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 var(--wa08);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.floatCardTop {
+  top: 20px;
+  left: 20px;
+  right: auto;
+}
+
+.floatCardBottom {
+  bottom: 24px;
+  left: 20px;
+  right: 20px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  padding: 16px 18px;
+}
+
+.floatIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-muted);
+  border: 1px solid var(--border-accent);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.floatIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.floatText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.floatNum {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.floatLabel {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.floatHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.floatDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success-500);
+  box-shadow: 0 0 8px var(--success-glow);
+  animation: floatDotPulse 2s ease-in-out infinite;
+}
+
+@keyframes floatDotPulse {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.floatCandidates {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.floatCand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+}
+
+.floatCandDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Corner geometric marker */
+.visualCorner {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--ink-950);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.visualCorner::after {
+  content: "YT";
+}
+
+/* Controls (dots) at bottom */
 .controls {
   position: absolute;
   bottom: 32px;
@@ -306,15 +488,18 @@
 @media (max-width: 900px) {
   .content {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 40px;
+    padding-top: 112px;
+    padding-bottom: 72px;
   }
-  .graphic {
-    max-width: 360px;
+  .visual {
+    max-width: 460px;
     justify-self: center;
     order: -1;
+    aspect-ratio: 4 / 3.4;
   }
-  .clientStrip {
-    padding-top: 76px;
+  .trustRow {
+    max-width: 100%;
   }
 }
 
@@ -322,15 +507,9 @@
   .hero {
     min-height: clamp(580px, 96vh, 780px);
   }
-  .clientStrip {
-    gap: 12px;
-    padding-top: 72px;
-  }
-  .clientLabel {
-    padding-right: 12px;
-  }
-  .graphic {
-    max-width: 300px;
+  .visual {
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
   }
   .ctas {
     flex-direction: column;
@@ -342,5 +521,20 @@
   }
   .controls {
     bottom: 20px;
+  }
+  .floatCardBottom {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    padding: 12px 14px;
+  }
+  .floatCardTop {
+    top: 12px;
+    left: 12px;
+    padding: 10px 14px;
+  }
+  .visualCorner {
+    top: 12px;
+    right: 12px;
   }
 }
