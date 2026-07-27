@@ -129,14 +129,15 @@ export function PlatformTalent() {
           <div className={styles.hdText}>
             <div className={styles.eye}>
               <span className={styles.eyeDot} aria-hidden="true" />
-              <span>Platform talent</span>
+              <span>Your platform, our specialists</span>
             </div>
             <h2 className={styles.h}>
-              Specialists for every enterprise platform.
+              Specialists ready for your platform stack.
             </h2>
             <p className={styles.sub}>
-              SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday — active
-              benches across UK, ME and India.
+              Running SAP, Oracle, Microsoft, Salesforce, Blue Yonder or
+              Workday? Active benches across UK, ME and India — ready to move on
+              your brief.
             </p>
           </div>
           <div className={styles.nav}>

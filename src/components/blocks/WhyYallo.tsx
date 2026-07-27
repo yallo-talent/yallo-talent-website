@@ -104,13 +104,13 @@ export function WhyYallo() {
               <span>Why Yallo</span>
             </div>
             <h2 className={styles.h}>
-              A hiring partner that thinks like your{" "}
-              <span className={styles.gold}>delivery team.</span>
+              The hiring partner your{" "}
+              <span className={styles.gold}>delivery team wanted.</span>
             </h2>
             <p className={styles.sub}>
               Not another recruitment agency. Yallo is architect-led — the same
-              operators who ran enterprise programmes across Richemont, Landmark
-              and Alshaya EMEA now screen every shortlist.
+              operators who shipped enterprise programmes at Richemont, Landmark
+              and Alshaya EMEA are the ones reviewing every shortlist you get.
             </p>
           </div>
           <div className={styles.hdrR}>

@@ -19,13 +19,16 @@ export function BriefCTA() {
               Ready when you are
             </div>
             <h2 className={styles.h}>
-              Send us a brief.
+              Send your brief.
               <br />
-              <span className={styles.accent}>Shortlist in 72 hours.</span>
+              <span className={styles.accent}>
+                Get your shortlist in 72 hours.
+              </span>
             </h2>
             <p className={styles.sub}>
-              Architect-led screening, matched to your programme — not the job
-              description. Available across UK, ME and India.
+              Your programme, your platform, your region — matched.
+              Architect-led screening from operators who've run enterprise
+              delivery themselves.
             </p>
           </div>
 

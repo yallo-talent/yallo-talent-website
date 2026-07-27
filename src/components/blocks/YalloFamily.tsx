@@ -84,11 +84,11 @@ export function YalloFamily() {
       <div className={styles.wrap}>
         <header className={styles.hdr}>
           <span className={styles.eye}>The Yallo Family</span>
-          <h2 className={styles.h}>When the challenge goes beyond hiring.</h2>
+          <h2 className={styles.h}>When your challenge goes beyond hiring.</h2>
           <p className={styles.sub}>
-            Yallo Talent is one arm of the Yallo group. When you need more than
-            people, our sister companies pick up where talent leaves off —
-            advisory and build, and AI enablement.
+            Yallo Talent is one arm of the Yallo group. When your programme
+            needs more than people, our sister companies pick up where talent
+            leaves off — advisory, build, and AI enablement.
           </p>
         </header>
 

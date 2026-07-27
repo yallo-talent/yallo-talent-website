@@ -138,14 +138,16 @@ export function HowItWorks() {
         <header className={styles.hd}>
           <div className={styles.eye}>
             <span className={styles.dot} aria-hidden="true" />
-            How it works
+            How you get your shortlist
           </div>
           <h2 className={styles.h}>
-            From brief to shortlist <em className={styles.em}>in 72 hours.</em>
+            Your shortlist{" "}
+            <em className={styles.em}>in 72 hours, not weeks.</em>
           </h2>
           <p className={styles.lede}>
-            No CVs until we understand your programme. A screen run by people
-            who have built enterprise tech — not keyword-matched it.
+            No CVs land in your inbox until we've calibrated to your programme.
+            The screening is run by operators who have shipped enterprise tech
+            themselves — not keyword-matched it.
           </p>
         </header>
 

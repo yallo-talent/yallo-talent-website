@@ -196,4 +196,56 @@ export const navIcons = {
       </>,
       p.className,
     ),
+  dataAi: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M3 3v18h18" />
+        <path d="M7 14l3-3 3 3 5-5" />
+        <circle cx="7" cy="14" r="1.5" />
+        <circle cx="18" cy="9" r="1.5" />
+      </>,
+      p.className,
+    ),
+  devops: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M4 4v6h6" />
+        <path d="M20 20v-6h-6" />
+        <path d="M4 10a8 8 0 0114-3M20 14a8 8 0 01-14 3" />
+      </>,
+      p.className,
+    ),
+  cloud: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M18 10a4 4 0 00-8-1 5 5 0 00-1 9.9h9a4 4 0 000-8z" />
+      </>,
+      p.className,
+    ),
+  security: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
+        <path d="M9 12l2 2 4-4" />
+      </>,
+      p.className,
+    ),
+  integration: (p: IconProps) =>
+    wrap(
+      <>
+        <circle cx="5" cy="7" r="2" />
+        <circle cx="5" cy="17" r="2" />
+        <circle cx="19" cy="12" r="2" />
+        <path d="M7 7h4a3 3 0 013 3v4a3 3 0 003 3M7 17h4a3 3 0 003-3v-4a3 3 0 013-3" />
+      </>,
+      p.className,
+    ),
+  emerging: (p: IconProps) =>
+    wrap(
+      <>
+        <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.2 16.2l2.9 2.9M2 12h4M18 12h4M4.9 19.1l2.8-2.9M16.2 7.7l2.9-2.8" />
+        <circle cx="12" cy="12" r="3" />
+      </>,
+      p.className,
+    ),
 } as const;

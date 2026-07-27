@@ -32,7 +32,7 @@
 }
 
 .wrap {
-  max-width: 1200px;
+  max-width: 1240px;
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 56px);
   position: relative;
@@ -70,7 +70,7 @@
   font-weight: 300;
   line-height: 1.7;
   color: var(--fg-muted);
-  max-width: 52ch;
+  max-width: 56ch;
   margin: 14px auto 0;
 }
 
@@ -79,7 +79,7 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin-bottom: 36px;
+  margin-bottom: 32px;
 }
 
 .tab {
@@ -90,22 +90,25 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: var(--surface);
+  background: color-mix(in oklab, var(--surface) 60%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: var(--fg);
   font-family: inherit;
   transition:
-    border-color 0.22s,
-    background 0.22s;
+    border-color 0.22s ease,
+    background 0.22s ease,
+    color 0.22s ease;
 }
 
 .tab:hover {
-  border-color: var(--border-accent);
+  border-color: var(--sector-accent-35);
 }
 
 .tabOn {
-  background: var(--accent-muted);
-  border-color: var(--accent);
-  box-shadow: 0 0 18px var(--ya13);
+  background: var(--sector-accent-08);
+  border-color: var(--sector-accent);
+  box-shadow: 0 0 18px var(--sector-accent-20);
 }
 
 .tabKey {
@@ -113,7 +116,7 @@
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: var(--accent);
+  color: var(--sector-accent);
 }
 
 .tabTitle {
@@ -124,29 +127,35 @@
 }
 
 .tabOn .tabTitle {
-  color: var(--accent);
+  color: var(--sector-accent);
 }
 
+/* Panel — 2-col image + content on glass */
 .panel {
-  background: var(--surface-raised);
-  border: 1px solid var(--border-accent);
-  border-radius: 20px;
-  padding: clamp(30px, 4vw, 52px);
-  max-width: 860px;
+  display: grid;
+  grid-template-columns: 460px 1fr;
+  gap: 40px;
+  max-width: 1100px;
   margin: 0 auto;
-  text-align: center;
-  position: relative;
+  padding: 0;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
   overflow: hidden;
+  position: relative;
   box-shadow:
-    0 30px 60px -42px rgba(0, 0, 0, 0.7),
-    0 0 0 1px var(--border-accent);
+    0 40px 100px -40px rgba(0, 0, 0, 0.7),
+    0 0 0 1px var(--sector-accent-35),
+    inset 0 1px 0 var(--wa08);
   animation: wwdPanelIn 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 @keyframes wwdPanelIn {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -159,11 +168,17 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   height: 3px;
-  background: var(--gradient-accent);
-  animation: wwdSweep 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  background: linear-gradient(
+    90deg,
+    var(--sector-accent),
+    var(--sector-accent-35),
+    transparent
+  );
+  animation: wwdSweep 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
   transform-origin: left;
+  z-index: 3;
 }
 
 @keyframes wwdSweep {
@@ -175,134 +190,176 @@
   }
 }
 
-.panel::after {
-  content: "";
+.panelImage {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
+
+.panelImageImg {
+  object-fit: cover;
+  z-index: 0;
+}
+
+.panelImageTint {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 80% 60% at 50% 100%,
-    var(--ya08) 0%,
-    transparent 65%
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--sector-accent) 30%, transparent) 0%,
+    transparent 55%,
+    color-mix(in oklab, var(--ink-950) 40%, transparent) 100%
+  );
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.panelImageOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    transparent 40%,
+    color-mix(in oklab, var(--ink-950) 45%, transparent) 100%
   );
   pointer-events: none;
+}
+
+/* Floating stat pill on image */
+.panelStat {
+  position: absolute;
+  z-index: 3;
+  bottom: 20px;
+  left: 20px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px 20px;
+  background: color-mix(in oklab, var(--ink-950) 72%, transparent);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border: 1px solid var(--sector-accent-35);
+  border-radius: 14px;
+}
+
+.panelStatN {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--sector-accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.panelStatL {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.panelBody {
+  padding: 40px 40px 40px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-self: center;
+  position: relative;
+  z-index: 2;
 }
 
 .panelKick {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
+  color: var(--sector-accent);
 }
 
 .panelPromise {
-  font-size: clamp(22px, 2.8vw, 36px);
+  font-size: clamp(24px, 3vw, 34px);
   font-weight: 900;
   letter-spacing: -0.02em;
   color: var(--fg);
-  line-height: 1.1;
-  margin-bottom: 16px;
-  position: relative;
-  z-index: 1;
+  line-height: 1.15;
 }
 
 .panelHow {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 300;
   color: var(--fg-muted);
   line-height: 1.72;
-  margin: 0 auto 26px;
-  max-width: 52ch;
-  position: relative;
-  z-index: 1;
+  max-width: 50ch;
+  margin: 0;
 }
 
 .forLabel {
   font-family: var(--font-mono);
   font-size: 9.5px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-subtle);
-  margin-bottom: 12px;
-  position: relative;
-  z-index: 1;
+  margin-top: 8px;
 }
 
 .chips {
   display: flex;
-  gap: 9px;
+  gap: 8px;
   flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 28px;
-  position: relative;
-  z-index: 1;
 }
 
 .chip {
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 400;
   color: var(--fg);
-  background: var(--accent-muted);
-  border: 1px solid var(--border-accent);
-  border-radius: 8px;
-  padding: 9px 16px;
+  background: var(--sector-accent-08);
+  border: 1px solid var(--sector-accent-35);
+  border-radius: 999px;
+  padding: 8px 14px;
 }
 
 .foot {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--border-accent);
-  padding-top: 24px;
-  position: relative;
-  z-index: 1;
-}
-
-.stat {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.statN {
-  font-size: 30px;
-  font-weight: 900;
-  color: var(--accent);
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.statL {
-  font-size: 11px;
-  font-weight: 400;
-  color: var(--fg-muted);
+  margin-top: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
 
 .more {
-  font-size: 13.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--fg);
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
+  transition: color 0.15s ease;
 }
 
 .more:hover {
-  color: var(--accent);
+  color: var(--sector-accent);
 }
 
 .arr {
-  transition: transform 0.18s;
-  color: var(--accent);
+  color: var(--sector-accent);
+  transition: transform 0.2s ease;
 }
 
 .more:hover .arr {
   transform: translateX(4px);
+}
+
+@media (max-width: 900px) {
+  .panel {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .panelImage {
+    aspect-ratio: 5 / 4;
+  }
+  .panelBody {
+    padding: 32px;
+  }
 }

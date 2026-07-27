@@ -229,15 +229,16 @@ export function WhereWePlace() {
         <header className={styles.hd}>
           <div className={styles.eye}>
             <span className={styles.eyeDot} aria-hidden="true" />
-            <span>Where we place</span>
+            <span>Your sector, our bench</span>
           </div>
           <h2 className={styles.h}>
-            The sectors hiring —<br />
-            and the skills they need.
+            Talent ready for your sector —<br />
+            wherever your programme runs.
           </h2>
           <p className={styles.sub}>
-            Banking, public sector, manufacturing and logistics are hiring hard
-            right now. Hover any sector to explore the roles in demand.
+            Whether you're in banking, public sector, manufacturing or beyond,
+            we have specialists calibrated to your programme. Hover any sector
+            to see the roles you can call on.
           </p>
         </header>
 
@@ -255,22 +256,6 @@ export function WhereWePlace() {
               />
             ))}
           </ul>
-        </div>
-
-        <div className={styles.roles} aria-live="polite" key={featured.slug}>
-          {featured.useCases.map((u, i) => (
-            <article
-              key={u.title}
-              className={styles.role}
-              style={hueStyle(featured.hue)}
-            >
-              <div className={styles.roleNum}>
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              <h3 className={styles.roleTitle}>{u.title}</h3>
-              <p className={styles.roleDesc}>{u.desc}</p>
-            </article>
-          ))}
         </div>
       </div>
     </section>

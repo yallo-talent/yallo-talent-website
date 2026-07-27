@@ -83,9 +83,10 @@ export function CaseStudies() {
             <span className={styles.eyeDot} aria-hidden="true" />
             Case Studies
           </div>
-          <h2 className={styles.h}>Shortlists that became hires.</h2>
+          <h2 className={styles.h}>Programmes like yours, shipped on time.</h2>
           <p className={styles.sub}>
-            A few of the programmes we've helped staff across the region.
+            Enterprise teams across banking, manufacturing and beyond have
+            closed their talent gaps with Yallo. See how.
           </p>
         </header>
 

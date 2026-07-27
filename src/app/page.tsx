@@ -3,7 +3,6 @@ import { CaseStudies } from "@/components/blocks/CaseStudies";
 import { HeroSlider } from "@/components/blocks/HeroSlider";
 import { HowItWorks } from "@/components/blocks/HowItWorks";
 import { LatestInsights } from "@/components/blocks/LatestInsights";
-import { Metrics } from "@/components/blocks/Metrics";
 import { OurPartners } from "@/components/blocks/OurPartners";
 import { PlatformTalent } from "@/components/blocks/PlatformTalent";
 import { TalentBridge } from "@/components/blocks/TalentBridge";
@@ -26,7 +25,6 @@ export default function Home() {
       <TalentBridge />
       <WhyYallo />
       <CaseStudies />
-      <Metrics />
       <LatestInsights />
       <YalloFamily />
       <BriefCTA />

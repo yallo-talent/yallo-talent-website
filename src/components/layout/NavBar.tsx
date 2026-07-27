@@ -109,9 +109,9 @@ export function NavBar() {
                   {openGroup === group.label && (
                     <motion.div
                       className={styles.megaPanel}
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
+                      initial={{ opacity: 0, y: -8, x: "-50%" }}
+                      animate={{ opacity: 1, y: 0, x: "-50%" }}
+                      exit={{ opacity: 0, y: -8, x: "-50%" }}
                       transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
                     >
                       {group.description && (

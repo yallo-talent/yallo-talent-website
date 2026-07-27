@@ -200,6 +200,51 @@ function HeroVisual() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
     >
+      {/* Floating decorative pills around the frame — subtle idle motion */}
+      <motion.div
+        className={`${styles.floatPill} ${styles.floatPillA}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.9, duration: 0.4 }}
+        aria-hidden="true"
+      >
+        <span
+          className={styles.floatPillDot}
+          style={{ background: "var(--hue-blue-500)" }}
+        />
+        SAP · Dubai
+      </motion.div>
+      <motion.div
+        className={`${styles.floatPill} ${styles.floatPillB}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.05, duration: 0.4 }}
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 24 24" role="presentation">
+          <title>Check</title>
+          <path
+            d="M20 6L9 17l-5-5"
+            stroke="var(--success-500)"
+            strokeWidth="2"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Screened
+      </motion.div>
+      <motion.div
+        className={`${styles.floatPill} ${styles.floatPillC}`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.2, duration: 0.4 }}
+        aria-hidden="true"
+      >
+        <span className={styles.floatPillBig}>2:1</span>
+        <span className={styles.floatPillSm}>CV · interview</span>
+      </motion.div>
+
       <div className={styles.visualFrame}>
         <Image
           src={HERO_IMAGE}

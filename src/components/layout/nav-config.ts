@@ -20,7 +20,13 @@ type IconKey =
   | "cases"
   | "about"
   | "why"
-  | "leadership";
+  | "leadership"
+  | "dataAi"
+  | "devops"
+  | "cloud"
+  | "security"
+  | "integration"
+  | "emerging";
 
 export interface NavItem {
   label: string;
@@ -116,31 +122,31 @@ export const primaryNav: NavGroup[] = [
             hue: "orange",
           },
           {
-            label: "Financial Services",
-            href: "/industries/finance",
-            icon: "finance",
-            hue: "blue",
-          },
-          {
-            label: "Manufacturing",
+            label: "Manufacturing & Logistics",
             href: "/industries/manufacturing",
             icon: "manufacturing",
             hue: "orange",
           },
           {
-            label: "Healthcare",
-            href: "/industries/healthcare",
-            icon: "healthcare",
-            hue: "teal",
+            label: "Banking & Financial Services",
+            href: "/industries/finance",
+            icon: "finance",
+            hue: "blue",
           },
           {
-            label: "Government",
+            label: "Government & Public Sector",
             href: "/industries/government",
             icon: "government",
             hue: "green",
           },
           {
-            label: "Telco",
+            label: "Healthcare & Life Science",
+            href: "/industries/healthcare",
+            icon: "healthcare",
+            hue: "teal",
+          },
+          {
+            label: "Telco & Media",
             href: "/industries/telco",
             icon: "telco",
             hue: "violet",
@@ -180,6 +186,47 @@ export const primaryNav: NavGroup[] = [
             href: "/platforms/workday",
             icon: "workday",
             hue: "violet",
+          },
+        ],
+      },
+      {
+        heading: "Capabilities",
+        items: [
+          {
+            label: "Data & AI",
+            href: "/capabilities/data-ai",
+            icon: "dataAi",
+            hue: "blue",
+          },
+          {
+            label: "Digital & DevOps",
+            href: "/capabilities/digital-devops",
+            icon: "devops",
+            hue: "violet",
+          },
+          {
+            label: "Cloud & Infrastructure",
+            href: "/capabilities/cloud-infrastructure",
+            icon: "cloud",
+            hue: "teal",
+          },
+          {
+            label: "Cybersecurity",
+            href: "/capabilities/cybersecurity",
+            icon: "security",
+            hue: "green",
+          },
+          {
+            label: "Integration & Middleware",
+            href: "/capabilities/integration-middleware",
+            icon: "integration",
+            hue: "orange",
+          },
+          {
+            label: "Emerging Technologies",
+            href: "/capabilities/emerging-technologies",
+            icon: "emerging",
+            hue: "rose",
           },
         ],
       },
