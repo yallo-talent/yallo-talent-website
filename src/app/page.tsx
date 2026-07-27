@@ -9,6 +9,7 @@ import { TheProblem } from "@/components/blocks/TheProblem";
 import { WhatWeDo } from "@/components/blocks/WhatWeDo";
 import { WhereWePlace } from "@/components/blocks/WhereWePlace";
 import { WhyYallo } from "@/components/blocks/WhyYallo";
+import { YalloFamily } from "@/components/blocks/YalloFamily";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
       <CaseStudies />
       <Metrics />
       <LatestInsights />
+      <YalloFamily />
     </>
   );
 }
