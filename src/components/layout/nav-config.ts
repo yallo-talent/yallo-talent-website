@@ -342,34 +342,6 @@ export const primaryNav: NavGroup[] = [
           },
         ],
       },
-      {
-        heading: "Yallo family",
-        items: [
-          {
-            label: "Yallo Talent",
-            href: "/",
-            description: "Where you are · enterprise IT talent",
-            icon: "capabilities",
-            hue: "orange",
-          },
-          {
-            label: "saasinator",
-            href: "https://saasinator.ai",
-            description: "AI advisory & build · launching soon",
-            icon: "emerging",
-            hue: "violet",
-            external: true,
-          },
-          {
-            label: "Yallo AI Academy",
-            href: "https://yallo.co/academy",
-            description: "Role-based AI enablement · soon",
-            icon: "dataAi",
-            hue: "teal",
-            external: true,
-          },
-        ],
-      },
     ],
     featured: {
       eyebrow: "Meet the operator",

@@ -109,117 +109,119 @@ export function NavBar() {
                   {openGroup === group.label && (
                     <motion.div
                       className={styles.megaPanel}
-                      initial={{ opacity: 0, y: -8, x: "-50%" }}
-                      animate={{ opacity: 1, y: 0, x: "-50%" }}
-                      exit={{ opacity: 0, y: -8, x: "-50%" }}
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
                     >
-                      {group.description && (
-                        <div className={styles.megaDescription}>
-                          {group.description}
-                        </div>
-                      )}
-                      <div
-                        className={styles.megaGrid}
-                        data-cols={
-                          group.columns.length + (group.featured ? 1 : 0)
-                        }
-                      >
-                        {group.columns.map((col) => (
-                          <div key={col.heading} className={styles.megaCol}>
-                            <div className={styles.megaColHeading}>
-                              {col.heading}
-                            </div>
-                            <ul className={styles.megaList}>
-                              {col.items.map((item) => {
-                                const inner = (
-                                  <>
-                                    <span className={styles.itemIcon}>
-                                      <NavItemIcon icon={item.icon} />
-                                    </span>
-                                    <span className={styles.itemBody}>
-                                      <span className={styles.itemLabel}>
-                                        {item.label}
-                                        {item.external && (
+                      <div className={styles.megaPanelInner}>
+                        {group.description && (
+                          <div className={styles.megaDescription}>
+                            {group.description}
+                          </div>
+                        )}
+                        <div
+                          className={styles.megaGrid}
+                          data-cols={
+                            group.columns.length + (group.featured ? 1 : 0)
+                          }
+                        >
+                          {group.columns.map((col) => (
+                            <div key={col.heading} className={styles.megaCol}>
+                              <div className={styles.megaColHeading}>
+                                {col.heading}
+                              </div>
+                              <ul className={styles.megaList}>
+                                {col.items.map((item) => {
+                                  const inner = (
+                                    <>
+                                      <span className={styles.itemIcon}>
+                                        <NavItemIcon icon={item.icon} />
+                                      </span>
+                                      <span className={styles.itemBody}>
+                                        <span className={styles.itemLabel}>
+                                          {item.label}
+                                          {item.external && (
+                                            <span
+                                              className={styles.externalMark}
+                                              aria-hidden="true"
+                                            >
+                                              ↗
+                                            </span>
+                                          )}
+                                        </span>
+                                        {item.description && (
                                           <span
-                                            className={styles.externalMark}
-                                            aria-hidden="true"
+                                            className={styles.itemDescription}
                                           >
-                                            ↗
+                                            {item.description}
                                           </span>
                                         )}
                                       </span>
-                                      {item.description && (
-                                        <span
-                                          className={styles.itemDescription}
+                                    </>
+                                  );
+                                  return (
+                                    <li key={item.href}>
+                                      {item.external ? (
+                                        <a
+                                          href={item.href}
+                                          className={styles.megaLink}
+                                          style={hueStyle(item.hue)}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
                                         >
-                                          {item.description}
-                                        </span>
+                                          {inner}
+                                        </a>
+                                      ) : (
+                                        <Link
+                                          href={item.href}
+                                          className={styles.megaLink}
+                                          style={hueStyle(item.hue)}
+                                        >
+                                          {inner}
+                                        </Link>
                                       )}
-                                    </span>
-                                  </>
-                                );
-                                return (
-                                  <li key={item.href}>
-                                    {item.external ? (
-                                      <a
-                                        href={item.href}
-                                        className={styles.megaLink}
-                                        style={hueStyle(item.hue)}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                      >
-                                        {inner}
-                                      </a>
-                                    ) : (
-                                      <Link
-                                        href={item.href}
-                                        className={styles.megaLink}
-                                        style={hueStyle(item.hue)}
-                                      >
-                                        {inner}
-                                      </Link>
-                                    )}
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          </div>
-                        ))}
-                        {group.featured && (
-                          <Link
-                            href={group.featured.href}
-                            className={styles.featured}
-                          >
-                            <div className={styles.featuredImage}>
-                              <Image
-                                src={group.featured.image}
-                                alt={group.featured.imageAlt}
-                                fill
-                                sizes="280px"
-                                className={styles.featuredImageImg}
-                              />
-                              <div
-                                className={styles.featuredImageTint}
-                                aria-hidden="true"
-                              />
+                                    </li>
+                                  );
+                                })}
+                              </ul>
                             </div>
-                            <div className={styles.featuredBody}>
-                              <span className={styles.featuredEyebrow}>
-                                {group.featured.eyebrow}
-                              </span>
-                              <span className={styles.featuredTitle}>
-                                {group.featured.title}
-                              </span>
-                              <span className={styles.featuredCopy}>
-                                {group.featured.copy}
-                              </span>
-                              <span className={styles.featuredCta}>
-                                {group.featured.ctaLabel}
-                              </span>
-                            </div>
-                          </Link>
-                        )}
+                          ))}
+                          {group.featured && (
+                            <Link
+                              href={group.featured.href}
+                              className={styles.featured}
+                            >
+                              <div className={styles.featuredImage}>
+                                <Image
+                                  src={group.featured.image}
+                                  alt={group.featured.imageAlt}
+                                  fill
+                                  sizes="280px"
+                                  className={styles.featuredImageImg}
+                                />
+                                <div
+                                  className={styles.featuredImageTint}
+                                  aria-hidden="true"
+                                />
+                              </div>
+                              <div className={styles.featuredBody}>
+                                <span className={styles.featuredEyebrow}>
+                                  {group.featured.eyebrow}
+                                </span>
+                                <span className={styles.featuredTitle}>
+                                  {group.featured.title}
+                                </span>
+                                <span className={styles.featuredCopy}>
+                                  {group.featured.copy}
+                                </span>
+                                <span className={styles.featuredCta}>
+                                  {group.featured.ctaLabel}
+                                </span>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
                       </div>
                     </motion.div>
                   )}

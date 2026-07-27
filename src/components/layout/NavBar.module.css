@@ -40,10 +40,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 18px 24px;
+  gap: 40px;
+  width: 100%;
+  padding: 18px clamp(20px, 3vw, 40px);
 }
 
 .brand {
@@ -71,7 +70,9 @@
 .primary {
   display: flex;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
 }
 
 .groupWrap {
@@ -117,24 +118,29 @@
 /* ============ MEGA PANEL (full viewport-width) ============ */
 .megaPanel {
   position: fixed;
-  top: 76px;
-  left: 50%;
-  /* transform: translateX(-50%) — owned by Framer motion for animation */
-  width: min(1200px, calc(100vw - 32px));
-  padding: 28px 32px;
+  top: 72px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 32px clamp(24px, 4vw, 60px);
   /* Fully opaque surface for text legibility on any bg */
   background: var(--ink-800);
-  border: 1px solid var(--wa25);
-  border-radius: 24px;
+  border-top: 1px solid var(--wa15);
+  border-bottom: 1px solid var(--wa15);
   box-shadow:
     0 40px 120px -30px rgba(0, 0, 0, 0.85),
-    0 0 0 1px var(--wa12),
     inset 0 1px 0 var(--wa12);
   z-index: 55;
 }
 
 .headerScrolled .megaPanel {
-  top: 68px;
+  top: 64px;
+}
+
+.megaPanelInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .megaDescription {
@@ -310,7 +316,7 @@
 
 .featuredImage {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 7;
   overflow: hidden;
 }
 
