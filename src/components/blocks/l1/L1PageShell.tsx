@@ -102,11 +102,7 @@ export function L1PageShell({ data }: Props) {
 }
 
 /* ============ IN-PAGE STICKY SUB-NAV ============ */
-function L1SubNav({
-  items,
-}: {
-  items: { id: string; label: string }[];
-}) {
+function L1SubNav({ items }: { items: { id: string; label: string }[] }) {
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
   useEffect(() => {
     if (typeof window === "undefined") return;

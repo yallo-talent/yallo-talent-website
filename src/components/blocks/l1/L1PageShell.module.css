@@ -291,14 +291,23 @@
   box-shadow: 0 0 8px var(--success-glow);
 }
 
+/* Give anchor targets breathing room under the sticky nav + sub-nav so
+   clicking a sub-nav chip lands the heading below both bars. */
+.page :is([id="why"], [id="deliver"], [id="how"], [id="scarce"], [id="architects"], [id="partners"], [id="engagement"], [id="insights"]),
+.page :global(#expertise),
+.page :global(#segments) {
+  scroll-margin-top: 120px;
+}
+
 /* ============ IN-PAGE STICKY SUB-NAV ============ */
 .subNav {
   position: sticky;
-  top: 0;
+  /* Sits directly under the main NavBar (~64px tall). */
+  top: 64px;
   z-index: 40;
-  background: color-mix(in oklab, var(--ink-950) 85%, transparent);
-  backdrop-filter: saturate(160%) blur(14px);
-  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  background: color-mix(in oklab, var(--ink-950) 92%, transparent);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
   border-bottom: 1px solid var(--wa08);
   border-top: 1px solid var(--wa08);
 }
