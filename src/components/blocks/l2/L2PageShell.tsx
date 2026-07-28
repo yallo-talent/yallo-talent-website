@@ -49,6 +49,9 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Tools sector={sector} fn={fn} />
           <L2Screening />
           <L2CrossLinks fn={fn} />
+          <L2Engagement />
+          <L2BottomCta sector={sector} fn={fn} />
+          <L2RelatedFunctions sector={sector} fn={fn} />
         </main>
       </div>
     </div>
@@ -395,10 +398,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                           ? "Blue Yonder"
                           : slug[0]?.toUpperCase() + slug.slice(1)}
                     </span>
-                    <span
-                      className={styles.crossChipArrow}
-                      aria-hidden="true"
-                    >
+                    <span className={styles.crossChipArrow} aria-hidden="true">
                       →
                     </span>
                   </Link>
@@ -425,10 +425,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                     <span className={styles.crossChipName}>
                       {capabilityLabels[slug] ?? slug}
                     </span>
-                    <span
-                      className={styles.crossChipArrow}
-                      aria-hidden="true"
-                    >
+                    <span className={styles.crossChipArrow} aria-hidden="true">
                       →
                     </span>
                   </Link>
@@ -437,6 +434,169 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
             </div>
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+/* ============ ENGAGEMENT MODELS MINI STRIP ============ */
+const engagementModels: {
+  href: string;
+  label: string;
+  hue: L1Hue;
+  copy: string;
+}[] = [
+  {
+    href: "/contract",
+    label: "Contract",
+    hue: "orange",
+    copy: "72h shortlist. Day-rate or fixed-term.",
+  },
+  {
+    href: "/permanent",
+    label: "Permanent",
+    hue: "blue",
+    copy: "Retained or contingent search.",
+  },
+  {
+    href: "/eor",
+    label: "EOR",
+    hue: "violet",
+    copy: "Compliant employment in 15+ markets.",
+  },
+  {
+    href: "/managed-delivery",
+    label: "Managed delivery",
+    hue: "teal",
+    copy: "Outcome-based pods, fixed-price milestones.",
+  },
+];
+
+function L2Engagement() {
+  return (
+    <section className={styles.engage}>
+      <div className={styles.engageInner}>
+        <div className={styles.secLabel}>How you engage</div>
+        <h2 className={styles.engageH}>Four commercial models. Pick one.</h2>
+        <div className={styles.engageGrid}>
+          {engagementModels.map((m) => (
+            <Link
+              key={m.href}
+              href={m.href}
+              className={styles.engageChip}
+              style={cardHueStyle(m.hue)}
+            >
+              <span className={styles.engageChipLabel}>{m.label}</span>
+              <span className={styles.engageChipCopy}>{m.copy}</span>
+              <span className={styles.engageChipArrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ BOTTOM CTA ============ */
+function L2BottomCta({
+  sector,
+  fn,
+}: {
+  sector: L1PageData;
+  fn: L1ExpertiseCard;
+}) {
+  const briefHref = `/brief?sector=${sector.slug}&fn=${fn.slug}`;
+  return (
+    <section className={styles.bottomCta}>
+      <div className={styles.bottomInner}>
+        <div className={styles.bottomGlow} aria-hidden="true" />
+        <div className={styles.bottomContent}>
+          <div className={styles.secLabel}>Ready to brief us?</div>
+          <h2 className={styles.bottomH}>
+            Need a{" "}
+            <span className={styles.bottomEm}>
+              {fn.title.toLowerCase()} contractor?
+            </span>
+          </h2>
+          <p className={styles.bottomSub}>
+            Send the role, the platform, the timeline — get an
+            architect-screened shortlist inside 72 hours. No CVs until we
+            understand your programme.
+          </p>
+          <div className={styles.bottomActions}>
+            <Link href={briefHref} className={styles.bottomCtaPrimary}>
+              Request a contractor
+              <span aria-hidden="true">→</span>
+            </Link>
+            <Link href="/contract" className={styles.bottomCtaGhost}>
+              Contract model
+            </Link>
+            <Link href="/eor" className={styles.bottomCtaGhost}>
+              EOR model
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ RELATED FUNCTIONS ============ */
+function L2RelatedFunctions({
+  sector,
+  fn,
+}: {
+  sector: L1PageData;
+  fn: L1ExpertiseCard;
+}) {
+  // Prev/next by index + one wrap-around pick to give three chips.
+  const enabled = sector.expertise.filter(
+    (e) => e.tools && e.tools.length > 0,
+  );
+  const idx = enabled.findIndex((e) => e.slug === fn.slug);
+  if (idx < 0 || enabled.length < 2) return null;
+  const picks: L1ExpertiseCard[] = [];
+  const prev = enabled[(idx - 1 + enabled.length) % enabled.length];
+  const next = enabled[(idx + 1) % enabled.length];
+  const jump = enabled[(idx + 3) % enabled.length];
+  if (prev && prev.slug !== fn.slug) picks.push(prev);
+  if (next && next.slug !== fn.slug && next.slug !== prev?.slug)
+    picks.push(next);
+  if (
+    jump &&
+    jump.slug !== fn.slug &&
+    jump.slug !== prev?.slug &&
+    jump.slug !== next?.slug
+  )
+    picks.push(jump);
+
+  return (
+    <section className={styles.related}>
+      <div className={styles.relatedInner}>
+        <div className={styles.secLabel}>More {sector.title}</div>
+        <h3 className={styles.relatedH}>Related functions in this sector</h3>
+        <div className={styles.relatedGrid}>
+          {picks.map((rf, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <Link
+                key={rf.slug}
+                href={`/industries/${sector.slug}/${rf.slug}`}
+                className={styles.relatedCard}
+                style={cardHueStyle(hue)}
+              >
+                <span className={styles.relatedNum}>{rf.num}</span>
+                <span className={styles.relatedTitle}>{rf.title}</span>
+                <span className={styles.relatedBlurb}>{rf.blurb}</span>
+                <span className={styles.relatedArrow} aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

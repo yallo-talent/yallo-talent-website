@@ -889,6 +889,308 @@
   transform: translateX(3px);
 }
 
+/* ============ ENGAGEMENT MODELS MINI STRIP ============ */
+.engage {
+  padding: 0 clamp(24px, 4vw, 52px) clamp(48px, 6vw, 72px);
+}
+
+.engageInner {
+  max-width: 1100px;
+}
+
+.engageH {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0 0 20px;
+}
+
+.engageGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.engageChip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 12px;
+  color: var(--fg);
+  overflow: hidden;
+  transition:
+    border-color 0.24s ease,
+    background 0.24s ease,
+    transform 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.engageChip:hover {
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -14px var(--card-hue-35, var(--sector-accent-35));
+}
+
+.engageChipLabel {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--card-hue, var(--sector-accent));
+}
+
+.engageChipCopy {
+  font-size: 11.5px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+.engageChipArrow {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  color: var(--card-hue, var(--sector-accent));
+  transition: transform 0.2s ease;
+}
+
+.engageChip:hover .engageChipArrow {
+  transform: translate(3px, -1px);
+}
+
+@media (max-width: 900px) {
+  .engageGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ============ BOTTOM CTA ============ */
+.bottomCta {
+  padding: 0 clamp(24px, 4vw, 52px) clamp(48px, 6vw, 72px);
+}
+
+.bottomInner {
+  position: relative;
+  max-width: 1100px;
+  padding: clamp(28px, 4vw, 48px);
+  background: linear-gradient(
+    135deg,
+    var(--sector-accent-08) 0%,
+    color-mix(in oklab, var(--ink-900) 92%, transparent) 55%,
+    color-mix(in oklab, var(--ink-900) 96%, transparent) 100%
+  );
+  border: 1px solid var(--sector-accent-35);
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 30px 60px -30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 var(--wa08);
+}
+
+.bottomGlow {
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bottomContent {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+}
+
+.bottomH {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--fg);
+  margin: 0 0 12px;
+}
+
+.bottomEm {
+  background: linear-gradient(120deg, var(--sector-accent), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bottomSub {
+  font-size: 13.5px;
+  color: var(--fg-muted);
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+.bottomActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.bottomCtaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--sector-accent);
+  color: var(--ink-950);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px -12px var(--sector-accent-35);
+  transition:
+    background 0.15s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.bottomCtaPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px var(--sector-accent-35);
+  background: color-mix(in oklab, var(--sector-accent) 88%, white);
+  color: var(--ink-950);
+}
+
+.bottomCtaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: var(--fg);
+  border: 1px solid var(--wa25);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: color-mix(in oklab, var(--ink-950) 40%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.bottomCtaGhost:hover {
+  border-color: var(--sector-accent);
+  color: var(--sector-accent);
+}
+
+/* ============ RELATED FUNCTIONS ============ */
+.related {
+  padding: 0 clamp(24px, 4vw, 52px) clamp(56px, 8vw, 96px);
+}
+
+.relatedInner {
+  max-width: 1100px;
+}
+
+.relatedH {
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  margin: 0 0 18px;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.relatedCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 22px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 14px;
+  color: var(--fg);
+  overflow: hidden;
+  transition:
+    border-color 0.24s ease,
+    background 0.24s ease,
+    transform 0.24s ease,
+    box-shadow 0.24s ease;
+}
+
+.relatedCard:hover {
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -14px var(--card-hue-35, var(--sector-accent-35));
+}
+
+.relatedNum {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--card-hue, var(--fg-subtle));
+}
+
+.relatedTitle {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  transition: color 0.24s ease;
+}
+
+.relatedCard:hover .relatedTitle {
+  color: var(--card-hue, var(--sector-accent));
+}
+
+.relatedBlurb {
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+.relatedArrow {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  color: var(--card-hue, var(--sector-accent));
+  font-family: var(--font-mono);
+  transition: transform 0.2s ease;
+}
+
+.relatedCard:hover .relatedArrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .relatedGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============ SIDEBAR ============ */
 .sbTop {
   padding: 20px 20px 18px;
