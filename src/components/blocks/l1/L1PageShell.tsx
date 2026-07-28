@@ -226,7 +226,10 @@ function L1HowWeWork({ data }: Props) {
           <div className={styles.eyebrow}>How we work</div>
           <h2 className={styles.h2}>
             Four steps from brief to bench —{" "}
-            <span className={styles.heroEmphasis}>every {data.slug === "retail" ? "retail" : data.slug} programme, same rhythm.</span>
+            <span className={styles.heroEmphasis}>
+              every {data.slug === "retail" ? "retail" : data.slug} programme,
+              same rhythm.
+            </span>
           </h2>
           <p className={styles.sub}>
             Yallo Talent is a contract-first bench built on architect-led
@@ -816,31 +819,59 @@ function L1BottomCta() {
 
 /* ============ READ NEXT ============ */
 function L1ReadNext({ data }: Props) {
+  // Split cross-links into three compact rails: industries | platforms | capabilities
+  const buckets = {
+    Industry: [] as typeof data.related,
+    Platform: [] as typeof data.related,
+    Capability: [] as typeof data.related,
+  };
+  for (const r of data.related) {
+    if (r.category === "Industry") buckets.Industry.push(r);
+    else if (r.category === "Platform") buckets.Platform.push(r);
+    else if (r.category === "Capability") buckets.Capability.push(r);
+  }
+  const rails: { label: string; items: typeof data.related }[] = [
+    { label: "Adjacent industries", items: buckets.Industry },
+    { label: "Platforms we staff", items: buckets.Platform },
+    { label: "Capabilities we deliver", items: buckets.Capability },
+  ].filter((r) => r.items.length > 0);
+
   return (
     <section className={styles.readNext}>
       <div className={styles.wrap}>
         <div className={styles.readNextHead}>
-          <div className={styles.eyebrow}>Read next</div>
+          <div className={styles.eyebrow}>Also connected</div>
           <h3 className={styles.readNextH}>{data.relatedTitle}</h3>
         </div>
-        <div className={styles.readNextGrid}>
-          {data.related.map((r, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
-            return (
-              <Link
-                key={r.href}
-                href={r.href}
-                className={styles.readNextCard}
-                style={cardHueStyle(hue)}
-              >
-                <span className={styles.readNextCat}>{r.category}</span>
-                <span className={styles.readNextLabel}>{r.label}</span>
-                <span className={styles.readNextArr} aria-hidden="true">
-                  →
-                </span>
-              </Link>
-            );
-          })}
+        <div className={styles.readNextRails}>
+          {rails.map((rail) => (
+            <div key={rail.label} className={styles.readNextRail}>
+              <div className={styles.readNextRailLabel}>{rail.label}</div>
+              <div className={styles.readNextChips}>
+                {rail.items.map((r, i) => {
+                  const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+                  return (
+                    <Link
+                      key={r.href}
+                      href={r.href}
+                      className={styles.readNextChip}
+                      style={cardHueStyle(hue)}
+                    >
+                      <span className={styles.readNextChipLabel}>
+                        {r.label}
+                      </span>
+                      <span
+                        className={styles.readNextChipArr}
+                        aria-hidden="true"
+                      >
+                        →
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
