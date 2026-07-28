@@ -556,6 +556,78 @@ export const retailData: L1PageData = {
     },
   ],
 
+  insightsEyebrow: "Insights",
+  insightsTitle: "What's happening in retail tech talent right now.",
+  insightsSub:
+    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insights: [
+    {
+      href: "/insights/blue-yonder-luminate-scarcity-2025",
+      category: "Supply Chain",
+      title:
+        "Blue Yonder Luminate contractors: why the bench dried up and what retail programmes are doing about it.",
+      excerpt:
+        "Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months — here's what we know about where the available contractors are and what they cost.",
+      author: "Sumeet Goenka",
+      minutes: 6,
+      image:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&auto=format&fit=crop&q=80",
+      imageAlt: "Supply chain warehouse operations",
+    },
+    {
+      href: "/insights/sap-commerce-cloud-middle-east",
+      category: "E-commerce",
+      title:
+        "SAP Commerce Cloud in the Gulf: implementation contractors are being hired six months too late.",
+      excerpt:
+        "Every SAP Commerce programme in the ME region that slipped in 2024 had one thing in common: the technical architect was confirmed after the project structure was already locked. The fix isn't faster hiring — it's earlier briefing.",
+      author: "Yallo Talent",
+      minutes: 5,
+      image:
+        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1000&auto=format&fit=crop&q=80",
+      imageAlt: "E-commerce workstation",
+    },
+    {
+      href: "/insights/retail-planning-anaplan-demand",
+      category: "Planning & Analytics",
+      title:
+        "Anaplan Model Builders in retail: the role that's reshaping how large retailers plan — and why there aren't enough of them.",
+      excerpt:
+        "Anaplan has moved from finance tool to enterprise planning platform faster than the talent pool has followed. In retail specifically, the demand for Model Builders outstrips supply by a ratio we haven't seen since SAP HANA launched in 2015.",
+      author: "Sumeet Goenka",
+      minutes: 7,
+      image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&auto=format&fit=crop&q=80",
+      imageAlt: "Retail planning analytics dashboard",
+    },
+    {
+      href: "/insights/retail-cx-contractor-retention",
+      category: "Customer Experience",
+      title:
+        "Why retail CX contractors walk at go-live — and how to keep them.",
+      excerpt:
+        "The highest-risk moment in any retail CX programme is the 30 days before and after go-live. What we've learned about contractor exit patterns, commercial triggers, and how to structure engagement to prevent it.",
+      author: "Sumeet Goenka",
+      minutes: 8,
+      image:
+        "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1000&auto=format&fit=crop&q=80",
+      imageAlt: "Retail CX programme",
+    },
+    {
+      href: "/insights/72-hour-talent-benchmark",
+      category: "Talent Operations",
+      title:
+        "The 72-hour benchmark: what enterprise retailers get wrong about contractor speed.",
+      excerpt:
+        "Most retail IT leaders accept 4–6 weeks as normal for contractor shortlisting. It isn't. What makes rapid shortlisting possible, why it needs architect-led screening, and how to brief a talent partner to activate it.",
+      author: "Yallo Talent",
+      minutes: 6,
+      image:
+        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1000&auto=format&fit=crop&q=80",
+      imageAlt: "Warehouse fulfilment operations",
+    },
+  ],
+
   relatedTitle:
     "Adjacent industries, platforms and capabilities we place into retail.",
   related: [

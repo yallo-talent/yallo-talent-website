@@ -54,6 +54,9 @@ export function L1PageShell({ data }: Props) {
       <L1Expertise data={data} />
       <L1Segments data={data} />
       <L1Partners />
+      {data.insights && data.insights.length > 0 && (
+        <L1Insights data={data} />
+      )}
       <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
@@ -490,6 +493,62 @@ function L1Partners() {
               >
                 <span className={styles.partnerName}>{name}</span>
               </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ INSIGHTS (scrolling) ============ */
+function L1Insights({ data }: Props) {
+  if (!data.insights || data.insights.length === 0) return null;
+  return (
+    <section className={styles.insights}>
+      <div className={styles.wrap}>
+        <div className={styles.eyebrow}>
+          {data.insightsEyebrow ?? "Insights"}
+        </div>
+        <h2 className={styles.h2}>
+          {data.insightsTitle ?? "What's happening in the market right now."}
+        </h2>
+        {data.insightsSub && <p className={styles.sub}>{data.insightsSub}</p>}
+      </div>
+      <div className={styles.insightsScrollWrap}>
+        <div className={styles.insightsScroll}>
+          {data.insights.map((post, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <Link
+                key={post.href}
+                href={post.href}
+                className={styles.insCard}
+                style={cardHueStyle(hue)}
+              >
+                <div className={styles.insImgWrap}>
+                  <Image
+                    src={post.image}
+                    alt={post.imageAlt}
+                    fill
+                    sizes="(max-width: 900px) 88vw, 380px"
+                    className={styles.insImg}
+                  />
+                  <div className={styles.insImgTint} aria-hidden="true" />
+                  <div className={styles.insImgOverlay} aria-hidden="true" />
+                  <span className={styles.insCat}>{post.category}</span>
+                </div>
+                <div className={styles.insBody}>
+                  <h3 className={styles.insTitle}>{post.title}</h3>
+                  <p className={styles.insExcerpt}>{post.excerpt}</p>
+                  <div className={styles.insMeta}>
+                    <span className={styles.insAuthor}>
+                      {post.author} · {post.minutes} min read
+                    </span>
+                    <span className={styles.insRead}>Read →</span>
+                  </div>
+                </div>
+              </Link>
             );
           })}
         </div>

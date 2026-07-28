@@ -108,6 +108,20 @@ export interface L1RelatedLink {
   category: string;
 }
 
+/**
+ * One card in the horizontally scrolling Insights row.
+ */
+export interface L1Insight {
+  href: string;
+  category: string;
+  title: string;
+  excerpt: string;
+  author: string;
+  minutes: number;
+  image: string;
+  imageAlt: string;
+}
+
 export interface L1PageData {
   slug: string;
   category: L1Category;
@@ -153,6 +167,12 @@ export interface L1PageData {
   segmentsTitle: string;
   segmentsSub: string;
   segments: L1Segment[];
+
+  /** Insights (horizontal scrolling row) — optional per page */
+  insightsEyebrow?: string;
+  insightsTitle?: string;
+  insightsSub?: string;
+  insights?: L1Insight[];
 
   /** Read next — cross-links */
   relatedTitle: string;
