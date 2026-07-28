@@ -415,6 +415,238 @@
   line-height: 1.55;
 }
 
+/* ============ WHAT WE DELIVER ============ */
+.wwd {
+  position: relative;
+  padding: 0 0 clamp(48px, 6vw, 72px);
+  isolation: isolate;
+}
+
+.wwdHead {
+  max-width: 780px;
+  margin-bottom: 24px;
+}
+
+.wwdGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.wwdCard {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.wwdGlow {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-35, var(--sector-accent-35)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.wwdCard::before {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-20, var(--sector-accent-20)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.wwdCard:hover {
+  transform: translateY(-6px);
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  box-shadow:
+    0 26px 52px -22px rgba(0, 0, 0, 0.55),
+    0 0 40px var(--card-hue-08, var(--sector-accent-08));
+}
+
+.wwdCard:hover .wwdGlow,
+.wwdCard:hover::before {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.wwdCardInner {
+  position: relative;
+  z-index: 2;
+  padding: 26px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wwdIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--card-hue-35, var(--sector-accent-35)),
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  color: var(--card-hue, var(--sector-accent));
+  box-shadow: inset 0 1px 0 var(--wa12);
+  margin-bottom: 14px;
+  transition:
+    transform 0.32s ease,
+    box-shadow 0.32s ease;
+}
+
+.wwdCard:hover .wwdIcon {
+  transform: rotate(-6deg) scale(1.08);
+  box-shadow:
+    0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35)),
+    inset 0 1px 0 var(--wa15);
+}
+
+.wwdIconSvg {
+  width: 22px;
+  height: 22px;
+}
+
+.wwdEyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--card-hue, var(--sector-accent));
+  margin-bottom: 4px;
+}
+
+.wwdTitle {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  line-height: 1.25;
+  margin: 0 0 8px;
+  transition: color 0.28s ease;
+}
+
+.wwdCard:hover .wwdTitle {
+  color: var(--card-hue, var(--sector-accent));
+}
+
+.wwdCopy {
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin: 0 0 12px;
+}
+
+.wwdBullets {
+  list-style: none;
+  padding: 12px 0 0;
+  margin: 0;
+  border-top: 1px solid var(--wa08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.wwdBullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  transition: color 0.22s ease;
+}
+
+.wwdCard:hover .wwdBullet {
+  color: var(--fg);
+}
+
+.wwdBullet::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--card-hue, var(--sector-accent));
+  flex-shrink: 0;
+  margin-top: 6px;
+  opacity: 0.8;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.wwdCard:hover .wwdBullet::before {
+  opacity: 1;
+  transform: scale(1.3);
+  box-shadow: 0 0 8px var(--card-hue-35, var(--sector-accent-35));
+}
+
+.wwdBadge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 3;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--card-hue, var(--sector-accent));
+  opacity: 0.5;
+}
+
+@media (max-width: 1000px) {
+  .wwdGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============ HOW WE WORK ============ */
 .hww {
   position: relative;

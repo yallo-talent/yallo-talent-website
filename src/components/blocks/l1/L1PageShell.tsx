@@ -48,6 +48,7 @@ export function L1PageShell({ data }: Props) {
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
       <L1Intro data={data} />
+      <L1WhatWeDeliver data={data} />
       <L1HowWeWork data={data} />
       {data.scarceRoles && data.scarceRoles.length > 0 && (
         <L1ScarceTalent data={data} />
@@ -179,6 +180,107 @@ function L1Intro({ data }: Props) {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ WHAT WE DELIVER ============ */
+type L1IconKeyLocal = L1IconKey;
+const whatWeDeliverCards: {
+  hue: L1Hue;
+  icon: L1IconKeyLocal;
+  eyebrow: string;
+  title: string;
+  copy: string;
+  bullets: string[];
+}[] = [
+  {
+    hue: "orange",
+    icon: "scarce",
+    eyebrow: "Contract-first bench",
+    title: "Specialists in the seat — not sourced in a week.",
+    copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the architect leading that practice.",
+    bullets: [
+      "72h from brief to shortlist",
+      "2:1 CV-to-interview ratio",
+      "Named consultants — not agency profiles",
+    ],
+  },
+  {
+    hue: "blue",
+    icon: "workforce",
+    eyebrow: "Architect-led screening",
+    title: "Screening depth that recruiters can't reproduce.",
+    copy: "Every shortlist is depth-tested by architects who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
+    bullets: [
+      "Practice leads screen every candidate",
+      "Sector-specific context tests",
+      "Reference-verified track records",
+    ],
+  },
+  {
+    hue: "teal",
+    icon: "spark",
+    eyebrow: "Multi-market flexibility",
+    title: "UK · ME · India — contract, EOR, perm or delivery.",
+    copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models let you pick how you hold the risk.",
+    bullets: [
+      "Active bench across 3 markets",
+      "Contract · EOR · Perm · Managed",
+      "IR35, VAT and compliance built in",
+    ],
+  },
+];
+
+function L1WhatWeDeliver({ data }: Props) {
+  const sector =
+    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  return (
+    <section className={styles.wwd}>
+      <div className={styles.wrap}>
+        <div className={styles.wwdHead}>
+          <div className={styles.eyebrow}>What we deliver</div>
+          <h2 className={styles.h2}>
+            Three things every {sector} programme buys from us —{" "}
+            <span className={styles.heroEmphasis}>
+              speed, screening depth, and coverage.
+            </span>
+          </h2>
+          <p className={styles.sub}>
+            The Yallo Talent bench is engineered around three commitments.
+            Every programme we support gets all three — from the first brief.
+          </p>
+        </div>
+        <div className={styles.wwdGrid}>
+          {whatWeDeliverCards.map((c, i) => (
+            <article
+              key={c.title}
+              className={styles.wwdCard}
+              style={cardHueStyle(c.hue)}
+            >
+              <div className={styles.wwdGlow} aria-hidden="true" />
+              <div className={styles.wwdCardInner}>
+                <span className={styles.wwdIcon}>
+                  <L1Icon icon={c.icon} className={styles.wwdIconSvg} />
+                </span>
+                <div className={styles.wwdEyebrow}>{c.eyebrow}</div>
+                <h3 className={styles.wwdTitle}>{c.title}</h3>
+                <p className={styles.wwdCopy}>{c.copy}</p>
+                <ul className={styles.wwdBullets}>
+                  {c.bullets.map((b) => (
+                    <li key={b} className={styles.wwdBullet}>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <span className={styles.wwdBadge} aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+            </article>
+          ))}
         </div>
       </div>
     </section>
