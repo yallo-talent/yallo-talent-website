@@ -57,9 +57,9 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Engagement />
           <L2BottomCta sector={sector} fn={fn} />
           <L2RelatedFunctions sector={sector} fn={fn} />
-          <L2CrossLinks fn={fn} />
         </main>
       </div>
+      <L2CrossLinks fn={fn} />
       <L2Insights sector={sector} />
     </div>
   );
