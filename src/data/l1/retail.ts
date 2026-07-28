@@ -465,18 +465,93 @@ export const retailData: L1PageData = {
       ],
     },
     {
-      id: "fmcg",
-      name: "FMCG (Fast-Moving Consumer Goods)",
+      id: "airline",
+      name: "Airline Retail & Duty-Free",
       intro:
-        "Trade promotion, direct-store-delivery and complex distributor networks. Contractors need SAP CRM/TPM, distribution management and CPG-specific analytics depth.",
+        "Multi-currency, multi-jurisdiction and integrated with airline reservation systems. A niche that demands contractors who understand both retail systems and the specific regulatory context of travel retail.",
+      image:
+        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80",
+      imageAlt: "Airline duty-free retail",
+      roles: [
+        "Duty-Free Systems Lead",
+        "POS Integration Specialist",
+        "Inventory Systems Analyst",
+        "CRM Functional Consultant",
+      ],
+    },
+    {
+      id: "fmcg",
+      name: "FMCG — Fast-Moving Consumer Goods",
+      intro:
+        "Trade promotions management, demand planning and supply chain optimisation at volume. SAP IBP and Blue Yonder specialists are consistently the hardest roles to place in this segment.",
       image:
         "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=1200&auto=format&fit=crop&q=80",
       imageAlt: "FMCG production",
       roles: [
-        "SAP TPM Consultant",
-        "Distribution Management Lead",
-        "Route-to-Market Architect",
-        "CPG Analytics Lead",
+        "SAP IBP Specialist",
+        "Blue Yonder Demand Lead",
+        "TPM Functional Consultant",
+        "Supply Planning Lead",
+      ],
+    },
+    {
+      id: "offprice",
+      name: "Off-Price / Discounts",
+      intro:
+        "Opportunistic buying, rapid markdown decisions and high inventory turnover. Pricing and promotions systems expertise — particularly Oracle Retail Pricing and Revionics — is the core requirement.",
+      image:
+        "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&auto=format&fit=crop&q=80",
+      imageAlt: "Off-price retail",
+      roles: [
+        "Pricing Systems Lead",
+        "Markdown Optimisation Specialist",
+        "Oracle Retail Pricing Lead",
+        "Inventory Analyst",
+      ],
+    },
+    {
+      id: "hotels",
+      name: "Hotels & Resorts",
+      intro:
+        "Property management, F&B integration and guest experience platforms. Oracle Hospitality and Salesforce Service Cloud specialists are consistently in demand across this segment in the Middle East.",
+      image:
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&auto=format&fit=crop&q=80",
+      imageAlt: "Hotels and resorts",
+      roles: [
+        "Oracle Hospitality Specialist",
+        "SAP REFX Consultant",
+        "CX Platform Lead",
+        "Property Systems Analyst",
+      ],
+    },
+    {
+      id: "convenience",
+      name: "Convenience & Fuel",
+      intro:
+        "POS integration, fuel management systems and high-frequency loyalty programmes. A segment where speed of contractor deployment matters most — programmes run on tight timelines.",
+      image:
+        "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1200&auto=format&fit=crop&q=80",
+      imageAlt: "Convenience and fuel retail",
+      roles: [
+        "POS Systems Lead",
+        "Loyalty Programme Specialist",
+        "SAP Retail Functional",
+        "Fuel Systems Analyst",
+      ],
+    },
+    {
+      id: "specialty",
+      name: "Specialty Retail",
+      intro:
+        "Category-specific operations spanning sports, toys, books, pets and DIY. Contractors need deep vertical understanding paired with modern commerce and inventory systems experience.",
+      image:
+        "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&auto=format&fit=crop&q=80",
+      imageAlt: "Specialty retail",
+      roles: [
+        "Category Systems Lead",
+        "Oracle Retail Consultant",
+        "Commerce Platform Specialist",
+        "Inventory Analyst",
       ],
     },
   ],
