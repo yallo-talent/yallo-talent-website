@@ -988,13 +988,15 @@
 }
 
 /* ============ BOTTOM CTA ============ */
+/* Sits outside .layout — spans full viewport width like Insights. */
 .bottomCta {
-  padding: 0 clamp(24px, 4vw, 52px) clamp(48px, 6vw, 72px);
+  padding: clamp(48px, 6vw, 72px) clamp(24px, 4vw, 52px);
 }
 
 .bottomInner {
   position: relative;
-  max-width: 1100px;
+  max-width: 1280px;
+  margin: 0 auto;
   padding: clamp(28px, 4vw, 48px);
   background: linear-gradient(
     135deg,
