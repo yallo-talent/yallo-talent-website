@@ -33,21 +33,9 @@ const yalloFamily = [
 ];
 
 const offices = [
-  {
-    city: "London",
-    country: "United Kingdom",
-    line: "Serving the UK enterprise market",
-  },
-  {
-    city: "Dubai",
-    country: "United Arab Emirates",
-    line: "Serving the Middle East region",
-  },
-  {
-    city: "Bengaluru",
-    country: "India",
-    line: "Serving India and delivery hubs",
-  },
+  { city: "London", country: "United Kingdom" },
+  { city: "Dubai", country: "United Arab Emirates" },
+  { city: "Bengaluru", country: "India" },
 ];
 
 export function Footer() {
@@ -67,6 +55,18 @@ export function Footer() {
               Architect-screened contractors delivered in 72 hours across UK ·
               ME · India.
             </p>
+            <div className={styles.locations}>
+              <div className={styles.locationsLabel}>Locations</div>
+              <ul className={styles.locationList}>
+                {offices.map((o) => (
+                  <li key={o.city} className={styles.locationItem}>
+                    <span className={styles.locationDot} aria-hidden="true" />
+                    <span className={styles.locationCity}>{o.city}</span>
+                    <span className={styles.locationCountry}>{o.country}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           <div className={styles.linkGrid}>
@@ -84,25 +84,12 @@ export function Footer() {
                       aria-disabled={!item.live}
                     >
                       {item.label}
-                      {!item.live && (
-                        <span className={styles.soon}>Launching soon</span>
-                      )}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-        </div>
-
-        <div className={styles.officeStrip}>
-          {offices.map((office) => (
-            <div key={office.city} className={styles.officeCard}>
-              <div className={styles.officeCity}>{office.city}</div>
-              <div className={styles.officeCountry}>{office.country}</div>
-              <div className={styles.officeLine}>{office.line}</div>
-            </div>
-          ))}
         </div>
 
         <div className={styles.bottom}>
