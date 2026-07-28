@@ -53,6 +53,7 @@ export function L1PageShell({ data }: Props) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
+      <L1Partners />
       <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
@@ -442,6 +443,55 @@ function L1Segments({ data }: Props) {
               </div>
             </div>
           </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ TECHNOLOGY PARTNERS ============ */
+const partnerNames: string[] = [
+  "SAP",
+  "Oracle",
+  "Salesforce",
+  "Anaplan",
+  "Microsoft",
+  "Blue Yonder",
+  "Workday",
+  "Manhattan Associates",
+  "Google Cloud",
+  "Shopify",
+  "IBM",
+  "Informatica",
+  "AWS",
+  "Magento",
+  "Coupa",
+  "Infor",
+];
+
+function L1Partners() {
+  return (
+    <section className={styles.partners}>
+      <div className={styles.wrap}>
+        <div className={styles.eyebrow}>Technology partners</div>
+        <h2 className={styles.h2}>The platforms we staff.</h2>
+        <p className={styles.sub}>
+          Active contractor benches across every major enterprise retail
+          technology platform.
+        </p>
+        <div className={styles.partnersGrid}>
+          {partnerNames.map((name, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <div
+                key={name}
+                className={styles.partnerCell}
+                style={cardHueStyle(hue)}
+              >
+                <span className={styles.partnerName}>{name}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

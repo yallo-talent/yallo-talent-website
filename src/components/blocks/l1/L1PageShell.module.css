@@ -1306,6 +1306,121 @@
   box-shadow: 0 6px 14px -6px var(--card-hue-35, var(--sector-accent-35));
 }
 
+/* ============ TECHNOLOGY PARTNERS ============ */
+.partners {
+  position: relative;
+  padding: clamp(48px, 6vw, 76px) 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.partners::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 40% 30% at 80% 10%,
+      var(--hue-teal-08),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 20% 90%,
+      var(--hue-violet-08),
+      transparent 55%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.partners > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.partnersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.partnerCell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 88px;
+  padding: 20px 16px;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(160%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.28s ease,
+    transform 0.28s ease,
+    background 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.partnerCell::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-35, var(--sector-accent-35)),
+    transparent 65%
+  );
+  filter: blur(24px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+
+.partnerCell:hover {
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  transform: translateY(-3px);
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  box-shadow:
+    0 16px 32px -16px rgba(0, 0, 0, 0.5),
+    0 0 24px var(--card-hue-08, var(--sector-accent-08));
+}
+
+.partnerCell:hover::before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.partnerName {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  text-align: center;
+  transition: color 0.24s ease;
+}
+
+.partnerCell:hover .partnerName {
+  color: var(--card-hue, var(--sector-accent));
+}
+
 /* ============ SERVICE PILLARS ============ */
 .pillars {
   position: relative;
@@ -1839,6 +1954,9 @@
   .pillarsGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .partnersGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
   .introGrid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -1893,6 +2011,9 @@
   }
   .pillarsGrid {
     grid-template-columns: 1fr;
+  }
+  .partnersGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .heroCtas {
     flex-direction: column;
