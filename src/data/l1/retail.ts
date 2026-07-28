@@ -121,6 +121,52 @@ export const retailData: L1PageData = {
         "SFMC Developer",
         "Personalisation Architect",
       ],
+      overview:
+        "Retail CX programmes stall when the contractor understands the platform but not the shopper journey. We place specialists who have built brand-to-basket flows across web, app and store — with the personalisation stack that supports them.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail customer experience flagship store",
+      tools: [
+        {
+          slug: "sap-customer-experience",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Customer Experience",
+          roles: [
+            "SAP CX Functional Consultant",
+            "SAP Commerce Architect",
+            "Technical Architect",
+            "Business Analyst",
+            "Personalisation Lead",
+          ],
+        },
+        {
+          slug: "salesforce-marketing-cloud",
+          vendor: "Salesforce",
+          vendorSlug: "salesforce",
+          name: "Salesforce Marketing Cloud",
+          roles: [
+            "SFMC Developer",
+            "Journey Builder Architect",
+            "Personalisation Consultant",
+            "Data Cloud Specialist",
+            "Marketing Ops Lead",
+          ],
+        },
+        {
+          slug: "oracle-retail-customer-engagement",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Customer Engagement",
+          roles: [
+            "Oracle Retail CX Consultant",
+            "Loyalty Configuration Specialist",
+            "CX Data Architect",
+            "Personalisation Consultant",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "clienteling",
@@ -132,6 +178,50 @@ export const retailData: L1PageData = {
         "Salesforce Clienteling Lead",
         "Endear / Tulip Specialist",
         "Retail Advisor App Architect",
+      ],
+      overview:
+        "Luxury clienteling is a specialist niche where sales-associate app design meets high-touch CRM. Our contractors have built appointment flows, wardrobe histories and gifting playbooks for maisons and multi-brand groups.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Luxury retail clienteling",
+      tools: [
+        {
+          slug: "salesforce-clienteling",
+          vendor: "Salesforce",
+          vendorSlug: "salesforce",
+          name: "Salesforce Retail Cloud (Clienteling)",
+          roles: [
+            "Clienteling Solution Consultant",
+            "Retail Cloud Architect",
+            "Sales Associate App Developer",
+            "Data Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "endear",
+          vendor: "Endear",
+          vendorSlug: "endear",
+          name: "Endear",
+          roles: [
+            "Endear Implementation Consultant",
+            "Retail CRM Specialist",
+            "Integration Consultant",
+            "Sales Ops Lead",
+          ],
+        },
+        {
+          slug: "tulip",
+          vendor: "Tulip",
+          vendorSlug: "tulip",
+          name: "Tulip Retail",
+          roles: [
+            "Tulip Solution Consultant",
+            "Store Associate App Developer",
+            "Integration Specialist",
+            "Rollout Programme Manager",
+          ],
+        },
       ],
     },
     {
@@ -145,6 +235,52 @@ export const retailData: L1PageData = {
         "SAP S/4HANA Retail Functional",
         "Store Systems Architect",
       ],
+      overview:
+        "Store ops is where the ERP meets the shop floor. Our contractors deliver task management, back-office systems and store-portal rollouts across estates from 20 stores to 2,000, integrating with the wider retail stack.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail store operations",
+      tools: [
+        {
+          slug: "oracle-retail",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail",
+          roles: [
+            "Oracle Retail Consultant",
+            "SIM / MOM Specialist",
+            "Store Systems Architect",
+            "Integration Consultant",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-s4hana-retail",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP S/4HANA Retail",
+          roles: [
+            "SAP S/4HANA Retail Functional",
+            "Retail Solution Architect",
+            "Technical Consultant",
+            "Business Analyst",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "d365-commerce",
+          vendor: "Microsoft",
+          vendorSlug: "microsoft",
+          name: "Microsoft Dynamics 365 Commerce",
+          roles: [
+            "D365 Commerce Consultant",
+            "Store Cloud Architect",
+            "Retail Systems Analyst",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "point-of-sale",
@@ -157,6 +293,51 @@ export const retailData: L1PageData = {
         "SAP Customer Checkout Consultant",
         "D365 POS Developer",
       ],
+      overview:
+        "POS is the highest-risk piece of the retail stack — outages hit revenue in real time. Our contractors have run POS rollouts at estate scale, from mobile POS in luxury boutiques to hyper-volume grocery checkouts.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail point-of-sale terminal",
+      tools: [
+        {
+          slug: "oracle-xstore",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Xstore",
+          roles: [
+            "Oracle Xstore Specialist",
+            "Xstore Configuration Consultant",
+            "POS Solution Architect",
+            "Integration Consultant",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "ncr-aloha",
+          vendor: "NCR",
+          vendorSlug: "ncr",
+          name: "NCR Aloha",
+          roles: [
+            "NCR Aloha Specialist",
+            "POS Systems Architect",
+            "Payment Integration Consultant",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-customer-checkout",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Customer Checkout",
+          roles: [
+            "SAP Customer Checkout Consultant",
+            "POS Configuration Specialist",
+            "Technical Consultant",
+            "Integration Consultant",
+            "Rollout Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "merchandising",
@@ -168,6 +349,52 @@ export const retailData: L1PageData = {
         "Blue Yonder MFP Specialist",
         "Oracle Retail MOM Consultant",
         "SAP MM Functional Lead",
+      ],
+      overview:
+        "Merchandising and buying is where product strategy meets the ERP. Our contractors have run range-planning cycles, seasonal buying and open-to-buy budgeting across apparel, grocery, electronics and mass-merchandise programmes.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail merchandising",
+      tools: [
+        {
+          slug: "blue-yonder-merchandise-management",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Merchandise Management",
+          roles: [
+            "Blue Yonder Merchandise Consultant",
+            "MFP Specialist",
+            "Assortment Planning Lead",
+            "Solution Architect",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "oracle-retail-mom",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail MOM",
+          roles: [
+            "Oracle Retail MOM Consultant",
+            "Merchandising Functional Consultant",
+            "Integration Specialist",
+            "Business Analyst",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-merchandise-management",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Merchandise Management",
+          roles: [
+            "SAP MM Functional Lead",
+            "SAP Retail Consultant",
+            "Business Analyst",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
