@@ -607,6 +607,12 @@ function L1Expertise({ data }: Props) {
   // Render every card; CSS hides cards past the limit on desktop when
   // collapsed, and shows all in the mobile horizontal-scroll layout.
   const visible = data.expertise;
+  // First function that has an L2 page — the "Explore all functions in
+  // detail" hint links here, and the L2 sidebar shows every function.
+  const firstL2 = data.expertise.find((e) => (e.tools?.length ?? 0) > 0);
+  const firstL2Href = firstL2
+    ? `/industries/${data.slug}/${firstL2.slug}`
+    : null;
 
   return (
     <section className={styles.expertise} id="expertise">
@@ -617,10 +623,17 @@ function L1Expertise({ data }: Props) {
             <h2 className={styles.h2}>{data.expertiseTitle}</h2>
             <p className={styles.sub}>{data.expertiseSub}</p>
           </div>
-          <div className={styles.expertiseHint}>
-            Explore all functions in detail
-            <span aria-hidden="true"> →</span>
-          </div>
+          {firstL2Href ? (
+            <Link href={firstL2Href} className={styles.expertiseHint}>
+              Explore all functions in detail
+              <span aria-hidden="true"> →</span>
+            </Link>
+          ) : (
+            <div className={styles.expertiseHint}>
+              Explore all functions in detail
+              <span aria-hidden="true"> →</span>
+            </div>
+          )}
         </div>
         <div
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
@@ -704,7 +717,10 @@ function L1Expertise({ data }: Props) {
                     requestAnimationFrame(() => {
                       document
                         .getElementById("expertise")
-                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        ?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
                     });
                   }
                   return !v;

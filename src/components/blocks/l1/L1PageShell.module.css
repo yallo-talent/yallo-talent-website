@@ -1272,7 +1272,6 @@
   color: var(--sector-accent);
   font-weight: 600;
   letter-spacing: -0.005em;
-  cursor: default;
   transition: transform 0.2s ease;
 }
 
