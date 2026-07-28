@@ -753,7 +753,11 @@ export const financeData: L1PageData = {
     },
     { href: "/platforms/sap", label: "SAP", category: "Platform" },
     { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
-    { href: "/platforms/salesforce", label: "Salesforce", category: "Platform" },
+    {
+      href: "/platforms/salesforce",
+      label: "Salesforce",
+      category: "Platform",
+    },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
       href: "/capabilities/data-ai",

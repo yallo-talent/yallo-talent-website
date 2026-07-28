@@ -611,8 +611,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
           {sector.insightsEyebrow ?? "Insights"}
         </div>
         <h2 className={styles.insightsH}>
-          {sector.insightsTitle ??
-            "What's happening in this market right now."}
+          {sector.insightsTitle ?? "What's happening in this market right now."}
         </h2>
       </div>
       <div className={styles.insightsScrollWrap}>

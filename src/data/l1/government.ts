@@ -353,7 +353,8 @@ export const governmentData: L1PageData = {
   ],
 
   segmentsEyebrow: "Segments we support",
-  segmentsTitle: "Every public-sector segment. Specialists who know the context.",
+  segmentsTitle:
+    "Every public-sector segment. Specialists who know the context.",
   segmentsSub:
     "Central government runs different programmes from a local authority or a police force. Our contractors understand the specific operating context — not just the platform.",
   segments: [
@@ -659,8 +660,7 @@ export const governmentData: L1PageData = {
   ],
 
   insightsEyebrow: "Insights",
-  insightsTitle:
-    "What's happening in public-sector tech talent right now.",
+  insightsTitle: "What's happening in public-sector tech talent right now.",
   insightsSub:
     "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
   insights: [
@@ -731,7 +731,11 @@ export const governmentData: L1PageData = {
       label: "Banking & Financial Services",
       category: "Industry",
     },
-    { href: "/platforms/salesforce", label: "Salesforce", category: "Platform" },
+    {
+      href: "/platforms/salesforce",
+      label: "Salesforce",
+      category: "Platform",
+    },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
       href: "/capabilities/data-ai",

@@ -713,8 +713,7 @@ export const manufacturingData: L1PageData = {
     {
       href: "/insights/circular-economy-manufacturing-tech",
       category: "Sustainability",
-      title:
-        "Circular economy in manufacturing: tech-enabled sustainability.",
+      title: "Circular economy in manufacturing: tech-enabled sustainability.",
       excerpt:
         "Carbon accounting, product passports and reverse ops are moving from board decks to programme plans. The specialist bench has not caught up.",
       author: "Sumeet Goenka",

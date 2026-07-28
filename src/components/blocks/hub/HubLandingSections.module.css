@@ -44,11 +44,7 @@
 }
 
 .emphasis {
-  background: linear-gradient(
-    120deg,
-    var(--accent),
-    var(--hue-orange-500)
-  );
+  background: linear-gradient(120deg, var(--accent), var(--hue-orange-500));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
