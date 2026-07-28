@@ -1352,6 +1352,37 @@
   box-shadow: 0 6px 14px -6px var(--card-hue-35, var(--sector-accent-35));
 }
 
+/* CTA row pushed to bottom of the panel to fill remaining vertical space */
+.segCtaRow {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.segCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: var(--card-hue, var(--sector-accent));
+  color: var(--ink-950);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  border-radius: 999px;
+  box-shadow: 0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35));
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    background 0.18s ease;
+}
+
+.segCta:hover {
+  transform: translateY(-2px);
+  color: var(--ink-950);
+  background: color-mix(in oklab, var(--card-hue, var(--sector-accent)) 88%, white);
+  box-shadow: 0 18px 36px -14px var(--card-hue-35, var(--sector-accent-35));
+}
+
 /* ============ TECHNOLOGY PARTNERS ============ */
 .partners {
   position: relative;

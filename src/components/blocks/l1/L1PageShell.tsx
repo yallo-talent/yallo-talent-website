@@ -445,6 +445,16 @@ function L1Segments({ data }: Props) {
                   </span>
                 ))}
               </div>
+              <div className={styles.segCtaRow}>
+                <Link
+                  href={`/brief?segment=${activeSeg.id}`}
+                  className={styles.segCta}
+                >
+                  Brief us on {activeSeg.name.split(/[,&—]/)[0]?.trim()}{" "}
+                  contractors
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>
