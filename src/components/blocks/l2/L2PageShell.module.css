@@ -40,6 +40,118 @@
   color: var(--sector-accent);
 }
 
+/* ============ SIDEBAR ============ */
+.sbTop {
+  padding: 20px 20px 18px;
+  border-bottom: 1px solid var(--wa08);
+}
+
+.sbBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  transition: color 0.18s ease;
+  margin-bottom: 14px;
+}
+
+.sbBack:hover {
+  color: var(--sector-accent);
+}
+
+.sbSectorLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sector-accent);
+  margin-bottom: 6px;
+}
+
+.sbSectorName {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+.sbSection {
+  padding: 14px 0 20px;
+}
+
+.sbHeading {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  padding: 8px 20px 10px;
+}
+
+.sbList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sbItem {
+  padding: 0;
+}
+
+.sbItemLink {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 20px;
+  border-left: 2px solid transparent;
+  color: var(--fg-muted);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-left-color 0.15s ease;
+}
+
+.sbItemLink:hover {
+  background: var(--wa03);
+  color: var(--fg);
+  border-left-color: var(--sector-accent-35);
+}
+
+.sbItemNum {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--fg-subtle);
+}
+
+.sbItemName {
+  min-width: 0;
+}
+
+.sbItemActive .sbItemLink {
+  background: var(--sector-accent-08);
+  color: var(--fg);
+  font-weight: 700;
+  border-left-color: var(--sector-accent);
+}
+
+.sbItemActive .sbItemNum {
+  color: var(--sector-accent);
+}
+
+.sbItemDisabled .sbItemLink {
+  opacity: 0.5;
+  cursor: default;
+}
+
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;

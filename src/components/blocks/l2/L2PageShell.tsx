@@ -41,9 +41,7 @@ export function L2PageShell({ sector, fn }: Props) {
   return (
     <div className={styles.page} style={hueStyle(sector.hue)}>
       <div className={styles.layout}>
-        <aside className={styles.sidebar} aria-label="Sector function list">
-          {/* Sidebar block populated in a follow-up commit */}
-        </aside>
+        <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
           {/* Hero, overview, roles, tools, screening, cross-links, cta */}
           <section className={styles.placeholder}>
@@ -57,9 +55,61 @@ export function L2PageShell({ sector, fn }: Props) {
   );
 }
 
+/* ============ SIDEBAR ============ */
+function L2Sidebar({
+  sector,
+  activeSlug,
+}: {
+  sector: L1PageData;
+  activeSlug: string;
+}) {
+  return (
+    <aside className={styles.sidebar} aria-label="Sector function list">
+      <div className={styles.sbTop}>
+        <Link
+          href={`/industries/${sector.slug}`}
+          className={styles.sbBack}
+          aria-label={`Back to ${sector.title}`}
+        >
+          <span aria-hidden="true">←</span> Back to {sector.title}
+        </Link>
+        <div className={styles.sbSectorLabel}>{sector.category}</div>
+        <div className={styles.sbSectorName}>{sector.title}</div>
+      </div>
+      <div className={styles.sbSection}>
+        <div className={styles.sbHeading}>All functions</div>
+        <ul className={styles.sbList}>
+          {sector.expertise.map((item) => {
+            const isActive = item.slug === activeSlug;
+            const enabled = Boolean(item.tools && item.tools.length > 0);
+            const href = `/industries/${sector.slug}/${item.slug}`;
+            return (
+              <li
+                key={item.slug}
+                className={`${styles.sbItem} ${isActive ? styles.sbItemActive : ""} ${!enabled ? styles.sbItemDisabled : ""}`}
+              >
+                {enabled ? (
+                  <Link href={href} className={styles.sbItemLink}>
+                    <span className={styles.sbItemNum}>{item.num}</span>
+                    <span className={styles.sbItemName}>{item.title}</span>
+                  </Link>
+                ) : (
+                  <span className={styles.sbItemLink} aria-disabled="true">
+                    <span className={styles.sbItemNum}>{item.num}</span>
+                    <span className={styles.sbItemName}>{item.title}</span>
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </aside>
+  );
+}
+
 // Exported so route pages / tests can reuse if needed.
 export { cardHueCycle, cardHueStyle };
 
 // Silence unused-import warnings until blocks are added.
 void Image;
-void Link;
