@@ -50,6 +50,7 @@ export function L1PageShell({ data }: Props) {
       <L1Intro data={data} />
       <L1WhatWeDeliver data={data} />
       <L1HowWeWork data={data} />
+      <L1CrossSector data={data} />
       {data.scarceRoles && data.scarceRoles.length > 0 && (
         <L1ScarceTalent data={data} />
       )}
@@ -235,8 +236,7 @@ const whatWeDeliverCards: {
 ];
 
 function L1WhatWeDeliver({ data }: Props) {
-  const sector =
-    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
   return (
     <section className={styles.wwd}>
       <div className={styles.wrap}>
@@ -249,8 +249,8 @@ function L1WhatWeDeliver({ data }: Props) {
             </span>
           </h2>
           <p className={styles.sub}>
-            The Yallo Talent bench is engineered around three commitments.
-            Every programme we support gets all three — from the first brief.
+            The Yallo Talent bench is engineered around three commitments. Every
+            programme we support gets all three — from the first brief.
           </p>
         </div>
         <div className={styles.wwdGrid}>
@@ -353,6 +353,97 @@ function L1HowWeWork({ data }: Props) {
                 <p className={styles.hwwStepCopy}>{s.copy}</p>
               </div>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ CROSS-SECTOR ADVANTAGE ============ */
+const crossSectorLinks: {
+  slug: string;
+  label: string;
+  hue: L1Hue;
+  copy: string;
+}[] = [
+  {
+    slug: "retail",
+    label: "Retail & Consumer",
+    hue: "orange",
+    copy: "Omnichannel fulfilment, CX and unit-economics discipline",
+  },
+  {
+    slug: "manufacturing",
+    label: "Manufacturing & Logistics",
+    hue: "blue",
+    copy: "Shop-floor execution, PLM and network planning",
+  },
+  {
+    slug: "finance",
+    label: "Banking & FS",
+    hue: "green",
+    copy: "Regulated delivery, risk models and controls",
+  },
+  {
+    slug: "government",
+    label: "Government & Public Sector",
+    hue: "violet",
+    copy: "GDS service design, cleared delivery and case management",
+  },
+  {
+    slug: "healthcare",
+    label: "Healthcare & Life Sciences",
+    hue: "rose",
+    copy: "HIPAA / GxP delivery, EHR and clinical trials",
+  },
+  {
+    slug: "telco",
+    label: "Telco & Media",
+    hue: "teal",
+    copy: "OSS/BSS, 5G rollout and carrier-grade uptime",
+  },
+];
+
+function L1CrossSector({ data }: Props) {
+  const others = crossSectorLinks.filter((s) => s.slug !== data.slug);
+  const sector =
+    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  return (
+    <section className={styles.xsec}>
+      <div className={styles.wrap}>
+        <div className={styles.xsecHead}>
+          <div className={styles.eyebrow}>Cross-sector advantage</div>
+          <h2 className={styles.h2}>
+            Why a multi-industry bench matters for{" "}
+            <span className={styles.heroEmphasis}>your {sector} programme.</span>
+          </h2>
+          <p className={styles.sub}>
+            Yallo Talent runs a single bench across six industries. The
+            operating patterns from one sector routinely land as unlocks in
+            another — regulated-industry rigour into retail, manufacturing
+            supply-chain discipline into F&B, banking risk models into public
+            healthcare. When you brief us, you get the pattern library, not
+            just the platform match.
+          </p>
+        </div>
+        <div className={styles.xsecGrid}>
+          {others.map((s) => (
+            <Link
+              key={s.slug}
+              href={`/industries/${s.slug}`}
+              className={styles.xsecCard}
+              style={cardHueStyle(s.hue)}
+            >
+              <div className={styles.xsecCardGlow} aria-hidden="true" />
+              <div className={styles.xsecCardInner}>
+                <span className={styles.xsecCardLabel}>{s.label}</span>
+                <span className={styles.xsecCardCopy}>{s.copy}</span>
+                <span className={styles.xsecCardArrow} aria-hidden="true">
+                  →
+                </span>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
