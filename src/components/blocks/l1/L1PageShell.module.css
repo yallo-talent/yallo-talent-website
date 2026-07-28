@@ -291,6 +291,67 @@
   box-shadow: 0 0 8px var(--success-glow);
 }
 
+/* ============ IN-PAGE STICKY SUB-NAV ============ */
+.subNav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in oklab, var(--ink-950) 85%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  border-bottom: 1px solid var(--wa08);
+  border-top: 1px solid var(--wa08);
+}
+
+.subNavInner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+.subNavList {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.subNavList::-webkit-scrollbar {
+  display: none;
+}
+
+.subNavItem {
+  flex-shrink: 0;
+}
+
+.subNavLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.18s ease,
+    border-bottom-color 0.18s ease;
+}
+
+.subNavLink:hover {
+  color: var(--fg);
+}
+
+.subNavLinkActive {
+  color: var(--sector-accent);
+  border-bottom-color: var(--sector-accent);
+}
+
 /* ============ STATS STRIP ============ */
 .statsStrip {
   background: var(--ink-900);

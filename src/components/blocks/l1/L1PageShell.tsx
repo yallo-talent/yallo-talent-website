@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
 import styles from "./L1PageShell.module.css";
 import { l1Icons } from "./l1-icons";
@@ -43,25 +43,110 @@ interface Props {
 }
 
 export function L1PageShell({ data }: Props) {
+  const hasScarce =
+    Boolean(data.scarceRoles) && (data.scarceRoles?.length ?? 0) > 0;
+  const hasInsights =
+    Boolean(data.insights) && (data.insights?.length ?? 0) > 0;
+  const subNavItems: { id: string; label: string }[] = [
+    { id: "why", label: "Why us" },
+    { id: "deliver", label: "What we deliver" },
+    { id: "how", label: "How we work" },
+    ...(hasScarce ? [{ id: "scarce", label: "Scarce talent" }] : []),
+    { id: "expertise", label: "Expertise" },
+    { id: "segments", label: "Segments" },
+    { id: "architects", label: "Architects" },
+    { id: "partners", label: "Partners" },
+    { id: "engagement", label: "Engagement" },
+    ...(hasInsights ? [{ id: "insights", label: "Insights" }] : []),
+  ];
+
   return (
     <div className={styles.page} style={hueStyle(data.hue)}>
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
-      <L1Intro data={data} />
-      <L1WhatWeDeliver data={data} />
-      <L1HowWeWork data={data} />
-      {data.scarceRoles && data.scarceRoles.length > 0 && (
-        <L1ScarceTalent data={data} />
+      <L1SubNav items={subNavItems} />
+      <div id="why">
+        <L1Intro data={data} />
+      </div>
+      <div id="deliver">
+        <L1WhatWeDeliver data={data} />
+      </div>
+      <div id="how">
+        <L1HowWeWork data={data} />
+      </div>
+      {hasScarce && (
+        <div id="scarce">
+          <L1ScarceTalent data={data} />
+        </div>
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
-      <L1Architects data={data} />
-      <L1Partners partners={data.partners} />
-      <L1ServicePillars />
+      <div id="architects">
+        <L1Architects data={data} />
+      </div>
+      <div id="partners">
+        <L1Partners partners={data.partners} />
+      </div>
+      <div id="engagement">
+        <L1ServicePillars />
+      </div>
       <L1BottomCta />
       <L1ReadNext data={data} />
-      {data.insights && data.insights.length > 0 && <L1Insights data={data} />}
+      {hasInsights && (
+        <div id="insights">
+          <L1Insights data={data} />
+        </div>
+      )}
     </div>
+  );
+}
+
+/* ============ IN-PAGE STICKY SUB-NAV ============ */
+function L1SubNav({
+  items,
+}: {
+  items: { id: string; label: string }[];
+}) {
+  const [active, setActive] = useState<string>(items[0]?.id ?? "");
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const observers: IntersectionObserver[] = [];
+    for (const item of items) {
+      const el = document.getElementById(item.id);
+      if (!el) continue;
+      const obs = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) setActive(item.id);
+          }
+        },
+        { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+      );
+      obs.observe(el);
+      observers.push(obs);
+    }
+    return () => {
+      for (const o of observers) o.disconnect();
+    };
+  }, [items]);
+
+  return (
+    <nav className={styles.subNav} aria-label="Page sections">
+      <div className={styles.subNavInner}>
+        <ul className={styles.subNavList}>
+          {items.map((it) => (
+            <li key={it.id} className={styles.subNavItem}>
+              <a
+                href={`#${it.id}`}
+                className={`${styles.subNavLink} ${active === it.id ? styles.subNavLinkActive : ""}`}
+              >
+                {it.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
   );
 }
 
