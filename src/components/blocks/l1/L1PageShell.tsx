@@ -48,6 +48,7 @@ export function L1PageShell({ data }: Props) {
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
       <L1Intro data={data} />
+      <L1HowWeWork data={data} />
       {data.scarceRoles && data.scarceRoles.length > 0 && (
         <L1ScarceTalent data={data} />
       )}
@@ -178,6 +179,76 @@ function L1Intro({ data }: Props) {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ HOW WE WORK ============ */
+const howWeWorkSteps: {
+  n: string;
+  title: string;
+  copy: string;
+  hue: L1Hue;
+}[] = [
+  {
+    n: "01",
+    title: "Send us the brief",
+    copy: "Role, platform, timeline, engagement model. No CVs traded on speculation — we start from what your programme actually needs.",
+    hue: "orange",
+  },
+  {
+    n: "02",
+    title: "Architect-led screening",
+    copy: "Specialists who have run your kind of delivery assess every candidate for implementation depth. Not certificates. Not keywords.",
+    hue: "blue",
+  },
+  {
+    n: "03",
+    title: "Shortlist in 72 hours",
+    copy: "Three to five architect-screened candidates in your inbox with rate, notice, engagement model and evidence attached.",
+    hue: "teal",
+  },
+  {
+    n: "04",
+    title: "Deploy the model that fits",
+    copy: "Contract, EOR, Permanent or Managed Delivery — matched to how you need to hold the risk.",
+    hue: "violet",
+  },
+];
+
+function L1HowWeWork({ data }: Props) {
+  return (
+    <section className={styles.hww}>
+      <div className={styles.wrap}>
+        <div className={styles.hwwHead}>
+          <div className={styles.eyebrow}>How we work</div>
+          <h2 className={styles.h2}>
+            Four steps from brief to bench —{" "}
+            <span className={styles.heroEmphasis}>every {data.slug === "retail" ? "retail" : data.slug} programme, same rhythm.</span>
+          </h2>
+          <p className={styles.sub}>
+            Yallo Talent is a contract-first bench built on architect-led
+            screening. Every engagement follows the same disciplined operating
+            rhythm — regardless of sector, platform or model.
+          </p>
+        </div>
+        <div className={styles.hwwGrid}>
+          {howWeWorkSteps.map((s) => (
+            <div
+              key={s.n}
+              className={styles.hwwStep}
+              style={cardHueStyle(s.hue)}
+            >
+              <div className={styles.hwwGlow} aria-hidden="true" />
+              <div className={styles.hwwStepInner}>
+                <div className={styles.hwwStepNum}>{s.n}</div>
+                <h3 className={styles.hwwStepTitle}>{s.title}</h3>
+                <p className={styles.hwwStepCopy}>{s.copy}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -346,10 +417,7 @@ function L1Expertise({ data }: Props) {
                             ))}
                           </ul>
                           {l2Href ? (
-                            <Link
-                              href={l2Href}
-                              className={styles.expCardLink}
-                            >
+                            <Link href={l2Href} className={styles.expCardLink}>
                               View contractors
                               <span aria-hidden="true">→</span>
                             </Link>
