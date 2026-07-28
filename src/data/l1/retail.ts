@@ -698,6 +698,52 @@ export const retailData: L1PageData = {
         "Salesforce Commerce Cloud Lead",
         "Shopify Plus Specialist",
       ],
+      overview:
+        "E-commerce contractors are the pointy end of retail delivery — storefront, checkout, headless commerce and everything in between. Our bench spans monolithic Magento estates, Salesforce Commerce Cloud rebuilds, SAP Commerce migrations and Shopify Plus scale-ups.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail e-commerce operations",
+      tools: [
+        {
+          slug: "sap-commerce-cloud",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Commerce Cloud",
+          roles: [
+            "SAP Commerce Architect",
+            "Hybris Developer",
+            "Solution Architect",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "magento",
+          vendor: "Adobe",
+          vendorSlug: "adobe",
+          name: "Magento (Adobe Commerce)",
+          roles: [
+            "Magento 2 Developer",
+            "Adobe Commerce Solution Architect",
+            "PWA Studio Specialist",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "shopify-plus",
+          vendor: "Shopify",
+          vendorSlug: "shopify",
+          name: "Shopify Plus",
+          roles: [
+            "Shopify Plus Specialist",
+            "Hydrogen / Storefront Developer",
+            "Integration Consultant",
+            "App Developer",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "omnichannel-fulfillment",
@@ -709,6 +755,52 @@ export const retailData: L1PageData = {
         "OMS Architect",
         "Blue Yonder Fulfillment Lead",
         "Store Fulfilment Programme Manager",
+      ],
+      overview:
+        "Omnichannel fulfilment is where the digital and physical estate collide. Our contractors have built ship-from-store, click-and-collect and dark-store programmes at estate scale — from enablement in 50 stores to national rollouts.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail omnichannel fulfilment",
+      tools: [
+        {
+          slug: "blue-yonder-fulfilment",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Fulfillment",
+          roles: [
+            "Blue Yonder Fulfilment Lead",
+            "Store Fulfilment Consultant",
+            "Solution Architect",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-omnichannel-retail",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Omnichannel Retail",
+          roles: [
+            "SAP OMS Functional",
+            "Omnichannel Solution Architect",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "oracle-retail-order-management",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Order Management",
+          roles: [
+            "Oracle Retail OMS Consultant",
+            "Order Management Lead",
+            "Integration Specialist",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
@@ -722,6 +814,52 @@ export const retailData: L1PageData = {
         "Manhattan Active Omni Lead",
         "Fluent Commerce Specialist",
       ],
+      overview:
+        "OMS is the connective tissue of modern retail — it routes every order, allocates inventory and drives service promises. Our contractors have run distributed order orchestration programmes on IBM Sterling, Manhattan Active Omni and Fluent Commerce.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail order management",
+      tools: [
+        {
+          slug: "ibm-sterling-oms",
+          vendor: "IBM",
+          vendorSlug: "ibm",
+          name: "IBM Sterling OMS",
+          roles: [
+            "IBM Sterling OMS Architect",
+            "Sterling Configuration Consultant",
+            "Order Orchestration Specialist",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "manhattan-active-omni",
+          vendor: "Manhattan Associates",
+          vendorSlug: "manhattan",
+          name: "Manhattan Active Omni",
+          roles: [
+            "Manhattan Active Omni Lead",
+            "OMS Solution Architect",
+            "Integration Specialist",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "fluent-commerce",
+          vendor: "Fluent Commerce",
+          vendorSlug: "fluent",
+          name: "Fluent Commerce",
+          roles: [
+            "Fluent Commerce Specialist",
+            "Order Orchestration Consultant",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "warehouse-management",
@@ -734,6 +872,52 @@ export const retailData: L1PageData = {
         "SAP EWM Consultant",
         "Blue Yonder WMS Specialist",
       ],
+      overview:
+        "WMS programmes are the highest-stakes retail deliveries — a bad go-live shuts the DC. Our contractors have run Manhattan WMS, SAP EWM and Blue Yonder migrations across grocery, apparel and 3PL estates.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail warehouse management",
+      tools: [
+        {
+          slug: "manhattan-wms",
+          vendor: "Manhattan Associates",
+          vendorSlug: "manhattan",
+          name: "Manhattan WMS",
+          roles: [
+            "Manhattan WMS Lead",
+            "WMS Solution Architect",
+            "Integration Consultant",
+            "Technical Consultant",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-ewm",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP EWM",
+          roles: [
+            "SAP EWM Consultant",
+            "EWM Technical Consultant",
+            "Solution Architect",
+            "Integration Specialist",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "blue-yonder-wms",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder WMS",
+          roles: [
+            "Blue Yonder WMS Specialist",
+            "WMS Solution Architect",
+            "Integration Consultant",
+            "Business Analyst",
+            "Rollout Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "transport-management",
@@ -745,6 +929,52 @@ export const retailData: L1PageData = {
         "Oracle OTM Specialist",
         "Manhattan Active TMS Consultant",
         "Blue Yonder TMS Architect",
+      ],
+      overview:
+        "TMS is where cost and CX meet — the platform that decides whether the promise gets kept. Our contractors have run OTM, Manhattan Active TMS and Blue Yonder programmes across DC-to-store and last-mile networks.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail transport management",
+      tools: [
+        {
+          slug: "oracle-transportation-management",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Transportation Management",
+          roles: [
+            "Oracle OTM Specialist",
+            "OTM Solution Architect",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "manhattan-active-tms",
+          vendor: "Manhattan Associates",
+          vendorSlug: "manhattan",
+          name: "Manhattan Active TMS",
+          roles: [
+            "Manhattan Active TMS Consultant",
+            "TMS Solution Architect",
+            "Carrier Integration Specialist",
+            "Analytics Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "blue-yonder-tms",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder TMS",
+          roles: [
+            "Blue Yonder TMS Architect",
+            "TMS Consultant",
+            "Analytics Specialist",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
