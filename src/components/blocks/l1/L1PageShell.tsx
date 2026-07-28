@@ -269,6 +269,12 @@ function L1Expertise({ data }: Props) {
           {data.expertise.map((card, i) => {
             const isOpen = expanded.has(card.slug);
             const cardHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            // Auto-derive L2 href when this function has tools configured
+            const l2Href =
+              card.href ??
+              (card.tools && card.tools.length > 0
+                ? `/industries/${data.slug}/${card.slug}`
+                : undefined);
             return (
               <motion.div
                 key={card.slug}
@@ -339,9 +345,9 @@ function L1Expertise({ data }: Props) {
                               </li>
                             ))}
                           </ul>
-                          {card.href ? (
+                          {l2Href ? (
                             <Link
-                              href={card.href}
+                              href={l2Href}
                               className={styles.expCardLink}
                             >
                               View contractors
