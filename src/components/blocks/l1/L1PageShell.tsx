@@ -53,7 +53,7 @@ export function L1PageShell({ data }: Props) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
-      <L1Partners />
+      <L1Partners partners={data.partners} />
       <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
@@ -464,7 +464,7 @@ function L1Segments({ data }: Props) {
 }
 
 /* ============ TECHNOLOGY PARTNERS ============ */
-const partnerNames: string[] = [
+const defaultPartnerNames: string[] = [
   "SAP",
   "Oracle",
   "Salesforce",
@@ -483,7 +483,9 @@ const partnerNames: string[] = [
   "Infor",
 ];
 
-function L1Partners() {
+function L1Partners({ partners }: { partners?: string[] }) {
+  const partnerNames =
+    partners && partners.length > 0 ? partners : defaultPartnerNames;
   return (
     <section className={styles.partners}>
       <div className={styles.wrap}>

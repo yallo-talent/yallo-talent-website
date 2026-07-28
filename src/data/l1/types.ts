@@ -174,6 +174,12 @@ export interface L1PageData {
   insightsSub?: string;
   insights?: L1Insight[];
 
+  /**
+   * Technology partners tile grid — optional per page.
+   * If omitted, the shell falls back to a shared default list.
+   */
+  partners?: string[];
+
   /** Read next — cross-links */
   relatedTitle: string;
   related: L1RelatedLink[];
