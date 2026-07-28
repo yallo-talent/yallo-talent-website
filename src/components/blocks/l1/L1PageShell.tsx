@@ -54,9 +54,7 @@ export function L1PageShell({ data }: Props) {
       <L1Expertise data={data} />
       <L1Segments data={data} />
       <L1Partners />
-      {data.insights && data.insights.length > 0 && (
-        <L1Insights data={data} />
-      )}
+      {data.insights && data.insights.length > 0 && <L1Insights data={data} />}
       <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
@@ -387,31 +385,51 @@ function L1Segments({ data }: Props) {
         <p className={styles.sub}>{data.segmentsSub}</p>
 
         <div className={styles.segWrap}>
-          <ul className={styles.segList} aria-label="Select a segment">
-            {data.segments.map((s, i) => {
-              const isActive = s.id === activeSeg.id;
-              const segHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
-              return (
-                <li
-                  key={s.id}
-                  className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
-                  style={cardHueStyle(segHue)}
-                >
-                  <button
-                    type="button"
-                    onMouseEnter={() => setActive(s.id)}
-                    onFocus={() => setActive(s.id)}
-                    onClick={() => setActive(s.id)}
-                    aria-pressed={isActive}
-                    className={styles.segTrigger}
+          <div className={styles.segListWrap}>
+            <ul className={styles.segList} aria-label="Select a segment">
+              {data.segments.map((s, i) => {
+                const isActive = s.id === activeSeg.id;
+                const segHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+                return (
+                  <li
+                    key={s.id}
+                    className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
+                    style={cardHueStyle(segHue)}
                   >
-                    <span className={styles.segItemDot} aria-hidden="true" />
-                    <span className={styles.segItemName}>{s.name}</span>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                    <button
+                      type="button"
+                      onMouseEnter={() => setActive(s.id)}
+                      onFocus={() => setActive(s.id)}
+                      onClick={() => setActive(s.id)}
+                      aria-pressed={isActive}
+                      className={styles.segTrigger}
+                    >
+                      <span className={styles.segItemDot} aria-hidden="true" />
+                      <span className={styles.segItemName}>{s.name}</span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            {data.segments.length > 8 && (
+              <div className={styles.segScrollHint} aria-hidden="true">
+                <span className={styles.segScrollHintText}>
+                  {data.segments.length - 8} more
+                </span>
+                <svg
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <title>Scroll for more</title>
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
+              </div>
+            )}
+          </div>
 
           <motion.div
             className={styles.segPanel}

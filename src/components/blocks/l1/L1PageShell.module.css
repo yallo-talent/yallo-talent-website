@@ -1035,17 +1035,84 @@
     inset 0 1px 0 var(--wa08);
 }
 
+.segListWrap {
+  position: relative;
+  border-right: 1px solid var(--wa08);
+}
+
 .segList {
   list-style: none;
-  padding: 32px 16px;
+  padding: 20px 16px 40px;
   margin: 0;
-  border-right: 1px solid var(--wa08);
-  max-height: 640px;
+  height: 448px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--sector-accent-35) transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-padding-top: 20px;
+}
+
+.segList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.segList::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.segList::-webkit-scrollbar-thumb {
+  background: var(--sector-accent-35);
+  border-radius: 999px;
+}
+
+.segList::-webkit-scrollbar-thumb:hover {
+  background: var(--sector-accent);
+}
+
+/* Bottom-anchored "scroll for more" chevron pill */
+.segScrollHint {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: color-mix(in oklab, var(--ink-900) 92%, transparent);
+  border: 1px solid var(--sector-accent-35);
+  border-radius: 999px;
+  color: var(--sector-accent);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  pointer-events: none;
+  animation: segHintBob 2s ease-in-out infinite;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.5);
+}
+
+.segScrollHint svg {
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes segHintBob {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(3px);
+  }
 }
 
 .segItem {
@@ -2206,13 +2273,21 @@
   .segWrap {
     grid-template-columns: 1fr;
   }
-  .segList {
+  .segListWrap {
     border-right: 0;
     border-bottom: 1px solid var(--wa08);
+  }
+  .segList {
     display: flex;
+    flex-direction: row;
     overflow-x: auto;
+    overflow-y: hidden;
+    height: auto;
     max-height: none;
-    padding: 8px;
+    padding: 12px;
+  }
+  .segScrollHint {
+    display: none;
   }
   .segItem {
     flex-shrink: 0;
