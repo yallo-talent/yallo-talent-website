@@ -43,15 +43,87 @@ export function L2PageShell({ sector, fn }: Props) {
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
-          {/* Hero, overview, roles, tools, screening, cross-links, cta */}
-          <section className={styles.placeholder}>
-            <p className={styles.placeholderText}>
-              L2 shell scaffold — {sector.title} / {fn.title}
-            </p>
-          </section>
+          <L2Hero sector={sector} fn={fn} />
         </main>
       </div>
     </div>
+  );
+}
+
+/* ============ HERO ============ */
+function L2Hero({
+  sector,
+  fn,
+}: {
+  sector: L1PageData;
+  fn: L1ExpertiseCard;
+}) {
+  return (
+    <section className={styles.hero}>
+      <div className={styles.heroImageWrap}>
+        <Image
+          src={sector.heroImage}
+          alt={sector.heroImageAlt}
+          fill
+          priority
+          sizes="(max-width: 900px) 100vw, calc(100vw - 280px)"
+          className={styles.heroImage}
+        />
+      </div>
+      <div className={styles.heroTint} aria-hidden="true" />
+      <div className={styles.heroOverlay} aria-hidden="true" />
+      <div className={styles.heroGrid} aria-hidden="true" />
+      <div className={styles.heroInner}>
+        <nav className={styles.crumb} aria-label="Breadcrumb">
+          <Link href="/industries" className={styles.crumbLink}>
+            Industries
+          </Link>
+          <span className={styles.crumbSep} aria-hidden="true">
+            /
+          </span>
+          <Link
+            href={`/industries/${sector.slug}`}
+            className={styles.crumbLink}
+          >
+            {sector.title.split("&")[0]?.trim() ?? sector.title}
+          </Link>
+          <span className={styles.crumbSep} aria-hidden="true">
+            /
+          </span>
+          <span className={styles.crumbCurrent}>{fn.title}</span>
+        </nav>
+
+        <div className={styles.heroEyebrow}>
+          <span className={styles.heroEyebrowDot} aria-hidden="true" />
+          {fn.num} · {sector.title.split("&")[0]?.trim() ?? sector.title}
+        </div>
+
+        <h1 className={styles.heroTitle}>
+          {fn.title}
+          <br />
+          <span className={styles.heroEmphasis}>
+            contractors, deployed in 72 hours.
+          </span>
+        </h1>
+
+        <p className={styles.heroSub}>{fn.blurb ?? fn.overview}</p>
+
+        <div className={styles.heroDots}>
+          <div className={styles.heroDot}>
+            <span className={styles.heroDotMark} aria-hidden="true" />
+            72h brief to shortlist
+          </div>
+          <div className={styles.heroDot}>
+            <span className={styles.heroDotMark} aria-hidden="true" />
+            Active bench · UK · ME · India
+          </div>
+          <div className={styles.heroDot}>
+            <span className={styles.heroDotMark} aria-hidden="true" />
+            Contract · EOR · Subcontract
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -111,5 +183,3 @@ function L2Sidebar({
 // Exported so route pages / tests can reuse if needed.
 export { cardHueCycle, cardHueStyle };
 
-// Silence unused-import warnings until blocks are added.
-void Image;
