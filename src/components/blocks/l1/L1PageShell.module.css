@@ -312,15 +312,15 @@
 /* ============ IN-PAGE STICKY SUB-NAV ============ */
 .subNav {
   position: sticky;
-  /* Sits below the main NavBar with a small breathing gap. */
+  /* Sits below the main NavBar; the 72px top offset creates the
+     visible gap only while pinned. No margin-top so it stays flush
+     with the stats strip in normal flow. */
   top: 72px;
   z-index: 40;
-  margin-top: 8px;
   background: color-mix(in oklab, var(--ink-950) 92%, transparent);
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   border-bottom: 1px solid var(--wa08);
-  border-top: 1px solid var(--wa08);
   box-shadow: 0 6px 20px -12px rgba(0, 0, 0, 0.6);
 }
 

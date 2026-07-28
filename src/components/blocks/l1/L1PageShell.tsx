@@ -642,10 +642,7 @@ function L1Expertise({ data }: Props) {
                 transition={{ duration: 0.4, delay: i * 0.03 }}
                 className={styles.expCardWrap}
               >
-                <div
-                  className={styles.expCard}
-                  style={cardHueStyle(cardHue)}
-                >
+                <div className={styles.expCard} style={cardHueStyle(cardHue)}>
                   <div className={styles.expCardGlow} aria-hidden="true" />
                   <div className={styles.expCardBorder} aria-hidden="true" />
                   <div className={styles.expCardInner}>
