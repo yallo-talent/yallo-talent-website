@@ -54,10 +54,10 @@ export function L1PageShell({ data }: Props) {
       <L1Expertise data={data} />
       <L1Segments data={data} />
       <L1Partners />
-      {data.insights && data.insights.length > 0 && <L1Insights data={data} />}
       <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
+      {data.insights && data.insights.length > 0 && <L1Insights data={data} />}
     </div>
   );
 }
@@ -544,21 +544,18 @@ function L1Insights({ data }: Props) {
                 className={styles.insCard}
                 style={cardHueStyle(hue)}
               >
-                <div className={styles.insImgWrap}>
-                  <Image
-                    src={post.image}
-                    alt={post.imageAlt}
-                    fill
-                    sizes="(max-width: 900px) 88vw, 380px"
-                    className={styles.insImg}
-                  />
-                  <div className={styles.insImgTint} aria-hidden="true" />
-                  <div className={styles.insImgOverlay} aria-hidden="true" />
-                  <span className={styles.insCat}>{post.category}</span>
-                </div>
-                <div className={styles.insBody}>
+                <Image
+                  src={post.image}
+                  alt={post.imageAlt}
+                  fill
+                  sizes="(max-width: 900px) 88vw, 380px"
+                  className={styles.insImg}
+                />
+                <div className={styles.insImgTint} aria-hidden="true" />
+                <div className={styles.insImgShade} aria-hidden="true" />
+                <span className={styles.insCat}>{post.category}</span>
+                <div className={styles.insOverlay}>
                   <h3 className={styles.insTitle}>{post.title}</h3>
-                  <p className={styles.insExcerpt}>{post.excerpt}</p>
                   <div className={styles.insMeta}>
                     <span className={styles.insAuthor}>
                       {post.author} · {post.minutes} min read
