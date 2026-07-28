@@ -427,6 +427,294 @@
   box-shadow: 0 6px 14px -6px var(--sector-accent-35);
 }
 
+/* ============ TOOLS ============ */
+.tools {
+  position: relative;
+  padding: clamp(48px, 6vw, 72px) clamp(24px, 4vw, 52px);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.tools::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 50% 40% at 50% 20%,
+    var(--sector-accent-08),
+    transparent 55%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.toolsInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+}
+
+.toolsH {
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0 0 10px;
+}
+
+.toolsSub {
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.65;
+  max-width: 62ch;
+  margin: 0 0 26px;
+}
+
+.toolsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.tc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background 0.32s ease;
+  box-shadow: inset 0 1px 0 var(--wa08);
+}
+
+.tcGlow {
+  position: absolute;
+  top: -70px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-35, var(--sector-accent-35)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.tc::before {
+  content: "";
+  position: absolute;
+  bottom: -70px;
+  left: -50px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-20, var(--sector-accent-20)),
+    transparent 65%
+  );
+  filter: blur(35px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.tc:hover {
+  transform: translateY(-5px);
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  box-shadow:
+    0 24px 48px -20px rgba(0, 0, 0, 0.6),
+    0 0 40px var(--card-hue-08, var(--sector-accent-08));
+}
+
+.tc:hover .tcGlow {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.tc:hover::before {
+  opacity: 0.9;
+  transform: scale(1.15);
+}
+
+.tcInner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 22px 22px 20px;
+}
+
+.tcBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  align-self: flex-start;
+  background: color-mix(in oklab, var(--ink-950) 55%, transparent);
+  border: 1px solid var(--card-hue-35, var(--wa15));
+  border-radius: 6px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.tcBadgeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--card-hue, var(--sector-accent));
+  box-shadow: 0 0 6px var(--card-hue-35, var(--sector-accent-35));
+}
+
+.tcBadgeName {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.tcName {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  line-height: 1.25;
+  margin: 0 0 18px;
+  transition: color 0.24s ease;
+}
+
+.tc:hover .tcName {
+  color: var(--card-hue, var(--sector-accent));
+}
+
+.tcRolesLabel {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--card-hue, var(--sector-accent));
+  margin-bottom: 10px;
+}
+
+.tcRoles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex: 1;
+  align-content: flex-start;
+}
+
+.tcRole {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: var(--card-hue-08, var(--sector-accent-08));
+  color: var(--card-hue, var(--sector-accent));
+  border: 1px solid var(--card-hue-20, var(--sector-accent-20));
+  line-height: 1;
+  transition: background 0.18s ease;
+}
+
+.tc:hover .tcRole {
+  background: var(--card-hue-20, var(--sector-accent-20));
+}
+
+.tcBench {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tcBenchDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success-500);
+  box-shadow: 0 0 6px var(--success-glow);
+}
+
+.tcBenchTxt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--fg-subtle);
+}
+
+.tcCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  background: var(--card-hue-08, var(--sector-accent-08));
+  color: var(--card-hue, var(--sector-accent));
+  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tcCta:hover {
+  background: var(--card-hue, var(--sector-accent));
+  color: var(--ink-950);
+  border-color: var(--card-hue, var(--sector-accent));
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35));
+}
+
+@media (max-width: 1200px) {
+  .toolsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .toolsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============ SIDEBAR ============ */
 .sbTop {
   padding: 20px 20px 18px;

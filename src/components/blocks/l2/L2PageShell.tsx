@@ -46,6 +46,7 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Hero sector={sector} fn={fn} />
           <L2Overview sector={sector} fn={fn} />
           <L2Roles fn={fn} />
+          <L2Tools sector={sector} fn={fn} />
         </main>
       </div>
     </div>
@@ -200,6 +201,67 @@ function L2Roles({ fn }: { fn: L1ExpertiseCard }) {
               {r}
             </span>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ TOOL / VENDOR CARDS ============ */
+function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
+  if (!fn.tools || fn.tools.length === 0) return null;
+  const briefHref = `/brief?sector=${sector.slug}&fn=${fn.slug}`;
+  return (
+    <section className={styles.tools}>
+      <div className={styles.toolsInner}>
+        <div className={styles.secLabel}>Tools we staff</div>
+        <h2 className={styles.toolsH}>
+          {fn.tools.length} tool
+          {fn.tools.length === 1 ? "" : "s"}. Architect-screened contractor
+          bench for each.
+        </h2>
+        <p className={styles.toolsSub}>
+          Every card lists the contractor roles Yallo places into that tool.
+          Send the brief — the shortlist is in your inbox in 72 hours.
+        </p>
+        <div className={styles.toolsGrid}>
+          {fn.tools.map((tool, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <article
+                key={tool.slug}
+                className={styles.tc}
+                style={cardHueStyle(hue)}
+              >
+                <div className={styles.tcGlow} aria-hidden="true" />
+                <div className={styles.tcInner}>
+                  <div className={styles.tcBadge}>
+                    <span className={styles.tcBadgeDot} aria-hidden="true" />
+                    <span className={styles.tcBadgeName}>{tool.vendor}</span>
+                  </div>
+                  <h3 className={styles.tcName}>{tool.name}</h3>
+                  <div className={styles.tcRolesLabel}>Contractor roles</div>
+                  <div className={styles.tcRoles}>
+                    {tool.roles.map((r) => (
+                      <span key={r} className={styles.tcRole}>
+                        {r}
+                      </span>
+                    ))}
+                  </div>
+                  <div className={styles.tcBench}>
+                    <span className={styles.tcBenchDot} aria-hidden="true" />
+                    <span className={styles.tcBenchTxt}>
+                      {tool.benchNote ?? "Active bench · UK · ME · India"}
+                    </span>
+                  </div>
+                  <Link href={briefHref} className={styles.tcCta}>
+                    Request a contractor
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
