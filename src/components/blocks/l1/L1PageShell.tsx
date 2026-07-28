@@ -1,11 +1,17 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import type { L1Hue, L1PageData } from "@/data/l1/types";
+import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
 import styles from "./L1PageShell.module.css";
+import { l1Icons } from "./l1-icons";
+
+function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
+  const Comp = l1Icons[icon];
+  return <Comp className={className} />;
+}
 
 const hueStyle = (hue: L1Hue): React.CSSProperties =>
   ({
@@ -13,6 +19,23 @@ const hueStyle = (hue: L1Hue): React.CSSProperties =>
     "--sector-accent-08": `var(--hue-${hue}-08)`,
     "--sector-accent-20": `var(--hue-${hue}-20)`,
     "--sector-accent-35": `var(--hue-${hue}-35)`,
+  }) as React.CSSProperties;
+
+const cardHueCycle: L1Hue[] = [
+  "blue",
+  "teal",
+  "violet",
+  "rose",
+  "green",
+  "orange",
+];
+
+const cardHueStyle = (hue: L1Hue): React.CSSProperties =>
+  ({
+    "--card-hue": `var(--hue-${hue}-500)`,
+    "--card-hue-08": `var(--hue-${hue}-08)`,
+    "--card-hue-20": `var(--hue-${hue}-20)`,
+    "--card-hue-35": `var(--hue-${hue}-35)`,
   }) as React.CSSProperties;
 
 interface Props {
@@ -161,16 +184,29 @@ function L1Intro({ data }: Props) {
 /* ============ SCARCE TALENT ============ */
 function L1ScarceTalent({ data }: Props) {
   if (!data.scarceRoles || !data.scarceEyebrow) return null;
+  const icon: L1IconKey = data.scarceIcon ?? "scarce";
   return (
     <section className={styles.scarce}>
       <div className={styles.wrap}>
         <div className={styles.scarceCard}>
           <div className={styles.scarceGlow} aria-hidden="true" />
+          <div className={styles.scarceGridBg} aria-hidden="true" />
           <div className={styles.scarceGrid}>
             <div className={styles.scarceLeft}>
-              <div className={styles.eyebrow}>{data.scarceEyebrow}</div>
-              <h3 className={styles.scarceH}>{data.scarceTitle}</h3>
-              <p className={styles.scarceCopy}>{data.scarceCopy}</p>
+              <div className={styles.scarceIcon}>
+                <L1Icon icon={icon} className={styles.scarceIconSvg} />
+              </div>
+              <div className={styles.scarceLeftMid}>
+                <div className={styles.eyebrow}>{data.scarceEyebrow}</div>
+                <h3 className={styles.scarceH}>{data.scarceTitle}</h3>
+                <p className={styles.scarceCopy}>{data.scarceCopy}</p>
+                {data.scarceCta && (
+                  <Link href={data.scarceCta.href} className={styles.scarceCta}>
+                    {data.scarceCta.label}
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                )}
+              </div>
             </div>
             <div className={styles.scarceList}>
               {data.scarceRoles.map((r) => (
@@ -210,6 +246,16 @@ function L1ScarceTalent({ data }: Props) {
 
 /* ============ EXPERTISE ============ */
 function L1Expertise({ data }: Props) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const toggle = (slug: string) => {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      return next;
+    });
+  };
+
   return (
     <section className={styles.expertise} id="expertise">
       <div className={styles.wrap}>
@@ -218,54 +264,97 @@ function L1Expertise({ data }: Props) {
         <p className={styles.sub}>{data.expertiseSub}</p>
         <div className={styles.expertiseGrid}>
           {data.expertise.map((card, i) => {
-            const inner = (
-              <>
-                <div className={styles.expCardBg}>
-                  <Image
-                    src={card.image}
-                    alt=""
-                    fill
-                    sizes="(max-width: 900px) 88vw, 300px"
-                    className={styles.expCardImage}
-                  />
-                </div>
-                <div className={styles.expCardTint} aria-hidden="true" />
-                <div className={styles.expCardOverlay} aria-hidden="true" />
-                <div className={styles.expCardInner}>
-                  <div className={styles.expCardNum}>{card.num}</div>
-                  <h3 className={styles.expCardTitle}>{card.title}</h3>
-                  <ul className={styles.expCardRoles}>
-                    {card.roles.map((r) => (
-                      <li key={r} className={styles.expCardRole}>
-                        {r}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className={styles.expCardLink}>
-                    View contractors
-                    <span aria-hidden="true">→</span>
-                  </div>
-                </div>
-              </>
-            );
+            const isOpen = expanded.has(card.slug);
+            const cardHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             return (
               <motion.div
                 key={card.slug}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.45, delay: i * 0.04 }}
+                transition={{ duration: 0.4, delay: i * 0.03 }}
                 className={styles.expCardWrap}
               >
-                {card.href ? (
-                  <Link href={card.href} className={styles.expCard}>
-                    {inner}
-                  </Link>
-                ) : (
-                  <div className={styles.expCard} data-static="true">
-                    {inner}
+                <div
+                  className={`${styles.expCard} ${isOpen ? styles.expCardOpen : ""}`}
+                  style={cardHueStyle(cardHue)}
+                >
+                  <div className={styles.expCardGlow} aria-hidden="true" />
+                  <div className={styles.expCardBorder} aria-hidden="true" />
+                  <div className={styles.expCardInner}>
+                    <div className={styles.expCardTop}>
+                      <span className={styles.expCardIcon}>
+                        <L1Icon
+                          icon={card.icon}
+                          className={styles.expCardIconSvg}
+                        />
+                      </span>
+                      <button
+                        type="button"
+                        className={styles.expCardToggle}
+                        aria-expanded={isOpen}
+                        aria-controls={`exp-panel-${card.slug}`}
+                        aria-label={isOpen ? "Hide roles" : "See roles"}
+                        onClick={() => toggle(card.slug)}
+                      >
+                        <svg
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                          strokeLinecap="round"
+                          aria-hidden="true"
+                        >
+                          <title>Toggle roles</title>
+                          <path d="M8 3v10M3 8h10" />
+                        </svg>
+                      </button>
+                    </div>
+                    <span className={styles.expCardNum}>{card.num}</span>
+                    <h3 className={styles.expCardTitle}>{card.title}</h3>
+                    {card.blurb && (
+                      <p className={styles.expCardBlurb}>{card.blurb}</p>
+                    )}
+                    <AnimatePresence initial={false}>
+                      {isOpen && (
+                        <motion.div
+                          id={`exp-panel-${card.slug}`}
+                          key="panel"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{
+                            duration: 0.28,
+                            ease: [0.2, 0.8, 0.2, 1],
+                          }}
+                          className={styles.expCardPanel}
+                        >
+                          <ul className={styles.expCardRoles}>
+                            {card.roles.map((r) => (
+                              <li key={r} className={styles.expCardRole}>
+                                {r}
+                              </li>
+                            ))}
+                          </ul>
+                          {card.href ? (
+                            <Link
+                              href={card.href}
+                              className={styles.expCardLink}
+                            >
+                              View contractors
+                              <span aria-hidden="true">→</span>
+                            </Link>
+                          ) : (
+                            <span className={styles.expCardLink}>
+                              View contractors
+                              <span aria-hidden="true">→</span>
+                            </span>
+                          )}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
-                )}
+                </div>
               </motion.div>
             );
           })}
@@ -278,9 +367,12 @@ function L1Expertise({ data }: Props) {
 /* ============ SEGMENTS ============ */
 function L1Segments({ data }: Props) {
   const [active, setActive] = useState(data.segments[0]?.id ?? "");
-  const activeSeg =
-    data.segments.find((s) => s.id === active) ?? data.segments[0];
+  const activeIdx = data.segments.findIndex((s) => s.id === active);
+  const activeSeg = data.segments[activeIdx >= 0 ? activeIdx : 0];
   if (!activeSeg) return null;
+  const activeHue = cardHueCycle[
+    (activeIdx >= 0 ? activeIdx : 0) % cardHueCycle.length
+  ] as L1Hue;
 
   return (
     <section className={styles.segments} id="segments">
@@ -291,12 +383,16 @@ function L1Segments({ data }: Props) {
 
         <div className={styles.segWrap}>
           <ul className={styles.segList} aria-label="Select a segment">
-            {data.segments.map((s) => {
+            {data.segments.map((s, i) => {
               const isActive = s.id === activeSeg.id;
+              const segHue = cardHueCycle[
+                i % cardHueCycle.length
+              ] as L1Hue;
               return (
                 <li
                   key={s.id}
                   className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
+                  style={cardHueStyle(segHue)}
                 >
                   <button
                     type="button"
@@ -316,11 +412,13 @@ function L1Segments({ data }: Props) {
 
           <motion.div
             className={styles.segPanel}
+            style={cardHueStyle(activeHue)}
             key={activeSeg.id}
             initial={{ opacity: 0, x: 8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
           >
+            <div className={styles.segPanelGlow} aria-hidden="true" />
             <div className={styles.segImgWrap}>
               <Image
                 src={activeSeg.image}
@@ -399,15 +497,23 @@ function L1ReadNext({ data }: Props) {
           <h3 className={styles.readNextH}>{data.relatedTitle}</h3>
         </div>
         <div className={styles.readNextGrid}>
-          {data.related.map((r) => (
-            <Link key={r.href} href={r.href} className={styles.readNextCard}>
-              <span className={styles.readNextCat}>{r.category}</span>
-              <span className={styles.readNextLabel}>{r.label}</span>
-              <span className={styles.readNextArr} aria-hidden="true">
-                →
-              </span>
-            </Link>
-          ))}
+          {data.related.map((r, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <Link
+                key={r.href}
+                href={r.href}
+                className={styles.readNextCard}
+                style={cardHueStyle(hue)}
+              >
+                <span className={styles.readNextCat}>{r.category}</span>
+                <span className={styles.readNextLabel}>{r.label}</span>
+                <span className={styles.readNextArr} aria-hidden="true">
+                  →
+                </span>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -28,14 +28,49 @@ export interface L1ExpertiseCard {
   num: string;
   title: string;
   roles: string[];
-  image: string;
-  imageAlt: string;
+  /**
+   * Icon key from `l1-icons.tsx` — sits in the top-left of the card,
+   * tinted with the sector accent.
+   */
+  icon: L1IconKey;
+  /** Short blurb under the title — one line, sub-heading style. */
+  blurb?: string;
   /**
    * L2 href — optional; if omitted the card is presentational for now.
    * Will populate once we build L2 pages.
    */
   href?: string;
 }
+
+/** Icon keys supported by the L1 icon set. */
+export type L1IconKey =
+  | "cx"
+  | "store"
+  | "merch"
+  | "assortment"
+  | "pricing"
+  | "loyalty"
+  | "omnichannel"
+  | "ecommerce"
+  | "pos"
+  | "oms"
+  | "wms"
+  | "tms"
+  | "supply"
+  | "demand"
+  | "inventory"
+  | "analytics"
+  | "mdm"
+  | "finance"
+  | "workforce"
+  | "crm"
+  | "returns"
+  | "clienteling"
+  | "promotions"
+  | "space"
+  | "hr"
+  | "scarce"
+  | "spark";
 
 /**
  * One segment in the interactive "Segments we support" panel.
@@ -100,6 +135,8 @@ export interface L1PageData {
   scarceTitle?: string;
   scarceCopy?: string;
   scarceRoles?: L1ScarceRole[];
+  scarceIcon?: L1IconKey;
+  scarceCta?: { label: string; href: string };
 
   /** Expertise grid */
   expertiseEyebrow: string;

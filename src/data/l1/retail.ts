@@ -28,7 +28,7 @@ export const retailData: L1PageData = {
   stats: [
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
-    { n: "8", l: "Retail function areas" },
+    { n: "20", l: "Retail function areas" },
     { n: "3", l: "Active delivery markets" },
   ],
 
@@ -55,10 +55,12 @@ export const retailData: L1PageData = {
   ],
 
   scarceEyebrow: "Scarce talent",
+  scarceIcon: "scarce",
   scarceTitle:
     "The roles every retail programme needs — and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every retail programme brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have six weeks.",
+  scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
       name: "SAP CAR / Customer Activity Repository Specialist",
@@ -104,121 +106,249 @@ export const retailData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Eight retail function areas. Contractor bench across all of them.",
+    "Twenty retail function areas. Contractor bench across all of them.",
   expertiseSub:
-    "Click any function to see the contractor roles we deploy and the platforms we staff within it.",
+    "From front-of-house customer experience to back-of-house supply chain — we place specialists into every function that moves a retail programme forward.",
   expertise: [
     {
       slug: "customer-experience",
       num: "01",
       title: "Customer Experience",
+      icon: "cx",
+      blurb: "Brand-to-basket journeys across channels",
       roles: [
         "SAP CX Functional Consultant",
         "SFMC Developer",
-        "Oracle Retail CX Consultant",
         "Personalisation Architect",
       ],
-      image:
-        "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Retail customer experience — flagship store",
+    },
+    {
+      slug: "clienteling",
+      num: "02",
+      title: "Clienteling & Styling",
+      icon: "clienteling",
+      blurb: "Luxury one-to-one selling and appointment flows",
+      roles: [
+        "Salesforce Clienteling Lead",
+        "Endear / Tulip Specialist",
+        "Retail Advisor App Architect",
+      ],
     },
     {
       slug: "store-operations",
-      num: "02",
+      num: "03",
       title: "Store Operations",
+      icon: "store",
+      blurb: "Task management, back-office and store systems",
       roles: [
         "Oracle Retail Consultant",
         "SAP S/4HANA Retail Functional",
-        "D365 Commerce Specialist",
         "Store Systems Architect",
       ],
-      image:
-        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Retail store operations",
-    },
-    {
-      slug: "merchandising",
-      num: "03",
-      title: "Merchandising & Planning",
-      roles: [
-        "Blue Yonder MFP Specialist",
-        "Oracle Retail MOM Consultant",
-        "SAP MM Functional Lead",
-        "Merch Systems Architect",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Retail merchandising displays",
-    },
-    {
-      slug: "omnichannel-fulfillment",
-      num: "04",
-      title: "Omnichannel Fulfillment",
-      roles: [
-        "OMS Architect",
-        "Blue Yonder Fulfillment Lead",
-        "SAP OMS Functional",
-        "Omnichannel Programme Manager",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Warehouse fulfillment operations",
-    },
-    {
-      slug: "ecommerce",
-      num: "05",
-      title: "E-commerce",
-      roles: [
-        "SAP Commerce Architect",
-        "Magento 2 Developer",
-        "Shopify Plus Specialist",
-        "Digital Experience Lead",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "E-commerce operations",
-    },
-    {
-      slug: "loyalty-rewards",
-      num: "06",
-      title: "Loyalty & Rewards",
-      roles: [
-        "Oracle Loyalty Cloud Consultant",
-        "Salesforce Loyalty Specialist",
-        "CRM Programme Manager",
-        "Loyalty Platform Architect",
-      ],
-      image:
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Loyalty and rewards programme",
     },
     {
       slug: "point-of-sale",
-      num: "07",
+      num: "04",
       title: "Point of Sale",
+      icon: "pos",
+      blurb: "In-store checkout, mobile POS and payments",
       roles: [
         "Oracle Xstore Specialist",
         "SAP Customer Checkout Consultant",
         "D365 POS Developer",
-        "NCR Aloha Specialist",
       ],
-      image:
-        "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Point-of-sale terminal",
+    },
+    {
+      slug: "merchandising",
+      num: "05",
+      title: "Merchandising & Buying",
+      icon: "merch",
+      blurb: "Buying, range management and product lifecycle",
+      roles: [
+        "Blue Yonder MFP Specialist",
+        "Oracle Retail MOM Consultant",
+        "SAP MM Functional Lead",
+      ],
+    },
+    {
+      slug: "assortment-planning",
+      num: "06",
+      title: "Assortment Planning",
+      icon: "assortment",
+      blurb: "Store cluster, size scale and OTB planning",
+      roles: [
+        "Anaplan Model Builder",
+        "Blue Yonder Assortment Specialist",
+        "Oracle Retail RPAS Consultant",
+      ],
+    },
+    {
+      slug: "space-planning",
+      num: "07",
+      title: "Space & Floor Planning",
+      icon: "space",
+      blurb: "Planograms, cluster grids and store layouts",
+      roles: [
+        "JDA Space Planner",
+        "Nielsen Spaceman Consultant",
+        "Retail Category Architect",
+      ],
+    },
+    {
+      slug: "pricing-promotions",
+      num: "08",
+      title: "Pricing & Promotions",
+      icon: "promotions",
+      blurb: "Price optimisation, markdown and offer engines",
+      roles: [
+        "Blue Yonder Price / Promotion Lead",
+        "Revionics Specialist",
+        "SAP Promotion Management Consultant",
+      ],
+    },
+    {
+      slug: "loyalty-rewards",
+      num: "09",
+      title: "Loyalty & Rewards",
+      icon: "loyalty",
+      blurb: "Points, tiers, gamification and lifecycle loyalty",
+      roles: [
+        "Oracle Loyalty Cloud Consultant",
+        "Salesforce Loyalty Specialist",
+        "Loyalty Platform Architect",
+      ],
+    },
+    {
+      slug: "crm",
+      num: "10",
+      title: "CRM & Marketing Ops",
+      icon: "crm",
+      blurb: "Segmentation, journeys and cross-channel activation",
+      roles: [
+        "Salesforce Marketing Cloud Consultant",
+        "Braze Specialist",
+        "CDP Architect",
+      ],
+    },
+    {
+      slug: "ecommerce",
+      num: "11",
+      title: "E-commerce",
+      icon: "ecommerce",
+      blurb: "Storefront, checkout and headless commerce",
+      roles: [
+        "SAP Commerce Architect",
+        "Salesforce Commerce Cloud Lead",
+        "Shopify Plus Specialist",
+      ],
+    },
+    {
+      slug: "omnichannel-fulfillment",
+      num: "12",
+      title: "Omnichannel Fulfilment",
+      icon: "omnichannel",
+      blurb: "Ship-from-store, click-collect and dark stores",
+      roles: [
+        "OMS Architect",
+        "Blue Yonder Fulfillment Lead",
+        "Store Fulfilment Programme Manager",
+      ],
+    },
+    {
+      slug: "order-management",
+      num: "13",
+      title: "Order Management (OMS)",
+      icon: "oms",
+      blurb: "Distributed order orchestration across channels",
+      roles: [
+        "IBM Sterling OMS Architect",
+        "Manhattan Active Omni Lead",
+        "Fluent Commerce Specialist",
+      ],
+    },
+    {
+      slug: "warehouse-management",
+      num: "14",
+      title: "Warehouse Management (WMS)",
+      icon: "wms",
+      blurb: "DC operations, pick paths and slotting",
+      roles: [
+        "Manhattan WMS Lead",
+        "SAP EWM Consultant",
+        "Blue Yonder WMS Specialist",
+      ],
+    },
+    {
+      slug: "transport-management",
+      num: "15",
+      title: "Transport Management (TMS)",
+      icon: "tms",
+      blurb: "Last-mile, routing and carrier orchestration",
+      roles: [
+        "Oracle OTM Specialist",
+        "Manhattan Active TMS Consultant",
+        "Blue Yonder TMS Architect",
+      ],
     },
     {
       slug: "supply-chain",
-      num: "08",
-      title: "Supply Chain",
+      num: "16",
+      title: "Supply Chain & S&OP",
+      icon: "supply",
+      blurb: "Integrated supply-demand planning across the network",
+      roles: [
+        "Kinaxis RapidResponse Lead",
+        "SAP IBP Consultant",
+        "S&OP Programme Manager",
+      ],
+    },
+    {
+      slug: "demand-planning",
+      num: "17",
+      title: "Demand Planning & Forecasting",
+      icon: "demand",
+      blurb: "Statistical forecasting and demand sensing",
       roles: [
         "Blue Yonder Demand Planner",
-        "SAP EWM Consultant",
-        "Manhattan WMS Lead",
-        "TMS Solution Architect",
+        "o9 Solutions Specialist",
+        "SAP APO / IBP Consultant",
       ],
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=700&auto=format&fit=crop&q=80",
-      imageAlt: "Retail supply chain and logistics",
+    },
+    {
+      slug: "inventory-replenishment",
+      num: "18",
+      title: "Inventory & Replenishment",
+      icon: "inventory",
+      blurb: "Store, DC and network inventory optimisation",
+      roles: [
+        "Blue Yonder Replenishment Lead",
+        "Oracle Retail Inventory Consultant",
+        "SAP F&R Specialist",
+      ],
+    },
+    {
+      slug: "returns-reverse-logistics",
+      num: "19",
+      title: "Returns & Reverse Logistics",
+      icon: "returns",
+      blurb: "Returns portals, refurb flows and reverse WMS",
+      roles: [
+        "Returns Platform Specialist",
+        "Reverse Logistics Consultant",
+        "Post-purchase Systems Lead",
+      ],
+    },
+    {
+      slug: "master-data-pim",
+      num: "20",
+      title: "Master Data & PIM",
+      icon: "mdm",
+      blurb: "Product, customer and location data at scale",
+      roles: [
+        "Stibo PIM Consultant",
+        "Informatica MDM Specialist",
+        "Salsify PIM Lead",
+      ],
     },
   ],
 
