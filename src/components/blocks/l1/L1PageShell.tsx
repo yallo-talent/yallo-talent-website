@@ -696,7 +696,20 @@ function L1Expertise({ data }: Props) {
             <button
               type="button"
               className={styles.expertiseShowAll}
-              onClick={() => setShowAll((v) => !v)}
+              onClick={() => {
+                setShowAll((v) => {
+                  if (v) {
+                    // Collapsing — bring the expertise section back into view
+                    // so the user isn't stranded further down the page.
+                    requestAnimationFrame(() => {
+                      document
+                        .getElementById("expertise")
+                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    });
+                  }
+                  return !v;
+                });
+              }}
               aria-expanded={showAll}
               aria-label={
                 showAll ? "Show less" : `Show all ${total} function areas`
