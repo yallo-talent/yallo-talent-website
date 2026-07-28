@@ -40,6 +40,45 @@ export interface L1ExpertiseCard {
    * Will populate once we build L2 pages.
    */
   href?: string;
+  /**
+   * Deep-copy paragraph for the L2 function-page overview block.
+   * If omitted, the shell falls back to `blurb`.
+   */
+  overview?: string;
+  /**
+   * L2 hero / overview image — square-ish, sits next to the paragraph.
+   */
+  overviewImage?: string;
+  overviewImageAlt?: string;
+  /**
+   * Vendor / tool cards rendered on the L2 page for this function.
+   * Each card lists a specific tool (SAP Customer Experience, etc.)
+   * with the contractor roles Yallo places into it.
+   */
+  tools?: L2Tool[];
+}
+
+/**
+ * Vendor tool card rendered on an L2 function page.
+ * Vendor name maps to a slug in `/public/logos/{vendorSlug}.svg`.
+ * Until the logo file exists the shell shows a text badge fallback.
+ */
+export interface L2Tool {
+  /** URL-safe slug, unique inside the function. */
+  slug: string;
+  /** Human-readable vendor (SAP, Oracle, Salesforce…). */
+  vendor: string;
+  /**
+   * Vendor logo slug (lowercase, hyphenated) → resolves to
+   * `/public/logos/{vendorSlug}.svg`. Optional; falls back to a text badge.
+   */
+  vendorSlug?: string;
+  /** Full product name — "SAP Customer Experience", "Blue Yonder Luminate". */
+  name: string;
+  /** 4–5 contractor role titles Yallo places on this tool. */
+  roles: string[];
+  /** Optional bench signal override. Defaults to the sector default. */
+  benchNote?: string;
 }
 
 /** Icon keys supported by the L1 icon set. */
