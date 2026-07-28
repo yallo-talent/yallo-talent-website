@@ -44,6 +44,7 @@ export function L2PageShell({ sector, fn }: Props) {
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
           <L2Hero sector={sector} fn={fn} />
+          <L2Overview sector={sector} fn={fn} />
         </main>
       </div>
     </div>
@@ -51,13 +52,7 @@ export function L2PageShell({ sector, fn }: Props) {
 }
 
 /* ============ HERO ============ */
-function L2Hero({
-  sector,
-  fn,
-}: {
-  sector: L1PageData;
-  fn: L1ExpertiseCard;
-}) {
+function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
     <section className={styles.hero}>
       <div className={styles.heroImageWrap}>
@@ -127,6 +122,58 @@ function L2Hero({
   );
 }
 
+/* ============ FUNCTION OVERVIEW ============ */
+function L2Overview({
+  sector,
+  fn,
+}: {
+  sector: L1PageData;
+  fn: L1ExpertiseCard;
+}) {
+  const image = fn.overviewImage ?? sector.heroImage;
+  const imageAlt = fn.overviewImageAlt ?? sector.heroImageAlt;
+  const copy = fn.overview ?? fn.blurb ?? "";
+  return (
+    <section className={styles.overview}>
+      <div className={styles.overviewInner}>
+        <div className={styles.overviewText}>
+          <div className={styles.secLabel}>Function overview</div>
+          <h2 className={styles.overviewH}>
+            Finding {fn.title.toLowerCase()} contractors who
+            <br />
+            <span className={styles.overviewEm}>
+              understand the context is harder than it looks.
+            </span>
+          </h2>
+          <p className={styles.overviewCopy}>{copy}</p>
+          <ul className={styles.overviewBullets}>
+            <li className={styles.overviewBullet}>
+              Architect-screened for platform depth, not certificates
+            </li>
+            <li className={styles.overviewBullet}>
+              Retail-context screening — high transaction volumes, multi-market
+              rollouts
+            </li>
+            <li className={styles.overviewBullet}>
+              72h from brief to shortlist — every time
+            </li>
+          </ul>
+        </div>
+        <div className={styles.overviewImageWrap}>
+          <Image
+            src={image}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 900px) 100vw, 420px"
+            className={styles.overviewImage}
+          />
+          <div className={styles.overviewImageTint} aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ============ SIDEBAR ============ */
 function L2Sidebar({
   sector,
@@ -182,4 +229,3 @@ function L2Sidebar({
 
 // Exported so route pages / tests can reuse if needed.
 export { cardHueCycle, cardHueStyle };
-
