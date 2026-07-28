@@ -55,11 +55,11 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Tools sector={sector} fn={fn} />
           <L2Screening />
           <L2Engagement />
+          <L2BottomCta sector={sector} fn={fn} />
           <L2RelatedFunctions sector={sector} fn={fn} />
           <L2CrossLinks fn={fn} />
         </main>
       </div>
-      <L2BottomCta sector={sector} fn={fn} />
       <L2Insights sector={sector} />
     </div>
   );
@@ -387,7 +387,8 @@ const platformMeta: Record<string, { label: string; blurb: string }> = {
   },
   workday: {
     label: "Workday",
-    blurb: "HCM, Financials and Adaptive Planning across enterprise programmes.",
+    blurb:
+      "HCM, Financials and Adaptive Planning across enterprise programmes.",
   },
 };
 
@@ -452,7 +453,8 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                       {meta?.label ?? slug}
                     </span>
                     <span className={styles.crossCardBlurb}>
-                      {meta?.blurb ?? "Contractors, architects and delivery leads."}
+                      {meta?.blurb ??
+                        "Contractors, architects and delivery leads."}
                     </span>
                     <span className={styles.crossCardCta}>
                       Explore platform bench
