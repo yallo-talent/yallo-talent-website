@@ -77,6 +77,7 @@ export type L1IconKey =
   | "integration"
   | "government"
   | "eor"
+  | "cases"
   | "pillarContract"
   | "pillarPermanent"
   | "pillarEor"

@@ -335,6 +335,15 @@ export const l1Icons: Record<L1IconKey, (p: IconProps) => React.ReactElement> =
         "EOR / policy admin",
         p.className,
       ),
+    cases: (p) =>
+      wrap(
+        <>
+          <rect x="3" y="7" width="18" height="14" rx="2" />
+          <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2M12 12v5M8 14h8" />
+        </>,
+        "Case management",
+        p.className,
+      ),
     pillarContract: (p) =>
       wrap(
         <>
