@@ -1038,13 +1038,17 @@
 .segListWrap {
   position: relative;
   border-right: 1px solid var(--wa08);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .segList {
   list-style: none;
-  padding: 20px 16px 16px;
+  padding: 20px 16px;
   margin: 0;
-  height: 448px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -1073,37 +1077,21 @@
   background: var(--sector-accent);
 }
 
-/* Compact "scroll for more" row sitting right under the list */
-.segScrollHint {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-top: 1px solid var(--wa08);
-  color: var(--sector-accent);
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* Bottom fade overlay — signals scrollable content continues below */
+.segListFade {
+  position: absolute;
+  left: 0;
+  right: 1px;
+  bottom: 0;
+  height: 56px;
   pointer-events: none;
-}
-
-.segScrollHint svg {
-  width: 11px;
-  height: 11px;
-  animation: segHintBob 1.8s ease-in-out infinite;
-}
-
-@keyframes segHintBob {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(2px);
-  }
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, var(--ink-900) 92%, transparent) 0%,
+    color-mix(in oklab, var(--ink-900) 60%, transparent) 55%,
+    transparent 100%
+  );
+  z-index: 2;
 }
 
 .segItem {
@@ -2250,17 +2238,17 @@
   .segListWrap {
     border-right: 0;
     border-bottom: 1px solid var(--wa08);
+    flex-direction: row;
   }
   .segList {
     display: flex;
     flex-direction: row;
     overflow-x: auto;
     overflow-y: hidden;
-    height: auto;
-    max-height: none;
     padding: 12px;
+    flex: 1;
   }
-  .segScrollHint {
+  .segListFade {
     display: none;
   }
   .segItem {

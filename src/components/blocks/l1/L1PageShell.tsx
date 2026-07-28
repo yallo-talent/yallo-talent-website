@@ -411,24 +411,7 @@ function L1Segments({ data }: Props) {
                 );
               })}
             </ul>
-            {data.segments.length > 8 && (
-              <div className={styles.segScrollHint} aria-hidden="true">
-                <span className={styles.segScrollHintText}>
-                  {data.segments.length - 8} more
-                </span>
-                <svg
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <title>Scroll for more</title>
-                  <path d="M4 6l4 4 4-4" />
-                </svg>
-              </div>
-            )}
+            <div className={styles.segListFade} aria-hidden="true" />
           </div>
 
           <motion.div
