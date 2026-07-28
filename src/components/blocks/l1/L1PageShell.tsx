@@ -597,8 +597,11 @@ function L1ScarceTalent({ data }: Props) {
 }
 
 /* ============ EXPERTISE ============ */
+const EXPERTISE_COLLAPSED_COUNT = 8;
+
 function L1Expertise({ data }: Props) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [showAll, setShowAll] = useState(false);
   const toggle = (slug: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -607,15 +610,38 @@ function L1Expertise({ data }: Props) {
       return next;
     });
   };
+  const total = data.expertise.length;
+  const collapsible = total > EXPERTISE_COLLAPSED_COUNT;
+  const hiddenCount = collapsible ? total - EXPERTISE_COLLAPSED_COUNT : 0;
+  // Render every card; CSS hides cards past the limit on desktop when
+  // collapsed, and shows all in the mobile horizontal-scroll layout.
+  const visible = data.expertise;
 
   return (
     <section className={styles.expertise} id="expertise">
       <div className={styles.wrap}>
-        <div className={styles.eyebrow}>{data.expertiseEyebrow}</div>
-        <h2 className={styles.h2}>{data.expertiseTitle}</h2>
-        <p className={styles.sub}>{data.expertiseSub}</p>
-        <div className={styles.expertiseGrid}>
-          {data.expertise.map((card, i) => {
+        <div className={styles.expertiseHead}>
+          <div className={styles.expertiseHeadLeft}>
+            <div className={styles.eyebrow}>{data.expertiseEyebrow}</div>
+            <h2 className={styles.h2}>{data.expertiseTitle}</h2>
+            <p className={styles.sub}>{data.expertiseSub}</p>
+          </div>
+          {collapsible && (
+            <button
+              type="button"
+              className={styles.expertiseViewAll}
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+            >
+              {showAll ? "Show less" : `View all ${total}`}
+              <span aria-hidden="true">{showAll ? "↑" : "→"}</span>
+            </button>
+          )}
+        </div>
+        <div
+          className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
+        >
+          {visible.map((card, i) => {
             const isOpen = expanded.has(card.slug);
             const cardHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             // Auto-derive L2 href when this function has tools configured
@@ -722,6 +748,35 @@ function L1Expertise({ data }: Props) {
             );
           })}
         </div>
+        {collapsible && hiddenCount > 0 && (
+          <div className={styles.expertiseFoot}>
+            <button
+              type="button"
+              className={styles.expertiseShowAll}
+              onClick={() => setShowAll(true)}
+              aria-label={`Show all ${total} function areas`}
+            >
+              Show all {total} function areas
+              <span aria-hidden="true">↓</span>
+              <span className={styles.expertiseHiddenCount}>
+                +{hiddenCount} more
+              </span>
+            </button>
+          </div>
+        )}
+        {collapsible && showAll && (
+          <div className={styles.expertiseFoot}>
+            <button
+              type="button"
+              className={styles.expertiseShowAll}
+              onClick={() => setShowAll(false)}
+              aria-label="Show less"
+            >
+              Show less
+              <span aria-hidden="true">↑</span>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
