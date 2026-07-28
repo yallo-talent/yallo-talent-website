@@ -546,6 +546,19 @@ function L1ServicePillars() {
               >
                 <div className={styles.pillarGlow} aria-hidden="true" />
                 <div className={styles.pillarBorder} aria-hidden="true" />
+                <span className={styles.pillarArrow} aria-hidden="true">
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <title>Open</title>
+                    <path d="M4 12L12 4M6 4h6v6" />
+                  </svg>
+                </span>
                 <div className={styles.pillarInner}>
                   <div className={styles.pillarIcon}>
                     <L1Icon icon={p.icon} className={styles.pillarIconSvg} />
@@ -560,10 +573,6 @@ function L1ServicePillars() {
                       </li>
                     ))}
                   </ul>
-                  <div className={styles.pillarLink}>
-                    Learn more
-                    <span aria-hidden="true">→</span>
-                  </div>
                 </div>
               </Link>
             </motion.div>
