@@ -1306,6 +1306,287 @@
   box-shadow: 0 6px 14px -6px var(--card-hue-35, var(--sector-accent-35));
 }
 
+/* ============ SERVICE PILLARS ============ */
+.pillars {
+  position: relative;
+  padding: clamp(72px, 9vw, 112px) 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.pillars::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 45% 35% at 15% 10%,
+      var(--sector-accent-08),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 85% 90%,
+      var(--accent-muted),
+      transparent 55%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pillars > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+  align-items: stretch;
+}
+
+.pillarWrap {
+  display: block;
+}
+
+.pillar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--fg);
+  box-shadow: inset 0 1px 0 var(--wa08);
+  transition:
+    border-color 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 0.61, 0.36, 1),
+    background 0.3s ease;
+}
+
+.pillarGlow {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-35, var(--sector-accent-35)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.pillar::before {
+  content: "";
+  position: absolute;
+  bottom: -80px;
+  left: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-20, var(--sector-accent-20)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.pillarBorder {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--card-hue-35, var(--sector-accent-35)) 30%,
+    var(--card-hue, var(--sector-accent)) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.pillar:hover {
+  transform: translateY(-6px);
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  box-shadow:
+    0 30px 60px -24px rgba(0, 0, 0, 0.55),
+    0 0 40px var(--card-hue-08, var(--sector-accent-08)),
+    inset 0 1px 0 var(--wa15);
+}
+
+.pillar:hover .pillarGlow {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.pillar:hover::before {
+  opacity: 0.9;
+  transform: scale(1.15);
+}
+
+.pillar:hover .pillarBorder {
+  opacity: 1;
+}
+
+.pillarInner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  height: 100%;
+  padding: 26px 24px 24px;
+}
+
+.pillarIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--card-hue-35, var(--sector-accent-35)),
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  color: var(--card-hue, var(--sector-accent));
+  box-shadow: inset 0 1px 0 var(--wa12);
+  margin-bottom: 12px;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.32s ease;
+}
+
+.pillar:hover .pillarIcon {
+  transform: rotate(-6deg) scale(1.08);
+  box-shadow:
+    0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35)),
+    inset 0 1px 0 var(--wa15);
+}
+
+.pillarIconSvg {
+  width: 24px;
+  height: 24px;
+}
+
+.pillarEyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--card-hue, var(--sector-accent));
+  margin: 0 0 4px;
+}
+
+.pillarTitle {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  line-height: 1.25;
+  margin: 0 0 6px;
+}
+
+.pillarCopy {
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  font-weight: 300;
+  margin: 0 0 12px;
+}
+
+.pillarBullets {
+  list-style: none;
+  padding: 12px 0 0;
+  margin: 0;
+  border-top: 1px solid var(--wa08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.pillarBullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+  transition: color 0.24s ease;
+}
+
+.pillar:hover .pillarBullet {
+  color: var(--fg);
+}
+
+.pillarBullet::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--card-hue, var(--sector-accent));
+  flex-shrink: 0;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+.pillarLink {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--card-hue, var(--sector-accent));
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--card-hue-20, var(--sector-accent-20));
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    transform 0.24s ease,
+    border-top-color 0.24s ease;
+}
+
+.pillar:hover .pillarLink {
+  transform: translateX(3px);
+  border-top-color: var(--card-hue-35, var(--sector-accent-35));
+}
+
 /* ============ BOTTOM CTA ============ */
 .bottomCta {
   padding: clamp(56px, 7vw, 80px) 0 clamp(72px, 9vw, 100px);
@@ -1527,6 +1808,9 @@
   .expertiseGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+  .pillarsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .introGrid {
     grid-template-columns: 1fr;
     gap: 32px;
@@ -1577,6 +1861,9 @@
     border-right: none;
   }
   .expertiseGrid {
+    grid-template-columns: 1fr;
+  }
+  .pillarsGrid {
     grid-template-columns: 1fr;
   }
   .heroCtas {

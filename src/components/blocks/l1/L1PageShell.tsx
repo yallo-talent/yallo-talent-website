@@ -53,6 +53,7 @@ export function L1PageShell({ data }: Props) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
+      <L1ServicePillars />
       <L1BottomCta />
       <L1ReadNext data={data} />
     </div>
@@ -385,9 +386,7 @@ function L1Segments({ data }: Props) {
           <ul className={styles.segList} aria-label="Select a segment">
             {data.segments.map((s, i) => {
               const isActive = s.id === activeSeg.id;
-              const segHue = cardHueCycle[
-                i % cardHueCycle.length
-              ] as L1Hue;
+              const segHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
               return (
                 <li
                   key={s.id}
@@ -443,6 +442,132 @@ function L1Segments({ data }: Props) {
               </div>
             </div>
           </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ SERVICE PILLARS ============ */
+const servicePillars: {
+  slug: string;
+  href: string;
+  hue: L1Hue;
+  icon: L1IconKey;
+  eyebrow: string;
+  title: string;
+  copy: string;
+  bullets: string[];
+}[] = [
+  {
+    slug: "contract",
+    href: "/contract",
+    hue: "orange",
+    icon: "pillarContract",
+    eyebrow: "01 · Contract",
+    title: "Contract & interim",
+    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across UK, ME and India.",
+    bullets: [
+      "72h brief to shortlist",
+      "IR35, day-rate or fixed-term",
+      "Bench refreshed weekly",
+    ],
+  },
+  {
+    slug: "permanent",
+    href: "/permanent",
+    hue: "blue",
+    icon: "pillarPermanent",
+    eyebrow: "02 · Permanent",
+    title: "Permanent placement",
+    copy: "Long-horizon hires when the role is core to the operating model. Retained and contingent search.",
+    bullets: [
+      "Retained or contingent",
+      "Executive to senior IC",
+      "Cross-market talent pool",
+    ],
+  },
+  {
+    slug: "eor",
+    href: "/eor",
+    hue: "violet",
+    icon: "pillarEor",
+    eyebrow: "03 · EOR",
+    title: "Employer of Record",
+    copy: "Compliant employment in 15+ markets. Onboard talent in days without setting up an entity.",
+    bullets: [
+      "15+ markets covered",
+      "Payroll, tax and compliance",
+      "Talent onboarded in days",
+    ],
+  },
+  {
+    slug: "managed",
+    href: "/managed-delivery",
+    hue: "teal",
+    icon: "pillarManaged",
+    eyebrow: "04 · Managed delivery",
+    title: "Managed delivery",
+    copy: "Outcome-based pods stood up end-to-end. Architect-led delivery with fixed-price milestones.",
+    bullets: [
+      "Fixed-price milestones",
+      "Architect-led pods",
+      "SLA on delivery outcomes",
+    ],
+  },
+];
+
+function L1ServicePillars() {
+  return (
+    <section className={styles.pillars}>
+      <div className={styles.wrap}>
+        <div className={styles.eyebrow}>Engagement models</div>
+        <h2 className={styles.h2}>
+          Four ways to deploy Yallo talent into your programme.
+        </h2>
+        <p className={styles.sub}>
+          Same architect-screened bench, four commercial models — pick the one
+          that fits how you want to engage.
+        </p>
+        <div className={styles.pillarsGrid}>
+          {servicePillars.map((p, i) => (
+            <motion.div
+              key={p.slug}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.45, delay: i * 0.06 }}
+              className={styles.pillarWrap}
+            >
+              <Link
+                href={p.href}
+                className={styles.pillar}
+                style={cardHueStyle(p.hue)}
+              >
+                <div className={styles.pillarGlow} aria-hidden="true" />
+                <div className={styles.pillarBorder} aria-hidden="true" />
+                <div className={styles.pillarInner}>
+                  <div className={styles.pillarIcon}>
+                    <L1Icon icon={p.icon} className={styles.pillarIconSvg} />
+                  </div>
+                  <div className={styles.pillarEyebrow}>{p.eyebrow}</div>
+                  <h3 className={styles.pillarTitle}>{p.title}</h3>
+                  <p className={styles.pillarCopy}>{p.copy}</p>
+                  <ul className={styles.pillarBullets}>
+                    {p.bullets.map((b) => (
+                      <li key={b} className={styles.pillarBullet}>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className={styles.pillarLink}>
+                    Learn more
+                    <span aria-hidden="true">→</span>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

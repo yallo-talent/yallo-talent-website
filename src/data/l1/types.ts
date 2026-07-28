@@ -70,7 +70,11 @@ export type L1IconKey =
   | "space"
   | "hr"
   | "scarce"
-  | "spark";
+  | "spark"
+  | "pillarContract"
+  | "pillarPermanent"
+  | "pillarEor"
+  | "pillarManaged";
 
 /**
  * One segment in the interactive "Segments we support" panel.

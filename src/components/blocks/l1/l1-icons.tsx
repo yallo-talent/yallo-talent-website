@@ -283,4 +283,42 @@ export const l1Icons: Record<L1IconKey, (p: IconProps) => React.ReactElement> =
         "Spark",
         p.className,
       ),
+    pillarContract: (p) =>
+      wrap(
+        <>
+          <rect x="4" y="3" width="16" height="18" rx="2" />
+          <path d="M8 8h8M8 12h8M8 16h5" />
+        </>,
+        "Contract",
+        p.className,
+      ),
+    pillarPermanent: (p) =>
+      wrap(
+        <>
+          <circle cx="12" cy="8" r="4" />
+          <path d="M4 21c0-4 3.5-6 8-6s8 2 8 6" />
+          <path d="M9 12l2 2 4-4" />
+        </>,
+        "Permanent",
+        p.className,
+      ),
+    pillarEor: (p) =>
+      wrap(
+        <>
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M8 4V2M16 4V2M3 10h18" />
+          <path d="M8 14h3M14 14h3M8 17h3" />
+        </>,
+        "EOR",
+        p.className,
+      ),
+    pillarManaged: (p) =>
+      wrap(
+        <>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="M9 12l2 2 4-4" />
+        </>,
+        "Managed delivery",
+        p.className,
+      ),
   };
