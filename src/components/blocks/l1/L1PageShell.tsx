@@ -419,20 +419,18 @@ function L1Expertise({ data }: Props) {
                               </li>
                             ))}
                           </ul>
-                          {l2Href ? (
-                            <Link href={l2Href} className={styles.expCardLink}>
-                              View contractors
-                              <span aria-hidden="true">→</span>
-                            </Link>
-                          ) : (
-                            <span className={styles.expCardLink}>
-                              View contractors
-                              <span aria-hidden="true">→</span>
-                            </span>
-                          )}
                         </motion.div>
                       )}
                     </AnimatePresence>
+                    {/* Always-visible L2 link footer — outside the collapse
+                        panel so it renders in initial HTML and remains
+                        clickable without expanding the card. */}
+                    {l2Href ? (
+                      <Link href={l2Href} className={styles.expCardLink}>
+                        View contractors
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </motion.div>
