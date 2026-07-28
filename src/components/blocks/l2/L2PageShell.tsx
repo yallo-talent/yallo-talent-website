@@ -362,62 +362,22 @@ const fnToCapabilitySlugs: Record<string, string[]> = {
   "master-data-pim": ["data-ai", "integration-middleware"],
 };
 
-const platformMeta: Record<string, { label: string; blurb: string }> = {
-  sap: {
-    label: "SAP",
-    blurb: "S/4HANA, CX, IBP and Ariba — enterprise ERP + planning depth.",
-  },
-  oracle: {
-    label: "Oracle",
-    blurb:
-      "Retail Suite, FLEXCUBE, OTM, Xstore — deep functional and technical bench.",
-  },
-  salesforce: {
-    label: "Salesforce",
-    blurb:
-      "CRM, Commerce Cloud, Marketing Cloud and Data Cloud implementations.",
-  },
-  microsoft: {
-    label: "Microsoft",
-    blurb: "Dynamics 365, Azure, Power Platform and Fabric — end-to-end.",
-  },
-  blueyonder: {
-    label: "Blue Yonder",
-    blurb: "Planning, WMS, TMS and demand — supply chain specialists.",
-  },
-  workday: {
-    label: "Workday",
-    blurb:
-      "HCM, Financials and Adaptive Planning across enterprise programmes.",
-  },
+const platformLabels: Record<string, string> = {
+  sap: "SAP",
+  oracle: "Oracle",
+  salesforce: "Salesforce",
+  microsoft: "Microsoft",
+  blueyonder: "Blue Yonder",
+  workday: "Workday",
 };
 
-const capabilityMeta: Record<string, { label: string; blurb: string }> = {
-  "data-ai": {
-    label: "Data & AI",
-    blurb:
-      "ML, MLOps, decisioning, GenAI and analytics engineering across cloud stacks.",
-  },
-  "digital-devops": {
-    label: "Digital & DevOps",
-    blurb: "CI/CD, SRE, platform engineering and DX for high-velocity teams.",
-  },
-  "cloud-infrastructure": {
-    label: "Cloud & Infrastructure",
-    blurb: "AWS, Azure, GCP landing zones, FinOps and platform reliability.",
-  },
-  cybersecurity: {
-    label: "Cybersecurity",
-    blurb: "IAM, zero-trust, cloud security, GRC and incident response.",
-  },
-  "integration-middleware": {
-    label: "Integration & Middleware",
-    blurb: "iPaaS, APIs, event streaming and legacy modernisation.",
-  },
-  "emerging-technologies": {
-    label: "Emerging Technologies",
-    blurb: "AR/VR, IoT, blockchain, quantum and edge — specialist bench.",
-  },
+const capabilityLabels: Record<string, string> = {
+  "data-ai": "Data & AI",
+  "digital-devops": "Digital & DevOps",
+  "cloud-infrastructure": "Cloud & Infrastructure",
+  cybersecurity: "Cybersecurity",
+  "integration-middleware": "Integration & Middleware",
+  "emerging-technologies": "Emerging Technologies",
 };
 
 function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
@@ -437,28 +397,21 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
         {platforms.length > 0 && (
           <div className={styles.crossRail}>
             <div className={styles.crossLabel}>Related platforms</div>
-            <div className={styles.crossCards}>
+            <div className={styles.crossChips}>
               {platforms.map((slug, i) => {
                 const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
-                const meta = platformMeta[slug];
                 return (
                   <Link
                     key={slug}
                     href={`/platforms/${slug}`}
-                    className={styles.crossCard}
+                    className={styles.crossChip}
                     style={cardHueStyle(hue)}
                   >
-                    <span className={styles.crossCardKind}>Platform</span>
-                    <span className={styles.crossCardName}>
-                      {meta?.label ?? slug}
+                    <span className={styles.crossChipName}>
+                      {platformLabels[slug] ?? slug}
                     </span>
-                    <span className={styles.crossCardBlurb}>
-                      {meta?.blurb ??
-                        "Contractors, architects and delivery leads."}
-                    </span>
-                    <span className={styles.crossCardCta}>
-                      Explore platform bench
-                      <span aria-hidden="true"> →</span>
+                    <span className={styles.crossChipArrow} aria-hidden="true">
+                      →
                     </span>
                   </Link>
                 );
@@ -469,30 +422,23 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
         {capabilities.length > 0 && (
           <div className={styles.crossRail}>
             <div className={styles.crossLabel}>Related capabilities</div>
-            <div className={styles.crossCards}>
+            <div className={styles.crossChips}>
               {capabilities.map((slug, i) => {
                 const hue = cardHueCycle[
                   (i + 3) % cardHueCycle.length
                 ] as L1Hue;
-                const meta = capabilityMeta[slug];
                 return (
                   <Link
                     key={slug}
                     href={`/capabilities/${slug}`}
-                    className={styles.crossCard}
+                    className={styles.crossChip}
                     style={cardHueStyle(hue)}
                   >
-                    <span className={styles.crossCardKind}>Capability</span>
-                    <span className={styles.crossCardName}>
-                      {meta?.label ?? slug}
+                    <span className={styles.crossChipName}>
+                      {capabilityLabels[slug] ?? slug}
                     </span>
-                    <span className={styles.crossCardBlurb}>
-                      {meta?.blurb ??
-                        "Cross-sector specialists placed into your programme."}
-                    </span>
-                    <span className={styles.crossCardCta}>
-                      Explore capability bench
-                      <span aria-hidden="true"> →</span>
+                    <span className={styles.crossChipArrow} aria-hidden="true">
+                      →
                     </span>
                   </Link>
                 );

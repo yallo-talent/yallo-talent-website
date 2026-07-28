@@ -849,87 +849,55 @@
   color: var(--fg-subtle);
 }
 
-/* Detailed cards — one per platform/capability, richer than a chip. */
-.crossCards {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-@media (max-width: 640px) {
-  .crossCards {
-    grid-template-columns: 1fr;
-  }
-}
-
-.crossCard {
-  position: relative;
+.crossChips {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 16px 18px 18px;
-  border-radius: 14px;
-  background: color-mix(
-    in oklab,
-    var(--glass-bg) 60%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.crossChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--glass-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border: 1px solid var(--card-hue-35, var(--glass-border));
   color: var(--fg);
-  overflow: hidden;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   transition:
-    background 0.24s ease,
-    border-color 0.24s ease,
-    transform 0.24s ease,
-    box-shadow 0.24s ease;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.crossCard:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+.crossChip:hover {
   background: color-mix(
     in oklab,
-    var(--glass-bg) 45%,
-    var(--card-hue-20, var(--sector-accent-20))
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
   );
-  transform: translateY(-3px);
-  box-shadow: 0 14px 30px -14px var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--card-hue, var(--sector-accent));
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px -10px var(--card-hue-35, var(--sector-accent-35));
 }
 
-.crossCardKind {
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
-  font-weight: 500;
-}
-
-.crossCardName {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+.crossChipName {
   color: var(--fg);
-  line-height: 1.25;
 }
 
-.crossCardBlurb {
-  font-size: 12.5px;
-  color: var(--fg-muted);
-  line-height: 1.5;
-  margin-top: 2px;
-}
-
-.crossCardCta {
-  margin-top: 8px;
-  font-size: 12px;
-  font-weight: 600;
+.crossChipArrow {
   color: var(--card-hue, var(--sector-accent));
+  font-family: var(--font-mono);
   transition: transform 0.2s ease;
 }
 
-.crossCard:hover .crossCardCta {
+.crossChip:hover .crossChipArrow {
   transform: translateX(3px);
 }
 
