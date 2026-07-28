@@ -372,28 +372,27 @@ function L1Expertise({ data }: Props) {
                           className={styles.expCardIconSvg}
                         />
                       </span>
-                      <button
-                        type="button"
-                        className={styles.expCardToggle}
-                        aria-expanded={isOpen}
-                        aria-controls={`exp-panel-${card.slug}`}
-                        aria-label={isOpen ? "Hide roles" : "See roles"}
-                        onClick={() => toggle(card.slug)}
-                      >
-                        <svg
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                          strokeLinecap="round"
-                          aria-hidden="true"
+                      {l2Href ? (
+                        <Link
+                          href={l2Href}
+                          className={styles.expCardOpenLink}
+                          aria-label={`Open ${card.title} contractors page`}
                         >
-                          <title>Toggle roles</title>
-                          <path d="M8 3v10M3 8h10" />
-                        </svg>
-                      </button>
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <title>Open page</title>
+                            <path d="M4 12L12 4M6 4h6v6" />
+                          </svg>
+                        </Link>
+                      ) : null}
                     </div>
-                    <span className={styles.expCardNum}>{card.num}</span>
                     <h3 className={styles.expCardTitle}>{card.title}</h3>
                     {card.blurb && (
                       <p className={styles.expCardBlurb}>{card.blurb}</p>
@@ -422,15 +421,26 @@ function L1Expertise({ data }: Props) {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                    {/* Always-visible L2 link footer — outside the collapse
-                        panel so it renders in initial HTML and remains
-                        clickable without expanding the card. */}
-                    {l2Href ? (
-                      <Link href={l2Href} className={styles.expCardLink}>
-                        View contractors
-                        <span aria-hidden="true">→</span>
-                      </Link>
-                    ) : null}
+                    <button
+                      type="button"
+                      className={styles.expCardToggleBottom}
+                      aria-expanded={isOpen}
+                      aria-controls={`exp-panel-${card.slug}`}
+                      aria-label={isOpen ? "Hide roles" : "Show roles"}
+                      onClick={() => toggle(card.slug)}
+                    >
+                      <svg
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <title>Toggle roles</title>
+                        <path d="M8 3v10M3 8h10" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </motion.div>

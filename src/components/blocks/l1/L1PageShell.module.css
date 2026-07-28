@@ -1024,39 +1024,71 @@
   min-height: calc(11.5px * 1.5 * 2);
 }
 
-/* Toggle: icon-only + button top-right (per-card hue) */
-.expCardToggle {
+/* Top-right open-page link (external-arrow chip) — always visible */
+.expCardOpenLink {
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   border-radius: 50%;
   background: var(--card-hue-08, var(--sector-accent-08));
+  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  color: var(--card-hue, var(--sector-accent));
+  transition:
+    background 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.22s ease;
+}
+
+.expCardOpenLink svg {
+  width: 13px;
+  height: 13px;
+}
+
+.expCardOpenLink:hover,
+.expCard:hover .expCardOpenLink {
+  background: var(--card-hue, var(--sector-accent));
+  border-color: var(--card-hue, var(--sector-accent));
+  color: var(--ink-950);
+  transform: translate(2px, -2px);
+  box-shadow: 0 8px 18px -8px var(--card-hue-35, var(--sector-accent-35));
+}
+
+/* Bottom + toggle for the roles panel */
+.expCardToggleBottom {
+  align-self: flex-start;
+  margin-top: 12px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
   color: var(--card-hue, var(--sector-accent));
   cursor: pointer;
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
-    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
-    box-shadow 0.2s ease;
+    color 0.2s ease,
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.expCardToggle:hover {
-  background: var(--card-hue, var(--sector-accent));
-  color: var(--ink-950);
-  border-color: var(--card-hue, var(--sector-accent));
-  box-shadow: 0 6px 16px -6px var(--card-hue-35, var(--sector-accent-35));
+.expCardToggleBottom svg {
+  width: 11px;
+  height: 11px;
 }
 
-.expCardToggle svg {
-  width: 12px;
-  height: 12px;
+.expCardToggleBottom:hover {
+  background: var(--card-hue-08, var(--sector-accent-08));
 }
 
-.expCardOpen .expCardToggle {
+.expCardOpen .expCardToggleBottom {
   background: var(--card-hue, var(--sector-accent));
   color: var(--ink-950);
   border-color: var(--card-hue, var(--sector-accent));
@@ -1105,26 +1137,9 @@
   opacity: 0.8;
 }
 
+/* Old .expCardLink retained for any residual references; no longer rendered. */
 .expCardLink {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--card-hue-20, var(--sector-accent-20));
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
-
-.expCardLink:hover {
-  transform: translateX(3px);
-  color: var(--card-hue, var(--sector-accent));
+  display: none;
 }
 
 /* ============ SEGMENTS ============ */
