@@ -283,6 +283,58 @@ export const l1Icons: Record<L1IconKey, (p: IconProps) => React.ReactElement> =
         "Spark",
         p.className,
       ),
+    security: (p) =>
+      wrap(
+        <>
+          <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
+          <path d="M9 12l2 2 4-4" />
+        </>,
+        "Security",
+        p.className,
+      ),
+    cloud: (p) =>
+      wrap(
+        <path d="M18 10a4 4 0 00-8-1 5 5 0 00-1 9.9h9a4 4 0 000-8z" />,
+        "Cloud",
+        p.className,
+      ),
+    dataAi: (p) =>
+      wrap(
+        <>
+          <path d="M3 3v18h18" />
+          <path d="M7 14l3-3 3 3 5-5" />
+          <circle cx="7" cy="14" r="1.5" />
+          <circle cx="18" cy="9" r="1.5" />
+        </>,
+        "Data & AI",
+        p.className,
+      ),
+    integration: (p) =>
+      wrap(
+        <>
+          <circle cx="5" cy="7" r="2" />
+          <circle cx="5" cy="17" r="2" />
+          <circle cx="19" cy="12" r="2" />
+          <path d="M7 7h4a3 3 0 013 3v4a3 3 0 003 3M7 17h4a3 3 0 003-3v-4a3 3 0 013-3" />
+        </>,
+        "Integration",
+        p.className,
+      ),
+    government: (p) =>
+      wrap(
+        <path d="M3 21h18M5 21V9l7-4 7 4v12M10 21v-5h4v5" />,
+        "Government",
+        p.className,
+      ),
+    eor: (p) =>
+      wrap(
+        <>
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M8 4V2M16 4V2M3 10h18" />
+        </>,
+        "EOR / policy admin",
+        p.className,
+      ),
     pillarContract: (p) =>
       wrap(
         <>
