@@ -47,6 +47,7 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Overview sector={sector} fn={fn} />
           <L2Roles fn={fn} />
           <L2Tools sector={sector} fn={fn} />
+          <L2Screening />
         </main>
       </div>
     </div>
@@ -262,6 +263,56 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
               </article>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ SCREENING CALLOUT ============ */
+function L2Screening() {
+  return (
+    <section className={styles.screening}>
+      <div className={styles.screeningInner}>
+        <div className={styles.screeningIcon} aria-hidden="true">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <title>Architect screening</title>
+            <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
+            <path d="M9 12l2 2 4-4" />
+          </svg>
+        </div>
+        <div className={styles.screeningBody}>
+          <h3 className={styles.screeningH}>
+            Architect-screened, not keyword-matched.
+          </h3>
+          <p className={styles.screeningCopy}>
+            Every contractor on our bench is assessed for implementation depth
+            by specialists who have run delivery in this function. Not
+            certification badges. Not platform familiarity. Track records
+            inside programmes like yours — verified before they get on the
+            shortlist.
+          </p>
+          <div className={styles.screeningChips}>
+            <span className={styles.screeningChip}>
+              <span className={styles.screeningChipDot} aria-hidden="true" />
+              Architect-screened
+            </span>
+            <span className={styles.screeningChip}>
+              <span className={styles.screeningChipDot} aria-hidden="true" />
+              72h shortlist
+            </span>
+            <span className={styles.screeningChip}>
+              <span className={styles.screeningChipDot} aria-hidden="true" />
+              Contract · EOR · Subcontract
+            </span>
+          </div>
         </div>
       </div>
     </section>
