@@ -351,7 +351,7 @@
 .subNavLink {
   display: inline-flex;
   align-items: center;
-  padding: 12px 14px;
+  padding: 14px 14px 12px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 500;
