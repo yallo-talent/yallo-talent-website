@@ -369,6 +369,64 @@
   }
 }
 
+/* ============ ROLES STRIP ============ */
+.roles {
+  position: relative;
+  padding: clamp(40px, 5vw, 60px) clamp(24px, 4vw, 52px);
+  background: var(--ink-900);
+  border-top: 1px solid var(--wa08);
+  border-bottom: 1px solid var(--wa08);
+}
+
+.rolesInner {
+  max-width: 1100px;
+}
+
+.rolesH {
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0 0 10px;
+}
+
+.rolesSub {
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.65;
+  max-width: 60ch;
+  margin: 0 0 20px;
+}
+
+.rolesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rolePill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--sector-accent-08);
+  color: var(--sector-accent);
+  border: 1px solid var(--sector-accent-35);
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  cursor: default;
+}
+
+.rolePill:hover {
+  background: var(--sector-accent-20);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px -6px var(--sector-accent-35);
+}
+
 /* ============ SIDEBAR ============ */
 .sbTop {
   padding: 20px 20px 18px;

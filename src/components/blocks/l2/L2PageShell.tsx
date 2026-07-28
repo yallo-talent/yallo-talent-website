@@ -45,6 +45,7 @@ export function L2PageShell({ sector, fn }: Props) {
         <main className={styles.main}>
           <L2Hero sector={sector} fn={fn} />
           <L2Overview sector={sector} fn={fn} />
+          <L2Roles fn={fn} />
         </main>
       </div>
     </div>
@@ -168,6 +169,37 @@ function L2Overview({
             className={styles.overviewImage}
           />
           <div className={styles.overviewImageTint} aria-hidden="true" />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ ROLES STRIP ============ */
+function L2Roles({ fn }: { fn: L1ExpertiseCard }) {
+  // Aggregate all roles from function + each tool for a comprehensive strip
+  const allRoles = new Set<string>(fn.roles);
+  for (const t of fn.tools ?? []) {
+    for (const r of t.roles) allRoles.add(r);
+  }
+  const roles = Array.from(allRoles);
+  return (
+    <section className={styles.roles}>
+      <div className={styles.rolesInner}>
+        <div className={styles.secLabel}>Roles we deploy</div>
+        <h2 className={styles.rolesH}>
+          Contractor roles Yallo places into {fn.title.toLowerCase()}.
+        </h2>
+        <p className={styles.rolesSub}>
+          Every role below is on an active bench across UK, ME and India. Send
+          the brief — the specialist is in your inbox in 72 hours.
+        </p>
+        <div className={styles.rolesGrid}>
+          {roles.map((r) => (
+            <span key={r} className={styles.rolePill}>
+              {r}
+            </span>
+          ))}
         </div>
       </div>
     </section>
