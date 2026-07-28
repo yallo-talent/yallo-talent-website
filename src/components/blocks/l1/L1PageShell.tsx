@@ -616,10 +616,10 @@ function L1Expertise({ data }: Props) {
             <div className={styles.eyebrow}>{data.expertiseEyebrow}</div>
             <h2 className={styles.h2}>{data.expertiseTitle}</h2>
             <p className={styles.sub}>{data.expertiseSub}</p>
-            <p className={styles.expertiseHint}>
-              Explore each function in detail
-              <span aria-hidden="true"> →</span>
-            </p>
+          </div>
+          <div className={styles.expertiseHint}>
+            Explore all functions in detail
+            <span aria-hidden="true"> →</span>
           </div>
         </div>
         <div
@@ -646,12 +646,34 @@ function L1Expertise({ data }: Props) {
                   <div className={styles.expCardGlow} aria-hidden="true" />
                   <div className={styles.expCardBorder} aria-hidden="true" />
                   <div className={styles.expCardInner}>
-                    <span className={styles.expCardIcon}>
-                      <L1Icon
-                        icon={card.icon}
-                        className={styles.expCardIconSvg}
-                      />
-                    </span>
+                    <div className={styles.expCardTop}>
+                      <span className={styles.expCardIcon}>
+                        <L1Icon
+                          icon={card.icon}
+                          className={styles.expCardIconSvg}
+                        />
+                      </span>
+                      {l2Href ? (
+                        <Link
+                          href={l2Href}
+                          className={styles.expCardOpenLink}
+                          aria-label={`Open ${card.title} contractors page`}
+                        >
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            <title>Open page</title>
+                            <path d="M4 12L12 4M6 4h6v6" />
+                          </svg>
+                        </Link>
+                      ) : null}
+                    </div>
                     <h3 className={styles.expCardTitle}>{card.title}</h3>
                     {card.blurb && (
                       <p className={styles.expCardBlurb}>{card.blurb}</p>
@@ -663,12 +685,6 @@ function L1Expertise({ data }: Props) {
                         </li>
                       ))}
                     </ul>
-                    {l2Href ? (
-                      <Link href={l2Href} className={styles.expCardDetailLink}>
-                        Explore in detail
-                        <span aria-hidden="true">→</span>
-                      </Link>
-                    ) : null}
                   </div>
                 </div>
               </motion.div>
