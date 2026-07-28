@@ -408,6 +408,52 @@ export const retailData: L1PageData = {
         "Blue Yonder Assortment Specialist",
         "Oracle Retail RPAS Consultant",
       ],
+      overview:
+        "Assortment planning is the highest-leverage function in retail — the wrong plan wastes months of buying budget. Our contractors have run seasonal assortment cycles across apparel, grocery and mass-merchandise with Anaplan, Blue Yonder and Oracle Retail.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail assortment planning",
+      tools: [
+        {
+          slug: "anaplan-retail-planning",
+          vendor: "Anaplan",
+          vendorSlug: "anaplan",
+          name: "Anaplan Retail Planning",
+          roles: [
+            "Anaplan Model Builder",
+            "Solution Architect",
+            "Retail Planning Consultant",
+            "Data Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "blue-yonder-assortment-optimization",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Assortment Optimization",
+          roles: [
+            "Blue Yonder Assortment Specialist",
+            "Assortment Solution Architect",
+            "Analytics Consultant",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "oracle-retail-assortment-planning",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Assortment Planning",
+          roles: [
+            "Oracle Retail RPAS Consultant",
+            "Assortment Planning Lead",
+            "Functional Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "space-planning",
@@ -419,6 +465,52 @@ export const retailData: L1PageData = {
         "JDA Space Planner",
         "Nielsen Spaceman Consultant",
         "Retail Category Architect",
+      ],
+      overview:
+        "Space planning turns range strategy into store-level execution. Our contractors have delivered planogram, cluster and micro-space programmes across grocery, apparel and specialty formats.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail space planning",
+      tools: [
+        {
+          slug: "blue-yonder-space-planning",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Space Planning",
+          roles: [
+            "Blue Yonder Space Planner",
+            "Space Solution Architect",
+            "Planogram Analyst",
+            "Category Data Specialist",
+            "Rollout Programme Manager",
+          ],
+        },
+        {
+          slug: "oracle-retail-space-optimization",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Space Optimization",
+          roles: [
+            "Oracle Retail Space Consultant",
+            "Space Planning Lead",
+            "Data Analytics Specialist",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-space-optimization",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Space Optimization",
+          roles: [
+            "SAP Space Consultant",
+            "SAP Retail Functional",
+            "Analytics Consultant",
+            "Data Migration Specialist",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
@@ -432,6 +524,52 @@ export const retailData: L1PageData = {
         "Revionics Specialist",
         "SAP Promotion Management Consultant",
       ],
+      overview:
+        "Pricing and promotions programmes are pure margin work. Our contractors have delivered price optimisation, markdown and offer-engine programmes across apparel, grocery and mass-merchandise at estate scale.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail pricing and promotions",
+      tools: [
+        {
+          slug: "oracle-retail-pricing",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Pricing",
+          roles: [
+            "Oracle Retail Pricing Lead",
+            "Markdown Consultant",
+            "Pricing Analytics Specialist",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-promotion-management",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP Promotion Management",
+          roles: [
+            "SAP Promotion Management Consultant",
+            "SAP Retail Functional",
+            "Data Integration Consultant",
+            "Analytics Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "revionics",
+          vendor: "Revionics",
+          vendorSlug: "revionics",
+          name: "Revionics Price Optimization",
+          roles: [
+            "Revionics Specialist",
+            "Pricing Solution Architect",
+            "Analytics Consultant",
+            "Data Migration Specialist",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "loyalty-rewards",
@@ -444,6 +582,52 @@ export const retailData: L1PageData = {
         "Salesforce Loyalty Specialist",
         "Loyalty Platform Architect",
       ],
+      overview:
+        "Loyalty is the retail battleground where brands compete on tier design, gamification and lifetime value. Our contractors have run modern points-and-tiers rebuilds across health & beauty, grocery and F&B.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail loyalty and rewards",
+      tools: [
+        {
+          slug: "oracle-loyalty-cloud",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Loyalty Cloud",
+          roles: [
+            "Oracle Loyalty Cloud Consultant",
+            "Loyalty Solution Architect",
+            "Integration Specialist",
+            "Analytics Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "salesforce-loyalty-management",
+          vendor: "Salesforce",
+          vendorSlug: "salesforce",
+          name: "Salesforce Loyalty Management",
+          roles: [
+            "Salesforce Loyalty Specialist",
+            "Loyalty Solution Architect",
+            "Data Cloud Integrator",
+            "Journey Builder Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "microsoft-dynamics-crm-loyalty",
+          vendor: "Microsoft",
+          vendorSlug: "microsoft",
+          name: "Microsoft Dynamics CRM",
+          roles: [
+            "Dynamics CRM Consultant",
+            "Loyalty Systems Architect",
+            "Integration Specialist",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "crm",
@@ -455,6 +639,52 @@ export const retailData: L1PageData = {
         "Salesforce Marketing Cloud Consultant",
         "Braze Specialist",
         "CDP Architect",
+      ],
+      overview:
+        "Retail CRM is where segmentation, journeys and cross-channel activation come together. Our contractors have run modern CDP-first stacks that unify email, SMS, app, web and paid-media activation.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail CRM operations",
+      tools: [
+        {
+          slug: "salesforce-marketing-cloud-crm",
+          vendor: "Salesforce",
+          vendorSlug: "salesforce",
+          name: "Salesforce Marketing Cloud",
+          roles: [
+            "SFMC Consultant",
+            "Journey Builder Architect",
+            "Data Cloud Specialist",
+            "Personalisation Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "braze",
+          vendor: "Braze",
+          vendorSlug: "braze",
+          name: "Braze",
+          roles: [
+            "Braze Specialist",
+            "Lifecycle Marketing Consultant",
+            "Integration Consultant",
+            "Analytics Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "adobe-experience-cloud",
+          vendor: "Adobe",
+          vendorSlug: "adobe",
+          name: "Adobe Experience Cloud",
+          roles: [
+            "Adobe Experience Cloud Consultant",
+            "AEP Specialist",
+            "AJO / Campaign Consultant",
+            "Analytics Lead",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
