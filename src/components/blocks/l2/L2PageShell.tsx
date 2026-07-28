@@ -48,6 +48,7 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Roles fn={fn} />
           <L2Tools sector={sector} fn={fn} />
           <L2Screening />
+          <L2CrossLinks fn={fn} />
         </main>
       </div>
     </div>
@@ -295,9 +296,8 @@ function L2Screening() {
           <p className={styles.screeningCopy}>
             Every contractor on our bench is assessed for implementation depth
             by specialists who have run delivery in this function. Not
-            certification badges. Not platform familiarity. Track records
-            inside programmes like yours — verified before they get on the
-            shortlist.
+            certification badges. Not platform familiarity. Track records inside
+            programmes like yours — verified before they get on the shortlist.
           </p>
           <div className={styles.screeningChips}>
             <span className={styles.screeningChip}>
@@ -314,6 +314,129 @@ function L2Screening() {
             </span>
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ CROSS-LINKS ============ */
+const vendorToPlatformSlug: Record<string, string> = {
+  SAP: "sap",
+  Oracle: "oracle",
+  Salesforce: "salesforce",
+  Microsoft: "microsoft",
+  "Blue Yonder": "blueyonder",
+  Workday: "workday",
+};
+
+const fnToCapabilitySlugs: Record<string, string[]> = {
+  "customer-experience": ["data-ai", "integration-middleware"],
+  clienteling: ["data-ai"],
+  "store-operations": ["cloud-infrastructure", "integration-middleware"],
+  "point-of-sale": ["cybersecurity", "cloud-infrastructure"],
+  merchandising: ["data-ai"],
+  "assortment-planning": ["data-ai"],
+  "space-planning": ["data-ai"],
+  "pricing-promotions": ["data-ai"],
+  "loyalty-rewards": ["data-ai", "integration-middleware"],
+  crm: ["data-ai", "integration-middleware"],
+  ecommerce: ["cloud-infrastructure", "integration-middleware"],
+  "omnichannel-fulfillment": ["integration-middleware", "cloud-infrastructure"],
+  "order-management": ["integration-middleware"],
+  "warehouse-management": ["integration-middleware", "cloud-infrastructure"],
+  "transport-management": ["integration-middleware"],
+  "supply-chain": ["data-ai"],
+  "demand-planning": ["data-ai"],
+  "inventory-replenishment": ["data-ai"],
+  "returns-reverse-logistics": ["integration-middleware"],
+  "master-data-pim": ["data-ai", "integration-middleware"],
+};
+
+const capabilityLabels: Record<string, string> = {
+  "data-ai": "Data & AI",
+  "digital-devops": "Digital & DevOps",
+  "cloud-infrastructure": "Cloud & Infrastructure",
+  cybersecurity: "Cybersecurity",
+  "integration-middleware": "Integration & Middleware",
+  "emerging-technologies": "Emerging Technologies",
+};
+
+function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
+  const platformSlugs = new Set<string>();
+  for (const t of fn.tools ?? []) {
+    const slug = vendorToPlatformSlug[t.vendor];
+    if (slug) platformSlugs.add(slug);
+  }
+  const platforms = Array.from(platformSlugs);
+  const capabilities = fnToCapabilitySlugs[fn.slug] ?? [];
+
+  if (platforms.length === 0 && capabilities.length === 0) return null;
+
+  return (
+    <section className={styles.cross}>
+      <div className={styles.crossInner}>
+        {platforms.length > 0 && (
+          <div className={styles.crossRail}>
+            <div className={styles.crossLabel}>Related platforms</div>
+            <div className={styles.crossChips}>
+              {platforms.map((slug, i) => {
+                const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+                return (
+                  <Link
+                    key={slug}
+                    href={`/platforms/${slug}`}
+                    className={styles.crossChip}
+                    style={cardHueStyle(hue)}
+                  >
+                    <span className={styles.crossChipName}>
+                      {slug === "sap"
+                        ? "SAP"
+                        : slug === "blueyonder"
+                          ? "Blue Yonder"
+                          : slug[0]?.toUpperCase() + slug.slice(1)}
+                    </span>
+                    <span
+                      className={styles.crossChipArrow}
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        {capabilities.length > 0 && (
+          <div className={styles.crossRail}>
+            <div className={styles.crossLabel}>Related capabilities</div>
+            <div className={styles.crossChips}>
+              {capabilities.map((slug, i) => {
+                const hue = cardHueCycle[
+                  (i + 3) % cardHueCycle.length
+                ] as L1Hue;
+                return (
+                  <Link
+                    key={slug}
+                    href={`/capabilities/${slug}`}
+                    className={styles.crossChip}
+                    style={cardHueStyle(hue)}
+                  >
+                    <span className={styles.crossChipName}>
+                      {capabilityLabels[slug] ?? slug}
+                    </span>
+                    <span
+                      className={styles.crossChipArrow}
+                      aria-hidden="true"
+                    >
+                      →
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );
