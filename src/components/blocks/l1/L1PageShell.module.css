@@ -1042,7 +1042,7 @@
 
 .segList {
   list-style: none;
-  padding: 20px 16px 40px;
+  padding: 20px 16px 16px;
   margin: 0;
   height: 448px;
   overflow-y: auto;
@@ -1073,20 +1073,14 @@
   background: var(--sector-accent);
 }
 
-/* Bottom-anchored "scroll for more" chevron pill */
+/* Compact "scroll for more" row sitting right under the list */
 .segScrollHint {
-  position: absolute;
-  left: 50%;
-  bottom: 10px;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 6px 12px;
-  background: color-mix(in oklab, var(--ink-900) 92%, transparent);
-  border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--wa08);
   color: var(--sector-accent);
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1094,24 +1088,21 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   pointer-events: none;
-  animation: segHintBob 2s ease-in-out infinite;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.5);
 }
 
 .segScrollHint svg {
   width: 11px;
   height: 11px;
+  animation: segHintBob 1.8s ease-in-out infinite;
 }
 
 @keyframes segHintBob {
   0%,
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
   50% {
-    transform: translateX(-50%) translateY(3px);
+    transform: translateY(2px);
   }
 }
 
