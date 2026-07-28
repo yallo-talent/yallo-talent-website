@@ -98,8 +98,8 @@
 :root {
   /* Foreground / background */
   --fg: var(--white);
-  --fg-muted: var(--wa60);
-  --fg-subtle: var(--wa40);
+  --fg-muted: rgba(255, 255, 255, 0.82);
+  --fg-subtle: rgba(255, 255, 255, 0.62);
   --bg: var(--ink-950);
   --surface: var(--ink-800);
   --surface-raised: var(--ink-700);
@@ -151,8 +151,8 @@
 
 :root.light {
   --fg: var(--ink-950);
-  --fg-muted: var(--ba60);
-  --fg-subtle: rgba(10, 11, 16, 0.4);
+  --fg-muted: rgba(10, 11, 16, 0.82);
+  --fg-subtle: rgba(10, 11, 16, 0.62);
   --bg: var(--white);
   --surface: var(--gray-100);
   --surface-raised: var(--gray-200);
