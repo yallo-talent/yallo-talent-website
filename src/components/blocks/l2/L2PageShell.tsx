@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import type { L1ExpertiseCard, L1Hue, L1PageData } from "@/data/l1/types";
+import { l1Icons } from "@/components/blocks/l1/l1-icons";
+import type {
+  L1ExpertiseCard,
+  L1Hue,
+  L1IconKey,
+  L1PageData,
+} from "@/data/l1/types";
 import styles from "./L2PageShell.module.css";
 
 const hueStyle = (hue: L1Hue): React.CSSProperties =>
@@ -440,36 +446,72 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
   );
 }
 
-/* ============ ENGAGEMENT MODELS MINI STRIP ============ */
-const engagementModels: {
+/* ============ ENGAGEMENT MODELS (detailed pillars — mirrors L1) ============ */
+const engagementPillars: {
+  slug: string;
   href: string;
-  label: string;
   hue: L1Hue;
+  icon: L1IconKey;
+  eyebrow: string;
+  title: string;
   copy: string;
+  bullets: string[];
 }[] = [
   {
+    slug: "contract",
     href: "/contract",
-    label: "Contract",
     hue: "orange",
-    copy: "72h shortlist. Day-rate or fixed-term.",
+    icon: "pillarContract",
+    eyebrow: "01 · Contract",
+    title: "Contract & interim",
+    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across UK, ME and India.",
+    bullets: [
+      "72h brief to shortlist",
+      "IR35, day-rate or fixed-term",
+      "Bench refreshed weekly",
+    ],
   },
   {
+    slug: "permanent",
     href: "/permanent",
-    label: "Permanent",
     hue: "blue",
-    copy: "Retained or contingent search.",
+    icon: "pillarPermanent",
+    eyebrow: "02 · Permanent",
+    title: "Permanent placement",
+    copy: "Long-horizon hires when the role is core to the operating model. Retained and contingent search.",
+    bullets: [
+      "Retained or contingent",
+      "Executive to senior IC",
+      "Cross-market talent pool",
+    ],
   },
   {
+    slug: "eor",
     href: "/eor",
-    label: "EOR",
     hue: "violet",
-    copy: "Compliant employment in 15+ markets.",
+    icon: "pillarEor",
+    eyebrow: "03 · EOR",
+    title: "Employer of Record",
+    copy: "Compliant employment in 15+ markets. Onboard talent in days without setting up an entity.",
+    bullets: [
+      "15+ markets covered",
+      "Payroll, tax and compliance",
+      "Talent onboarded in days",
+    ],
   },
   {
+    slug: "managed",
     href: "/managed-delivery",
-    label: "Managed delivery",
     hue: "teal",
-    copy: "Outcome-based pods, fixed-price milestones.",
+    icon: "pillarManaged",
+    eyebrow: "04 · Managed delivery",
+    title: "Managed delivery",
+    copy: "Outcome-based pods stood up end-to-end. Architect-led delivery with fixed-price milestones.",
+    bullets: [
+      "Fixed-price milestones",
+      "Architect-led pods",
+      "SLA on delivery outcomes",
+    ],
   },
 ];
 
@@ -478,22 +520,55 @@ function L2Engagement() {
     <section className={styles.engage}>
       <div className={styles.engageInner}>
         <div className={styles.secLabel}>How you engage</div>
-        <h2 className={styles.engageH}>Four commercial models. Pick one.</h2>
-        <div className={styles.engageGrid}>
-          {engagementModels.map((m) => (
-            <Link
-              key={m.href}
-              href={m.href}
-              className={styles.engageChip}
-              style={cardHueStyle(m.hue)}
-            >
-              <span className={styles.engageChipLabel}>{m.label}</span>
-              <span className={styles.engageChipCopy}>{m.copy}</span>
-              <span className={styles.engageChipArrow} aria-hidden="true">
-                →
-              </span>
-            </Link>
-          ))}
+        <h2 className={styles.engageH}>
+          Four commercial models — pick how you want to hold the risk.
+        </h2>
+        <p className={styles.engageSub}>
+          Same architect-screened bench. Four ways to bring them into your
+          programme.
+        </p>
+        <div className={styles.engagePillarsGrid}>
+          {engagementPillars.map((p) => {
+            const Icon = l1Icons[p.icon];
+            return (
+              <Link
+                key={p.slug}
+                href={p.href}
+                className={styles.engagePillar}
+                style={cardHueStyle(p.hue)}
+              >
+                <div className={styles.engagePillarGlow} aria-hidden="true" />
+                <span className={styles.engagePillarArrow} aria-hidden="true">
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <title>Open</title>
+                    <path d="M4 12L12 4M6 4h6v6" />
+                  </svg>
+                </span>
+                <div className={styles.engagePillarInner}>
+                  <div className={styles.engagePillarIcon}>
+                    <Icon className={styles.engagePillarIconSvg} />
+                  </div>
+                  <div className={styles.engagePillarEyebrow}>{p.eyebrow}</div>
+                  <h3 className={styles.engagePillarTitle}>{p.title}</h3>
+                  <p className={styles.engagePillarCopy}>{p.copy}</p>
+                  <ul className={styles.engagePillarBullets}>
+                    {p.bullets.map((b) => (
+                      <li key={b} className={styles.engagePillarBullet}>
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     </section>
