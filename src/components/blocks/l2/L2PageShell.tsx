@@ -52,6 +52,7 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2BottomCta sector={sector} fn={fn} />
           <L2RelatedFunctions sector={sector} fn={fn} />
           <L2CrossLinks fn={fn} />
+          <L2Insights sector={sector} />
         </main>
       </div>
     </div>
@@ -591,6 +592,59 @@ function L2RelatedFunctions({
                 <span className={styles.relatedArrow} aria-hidden="true">
                   →
                 </span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ INSIGHTS (horizontal scrolling) ============ */
+function L2Insights({ sector }: { sector: L1PageData }) {
+  if (!sector.insights || sector.insights.length === 0) return null;
+  return (
+    <section className={styles.insights}>
+      <div className={styles.insightsHead}>
+        <div className={styles.secLabel}>
+          {sector.insightsEyebrow ?? "Insights"}
+        </div>
+        <h2 className={styles.insightsH}>
+          {sector.insightsTitle ??
+            "What's happening in this market right now."}
+        </h2>
+      </div>
+      <div className={styles.insightsScrollWrap}>
+        <div className={styles.insightsScroll}>
+          {sector.insights.map((post, i) => {
+            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
+            return (
+              <Link
+                key={post.href}
+                href={post.href}
+                className={styles.insCard}
+                style={cardHueStyle(hue)}
+              >
+                <Image
+                  src={post.image}
+                  alt={post.imageAlt}
+                  fill
+                  sizes="(max-width: 900px) 88vw, 320px"
+                  className={styles.insImg}
+                />
+                <div className={styles.insImgTint} aria-hidden="true" />
+                <div className={styles.insImgShade} aria-hidden="true" />
+                <span className={styles.insCat}>{post.category}</span>
+                <div className={styles.insOverlay}>
+                  <h3 className={styles.insTitle}>{post.title}</h3>
+                  <div className={styles.insMeta}>
+                    <span className={styles.insAuthor}>
+                      {post.author} · {post.minutes} min
+                    </span>
+                    <span className={styles.insRead}>Read →</span>
+                  </div>
+                </div>
               </Link>
             );
           })}
