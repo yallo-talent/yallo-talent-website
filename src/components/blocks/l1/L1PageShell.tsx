@@ -56,6 +56,7 @@ export function L1PageShell({ data }: Props) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
+      <L1Architects data={data} />
       <L1Partners partners={data.partners} />
       <L1ServicePillars />
       <L1BottomCta />
@@ -407,8 +408,7 @@ const crossSectorLinks: {
 
 function L1CrossSector({ data }: Props) {
   const others = crossSectorLinks.filter((s) => s.slug !== data.slug);
-  const sector =
-    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
   return (
     <section className={styles.xsec}>
       <div className={styles.wrap}>
@@ -416,15 +416,17 @@ function L1CrossSector({ data }: Props) {
           <div className={styles.eyebrow}>Cross-sector advantage</div>
           <h2 className={styles.h2}>
             Why a multi-industry bench matters for{" "}
-            <span className={styles.heroEmphasis}>your {sector} programme.</span>
+            <span className={styles.heroEmphasis}>
+              your {sector} programme.
+            </span>
           </h2>
           <p className={styles.sub}>
             Yallo Talent runs a single bench across six industries. The
             operating patterns from one sector routinely land as unlocks in
             another — regulated-industry rigour into retail, manufacturing
             supply-chain discipline into F&B, banking risk models into public
-            healthcare. When you brief us, you get the pattern library, not
-            just the platform match.
+            healthcare. When you brief us, you get the pattern library, not just
+            the platform match.
           </p>
         </div>
         <div className={styles.xsecGrid}>
@@ -639,6 +641,94 @@ function L1Expertise({ data }: Props) {
               </motion.div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ ARCHITECTS SCREENING ============ */
+const architects: {
+  name: string;
+  role: string;
+  bio: string;
+  hue: L1Hue;
+}[] = [
+  {
+    name: "Sumeet Goenka",
+    role: "Founder & CEO",
+    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them. Reviews every architect-tier shortlist personally.",
+    hue: "orange",
+  },
+  {
+    name: "SAP practice lead",
+    role: "Architect · SAP",
+    bio: "20+ years of SAP delivery across retail and financial services. Screens every SAP CX, Commerce, S/4HANA and IBP candidate before they land on your shortlist.",
+    hue: "blue",
+  },
+  {
+    name: "Oracle practice lead",
+    role: "Architect · Oracle",
+    bio: "Ex-Oracle Fusion delivery leader. Depth-tests every Oracle Retail, FLEXCUBE, OTM and Xstore candidate for functional and technical fit.",
+    hue: "green",
+  },
+  {
+    name: "Cloud & Data practice lead",
+    role: "Architect · Cloud & Data",
+    bio: "Azure and AWS platform builder. Runs screening for cloud landing zones, data engineering, DevOps and platform-eng roles across all six sectors.",
+    hue: "teal",
+  },
+];
+
+function L1Architects({ data }: Props) {
+  const sector =
+    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  return (
+    <section className={styles.arch}>
+      <div className={styles.wrap}>
+        <div className={styles.archHead}>
+          <div className={styles.eyebrow}>Screened by architects</div>
+          <h2 className={styles.h2}>
+            The people who screen your shortlist —{" "}
+            <span className={styles.heroEmphasis}>
+              have run {sector} programmes at scale.
+            </span>
+          </h2>
+          <p className={styles.sub}>
+            Yallo Talent is architect-led, not sourcer-led. Every practice lead
+            has decades of delivery under them. They review every candidate
+            personally before the shortlist leaves the building. That's the
+            reason our 72h SLA holds up.
+          </p>
+        </div>
+        <div className={styles.archGrid}>
+          {architects.map((a) => (
+            <article
+              key={a.name}
+              className={styles.archCard}
+              style={cardHueStyle(a.hue)}
+            >
+              <div className={styles.archGlow} aria-hidden="true" />
+              <div className={styles.archCardInner}>
+                <div className={styles.archInitials} aria-hidden="true">
+                  {a.name
+                    .split(" ")
+                    .map((w) => w[0])
+                    .slice(0, 2)
+                    .join("")}
+                </div>
+                <div className={styles.archRole}>{a.role}</div>
+                <div className={styles.archName}>{a.name}</div>
+                <p className={styles.archBio}>{a.bio}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className={styles.archFoot}>
+          <Link href="/leadership" className={styles.archFootLink}>
+            Meet the whole team
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </section>

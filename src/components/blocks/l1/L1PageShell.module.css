@@ -1500,6 +1500,204 @@
   display: none;
 }
 
+/* ============ ARCHITECTS ============ */
+.arch {
+  position: relative;
+  padding: clamp(48px, 6vw, 76px) 0;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.arch::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse 40% 30% at 15% 10%,
+      var(--sector-accent-08),
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 85% 90%,
+      var(--accent-muted),
+      transparent 55%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.arch > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.archHead {
+  max-width: 780px;
+  margin-bottom: 24px;
+}
+
+.archGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.archCard {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border-radius: 16px;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.archGlow {
+  position: absolute;
+  top: -80px;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--card-hue-35, var(--sector-accent-35)),
+    transparent 65%
+  );
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+  transition:
+    opacity 0.32s ease,
+    transform 0.32s ease;
+}
+
+.archCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--card-hue-35, var(--sector-accent-35));
+  background: color-mix(
+    in oklab,
+    var(--glass-bg) 55%,
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  box-shadow:
+    0 22px 44px -20px rgba(0, 0, 0, 0.55),
+    0 0 32px var(--card-hue-08, var(--sector-accent-08));
+}
+
+.archCard:hover .archGlow {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.archCardInner {
+  position: relative;
+  z-index: 1;
+  padding: 22px 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.archInitials {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--card-hue-35, var(--sector-accent-35)),
+    var(--card-hue-08, var(--sector-accent-08))
+  );
+  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  color: var(--card-hue, var(--sector-accent));
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  box-shadow: inset 0 1px 0 var(--wa12);
+  transition: transform 0.32s ease;
+}
+
+.archCard:hover .archInitials {
+  transform: rotate(-6deg) scale(1.08);
+}
+
+.archRole {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--card-hue, var(--sector-accent));
+  margin-bottom: 4px;
+}
+
+.archName {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.archBio {
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.archFoot {
+  display: flex;
+  justify-content: center;
+}
+
+.archFootLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border: 1px solid var(--wa15);
+  border-radius: 999px;
+  color: var(--fg);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.archFootLink:hover {
+  border-color: var(--sector-accent);
+  color: var(--sector-accent);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1100px) {
+  .archGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .archGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ============ SEGMENTS ============ */
 .segments {
   position: relative;
