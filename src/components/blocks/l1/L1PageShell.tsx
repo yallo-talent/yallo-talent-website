@@ -50,7 +50,6 @@ export function L1PageShell({ data }: Props) {
       <L1Intro data={data} />
       <L1WhatWeDeliver data={data} />
       <L1HowWeWork data={data} />
-      <L1CrossSector data={data} />
       {data.scarceRoles && data.scarceRoles.length > 0 && (
         <L1ScarceTalent data={data} />
       )}
@@ -681,8 +680,7 @@ const architects: {
 ];
 
 function L1Architects({ data }: Props) {
-  const sector =
-    data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
   return (
     <section className={styles.arch}>
       <div className={styles.wrap}>
