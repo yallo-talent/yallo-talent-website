@@ -600,16 +600,7 @@ function L1ScarceTalent({ data }: Props) {
 const EXPERTISE_COLLAPSED_COUNT = 8;
 
 function L1Expertise({ data }: Props) {
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [showAll, setShowAll] = useState(false);
-  const toggle = (slug: string) => {
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(slug)) next.delete(slug);
-      else next.add(slug);
-      return next;
-    });
-  };
   const total = data.expertise.length;
   const collapsible = total > EXPERTISE_COLLAPSED_COUNT;
   const hiddenCount = collapsible ? total - EXPERTISE_COLLAPSED_COUNT : 0;
@@ -625,24 +616,16 @@ function L1Expertise({ data }: Props) {
             <div className={styles.eyebrow}>{data.expertiseEyebrow}</div>
             <h2 className={styles.h2}>{data.expertiseTitle}</h2>
             <p className={styles.sub}>{data.expertiseSub}</p>
+            <p className={styles.expertiseHint}>
+              Explore each function in detail
+              <span aria-hidden="true"> →</span>
+            </p>
           </div>
-          {collapsible && (
-            <button
-              type="button"
-              className={styles.expertiseViewAll}
-              onClick={() => setShowAll((v) => !v)}
-              aria-expanded={showAll}
-            >
-              {showAll ? "Show less" : `View all ${total}`}
-              <span aria-hidden="true">{showAll ? "↑" : "→"}</span>
-            </button>
-          )}
         </div>
         <div
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
         >
           {visible.map((card, i) => {
-            const isOpen = expanded.has(card.slug);
             const cardHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             // Auto-derive L2 href when this function has tools configured
             const l2Href =
@@ -660,120 +643,59 @@ function L1Expertise({ data }: Props) {
                 className={styles.expCardWrap}
               >
                 <div
-                  className={`${styles.expCard} ${isOpen ? styles.expCardOpen : ""}`}
+                  className={styles.expCard}
                   style={cardHueStyle(cardHue)}
                 >
                   <div className={styles.expCardGlow} aria-hidden="true" />
                   <div className={styles.expCardBorder} aria-hidden="true" />
                   <div className={styles.expCardInner}>
-                    <div className={styles.expCardTop}>
-                      <span className={styles.expCardIcon}>
-                        <L1Icon
-                          icon={card.icon}
-                          className={styles.expCardIconSvg}
-                        />
-                      </span>
-                      {l2Href ? (
-                        <Link
-                          href={l2Href}
-                          className={styles.expCardOpenLink}
-                          aria-label={`Open ${card.title} contractors page`}
-                        >
-                          <svg
-                            viewBox="0 0 16 16"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.8"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <title>Open page</title>
-                            <path d="M4 12L12 4M6 4h6v6" />
-                          </svg>
-                        </Link>
-                      ) : null}
-                    </div>
+                    <span className={styles.expCardIcon}>
+                      <L1Icon
+                        icon={card.icon}
+                        className={styles.expCardIconSvg}
+                      />
+                    </span>
                     <h3 className={styles.expCardTitle}>{card.title}</h3>
                     {card.blurb && (
                       <p className={styles.expCardBlurb}>{card.blurb}</p>
                     )}
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          id={`exp-panel-${card.slug}`}
-                          key="panel"
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{
-                            duration: 0.28,
-                            ease: [0.2, 0.8, 0.2, 1],
-                          }}
-                          className={styles.expCardPanel}
-                        >
-                          <ul className={styles.expCardRoles}>
-                            {card.roles.map((r) => (
-                              <li key={r} className={styles.expCardRole}>
-                                {r}
-                              </li>
-                            ))}
-                          </ul>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                    <button
-                      type="button"
-                      className={styles.expCardToggleBottom}
-                      aria-expanded={isOpen}
-                      aria-controls={`exp-panel-${card.slug}`}
-                      aria-label={isOpen ? "Hide roles" : "Show roles"}
-                      onClick={() => toggle(card.slug)}
-                    >
-                      <svg
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        aria-hidden="true"
-                      >
-                        <title>Toggle roles</title>
-                        <path d="M8 3v10M3 8h10" />
-                      </svg>
-                    </button>
+                    <ul className={styles.expCardRoles}>
+                      {card.roles.map((r) => (
+                        <li key={r} className={styles.expCardRole}>
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                    {l2Href ? (
+                      <Link href={l2Href} className={styles.expCardDetailLink}>
+                        Explore in detail
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    ) : null}
                   </div>
                 </div>
               </motion.div>
             );
           })}
         </div>
-        {collapsible && hiddenCount > 0 && (
+        {collapsible && (
           <div className={styles.expertiseFoot}>
             <button
               type="button"
               className={styles.expertiseShowAll}
-              onClick={() => setShowAll(true)}
-              aria-label={`Show all ${total} function areas`}
+              onClick={() => setShowAll((v) => !v)}
+              aria-expanded={showAll}
+              aria-label={
+                showAll ? "Show less" : `Show all ${total} function areas`
+              }
             >
-              Show all {total} function areas
-              <span aria-hidden="true">↓</span>
-              <span className={styles.expertiseHiddenCount}>
-                +{hiddenCount} more
-              </span>
-            </button>
-          </div>
-        )}
-        {collapsible && showAll && (
-          <div className={styles.expertiseFoot}>
-            <button
-              type="button"
-              className={styles.expertiseShowAll}
-              onClick={() => setShowAll(false)}
-              aria-label="Show less"
-            >
-              Show less
-              <span aria-hidden="true">↑</span>
+              {showAll ? "Show less" : `Show all ${total} function areas`}
+              <span aria-hidden="true">{showAll ? "↑" : "↓"}</span>
+              {!showAll && (
+                <span className={styles.expertiseHiddenCount}>
+                  +{hiddenCount} more
+                </span>
+              )}
             </button>
           </div>
         )}
