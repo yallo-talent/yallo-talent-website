@@ -812,20 +812,32 @@
 
 /* ============ CROSS-LINKS ============ */
 .cross {
-  padding: 0 clamp(24px, 4vw, 52px) clamp(48px, 6vw, 72px);
+  padding: 0 clamp(24px, 4vw, 52px) clamp(56px, 8vw, 96px);
 }
 
 .crossInner {
   max-width: 1100px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .crossRail {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 20px 22px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--wa08);
+  border-radius: 14px;
+}
+
+@media (max-width: 900px) {
+  .crossInner {
+    grid-template-columns: 1fr;
+  }
 }
 
 .crossLabel {

@@ -48,10 +48,10 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Roles fn={fn} />
           <L2Tools sector={sector} fn={fn} />
           <L2Screening />
-          <L2CrossLinks fn={fn} />
           <L2Engagement />
           <L2BottomCta sector={sector} fn={fn} />
           <L2RelatedFunctions sector={sector} fn={fn} />
+          <L2CrossLinks fn={fn} />
         </main>
       </div>
     </div>
@@ -552,9 +552,7 @@ function L2RelatedFunctions({
   fn: L1ExpertiseCard;
 }) {
   // Prev/next by index + one wrap-around pick to give three chips.
-  const enabled = sector.expertise.filter(
-    (e) => e.tools && e.tools.length > 0,
-  );
+  const enabled = sector.expertise.filter((e) => e.tools && e.tools.length > 0);
   const idx = enabled.findIndex((e) => e.slug === fn.slug);
   if (idx < 0 || enabled.length < 2) return null;
   const picks: L1ExpertiseCard[] = [];
