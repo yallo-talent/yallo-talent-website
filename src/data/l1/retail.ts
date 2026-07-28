@@ -988,6 +988,52 @@ export const retailData: L1PageData = {
         "SAP IBP Consultant",
         "S&OP Programme Manager",
       ],
+      overview:
+        "S&OP is the boardroom conversation that runs the network. Our contractors have delivered integrated supply and demand planning programmes on Kinaxis, SAP IBP and Blue Yonder Luminate across grocery, apparel and mass-merchandise portfolios.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail supply chain S&OP",
+      tools: [
+        {
+          slug: "kinaxis-rapidresponse",
+          vendor: "Kinaxis",
+          vendorSlug: "kinaxis",
+          name: "Kinaxis RapidResponse",
+          roles: [
+            "Kinaxis RapidResponse Lead",
+            "RapidResponse Author",
+            "Solution Architect",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-ibp",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP IBP",
+          roles: [
+            "SAP IBP Consultant",
+            "IBP Solution Architect",
+            "Integration Specialist",
+            "Analytics Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "blue-yonder-luminate",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Luminate",
+          roles: [
+            "Blue Yonder Luminate Consultant",
+            "Luminate Data Scientist",
+            "Solution Architect",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "demand-planning",
@@ -999,6 +1045,52 @@ export const retailData: L1PageData = {
         "Blue Yonder Demand Planner",
         "o9 Solutions Specialist",
         "SAP APO / IBP Consultant",
+      ],
+      overview:
+        "Modern demand planning is a mix of statistical rigour, ML models and demand sensing. Our contractors have delivered demand programmes across grocery, apparel and CPG using Blue Yonder, o9 and SAP IBP.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail demand planning",
+      tools: [
+        {
+          slug: "blue-yonder-demand-planning",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Demand Planning",
+          roles: [
+            "Blue Yonder Demand Planner",
+            "Statistical Forecasting Consultant",
+            "Solution Architect",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "o9-solutions",
+          vendor: "o9 Solutions",
+          vendorSlug: "o9",
+          name: "o9 Solutions",
+          roles: [
+            "o9 Solutions Specialist",
+            "Model Builder",
+            "Integration Consultant",
+            "Analytics Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-apo-ibp",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP APO / IBP",
+          roles: [
+            "SAP APO / IBP Consultant",
+            "Demand Planner",
+            "Integration Specialist",
+            "Analytics Consultant",
+            "Programme Manager",
+          ],
+        },
       ],
     },
     {
@@ -1012,6 +1104,52 @@ export const retailData: L1PageData = {
         "Oracle Retail Inventory Consultant",
         "SAP F&R Specialist",
       ],
+      overview:
+        "Inventory and replenishment programmes drive stock availability and margin. Our contractors have delivered store, DC and network-level optimisation across grocery, apparel and mass merchandise with Blue Yonder, Oracle Retail and SAP F&R.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail inventory replenishment",
+      tools: [
+        {
+          slug: "blue-yonder-replenishment",
+          vendor: "Blue Yonder",
+          vendorSlug: "blueyonder",
+          name: "Blue Yonder Replenishment",
+          roles: [
+            "Blue Yonder Replenishment Lead",
+            "Inventory Optimisation Consultant",
+            "Solution Architect",
+            "Integration Specialist",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "oracle-retail-inventory",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Retail Inventory",
+          roles: [
+            "Oracle Retail Inventory Consultant",
+            "Solution Architect",
+            "Integration Specialist",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "sap-f-r",
+          vendor: "SAP",
+          vendorSlug: "sap",
+          name: "SAP F&R",
+          roles: [
+            "SAP F&R Specialist",
+            "Replenishment Consultant",
+            "Solution Architect",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "returns-reverse-logistics",
@@ -1024,6 +1162,52 @@ export const retailData: L1PageData = {
         "Reverse Logistics Consultant",
         "Post-purchase Systems Lead",
       ],
+      overview:
+        "Returns and reverse logistics have moved from cost centre to CX differentiator. Our contractors have built returns portals, refurb flows and reverse WMS integrations for apparel, electronics and mass-merchandise.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail returns and reverse logistics",
+      tools: [
+        {
+          slug: "returnly",
+          vendor: "Returnly",
+          vendorSlug: "returnly",
+          name: "Returnly",
+          roles: [
+            "Returnly Implementation Consultant",
+            "Returns UX Specialist",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "loop-returns",
+          vendor: "Loop Returns",
+          vendorSlug: "loop",
+          name: "Loop Returns",
+          roles: [
+            "Loop Returns Consultant",
+            "Post-Purchase Systems Lead",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "optoro",
+          vendor: "Optoro",
+          vendorSlug: "optoro",
+          name: "Optoro",
+          roles: [
+            "Optoro Reverse Logistics Consultant",
+            "Refurb Systems Specialist",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
+      ],
     },
     {
       slug: "master-data-pim",
@@ -1035,6 +1219,52 @@ export const retailData: L1PageData = {
         "Stibo PIM Consultant",
         "Informatica MDM Specialist",
         "Salsify PIM Lead",
+      ],
+      overview:
+        "PIM and MDM are the unglamorous foundation retail runs on. Our contractors have delivered product, customer and location data programmes at estate scale using Stibo, Informatica and Salsify.",
+      overviewImage:
+        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
+      overviewImageAlt: "Retail master data and PIM",
+      tools: [
+        {
+          slug: "stibo-pim",
+          vendor: "Stibo Systems",
+          vendorSlug: "stibo",
+          name: "Stibo PIM",
+          roles: [
+            "Stibo PIM Consultant",
+            "Data Modeller",
+            "Solution Architect",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "informatica-mdm",
+          vendor: "Informatica",
+          vendorSlug: "informatica",
+          name: "Informatica MDM",
+          roles: [
+            "Informatica MDM Specialist",
+            "Data Governance Consultant",
+            "Solution Architect",
+            "Integration Consultant",
+            "Programme Manager",
+          ],
+        },
+        {
+          slug: "salsify",
+          vendor: "Salsify",
+          vendorSlug: "salsify",
+          name: "Salsify PIM",
+          roles: [
+            "Salsify PIM Lead",
+            "Product Data Consultant",
+            "Integration Consultant",
+            "Business Analyst",
+            "Programme Manager",
+          ],
+        },
       ],
     },
   ],
