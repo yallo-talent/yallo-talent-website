@@ -41,14 +41,6 @@ export const retailData: L1PageData = {
   ],
   introStatCards: [
     {
-      n: "68%",
-      l: "of retail CIOs report contractor quality — not budget — is the primary reason programmes slip past go-live.",
-    },
-    {
-      n: "4–6 wks",
-      l: "Average time lost when a specialist is placed without retail-specific screening. Yallo's shortlist is in your inbox in 72h.",
-    },
-    {
       n: "Contract-first",
       l: "Primary focus is interim and contract deployment. Also available in Permanent, EOR and Managed Delivery models.",
     },
