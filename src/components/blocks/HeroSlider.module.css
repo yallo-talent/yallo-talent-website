@@ -131,6 +131,9 @@
   letter-spacing: -0.04em;
   line-height: 1.03;
   font-weight: 800;
+  /* Reserve 4 lines so slides with different heading lengths don't
+     resize the hero and jerk the page below on auto-advance. */
+  min-height: calc(4 * 1.03em);
 }
 
 .emphasis {
@@ -145,6 +148,8 @@
   color: var(--fg-muted);
   font-size: clamp(14px, 1.2vw, 17px);
   line-height: 1.7;
+  /* Reserve 3 lines so shorter copy on some slides doesn't shift CTAs. */
+  min-height: calc(3 * 1.7em);
 }
 
 .ctas {
