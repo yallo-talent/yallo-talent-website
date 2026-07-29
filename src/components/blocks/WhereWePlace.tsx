@@ -255,6 +255,7 @@ export function WhereWePlace() {
                 }}
               />
             ))}
+            <MiniCtaCard />
           </ul>
         </div>
       </div>
@@ -360,6 +361,30 @@ function MiniCard({ sector, onActivate }: MiniProps) {
           </ul>
         </div>
       </button>
+    </li>
+  );
+}
+
+function MiniCtaCard() {
+  return (
+    <li className={styles.miniLi}>
+      <Link
+        href="/brief"
+        className={styles.miniCta}
+        aria-label="Send us a brief"
+      >
+        <div className={styles.miniCtaGlow} aria-hidden="true" />
+        <div className={styles.miniCtaBody}>
+          <span className={styles.miniCtaEyebrow}>Not sure where you fit?</span>
+          <span className={styles.miniCtaTitle}>
+            Send us a brief — we'll come back in 72h.
+          </span>
+          <span className={styles.miniCtaAction}>
+            Send a brief
+            <span aria-hidden="true">→</span>
+          </span>
+        </div>
+      </Link>
     </li>
   );
 }
