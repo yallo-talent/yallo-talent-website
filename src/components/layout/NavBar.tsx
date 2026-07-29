@@ -17,7 +17,6 @@ import {
   primaryNav,
 } from "./nav-config";
 import { navIcons } from "./nav-icons";
-import { ThemeToggle } from "./ThemeToggle";
 
 function NavItemIcon({ icon }: { icon?: NavItem["icon"] }) {
   if (!icon) return null;
@@ -231,7 +230,7 @@ export function NavBar() {
           </nav>
 
           <div className={styles.actions}>
-            <ThemeToggle />
+            {/* Theme toggle hidden until light theme is production-ready. */}
             <Link href={primaryCTAHref} className={styles.ctaPrimary}>
               Request a contractor
               <span aria-hidden="true">→</span>
