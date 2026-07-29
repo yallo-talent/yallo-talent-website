@@ -1,9 +1,17 @@
 import type { MetadataRoute } from "next";
-import { getAllCapabilities, getAllPlatforms, getAllSectors } from "@/lib/data";
+import { capabilityRegistry } from "@/data/capabilities";
+import { industriesIndex } from "@/data/l1";
+import { retailData } from "@/data/l1/retail";
+import type { L1PageData } from "@/data/l1/types";
 import { SITE } from "@/lib/seo";
+
+const sectorL2Registry: Record<string, L1PageData> = {
+  retail: retailData,
+};
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
   const staticRoutes = [
     "",
     "/brief",
@@ -30,64 +38,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === "" ? 1 : 0.8,
   }));
 
-  const sectorRoutes = getAllSectors().flatMap((sector) => {
-    const base = `${SITE.url}/industries/${sector.slug}`;
-    return [
-      {
-        url: base,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      },
-      ...sector.functions.map((fn) => ({
-        url: `${base}/${fn.slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      })),
-    ];
-  });
+  const industryRoutes = industriesIndex.map((entry) => ({
+    url: `${SITE.url}/industries/${entry.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
-  const platformRoutes = getAllPlatforms().flatMap((platform) => {
-    const base = `${SITE.url}/platforms/${platform.slug}`;
-    return [
-      {
-        url: base,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      },
-      ...platform.modules.map((mod) => ({
-        url: `${base}/${mod.slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      })),
-    ];
-  });
+  const industryL2Routes = Object.entries(sectorL2Registry).flatMap(
+    ([sectorSlug, data]) =>
+      data.expertise
+        .filter((fn) => fn.tools && fn.tools.length > 0)
+        .map((fn) => ({
+          url: `${SITE.url}/industries/${sectorSlug}/${fn.slug}`,
+          lastModified: now,
+          changeFrequency: "monthly" as const,
+          priority: 0.6,
+        })),
+  );
 
-  const capabilityRoutes = getAllCapabilities().flatMap((cap) => {
-    const base = `${SITE.url}/capabilities/${cap.slug}`;
-    return [
-      {
-        url: base,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.7,
-      },
-      ...cap.subs.map((sub) => ({
-        url: `${base}/${sub.slug}`,
-        lastModified: now,
-        changeFrequency: "monthly" as const,
-        priority: 0.6,
-      })),
-    ];
-  });
+  const capabilityRoutes = Object.keys(capabilityRegistry).map((slug) => ({
+    url: `${SITE.url}/capabilities/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
   return [
     ...staticRoutes,
-    ...sectorRoutes,
-    ...platformRoutes,
+    ...industryRoutes,
+    ...industryL2Routes,
     ...capabilityRoutes,
   ];
 }
