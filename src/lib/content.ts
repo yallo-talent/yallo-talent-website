@@ -24,6 +24,13 @@ function readMdxFilesSync(dir: string): string[] {
     .map((name) => name.replace(/\.mdx$/, ""));
 }
 
+function toIsoDate(value: unknown): unknown {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 10);
+  }
+  return value;
+}
+
 function loadEntry<T extends { slug: string }>(
   dir: string,
   slug: string,
@@ -31,7 +38,8 @@ function loadEntry<T extends { slug: string }>(
 ): LoadedEntry<T> {
   const raw = readFileSync(join(dir, `${slug}.mdx`), "utf8");
   const { data, content } = matter(raw);
-  const parsed = schema.safeParse(data);
+  const normalised = { ...data, date: toIsoDate(data.date) };
+  const parsed = schema.safeParse(normalised);
   if (!parsed.success) {
     const issues = parsed.error.issues
       .map((i) => `${i.path.join(".")}: ${i.message}`)
