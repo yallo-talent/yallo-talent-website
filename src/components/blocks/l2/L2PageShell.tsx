@@ -335,7 +335,7 @@ const vendorToPlatformSlug: Record<string, string> = {
   Oracle: "oracle",
   Salesforce: "salesforce",
   Microsoft: "microsoft",
-  "Blue Yonder": "blueyonder",
+  "Blue Yonder": "blue-yonder",
   Workday: "workday",
 };
 
@@ -367,7 +367,7 @@ const platformLabels: Record<string, string> = {
   oracle: "Oracle",
   salesforce: "Salesforce",
   microsoft: "Microsoft",
-  blueyonder: "Blue Yonder",
+  "blue-yonder": "Blue Yonder",
   workday: "Workday",
 };
 

@@ -306,7 +306,7 @@ export function HubCrossConnected() {
                   hue: "violet" as L1Hue,
                 },
                 {
-                  slug: "blueyonder",
+                  slug: "blue-yonder",
                   label: "Blue Yonder",
                   hue: "green" as L1Hue,
                 },

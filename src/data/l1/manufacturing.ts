@@ -753,7 +753,7 @@ export const manufacturingData: L1PageData = {
     { href: "/platforms/sap", label: "SAP", category: "Platform" },
     { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
     {
-      href: "/platforms/blueyonder",
+      href: "/platforms/blue-yonder",
       label: "Blue Yonder",
       category: "Platform",
     },

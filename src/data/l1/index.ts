@@ -130,7 +130,7 @@ export const platformsIndex: L1IndexEntry[] = [
     imageAlt: "CRM strategy session",
   },
   {
-    slug: "blueyonder",
+    slug: "blue-yonder",
     label: "Blue Yonder",
     short: "Blue Yonder",
     category: "platforms",
