@@ -42,7 +42,6 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-weight: 800;
   letter-spacing: -0.02em;
 }
 
@@ -50,25 +49,31 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  color: var(--accent);
 }
 
 .brandText {
   display: inline-flex;
   flex-direction: column;
   line-height: 1;
-  gap: 4px;
+  gap: 5px;
 }
 
 .brandMark {
   font-size: 24px;
+  font-weight: 900;
   color: var(--accent);
   line-height: 1;
+  letter-spacing: -0.01em;
 }
 
+/* Letter-spacing tuned so "TALENT" width matches "Yallo". */
 .brandSuffix {
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 3px;
+  font-weight: 600;
+  letter-spacing: 0.44em;
+  padding-left: 0.44em;
   text-transform: uppercase;
   color: var(--fg-muted);
   line-height: 1;

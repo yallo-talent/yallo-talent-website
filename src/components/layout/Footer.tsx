@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import styles from "./Footer.module.css";
+import { YalloFlower } from "./YalloFlower";
 
 const serviceLinks = [
   { label: "Contract Workforce", href: "/contract" },
@@ -48,13 +48,7 @@ export function Footer() {
         <div className={styles.top}>
           <div className={styles.brandBlock}>
             <div className={styles.brand}>
-              <Image
-                src="/logos/yallo-flower.svg"
-                alt=""
-                width={44}
-                height={44}
-                className={styles.brandFlower}
-              />
+              <YalloFlower size={44} className={styles.brandFlower} />
               <span className={styles.brandText}>
                 <span className={styles.brandMark}>Yallo</span>
                 <span className={styles.brandSuffix}>Talent</span>
