@@ -47,24 +47,39 @@
 
 .brand {
   display: inline-flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
   color: var(--fg);
   font-weight: 800;
-  font-size: 18px;
   letter-spacing: -0.02em;
 }
 
+.brandFlower {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.brandText {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1;
+  gap: 3px;
+}
+
 .brandMark {
+  font-size: 20px;
   color: var(--accent);
+  line-height: 1;
 }
 
 .brandSuffix {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--fg-muted);
+  line-height: 1;
 }
 
 .primary {

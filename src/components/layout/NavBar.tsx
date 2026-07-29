@@ -57,8 +57,18 @@ export function NavBar() {
             className={styles.brand}
             aria-label="Yallo Talent home"
           >
-            <span className={styles.brandMark}>Yallo</span>
-            <span className={styles.brandSuffix}>Talent</span>
+            <Image
+              src="/logos/yallo-flower.svg"
+              alt=""
+              width={36}
+              height={36}
+              className={styles.brandFlower}
+              priority
+            />
+            <span className={styles.brandText}>
+              <span className={styles.brandMark}>Yallo</span>
+              <span className={styles.brandSuffix}>Talent</span>
+            </span>
           </Link>
 
           <nav

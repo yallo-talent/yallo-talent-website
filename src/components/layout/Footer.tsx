@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import styles from "./Footer.module.css";
 
@@ -47,8 +48,17 @@ export function Footer() {
         <div className={styles.top}>
           <div className={styles.brandBlock}>
             <div className={styles.brand}>
-              <span className={styles.brandMark}>Yallo</span>
-              <span className={styles.brandSuffix}>Talent</span>
+              <Image
+                src="/logos/yallo-flower.svg"
+                alt=""
+                width={44}
+                height={44}
+                className={styles.brandFlower}
+              />
+              <span className={styles.brandText}>
+                <span className={styles.brandMark}>Yallo</span>
+                <span className={styles.brandSuffix}>Talent</span>
+              </span>
             </div>
             <p className={styles.brandCopy}>
               Contract-first workforce for enterprise platform programmes.
