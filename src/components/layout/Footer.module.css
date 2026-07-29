@@ -64,7 +64,7 @@
   font-weight: 900;
   color: var(--accent);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.03em;
 }
 
 /* Letter-spacing tuned so "TALENT" width matches "Yallo". */
@@ -72,8 +72,8 @@
   font-family: var(--font-mono);
   font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.44em;
-  padding-left: 0.44em;
+  letter-spacing: 0.48em;
+  padding-left: 0.48em;
   text-transform: uppercase;
   color: var(--fg-muted);
   line-height: 1;
