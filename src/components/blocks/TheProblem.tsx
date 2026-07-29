@@ -25,8 +25,8 @@ const personas: Persona[] = [
       "Half the budget sits benched, waiting on the right specialists.",
     ],
     num: "95%",
-    txt: "of UAE employers now hire tech talent from abroad because senior specialists can't be found locally; 83% have turned to offshoring.",
-    src: "Source: UAE Ministry of Economy, 2024",
+    txt: "of UAE employers actively seek tech professionals from outside the region; 83% say offshoring is a key part of their business model.",
+    src: "Source: UAE Future Tech Talent Report 2024, UAE Ministry of Economy with Integra Seven",
   },
   {
     role: "Head of TA",
