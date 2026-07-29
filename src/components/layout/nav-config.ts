@@ -51,8 +51,6 @@ export interface NavFeatured {
   copy: string;
   href: string;
   ctaLabel: string;
-  image: string;
-  imageAlt: string;
 }
 
 export interface NavGroup {
@@ -112,9 +110,6 @@ export const primaryNav: NavGroup[] = [
       copy: "Send a brief and we'll return an architect-screened list.",
       href: "/brief",
       ctaLabel: "Send a brief →",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80",
-      imageAlt: "Enterprise team calibrating a hiring brief",
     },
   },
   {
@@ -246,9 +241,6 @@ export const primaryNav: NavGroup[] = [
       copy: "What the market tells us about compensation and availability.",
       href: "/insights/sap-talent-gcc",
       ctaLabel: "Read research →",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
-      imageAlt: "Analytics dashboard",
     },
   },
   {
@@ -307,9 +299,6 @@ export const primaryNav: NavGroup[] = [
       copy: "A GCC bank moved two candidates to offer within a week.",
       href: "/case-studies/gcc-bank-sap-72h",
       ctaLabel: "Read the story →",
-      image:
-        "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80",
-      imageAlt: "Enterprise leadership meeting",
     },
   },
   {
@@ -349,9 +338,6 @@ export const primaryNav: NavGroup[] = [
       copy: "Ex-Richemont, Landmark and Alshaya EMEA operator leading the architect team.",
       href: "/leadership",
       ctaLabel: "Meet the team →",
-      image:
-        "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
-      imageAlt: "Business leader portrait",
     },
   },
 ];
@@ -399,8 +385,5 @@ export const jobSeekersGroup: NavGroup = {
     copy: "Our architect team screens every submission — we tell you before you're put forward.",
     href: "https://www.yallo.co/join-us/",
     ctaLabel: "Upload CV →",
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
-    imageAlt: "Job seeker at a workstation",
   },
 };

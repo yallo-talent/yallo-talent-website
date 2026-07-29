@@ -6,7 +6,6 @@ import {
   useMotionValueEvent,
   useScroll,
 } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import styles from "./NavBar.module.css";
@@ -195,19 +194,6 @@ export function NavBar() {
                               href={group.featured.href}
                               className={styles.featured}
                             >
-                              <div className={styles.featuredImage}>
-                                <Image
-                                  src={group.featured.image}
-                                  alt={group.featured.imageAlt}
-                                  fill
-                                  sizes="280px"
-                                  className={styles.featuredImageImg}
-                                />
-                                <div
-                                  className={styles.featuredImageTint}
-                                  aria-hidden="true"
-                                />
-                              </div>
                               <div className={styles.featuredBody}>
                                 <span className={styles.featuredEyebrow}>
                                   {group.featured.eyebrow}
