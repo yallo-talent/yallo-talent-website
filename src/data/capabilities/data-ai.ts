@@ -51,8 +51,7 @@ export const dataAiData: L1PageData = {
   ],
 
   scarceEyebrow: "Scarce talent · high demand",
-  scarceTitle:
-    "The Data & AI roles every enterprise programme fights over.",
+  scarceTitle: "The Data & AI roles every enterprise programme fights over.",
   scarceCopy:
     "These are the specialists that appear on every AI, ML and data platform brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -123,11 +122,7 @@ export const dataAiData: L1PageData = {
       title: "Analytics Engineering",
       icon: "analytics",
       blurb: "dbt, semantic layers, self-serve modelling.",
-      roles: [
-        "Analytics Engineer",
-        "dbt Lead",
-        "Semantic Layer Architect",
-      ],
+      roles: ["Analytics Engineer", "dbt Lead", "Semantic Layer Architect"],
     },
     {
       slug: "ml-engineering",
@@ -135,11 +130,7 @@ export const dataAiData: L1PageData = {
       title: "ML Engineering & MLOps",
       icon: "spark",
       blurb: "Training pipelines, model serving and observability.",
-      roles: [
-        "ML Engineer",
-        "MLOps Platform Engineer",
-        "Model Serving Lead",
-      ],
+      roles: ["ML Engineer", "MLOps Platform Engineer", "Model Serving Lead"],
     },
     {
       slug: "data-platform",
@@ -183,11 +174,7 @@ export const dataAiData: L1PageData = {
       title: "Business Intelligence",
       icon: "analytics",
       blurb: "Power BI, Tableau, Looker — self-serve BI.",
-      roles: [
-        "BI Developer",
-        "Power BI Architect",
-        "Analytics Delivery Lead",
-      ],
+      roles: ["BI Developer", "Power BI Architect", "Analytics Delivery Lead"],
     },
     {
       slug: "data-science",
@@ -195,11 +182,7 @@ export const dataAiData: L1PageData = {
       title: "Data Science",
       icon: "spark",
       blurb: "Applied ML, forecasting and decisioning.",
-      roles: [
-        "Data Scientist",
-        "Applied ML Scientist",
-        "Decisioning Lead",
-      ],
+      roles: ["Data Scientist", "Applied ML Scientist", "Decisioning Lead"],
     },
     {
       slug: "streaming-realtime",
@@ -228,8 +211,7 @@ export const dataAiData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle:
-    "Every sector runs a Data & AI programme — we staff them all.",
+  segmentsTitle: "Every sector runs a Data & AI programme — we staff them all.",
   segmentsSub:
     "Retail personalisation, banking risk models, healthcare analytics or public-sector data platforms — same architect-screened bench, calibrated to your operating context.",
   segments: [
