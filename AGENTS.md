@@ -1,19 +1,24 @@
 # AGENTS.md — talent.yallo.co (yallo-co)
 
-Contract-first Yallo Talent site. UK · ME · India. Next.js 15 / TS5 strict /
-Tailwind 4 / pnpm 9 / Framer Motion 12. Static-generated, no CMS at launch.
+Contract-first Yallo Talent site. UK · ME · India. Next.js 16.2.12 / TS5
+strict / Tailwind 4 / pnpm 10.x / Framer Motion 12. Static-generated, no
+CMS at launch.
+
+## Ownership
+- **Sumeet Goenka** owns the codebase for the duration of the redesign
+  and drives all commits during that window.
+- **Handback to Raphy Varghese** at deployment: once the redesign is
+  ratified and the DNS switch is scheduled, Raphy takes over ownership
+  for deployment, DNS cutover and post-launch operations.
 
 ## Ground rules
-- All commits are authored as **Raphy Varghese** — no co-author trailers, ever.
-- Nothing changes on the locked decisions (see docs/architecture/exicution.html
-  "Decisions" section) without Raphy's explicit sign-off.
-- Zero hardcoded hex colours outside `src/app/globals.css` Layer 1 — enforced
-  by `.claude/hooks/check-colours.js` on every commit.
+- Zero hardcoded hex colours outside `src/app/globals.css` Layer 1 —
+  enforced by `.claude/hooks/check-colours.js` on every commit.
 - Data-file changes (src/data/**) use the `data:` commit type.
 - Phase order is fixed: 0 Scaffold → 1 Design System/TS → 2 Homepage →
-  3 Service Pages/Templates → 4 Industry/Platform Taxonomy → 5 Capabilities/
-  Knowledge Hub → 6 Jobs Portal/QA/Perf Gate. See docs/architecture/exicution.html
-  for full detail.
+  3 Service Pages/Templates → 4 Industry/Platform Taxonomy → 5
+  Capabilities/Knowledge Hub → 6 Jobs Portal/QA/Perf Gate. See
+  docs/architecture/exicution.html for full detail.
 - Performance gate before DNS switch: Lighthouse Mobile 90+, LCP <2.5s,
   CLS <0.1, INP <200ms, WCAG 2.2 AA.
 
@@ -26,4 +31,3 @@ Tailwind 4 / pnpm 9 / Framer Motion 12. Static-generated, no CMS at launch.
 ## Team (see .claude/agents/)
 architect, uiux-emil, content-strategist, seo-geo-aeo, performance-qa —
 one subagent per discipline in docs/architecture/teamand tools_v2.html.
-Raphy retains sign-off authority on all of them.
