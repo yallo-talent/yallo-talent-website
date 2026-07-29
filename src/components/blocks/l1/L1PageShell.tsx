@@ -715,12 +715,10 @@ function L1Expertise({ data }: Props) {
                     // Collapsing — bring the expertise section back into view
                     // so the user isn't stranded further down the page.
                     requestAnimationFrame(() => {
-                      document
-                        .getElementById("expertise")
-                        ?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
+                      document.getElementById("expertise")?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
                     });
                   }
                   return !v;
