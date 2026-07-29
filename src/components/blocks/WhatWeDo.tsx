@@ -59,7 +59,7 @@ const pillars: Pillar[] = [
     imageAlt: "Business professional in a leadership setting",
   },
   {
-    key: "EOR",
+    key: "Employer of Record",
     kick: "For risk you don't want to hold",
     promise: "You choose the person. We carry the employment.",
     how: "Found the hire yourself? We take on the UAE visa or India payroll — you direct the work, we hold the compliance. Move fast without the entity setup.",

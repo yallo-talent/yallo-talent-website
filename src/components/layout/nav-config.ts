@@ -90,7 +90,7 @@ export const primaryNav: NavGroup[] = [
         heading: "Compliance & outcomes",
         items: [
           {
-            label: "EOR",
+            label: "Employer of Record",
             href: "/eor",
             description: "UAE visa + India payroll cover",
             icon: "eor",
