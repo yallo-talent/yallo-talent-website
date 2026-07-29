@@ -202,27 +202,6 @@
   padding: 0 clamp(20px, 5vw, 48px);
 }
 
-.trackWrap::before,
-.trackWrap::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: clamp(24px, 5vw, 80px);
-  z-index: 3;
-  pointer-events: none;
-}
-
-.trackWrap::before {
-  left: 0;
-  background: linear-gradient(to right, var(--ink-950), transparent);
-}
-
-.trackWrap::after {
-  right: 0;
-  background: linear-gradient(to left, var(--ink-950), transparent);
-}
-
 .track {
   display: grid;
   grid-auto-flow: column;
