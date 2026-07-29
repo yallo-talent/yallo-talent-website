@@ -55,7 +55,7 @@ const platforms: Platform[] = [
     icon: "/logos/platforms/salesforce.svg",
   },
   {
-    slug: "blueyonder",
+    slug: "blue-yonder",
     abbr: "BY",
     name: "Blue Yonder",
     desc: "SCM, WMS, TMS, Luminate and MFP specialists.",

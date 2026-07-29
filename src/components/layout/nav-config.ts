@@ -13,7 +13,7 @@ type IconKey =
   | "oracle"
   | "microsoft"
   | "salesforce"
-  | "blueyonder"
+  | "blue-yonder"
   | "workday"
   | "capabilities"
   | "insights"
@@ -36,8 +36,12 @@ export interface NavItem {
   href: string;
   description?: string;
   icon?: IconKey;
-  hue?: "blue" | "green" | "orange" | "teal" | "violet" | "rose";
   external?: boolean;
+  /**
+   * When false the label is rendered as non-interactive text (aria-disabled)
+   * rather than a link. Use for nav targets whose route does not yet exist.
+   */
+  published?: boolean;
 }
 
 export interface NavColumn {
@@ -62,44 +66,164 @@ export interface NavGroup {
 
 export const primaryNav: NavGroup[] = [
   {
-    label: "What we do",
-    description: "Engagement models — how you hold the risk",
+    label: "Specialisms",
+    description: "What we can find for you",
     columns: [
       {
-        heading: "Interim & permanent",
+        heading: "Platforms",
         items: [
+          { label: "SAP", href: "/platforms/sap", icon: "sap" },
+          { label: "Oracle", href: "/platforms/oracle", icon: "oracle" },
           {
-            label: "Contract Workforce",
-            href: "/contract",
-            description: "72-hour shortlists · architect-screened",
-            icon: "contract",
-            hue: "orange",
+            label: "Microsoft",
+            href: "/platforms/microsoft",
+            icon: "microsoft",
           },
           {
-            label: "Permanent Hiring",
-            href: "/permanent",
-            description: "Long-term fit, architect-vetted",
-            icon: "permanent",
-            hue: "blue",
+            label: "Salesforce",
+            href: "/platforms/salesforce",
+            icon: "salesforce",
+          },
+          {
+            label: "Blue Yonder",
+            href: "/platforms/blue-yonder",
+            icon: "blue-yonder",
+          },
+          { label: "Workday", href: "/platforms/workday", icon: "workday" },
+          { label: "ServiceNow", href: "/platforms/servicenow" },
+        ],
+      },
+      {
+        heading: "Disciplines",
+        items: [
+          {
+            label: "Data & AI",
+            href: "/capabilities/data-ai",
+            icon: "dataAi",
+          },
+          {
+            label: "Digital & DevOps",
+            href: "/capabilities/digital-devops",
+            icon: "devops",
+          },
+          {
+            label: "Cloud & Infrastructure",
+            href: "/capabilities/cloud-infrastructure",
+            icon: "cloud",
+          },
+          {
+            label: "Cybersecurity",
+            href: "/capabilities/cybersecurity",
+            icon: "security",
+          },
+          {
+            label: "Integration & Middleware",
+            href: "/capabilities/integration-middleware",
+            icon: "integration",
+          },
+          {
+            label: "Emerging Technologies",
+            href: "/capabilities/emerging-technologies",
+            icon: "emerging",
           },
         ],
       },
       {
-        heading: "Compliance & outcomes",
+        heading: "Roles",
         items: [
+          {
+            label: "AI talent",
+            href: "/ai-talent",
+            icon: "dataAi",
+            published: false,
+          },
+        ],
+      },
+    ],
+    featured: {
+      eyebrow: "New capability",
+      title: "AI talent, on demand",
+      copy: "Applied AI engineers, prompt architects and data scientists — screened for delivery, not certifications.",
+      href: "/ai-talent",
+      ctaLabel: "Explore AI talent →",
+    },
+  },
+  {
+    label: "Industries",
+    columns: [
+      {
+        heading: "Sectors",
+        items: [
+          {
+            label: "Retail & Consumer",
+            href: "/industries/retail",
+            icon: "retail",
+          },
+          {
+            label: "Manufacturing & Logistics",
+            href: "/industries/manufacturing",
+            icon: "manufacturing",
+          },
+          {
+            label: "Banking & Financial Services",
+            href: "/industries/finance",
+            icon: "finance",
+          },
+          {
+            label: "Government & Public Sector",
+            href: "/industries/government",
+            icon: "government",
+          },
+          {
+            label: "Healthcare & Life Science",
+            href: "/industries/healthcare",
+            icon: "healthcare",
+          },
+          {
+            label: "Telco & Media",
+            href: "/industries/telco",
+            icon: "telco",
+          },
+        ],
+      },
+    ],
+    featured: {
+      eyebrow: "New research",
+      title: "SAP talent in the Middle East",
+      copy: "What the market tells us about compensation and availability.",
+      href: "/insights/sap-talent-middle-east",
+      ctaLabel: "Read research →",
+    },
+  },
+  {
+    label: "How we work",
+    columns: [
+      {
+        heading: "Engagement",
+        items: [
+          {
+            label: "Contract",
+            href: "/contract",
+            description: "72-hour shortlists · architect-screened",
+            icon: "contract",
+          },
+          {
+            label: "Permanent",
+            href: "/permanent",
+            description: "Long-term fit, architect-vetted",
+            icon: "permanent",
+          },
           {
             label: "Employer of Record",
             href: "/eor",
             description: "UAE visa + India payroll cover",
             icon: "eor",
-            hue: "teal",
           },
           {
             label: "Managed Delivery",
             href: "/managed-delivery",
             description: "Scope-defined, outcome-owned",
             icon: "managed",
-            hue: "violet",
           },
         ],
       },
@@ -113,182 +237,28 @@ export const primaryNav: NavGroup[] = [
     },
   },
   {
-    label: "How we serve",
-    description: "Six sectors, six enterprise platforms",
+    label: "Evidence",
     columns: [
       {
-        heading: "Industries",
+        heading: "Explore",
         items: [
-          {
-            label: "Retail & Consumer",
-            href: "/industries/retail",
-            icon: "retail",
-            hue: "orange",
-          },
-          {
-            label: "Manufacturing & Logistics",
-            href: "/industries/manufacturing",
-            icon: "manufacturing",
-            hue: "orange",
-          },
-          {
-            label: "Banking & Financial Services",
-            href: "/industries/finance",
-            icon: "finance",
-            hue: "blue",
-          },
-          {
-            label: "Government & Public Sector",
-            href: "/industries/government",
-            icon: "government",
-            hue: "green",
-          },
-          {
-            label: "Healthcare & Life Science",
-            href: "/industries/healthcare",
-            icon: "healthcare",
-            hue: "teal",
-          },
-          {
-            label: "Telco & Media",
-            href: "/industries/telco",
-            icon: "telco",
-            hue: "violet",
-          },
-        ],
-      },
-      {
-        heading: "Platforms",
-        items: [
-          { label: "SAP", href: "/platforms/sap", icon: "sap", hue: "blue" },
-          {
-            label: "Oracle",
-            href: "/platforms/oracle",
-            icon: "oracle",
-            hue: "rose",
-          },
-          {
-            label: "Microsoft",
-            href: "/platforms/microsoft",
-            icon: "microsoft",
-            hue: "blue",
-          },
-          {
-            label: "Salesforce",
-            href: "/platforms/salesforce",
-            icon: "salesforce",
-            hue: "teal",
-          },
-          {
-            label: "Blue Yonder",
-            href: "/platforms/blueyonder",
-            icon: "blueyonder",
-            hue: "orange",
-          },
-          {
-            label: "Workday",
-            href: "/platforms/workday",
-            icon: "workday",
-            hue: "violet",
-          },
-        ],
-      },
-      {
-        heading: "Capabilities",
-        items: [
-          {
-            label: "Data & AI",
-            href: "/capabilities/data-ai",
-            icon: "dataAi",
-            hue: "blue",
-          },
-          {
-            label: "Digital & DevOps",
-            href: "/capabilities/digital-devops",
-            icon: "devops",
-            hue: "violet",
-          },
-          {
-            label: "Cloud & Infrastructure",
-            href: "/capabilities/cloud-infrastructure",
-            icon: "cloud",
-            hue: "teal",
-          },
-          {
-            label: "Cybersecurity",
-            href: "/capabilities/cybersecurity",
-            icon: "security",
-            hue: "green",
-          },
-          {
-            label: "Integration & Middleware",
-            href: "/capabilities/integration-middleware",
-            icon: "integration",
-            hue: "orange",
-          },
-          {
-            label: "Emerging Technologies",
-            href: "/capabilities/emerging-technologies",
-            icon: "emerging",
-            hue: "rose",
-          },
-        ],
-      },
-    ],
-    featured: {
-      eyebrow: "New research",
-      title: "SAP talent in the GCC",
-      copy: "What the market tells us about compensation and availability.",
-      href: "/insights/sap-talent-gcc",
-      ctaLabel: "Read research →",
-    },
-  },
-  {
-    label: "Knowledge",
-    description: "Insights, research, case studies",
-    columns: [
-      {
-        heading: "Published",
-        items: [
-          {
-            label: "Insights",
-            href: "/insights",
-            description: "Articles, research and analysis",
-            icon: "insights",
-            hue: "blue",
-          },
           {
             label: "Case studies",
             href: "/case-studies",
             description: "Programmes we've helped staff",
             icon: "cases",
-            hue: "teal",
-          },
-        ],
-      },
-      {
-        heading: "By topic",
-        items: [
-          {
-            label: "Market data",
-            href: "/insights?topic=market-data",
-            description: "Compensation windows, availability",
-            icon: "dataAi",
-            hue: "blue",
           },
           {
-            label: "Capability build",
-            href: "/insights?topic=capability-build",
-            description: "GCC engineering centres, delivery ops",
-            icon: "capabilities",
-            hue: "green",
+            label: "Clients",
+            href: "/about#clients",
+            description: "Who we've delivered for",
+            icon: "about",
           },
           {
-            label: "Engagement models",
-            href: "/insights?topic=engagement",
-            description: "Contract vs permanent vs EOR guides",
-            icon: "contract",
-            hue: "orange",
+            label: "The team who screen",
+            href: "/leadership",
+            description: "Architects behind every shortlist",
+            icon: "leadership",
           },
         ],
       },
@@ -302,88 +272,43 @@ export const primaryNav: NavGroup[] = [
     },
   },
   {
-    label: "About",
-    description: "The team behind the shortlist",
+    label: "Intelligence",
     columns: [
       {
-        heading: "Company",
+        heading: "Explore",
         items: [
           {
-            label: "About Yallo",
-            href: "/about",
-            description: "The company, the philosophy",
-            icon: "about",
-            hue: "blue",
+            label: "Insights",
+            href: "/insights",
+            description: "Articles, research and analysis",
+            icon: "insights",
           },
           {
-            label: "Why Yallo",
-            href: "/why-yallo",
-            description: "Architect-led, region-deep",
-            icon: "why",
-            hue: "orange",
+            label: "Programme Staffing Blueprint",
+            href: "/intelligence",
+            description: "The full staffing framework",
+            icon: "capabilities",
+            published: false,
           },
           {
-            label: "Leadership",
-            href: "/leadership",
-            description: "Operators from Richemont, Landmark, Alshaya EMEA",
-            icon: "leadership",
-            hue: "rose",
+            label: "AI Talent Atlas",
+            href: "/ai-talent",
+            description: "AI role landscape and comp windows",
+            icon: "dataAi",
+            published: false,
           },
         ],
       },
     ],
     featured: {
-      eyebrow: "Meet the operator",
-      title: "Sumeet Goenka",
-      copy: "Ex-Richemont, Landmark and Alshaya EMEA operator leading the architect team.",
-      href: "/leadership",
-      ctaLabel: "Meet the team →",
+      eyebrow: "Latest research",
+      title: "Talent research briefings",
+      copy: "Compensation windows, availability signals and hiring notes across UK, ME and India.",
+      href: "/insights",
+      ctaLabel: "Read the briefings →",
     },
   },
 ];
 
 export const jobSeekersHref = "/jobs";
 export const primaryCTAHref = "/brief";
-
-export const jobSeekersGroup: NavGroup = {
-  label: "Job seekers",
-  description: "For specialists · candidate portal",
-  columns: [
-    {
-      heading: "Candidate services",
-      items: [
-        {
-          label: "Upload your CV",
-          href: "https://www.yallo.co/join-us/",
-          description: "Submit your CV to apply for relevant job roles",
-          icon: "uploadCv",
-          hue: "green",
-          external: true,
-        },
-        {
-          label: "Manage Account",
-          href: "https://www.yallo.co/users/login",
-          description: "Customise your account settings to fit your needs",
-          icon: "manageAccount",
-          hue: "blue",
-          external: true,
-        },
-        {
-          label: "Job search",
-          href: "https://www.yallo.co/jobs",
-          description: "Discover the perfect job opportunities for your career",
-          icon: "jobSearch",
-          hue: "teal",
-          external: true,
-        },
-      ],
-    },
-  ],
-  featured: {
-    eyebrow: "Not registered yet?",
-    title: "Send us your CV.",
-    copy: "Our architect team screens every submission — we tell you before you're put forward.",
-    href: "https://www.yallo.co/join-us/",
-    ctaLabel: "Upload CV →",
-  },
-};

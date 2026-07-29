@@ -351,7 +351,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-merchandise-management",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Merchandise Management",
           roles: [
             "Blue Yonder Merchandise Consultant",
@@ -422,7 +422,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-assortment-optimization",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Assortment Optimization",
           roles: [
             "Blue Yonder Assortment Specialist",
@@ -467,7 +467,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-space-planning",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Space Planning",
           roles: [
             "Blue Yonder Space Planner",
@@ -757,7 +757,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-fulfilment",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Fulfillment",
           roles: [
             "Blue Yonder Fulfilment Lead",
@@ -899,7 +899,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-wms",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder WMS",
           roles: [
             "Blue Yonder WMS Specialist",
@@ -957,7 +957,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-tms",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder TMS",
           roles: [
             "Blue Yonder TMS Architect",
@@ -1015,7 +1015,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-luminate",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Luminate",
           roles: [
             "Blue Yonder Luminate Consultant",
@@ -1047,7 +1047,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-demand-planning",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Demand Planning",
           roles: [
             "Blue Yonder Demand Planner",
@@ -1105,7 +1105,7 @@ export const retailData: L1PageData = {
         {
           slug: "blue-yonder-replenishment",
           vendor: "Blue Yonder",
-          vendorSlug: "blueyonder",
+          vendorSlug: "blue-yonder",
           name: "Blue Yonder Replenishment",
           roles: [
             "Blue Yonder Replenishment Lead",
@@ -1618,7 +1618,7 @@ export const retailData: L1PageData = {
     { href: "/platforms/sap", label: "SAP", category: "Platform" },
     { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
     {
-      href: "/platforms/blueyonder",
+      href: "/platforms/blue-yonder",
       label: "Blue Yonder",
       category: "Platform",
     },

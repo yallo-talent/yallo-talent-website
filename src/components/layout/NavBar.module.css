@@ -136,6 +136,23 @@
   color: var(--accent);
 }
 
+.jobsLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 14px;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  transition: color 0.15s ease;
+}
+
+.jobsLink:hover,
+.jobsLink:focus-visible {
+  color: var(--accent);
+}
+
 /* ============ MEGA PANEL (full viewport-width) ============ */
 .megaPanel {
   position: fixed;
@@ -245,6 +262,23 @@
   background: var(--item-hue-08, var(--accent-muted));
   border-color: var(--item-hue-35, var(--border-accent));
   transform: translateX(2px);
+}
+
+.megaLink[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.megaLink[aria-disabled="true"]:hover,
+.megaLink[aria-disabled="true"]:focus-visible {
+  background: transparent;
+  border-color: transparent;
+  transform: none;
+}
+
+.mobileLink[aria-disabled="true"] {
+  color: var(--fg-muted);
+  cursor: default;
 }
 
 .itemIcon {

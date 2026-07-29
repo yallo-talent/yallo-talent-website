@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/platforms/blueyonder",
+        destination: "/platforms/blue-yonder",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

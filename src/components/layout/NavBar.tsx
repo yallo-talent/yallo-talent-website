@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./NavBar.module.css";
 import {
-  jobSeekersGroup,
+  jobSeekersHref,
   type NavItem,
   primaryCTAHref,
   primaryNav,
@@ -24,14 +24,55 @@ function NavItemIcon({ icon }: { icon?: NavItem["icon"] }) {
   return <IconComp className={styles.itemIconSvg} />;
 }
 
-const hueStyle = (hue?: NavItem["hue"]): React.CSSProperties | undefined => {
-  if (!hue) return undefined;
-  return {
-    "--item-hue": `var(--hue-${hue}-500)`,
-    "--item-hue-08": `var(--hue-${hue}-08)`,
-    "--item-hue-35": `var(--hue-${hue}-35)`,
-  } as React.CSSProperties;
-};
+function NavItemBody({ item }: { item: NavItem }) {
+  return (
+    <>
+      <span className={styles.itemIcon}>
+        <NavItemIcon icon={item.icon} />
+      </span>
+      <span className={styles.itemBody}>
+        <span className={styles.itemLabel}>
+          {item.label}
+          {item.external && (
+            <span className={styles.externalMark} aria-hidden="true">
+              ↗
+            </span>
+          )}
+        </span>
+        {item.description && (
+          <span className={styles.itemDescription}>{item.description}</span>
+        )}
+      </span>
+    </>
+  );
+}
+
+function MegaItem({ item }: { item: NavItem }) {
+  if (item.published === false) {
+    return (
+      <span className={styles.megaLink} aria-disabled="true">
+        <NavItemBody item={item} />
+      </span>
+    );
+  }
+  if (item.external) {
+    return (
+      <a
+        href={item.href}
+        className={styles.megaLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <NavItemBody item={item} />
+      </a>
+    );
+  }
+  return (
+    <Link href={item.href} className={styles.megaLink}>
+      <NavItemBody item={item} />
+    </Link>
+  );
+}
 
 export function NavBar() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -74,7 +115,7 @@ export function NavBar() {
               }
             }}
           >
-            {[...primaryNav, jobSeekersGroup].map((group) => (
+            {primaryNav.map((group) => (
               // biome-ignore lint/a11y/noStaticElementInteractions: hover opens mega-menu; keyboard uses button focus handler
               <div
                 key={group.label}
@@ -134,58 +175,11 @@ export function NavBar() {
                                 {col.heading}
                               </div>
                               <ul className={styles.megaList}>
-                                {col.items.map((item) => {
-                                  const inner = (
-                                    <>
-                                      <span className={styles.itemIcon}>
-                                        <NavItemIcon icon={item.icon} />
-                                      </span>
-                                      <span className={styles.itemBody}>
-                                        <span className={styles.itemLabel}>
-                                          {item.label}
-                                          {item.external && (
-                                            <span
-                                              className={styles.externalMark}
-                                              aria-hidden="true"
-                                            >
-                                              ↗
-                                            </span>
-                                          )}
-                                        </span>
-                                        {item.description && (
-                                          <span
-                                            className={styles.itemDescription}
-                                          >
-                                            {item.description}
-                                          </span>
-                                        )}
-                                      </span>
-                                    </>
-                                  );
-                                  return (
-                                    <li key={item.href}>
-                                      {item.external ? (
-                                        <a
-                                          href={item.href}
-                                          className={styles.megaLink}
-                                          style={hueStyle(item.hue)}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                        >
-                                          {inner}
-                                        </a>
-                                      ) : (
-                                        <Link
-                                          href={item.href}
-                                          className={styles.megaLink}
-                                          style={hueStyle(item.hue)}
-                                        >
-                                          {inner}
-                                        </Link>
-                                      )}
-                                    </li>
-                                  );
-                                })}
+                                {col.items.map((item) => (
+                                  <li key={item.href}>
+                                    <MegaItem item={item} />
+                                  </li>
+                                ))}
                               </ul>
                             </div>
                           ))}
@@ -217,6 +211,9 @@ export function NavBar() {
                 </AnimatePresence>
               </div>
             ))}
+            <Link href={jobSeekersHref} className={styles.jobsLink}>
+              Jobs
+            </Link>
           </nav>
 
           <div className={styles.actions}>
@@ -250,12 +247,23 @@ export function NavBar() {
             transition={{ type: "spring", stiffness: 260, damping: 30 }}
           >
             <div className={styles.mobileInner}>
-              {[...primaryNav, jobSeekersGroup].map((group) => (
+              {primaryNav.map((group) => (
                 <div key={group.label} className={styles.mobileGroup}>
                   <div className="eyebrow">{group.label}</div>
                   {group.columns.flatMap((col) =>
-                    col.items.map((item) =>
-                      item.external ? (
+                    col.items.map((item) => {
+                      if (item.published === false) {
+                        return (
+                          <span
+                            key={item.href}
+                            className={styles.mobileLink}
+                            aria-disabled="true"
+                          >
+                            {item.label}
+                          </span>
+                        );
+                      }
+                      return item.external ? (
                         <a
                           key={item.href}
                           href={item.href}
@@ -275,12 +283,19 @@ export function NavBar() {
                         >
                           {item.label}
                         </Link>
-                      ),
-                    ),
+                      );
+                    }),
                   )}
                 </div>
               ))}
               <div className={styles.mobileGroup}>
+                <Link
+                  href={jobSeekersHref}
+                  className={styles.mobileLink}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  Jobs
+                </Link>
                 <Link
                   href={primaryCTAHref}
                   className={styles.mobileCTA}
