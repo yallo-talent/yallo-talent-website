@@ -611,7 +611,7 @@ function L1Expertise({ data }: Props) {
   // detail" hint links here, and the L2 sidebar shows every function.
   const firstL2 = data.expertise.find((e) => (e.tools?.length ?? 0) > 0);
   const firstL2Href = firstL2
-    ? `/industries/${data.slug}/${firstL2.slug}`
+    ? `/${data.category}/${data.slug}/${firstL2.slug}`
     : null;
 
   return (
@@ -644,7 +644,7 @@ function L1Expertise({ data }: Props) {
             const l2Href =
               card.href ??
               (card.tools && card.tools.length > 0
-                ? `/industries/${data.slug}/${card.slug}`
+                ? `/${data.category}/${data.slug}/${card.slug}`
                 : undefined);
             return (
               <motion.div
