@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import type { SEOMeta } from "@/types";
 
+const PRODUCTION_URL = "https://yallo.co";
+
 export const SITE = {
-  url: "https://talent.yallo.co",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   name: "Yallo Talent",
   brand: "Yallo",
   locales: ["en-GB", "en-AE"] as const,
   defaultOgImage: "/images/og-default.jpg",
 } as const;
+
+export const isProductionHost =
+  process.env.NEXT_PUBLIC_SITE_URL === PRODUCTION_URL;
 
 interface BuildMetadataInput {
   seo: SEOMeta;
@@ -45,15 +50,24 @@ export function buildMetadata({ seo, path }: BuildMetadataInput): Metadata {
       description: seo.description,
       images: [image],
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
+    robots: isProductionHost
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        }
+      : {
+          index: false,
+          follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
+        },
   };
 }
