@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { publishedTaxonomySlugs } from "@/app/insights/_taxonomy";
 import { capabilityRegistry } from "@/data/capabilities";
 import { industriesIndex } from "@/data/l1";
 import { retailData } from "@/data/l1/retail";
@@ -91,6 +92,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
+  const taxonomyRoutes = (
+    ["industry", "platform", "discipline"] as const
+  ).flatMap((kind) =>
+    publishedTaxonomySlugs(kind).map((slug) => ({
+      url: `${SITE.url}/insights/${kind}/${slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    })),
+  );
+
   return [
     ...staticRoutes,
     ...industryRoutes,
@@ -98,5 +110,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...capabilityRoutes,
     ...insightRoutes,
     ...caseStudyRoutes,
+    ...taxonomyRoutes,
   ];
 }
