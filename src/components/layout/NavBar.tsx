@@ -11,6 +11,7 @@ import { useState } from "react";
 import styles from "./NavBar.module.css";
 import {
   jobSeekersHref,
+  type NavFeatured,
   type NavItem,
   primaryCTAHref,
   primaryNav,
@@ -44,6 +45,32 @@ function NavItemBody({ item }: { item: NavItem }) {
         )}
       </span>
     </>
+  );
+}
+
+function FeaturedBody({ featured }: { featured: NavFeatured }) {
+  return (
+    <div className={styles.featuredBody}>
+      <span className={styles.featuredEyebrow}>{featured.eyebrow}</span>
+      <span className={styles.featuredTitle}>{featured.title}</span>
+      <span className={styles.featuredCopy}>{featured.copy}</span>
+      <span className={styles.featuredCta}>{featured.ctaLabel}</span>
+    </div>
+  );
+}
+
+function FeaturedCard({ featured }: { featured: NavFeatured }) {
+  if (featured.published === false) {
+    return (
+      <div className={styles.featured} aria-disabled="true">
+        <FeaturedBody featured={featured} />
+      </div>
+    );
+  }
+  return (
+    <Link href={featured.href} className={styles.featured}>
+      <FeaturedBody featured={featured} />
+    </Link>
   );
 }
 
@@ -184,25 +211,7 @@ export function NavBar() {
                             </div>
                           ))}
                           {group.featured && (
-                            <Link
-                              href={group.featured.href}
-                              className={styles.featured}
-                            >
-                              <div className={styles.featuredBody}>
-                                <span className={styles.featuredEyebrow}>
-                                  {group.featured.eyebrow}
-                                </span>
-                                <span className={styles.featuredTitle}>
-                                  {group.featured.title}
-                                </span>
-                                <span className={styles.featuredCopy}>
-                                  {group.featured.copy}
-                                </span>
-                                <span className={styles.featuredCta}>
-                                  {group.featured.ctaLabel}
-                                </span>
-                              </div>
-                            </Link>
+                            <FeaturedCard featured={group.featured} />
                           )}
                         </div>
                       </div>

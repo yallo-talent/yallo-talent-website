@@ -666,6 +666,7 @@ export const healthcareData: L1PageData = {
   insights: [
     {
       href: "/insights/epic-cerner-talent-2025",
+      published: false,
       category: "EHR",
       title:
         "Epic vs Cerner: where the migration specialists are and what they cost in 2025.",
@@ -679,6 +680,7 @@ export const healthcareData: L1PageData = {
     },
     {
       href: "/insights/veeva-vault-scarcity-2025",
+      published: false,
       category: "Life Sciences",
       title:
         "Veeva Vault QualityDocs: why life-sciences programmes are hiring six months too late.",
@@ -692,6 +694,7 @@ export const healthcareData: L1PageData = {
     },
     {
       href: "/insights/fhir-interop-2025",
+      published: false,
       category: "Interoperability",
       title:
         "FHIR at scale: the integration architects UK ICBs and Gulf networks need on the bench.",
@@ -705,6 +708,7 @@ export const healthcareData: L1PageData = {
     },
     {
       href: "/insights/pharma-serialisation-talent",
+      published: false,
       category: "Pharma",
       title:
         "DSCSA / FMD serialisation: the specialist bench pharma manufacturers are running out of.",

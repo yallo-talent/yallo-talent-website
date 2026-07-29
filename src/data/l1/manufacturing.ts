@@ -686,6 +686,7 @@ export const manufacturingData: L1PageData = {
   insights: [
     {
       href: "/insights/smart-manufacturing-iot-2025",
+      published: false,
       category: "Smart Manufacturing",
       title:
         "Smart manufacturing: IoT's role in shaping intelligent ecosystems.",
@@ -699,6 +700,7 @@ export const manufacturingData: L1PageData = {
     },
     {
       href: "/insights/supply-chain-resilience-predictive-analytics",
+      published: false,
       category: "Supply Chain",
       title:
         "Supply chain resilience: overcoming disruptions with predictive analytics.",
@@ -712,6 +714,7 @@ export const manufacturingData: L1PageData = {
     },
     {
       href: "/insights/circular-economy-manufacturing-tech",
+      published: false,
       category: "Sustainability",
       title: "Circular economy in manufacturing: tech-enabled sustainability.",
       excerpt:
@@ -724,6 +727,7 @@ export const manufacturingData: L1PageData = {
     },
     {
       href: "/insights/siemens-opcenter-scarcity-2025",
+      published: false,
       category: "MES",
       title:
         "Siemens Opcenter specialists in the Gulf: why the bench has dried up.",

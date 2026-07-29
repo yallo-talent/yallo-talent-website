@@ -666,6 +666,7 @@ export const governmentData: L1PageData = {
   insights: [
     {
       href: "/insights/gds-service-standard-talent-2025",
+      published: false,
       category: "Digital Services",
       title:
         "GDS service standard: the specialists central departments cannot deliver a service without.",
@@ -679,6 +680,7 @@ export const governmentData: L1PageData = {
     },
     {
       href: "/insights/arcgis-planning-talent-me",
+      published: false,
       category: "Urban Planning",
       title:
         "ArcGIS in the Gulf: why regional smart-city programmes are chasing the same twenty consultants.",
@@ -692,6 +694,7 @@ export const governmentData: L1PageData = {
     },
     {
       href: "/insights/palantir-foundry-defence",
+      published: false,
       category: "Defence",
       title:
         "Palantir Foundry contractors in defence: what actually gets you shortlisted.",
@@ -705,6 +708,7 @@ export const governmentData: L1PageData = {
     },
     {
       href: "/insights/ncsc-caf-2025",
+      published: false,
       category: "Cybersecurity",
       title:
         "NCSC CAF: the security architects UK public bodies need on the bench now.",

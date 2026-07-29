@@ -55,6 +55,11 @@ export interface NavFeatured {
   copy: string;
   href: string;
   ctaLabel: string;
+  /**
+   * When false the card renders as a non-interactive tile rather than a
+   * link — used where the target route has not shipped yet.
+   */
+  published?: boolean;
 }
 
 export interface NavGroup {
@@ -192,7 +197,8 @@ export const primaryNav: NavGroup[] = [
       title: "SAP talent in the Middle East",
       copy: "What the market tells us about compensation and availability.",
       href: "/insights/sap-talent-middle-east",
-      ctaLabel: "Read research →",
+      ctaLabel: "Coming soon",
+      published: false,
     },
   },
   {

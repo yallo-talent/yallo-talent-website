@@ -686,6 +686,7 @@ export const financeData: L1PageData = {
   insights: [
     {
       href: "/insights/temenos-transact-migration-talent",
+      published: false,
       category: "Core Banking",
       title:
         "Temenos Transact migrations: why the specialist bench in the Gulf has thinned in 2025.",
@@ -699,6 +700,7 @@ export const financeData: L1PageData = {
     },
     {
       href: "/insights/guidewire-claimcenter-talent",
+      published: false,
       category: "Insurance",
       title:
         "Guidewire ClaimCenter contractors: the roles insurers are hiring six months too late.",
@@ -712,6 +714,7 @@ export const financeData: L1PageData = {
     },
     {
       href: "/insights/psd3-open-banking-2025",
+      published: false,
       category: "Digital Payments",
       title:
         "PSD3 and open banking: the API and integration talent that European banks now need on the bench.",
@@ -725,6 +728,7 @@ export const financeData: L1PageData = {
     },
     {
       href: "/insights/aml-actimize-scarcity-2025",
+      published: false,
       category: "Fin Crime",
       title:
         "AML analytics: why NICE Actimize modellers are the hardest hire in FS this year.",

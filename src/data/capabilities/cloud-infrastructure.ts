@@ -301,6 +301,7 @@ export const cloudInfrastructureData: L1PageData = {
   insights: [
     {
       href: "/insights/landing-zone-first-hire",
+      published: false,
       category: "Cloud",
       title: "The landing-zone architect is your first hire, not your last.",
       excerpt:
@@ -313,6 +314,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       href: "/insights/finops-when-to-hire",
+      published: false,
       category: "FinOps",
       title: "When to hire your first FinOps practitioner.",
       excerpt:
@@ -325,6 +327,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       href: "/insights/kubernetes-platform-team",
+      published: false,
       category: "Kubernetes",
       title: "Why every Kubernetes platform team of five is really seven.",
       excerpt:
@@ -337,6 +340,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       href: "/insights/sre-in-regulated-clouds",
+      published: false,
       category: "SRE",
       title: "SRE inside a regulated cloud — the parts nobody documents.",
       excerpt:

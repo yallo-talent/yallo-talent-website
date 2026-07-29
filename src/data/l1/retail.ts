@@ -1537,6 +1537,7 @@ export const retailData: L1PageData = {
   insights: [
     {
       href: "/insights/blue-yonder-luminate-scarcity-2025",
+      published: false,
       category: "Supply Chain",
       title:
         "Blue Yonder Luminate contractors: why the bench dried up and what retail programmes are doing about it.",
@@ -1550,6 +1551,7 @@ export const retailData: L1PageData = {
     },
     {
       href: "/insights/sap-commerce-cloud-middle-east",
+      published: false,
       category: "E-commerce",
       title:
         "SAP Commerce Cloud in the Gulf: implementation contractors are being hired six months too late.",
@@ -1563,6 +1565,7 @@ export const retailData: L1PageData = {
     },
     {
       href: "/insights/retail-planning-anaplan-demand",
+      published: false,
       category: "Planning & Analytics",
       title:
         "Anaplan Model Builders in retail: the role that's reshaping how large retailers plan — and why there aren't enough of them.",
@@ -1576,6 +1579,7 @@ export const retailData: L1PageData = {
     },
     {
       href: "/insights/retail-cx-contractor-retention",
+      published: false,
       category: "Customer Experience",
       title:
         "Why retail CX contractors walk at go-live — and how to keep them.",
@@ -1589,6 +1593,7 @@ export const retailData: L1PageData = {
     },
     {
       href: "/insights/72-hour-talent-benchmark",
+      published: false,
       category: "Talent Operations",
       title:
         "The 72-hour benchmark: what enterprise retailers get wrong about contractor speed.",

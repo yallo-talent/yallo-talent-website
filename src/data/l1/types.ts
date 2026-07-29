@@ -166,6 +166,11 @@ export interface L1Insight {
   minutes: number;
   image: string;
   imageAlt: string;
+  /**
+   * When false, the card renders as non-interactive text rather than a
+   * link. Use where `href` points at a route that has not shipped yet.
+   */
+  published?: boolean;
 }
 
 export interface L1PageData {
