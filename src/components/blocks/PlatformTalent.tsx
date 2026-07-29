@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./PlatformTalent.module.css";
@@ -13,6 +14,7 @@ interface Platform {
   desc: string;
   tags: [string, string, string];
   hue: Hue;
+  icon?: string;
 }
 
 const platforms: Platform[] = [
@@ -23,6 +25,7 @@ const platforms: Platform[] = [
     desc: "S/4HANA, FICO, MM, SD and integration specialists — functional and technical.",
     tags: ["Functional", "Technical", "Architecture"],
     hue: "blue",
+    icon: "/logos/platforms/sap.svg",
   },
   {
     slug: "oracle",
@@ -31,6 +34,7 @@ const platforms: Platform[] = [
     desc: "ERP, EPM, HCM and Fusion specialists across the back office.",
     tags: ["Functional", "Technical", "EPM"],
     hue: "rose",
+    icon: "/logos/platforms/oracle.svg",
   },
   {
     slug: "microsoft",
@@ -39,6 +43,7 @@ const platforms: Platform[] = [
     desc: "Dynamics, Azure, Power Platform and M365 engineers and leads.",
     tags: ["Dynamics", "Azure", "Power Platform"],
     hue: "blue",
+    icon: "/logos/platforms/microsoft.svg",
   },
   {
     slug: "salesforce",
@@ -47,6 +52,7 @@ const platforms: Platform[] = [
     desc: "Core CRM, Commerce Cloud and integration architects.",
     tags: ["Admin", "Developer", "Architect"],
     hue: "teal",
+    icon: "/logos/platforms/salesforce.svg",
   },
   {
     slug: "blueyonder",
@@ -63,6 +69,7 @@ const platforms: Platform[] = [
     desc: "HCM, Payroll, Recruiting and Adaptive Planning specialists.",
     tags: ["HCM", "Payroll", "Adaptive"],
     hue: "violet",
+    icon: "/logos/platforms/workday.svg",
   },
   {
     slug: "servicenow",
@@ -71,6 +78,7 @@ const platforms: Platform[] = [
     desc: "ITSM, HRSD and platform development specialists.",
     tags: ["ITSM", "Platform Dev", "Integration"],
     hue: "green",
+    icon: "/logos/platforms/servicenow.svg",
   },
   {
     slug: "aws",
@@ -79,6 +87,7 @@ const platforms: Platform[] = [
     desc: "Cloud architects, DevOps engineers and solutions architects.",
     tags: ["Cloud", "DevOps", "Solutions Arch"],
     hue: "orange",
+    icon: "/logos/platforms/aws.svg",
   },
 ];
 
@@ -195,7 +204,19 @@ export function PlatformTalent() {
                 <div className={styles.cardGlow} aria-hidden="true" />
                 <div className={styles.cardHighlight} aria-hidden="true" />
                 <div className={styles.cardTop}>
-                  <span className={styles.badge}>{p.abbr}</span>
+                  <span className={styles.badge}>
+                    {p.icon ? (
+                      <Image
+                        src={p.icon}
+                        alt=""
+                        width={44}
+                        height={44}
+                        className={styles.badgeIcon}
+                      />
+                    ) : (
+                      p.abbr
+                    )}
+                  </span>
                   <span className={styles.cardArrow} aria-hidden="true">
                     →
                   </span>

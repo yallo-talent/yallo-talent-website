@@ -326,15 +326,23 @@
   justify-content: center;
   min-width: 44px;
   height: 44px;
-  padding: 0 12px;
+  padding: 6px 10px;
   border-radius: 12px;
-  background: var(--sector-accent-08);
+  background: var(--fg);
   border: 1px solid var(--sector-accent-35);
   color: var(--sector-accent);
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.06em;
+  overflow: hidden;
+}
+
+.badgeIcon {
+  width: auto;
+  max-width: 40px;
+  height: 28px;
+  object-fit: contain;
 }
 
 .cardArrow {
