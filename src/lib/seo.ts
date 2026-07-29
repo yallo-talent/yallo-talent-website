@@ -4,14 +4,15 @@ import type { SEOMeta } from "@/types";
 const PRODUCTION_URL = "https://yallo.co";
 
 export const SITE = {
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? PRODUCTION_URL,
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   name: "Yallo Talent",
   brand: "Yallo",
   locales: ["en-GB", "en-AE"] as const,
   defaultOgImage: "/images/og-default.jpg",
 } as const;
 
-export const isProductionHost = SITE.url === PRODUCTION_URL;
+export const isProductionHost =
+  process.env.NEXT_PUBLIC_SITE_URL === PRODUCTION_URL;
 
 interface BuildMetadataInput {
   seo: SEOMeta;
