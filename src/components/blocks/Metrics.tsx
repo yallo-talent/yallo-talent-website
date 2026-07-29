@@ -1,48 +1,42 @@
 "use client";
 
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
-import { useEffect, useRef } from "react";
+import { animate, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { homeMetrics, type MetricStat } from "@/data/metrics";
 import styles from "./Metrics.module.css";
 
-interface Stat {
-  target: number;
-  suffix?: string;
-  label: string;
-}
-
-const stats: Stat[] = [
-  { target: 72, suffix: "hrs", label: "Brief to shortlist" },
-  { target: 2, suffix: ":1", label: "CV-to-interview ratio" },
-  { target: 3, label: "Delivery regions" },
-  { target: 6, suffix: "+", label: "Platform ecosystems" },
-];
-
-function StatCell({ target, suffix, label, delay }: Stat & { delay: number }) {
+function StatCell({
+  target,
+  suffix,
+  label,
+  delay,
+}: MetricStat & { delay: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) => Math.round(v).toString());
+  const [display, setDisplay] = useState<number>(target);
 
   useEffect(() => {
     if (!inView) return;
-    const controls = animate(count, target, {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(target);
+      return;
+    }
+    setDisplay(0);
+    const controls = animate(0, target, {
       duration: 1.4,
       delay,
       ease: "easeOut",
+      onUpdate: (v) => setDisplay(Math.round(v)),
+      onComplete: () => setDisplay(target),
     });
     return () => controls.stop();
-  }, [inView, target, delay, count]);
+  }, [inView, target, delay]);
 
   return (
     <div ref={ref} className={styles.stat}>
       <div className={styles.numRow}>
-        <motion.span className={styles.num}>{display}</motion.span>
+        <span className={styles.num}>{display}</span>
         {suffix && <span className={styles.sfx}>{suffix}</span>}
       </div>
       <div className={styles.rule} />
@@ -69,7 +63,7 @@ export function Metrics() {
         </header>
 
         <div className={styles.grid}>
-          {stats.map((s, i) => (
+          {homeMetrics.map((s, i) => (
             <StatCell key={s.label} {...s} delay={i * 0.12} />
           ))}
         </div>

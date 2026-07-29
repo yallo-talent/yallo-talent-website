@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  animate,
-  motion,
-  useInView,
-  useMotionValue,
-  useTransform,
-} from "framer-motion";
+import { animate, motion, useInView } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./CaseStudies.module.css";
 
 type Hue = "blue" | "green" | "orange" | "teal" | "violet" | "rose";
@@ -213,22 +207,29 @@ function AnimatedMetric({
   suffix: string;
   inView: boolean;
 }) {
-  const count = useMotionValue(0);
-  const display = useTransform(count, (v) => Math.round(v).toString());
+  const [display, setDisplay] = useState<number>(target);
 
   useEffect(() => {
     if (!inView) return;
-    const controls = animate(count, target, {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(target);
+      return;
+    }
+    setDisplay(0);
+    const controls = animate(0, target, {
       duration: 1.2,
       delay: 0.2,
       ease: "easeOut",
+      onUpdate: (v) => setDisplay(Math.round(v)),
+      onComplete: () => setDisplay(target),
     });
     return () => controls.stop();
-  }, [inView, target, count]);
+  }, [inView, target]);
 
   return (
     <span className={styles.metric}>
-      <motion.span className={styles.metricN}>{display}</motion.span>
+      <span className={styles.metricN}>{display}</span>
       {suffix && <span className={styles.metricSfx}>{suffix}</span>}
     </span>
   );
