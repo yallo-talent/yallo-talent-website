@@ -51,7 +51,8 @@ export const cloudInfrastructureData: L1PageData = {
   ],
 
   scarceEyebrow: "Scarce talent · high demand",
-  scarceTitle: "The Cloud & Infra roles every enterprise programme fights over.",
+  scarceTitle:
+    "The Cloud & Infra roles every enterprise programme fights over.",
   scarceCopy:
     "These are the specialists that appear on every cloud migration and platform brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -122,11 +123,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Platform Engineering",
       icon: "integration",
       blurb: "Internal developer platforms, golden paths, Backstage.",
-      roles: [
-        "Platform Engineer",
-        "IDP Architect",
-        "Backstage Lead",
-      ],
+      roles: ["Platform Engineer", "IDP Architect", "Backstage Lead"],
     },
     {
       slug: "sre-reliability",
@@ -134,11 +131,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "SRE & Reliability",
       icon: "spark",
       blurb: "SLOs, error budgets, incident response and chaos.",
-      roles: [
-        "Principal SRE",
-        "Reliability Engineer",
-        "Incident Commander",
-      ],
+      roles: ["Principal SRE", "Reliability Engineer", "Incident Commander"],
     },
     {
       slug: "kubernetes-containers",
@@ -158,11 +151,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "IaC & Automation",
       icon: "integration",
       blurb: "Terraform, Pulumi, Crossplane, policy-as-code.",
-      roles: [
-        "Terraform Lead",
-        "Pulumi Engineer",
-        "Policy-as-Code Architect",
-      ],
+      roles: ["Terraform Lead", "Pulumi Engineer", "Policy-as-Code Architect"],
     },
     {
       slug: "cloud-security",
@@ -170,11 +159,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Cloud Security",
       icon: "security",
       blurb: "CSPM, CNAPP, IAM hardening and workload identity.",
-      roles: [
-        "Cloud Security Architect",
-        "IAM Engineer",
-        "CSPM Consultant",
-      ],
+      roles: ["Cloud Security Architect", "IAM Engineer", "CSPM Consultant"],
     },
     {
       slug: "networking",
@@ -194,11 +179,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "FinOps & Cost",
       icon: "finance",
       blurb: "Unit economics, tagging, showback and rate optimisation.",
-      roles: [
-        "FinOps Practitioner",
-        "Cloud Economist",
-        "Cost Governance Lead",
-      ],
+      roles: ["FinOps Practitioner", "Cloud Economist", "Cost Governance Lead"],
     },
     {
       slug: "observability",
@@ -227,8 +208,7 @@ export const cloudInfrastructureData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle:
-    "Every sector runs a cloud programme — we staff them all.",
+  segmentsTitle: "Every sector runs a cloud programme — we staff them all.",
   segmentsSub:
     "Retail resilience, banking landing-zones, healthcare compliant clouds or public-sector modernisation — same architect-screened bench, calibrated to your operating context.",
   segments: [
@@ -268,11 +248,7 @@ export const cloudInfrastructureData: L1PageData = {
       image:
         "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&auto=format&fit=crop&q=80",
       imageAlt: "Healthcare analytics dashboard",
-      roles: [
-        "HIPAA Cloud Architect",
-        "Clinical Workload SRE",
-        "DR Engineer",
-      ],
+      roles: ["HIPAA Cloud Architect", "Clinical Workload SRE", "DR Engineer"],
     },
     {
       id: "government",
