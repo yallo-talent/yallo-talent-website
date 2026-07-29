@@ -2,8 +2,14 @@
 
 import { animate, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { homeMetrics, type MetricStat } from "@/data/metrics";
 import styles from "./Metrics.module.css";
+
+export interface MetricStat {
+  target: number;
+  suffix?: string;
+  label: string;
+  source: string;
+}
 
 function StatCell({
   target,
@@ -45,7 +51,7 @@ function StatCell({
   );
 }
 
-export function Metrics() {
+export function Metrics({ stats }: { stats: MetricStat[] }) {
   return (
     <section id="metrics" className={styles.section}>
       <div className={styles.breathe} aria-hidden="true" />
@@ -63,7 +69,7 @@ export function Metrics() {
         </header>
 
         <div className={styles.grid}>
-          {homeMetrics.map((s, i) => (
+          {stats.map((s, i) => (
             <StatCell key={s.label} {...s} delay={i * 0.12} />
           ))}
         </div>
