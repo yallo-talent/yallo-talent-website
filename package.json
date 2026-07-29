@@ -10,7 +10,11 @@
     "prepare": "husky || true"
   },
   "engines": {
-    "node": ">=20"
+    "node": "22.x",
+    "pnpm": ">=9"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sharp", "unrs-resolver"]
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
