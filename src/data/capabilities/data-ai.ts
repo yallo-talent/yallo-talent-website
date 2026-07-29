@@ -320,6 +320,7 @@ export const dataAiData: L1PageData = {
     },
     {
       href: "/insights/genai-in-enterprise",
+      published: false,
       category: "GenAI",
       title: "GenAI in the enterprise — beyond the demo.",
       excerpt:
@@ -332,6 +333,7 @@ export const dataAiData: L1PageData = {
     },
     {
       href: "/insights/data-platform-migration",
+      published: false,
       category: "Data Platform",
       title: "Snowflake or Databricks? The wrong first question.",
       excerpt:
@@ -344,6 +346,7 @@ export const dataAiData: L1PageData = {
     },
     {
       href: "/insights/mlops-cost-of-ignoring",
+      published: false,
       category: "MLOps",
       title: "The cost of ignoring MLOps until year two.",
       excerpt:

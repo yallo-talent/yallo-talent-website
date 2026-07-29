@@ -1,0 +1,37 @@
+# Client register. Any entry with consentOnFile: false must not render
+# anywhere on the site — the loader filters at read time and every
+# consumer must respect that filter. Flip consentOnFile to true only
+# once written consent is on file.
+enterprise:
+  - name: Landmark Group
+    logo: /logos/clients/landmark.svg
+    consentOnFile: false
+  - name: Majid Al Futtaim
+    logo: /logos/clients/majid-al-futtaim.svg
+    consentOnFile: false
+  - name: Al Tayer Group
+    logo: /logos/clients/al-tayer.svg
+    consentOnFile: false
+  - name: Chalhoub Group
+    logo: /logos/clients/chalhoub.svg
+    consentOnFile: false
+  - name: Wickes
+    logo: /logos/clients/wickes.svg
+    consentOnFile: false
+
+integrators:
+  - name: TCS
+    logo: /logos/clients/tcs.svg
+    consentOnFile: false
+  - name: Infosys
+    logo: /logos/clients/infosys.svg
+    consentOnFile: false
+  - name: Capgemini
+    logo: /logos/clients/capgemini.svg
+    consentOnFile: false
+  - name: Wipro
+    logo: /logos/clients/wipro.svg
+    consentOnFile: false
+  - name: Oracle Consulting
+    logo: /logos/clients/oracle-consulting.svg
+    consentOnFile: false

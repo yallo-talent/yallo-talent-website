@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { getConsentedClients } from "@/lib/clients";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -62,6 +63,10 @@ const timeline = [
 ];
 
 export default function AboutPage() {
+  const enterpriseClients = getConsentedClients("enterprise");
+  const integratorPartners = getConsentedClients("integrators");
+  const hasClients = enterpriseClients.length + integratorPartners.length > 0;
+
   return (
     <div className={styles.page} style={hueStyle}>
       {/* HERO */}
@@ -231,6 +236,51 @@ export default function AboutPage() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CLIENTS */}
+      <section id="clients" className={styles.section}>
+        <div className={styles.wrap}>
+          <div className={styles.sectionInner}>
+            <span className={styles.sectionEyebrow}>Clients</span>
+            <h2 className={styles.sectionH}>Who we've worked with.</h2>
+            {hasClients ? (
+              <>
+                {enterpriseClients.length > 0 && (
+                  <>
+                    <span className={styles.sectionEyebrow}>Enterprise</span>
+                    <div className={styles.cardGrid3}>
+                      {enterpriseClients.map((c) => (
+                        <div key={c.name} className={styles.card}>
+                          <div className={styles.cardTitle}>{c.name}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {integratorPartners.length > 0 && (
+                  <>
+                    <span className={styles.sectionEyebrow}>
+                      Integrator partners
+                    </span>
+                    <div className={styles.cardGrid3}>
+                      {integratorPartners.map((c) => (
+                        <div key={c.name} className={styles.card}>
+                          <div className={styles.cardTitle}>{c.name}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <p className={styles.sectionLede}>
+                We name clients only where written consent is on file. A current
+                reference list is available on request.
+              </p>
+            )}
           </div>
         </div>
       </section>

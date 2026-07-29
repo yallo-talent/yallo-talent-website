@@ -698,13 +698,8 @@ function L2Insights({ sector }: { sector: L1PageData }) {
         <div className={styles.insightsScroll}>
           {sector.insights.map((post, i) => {
             const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
-            return (
-              <Link
-                key={post.href}
-                href={post.href}
-                className={styles.insCard}
-                style={cardHueStyle(hue)}
-              >
+            const inner = (
+              <>
                 <Image
                   src={post.image}
                   alt={post.imageAlt}
@@ -721,9 +716,33 @@ function L2Insights({ sector }: { sector: L1PageData }) {
                     <span className={styles.insAuthor}>
                       {post.author} · {post.minutes} min
                     </span>
-                    <span className={styles.insRead}>Read →</span>
+                    {post.published !== false && (
+                      <span className={styles.insRead}>Read →</span>
+                    )}
                   </div>
                 </div>
+              </>
+            );
+            if (post.published === false) {
+              return (
+                <div
+                  key={post.href}
+                  className={styles.insCard}
+                  style={cardHueStyle(hue)}
+                  aria-disabled="true"
+                >
+                  {inner}
+                </div>
+              );
+            }
+            return (
+              <Link
+                key={post.href}
+                href={post.href}
+                className={styles.insCard}
+                style={cardHueStyle(hue)}
+              >
+                {inner}
               </Link>
             );
           })}

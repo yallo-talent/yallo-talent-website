@@ -1,0 +1,17 @@
+# Homepage metric strip. Each metric requires a source; asAt is the date
+# these values were verified against internal delivery records or the
+# stated source. Update asAt whenever any value changes.
+asAt: 2026-07-29
+metrics:
+  - target: 72
+    suffix: hrs
+    label: Brief to shortlist
+    source: Yallo internal delivery record, Q1-Q2 2026
+  - target: 2
+    suffix: ":1"
+    label: CV-to-interview ratio
+    source: Yallo internal shortlist record, Q1-Q2 2026
+  - target: 7
+    suffix: +
+    label: Platform ecosystems
+    source: Yallo internal platform coverage register, Q2 2026

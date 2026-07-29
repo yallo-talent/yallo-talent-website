@@ -684,6 +684,7 @@ export const telcoData: L1PageData = {
   insights: [
     {
       href: "/insights/amdocs-charging-scarcity-2025",
+      published: false,
       category: "BSS",
       title:
         "Amdocs Charging (CES) specialists: why every UK / ME telco is now competing for the same twenty architects.",
@@ -697,6 +698,7 @@ export const telcoData: L1PageData = {
     },
     {
       href: "/insights/5g-standalone-talent-me",
+      published: false,
       category: "5G",
       title:
         "5G Standalone in the Gulf: the specialists Middle East carriers need on the bench right now.",
@@ -710,6 +712,7 @@ export const telcoData: L1PageData = {
     },
     {
       href: "/insights/salesforce-comms-cloud-2025",
+      published: false,
       category: "CRM",
       title:
         "Salesforce Communications Cloud: what actually gets a carrier delivery on time.",
@@ -723,6 +726,7 @@ export const telcoData: L1PageData = {
     },
     {
       href: "/insights/oss-bss-modernisation",
+      published: false,
       category: "OSS/BSS",
       title:
         "OSS/BSS modernisation: the migration architects who actually delivered legacy-to-cloud in the last 24 months.",
