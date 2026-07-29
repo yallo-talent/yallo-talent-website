@@ -10,6 +10,10 @@ const isoDateString = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, "date must be YYYY-MM-DD");
 
+const slugArray = z
+  .array(z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "must be kebab-case"))
+  .optional();
+
 export const insightFrontmatterSchema = z.object({
   title: z.string().min(1),
   slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "slug must be kebab-case"),
@@ -19,6 +23,14 @@ export const insightFrontmatterSchema = z.object({
   author: z.string().min(1),
   readingTimeMinutes: z.number().int().positive(),
   sources: z.array(sourceSchema).optional(),
+  /** Taxonomy tags. Consumed by /insights/{industry,platform,discipline}/[slug] archives. */
+  industry: slugArray,
+  platform: slugArray,
+  discipline: slugArray,
+  /** Defaults to true; when false the article is not linked from any hub or archive. */
+  published: z.boolean().optional(),
+  /** For unpublished stubs: rewrite direction so the piece can be revived intentionally. */
+  rewriteBrief: z.string().optional(),
 });
 
 const metricSchema = z.object({

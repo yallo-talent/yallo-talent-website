@@ -69,6 +69,37 @@ export function getAllInsights(): LoadedEntry<InsightFrontmatter>[] {
     .sort((a, b) => (a.frontmatter.date < b.frontmatter.date ? 1 : -1));
 }
 
+function isPublished(entry: LoadedEntry<InsightFrontmatter>): boolean {
+  return entry.frontmatter.published !== false;
+}
+
+export function getPublishedInsights(): LoadedEntry<InsightFrontmatter>[] {
+  return getAllInsights().filter(isPublished);
+}
+
+export function getInsightsByTaxonomy(
+  kind: "industry" | "platform" | "discipline",
+  slug: string,
+): LoadedEntry<InsightFrontmatter>[] {
+  return getPublishedInsights().filter((entry) =>
+    (entry.frontmatter[kind] ?? []).includes(slug),
+  );
+}
+
+export function getTaxonomyIndex(
+  kind: "industry" | "platform" | "discipline",
+): Map<string, LoadedEntry<InsightFrontmatter>[]> {
+  const index = new Map<string, LoadedEntry<InsightFrontmatter>[]>();
+  for (const entry of getPublishedInsights()) {
+    for (const value of entry.frontmatter[kind] ?? []) {
+      const bucket = index.get(value) ?? [];
+      bucket.push(entry);
+      index.set(value, bucket);
+    }
+  }
+  return index;
+}
+
 export function getAllCaseStudySlugs(): string[] {
   return readMdxFilesSync(CASE_STUDIES_DIR);
 }

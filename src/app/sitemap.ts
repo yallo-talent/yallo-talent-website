@@ -3,7 +3,11 @@ import { capabilityRegistry } from "@/data/capabilities";
 import { industriesIndex } from "@/data/l1";
 import { retailData } from "@/data/l1/retail";
 import type { L1PageData } from "@/data/l1/types";
-import { getAllCaseStudySlugs, getAllInsightSlugs } from "@/lib/content";
+import {
+  getAllCaseStudySlugs,
+  getAllInsightSlugs,
+  getInsight,
+} from "@/lib/content";
 import { SITE } from "@/lib/seo";
 
 const sectorL2Registry: Record<string, L1PageData> = {
@@ -65,12 +69,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const insightRoutes = getAllInsightSlugs().map((slug) => ({
-    url: `${SITE.url}/insights/${slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
-  }));
+  const insightRoutes = getAllInsightSlugs()
+    .filter((slug) => {
+      try {
+        return getInsight(slug).frontmatter.published !== false;
+      } catch {
+        return false;
+      }
+    })
+    .map((slug) => ({
+      url: `${SITE.url}/insights/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
 
   const caseStudyRoutes = getAllCaseStudySlugs().map((slug) => ({
     url: `${SITE.url}/case-studies/${slug}`,

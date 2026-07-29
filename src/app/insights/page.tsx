@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
-import { getAllInsights } from "@/lib/content";
+import { getPublishedInsights } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -14,7 +14,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function InsightsHub() {
-  const all = getAllInsights();
+  const all = getPublishedInsights();
   const [featured, ...rest] = all;
 
   return (
