@@ -16,7 +16,15 @@ interface RouteParams {
 }
 
 export function generateStaticParams(): RouteParams[] {
-  return getAllInsightSlugs().map((slug) => ({ slug }));
+  return getAllInsightSlugs()
+    .filter((slug) => {
+      try {
+        return getInsight(slug).frontmatter.published !== false;
+      } catch {
+        return false;
+      }
+    })
+    .map((slug) => ({ slug }));
 }
 
 interface PageProps {
@@ -50,7 +58,7 @@ export async function generateMetadata({
 export default async function InsightPage({ params }: PageProps) {
   const { slug } = await params;
   const entry = tryGetInsight(slug);
-  if (!entry) notFound();
+  if (!entry || entry.frontmatter.published === false) notFound();
   const { frontmatter, body } = entry;
 
   return (
