@@ -5,11 +5,13 @@ import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { LogoImage } from "@/components/blocks/home/LogoImage";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
+import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { platforms as platformAxis } from "@/data/home/place";
 import {
   getPlatformCoverage,
   publishedPlatformSlugs,
 } from "@/data/platforms/derive";
+import { whyPoints } from "@/data/platforms/why";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -77,43 +79,10 @@ export default async function PlatformPage({
             like.
           </p>
 
-          <dl className={styles.metrics}>
-            <div className={styles.metric}>
-              <span className={styles.metricPetal} aria-hidden="true" />
-              <dd className={styles.metricValue}>{cov.moduleCount}</dd>
-              <dt className={styles.metricLabel}>Modules covered</dt>
-              <dd className={styles.metricDefinition}>
-                Distinct {cov.name} products we place specialists into.
-              </dd>
-            </div>
-            <div className={styles.metric}>
-              <span className={styles.metricPetal} aria-hidden="true" />
-              <dd className={styles.metricValue}>{cov.roleCount}</dd>
-              <dt className={styles.metricLabel}>Distinct roles</dt>
-              <dd className={styles.metricDefinition}>
-                Named contractor roles, not job-title variations.
-              </dd>
-            </div>
-            <div className={styles.metric}>
-              <span className={styles.metricPetal} aria-hidden="true" />
-              <dd className={styles.metricValue}>72h</dd>
-              <dt className={styles.metricLabel}>Brief to shortlist</dt>
-              <dd className={styles.metricDefinition}>
-                Three screened candidates from a complete brief.
-              </dd>
-            </div>
-            {/* Deliberately a canon metric rather than sector count: with
-                module data currently seeded for one sector, "1 sector" is both
-                ungrammatical and a weak thing to publish. */}
-            <div className={styles.metric}>
-              <span className={styles.metricPetal} aria-hidden="true" />
-              <dd className={styles.metricValue}>80%</dd>
-              <dt className={styles.metricLabel}>Contracts renewed</dt>
-              <dd className={styles.metricDefinition}>
-                Placed contractors extended at least once.
-              </dd>
-            </div>
-          </dl>
+          {/* The four-point why rail: the wedge, the screen, the terms, the
+              speed. Three figures are derived from this platform's own
+              coverage; the fourth is a canon §6 metric. Nothing unsourced. */}
+          <WhyRail points={whyPoints(cov)} />
 
           <div className={styles.ctaRow}>
             <Link className={styles.btnPrimary} href="/brief">
@@ -147,6 +116,13 @@ export default async function PlatformPage({
                   </span>
                 ) : null}
                 <h3>{mod.name}</h3>
+                {/* The scope line: what Yallo places on this module, never what
+                    the module does. Only authored modules carry one; derived
+                    modules render the roles alone rather than a written-for-them
+                    sentence. */}
+                {mod.scope ? (
+                  <p className={styles.vowScope}>{mod.scope}</p>
+                ) : null}
                 <ul className={styles.roleChips}>
                   {mod.roles.map((r) => (
                     <li key={r} className="role-pill">

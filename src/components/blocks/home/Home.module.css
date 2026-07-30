@@ -1142,6 +1142,16 @@
   flex: none;
 }
 
+/* A module's scope line: what Yallo places on it, Talent-speak. */
+.vowScope {
+  position: relative;
+  margin-top: 8px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 46ch;
+}
+
 .vowFoot {
   margin-top: auto;
   padding-top: 22px;
@@ -1500,15 +1510,15 @@
   border-color: var(--boundary);
 }
 
+/* No tile. `--paper-2` was a hardcoded LIGHT ground regardless of theme, so on
+   dark surfaces every mark sat in a bright rectangle — the white-card problem
+   canon §8 names. The mark now sits on the card's own ground. */
 .caseLogo {
   display: grid;
   place-items: center;
-  height: 44px;
+  height: 32px;
   width: fit-content;
-  min-width: 88px;
-  padding: 0 12px;
-  background: var(--paper-2);
-  border: 1px solid var(--hairline);
+  min-width: 72px;
   border-radius: 0 0 0 var(--r-xs);
   margin-bottom: 18px;
 }

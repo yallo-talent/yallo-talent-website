@@ -1,0 +1,108 @@
+/* The four-point why rail. A scroll-snap track of native cards: no carousel
+   library, no hero carousel, nothing hidden from a crawler. */
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 16px;
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+  /* Equal-height by grid, so auto-advance cannot shift layout. */
+  align-items: stretch;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2vw, 24px);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  /* The petal, bottom-left. */
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: 550;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  max-width: 24ch;
+}
+
+.body {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 42ch;
+}
+
+/* Pushed to the foot so the four cards align on their figures. */
+.figure {
+  margin: auto 0 0;
+  padding-top: 14px;
+  display: grid;
+  gap: 2px;
+  border-top: 1px solid var(--hairline);
+}
+
+.figureValue {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.figureLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Below 900px the four become a swipeable track rather than shrinking to
+   unreadable columns. Snap points keep a card edge-aligned after each advance. */
+@media (max-width: 900px) {
+  .track {
+    grid-auto-columns: minmax(78%, 1fr);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    /* Full-bleed the track so the first card aligns to the page gutter. */
+    padding-inline: var(--pad);
+    margin-inline: calc(var(--pad) * -1);
+  }
+
+  .track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card {
+    scroll-snap-align: start;
+  }
+}
+
+@media (max-width: 560px) {
+  .track {
+    grid-auto-columns: minmax(86%, 1fr);
+  }
+}
