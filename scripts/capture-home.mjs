@@ -66,11 +66,24 @@ for (const theme of ["light", "dark"]) {
       window.scrollTo(0, 0);
     });
 
-    // Images inside the horizontally scrolling case rail are excluded from the
-    // completeness requirement: vertical scrolling never reveals the later
-    // slides, so at 360px their lazy loading correctly does not fire. Demanding
-    // they load would be asserting that the carousel is NOT lazy.
-    const RAIL = '[aria-label="Published case studies"] img';
+    // Images inside a horizontally translated track are excluded from the
+    // COMPLETENESS requirement: vertical scrolling never reveals them, so their
+    // lazy loading correctly does not fire. Demanding they load would be
+    // asserting that the marquee is NOT lazy.
+    //
+    // Two such tracks: the case rail (later slides), and the client rail's
+    // aria-hidden duplicate half, which exists only to make the loop seamless.
+    // Every URL in that duplicate also appears in the FIRST, eager, non-hidden
+    // half, which is still asserted — so coverage is unchanged: a broken mark
+    // still fails. Making the duplicate eager instead pushed 36 images in front
+    // of the `load` event and timed the reduced-motion navigation out at 30s.
+    //
+    // The decode check below deliberately stays universal: `complete` with
+    // naturalWidth 0 is a failure wherever it sits, deferred or not.
+    const RAIL = [
+      '[aria-label="Published case studies"] img',
+      '[aria-label="Clients and integrators"] [aria-hidden="true"] img',
+    ].join(", ");
     await page
       .waitForFunction(
         (sel) => {

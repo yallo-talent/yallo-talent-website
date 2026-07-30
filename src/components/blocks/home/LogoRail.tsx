@@ -58,13 +58,20 @@ function LogoItems({
           aria-hidden={ariaHidden || undefined}
         >
           {c.logo ? (
-            /* Eager, deliberately. These marks sit high on the page and the
-               track is a horizontal marquee: a lazily-loaded mark on the
-               duplicated half never enters the viewport by vertical scrolling,
-               so it never loads at all — which the served-markup gate correctly
-               failed on. Eighteen small marks, and the duplicate half reuses
-               the same URLs from cache. */
-            <LogoImage src={c.logo} width={120} height={30} eager />
+            /* The FIRST track is eager and the duplicate is not, which is the
+               only combination that satisfies both gates. Lazy on the first
+               track meant marks on a horizontally-translated marquee never
+               entered the viewport and so never loaded at all. Eager on BOTH
+               put 36 images in front of the `load` event and timed out CI's
+               reduced-motion navigation at 30s. The duplicate is aria-hidden
+               decoration sharing the same URLs, so it paints from cache without
+               ever blocking load. */
+            <LogoImage
+              src={c.logo}
+              width={120}
+              height={30}
+              eager={!ariaHidden}
+            />
           ) : (
             <span className={styles.wordmark}>{c.name}</span>
           )}
