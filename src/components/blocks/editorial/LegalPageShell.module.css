@@ -26,7 +26,7 @@
   padding: 24px 20px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .tocTitle {
@@ -34,7 +34,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 14px;
 }
 
@@ -51,10 +51,10 @@
   display: block;
   padding: 8px 10px;
   margin: 0 -10px;
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   letter-spacing: -0.005em;
-  border-radius: 8px;
+  border-radius: 0 0 0 var(--r-xs);
   border-left: 2px solid transparent;
   transition:
     color 0.15s ease,
@@ -63,7 +63,7 @@
 }
 
 .tocLink:hover {
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border-left-color: var(--sector-accent);
 }
@@ -90,7 +90,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 12px;
 }
 
@@ -104,7 +104,7 @@
 }
 
 .para {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   line-height: 1.75;
   color: var(--fg-muted);
   margin: 0 0 14px;
@@ -115,7 +115,7 @@
 }
 
 .para a {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .footer {

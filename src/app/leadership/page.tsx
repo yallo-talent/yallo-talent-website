@@ -162,9 +162,9 @@ export default function LeadershipPage() {
                 >
                   <div
                     style={{
-                      fontSize: 20,
+                      fontSize: "var(--fs-subtitle)",
                       fontWeight: 900,
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       letterSpacing: "-0.02em",
                       lineHeight: 1,
                     }}
@@ -174,7 +174,7 @@ export default function LeadershipPage() {
                   <div
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: 10,
+                      fontSize: "var(--fs-data)",
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
                       color: "var(--fg-muted)",
@@ -192,7 +192,7 @@ export default function LeadershipPage() {
                 </h2>
                 <p
                   style={{
-                    fontSize: 16,
+                    fontSize: "var(--fs-body-sm)",
                     lineHeight: 1.7,
                     color: "var(--fg-muted)",
                     marginBottom: 20,
@@ -205,7 +205,7 @@ export default function LeadershipPage() {
                 </p>
                 <p
                   style={{
-                    fontSize: 16,
+                    fontSize: "var(--fs-body-sm)",
                     lineHeight: 1.7,
                     color: "var(--fg-muted)",
                     marginBottom: 24,
@@ -257,9 +257,9 @@ export default function LeadershipPage() {
                       placeItems: "center",
                       background: "var(--sector-accent-08)",
                       border: "1px solid var(--sector-accent-35)",
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       fontFamily: "var(--font-mono)",
-                      fontSize: 15,
+                      fontSize: "var(--fs-body-sm)",
                       fontWeight: 700,
                       letterSpacing: "0.04em",
                       marginBottom: 20,
@@ -271,10 +271,10 @@ export default function LeadershipPage() {
                   <div
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: 10,
+                      fontSize: "var(--fs-data)",
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       marginBottom: 12,
                     }}
                   >

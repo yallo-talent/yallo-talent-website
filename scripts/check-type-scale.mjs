@@ -62,6 +62,23 @@ for (const file of walk("src")) {
       if (s) selector = s;
     }
 
+    // JSX inline styles: `fontSize: 10` is a px value React writes out, and it
+    // used to slip straight past this guard — four sub-12px values were living
+    // in .tsx style objects while CSS was clean.
+    const jsx = line.match(/fontSize:\s*([0-9.]+)\s*[,}]/);
+    if (jsx) {
+      const px = Number.parseFloat(jsx[1]);
+      if (px < FLOOR) {
+        errors.push(
+          `${file}:${i + 1}  inline fontSize ${px} is below the ${FLOOR}px floor  [${selector}]`,
+        );
+      } else {
+        warnings.push(
+          `${file}:${i + 1}  inline fontSize ${px} is off-token  [${selector}]`,
+        );
+      }
+    }
+
     const size = line.match(/font-size:\s*([0-9.]+)px/);
     if (size) {
       const px = Number.parseFloat(size[1]);

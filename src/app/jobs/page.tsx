@@ -182,7 +182,7 @@ export default function JobsPage() {
                   <div>
                     <div
                       style={{
-                        fontSize: 16,
+                        fontSize: "var(--fs-body-sm)",
                         fontWeight: 700,
                         color: "var(--fg)",
                         letterSpacing: "-0.01em",
@@ -194,7 +194,7 @@ export default function JobsPage() {
                     <div
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: 11,
+                        fontSize: "var(--fs-data)",
                         letterSpacing: "0.06em",
                         color: "var(--fg-muted)",
                       }}
@@ -206,10 +206,10 @@ export default function JobsPage() {
                     style={{
                       padding: "5px 12px",
                       fontFamily: "var(--font-mono)",
-                      fontSize: 10,
+                      fontSize: "var(--fs-data)",
                       letterSpacing: "0.12em",
                       textTransform: "uppercase",
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       background: "var(--sector-accent-08)",
                       border: "1px solid var(--sector-accent-35)",
                       borderRadius: 999,
@@ -221,7 +221,7 @@ export default function JobsPage() {
                     href="#upload"
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: 11,
+                      fontSize: "var(--fs-data)",
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
                       color: "var(--fg)",
@@ -237,7 +237,7 @@ export default function JobsPage() {
               style={{
                 marginTop: 24,
                 fontFamily: "var(--font-mono)",
-                fontSize: 11,
+                fontSize: "var(--fs-data)",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
                 color: "var(--fg-subtle)",

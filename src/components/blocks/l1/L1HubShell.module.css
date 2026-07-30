@@ -1,6 +1,6 @@
 .page {
   color: var(--fg);
-  background: var(--ink-950);
+  background: var(--ground);
 }
 
 .wrap {
@@ -76,7 +76,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-label);
   background: var(--accent-muted);
   border: 1px solid var(--border-accent);
   border-radius: 0 0 0 var(--r-md);
@@ -87,7 +87,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--accent-mark);
 }
 
 .heroTitle {
@@ -102,9 +102,8 @@
 
 .heroEmphasis {
   background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+
+  color: var(--accent-line);
 }
 
 .heroSub {
@@ -134,7 +133,7 @@
   color: var(--fg);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 20px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -183,7 +182,7 @@
   background: linear-gradient(
     180deg,
     transparent 40%,
-    color-mix(in oklab, var(--ink-800) 70%, transparent) 100%
+    color-mix(in oklab, var(--ground-3) 70%, transparent) 100%
   );
   pointer-events: none;
 }
@@ -195,7 +194,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: var(--ink-800);
+  background: var(--ground-3);
   border-top: 1px solid var(--wa08);
 }
 
@@ -204,11 +203,11 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .cardTitle {
-  font-size: 20px;
+  font-size: var(--fs-subtitle);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -217,7 +216,7 @@
 }
 
 .cardTag {
-  font-size: 13.5px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.6;
   font-weight: 300;
@@ -230,7 +229,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   transition: transform 0.2s ease;
 }
 
@@ -249,7 +248,7 @@
   gap: 32px;
   align-items: center;
   padding: clamp(32px, 5vw, 56px);
-  background: linear-gradient(135deg, var(--accent-muted), var(--ink-900));
+  background: linear-gradient(135deg, var(--accent-muted), var(--ground-2));
   border: 1px solid var(--border-accent);
   border-radius: 24px;
 }
@@ -259,7 +258,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-label);
   margin-bottom: 12px;
 }
 
@@ -273,7 +272,7 @@
 }
 
 .bottomSub {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.7;
   font-weight: 300;
@@ -294,9 +293,9 @@
   justify-content: center;
   gap: 10px;
   padding: 14px 24px;
-  background: var(--accent);
+  background: var(--accent-mark);
   color: var(--ink-950);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -305,7 +304,7 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-mark);
   color: var(--ink-950);
   transform: translateY(-1px);
 }
@@ -319,8 +318,8 @@
   border: 1px solid var(--wa25);
   border-radius: 0 0 0 var(--r-md);
   font-weight: 500;
-  font-size: 13px;
-  background: color-mix(in oklab, var(--ink-950) 40%, transparent);
+  font-size: var(--fs-caption);
+  background: color-mix(in oklab, var(--ground) 40%, transparent);
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -328,7 +327,7 @@
 
 .ctaGhost:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-label);
 }
 
 @media (max-width: 1024px) {

@@ -118,13 +118,12 @@
 
 .accent {
   background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+
+  color: var(--accent-line);
 }
 
 .sub {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   color: var(--fg-muted);
   line-height: 1.7;
   font-weight: 300;
@@ -151,7 +150,7 @@
   padding: 18px 28px;
   background: var(--accent);
   color: var(--ink-950);
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 700;
   border-radius: 999px;
   transition:
@@ -175,7 +174,7 @@
   border: 1px solid var(--wa25);
   border-radius: 999px;
   font-weight: 500;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   background: var(--wa03);
   transition:
     border-color 0.15s ease,

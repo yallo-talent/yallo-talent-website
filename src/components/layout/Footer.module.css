@@ -97,7 +97,7 @@
 
 .brandCopy {
   margin-top: 20px;
-  font-size: 14px;
+  font-size: var(--fs-caption);
   line-height: 1.7;
   color: var(--dk-txt-2);
 }
@@ -192,7 +192,7 @@
 
 .locationCountry {
   color: var(--dk-txt-2);
-  font-size: 12px;
+  font-size: var(--fs-data);
   font-weight: 400;
 }
 

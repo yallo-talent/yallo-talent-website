@@ -23,7 +23,7 @@
   isolation: isolate;
   overflow: hidden;
   padding: clamp(96px, 12vw, 160px) 0 clamp(60px, 8vw, 96px);
-  background: var(--ink-950);
+  background: var(--ground);
 }
 
 .heroBg {
@@ -100,7 +100,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
@@ -124,14 +124,7 @@
 }
 
 .emphasis {
-  background: linear-gradient(
-    120deg,
-    var(--sector-accent) 0%,
-    var(--accent) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-line);
 }
 
 .heroLede {
@@ -154,9 +147,9 @@
   align-items: center;
   gap: 10px;
   padding: 14px 24px;
-  background: var(--accent);
+  background: var(--accent-mark);
   color: var(--ink-950);
-  font-size: 14px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -166,7 +159,7 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-mark);
   color: var(--ink-950);
   transform: translateY(-1px);
 }
@@ -179,7 +172,7 @@
   border: 1px solid var(--border-strong);
   border-radius: 0 0 0 var(--r-md);
   font-weight: 500;
-  font-size: 14px;
+  font-size: var(--fs-caption);
   background: var(--ground-2);
   transition:
     border-color 0.15s ease,
@@ -188,7 +181,7 @@
 
 .ctaGhost:hover {
   border-color: var(--sector-accent);
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .trustLine {
@@ -234,8 +227,8 @@
   background: linear-gradient(
     215deg,
     transparent 0%,
-    color-mix(in oklab, var(--ink-950) 25%, transparent) 55%,
-    color-mix(in oklab, var(--ink-950) 60%, transparent) 100%
+    color-mix(in oklab, var(--ground) 25%, transparent) 55%,
+    color-mix(in oklab, var(--ground) 60%, transparent) 100%
   );
   pointer-events: none;
 }
@@ -263,15 +256,15 @@
   align-items: baseline;
   gap: 14px;
   padding: 16px 20px;
-  background: color-mix(in oklab, var(--ink-800) 82%, transparent);
+  background: color-mix(in oklab, var(--ground-3) 82%, transparent);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .heroStatN {
-  font-size: 32px;
+  font-size: var(--fs-headline);
   font-weight: 900;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   letter-spacing: -0.02em;
   line-height: 1;
 }
@@ -288,7 +281,7 @@
 .benefits {
   position: relative;
   padding: clamp(72px, 9vw, 112px) 0;
-  background: var(--ink-900);
+  background: var(--ground-2);
   overflow: hidden;
   isolation: isolate;
 }
@@ -325,7 +318,7 @@
   padding: 32px 28px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   transition:
     border-color 0.3s ease,
     transform 0.3s ease,
@@ -340,12 +333,12 @@
 .benefitIcon {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   display: grid;
   place-items: center;
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 20px;
 }
 
@@ -355,7 +348,7 @@
 }
 
 .benefitTitle {
-  font-size: 18px;
+  font-size: var(--fs-body);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -363,7 +356,7 @@
 }
 
 .benefitCopy {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   line-height: 1.7;
   color: var(--fg-muted);
   margin: 0;
@@ -373,7 +366,7 @@
 .process {
   position: relative;
   padding: clamp(80px, 10vw, 128px) 0;
-  background: var(--ink-950);
+  background: var(--ground);
   overflow: hidden;
   isolation: isolate;
 }
@@ -417,7 +410,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
@@ -456,7 +449,7 @@
     transparent 100%
   );
   z-index: 0;
-  border-radius: 2px;
+  border-radius: var(--r-micro);
 }
 
 .step {
@@ -501,11 +494,11 @@
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: linear-gradient(140deg, var(--ink-800) 0%, var(--ink-900) 100%);
+  background: linear-gradient(140deg, var(--ground-3) 0%, var(--ground-2) 100%);
   border: 1.5px solid var(--sector-accent);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 700;
   letter-spacing: 0.04em;
   box-shadow: inset 0 1px 0 var(--wa08);
@@ -536,9 +529,9 @@
   gap: 20px;
   align-items: center;
   padding: 24px 28px;
-  background: var(--ink-800);
+  background: var(--ground-3);
   border: 1px solid var(--wa08);
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow: inset 0 1px 0 var(--wa05);
   transition:
     border-color 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -566,7 +559,7 @@
 }
 
 .stepTitle {
-  font-size: 20px;
+  font-size: var(--fs-subtitle);
   font-weight: 800;
   color: var(--fg);
   letter-spacing: -0.015em;
@@ -579,7 +572,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
   padding: 4px 10px;
@@ -587,7 +580,7 @@
 }
 
 .stepCopy {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   line-height: 1.7;
   color: var(--fg-muted);
   margin: 0;
@@ -602,7 +595,7 @@
   border-radius: 50%;
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   opacity: 0.55;
   transition:
     opacity 0.28s ease,
@@ -639,7 +632,7 @@
   .stepNum {
     width: 40px;
     height: 40px;
-    font-size: 12px;
+    font-size: var(--fs-data);
   }
   .stepMarkerLabel {
     display: none;
@@ -652,7 +645,7 @@
     justify-self: start;
   }
   .stepTitle {
-    font-size: 17px;
+    font-size: var(--fs-body);
   }
 }
 
@@ -660,7 +653,7 @@
 .roles {
   position: relative;
   padding: clamp(60px, 8vw, 96px) 0;
-  background: var(--ink-900);
+  background: var(--ground-2);
   overflow: hidden;
   isolation: isolate;
 }
@@ -698,7 +691,7 @@
   display: inline-flex;
   align-items: center;
   padding: 10px 18px;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   color: var(--fg);
   background: var(--sector-accent-08);
@@ -710,7 +703,7 @@
 .faq {
   position: relative;
   padding: clamp(80px, 10vw, 128px) 0;
-  background: var(--ink-950);
+  background: var(--ground);
   overflow: hidden;
   isolation: isolate;
 }
@@ -734,7 +727,7 @@
   position: sticky;
   top: 96px;
   padding: 32px 28px;
-  background: linear-gradient(160deg, var(--ink-800) 0%, var(--ink-900) 100%);
+  background: linear-gradient(160deg, var(--ground-3) 0%, var(--ground-2) 100%);
   border: 1px solid var(--sector-accent-35);
   border-radius: 22px;
   box-shadow: inset 0 1px 0 var(--wa08);
@@ -748,7 +741,7 @@
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
@@ -756,7 +749,7 @@
 }
 
 .faqAsideCopy {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   line-height: 1.7;
   color: var(--fg-muted);
   margin: 16px 0 24px;
@@ -777,11 +770,11 @@
 }
 
 .faqAsideStatN {
-  font-size: 32px;
+  font-size: var(--fs-headline);
   font-weight: 900;
   letter-spacing: -0.02em;
   line-height: 1;
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .faqAsideStatL {
@@ -800,8 +793,8 @@
 
 .faqItem {
   border: 1px solid var(--border);
-  border-radius: 14px;
-  background: var(--ink-800);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-3);
   transition:
     border-color 0.28s ease,
     background 0.28s ease;
@@ -816,7 +809,7 @@
   border-color: var(--sector-accent-35);
   background: linear-gradient(
     160deg,
-    var(--ink-800) 0%,
+    var(--ground-3) 0%,
     var(--sector-accent-08) 100%
   );
 }
@@ -841,21 +834,21 @@
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   padding: 4px 10px;
   border: 1px solid var(--sector-accent-35);
-  border-radius: 8px;
+  border-radius: 0 0 0 var(--r-xs);
   background: var(--sector-accent-08);
 }
 
 .faqOpen .faqQNum {
-  background: var(--sector-accent);
-  color: var(--ink-950);
-  border-color: var(--sector-accent);
+  background: var(--accent-mark);
+  color: var(--ink);
+  border-color: var(--accent-mark);
 }
 
 .faqQText {
-  font-size: 16px;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   letter-spacing: -0.005em;
   line-height: 1.35;
@@ -864,11 +857,11 @@
 }
 
 .faqQ:hover .faqQText {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .faqChev {
-  color: var(--sector-accent);
+  color: var(--accent-label);
   transition:
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     background 0.2s ease;
@@ -889,8 +882,8 @@
 
 .faqOpen .faqChev {
   transform: rotate(180deg);
-  background: var(--sector-accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   border-color: var(--sector-accent);
 }
 
@@ -900,7 +893,7 @@
 
 .faqA p {
   padding: 4px 24px 24px 78px;
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   line-height: 1.75;
   color: var(--fg-muted);
   margin: 0;
@@ -930,7 +923,7 @@
   }
   .faqQText {
     grid-column: 1 / -1;
-    font-size: 15px;
+    font-size: var(--fs-body-sm);
   }
   .faqA p {
     padding-left: 24px;
@@ -941,7 +934,7 @@
 .bottomCta {
   position: relative;
   padding: clamp(72px, 9vw, 112px) 0;
-  background: var(--ink-950);
+  background: var(--ground);
   overflow: hidden;
 }
 
@@ -983,7 +976,7 @@
 }
 
 .bottomSub {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   line-height: 1.7;
   color: var(--fg-muted);
   margin: 0 0 28px;

@@ -38,7 +38,7 @@ interface Props {
  */
 export function L2PageShell({ sector, fn }: Props) {
   return (
-    <div className={`${styles.page} band-dark`} style={hueStyle()}>
+    <div className={styles.page} style={hueStyle()}>
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
@@ -685,7 +685,12 @@ function L2Insights({ sector }: { sector: L1PageData }) {
         </h2>
       </div>
       <div className={styles.insightsScrollWrap}>
-        <div className={styles.insightsScroll}>
+        {/* Focusable because it scrolls (SC 2.1.1). */}
+        <div
+          className={styles.insightsScroll}
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+          tabIndex={0}
+        >
           {sector.insights.map((post, _i) => {
             const inner = (
               <>

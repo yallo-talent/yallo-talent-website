@@ -3,7 +3,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: -0.005em;
   border-radius: 999px;

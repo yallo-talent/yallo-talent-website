@@ -143,10 +143,10 @@ export default function WhyYalloPage() {
                 <article key={d.title} className={styles.card}>
                   <div
                     style={{
-                      fontSize: 44,
+                      fontSize: "var(--fs-numeral)",
                       fontWeight: 900,
                       letterSpacing: "-0.03em",
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       lineHeight: 1,
                       marginBottom: 20,
                     }}
@@ -188,13 +188,13 @@ export default function WhyYalloPage() {
               <div
                 style={{
                   padding: 24,
-                  background: "var(--wa03)",
+                  background: "var(--ground-3)",
                 }}
               >
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 11,
+                    fontSize: "var(--fs-data)",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "var(--fg-subtle)",
@@ -217,7 +217,7 @@ export default function WhyYalloPage() {
                     <li
                       key={row.them}
                       style={{
-                        fontSize: 14,
+                        fontSize: "var(--fs-caption)",
                         color: "var(--fg-muted)",
                         lineHeight: 1.6,
                       }}
@@ -237,10 +237,10 @@ export default function WhyYalloPage() {
                 <div
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: 11,
+                    fontSize: "var(--fs-data)",
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
-                    color: "var(--sector-accent)",
+                    color: "var(--accent-label)",
                     marginBottom: 20,
                   }}
                 >
@@ -260,7 +260,7 @@ export default function WhyYalloPage() {
                     <li
                       key={row.us}
                       style={{
-                        fontSize: 14,
+                        fontSize: "var(--fs-caption)",
                         color: "var(--fg)",
                         lineHeight: 1.6,
                         fontWeight: 500,

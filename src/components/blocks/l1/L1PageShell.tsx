@@ -49,7 +49,7 @@ export function L1PageShell({ data }: Props) {
   ];
 
   return (
-    <div className={`${styles.page} band-dark`} style={hueStyle()}>
+    <div className={styles.page} style={hueStyle()}>
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
       <L1SubNav items={subNavItems} />
@@ -614,8 +614,11 @@ function L1Expertise({ data }: Props) {
             </div>
           )}
         </div>
+        {/* Focusable because it scrolls at narrow widths (SC 2.1.1). */}
         <div
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+          tabIndex={0}
         >
           {visible.map((card, i) => {
             // Auto-derive L2 href when this function has tools configured

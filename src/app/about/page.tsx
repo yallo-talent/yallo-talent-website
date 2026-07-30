@@ -184,10 +184,10 @@ export default function AboutPage() {
                   <div
                     style={{
                       fontFamily: "var(--font-mono)",
-                      fontSize: 11,
+                      fontSize: "var(--fs-data)",
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
-                      color: "var(--sector-accent)",
+                      color: "var(--accent-label)",
                       marginBottom: 12,
                     }}
                   >

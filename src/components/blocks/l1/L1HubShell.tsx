@@ -13,7 +13,7 @@ interface Props {
 
 export function L1HubShell({ eyebrow, title, emphasis, sub, entries }: Props) {
   return (
-    <div className={`${styles.page} band-dark`}>
+    <div className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroOrbA} aria-hidden="true" />
         <div className={styles.heroOrbB} aria-hidden="true" />

@@ -4,10 +4,10 @@
   left: 12px;
   z-index: 100;
   padding: 8px 12px;
-  background: var(--accent);
+  background: var(--accent-mark);
   color: var(--ink-950);
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--fs-data);
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: top 0.2s ease;
@@ -61,7 +61,7 @@
   width: 36px;
   height: 36px;
   flex-shrink: 0;
-  color: var(--accent);
+  color: var(--accent-label);
 }
 
 /* The lockup, ratified 30 Jul (canon §5): flower, "Yallo" wordmark, then
@@ -80,9 +80,9 @@
 
 .brandMark {
   font-family: var(--font-display);
-  font-size: 27px;
+  font-size: var(--fs-title);
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-label);
   line-height: 1;
   letter-spacing: -0.015em;
 }
@@ -140,7 +140,7 @@
   border: 0;
   color: var(--fg);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   letter-spacing: -0.005em;
   cursor: pointer;
@@ -164,7 +164,7 @@
 .groupTrigger:hover,
 .groupTrigger:focus-visible,
 .groupTrigger[aria-expanded="true"] {
-  color: var(--accent);
+  color: var(--accent-label);
 }
 
 .jobsLink {
@@ -173,7 +173,7 @@
   padding: 10px 14px;
   color: var(--fg);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   letter-spacing: -0.005em;
   transition: color 0.15s ease;
@@ -181,7 +181,7 @@
 
 .jobsLink:hover,
 .jobsLink:focus-visible {
-  color: var(--accent);
+  color: var(--accent-label);
 }
 
 /* ============ MEGA PANEL (full viewport-width) ============ */
@@ -343,7 +343,7 @@
 }
 
 .itemLabel {
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.005em;
@@ -434,11 +434,11 @@
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-label);
 }
 
 .featuredTitle {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 700;
   color: var(--fg);
   letter-spacing: -0.01em;
@@ -458,7 +458,7 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-label);
   padding-top: 6px;
   border-top: 1px solid var(--wa05);
   transition: transform 0.15s ease;
@@ -488,7 +488,7 @@
   background: var(--accent-mark);
   color: var(--ink);
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -512,7 +512,7 @@
   padding: 10px;
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0 0 0 var(--r-xs);
   cursor: pointer;
 }
 
@@ -554,7 +554,7 @@
 .mobileLink {
   padding: 10px 0;
   color: var(--fg);
-  font-size: 16px;
+  font-size: var(--fs-body-sm);
   font-weight: 500;
   border-bottom: 1px solid var(--border);
 }
@@ -562,7 +562,7 @@
 .mobileCTA {
   margin-top: 12px;
   padding: 14px 18px;
-  background: var(--accent);
+  background: var(--accent-mark);
   color: var(--ink-950);
   text-align: center;
   border-radius: 0 0 0 var(--r-md);
@@ -582,7 +582,7 @@
      button rendered as a 92x90px blob beside the hamburger. */
   .ctaPrimary {
     padding: 10px 14px;
-    font-size: 13px;
+    font-size: var(--fs-caption);
     white-space: nowrap;
   }
 }

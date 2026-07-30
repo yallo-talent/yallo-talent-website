@@ -13,7 +13,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--accent-label);
   margin-bottom: 14px;
 }
 
@@ -21,7 +21,7 @@
   content: "";
   width: 18px;
   height: 1px;
-  background: var(--accent);
+  background: var(--accent-mark);
   opacity: 0.65;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .sub {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   max-width: 62ch;
   line-height: 1.7;
@@ -44,10 +44,7 @@
 }
 
 .emphasis {
-  background: linear-gradient(120deg, var(--accent), var(--hue-orange-500));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-line);
 }
 
 .glow {
@@ -78,7 +75,7 @@
   position: relative;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -113,7 +110,7 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(135deg, var(--card-hue-35), var(--card-hue-08));
   border: 1px solid var(--card-hue-35);
   color: var(--card-hue);
@@ -141,7 +138,7 @@
 }
 
 .wwdTitle {
-  font-size: 18px;
+  font-size: var(--fs-body);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -155,7 +152,7 @@
 }
 
 .wwdCopy {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0 0 12px;
@@ -197,7 +194,7 @@
   right: 20px;
   z-index: 3;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--card-hue);
@@ -226,7 +223,7 @@
   position: relative;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -273,7 +270,7 @@
 }
 
 .hwwStepTitle {
-  font-size: 16px;
+  font-size: var(--fs-body-sm);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -286,7 +283,7 @@
 }
 
 .hwwStepCopy {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -316,7 +313,7 @@
   position: relative;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -346,12 +343,12 @@
 .archInitials {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(135deg, var(--card-hue-35), var(--card-hue-08));
   border: 1px solid var(--card-hue-35);
   color: var(--card-hue);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.06em;
   display: grid;
@@ -375,7 +372,7 @@
 }
 
 .archName {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -384,7 +381,7 @@
 }
 
 .archBio {
-  font-size: 12px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -403,7 +400,7 @@
   border: 1px solid var(--wa15);
   border-radius: 999px;
   color: var(--fg);
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   font-weight: 600;
   transition:
     border-color 0.2s ease,
@@ -413,7 +410,7 @@
 
 .archFootLink:hover {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-label);
   transform: translateY(-2px);
 }
 
@@ -438,7 +435,7 @@
   padding: 20px 22px;
   background: var(--ground-2);
   border: 1px solid var(--wa08);
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .crossRailLabel {
@@ -464,9 +461,9 @@
   gap: 10px;
   padding: 10px 14px;
   border: 1px solid var(--card-hue-20);
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   color: var(--fg);
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   font-weight: 500;
   transition:
     background 0.2s ease,

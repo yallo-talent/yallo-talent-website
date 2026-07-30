@@ -1,6 +1,6 @@
 .page {
   color: var(--fg);
-  background: var(--ink-950);
+  background: var(--ground);
 }
 
 .wrap {
@@ -19,7 +19,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 14px;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .sub {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   max-width: 620px;
   line-height: 1.7;
@@ -91,9 +91,9 @@
   /* Keeps the copy legible over the drawn plate without burying it. */
   background: linear-gradient(
     to top,
-    var(--dk) 0%,
-    color-mix(in oklab, var(--dk) 82%, transparent) 55%,
-    color-mix(in oklab, var(--dk) 55%, transparent) 100%
+    var(--ground) 0%,
+    color-mix(in oklab, var(--ground) 82%, transparent) 55%,
+    color-mix(in oklab, var(--ground) 55%, transparent) 100%
   );
   pointer-events: none;
 }
@@ -147,7 +147,7 @@
 }
 
 .crumbLink:hover {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .crumbSep {
@@ -155,7 +155,7 @@
 }
 
 .crumbCurrent {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .heroEyebrow {
@@ -163,7 +163,7 @@
   align-items: center;
   gap: 10px;
   padding: 8px 14px;
-  background: color-mix(in oklab, var(--ink-950) 65%, transparent);
+  background: color-mix(in oklab, var(--ground) 65%, transparent);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
   font-family: var(--font-mono);
@@ -171,7 +171,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 24px;
 }
 
@@ -193,10 +193,7 @@
 }
 
 .heroEmphasis {
-  background: linear-gradient(120deg, var(--sector-accent), var(--accent));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--accent-line);
 }
 
 .heroSub {
@@ -220,9 +217,9 @@
   align-items: center;
   gap: 10px;
   padding: 14px 24px;
-  background: var(--accent);
+  background: var(--accent-mark);
   color: var(--ink-950);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -232,7 +229,7 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-hover);
+  background: var(--accent-mark);
   color: var(--ink-950);
   transform: translateY(-1px);
 }
@@ -245,8 +242,8 @@
   border: 1px solid var(--wa25);
   border-radius: 0 0 0 var(--r-md);
   font-weight: 500;
-  font-size: 13px;
-  background: color-mix(in oklab, var(--ink-950) 40%, transparent);
+  font-size: var(--fs-caption);
+  background: color-mix(in oklab, var(--ground) 40%, transparent);
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -254,7 +251,7 @@
 
 .ctaGhost:hover {
   border-color: var(--sector-accent);
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .heroDots {
@@ -307,7 +304,7 @@
      with the stats strip in normal flow. */
   top: 72px;
   z-index: 40;
-  background: color-mix(in oklab, var(--ink-950) 92%, transparent);
+  background: color-mix(in oklab, var(--ground) 92%, transparent);
   border-bottom: 1px solid var(--wa08);
 }
 
@@ -356,13 +353,13 @@
 }
 
 .subNavLinkActive {
-  color: var(--sector-accent);
+  color: var(--accent-label);
   border-bottom-color: var(--sector-accent);
 }
 
 /* ============ STATS STRIP ============ */
 .statsStrip {
-  background: var(--ink-900);
+  background: var(--ground-2);
   border-top: 1px solid var(--wa08);
   border-bottom: 1px solid var(--wa08);
 }
@@ -388,7 +385,7 @@
   font-size: clamp(24px, 3vw, 32px);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   line-height: 1;
 }
 
@@ -429,7 +426,7 @@
 }
 
 .introPara {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.8;
   font-weight: 300;
@@ -447,7 +444,7 @@
   background: var(--ground-2);
   border: 1px solid var(--hairline);
   border-left: 3px solid var(--sector-accent);
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
   transition:
     border-color 0.24s ease,
     transform 0.24s ease;
@@ -460,15 +457,15 @@
 }
 
 .introStatN {
-  font-size: 28px;
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   line-height: 1;
 }
 
 .introStatL {
-  font-size: 12px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   font-weight: 300;
   margin-top: 6px;
@@ -497,7 +494,7 @@
   position: relative;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -565,14 +562,14 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
     var(--card-hue-35, var(--sector-accent-35)),
     var(--card-hue-08, var(--sector-accent-08))
   );
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 14px;
   transition:
@@ -595,12 +592,12 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   margin-bottom: 4px;
 }
 
 .wwdTitle {
-  font-size: 18px;
+  font-size: var(--fs-body);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -610,11 +607,11 @@
 }
 
 .wwdCard:hover .wwdTitle {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .wwdCopy {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0 0 12px;
@@ -671,10 +668,10 @@
   right: 20px;
   z-index: 3;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   opacity: 0.5;
 }
 
@@ -707,7 +704,7 @@
   padding: 0;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -748,7 +745,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   margin-bottom: 12px;
   display: inline-flex;
   align-items: center;
@@ -764,7 +761,7 @@
 }
 
 .hwwStepTitle {
-  font-size: 16px;
+  font-size: var(--fs-body-sm);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -774,11 +771,11 @@
 }
 
 .hwwStep:hover .hwwStepTitle {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .hwwStepCopy {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -819,7 +816,7 @@
   padding: 0;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   color: var(--fg);
@@ -861,7 +858,7 @@
 }
 
 .xsecCardLabel {
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: -0.005em;
   color: var(--fg);
@@ -869,7 +866,7 @@
 }
 
 .xsecCard:hover .xsecCardLabel {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .xsecCardCopy {
@@ -882,9 +879,9 @@
   position: absolute;
   top: 16px;
   right: 16px;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: var(--fs-caption);
   transition: transform 0.22s ease;
 }
 
@@ -916,8 +913,8 @@
     linear-gradient(
       135deg,
       var(--sector-accent-08) 0%,
-      color-mix(in oklab, var(--ink-900) 92%, transparent) 55%,
-      color-mix(in oklab, var(--ink-900) 96%, transparent) 100%
+      color-mix(in oklab, var(--ground-2) 92%, transparent) 55%,
+      color-mix(in oklab, var(--ground-2) 96%, transparent) 100%
     ),
     var(--ground-2);
   border: 1px solid var(--sector-accent-35);
@@ -978,14 +975,14 @@
   place-items: center;
   width: 56px;
   height: 56px;
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   background: linear-gradient(
     135deg,
     var(--sector-accent-35),
     var(--sector-accent-08)
   );
   border: 1px solid var(--sector-accent-35);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa15);
   transition:
     transform 0.28s ease,
@@ -1012,7 +1009,7 @@
 }
 
 .scarceCopy {
-  font-size: 13px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.75;
   font-weight: 300;
@@ -1025,9 +1022,9 @@
   align-items: center;
   gap: 8px;
   padding: 11px 20px;
-  background: var(--sector-accent);
-  color: var(--ink-950);
-  font-size: 12.5px;
+  background: var(--accent-mark);
+  color: var(--ink);
+  font-size: var(--fs-label);
   font-weight: 700;
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
@@ -1057,7 +1054,7 @@
   padding: 12px 16px;
   background: color-mix(in oklab, var(--sector-accent) 6%, transparent);
   border: 1px solid var(--sector-accent-20);
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
@@ -1069,7 +1066,7 @@
 }
 
 .scarceRowName {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   font-weight: 500;
   color: var(--fg);
 }
@@ -1110,7 +1107,7 @@
 }
 
 .rtagContract {
-  color: var(--sector-accent);
+  color: var(--accent-label);
   background: var(--sector-accent-08);
   border-color: var(--sector-accent-35);
 }
@@ -1127,7 +1124,7 @@
   padding: clamp(48px, 6vw, 76px) 0;
   overflow: hidden;
   isolation: isolate;
-  background: var(--ink-900);
+  background: var(--ground-2);
 }
 
 .expertise::before {
@@ -1174,8 +1171,8 @@
 .expertiseHint {
   align-self: end;
   padding-bottom: 4px;
-  font-size: 13px;
-  color: var(--sector-accent);
+  font-size: var(--fs-caption);
+  color: var(--accent-label);
   font-weight: 600;
   letter-spacing: -0.005em;
   transition: transform 0.2s ease;
@@ -1194,7 +1191,7 @@
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: 500;
@@ -1210,8 +1207,8 @@
 }
 
 .expertiseViewAll:hover {
-  background: var(--sector-accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   border-color: var(--sector-accent);
   transform: translateY(-2px);
 }
@@ -1262,7 +1259,7 @@
 .expertiseShowAll:hover {
   background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
   border-color: var(--sector-accent);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   transform: translateY(-2px);
 }
 
@@ -1271,8 +1268,8 @@
   font-size: var(--fs-label);
   padding: 4px 8px;
   border-radius: 0 0 0 var(--r-md);
-  background: var(--sector-accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   letter-spacing: 0.1em;
 }
 
@@ -1288,7 +1285,7 @@
   color: var(--fg);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -1400,14 +1397,14 @@
   place-items: center;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
     var(--card-hue-35, var(--sector-accent-35)),
     var(--card-hue-08, var(--sector-accent-08))
   );
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   transition:
     transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -1437,11 +1434,11 @@
 
 .expCard:hover .expCardNum,
 .expCardOpen .expCardNum {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .expCardTitle {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -1473,7 +1470,7 @@
   border-radius: 50%;
   background: var(--card-hue-08, var(--sector-accent-08));
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   transition:
     background 0.22s ease,
     border-color 0.22s ease,
@@ -1507,7 +1504,7 @@
   border-radius: 50%;
   background: transparent;
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   cursor: pointer;
   transition:
     background 0.2s ease,
@@ -1633,7 +1630,7 @@
   position: relative;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 16px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -1676,16 +1673,16 @@
 .archInitials {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
     var(--card-hue-35, var(--sector-accent-35)),
     var(--card-hue-08, var(--sector-accent-08))
   );
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: 0.06em;
   display: grid;
@@ -1704,12 +1701,12 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   margin-bottom: 4px;
 }
 
 .archName {
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -1718,7 +1715,7 @@
 }
 
 .archBio {
-  font-size: 12px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -1737,7 +1734,7 @@
   border: 1px solid var(--wa15);
   border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   font-weight: 600;
   transition:
     border-color 0.2s ease,
@@ -1747,7 +1744,7 @@
 
 .archFootLink:hover {
   border-color: var(--sector-accent);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   transform: translateY(-2px);
 }
 
@@ -1851,8 +1848,8 @@
   pointer-events: none;
   background: linear-gradient(
     to top,
-    color-mix(in oklab, var(--ink-900) 92%, transparent) 0%,
-    color-mix(in oklab, var(--ink-900) 60%, transparent) 55%,
+    color-mix(in oklab, var(--ground-2) 92%, transparent) 0%,
+    color-mix(in oklab, var(--ground-2) 60%, transparent) 55%,
     transparent 100%
   );
   z-index: 2;
@@ -1871,7 +1868,7 @@
   cursor: pointer;
   border: 1px solid transparent;
   background: transparent;
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   font-family: inherit;
   text-align: left;
   transition:
@@ -1915,7 +1912,7 @@
 }
 
 .segItemName {
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 500;
   color: var(--fg-muted);
   transition: color 0.18s ease;
@@ -2020,8 +2017,8 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    color-mix(in oklab, var(--ink-800) 92%, transparent) 0%,
-    color-mix(in oklab, var(--ink-800) 20%, transparent) 55%,
+    color-mix(in oklab, var(--ground-3) 92%, transparent) 0%,
+    color-mix(in oklab, var(--ground-3) 20%, transparent) 55%,
     transparent 100%
   );
   pointer-events: none;
@@ -2039,7 +2036,7 @@
 }
 
 .segH {
-  font-size: 24px;
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -2048,7 +2045,7 @@
 }
 
 .segCopy {
-  font-size: 13.5px;
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.75;
   font-weight: 300;
@@ -2061,7 +2058,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   margin-bottom: 14px;
   display: inline-flex;
   align-items: center;
@@ -2088,7 +2085,7 @@
   padding: 7px 13px;
   border-radius: 0 0 0 var(--r-md);
   background: var(--card-hue-08, var(--sector-accent-08));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
   transition:
     background 0.18s ease,
@@ -2114,7 +2111,7 @@
   padding: 12px 20px;
   background: var(--card-hue, var(--sector-accent));
   color: var(--ink-950);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 700;
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
@@ -2181,7 +2178,7 @@
   padding: 20px 16px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   overflow: hidden;
   isolation: isolate;
   transition:
@@ -2232,7 +2229,7 @@
   position: relative;
   z-index: 1;
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--fg);
@@ -2241,7 +2238,7 @@
 }
 
 .partnerCell:hover .partnerName {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 /* ============ INSIGHTS (horizontal scroll) ============ */
@@ -2289,12 +2286,12 @@
 
 .insightsScrollWrap::before {
   left: 0;
-  background: linear-gradient(to right, var(--ink-950), transparent);
+  background: linear-gradient(to right, var(--ground), transparent);
 }
 
 .insightsScrollWrap::after {
   right: 0;
-  background: linear-gradient(to left, var(--ink-950), transparent);
+  background: linear-gradient(to left, var(--ground), transparent);
 }
 
 .insightsScroll {
@@ -2334,11 +2331,11 @@
   justify-content: flex-end;
   scroll-snap-align: start;
   aspect-ratio: 3 / 4;
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   color: var(--fg);
-  background: var(--ink-900);
+  background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
   transition:
     border-color 0.32s ease,
@@ -2381,9 +2378,9 @@
   inset: 0;
   background: linear-gradient(
     to top,
-    color-mix(in oklab, var(--ink-950) 96%, transparent) 0%,
-    color-mix(in oklab, var(--ink-950) 70%, transparent) 30%,
-    color-mix(in oklab, var(--ink-950) 20%, transparent) 60%,
+    color-mix(in oklab, var(--ground) 96%, transparent) 0%,
+    color-mix(in oklab, var(--ground) 70%, transparent) 30%,
+    color-mix(in oklab, var(--ground) 20%, transparent) 60%,
     transparent 90%
   );
   pointer-events: none;
@@ -2402,9 +2399,9 @@
   text-transform: uppercase;
   padding: 6px 12px;
   border-radius: 0 0 0 var(--r-md);
-  background: color-mix(in oklab, var(--ink-950) 60%, transparent);
+  background: color-mix(in oklab, var(--ground) 60%, transparent);
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .insOverlay {
@@ -2417,7 +2414,7 @@
 }
 
 .insTitle {
-  font-size: 17px;
+  font-size: var(--fs-body);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -2431,7 +2428,7 @@
 }
 
 .insCard:hover .insTitle {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .insMeta {
@@ -2449,7 +2446,7 @@
 }
 
 .insRead {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   font-weight: 500;
   transition: transform 0.24s ease;
   display: inline-flex;
@@ -2511,7 +2508,7 @@
   padding: 0;
   background: var(--ground-2);
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 18px;
+  border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
   color: var(--fg);
@@ -2609,14 +2606,14 @@
   place-items: center;
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
     var(--card-hue-35, var(--sector-accent-35)),
     var(--card-hue-08, var(--sector-accent-08))
   );
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 12px;
   transition:
@@ -2639,12 +2636,12 @@
   font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   margin: 0 0 4px;
 }
 
 .pillarTitle {
-  font-size: 18px;
+  font-size: var(--fs-body);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -2654,11 +2651,11 @@
 }
 
 .pillar:hover .pillarTitle {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
 }
 
 .pillarCopy {
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   color: var(--fg-muted);
   line-height: 1.6;
   font-weight: 300;
@@ -2723,7 +2720,7 @@
   border-radius: 50%;
   background: var(--card-hue-08, var(--sector-accent-08));
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   transition:
     background 0.24s ease,
     border-color 0.24s ease,
@@ -2755,7 +2752,7 @@
   background: linear-gradient(
     135deg,
     var(--sector-accent-08) 0%,
-    var(--ink-900) 100%
+    var(--ground-2) 100%
   );
   border: 1px solid var(--sector-accent-35);
   border-radius: 22px;
@@ -2824,7 +2821,7 @@
   padding: 20px 22px;
   background: var(--ground-2);
   border: 1px solid var(--wa08);
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .readNextRailLabel {
@@ -2850,9 +2847,9 @@
   gap: 10px;
   padding: 10px 14px;
   border: 1px solid var(--card-hue-20, var(--hairline));
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   color: var(--fg);
-  font-size: 12.5px;
+  font-size: var(--fs-data);
   font-weight: 500;
   transition:
     background 0.2s ease,
@@ -2876,7 +2873,7 @@
 }
 
 .readNextChipArr {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   font-family: var(--font-mono);
   transition: transform 0.2s ease;
 }
@@ -2900,7 +2897,7 @@
   padding: 18px 22px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   overflow: hidden;
   isolation: isolate;
@@ -2983,7 +2980,7 @@
 }
 
 .readNextCard:hover .readNextCat {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   opacity: 1;
 }
 
@@ -3001,7 +2998,7 @@
 }
 
 .readNextLabel {
-  font-size: 14px;
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.005em;
@@ -3010,9 +3007,9 @@
 }
 
 .readNextArr {
-  color: var(--card-hue, var(--sector-accent));
+  color: var(--accent-label);
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: var(--fs-body-sm);
   grid-column: 2;
   grid-row: 1 / span 2;
   align-self: center;
