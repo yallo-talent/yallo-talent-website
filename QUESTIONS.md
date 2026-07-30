@@ -41,9 +41,55 @@ them is a Sumeet/client-side call, not a Code decision:
 **Assumption taken:** excerpts compress around the defects (no defective line
 was used); bodies stay verbatim including the defects.
 
-## Q3 — Register-test outcome ratification
+## Q3 — Register test: the light variant is a rebuild, not a variant
 
-Canon §5 records the site default register as "under critique test" and says
-canon updates with the result. The test runs in this session (one L1 both
-registers, scores decide). The canon edit recording the winner needs
-ratification — the result and scores will be in the final report.
+**This is the largest scope discovery of the run, and it blocks step 8.**
+
+Canon §5 records the site default register as "under critique test", and Relay
+v2.0 §2.1 rules L1/L2/service into the light register. I ran the test by
+removing `band-dark` from the retail L1 and capturing both.
+
+**The light flip does not render.** It produces dark-ink-on-dark across most of
+the page — which is precisely why `band-dark` was applied in the first place.
+Measured cause: the legacy shells hardcode dark grounds in their own CSS rather
+than resolving through `--ground`, via the Layer 2c aliases `--ink-950`,
+`--ink-900`, `--ink-800` and `--dk`:
+
+| Shell | Hardcoded dark-ground references |
+|---|---|
+| `l2/L2PageShell.module.css` | 23 |
+| `service/ServicePageShell.module.css` | 18 |
+| `l1/L1PageShell.module.css` | 10 (34 alias uses in total) |
+| `l1/L1HubShell.module.css` | 7 |
+
+So the register change is not a class swap — every one of those grounds has to
+be re-authored against the semantic layer, and the section rhythm re-designed so
+the page reads as light with at most two inverted bands. On a ~3,000-line
+stylesheet per shell that is the single biggest remaining task in the build.
+
+**State left:** the dark register is restored and working; nothing is broken.
+Captures of both attempts are in `docs/status/screens/register-dark/` and
+`register-light/` — the light one is the evidence, not a deliverable.
+
+**Recommendation:** treat the L1/L2/service light rebuild as its own dispatch
+with the strip-and-rebuild checklist (`docs/status/step-8-rebuild-checklist.md`),
+rather than as a step inside a broader pass. The critique comparison canon §5
+asks for cannot be scored until the light variant actually renders.
+
+## Q4 — The client mark pack has no alpha channel
+
+Canon §8's "uniform monochrome treatment" presumes silhouette-ready sources. The
+pack is **15 opaque rasters** (PNG colour-type 3, no alpha) with baked-in white
+backgrounds, plus 3 vectors — and a few marks whose own background is dark.
+
+A CSS filter alone therefore rendered fifteen of eighteen marks as solid black
+bars. The shipped fix knocks the white out with a blend mode per theme
+(`multiply` on light, `invert` + `screen` on dark), which is legible and
+tile-free. A residual light or dark box still shows on the few marks whose
+background is off-white or genuinely dark.
+
+**Assumption taken:** blend-mode knockout ships now because it is legible and
+canon-shaped. **The durable fix is the asset pipeline** — extend
+`scripts/build-logos.mjs` to key out backgrounds and emit true-alpha assets, or
+commission monochrome SVG silhouettes for all eighteen. That is a content and
+asset task, not a CSS one.

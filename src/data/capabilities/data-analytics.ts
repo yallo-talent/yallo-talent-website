@@ -252,6 +252,10 @@ export const dataAnalyticsData: L1PageData = {
         "The AI roadmap stalls on the pipeline long before it stalls on the model. Where the scarcity actually sits.",
       author: "Yallo Talent",
       minutes: 6,
+      /* Non-interactive: the whole legacy insight family is unpublished per
+         Relay v2.2 §2, so this card must not link to a 404. The dead-href gate
+         caught it — the only link the unpublishing broke. */
+      published: false,
     },
     {
       href: "/insights/genai-in-enterprise",

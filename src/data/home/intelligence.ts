@@ -41,7 +41,10 @@ export const aiCopy = {
       "of employers cannot find the skills they need, and AI has overtaken engineering and traditional IT as the hardest category of all.",
     source: "ManpowerGroup Talent Shortage Survey, 2026",
   },
-  cta: { label: "The AI Talent Atlas", href: "/ai-talent", published: false },
+  /* Points at the specialism page, which now exists. The Atlas is a separate,
+     still-unpublished asset and /ai-talent says so itself rather than implying
+     otherwise from here. */
+  cta: { label: "See the AI practice", href: "/ai-talent" },
 } as const;
 
 /* No lede. The heading already says the work is published, and a second

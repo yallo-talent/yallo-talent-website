@@ -113,7 +113,6 @@ export const primaryNav: NavGroup[] = [
             label: "AI talent",
             href: "/ai-talent",
             icon: "dataAi",
-            published: false,
           },
           {
             label: "Data & Analytics",
