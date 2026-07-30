@@ -24,18 +24,19 @@ const quickLinks = [
   { label: "Leadership", href: "/leadership" },
   { label: "Insights", href: "/insights" },
   { label: "Case studies", href: "/case-studies" },
-  { label: "Job seekers", href: "/jobs" },
+  { label: "Jobs", href: "/jobs" },
 ];
 
 const yalloFamily = [
   { label: "Yallo Talent", href: "https://talent.yallo.co", live: true },
-  { label: "saasinator AI", href: "#", live: false },
+  { label: "saasinator AI", href: "https://saasinator.ai", live: true },
   { label: "Yallo AI Academy", href: "#", live: false },
 ];
 
 const offices = [
   { city: "London", country: "United Kingdom" },
   { city: "Dubai", country: "United Arab Emirates" },
+  { city: "Riyadh", country: "Saudi Arabia" },
   { city: "Bengaluru", country: "India" },
 ];
 
@@ -55,9 +56,8 @@ export function Footer() {
               </span>
             </div>
             <p className={styles.brandCopy}>
-              Contract-first workforce for enterprise platform programmes.
-              Architect-screened contractors delivered in 72 hours across UK ·
-              ME · India.
+              Enterprise platform talent across the Middle East and Europe.
+              Specialist-screened shortlists in 72 hours.
             </p>
             <div className={styles.locations}>
               <div className={styles.locationsLabel}>Locations</div>

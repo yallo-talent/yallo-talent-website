@@ -5,7 +5,12 @@ import { z } from "zod";
 
 const clientSchema = z.object({
   name: z.string().min(1),
-  logo: z.string().min(1),
+  /**
+   * Omitted where no file exists in the supplied pack (currently Radwell and
+   * Capgemini). Consumers render a set wordmark in that case — never a
+   * substituted logo, and never a broken image.
+   */
+  logo: z.string().min(1).optional(),
   consentOnFile: z.boolean(),
 });
 

@@ -228,7 +228,7 @@ export function NavBar() {
           <div className={styles.actions}>
             {/* Theme toggle hidden until light theme is production-ready. */}
             <Link href={primaryCTAHref} className={styles.ctaPrimary}>
-              Request a contractor
+              Start a brief
               <span aria-hidden="true">→</span>
             </Link>
             <button
@@ -310,7 +310,7 @@ export function NavBar() {
                   className={styles.mobileCTA}
                   onClick={() => setMobileOpen(false)}
                 >
-                  Request a contractor →
+                  Start a brief →
                 </Link>
               </div>
             </div>

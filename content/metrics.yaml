@@ -1,17 +1,37 @@
-# Homepage metric strip. Each metric requires a source; asAt is the date
-# these values were verified against internal delivery records or the
-# stated source. Update asAt whenever any value changes.
-asAt: 2026-07-29
+# The only four metrics published on this site.
+#
+# Canon §7. Database size is deliberately absent: it argues against the
+# screening positioning and invites a bench-depth comparison against the
+# Indian SIs.
+#
+# `definition` renders on the page beneath each value — a number that means
+# exactly one thing is the point. `source` and `asAt` are provenance for
+# whoever refreshes these and are deliberately NOT rendered: all four come from
+# internal delivery records, so a visible "Yallo internal record" line adds no
+# credibility while inviting a challenge we cannot answer publicly. Third-party
+# figures elsewhere on the site (the five persona statistics) do carry visible
+# sources, because there the citation *is* the credibility.
+#
+# Refreshed quarterly. Update asAt whenever any value changes.
+asAt: 2026-07-30
 metrics:
   - target: 72
-    suffix: hrs
+    suffix: h
     label: Brief to shortlist
-    source: Yallo internal delivery record, Q1-Q2 2026
+    definition: Three screened candidates from a complete brief.
+    source: Yallo internal delivery record, Q1–Q2 2026
   - target: 2
     suffix: ":1"
-    label: CV-to-interview ratio
-    source: Yallo internal shortlist record, Q1-Q2 2026
-  - target: 7
+    label: CVs per interview
+    definition: Candidates sent for every one you interview.
+    source: Yallo internal shortlist record, Q1–Q2 2026
+  - target: 80
+    suffix: "%"
+    label: Contracts renewed
+    definition: Placed contractors extended at least once.
+    source: Yallo internal placement record, Q1–Q2 2026
+  - target: 50
     suffix: +
-    label: Platform ecosystems
-    source: Yallo internal platform coverage register, Q2 2026
+    label: Programmes staffed
+    definition: Enterprise platform programmes, not placements.
+    source: Yallo internal programme register, Q2 2026

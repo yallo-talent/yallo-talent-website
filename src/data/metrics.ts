@@ -7,6 +7,9 @@ const metricSchema = z.object({
   target: z.number(),
   suffix: z.string().optional(),
   label: z.string().min(1),
+  /** Renders on the page. A number that means exactly one thing is the point. */
+  definition: z.string().min(1),
+  /** Provenance only — deliberately not rendered. See content/metrics.yaml. */
   source: z.string().min(1),
 });
 

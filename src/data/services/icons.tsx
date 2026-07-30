@@ -52,9 +52,7 @@ export const usersIcon = wrap(
 );
 
 export const puzzleIcon = wrap(
-  <>
-    <path d="M14 3h3a2 2 0 012 2v3a2 2 0 002 2h1v3h-1a2 2 0 00-2 2v3a2 2 0 01-2 2h-3v-1a2 2 0 00-2-2 2 2 0 00-2 2v1H5a2 2 0 01-2-2v-3h1a2 2 0 000-4H3V7a2 2 0 012-2h3v1a2 2 0 002 2 2 2 0 002-2V3z" />
-  </>,
+  <path d="M14 3h3a2 2 0 012 2v3a2 2 0 002 2h1v3h-1a2 2 0 00-2 2v3a2 2 0 01-2 2h-3v-1a2 2 0 00-2-2 2 2 0 00-2 2v1H5a2 2 0 01-2-2v-3h1a2 2 0 000-4H3V7a2 2 0 012-2h3v1a2 2 0 002 2 2 2 0 002-2V3z" />,
 );
 
 export const checkCircleIcon = wrap(
@@ -64,16 +62,10 @@ export const checkCircleIcon = wrap(
   </>,
 );
 
-export const boltIcon = wrap(
-  <>
-    <path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />
-  </>,
-);
+export const boltIcon = wrap(<path d="M13 3L4 14h7l-1 7 9-11h-7l1-7z" />);
 
 export const layersIcon = wrap(
-  <>
-    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-  </>,
+  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />,
 );
 
 export const rocketIcon = wrap(
@@ -84,13 +76,9 @@ export const rocketIcon = wrap(
 );
 
 export const scaleIcon = wrap(
-  <>
-    <path d="M12 3v18M6 8h12l-3 6h-6L6 8zM4 21h16" />
-  </>,
+  <path d="M12 3v18M6 8h12l-3 6h-6L6 8zM4 21h16" />,
 );
 
 export const handshakeIcon = wrap(
-  <>
-    <path d="M11 17l-3.5-3.5a3 3 0 010-4.24l1.24-1.24a3 3 0 014.24 0L14 9M11 17l3.5 3.5M13 12l3-3M3 15l4-4M17 8l4-4" />
-  </>,
+  <path d="M11 17l-3.5-3.5a3 3 0 010-4.24l1.24-1.24a3 3 0 014.24 0L14 9M11 17l3.5 3.5M13 12l3-3M3 15l4-4M17 8l4-4" />,
 );

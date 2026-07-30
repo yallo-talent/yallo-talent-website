@@ -1,10 +1,16 @@
+/* The footer is permanently dark — it is the back cover of the dossier and
+   flows out of the dark Close section above it. Because it hardcodes a dark
+   ground it must also hardcode dark-register foregrounds: the Layer 2c
+   compatibility aliases compute against :root, so a theme-following token
+   would resolve to light ink on this ground in the light theme.
+   When Layer 2c is removed, these become plain semantic tokens. */
 .footer {
   position: relative;
   margin-top: auto;
   padding: 88px 0 40px;
-  background: var(--black-900);
-  border-top: 1px solid var(--border);
-  color: var(--fg);
+  background: var(--dk);
+  border-top: 1px solid var(--dk-line);
+  color: var(--dk-txt);
 }
 
 .footer::before {
@@ -31,7 +37,7 @@
   grid-template-columns: 1.1fr 2.4fr;
   gap: 48px;
   padding-bottom: 56px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--dk-line);
 }
 
 .brandBlock {
@@ -49,7 +55,7 @@
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  color: var(--accent);
+  color: var(--gold);
 }
 
 .brandText {
@@ -62,7 +68,7 @@
 .brandMark {
   font-size: 24px;
   font-weight: 900;
-  color: var(--accent);
+  color: var(--gold);
   line-height: 1;
   letter-spacing: 0.03em;
 }
@@ -75,7 +81,7 @@
   letter-spacing: 0.48em;
   padding-left: 0.48em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--dk-txt-2);
   line-height: 1;
 }
 
@@ -83,7 +89,7 @@
   margin-top: 20px;
   font-size: 14px;
   line-height: 1.7;
-  color: var(--fg-muted);
+  color: var(--dk-txt-2);
 }
 
 .linkGrid {
@@ -112,18 +118,18 @@
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
-  color: var(--fg);
+  color: var(--dk-txt);
   font-size: 13px;
   font-weight: 500;
   transition: color 0.15s ease;
 }
 
 .link:hover {
-  color: var(--accent);
+  color: var(--gold);
 }
 
 .link[aria-disabled="true"] {
-  color: var(--fg-subtle);
+  color: var(--dk-txt-3);
   cursor: default;
   pointer-events: none;
 }
@@ -140,7 +146,7 @@
   font-size: 9.5px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--gold);
 }
 
 .locationList {
@@ -163,19 +169,19 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--accent);
+  background: var(--gold);
   flex-shrink: 0;
   transform: translateY(-2px);
 }
 
 .locationCity {
   font-weight: 700;
-  color: var(--fg);
+  color: var(--dk-txt);
   letter-spacing: -0.005em;
 }
 
 .locationCountry {
-  color: var(--fg-muted);
+  color: var(--dk-txt-2);
   font-size: 12px;
   font-weight: 400;
 }
@@ -192,7 +198,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 1px;
-  color: var(--fg-subtle);
+  color: var(--dk-txt-3);
 }
 
 .legal {
@@ -201,16 +207,16 @@
   gap: 12px;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--fg-subtle);
+  color: var(--dk-txt-3);
 }
 
 .legalLink {
-  color: var(--fg-muted);
+  color: var(--dk-txt-2);
   transition: color 0.15s ease;
 }
 
 .legalLink:hover {
-  color: var(--accent);
+  color: var(--gold);
 }
 
 @media (max-width: 900px) {

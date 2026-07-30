@@ -75,16 +75,54 @@ typography:
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: "0.16em"
+  numeral:
+    fontFamily: "Newsreader, Georgia, serif"
+    fontSize: "clamp(40px, 4.6vw, 62px)"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "-0.03em"
+  subtitle:
+    fontFamily: "Newsreader, Georgia, serif"
+    fontSize: "19px"
+    fontWeight: 550
+    lineHeight: 1.2
+    letterSpacing: "-0.01em"
+  card-title:
+    fontFamily: "Newsreader, Georgia, serif"
+    fontSize: "17px"
+    fontWeight: 550
+    lineHeight: 1.2
+    letterSpacing: "-0.01em"
+  body-sm:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "15px"
+    fontWeight: 500
+    lineHeight: 1.55
+    letterSpacing: "normal"
+  caption:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.6
+    letterSpacing: "normal"
   data:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
     fontSize: "12px"
     fontWeight: 500
     lineHeight: 1.3
     letterSpacing: "0.06em"
+  data-sm:
+    fontFamily: "IBM Plex Mono, ui-monospace, monospace"
+    fontSize: "10.5px"
+    fontWeight: 400
+    lineHeight: 1.3
+    letterSpacing: "0.06em"
 rounded:
   petal: "56px"
   petal-md: "18px"
   petal-sm: "12px"
+  petal-xs: "8px"
+  petal-micro: "3px"
   square: "0px"
 spacing:
   xs: "6px"
@@ -254,11 +292,14 @@ reads as considered rather than decorative. Inter carries every sentence a reade
 reads. IBM Plex Mono carries only what a dossier would set in monospace. Three faces, and the
 division between them is by job, never by taste. `Plus Jakarta Sans` and `DM Mono` are retired.
 
+Every size resolves through an `--fs-*` token in `globals.css` Layer 1. A literal `px`
+font-size in a component is drift: add a step to the ramp or use the nearest one.
+
 ### Hierarchy
 
-- **Display** (500, `clamp(38px, 5.6vw, 72px)`, 1.0): the H1, once per page. Capped at 17ch so
-  it always breaks into three or four lines and never runs as a banner. Italic 600 in
-  `--gold-deep` marks the one phrase carrying the argument.
+- **Display** (500, `clamp(38px, 5.6vw, 72px)`, 1.0): the H1, once per page. Capped at 21ch so
+  it breaks into four lines and never runs as a banner or leaves a one-word last line. Italic
+  600 in `--gold-deep` marks the one phrase carrying the argument.
 - **Headline** (500, `clamp(32px, 4.4vw, 54px)`, 1.05): section H2, capped at 23ch.
 - **Title** (550, `clamp(20px, 2.2vw, 27px)`, 1.15): card and panel headings.
 - **Lede** (400, 18.5px, 1.6, `--ink-2`, max 52ch): the hero paragraph.
@@ -321,8 +362,10 @@ meaning anything. Hover states change ground, border or transform — never elev
 
 **The quarter-round petal is the structural signature: three square corners and one radius,
 taken directly from the four petals of the Yallo mark.** It is the one form a competitor cannot
-copy without copying the logo, and it appears at three scales — `56px` on full panels and
-cards, `18px` on buttons and small cards, `12px` on chips and inner tiles.
+copy without copying the logo, and it appears at five scales — `56px` on full panels and cards,
+`18px` on buttons and small cards, `12px` on chips and inner tiles, `8px` on logo tiles and
+flags, and `3px` on hairline-scale fills such as the instrument's score bars. Five rather than
+three because the same form has to survive on a 560px panel and on a 5px bar.
 
 Which corner carries the radius is not arbitrary. **Buttons and chips take bottom-left**
 (`0 0 0 18px`), reading as a page corner turned up. **Cards and panels take bottom-left** as the
@@ -358,7 +401,11 @@ pulse, and status marks.
 
 ### Cards / Containers
 
-- **Corner Style:** petal at 56px, bottom-left; top-right when inverted.
+- **Corner Style:** petal at 56px, bottom-left by default. A card takes the
+  opposite corner (top-right) when it is the distinguished member of a pair —
+  the gated Blueprint against the open Atlas — so the difference reads in
+  silhouette before any label does. The corner flip is *not* an inverted ground:
+  a page has only two inverted bands to spend.
 - **Background:** `--paper-2` on a `--paper` section, `--paper` on a `--paper-2` section — always
   one step of tonal separation from its ground.
 - **Shadow Strategy:** none. See Elevation & Depth.
@@ -396,10 +443,16 @@ such, and contains no real candidate data.
 
 ### The Petal Fill (signature)
 
-Metric cards, panel corners and the AI role tiles each carry a small gold petal in one corner at
-low opacity. Across the four metrics the fill progresses — a quarter, a half, three-quarters,
-full — so the row reads as a sequence rather than four equal facts. This is the mark used as
-structure, and it is the cheapest recognisability in the system.
+Metric cards and panel corners carry a small gold petal at low opacity. Across the four metrics
+the fill progresses — a quarter, a half, three-quarters, full — so the row reads as a sequence
+rather than four equal facts. This is the mark used as structure, and it is the cheapest
+recognisability in the system.
+
+**It is deliberately not applied everywhere.** The six AI role tiles carried one during the
+first implementation and it was removed: at low opacity over near-black the hard-edged fill read
+as a rendering artefact rather than a mark, and six repetitions in one grid worked against the
+One Marker Rule. Those tiles carry the petal in their corner radius alone. If a surface needs
+the petal fill to feel finished, the surface is under-designed.
 
 ## Do's and Don'ts
 

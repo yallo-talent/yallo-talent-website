@@ -38,7 +38,7 @@ function resolve(sectorSlug: string, fnSlug: string) {
   const sector = sectorRegistry[sectorSlug];
   if (!sector) return null;
   const fn = sector.expertise.find((e) => e.slug === fnSlug);
-  if (!fn || !fn.tools || fn.tools.length === 0) return null;
+  if (!fn?.tools || fn.tools.length === 0) return null;
   return { sector, fn };
 }
 

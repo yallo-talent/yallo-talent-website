@@ -1,0 +1,1736 @@
+/* ==========================================================================
+   Homepage composition — "The Screening Dossier"
+   One stylesheet for all thirteen sections, because they are a single
+   composition sharing one rhythm: the two-column section head, the petal, the
+   hairline rule. Thirteen near-identical modules would duplicate that rhythm
+   thirteen times and let it drift.
+   Every colour resolves through a Layer 2 semantic token — no raw hex here.
+   ========================================================================== */
+
+.wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.section {
+  padding: clamp(52px, 6.5vw, 94px) 0;
+  background: var(--ground);
+}
+
+/* Adjacent sections step between the three grounds so blocks read as separate
+   sheets without needing borders. */
+.g1 {
+  background: var(--ground);
+}
+.g2 {
+  background: var(--ground-2);
+}
+.g3 {
+  background: var(--ground-3);
+}
+
+/* An inverted band re-declares the semantic layer via .band-invert in
+   globals.css, so this only needs the ground and a top rule. */
+.invert {
+  background: var(--ground);
+  border-top: 1px solid var(--hairline);
+}
+
+/* --- The section head: the strongest rhythm in the system ---------------- */
+.head {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(24px, 4vw, 64px);
+  align-items: end;
+  margin: 20px 0 clamp(32px, 4vw, 48px);
+}
+
+.head h2 {
+  max-width: var(--measure-head);
+}
+
+.headLede {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 46ch;
+  padding-bottom: 5px;
+}
+
+/* --- Buttons ------------------------------------------------------------- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: var(--accent-mark);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: var(--fs-body-sm);
+  padding: 14px 24px;
+  border-radius: 0 0 0 var(--r-md);
+  transition: transform 0.45s var(--ease);
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--text);
+  border-bottom: 1.5px solid var(--accent-line);
+  padding-bottom: 2px;
+  transition: gap 0.35s var(--ease);
+}
+
+.btnSecondary:hover {
+  gap: 12px;
+}
+
+/* A card whose destination does not exist yet. Never a link. */
+.unbuilt {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.unbuiltFlag {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.ctaRow {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+/* ==========================================================================
+   1 · Hero
+   ========================================================================== */
+.hero {
+  padding: clamp(28px, 3.2vw, 44px) 0 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--ground);
+}
+
+/* The one background graphic in the system: a large gold petal, rotated. */
+.heroPetal {
+  position: absolute;
+  right: -170px;
+  top: -130px;
+  width: 640px;
+  height: 640px;
+  background: var(--accent-mark);
+  opacity: 0.07;
+  border-radius: var(--r) 0 0 0;
+  transform: rotate(12deg);
+  pointer-events: none;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+  position: relative;
+}
+
+.heroHeadline {
+  margin-top: 20px;
+}
+
+/* The one phrase carrying the argument. */
+.heroHeadline em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--accent-line);
+}
+
+.heroLede {
+  font-size: var(--fs-lede);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 52ch;
+  margin-top: 24px;
+}
+
+.pillars {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.pillars li {
+  font-size: var(--fs-caption-sm);
+  font-weight: 500;
+  padding: 7px 13px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+  color: var(--text-2);
+}
+
+/* --- The hero instrument: the only lifted element in the system ---------- */
+.instrument {
+  background: var(--dk);
+  color: var(--dk-txt);
+  border-radius: 0 0 0 var(--r);
+  padding: 22px;
+  box-shadow: var(--lift);
+  position: relative;
+  overflow: hidden;
+}
+
+.instrument::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 110px;
+  top: -110px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--gold-wash),
+    transparent
+  );
+  opacity: 0.06;
+  animation: scan 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.instrumentTop {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--dk-txt-2);
+  position: relative;
+}
+
+.live {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: pulse 2.4s ease-in-out infinite;
+  flex: none;
+}
+
+.requisition {
+  margin-left: auto;
+  color: var(--dk-txt-3);
+  letter-spacing: 0.06em;
+}
+
+.phases {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 18px 0 20px;
+  position: relative;
+}
+
+.phase {
+  padding: 11px 9px 13px;
+  background: var(--dk-2);
+  border-radius: 0 0 0 var(--r-sm);
+  position: relative;
+}
+
+.phaseKey {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.1em;
+  color: var(--dk-txt-3);
+}
+
+.phaseName {
+  display: block;
+  font-size: var(--fs-caption-sm);
+  font-weight: 600;
+  color: var(--dk-txt-2);
+  margin-top: 5px;
+}
+
+.phaseActive {
+  background: var(--dk-3);
+  box-shadow: inset 0 0 0 1px var(--gold);
+}
+
+.phaseActive .phaseName {
+  color: var(--gold);
+}
+
+.phaseDone .phaseName {
+  color: var(--dk-txt);
+}
+
+.phaseTick {
+  position: absolute;
+  right: 9px;
+  top: 9px;
+  color: var(--gold);
+  display: grid;
+}
+
+.candidates {
+  border-top: 1px solid var(--dk-line);
+}
+
+.candidate {
+  display: grid;
+  grid-template-columns: 1fr 88px 40px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dk-line);
+}
+
+.candidate:last-child {
+  border-bottom: 0;
+}
+
+.candidateName {
+  font-size: var(--fs-caption-sm);
+  color: var(--dk-txt);
+  font-weight: 500;
+}
+
+.candidateMeta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  color: var(--dk-txt-3);
+  margin-top: 3px;
+}
+
+.bar {
+  height: 5px;
+  background: var(--dk-3);
+  border-radius: 0 0 0 var(--r-micro);
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  border-radius: 0 0 0 var(--r-micro);
+  animation: bar-grow 1.6s var(--ease-measure) both;
+}
+
+.candidateScore {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--gold);
+  text-align: right;
+}
+
+.screenedOut .candidateName {
+  color: var(--dk-txt-2);
+}
+
+.screenedOutScore {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--dk-txt-3);
+  text-align: right;
+}
+
+.instrumentFoot {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-top: 18px;
+  position: relative;
+}
+
+.instrumentFoot > div {
+  background: var(--dk-2);
+  padding: 13px;
+  border-radius: 0 0 0 var(--r-sm);
+}
+
+.footValue {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.footLabel {
+  display: block;
+  font-size: var(--fs-data);
+  color: var(--dk-txt-2);
+  margin-top: 7px;
+  font-weight: 500;
+}
+
+/* --- Four entities ------------------------------------------------------- */
+.entities {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: clamp(34px, 4vw, 52px);
+  border-top: 1px solid var(--hairline);
+  list-style: none;
+  padding: 0;
+}
+
+.entity {
+  padding: 22px 22px 26px;
+  border-right: 1px solid var(--hairline);
+  position: relative;
+}
+
+.entity:last-child {
+  border-right: 0;
+}
+
+/* The petal at four rotations across the strip. */
+.entityMark {
+  position: absolute;
+  right: 18px;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-mark);
+  opacity: 0.5;
+}
+
+.entity:nth-child(1) .entityMark {
+  border-radius: 0 0 0 var(--r-xs);
+}
+.entity:nth-child(2) .entityMark {
+  border-radius: var(--r-xs) 0 0 0;
+}
+.entity:nth-child(3) .entityMark {
+  border-radius: 0 var(--r-xs) 0 0;
+}
+.entity:nth-child(4) .entityMark {
+  border-radius: 0 0 var(--r-xs) 0;
+}
+
+.entityCity {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-entity);
+  font-weight: 550;
+  color: var(--text);
+}
+
+.entityRole {
+  display: block;
+  font-size: var(--fs-caption-sm);
+  color: var(--text-3);
+  margin-top: 7px;
+}
+
+/* ==========================================================================
+   2 · Logo rail — two groups, never merged into one strip
+   ========================================================================== */
+.rail {
+  background: var(--ground-2);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: clamp(28px, 3.5vw, 44px) 0;
+  overflow: hidden;
+}
+
+.railLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 18px;
+  max-width: 56ch;
+}
+
+.railGroup + .railGroup {
+  margin-top: clamp(26px, 3vw, 38px);
+  padding-top: clamp(26px, 3vw, 38px);
+  border-top: 1px solid var(--hairline);
+}
+
+.logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+/* Each mark sits in a white tile: the pack mixes transparency with opaque
+   JPEG, and a printed dossier reproduces client logos on white anyway. */
+.logo {
+  display: grid;
+  place-items: center;
+  height: 56px;
+  min-width: 104px;
+  /* Capped: the pack ranges from square to 14:1, and an uncapped wordmark
+     dominates the row and reads as a hierarchy that does not exist. */
+  max-width: 190px;
+  padding: 0 16px;
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+}
+
+.logo img {
+  max-height: 30px;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Consented client, no logo file supplied. Set, never substituted. */
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: 550;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   3 · The gap — five-persona index
+   ========================================================================== */
+.gap {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+
+.personaIndex {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--hairline);
+}
+
+.personaTab {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 18px 16px 0;
+  border-bottom: 1px solid var(--hairline);
+  border-left: 2px solid transparent;
+  padding-left: 16px;
+  transition:
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
+}
+
+.personaTab[aria-selected="true"] {
+  border-left-color: var(--accent-line);
+  background: var(--ground-2);
+}
+
+.personaRole {
+  font-family: var(--font-display);
+  font-size: var(--fs-subtitle);
+  font-weight: 550;
+  color: var(--text);
+}
+
+.personaCue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+}
+
+.personaTab[aria-selected="true"] .personaCue {
+  color: var(--accent-label);
+}
+
+.personaPanel {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: clamp(22px, 3vw, 36px);
+}
+
+.panelPetal {
+  position: absolute;
+  right: -34px;
+  top: -34px;
+  width: 120px;
+  height: 120px;
+  background: var(--accent-mark);
+  opacity: var(--petal-opacity);
+  border-radius: 0 0 0 var(--r);
+  pointer-events: none;
+}
+
+.panelLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  position: relative;
+}
+
+.personaPanel h3 {
+  margin-top: 10px;
+  max-width: 26ch;
+  position: relative;
+}
+
+.quotes {
+  margin: 22px 0 0;
+  padding: 0;
+  position: relative;
+}
+
+.quotes blockquote {
+  margin: 0;
+  padding: 12px 0 12px 18px;
+  border-left: 2px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.quotes blockquote + blockquote {
+  border-top: 1px solid var(--hairline);
+}
+
+.personaStat {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--boundary);
+  position: relative;
+}
+
+.personaStatValue {
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral-sm);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  flex: none;
+}
+
+.personaStatClaim {
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 48ch;
+}
+
+/* Third-party figures carry a visible source — the citation is the proof. */
+.personaStatSource {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.03em;
+  color: var(--text-3);
+}
+
+/* ==========================================================================
+   4 · Metrics — the petal fill advances across the row
+   ========================================================================== */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.metric {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: clamp(20px, 2.4vw, 28px);
+}
+
+.metricPetal {
+  position: absolute;
+  right: -30px;
+  top: -30px;
+  width: 110px;
+  height: 110px;
+  background: var(--accent-mark);
+  border-radius: 0 0 0 var(--r);
+  pointer-events: none;
+}
+
+/* A quarter, a half, three-quarters, full: the row reads as a sequence. */
+.metric:nth-child(1) .metricPetal {
+  opacity: calc(var(--petal-opacity) * 0.35);
+}
+.metric:nth-child(2) .metricPetal {
+  opacity: calc(var(--petal-opacity) * 0.6);
+}
+.metric:nth-child(3) .metricPetal {
+  opacity: calc(var(--petal-opacity) * 0.82);
+}
+.metric:nth-child(4) .metricPetal {
+  opacity: var(--petal-opacity);
+}
+
+.metricValue {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-numeral);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+
+.metricLabel {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  position: relative;
+}
+
+.metricDefinition {
+  margin-top: 8px;
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 30ch;
+  position: relative;
+}
+
+/* ==========================================================================
+   5 · The screen — ghost numerals and a connector, carried from the previous
+   build whose execution of this was stronger than the prototype's
+   ========================================================================== */
+.flow {
+  position: relative;
+}
+
+.connector {
+  position: absolute;
+  top: 52px;
+  left: 11%;
+  right: 11%;
+  height: 1px;
+  background: var(--hairline);
+  z-index: 0;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.step {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: 24px 22px 22px;
+  transition:
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
+}
+
+.step:hover {
+  border-color: var(--boundary);
+  background: var(--ground-3);
+}
+
+.ghost {
+  position: absolute;
+  bottom: -16px;
+  right: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-ghost);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent-mark);
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.stepIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-wash);
+  border: 1px solid var(--hairline);
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+  color: var(--accent-label);
+}
+
+.step h3 {
+  font-size: var(--fs-title);
+  position: relative;
+}
+
+.stepCopy {
+  margin-top: 8px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-2);
+  position: relative;
+}
+
+.stepBadge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 5px 11px;
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-wash);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.06em;
+  color: var(--accent-label);
+  position: relative;
+}
+
+.desks {
+  margin-top: clamp(32px, 4vw, 48px);
+  padding-top: clamp(26px, 3vw, 34px);
+  border-top: 1px solid var(--hairline);
+}
+
+.desksLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.desksList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.desksNote {
+  margin-top: 14px;
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+}
+
+/* ==========================================================================
+   6 · Role coverage
+   ========================================================================== */
+.roleGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.roleCard {
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  padding: 18px 16px;
+  transition:
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
+}
+
+.roleCard[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+
+.roleCard svg {
+  color: var(--accent-line);
+  margin-bottom: 12px;
+}
+
+.roleCard[aria-pressed="true"] svg {
+  color: var(--accent-label);
+}
+
+.roleName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: 550;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.roleNote {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.04em;
+  color: var(--text-3);
+  margin-top: 6px;
+}
+
+.roleOut {
+  position: relative;
+  overflow: hidden;
+  margin-top: 12px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.roleOut h3 {
+  position: relative;
+}
+
+.roleOutNote {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  margin-top: 8px;
+  position: relative;
+}
+
+.roleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+/* ==========================================================================
+   7 · The commitment
+   ========================================================================== */
+.commitment {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.vow {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: clamp(24px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+}
+
+.vowKind {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  position: relative;
+}
+
+.vow h3 {
+  margin-top: 12px;
+  max-width: 24ch;
+  position: relative;
+}
+
+.vowBadge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 14px 20px;
+  background: var(--accent-wash);
+  border-radius: 0 0 0 var(--r-md);
+  align-self: flex-start;
+  position: relative;
+}
+
+.vowBadgeValue {
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral-sm);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--accent-line);
+}
+
+.vowBadgeLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.vowTerms {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hairline);
+  position: relative;
+}
+
+.vowTerms li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  color: var(--text);
+}
+
+.vowTerms li:last-child {
+  border-bottom: 0;
+}
+
+.vowTerms svg {
+  color: var(--positive-mark);
+  flex: none;
+}
+
+.vowFoot {
+  margin-top: auto;
+  padding-top: 22px;
+  position: relative;
+}
+
+.commitmentNote {
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.03em;
+  color: var(--text-3);
+}
+
+/* ==========================================================================
+   8 · Engage — native details/summary, no JS
+   ========================================================================== */
+.accordion {
+  border-top: 1px solid var(--boundary);
+}
+
+.model {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.modelSummary {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 4px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.modelSummary::-webkit-details-marker {
+  display: none;
+}
+
+.modelNum {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  flex: none;
+}
+
+.modelName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 550;
+  color: var(--text);
+  line-height: 1.15;
+}
+
+.modelPositioning {
+  display: block;
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+  margin-top: 4px;
+  max-width: 52ch;
+}
+
+.leadFlag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--accent-mark);
+  padding: 4px 9px;
+  border-radius: 0 0 0 var(--r-xs);
+  flex: none;
+}
+
+.chevron {
+  margin-left: auto;
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid var(--accent-line);
+  border-bottom: 1.5px solid var(--accent-line);
+  transform: rotate(45deg);
+  transition: transform 0.35s var(--ease);
+  flex: none;
+}
+
+.leadFlag + .chevron {
+  margin-left: 0;
+}
+
+.model[open] .chevron {
+  transform: rotate(225deg);
+}
+
+.modelBody {
+  padding: 0 4px 26px;
+  display: grid;
+  gap: 16px;
+}
+
+.rightForLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ==========================================================================
+   9 · Where we place — two axes
+   ========================================================================== */
+.axes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+}
+
+.axisLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--boundary);
+}
+
+.axisList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.axisItem {
+  display: grid;
+  /* Wide enough for a 7:1 wordmark to stay legible — Blue Yonder sets the
+     lower bound here, not the squarer marks. */
+  grid-template-columns: 76px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+  transition: background 0.28s var(--ease);
+}
+
+.axisLink:hover .axisItem {
+  background: var(--ground-2);
+}
+
+.axisMark {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  background: var(--paper-2);
+  border-radius: 0 0 0 var(--r-xs);
+  padding: 0 6px;
+}
+
+.axisMark img {
+  max-height: 26px;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.axisMarkDrawn {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-xs);
+  color: var(--accent-line);
+}
+
+.axisName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-subtitle);
+  font-weight: 550;
+  color: var(--text);
+}
+
+.axisModules {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.03em;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   10 · AI talent
+   ========================================================================== */
+.aiGrid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+
+.aiStat {
+  border-top: 1px solid var(--boundary);
+  padding-top: 22px;
+}
+
+.aiStatValue {
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral-lg);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--accent-line);
+}
+
+.aiStatClaim {
+  margin-top: 14px;
+  font-size: var(--fs-card-title);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 42ch;
+}
+
+.aiStatSource {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--text-3);
+}
+
+.aiRoles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.aiRole {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  padding: 18px;
+}
+
+.aiRoleName {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: 550;
+  color: var(--text);
+  position: relative;
+}
+
+.aiRoleScope {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.03em;
+  color: var(--text-3);
+  margin-top: 6px;
+  position: relative;
+}
+
+/* ==========================================================================
+   11 · Evidence
+   ========================================================================== */
+.caseRail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(300px, 1fr);
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.caseCard {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: 24px;
+  transition:
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
+}
+
+.caseCard:hover {
+  border-color: var(--boundary);
+}
+
+.caseLogo {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  width: fit-content;
+  min-width: 88px;
+  padding: 0 12px;
+  background: var(--paper-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-xs);
+  margin-bottom: 18px;
+}
+
+.caseLogo img {
+  max-height: 24px;
+  width: auto;
+  object-fit: contain;
+}
+
+.caseMeta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.06em;
+  color: var(--accent-label);
+}
+
+.caseCard h3 {
+  margin-top: 10px;
+  font-size: var(--fs-title);
+  max-width: 26ch;
+}
+
+.caseSummary {
+  margin-top: 12px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-2);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.caseFoot {
+  margin-top: auto;
+  padding-top: 20px;
+}
+
+.railNav {
+  display: flex;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.railNav button {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-sm);
+  color: var(--text-2);
+  transition:
+    color 0.28s var(--ease),
+    background 0.28s var(--ease),
+    border-color 0.28s var(--ease);
+}
+
+.railNav button:hover {
+  color: var(--accent-label);
+  background: var(--accent-wash);
+  border-color: var(--accent-line);
+}
+
+/* ==========================================================================
+   12 · Intelligence
+   ========================================================================== */
+.intelGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.intelCard {
+  position: relative;
+  overflow: hidden;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  padding: clamp(24px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* The gated asset takes the inverted ground — content type, not decoration.
+   Inverted cards take the opposite corner so the flip reads in silhouette. */
+.intelCardInvert {
+  border-radius: 0 var(--r) 0 0;
+  border-color: var(--hairline);
+}
+
+.intelFlag {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data-sm);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-xs);
+  color: var(--text-2);
+  position: relative;
+}
+
+.intelCard h3 {
+  margin-top: 18px;
+  max-width: 22ch;
+  position: relative;
+}
+
+.intelCopy {
+  margin-top: 12px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+  max-width: 44ch;
+  position: relative;
+}
+
+.intelPoints {
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+
+.intelPoints li {
+  padding: 10px 0 10px 18px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+  position: relative;
+}
+
+.intelPoints li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 17px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent-mark);
+  border-radius: 0 0 0 var(--r-micro);
+}
+
+.intelFoot {
+  margin-top: auto;
+  padding-top: 24px;
+  position: relative;
+}
+
+/* ==========================================================================
+   13 · Close
+   ========================================================================== */
+.close {
+  position: relative;
+  overflow: hidden;
+  background: var(--dk);
+  color: var(--dk-txt);
+  padding: clamp(52px, 6.5vw, 94px) 0;
+}
+
+.closePetal {
+  position: absolute;
+  left: -140px;
+  bottom: -160px;
+  width: 560px;
+  height: 560px;
+  background: var(--gold);
+  opacity: 0.06;
+  border-radius: 0 var(--r) 0 0;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.closeGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+  position: relative;
+}
+
+.closeGrid h2 {
+  margin-top: 18px;
+  color: var(--dk-txt);
+}
+
+.closeGrid h2 em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.closeLede {
+  margin-top: 18px;
+  font-size: var(--fs-card-title);
+  line-height: 1.6;
+  color: var(--dk-txt-2);
+  max-width: 48ch;
+}
+
+.closeEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.closeEyebrow::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.jobsLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-caption);
+  color: var(--dk-txt-2);
+  border-bottom: 1.5px solid var(--gold);
+  padding-bottom: 2px;
+}
+
+.brief {
+  background: var(--dk-2);
+  border: 1px solid var(--dk-line);
+  border-radius: 0 var(--r) 0 0;
+  padding: clamp(24px, 3vw, 32px);
+}
+
+.briefTitle {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.briefList {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: brief;
+}
+
+.briefList li {
+  counter-increment: brief;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--dk-line);
+  font-size: var(--fs-caption);
+  color: var(--dk-txt);
+}
+
+.briefList li:last-child {
+  border-bottom: 0;
+}
+
+.briefList li::before {
+  content: counter(brief, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--dk-txt-3);
+  padding-top: 3px;
+}
+
+.briefFoot {
+  margin-top: 22px;
+}
+
+/* ==========================================================================
+   Responsive — 1100 collapses two-column figures, 900 collapses heads and
+   4-up, 560 goes single column. Floor is 360px.
+   ========================================================================== */
+@media (max-width: 1100px) {
+  .heroGrid,
+  .gap,
+  .aiGrid,
+  .closeGrid {
+    grid-template-columns: 1fr;
+  }
+  .roleGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .head {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .headLede {
+    padding-bottom: 0;
+  }
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .connector {
+    display: none;
+  }
+  .axes,
+  .commitment,
+  .intelGrid {
+    grid-template-columns: 1fr;
+  }
+  .entities {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .entity:nth-child(2n) {
+    border-right: 0;
+  }
+  .entity:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--hairline);
+  }
+  /* Inverted cards return to the default corner once stacked, so the
+     silhouette cue does not fight the stack. */
+  .intelCardInvert,
+  .brief {
+    border-radius: 0 0 0 var(--r);
+  }
+}
+
+@media (max-width: 560px) {
+  .roleGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .aiRoles {
+    grid-template-columns: 1fr;
+  }
+  .instrument {
+    padding: 18px;
+  }
+  .instrumentFoot {
+    grid-template-columns: 1fr;
+  }
+  .candidate {
+    grid-template-columns: 1fr 60px 32px;
+    gap: 8px;
+  }
+  .modelSummary {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .personaStat {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  /* At the floor the instrument keeps all four phases rather than scrolling. */
+  .phases {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metrics,
+  .roleGrid,
+  .steps {
+    grid-template-columns: 1fr;
+  }
+  .logo {
+    min-width: 88px;
+    padding: 0 12px;
+  }
+}

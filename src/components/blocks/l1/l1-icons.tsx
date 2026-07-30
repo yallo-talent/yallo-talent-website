@@ -76,9 +76,7 @@ export const l1Icons: Record<L1IconKey, (p: IconProps) => React.ReactElement> =
       ),
     loyalty: (p) =>
       wrap(
-        <>
-          <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" />
-        </>,
+        <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" />,
         "Loyalty",
         p.className,
       ),
@@ -240,9 +238,7 @@ export const l1Icons: Record<L1IconKey, (p: IconProps) => React.ReactElement> =
       ),
     promotions: (p) =>
       wrap(
-        <>
-          <path d="M20.6 7.4L12 16l-8.6-8.6a5 5 0 017.1-7L12 3l1.5-1.5a5 5 0 017.1 5.9z" />
-        </>,
+        <path d="M20.6 7.4L12 16l-8.6-8.6a5 5 0 017.1-7L12 3l1.5-1.5a5 5 0 017.1 5.9z" />,
         "Promotions",
         p.className,
       ),

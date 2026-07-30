@@ -67,10 +67,37 @@
   --fn-category-text-d: #dc9ac6;
 
   /* --- Non-colour primitives ------------------------------------------- */
-  /* The quarter-round petal: three square corners, one radius. */
-  --r: 56px;
-  --r-md: 18px;
-  --r-sm: 12px;
+  /* The quarter-round petal: three square corners, one radius. Five scales,
+     because the same form has to work on a full panel and on a 5px bar. */
+  --r: 56px; /* panels, cards, the hero instrument */
+  --r-md: 18px; /* buttons, small cards */
+  --r-sm: 12px; /* chips, inner tiles, hero pillars */
+  --r-xs: 8px; /* logo tiles, flags, entity marks */
+  --r-micro: 3px; /* progress bars and other hairline-scale fills */
+
+  /* --- Type ramp --------------------------------------------------------
+     Every font-size in the system resolves through one of these. A literal
+     px value in a component is drift: add a step here instead, or use the
+     nearest one. Roles, not a geometric scale — this is a dense editorial
+     page and each step has a distinct job. */
+  --fs-display: clamp(38px, 5.6vw, 72px); /* the H1, once per page */
+  --fs-headline: clamp(32px, 4.4vw, 54px); /* section H2 */
+  --fs-numeral: clamp(40px, 4.6vw, 62px); /* published metric values */
+  --fs-numeral-lg: clamp(48px, 6vw, 84px); /* the single AI-talent figure */
+  --fs-numeral-sm: clamp(30px, 3.4vw, 44px); /* persona statistic values */
+  --fs-title: clamp(20px, 2.2vw, 27px); /* card and panel headings */
+  --fs-subtitle: 19px; /* axis names, persona roles */
+  --fs-lede: 18.5px; /* the hero paragraph */
+  --fs-card-title: 17px; /* role and AI-role names */
+  --fs-body: 16.5px; /* section ledes, body copy */
+  --fs-body-sm: 15px; /* buttons, list terms, quotes */
+  --fs-caption: 14px; /* card copy, metric definitions */
+  --fs-caption-sm: 13px; /* entity roles, pillars */
+  --fs-data: 12px; /* mono: measured values, reference numbers */
+  --fs-label: 11px; /* mono: eyebrows, axis labels */
+  --fs-data-sm: 10.5px; /* mono: badges, inline meta, flags */
+  --fs-ghost: 82px; /* the ghost numerals bled off step cards */
+  --fs-entity: clamp(22px, 2.4vw, 30px); /* the four-entity strip */
 
   --pad: clamp(20px, 5vw, 72px);
   --measure-head: 23ch;
@@ -222,12 +249,19 @@
 :root {
   --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
   --font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
-    monospace;
+  --font-mono:
+    var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 /* ==========================================================================
    Layer 2c — COMPATIBILITY SHIM · REMOVE IN PHASE B/E
+
+   KNOWN LIMITATION: these aliases are declared on :root, so each one computes
+   against :root's semantic values and descendants inherit that computed value.
+   They therefore do NOT follow `.band-invert`. Any component that sits on an
+   inverted ground must use Layer 2 names directly, or hardcode the dark
+   register as src/components/layout/Footer.module.css does. This is the main
+   reason the shim is temporary.
    The L1, L2, service and legal surfaces still consume the previous token
    names. They are mapped onto the new palette here so the canon lands
    visually everywhere at once without those pages being rebuilt yet. The six
@@ -398,18 +432,18 @@ h6 {
 }
 
 h1 {
-  font-size: clamp(38px, 5.6vw, 72px);
+  font-size: var(--fs-display);
   line-height: 1;
-  max-width: 17ch;
+  max-width: 21ch;
 }
 
 h2 {
-  font-size: clamp(32px, 4.4vw, 54px);
+  font-size: var(--fs-headline);
   max-width: var(--measure-head);
 }
 
 h3 {
-  font-size: clamp(20px, 2.2vw, 27px);
+  font-size: var(--fs-title);
   font-weight: 550;
   letter-spacing: -0.015em;
   line-height: 1.15;
@@ -456,7 +490,7 @@ button {
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -496,7 +530,7 @@ button {
   align-items: center;
   padding: 7px 13px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--fs-data);
   letter-spacing: 0.06em;
   color: var(--text-2);
   background: var(--ground-2);
@@ -511,7 +545,7 @@ button {
   gap: 6px;
   padding: 5px 10px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-data-sm);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent-label);
@@ -527,7 +561,7 @@ button {
   align-items: center;
   gap: 7px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--positive-text);
@@ -662,9 +696,9 @@ button {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
   }
 }

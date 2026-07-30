@@ -81,24 +81,12 @@ export const navIcons = {
       p.className,
     ),
   healthcare: (p: IconProps) =>
-    wrap(
-      <>
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </>,
-      p.className,
-    ),
+    wrap(<path d="M22 12h-4l-3 9L9 3l-3 9H2" />, p.className),
   government: (p: IconProps) =>
-    wrap(
-      <>
-        <path d="M3 21h18M5 21V9l7-4 7 4v12M10 21v-5h4v5" />
-      </>,
-      p.className,
-    ),
+    wrap(<path d="M3 21h18M5 21V9l7-4 7 4v12M10 21v-5h4v5" />, p.className),
   telco: (p: IconProps) =>
     wrap(
-      <>
-        <path d="M5 12.5a11 11 0 0114 0M1.5 9a16 16 0 0121 0M8.5 16a6 6 0 017 0M12 20h.01" />
-      </>,
+      <path d="M5 12.5a11 11 0 0114 0M1.5 9a16 16 0 0121 0M8.5 16a6 6 0 017 0M12 20h.01" />,
       p.className,
     ),
   sap: (p: IconProps) =>
@@ -110,12 +98,7 @@ export const navIcons = {
       p.className,
     ),
   oracle: (p: IconProps) =>
-    wrap(
-      <>
-        <ellipse cx="12" cy="12" rx="9" ry="6" />
-      </>,
-      p.className,
-    ),
+    wrap(<ellipse cx="12" cy="12" rx="9" ry="6" />, p.className),
   microsoft: (p: IconProps) =>
     wrap(
       <>
@@ -128,9 +111,7 @@ export const navIcons = {
     ),
   salesforce: (p: IconProps) =>
     wrap(
-      <>
-        <path d="M8 15a4 4 0 010-8 5 5 0 019.5-1A4 4 0 0121 12a4 4 0 01-6 4c-1 3-5 3-7 0z" />
-      </>,
+      <path d="M8 15a4 4 0 010-8 5 5 0 019.5-1A4 4 0 0121 12a4 4 0 01-6 4c-1 3-5 3-7 0z" />,
       p.className,
     ),
   "blue-yonder": (p: IconProps) =>
@@ -151,18 +132,11 @@ export const navIcons = {
     ),
   capabilities: (p: IconProps) =>
     wrap(
-      <>
-        <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" />
-      </>,
+      <path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1 3-6z" />,
       p.className,
     ),
   insights: (p: IconProps) =>
-    wrap(
-      <>
-        <path d="M2 20l4-5 5 3 4-8 7 4" />
-      </>,
-      p.className,
-    ),
+    wrap(<path d="M2 20l4-5 5 3 4-8 7 4" />, p.className),
   cases: (p: IconProps) =>
     wrap(
       <>
@@ -217,9 +191,7 @@ export const navIcons = {
     ),
   cloud: (p: IconProps) =>
     wrap(
-      <>
-        <path d="M18 10a4 4 0 00-8-1 5 5 0 00-1 9.9h9a4 4 0 000-8z" />
-      </>,
+      <path d="M18 10a4 4 0 00-8-1 5 5 0 00-1 9.9h9a4 4 0 000-8z" />,
       p.className,
     ),
   security: (p: IconProps) =>

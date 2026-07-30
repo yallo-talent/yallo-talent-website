@@ -1,37 +1,70 @@
-# Client register. Any entry with consentOnFile: false must not render
-# anywhere on the site — the loader filters at read time and every
-# consumer must respect that filter. Flip consentOnFile to true only
-# once written consent is on file.
+# Client register — canon §9 and combined relay §9.
+#
+# Two groups, never merged into one strip. Only the names below appear on the
+# site; the supplied logo pack contains around forty more and they are NOT
+# current trading relationships, so they are not shipped.
+#
+# `consentOnFile: false` means the entry renders nowhere — the loader filters at
+# read time and every consumer must respect that filter.
+#
+# `logo` omitted means no file exists in the supplied pack. Those names render
+# as a set wordmark rather than an image. Never substitute a similar logo.
 enterprise:
+  - name: Alshaya Group
+    logo: /logos/clients/alshaya.svg
+    consentOnFile: true
   - name: Landmark Group
-    logo: /logos/clients/landmark.svg
-    consentOnFile: false
+    logo: /logos/clients/landmark-group.png
+    consentOnFile: true
   - name: Majid Al Futtaim
-    logo: /logos/clients/majid-al-futtaim.svg
-    consentOnFile: false
-  - name: Al Tayer Group
-    logo: /logos/clients/al-tayer.svg
-    consentOnFile: false
+    logo: /logos/clients/majid-al-futtaim.png
+    consentOnFile: true
+  - name: Al Tayer
+    logo: /logos/clients/al-tayer.png
+    consentOnFile: true
+  - name: Al Futtaim
+    logo: /logos/clients/al-futtaim.png
+    consentOnFile: true
   - name: Chalhoub Group
-    logo: /logos/clients/chalhoub.svg
-    consentOnFile: false
+    logo: /logos/clients/chalhoub-group.png
+    consentOnFile: true
+  - name: Al Othaim Markets
+    logo: /logos/clients/al-othaim-markets.png
+    consentOnFile: true
+  - name: Sephora
+    logo: /logos/clients/sephora.png
+    consentOnFile: true
+  - name: Richemont
+    logo: /logos/clients/richemont.png
+    consentOnFile: true
+  - name: Marks & Spencer
+    logo: /logos/clients/marks-and-spencer.png
+    consentOnFile: true
+  - name: Panda Retail
+    logo: /logos/clients/panda-retail.png
+    consentOnFile: true
   - name: Wickes
-    logo: /logos/clients/wickes.svg
-    consentOnFile: false
+    logo: /logos/clients/wickes.png
+    consentOnFile: true
+  # No file in the supplied pack — renders as a wordmark until one arrives.
+  - name: Radwell
+    consentOnFile: true
 
+# Heading on the site: "the systems integrators delivering them come to us for
+# specialists". Never describes the commercial arrangement.
 integrators:
   - name: TCS
-    logo: /logos/clients/tcs.svg
-    consentOnFile: false
-  - name: Infosys
-    logo: /logos/clients/infosys.svg
-    consentOnFile: false
-  - name: Capgemini
-    logo: /logos/clients/capgemini.svg
-    consentOnFile: false
+    logo: /logos/integrators/tcs.png
+    consentOnFile: true
   - name: Wipro
-    logo: /logos/clients/wipro.svg
-    consentOnFile: false
+    logo: /logos/integrators/wipro.png
+    consentOnFile: true
+  - name: Infosys
+    logo: /logos/integrators/infosys.png
+    consentOnFile: true
+  # No file in the supplied pack — renders as a wordmark until one arrives.
+  - name: Capgemini
+    consentOnFile: true
   - name: Oracle Consulting
-    logo: /logos/clients/oracle-consulting.svg
-    consentOnFile: false
+    logo: /logos/integrators/oracle-consulting.png
+    consentOnFile: true

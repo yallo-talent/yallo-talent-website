@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -486,7 +486,7 @@ const crossSectorLinks: {
   },
 ];
 
-function L1CrossSector({ data }: Props) {
+function _L1CrossSector({ data }: Props) {
   const others = crossSectorLinks.filter((s) => s.slug !== data.slug);
   const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
   return (
