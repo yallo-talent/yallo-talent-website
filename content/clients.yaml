@@ -7,8 +7,10 @@
 # `consentOnFile: false` means the entry renders nowhere — the loader filters at
 # read time and every consumer must respect that filter.
 #
-# `logo` omitted means no file exists in the supplied pack. Those names render
-# as a set wordmark rather than an image. Never substitute a similar logo.
+# Every consented name now has a mark. Radwell and Capgemini were absent from
+# the supplied pack and were sourced separately as vectors — see the header of
+# scripts/build-logos.mjs for provenance. If a future name has no file, omit
+# `logo` and it renders as a set wordmark; never substitute a similar logo.
 enterprise:
   - name: Alshaya Group
     logo: /logos/clients/alshaya.svg
@@ -46,8 +48,8 @@ enterprise:
   - name: Wickes
     logo: /logos/clients/wickes.png
     consentOnFile: true
-  # No file in the supplied pack — renders as a wordmark until one arrives.
   - name: Radwell
+    logo: /logos/clients/radwell.svg
     consentOnFile: true
 
 # Heading on the site: "the systems integrators delivering them come to us for
@@ -62,8 +64,8 @@ integrators:
   - name: Infosys
     logo: /logos/integrators/infosys.png
     consentOnFile: true
-  # No file in the supplied pack — renders as a wordmark until one arrives.
   - name: Capgemini
+    logo: /logos/integrators/capgemini.svg
     consentOnFile: true
   - name: Oracle Consulting
     logo: /logos/integrators/oracle-consulting.png

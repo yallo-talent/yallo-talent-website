@@ -43,7 +43,7 @@ for (const theme of ["light", "dark"]) {
       theme,
     );
 
-    await page.goto(BASE, { waitUntil: "networkidle" });
+    await page.goto(BASE, { waitUntil: "load" });
 
     const resolved = await page.getAttribute("html", "data-theme");
     if (resolved !== theme) {
@@ -166,7 +166,8 @@ for (const theme of ["light", "dark"]) {
     reducedMotion: "reduce",
   });
   const page = await context.newPage();
-  await page.goto(BASE, { waitUntil: "networkidle" });
+  await page.goto(BASE, { waitUntil: "load" });
+  await page.locator("#metrics").waitFor({ state: "attached" });
   await page.locator("#metrics").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
   const shown = await page.locator("#metrics dd").first().innerText();

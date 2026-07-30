@@ -12,13 +12,19 @@
  * rest of the pack is deliberately not shipped — they are not current trading
  * relationships.
  *
+ * Two marks are NOT in the supplied pack and are committed directly as vectors
+ * rather than generated here, so this script does not touch them:
+ *   public/logos/clients/radwell.svg        — from the header of radwell.co.uk
+ *   public/logos/integrators/capgemini.svg  — Capgemini_201x_logo.svg, Wikimedia Commons
+ * Both are used nominatively to identify a client with consent on file.
+ *
  *   node scripts/build-logos.mjs
  */
 import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
 import { basename, extname, join } from "node:path";
 import sharp from "sharp";
 
-const SRC = join(process.cwd(), "prototype", "Client Logos");
+const SRC = join(process.cwd(), "assets", "client-logos");
 const OUT_CLIENTS = join(process.cwd(), "public", "logos", "clients");
 const OUT_INTEGRATORS = join(process.cwd(), "public", "logos", "integrators");
 
@@ -39,7 +45,7 @@ const CLIENTS = {
   "marks-and-spencer": "M&S.jpeg",
   "panda-retail": "Panda.png",
   wickes: "Wickes.png",
-  // radwell: no file in the pack — flagged, never substituted.
+  // radwell: committed directly as public/logos/clients/radwell.svg — see header.
 };
 
 const INTEGRATORS = {
@@ -47,7 +53,7 @@ const INTEGRATORS = {
   wipro: "Wipro.png",
   infosys: "Infosys.png",
   "oracle-consulting": "Oracle.png",
-  // capgemini: no file in the pack — flagged, never substituted.
+  // capgemini: committed directly as public/logos/integrators/capgemini.svg.
 };
 
 const missing = [];
@@ -100,20 +106,21 @@ for (const [slug, file] of Object.entries(INTEGRATORS)) {
 
 console.log(`\n${written} logo files written.`);
 
-const expected = ["radwell", "capgemini"];
-console.log(
-  `\nNot in the supplied pack and NOT substituted: ${expected.join(", ")}.`,
-);
-console.log(
-  "These render as a set wordmark until real files arrive. Do not swap in a similar logo.",
-);
+// Marks committed as vectors outside this script. Verified, not generated.
+for (const [slug, file] of [
+  ["radwell", join(OUT_CLIENTS, "radwell.svg")],
+  ["capgemini", join(OUT_INTEGRATORS, "capgemini.svg")],
+]) {
+  if (!existsSync(file)) {
+    missing.push(`${slug} (expected committed vector at ${file})`);
+  } else {
+    console.log(`  ${slug}: committed vector present`);
+  }
+}
 
 if (missing.length) {
-  console.error(`\nSource files missing for: ${missing.join(", ")}`);
-  const unexpected = missing.filter(
-    (m) => !expected.some((e) => m.startsWith(e)),
-  );
-  if (unexpected.length) process.exit(1);
+  console.error(`\nMissing logo sources: ${missing.join(", ")}`);
+  process.exit(1);
 }
 
 // Report anything in the pack we deliberately did not ship.
