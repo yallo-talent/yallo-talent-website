@@ -106,7 +106,7 @@
 
 .unbuiltFlag {
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-3);
@@ -184,7 +184,7 @@
 }
 
 .pillars li {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   font-weight: 500;
   padding: 7px 13px;
   background: var(--ground-2);
@@ -281,14 +281,14 @@
 .phaseKey {
   display: block;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.1em;
   color: var(--dk-txt-3);
 }
 
 .phaseName {
   display: block;
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--dk-txt-2);
   margin-top: 5px;
@@ -333,14 +333,14 @@
 }
 
 .candidateName {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--dk-txt);
   font-weight: 500;
 }
 
 .candidateMeta {
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   color: var(--dk-txt-3);
   margin-top: 3px;
 }
@@ -482,7 +482,7 @@
 
 .entityRole {
   display: block;
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--text-3);
   margin-top: 7px;
 }
@@ -595,30 +595,38 @@
 /* Each mark sits in a white tile: the pack mixes transparency with opaque
    JPEG, and a printed dossier reproduces client logos on white anyway. */
 /* No tile, ever: canon §8 forbids a mark on a white card. The uniform
-   monochrome treatment (--mark-mono) silhouettes every mark for the ground it
+   monochrome treatment (--mark-filter) silhouettes every mark for the ground it
    sits on, at 72% opacity lifting to full on hover. */
+/* UNIFORM CELLS. One width, one height, one cap height, even spacing — so the
+   rail reads as one row of equals rather than fifteen differently-scaled marks.
+   The pack ranges from square to 14:1, and letting each mark size itself made
+   the widest wordmark dominate and read as a hierarchy that does not exist. */
 .logo {
   display: grid;
   place-items: center;
+  width: 156px;
   height: 56px;
-  min-width: 88px;
-  /* Capped: the pack ranges from square to 14:1, and an uncapped wordmark
-     dominates the row and reads as a hierarchy that does not exist. */
-  max-width: 190px;
   flex: none;
 }
 
+/* SINGLE INK, one tone, one opacity, no blend mode.
+   The silhouettes now carry TRUE ALPHA (scripts/build-logos.mjs keys the ground
+   out at build time), and they are emitted as solid black. So one filter per
+   theme is the whole treatment: none on light leaves black ink, invert on dark
+   makes it white, and alpha is preserved either way.
+   What this replaces: a flattened white tile shown through grayscale() plus a
+   per-theme mix-blend-mode. A blend mode composites against each asset's OWN
+   baked background, so the result varied mark by mark and left visible plates
+   wherever that background was off-white or genuinely dark — the "illegible dark
+   blobs". No blend mode can give one tone across a pack like that; only real
+   alpha can. */
 .logo img {
-  max-height: 28px;
+  height: 26px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
-  filter: var(--mark-mono);
-  /* Knocks the assets' baked white background out against the ground — 15 of
-     the 18 marks are opaque rasters with no alpha, so a filter alone rendered
-     them as solid bars. */
-  mix-blend-mode: var(--mark-blend);
-  opacity: 0.78;
+  filter: var(--mark-filter);
+  opacity: 0.82;
   transition: opacity 0.28s var(--ease);
 }
 
@@ -628,12 +636,21 @@
 }
 
 /* Consented client, no logo file supplied. Set, never substituted. */
+/* The NAME, for a mark whose source will not key to one clean ink or cannot
+   reach a readable cap height in the cell. Canon §8: never a padded box, never a
+   redrawn mark. Set in the display face at the same optical weight as the
+   silhouettes so the row still reads as one rank — it is a peer, not a gap.
+   --text-2, not --ink-2: the rail appears in both registers and the hardcoded
+   light ink was invisible on the dark one. */
 .wordmark {
   font-family: var(--font-display);
-  font-size: var(--fs-card-title);
+  font-size: var(--fs-body);
   font-weight: 550;
-  color: var(--ink-2);
+  color: var(--text-2);
   letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.15;
+  opacity: 0.86;
 }
 
 /* ==========================================================================
@@ -941,7 +958,7 @@
   border-radius: 0 0 0 var(--r-sm);
   background: var(--accent-wash);
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.06em;
   color: var(--accent-label);
   position: relative;
@@ -1021,7 +1038,7 @@
 .roleNote {
   display: block;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.04em;
   color: var(--text-3);
   margin-top: 6px;
@@ -1180,27 +1197,74 @@
 }
 
 /* ==========================================================================
-   8 · Engage — native details/summary, no JS
+   8 · Engage — vertical master-detail (APG tab pattern)
    ========================================================================== */
-.accordion {
+
+/* ONE grid serves both layouts. .engagePair is display:contents at desktop, so
+   each tab and panel becomes a direct grid item and can be placed explicitly:
+   tabs stack down column one, the single visible panel spans every row of column
+   two. At mobile the pairs become blocks again and source order — tab, panel,
+   tab, panel — is already the stacked accordion, with each panel directly under
+   the row that opens it. No second DOM, so nothing is duplicated for screen
+   readers, and no matchMedia switch, so nothing shifts on hydration. */
+.engageSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: 0 clamp(24px, 4vw, 52px);
+  align-items: start;
   border-top: 1px solid var(--boundary);
 }
 
-.model {
-  border-bottom: 1px solid var(--hairline);
+.engagePair {
+  display: contents;
 }
 
-.modelSummary {
+.engageTab {
+  grid-column: 1;
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 22px 4px;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 16px 20px 12px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  border-left: 2px solid transparent;
+  font: inherit;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
+  transition:
+    background 0.18s ease,
+    border-left-color 0.18s ease,
+    transform 0.18s var(--ease);
 }
 
-.modelSummary::-webkit-details-marker {
-  display: none;
+.engageTabText {
+  min-width: 0;
+}
+
+/* A5: hover elevation is an interaction state, and it is paired with a ground
+   shift so the cue survives prefers-reduced-motion, where the transform is
+   suppressed but the background is not. */
+.engageTab:hover {
+  background: var(--wa03);
+  transform: translateY(-1px);
+}
+
+.engageTab:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: -2px;
+}
+
+/* Selected state carries a border, a ground AND the accent on the name — never
+   colour alone, and never motion alone. */
+.engageTabOn {
+  background: var(--wa05);
+  border-left-color: var(--accent-mark);
+}
+
+.engageTabOn .modelName {
+  color: var(--accent-label);
 }
 
 .modelNum {
@@ -1231,7 +1295,7 @@
 .leadFlag {
   margin-left: auto;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink);
@@ -1241,30 +1305,20 @@
   flex: none;
 }
 
-.chevron {
-  margin-left: auto;
-  width: 10px;
-  height: 10px;
-  border-right: 1.5px solid var(--accent-line);
-  border-bottom: 1.5px solid var(--accent-line);
-  transform: rotate(45deg);
-  transition: transform 0.35s var(--ease);
-  flex: none;
-}
-
-.leadFlag + .chevron {
-  margin-left: 0;
-}
-
-.model[open] .chevron {
-  transform: rotate(225deg);
-}
-
-/* Media left, content right — the drawn plate is the model's face. */
-.modelBody {
-  padding: 4px 4px 26px;
+/* The detail panel: media above content on a narrow panel, side by side once
+   there is room. Row 1 to -1 so it sits against the whole rail rather than only
+   its own tab's row. */
+.engagePanel {
+  grid-column: 2;
+  /* `1 / span 4`, not `1 / -1`. The -1 line refers to the last line of the
+     EXPLICIT grid, and these rows are implicit (auto-placed from the tabs), so
+     -1 resolved to line 1 and the panel occupied row one alone. That inflated
+     row one to the panel's height and left a 256px gap between the first tab and
+     the second — measured. Spanning the four model rows is what was meant. */
+  grid-row: 1 / span 4;
+  padding: 4px 0 26px;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: clamp(18px, 3vw, 34px);
   align-items: start;
 }
@@ -1281,18 +1335,18 @@
   border: 1px solid var(--hairline);
 }
 
-/* The metric callout sits ON the plate, dossier-stamp style — on its own
-   ground chip, so legibility never depends on what the plate drew under it. */
+/* The metric is its own chip at the top of the content column, not a stamp on
+   the plate. Over the plate its legibility depended on whatever the drawing put
+   underneath, and the plate is deterministic per route — so the contrast varied
+   by model with nothing to guarantee it. On its own ground it is one pair. */
 .modelMetric {
-  position: absolute;
-  left: 18px;
-  bottom: 14px;
-  display: grid;
+  display: inline-grid;
   gap: 2px;
-  margin: 0;
-  padding: 10px 14px;
-  background: var(--ground);
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  background: var(--ground-2);
   border: 1px solid var(--hairline);
+  border-left: 2px solid var(--accent-mark);
   border-radius: 0 0 0 var(--r-sm);
 }
 
@@ -1312,12 +1366,34 @@
   color: var(--accent-label);
 }
 
-@media (max-width: 700px) {
-  /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so the SVG plate
-     and the role chips could force the track wider than the viewport — it
-     overflowed the page by 29px at 360. */
-  .modelBody {
+/* Below 900px the split collapses. .engagePair stops being display:contents, so
+   each tab and its panel become a block pair in source order — the stacked
+   accordion. minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so the
+   SVG plate and the role chips could force the track wider than the viewport,
+   which overflowed the page by 29px at 360. */
+@media (max-width: 900px) {
+  .engageSplit {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .engagePair {
+    display: block;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .engageTab {
+    border-bottom: 0;
+  }
+
+  .engagePanel,
+  .engageTab {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .engagePanel {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 0 24px 12px;
   }
 }
 
@@ -1332,7 +1408,11 @@
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  /* Real gap, matching the chips' new padding — at 8px they crowded into a
+     single grey mass and the row read as one object rather than four choices. */
+  gap: 10px;
+  /* min-width: 0 so a long chip can shrink rather than forcing the track. */
+  min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1637,7 +1717,7 @@
   display: inline-block;
   align-self: flex-start;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 5px 10px;
@@ -1899,7 +1979,7 @@
     grid-template-columns: 1fr 60px 32px;
     gap: 8px;
   }
-  .modelSummary {
+  .engageTab {
     flex-wrap: wrap;
     gap: 10px;
   }

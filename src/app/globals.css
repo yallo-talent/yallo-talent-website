@@ -22,17 +22,22 @@
   --rule-strong: #807e76; /* 3.11:1 — control boundaries only */
 
   /* --- Dark register: "the appendix" ------------------------------------ */
-  /* Charcoal with a whisper of blue. Never navy. */
-  --dk: #0c0d10;
-  --dk-2: #151820;
-  --dk-3: #1f2330;
+  /* Warm charcoal. R > G > B on every step, tuned to sit with the brand gold
+     rather than against it — the previous set was blue-biased (R < G < B) and
+     read harsh: a cool ground under a warm accent, with peak text at 13.62:1
+     doing the glare. Warmed and taken down one step. All 32 pairs still pass,
+     with more margin than before on gold and on the strong boundary.
+     Never navy, and now never cold. */
+  --dk: #100f0d;
+  --dk-2: #191714;
+  --dk-3: #221f1b;
 
-  --dk-txt: #f0efec; /* 13.62:1 on dk-3 */
-  --dk-txt-2: #b9bdc6; /* 8.32:1  */
-  --dk-txt-3: #9298a3; /* 5.40:1  — lifted from #6b7079 (~3.2:1) */
+  --dk-txt: #e8e4dc; /* 12.94:1 on dk-3 — was #f0efec at 13.62:1 */
+  --dk-txt-2: #b4aea3; /* 7.44:1  */
+  --dk-txt-3: #99927f; /* 5.29:1  */
 
-  --dk-line: #2e333d; /* decorative hairline */
-  --dk-line-strong: #6b7280; /* 3.24:1 — control boundaries only */
+  --dk-line: #2f2b26; /* decorative hairline — 1.17:1, gentler than 1.24:1 */
+  --dk-line-strong: #787167; /* 3.40:1 — control boundaries only */
 
   /* --- Brand accent: one marker, always --------------------------------- */
   /* Taken from public/logos/yallo-flower.svg. Three grades because no single
@@ -102,11 +107,24 @@
      the DESIGN.md frontmatter documents — the frontmatter is the single
      source of truth and this block mirrors it.
 
-     Constraints (ratified): nothing below 12px; body >=16px (17 preferred);
-     card/list body >=14px; meta >=13px; mono labels 12px at >=0.12em; table
-     figures >=14px tabular. No two adjacent fixed steps closer than a 1.125
-     ratio. Fixed chain: 12 -> 13.5 -> 15.5 -> 17.5 -> 20 -> 23(min)
-     (ratios 1.125 · 1.148 · 1.129 · 1.143 · 1.15). */
+     Constraints (canon amendment A4, 30 Jul): nothing below 13px; mono labels
+     13px at >=0.12em; meta 14px; footer links 14px; nav 15px; buttons 15px;
+     card/list body >=14px; body >=16px (17 preferred); table figures >=14px
+     tabular.
+
+     Fixed chain: 13 -> 14 -> 15.5 -> 17.5 -> 20 -> 23(min)
+     (ratios 1.077 · 1.107 · 1.129 · 1.143 · 1.15).
+
+     The 1.125 adjacency rule now applies from --fs-body-sm upward only, and
+     that is a deliberate narrowing, not an oversight. A4 enumerates 13, 14 and
+     15 as required sizes; 14/13 and 15.5/14 cannot both clear 1.125, so the two
+     ratified rules are in direct conflict and the later, explicit one wins.
+     The narrowing is defensible on the rule's own purpose: adjacency exists so a
+     reader never sees two heading steps they cannot tell apart. In the small-text
+     band the steps are separated by family, case, tracking, weight and colour as
+     well as size — mono uppercase tracked 13px against sans 14px is not a
+     size comparison — so a tight ratio there costs nothing. Logged for Sumeet in
+     QUESTIONS.md Q7. */
   /* 62px max, not 72px. At 72px the H1 broke into six lines inside the hero's
      text column and pushed the primary CTA below an 800px fold; the cap was
      never the constraint, the column width was. 62px keeps a 1.147 ratio over
@@ -124,14 +142,13 @@
   --fs-card-title: 17.5px; /* role and AI-role names — shares the body step */
   --fs-body: 17.5px; /* section ledes, body copy (17px preferred: met) */
   --fs-body-sm: 15.5px; /* buttons, list terms, quotes, table figures */
-  --fs-caption: 13.5px; /* card copy, metric definitions, meta */
-  --fs-data: 12px; /* mono: measured values, reference numbers */
-  --fs-label: 12px; /* mono: eyebrows, axis labels. 12px is the hard floor */
+  --fs-caption: 14px; /* meta, footer links, card copy (A4 floor: meta 14) */
+  --fs-data: 13px; /* mono: measured values, reference numbers */
+  --fs-label: 13px; /* mono: eyebrows, axis labels. 13px is the hard floor */
 
   /* Retired roles, aliased to the nearest surviving step so no usage breaks.
-     Migrate consumers during the rebuild, then delete these. */
-  --fs-data-sm: var(--fs-label); /* was 10.5px, below the floor */
-  --fs-caption-sm: var(--fs-caption); /* was 13px */
+     --fs-data-sm and --fs-caption-sm are now GONE, not aliased: every consumer
+     was migrated in the A4 pass, which is what the instruction here asked for. */
   --fs-numeral-lg: var(--fs-numeral); /* was 48-84px */
   --fs-numeral-sm: var(--fs-headline); /* was 30-44px */
   --fs-ghost: var(--fs-display); /* was 82px — decorative bleed numerals */
@@ -197,8 +214,9 @@
      eighteen marks into solid black bars — on-canon and illegible. Blend mode
      does the knockout the assets cannot: on a light ground `multiply` drops
      white into the paper; grayscale carries the monochrome. */
-  --mark-mono: grayscale(1) contrast(1.15);
-  --mark-blend: multiply;
+  /* Silhouettes are emitted as solid black with true alpha, so light needs
+     no filter at all. See LogoRail and scripts/build-logos.mjs. */
+  --mark-filter: none;
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
@@ -244,8 +262,8 @@
   --petal-opacity: 0.2;
   /* On dark: invert first so the baked white becomes black, then `screen` drops
      black out, leaving a light silhouette on the near-black ground. */
-  --mark-mono: grayscale(1) invert(1) contrast(1.15);
-  --mark-blend: screen;
+  /* Invert turns the black silhouette white and preserves its alpha. */
+  --mark-filter: invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
@@ -289,8 +307,8 @@
   --petal-opacity: 0.2;
   /* On dark: invert first so the baked white becomes black, then `screen` drops
      black out, leaving a light silhouette on the near-black ground. */
-  --mark-mono: grayscale(1) invert(1) contrast(1.15);
-  --mark-blend: screen;
+  /* Invert turns the black silhouette white and preserves its alpha. */
+  --mark-filter: invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
@@ -354,8 +372,9 @@
   --category-mark: var(--fn-category-mark-l);
   --category-text: var(--fn-category-text-l);
   --petal-opacity: 0.16;
-  --mark-mono: grayscale(1) contrast(1.15);
-  --mark-blend: multiply;
+  /* Silhouettes are emitted as solid black with true alpha, so light needs
+     no filter at all. See LogoRail and scripts/build-logos.mjs. */
+  --mark-filter: none;
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
   --amb-alpha: 8%;
@@ -457,12 +476,6 @@
   --wa60: var(--dk-txt-2);
   --wa88: var(--dk-txt);
   --ba75: var(--dk);
-  --hue-blue-500: var(--gold);
-  --hue-green-500: var(--gold);
-  --hue-orange-500: var(--gold);
-  --hue-rose-500: var(--gold);
-  --hue-teal-500: var(--gold);
-  --hue-violet-500: var(--gold);
 
   background: var(--dk);
   color: var(--dk-txt);
@@ -550,31 +563,6 @@
     var(--accent-line)
   );
   --gradient-hero: none;
-
-  --hue-blue-500: var(--accent-line);
-  --hue-blue-08: var(--accent-wash);
-  --hue-blue-20: var(--accent-wash);
-  --hue-blue-35: transparent;
-  --hue-green-500: var(--accent-line);
-  --hue-green-08: var(--accent-wash);
-  --hue-green-20: var(--accent-wash);
-  --hue-green-35: transparent;
-  --hue-orange-500: var(--accent-line);
-  --hue-orange-08: var(--accent-wash);
-  --hue-orange-20: var(--accent-wash);
-  --hue-orange-35: transparent;
-  --hue-rose-500: var(--accent-line);
-  --hue-rose-08: var(--accent-wash);
-  --hue-rose-20: var(--accent-wash);
-  --hue-rose-35: transparent;
-  --hue-teal-500: var(--accent-line);
-  --hue-teal-08: var(--accent-wash);
-  --hue-teal-20: var(--accent-wash);
-  --hue-teal-35: transparent;
-  --hue-violet-500: var(--accent-line);
-  --hue-violet-08: var(--accent-wash);
-  --hue-violet-20: var(--accent-wash);
-  --hue-violet-35: transparent;
 
   --success-500: var(--positive-mark);
   --success-glow: transparent;
@@ -840,27 +828,64 @@ button {
      Developer"). As an inline-flex box the label sized to max-content and
      pushed past a 360px viewport; this lets it shrink and wrap instead. */
   max-width: 100%;
-  padding: 7px 13px;
+  /* Real padding, not a hairline of it: these are the product Yallo sells, and
+     at 7px they read as tags rather than as things worth reading. */
+  padding: 9px 15px;
   font-family: var(--font-mono);
-  /* Role chips carry a 14px minimum (v2.0 §3.4) — body-sm is the compliant
-     step. Other mono stays at --fs-data; this floor is chip-specific. */
+  /* A4: chips carry a 14px minimum, and --fs-body-sm (15.5px) is the compliant
+     step. Other mono stays at --fs-data. */
   font-size: var(--fs-body-sm);
+  line-height: 1.35;
   letter-spacing: 0.04em;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-sm);
-  white-space: nowrap;
+  /* NOT nowrap. nowrap makes the chip's min-content width its full label, and a
+     flex or grid track cannot shrink below that — so one long chip
+     ("Specialist skills you don't hold", widened by the A4 step from 13.5px to
+     15.5px) pushed the homepage to 363px at a 360px viewport. Measured. Wrapping
+     inside the chip costs two lines on the narrowest phone and nothing else;
+     overflowing the document costs every page. */
+  white-space: normal;
+  /* Break inside a word only as a last resort, so a long single token cannot
+     overflow either — but ordinary labels still break at spaces. */
+  overflow-wrap: break-word;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s var(--ease);
+}
+
+/* A5: hover elevation as an interaction state, on chips that are links or
+   buttons only — a chip that does nothing must not advertise that it does.
+   Paired with a ground and border shift so the cue survives reduced motion. */
+a.role-pill:hover,
+button.role-pill:hover,
+a.role-pill:focus-visible,
+button.role-pill:focus-visible {
+  background: var(--ground-3);
+  border-color: var(--rule-strong);
+  transform: translateY(-1px);
+}
+
+a.role-pill:focus-visible,
+button.role-pill:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
 }
 
 .vendor-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 10px;
+  padding: 6px 11px;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
-  letter-spacing: 0.06em;
+  font-size: var(--fs-label);
+  /* 0.12em, not 0.06em. This became an uppercase --fs-label consumer when the
+     retired --fs-data-sm alias was migrated out, and uppercase mono needs the
+     tracking or the caps close into a smear — the guard caught it. */
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-label);
   background: var(--accent-wash);

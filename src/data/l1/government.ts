@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const governmentData: L1PageData = {
   slug: "government",
   category: "industries",
-  hue: "violet",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Government & Public Sector" },
@@ -704,6 +703,6 @@ export const governmentData: L1PageData = {
     title:
       "Government & Public Sector Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola contractors for central, local and defence programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola contractors for central, local and defence programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

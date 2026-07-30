@@ -24,7 +24,7 @@
   height: 420px;
   top: -12%;
   right: -8%;
-  background: radial-gradient(circle, var(--hue-teal-20), transparent 65%);
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   animation: orb-drift 26s ease-in-out infinite;
 }
 
@@ -217,15 +217,15 @@
 }
 
 .pillDot[data-hue="blue"] {
-  background: var(--hue-blue-500);
+  background: var(--accent-line);
 }
 
 .pillDot[data-hue="green"] {
-  background: var(--hue-green-500);
+  background: var(--accent-line);
 }
 
 .pillDot[data-hue="rose"] {
-  background: var(--hue-rose-500);
+  background: var(--accent-line);
 }
 
 @media (max-width: 900px) {

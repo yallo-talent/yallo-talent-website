@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const financeData: L1PageData = {
   slug: "finance",
   category: "industries",
-  hue: "green",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Banking & Financial Services" },
@@ -13,7 +12,7 @@ export const financeData: L1PageData = {
   title: "Banking & FS contractors,",
   sectorNoun: "financial services",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Architect-screened for regulated-industry depth.",
+  sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -713,6 +712,6 @@ export const financeData: L1PageData = {
     title:
       "Banking & Financial Services Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "Temenos, FLEXCUBE, Finacle, Guidewire and Murex contractors for banking, insurance and capital-markets programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "Temenos, FLEXCUBE, Finacle, Guidewire and Murex contractors for banking, insurance and capital-markets programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

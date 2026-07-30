@@ -1,5 +1,5 @@
 import { logoRail } from "@/data/home/hero";
-import { type Client, getConsentedClients } from "@/lib/clients";
+import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
 import styles from "./Home.module.css";
 import { LogoImage } from "./LogoImage";
 
@@ -7,11 +7,22 @@ import { LogoImage } from "./LogoImage";
  * One continuous monochrome moving rail — canon §8 as amended 30 Jul.
  *
  * The enterprise/integrator split survives as data and one caption line, never
- * as two walls. Every mark renders through the uniform monochrome treatment
- * (`--mark-mono`, silhouette per theme) at 72% opacity, never on a white card.
- * Only names carrying consent render; the loader filters at read time. A
- * consented client with no logo file renders as a wordmark rather than being
- * substituted or dropped.
+ * as two walls. Only names carrying consent render; the loader filters at read
+ * time.
+ *
+ * SINGLE INK, not a filtered tile. Every mark is a true-alpha silhouette emitted
+ * by scripts/build-logos.mjs, painted in one theme ink token at one opacity
+ * inside a uniform cell at one cap height. It used to be a flattened tile shown
+ * through `grayscale()` plus a per-theme `mix-blend-mode`, which is the only
+ * thing that could work against a baked background — and it could not give one
+ * tone: it left visible plates on any mark whose own ground was off-white or
+ * dark, which is what read as "illegible dark blobs".
+ *
+ * A mark whose source will not key to one clean ink, or which cannot reach a
+ * readable cap height in the cell, is NOT shipped as an image at all — the build
+ * gate measures both and declines. Those render as the client's NAME, per canon
+ * §8: never a padded box, never a redrawn mark. `hasLogoAsset` is the check,
+ * because clients.yaml still names them; only the asset is absent.
  *
  * Motion: one slow translateX loop over a duplicated track. Pauses on hover.
  * Under `prefers-reduced-motion` the duplicate is hidden and the track wraps
@@ -57,7 +68,7 @@ function LogoItems({
           className={`${styles.logo}${ariaHidden ? ` ${styles.logoDup}` : ""}`}
           aria-hidden={ariaHidden || undefined}
         >
-          {c.logo ? (
+          {hasLogoAsset(c.logo) && c.logo ? (
             /* The FIRST track is eager and the duplicate is not, which is the
                only combination that satisfies both gates. Lazy on the first
                track meant marks on a horizontally-translated marquee never
@@ -69,7 +80,7 @@ function LogoItems({
             <LogoImage
               src={c.logo}
               width={120}
-              height={30}
+              height={26}
               eager={!ariaHidden}
             />
           ) : (

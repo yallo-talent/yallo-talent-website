@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const manufacturingData: L1PageData = {
   slug: "manufacturing",
   category: "industries",
-  hue: "blue",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Manufacturing & Logistics" },
@@ -13,7 +12,7 @@ export const manufacturingData: L1PageData = {
   title: "Manufacturing tech contractors,",
   sectorNoun: "manufacturing",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just platform familiarity.",
+  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -712,6 +711,6 @@ export const manufacturingData: L1PageData = {
     title:
       "Manufacturing & Logistics Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "SAP, Siemens, Rockwell, Blue Yonder and Manhattan contractors for manufacturing programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "SAP, Siemens, Rockwell, Blue Yonder and Manhattan contractors for manufacturing programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

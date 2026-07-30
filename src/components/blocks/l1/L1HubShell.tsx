@@ -40,14 +40,6 @@ export function L1HubShell({ eyebrow, title, emphasis, sub, entries }: Props) {
                 key={e.slug}
                 href={`/${e.category}/${e.slug}`}
                 className={styles.card}
-                style={
-                  {
-                    "--sector-accent": `var(--hue-${e.hue}-500)`,
-                    "--sector-accent-08": `var(--hue-${e.hue}-08)`,
-                    "--sector-accent-20": `var(--hue-${e.hue}-20)`,
-                    "--sector-accent-35": `var(--hue-${e.hue}-35)`,
-                  } as React.CSSProperties
-                }
               >
                 <div className={styles.cardImage}>
                   <PetalPlate

@@ -8,7 +8,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Insights · Yallo Talent",
     description:
-      "Articles, research and white papers on enterprise tech hiring, engagement models and delivery — from the Yallo architect team.",
+      "Articles, research and white papers on enterprise tech hiring, engagement models and delivery — from the Yallo specialist team.",
   },
   path: "/insights",
 });
@@ -35,7 +35,7 @@ export default function InsightsHub() {
             <span className={styles.emphasis}>enterprise tech hiring.</span>
           </h1>
           <p className={styles.heroLede}>
-            Articles, research and white papers from the Yallo architect team —
+            Articles, research and white papers from the Yallo specialist team —
             operators who ran the programmes, sharing what actually works.
           </p>
         </div>
@@ -106,8 +106,8 @@ export default function InsightsHub() {
                 Have a specific question we haven't covered?
               </h2>
               <p className={styles.bottomSub}>
-                Send a brief. One of our architect team will pick it up directly
-                — usually with a useful angle you hadn't considered.
+                Send a brief. One of our specialist team will pick it up
+                directly — usually with a useful angle you hadn't considered.
               </p>
               <div className={styles.bottomActions}>
                 <Link href="/brief" className={styles.ctaPrimary}>

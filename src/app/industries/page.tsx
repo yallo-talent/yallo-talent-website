@@ -13,7 +13,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Industries · Yallo Talent",
     description:
-      "Talent for retail, banking, government, manufacturing, healthcare and telco enterprise programmes. Architect-screened across the Middle East, Europe and India.",
+      "Talent for retail, banking, government, manufacturing, healthcare and telco enterprise programmes. Specialist-screened across the Middle East, Europe and India.",
   },
   path: "/industries",
 });
@@ -24,7 +24,7 @@ export default function IndustriesHub() {
       <L1HubShell
         eyebrow="Industries"
         title="Six sectors."
-        emphasis="One architect-led bench."
+        emphasis="One specialist-led bench."
         sub="Enterprise technology talent calibrated to your sector — from retail transformation to public-sector digital and telco OSS/BSS."
         entries={industriesIndex}
       />

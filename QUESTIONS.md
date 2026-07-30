@@ -87,53 +87,111 @@ with the strip-and-rebuild checklist (`docs/status/step-8-rebuild-checklist.md`)
 rather than as a step inside a broader pass. The critique comparison canon §5
 asks for cannot be scored until the light variant actually renders.
 
-## Q5 — India is a demand market in one document and never one in another
+## Q5 — RESOLVED: India is a demand market as well as the supply hub
 
-Surfaced by the L1 re-critique, which flagged the retail hero as conflicting with
-canon. Checked both sources: they contradict each other, so this is not a copy
-defect to fix but a positioning question to settle.
+**Closed by canon amendment A6, ratified 30 Jul.** Demand arrives as Global
+Capability Centre staffing — multinationals building capability centres in
+Bengaluru buy from Yallo there. `PRODUCT.md` stands as written, the L1 heroes keep
+"Middle East, Europe and India", and "3 delivery regions" stays banned because
+that ban was always about conflating supply with demand.
 
-- **Canon §1:** India is third, "Global Capability Centre staffing for
-  multinationals, **never a demand market**".
-- **PRODUCT.md:** treats India *as* a demand market for Middle East staffing.
+The question as raised: canon §1 said "never a demand market" while `PRODUCT.md`
+treated India as one, and the L1 heroes followed `PRODUCT.md`. Code left the copy
+alone and asked rather than picking a side. The "never" line has been rewritten.
 
-The L1 heroes currently sell programmes "across the Middle East, Europe and
-India", which follows PRODUCT.md and reads against canon §1.
+## Q7 — A4's sizes and the 1.125 adjacency rule cannot both hold
 
-**Assumption taken:** copy is left as-is, because canon §1's own sentence
-describes India as a market Yallo staffs *into* for multinationals — which the
-hero wording does not actually contradict, and rewriting six heroes on an
-unresolved reading would be worse than leaving them consistent. Ratify one
-reading and the wording follows in one pass.
+Both are ratified canon and they conflict directly. A4 enumerates **13px** (mono
+labels), **14px** (meta, footer links) and **15px** (nav, buttons) as required
+sizes. The adjacency rule says no two adjacent fixed steps sit closer than a
+1.125 ratio. But 14/13 = **1.077** and 15.5/14 = **1.107**. There is no ramp that
+satisfies both.
 
-## Q6 — The retired per-sector hue system is still one line from returning
+**Resolution taken:** A4 wins, being the later and more specific ratification,
+and the adjacency rule is narrowed to apply **from `--fs-body-sm` (15.5px)
+upward** — the display and heading chain, where its ratios still hold at 1.129,
+1.143, 1.147 and 1.15.
 
-Canon §5 bans per-taxonomy-branch ambient assignment. The plumbing is inert but
-fully present: `--card-hue*` is consumed in ~20 places and **declared nowhere**,
-`hueStyle()` and `cardHueStyle()` are no-op stubs threaded through nine
-components, and `hue:` fields persist across five data arrays. Restoring the
-banned system is a one-line change by accident.
+**Why this is defensible rather than convenient:** adjacency exists so a reader
+never meets two heading steps they cannot tell apart. In the small-text band the
+roles are separated by family, case, tracking, weight and colour as well as size
+— mono uppercase tracked at 13px against sans sentence-case at 14px is not a size
+comparison at all. A tight ratio there costs nothing the rule was protecting.
 
-**Assumption taken:** left in place this round — deleting it touches nine
-components and five data files, which is its own dispatch, not a step inside a
-critique fix round. Recommend removing it before handback so the ban is
-structural rather than a convention. Note the `--fs-data`/`--fs-caption-sm`
-aliases in `globals.css` carry the same "migrate then delete" instruction.
+**Correct me if the intent was different** — the alternative is to drop one of
+A4's three sizes (most likely collapsing meta and nav onto a single 15px step),
+which would satisfy adjacency but lose the meta/control distinction.
 
-## Q4 — The client mark pack has no alpha channel
+## Q6 — RESOLVED: the per-sector hue system is deleted, not stubbed
 
-Canon §8's "uniform monochrome treatment" presumes silhouette-ready sources. The
-pack is **15 opaque rasters** (PNG colour-type 3, no alpha) with baked-in white
-backgrounds, plus 3 vectors — and a few marks whose own background is dark.
+**Closed by order step 9.** Canon §5's ban is now structural: there is nothing
+left to re-enable. Removed in full — 139 `--card-hue*` CSS consumers, 8
+`hueStyle`/`cardHueStyle` call sites, the `L1Hue` type, 48 `hue:` data fields
+across 15 files, and all 30 `--hue-*` shim declarations in `globals.css`.
 
-A CSS filter alone therefore rendered fifteen of eighteen marks as solid black
-bars. The shipped fix knocks the white out with a blend mode per theme
-(`multiply` on light, `invert` + `screen` on dark), which is legible and
-tile-free. A residual light or dark box still shows on the few marks whose
-background is off-white or genuinely dark.
+**Two things were worse than the original note recorded, and both were live
+defects rather than inert plumbing:**
 
-**Assumption taken:** blend-mode knockout ships now because it is legible and
-canon-shaped. **The durable fix is the asset pipeline** — extend
-`scripts/build-logos.mjs` to key out backgrounds and emit true-alpha assets, or
-commission monochrome SVG silhouettes for all eighteen. That is a content and
-asset task, not a CSS one.
+1. **29 bare `var(--card-hue-20)` uses in `HubLandingSections.module.css` had no
+   fallback at all.** With `--card-hue*` declared nowhere, those declarations
+   were invalid at computed-value time and had been silently falling back to
+   `inherit`/`initial` — borders and washes that never rendered.
+2. **Five pages plus the L1 hub were still assigning the accent per taxonomy
+   branch, inline.** `about`, `why-yallo`, `jobs`, `leadership` and
+   `LegalPageShell` each carried a live `hueStyle` object writing
+   `--sector-accent: var(--hue-blue-500)`, and `L1HubShell` wrote
+   `var(--hue-${e.hue}-500)` keyed to each entry's own slug — exactly what canon
+   §5 bans, and inline beats every class. `jobs` and `leadership` did the same
+   per row and per person.
+
+Every consumer was rerouted to the semantic accent ramp, which flips per theme.
+`-35` now resolves to `--sector-accent-35`, a real colour, rather than the shim's
+`transparent` — the invisible-border defect from the earlier round, at its source.
+
+## Q4 — RESOLVED: the pack now has a real alpha channel, and six marks ship as names
+
+**Closed by order step 11.** The durable fix this entry named — extend
+`scripts/build-logos.mjs` to key out backgrounds and emit true-alpha assets — is
+done, so the CSS no longer compensates for the assets.
+
+**Two simpler versions failed first, and the failures are the useful part:**
+
+1. *Greyscale, normalise, invert, use as alpha.* Assumes dark ink on a light
+   ground. Measured, `marks-and-spencer` came out **96.5% partial alpha and 0.1%
+   transparent** — inverting a white-on-dark mark makes the ground opaque and the
+   ink vanish.
+2. *Sample the border ring for the ground luminance.* Better, 9 of 15 clean, but
+   six stayed under 6% transparent because their grounds are gradients or brand
+   colours, and `trim` had already eaten the flat edge on some.
+3. *Otsu's method.* Ships. It finds the threshold that best splits the image into
+   two luminance classes — the ink/ground split — and the border ring is used only
+   to decide which class is the ground, so either polarity works. Alpha is the
+   pixel's position between the two class means, so antialiased edges stay soft.
+
+**Eleven marks key cleanly. Six do not, and they ship as their NAME** — canon §8's
+own rule, applied by measurement rather than by eye. The build refuses to emit an
+asset it cannot vouch for, on two tests: clarity (under 25% transparent, or over
+45% partial alpha, means the ground did not separate) and cap height (a mark too
+wide to reach 15px of ink in the 156px rail cell is a line, not a mark).
+
+| Mark | Why it ships as a name |
+|---|---|
+| Landmark Group | 21.3% transparent, 70.8% partial |
+| Chalhoub Group | 16.8% transparent, 74.4% partial |
+| Al Othaim Markets | 19.4% transparent, 70.5% partial |
+| Sephora | 3.8% transparent, 50.4% partial |
+| Oracle Consulting | 2.2% transparent, 67.4% partial |
+| Richemont | cap height 10.7px at the rail cell |
+
+`src/lib/clients.ts` gained `hasLogoAsset`, because `clients.yaml` still names
+these clients — the consent and the relationship are unchanged, only the asset is
+absent.
+
+**The rail is now genuinely single ink:** uniform 156x56 cells, one 26px cap
+height, one filter per theme (`none` on light, `invert(1)` on dark), **no blend
+mode at all**, one opacity, even 51.2px spacing — every one of those measured in
+the browser.
+
+**Still worth commissioning:** monochrome SVG silhouettes for the six. Nothing is
+broken without them — a name is a legitimate treatment, not a placeholder — but a
+vector would let all fifteen render as marks.

@@ -42,3 +42,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Local-only: a 5.1GB WordPress export of the legacy site. Kept on disk for
+# reference during the port-and-convert, never in git — it was committed by
+# accident once and the pack went to 4.8GB, which failed the push outright.
+old_wordpress/

@@ -3,7 +3,6 @@ import type { L1PageData } from "@/data/l1/types";
 export const cloudInfrastructureData: L1PageData = {
   slug: "cloud-infrastructure",
   category: "capabilities",
-  hue: "teal",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
     { label: "Cloud & Infrastructure" },
@@ -13,7 +12,7 @@ export const cloudInfrastructureData: L1PageData = {
   title: "Cloud & Infrastructure contractors,",
   sectorNoun: "cloud and infrastructure",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Cloud architects, platform engineers, SREs and DevOps specialists for AWS, Azure and GCP programmes across the Middle East, Europe and India. Architect-screened for landing-zone depth, FinOps discipline and production resilience — not just certification badges.",
+  sub: "Cloud architects, platform engineers, SREs and DevOps specialists for AWS, Azure and GCP programmes across the Middle East, Europe and India. Specialist-screened for landing-zone depth, FinOps discipline and production resilience — not just certification badges.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -201,7 +200,7 @@ export const cloudInfrastructureData: L1PageData = {
   segmentsEyebrow: "Where we deploy",
   segmentsTitle: "Every sector runs a cloud programme — we staff them all.",
   segmentsSub:
-    "Retail resilience, banking landing-zones, healthcare compliant clouds or public-sector modernisation — same architect-screened bench, calibrated to your operating context.",
+    "Retail resilience, banking landing-zones, healthcare compliant clouds or public-sector modernisation — same specialist-screened bench, calibrated to your operating context.",
   segments: [
     {
       id: "retail",
@@ -364,6 +363,6 @@ export const cloudInfrastructureData: L1PageData = {
   seo: {
     title: "Cloud & Infrastructure Contractors · Yallo Talent",
     description:
-      "Architect-screened Cloud & Infrastructure contractors — landing-zones, Kubernetes, SRE, FinOps, cloud security. 72h shortlist across the Middle East, Europe and India.",
+      "Specialist-screened Cloud & Infrastructure contractors — landing-zones, Kubernetes, SRE, FinOps, cloud security. 72h shortlist across the Middle East, Europe and India.",
   },
 };

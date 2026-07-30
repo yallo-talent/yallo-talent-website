@@ -134,7 +134,7 @@
   min-height: 24px;
   padding: 2px 0;
   color: var(--dk-txt);
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   font-weight: 500;
   transition: color 0.15s ease;
 }
@@ -177,7 +177,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
 }
 
 .locationDot {
@@ -229,6 +229,12 @@
   display: inline-flex;
   align-items: center;
   min-height: 24px;
+  /* A4: footer links 14px. These inherited the 13px mono label size from
+     .legal, which made the legal row the smallest text on the page. */
+  font-family: var(--font-inter, inherit);
+  font-size: var(--fs-caption);
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--dk-txt-2);
   transition: color 0.15s ease;
 }

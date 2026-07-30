@@ -18,16 +18,9 @@ interface Props {
   data: LegalPageData;
 }
 
-const hueStyle: React.CSSProperties = {
-  "--sector-accent": "var(--hue-teal-500)",
-  "--sector-accent-08": "var(--hue-teal-08)",
-  "--sector-accent-20": "var(--hue-teal-20)",
-  "--sector-accent-35": "var(--hue-teal-35)",
-} as React.CSSProperties;
-
 export function LegalPageShell({ data }: Props) {
   return (
-    <div className={editorial.page} style={hueStyle}>
+    <div className={editorial.page}>
       <section className={editorial.hero}>
         <div className={editorial.heroBg} aria-hidden="true">
           <div className={editorial.heroBgA} />

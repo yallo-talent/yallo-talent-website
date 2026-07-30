@@ -2,14 +2,16 @@
 /**
  * Type-scale guard.
  *
- * Enforces the floor ratified in Chat Relay v2.0 §3.1: nothing renders below
- * 12px anywhere on the site, and mono labels carry at least 0.12em tracking.
+ * Enforces the floor ratified in canon amendment A4 (30 Jul): nothing renders
+ * below 13px anywhere on the site, and mono labels carry at least 0.12em
+ * tracking. Supersedes the 12px floor of Chat Relay v2.0 §3.1 — that floor was
+ * met and then became the resting size of load-bearing content.
  * The 11px mono eyebrow was the specific case flagged as unreadable, and it
  * appeared on every page.
  *
  * FAILS on:
- *   - any font-size below 12px, literal or in an --fs-* token
- *   - any --fs-* token declared below 12px
+ *   - any font-size below 13px, literal or in an --fs-* token
+ *   - any --fs-* token declared below 13px
  *
  * WARNS on:
  *   - literal px font-sizes in components. DESIGN.md holds that every size
@@ -24,7 +26,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const FLOOR = 12;
+const FLOOR = 13;
 const TRACKING_FLOOR = 0.12;
 const strict = process.argv.includes("--strict");
 
@@ -186,7 +188,7 @@ if (errors.length) {
   console.error(`\n${errors.length} type-scale violation(s):\n`);
   for (const e of errors) console.error(`  ${e}`);
   console.error(
-    `\nThe floor is ${FLOOR}px, ratified in Chat Relay v2.0 §3.1. Use an --fs-* token from globals.css Layer 1.`,
+    `\nThe floor is ${FLOOR}px, ratified in canon amendment A4. Use an --fs-* token from globals.css Layer 1.`,
   );
   process.exit(1);
 }

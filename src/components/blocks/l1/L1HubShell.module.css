@@ -29,7 +29,7 @@
   height: 620px;
   top: -20%;
   right: -6%;
-  background: radial-gradient(circle, var(--hue-blue-20), transparent 65%);
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
 }
 
 .heroOrbB {

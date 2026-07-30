@@ -32,7 +32,6 @@ export interface ServiceCta {
 
 export interface ServicePageData {
   slug: string;
-  hue: ServiceHue;
   eyebrow: string;
   title: string;
   emphasis: string;

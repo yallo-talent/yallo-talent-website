@@ -305,7 +305,7 @@
   [id="deliver"],
   [id="how"],
   [id="scarce"],
-  [id="architects"],
+  [id="specialists"],
   [id="partners"],
   [id="engagement"],
   [id="insights"]
@@ -529,7 +529,7 @@
 .wwdCard {
   position: relative;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -554,11 +554,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-20, var(--sector-accent-20)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   filter: blur(40px);
   pointer-events: none;
   z-index: 0;
@@ -570,12 +566,8 @@
 
 .wwdCard:hover {
   transform: translateY(-6px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .wwdCard:hover .wwdGlow,
@@ -601,10 +593,10 @@
   border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)),
-    var(--card-hue-08, var(--sector-accent-08))
+    var(--sector-accent-35),
+    var(--sector-accent-08)
   );
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 14px;
@@ -683,7 +675,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   flex-shrink: 0;
   margin-top: 6px;
   opacity: 0.8;
@@ -738,7 +730,7 @@
   position: relative;
   padding: 0;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -757,12 +749,8 @@
 
 .hwwStep:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .hwwStep:hover .hwwGlow {
@@ -791,7 +779,7 @@
   content: "";
   width: 18px;
   height: 1px;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   opacity: 0.65;
 }
 
@@ -850,7 +838,7 @@
   position: relative;
   padding: 0;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -870,12 +858,8 @@
 
 .xsecCard:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .xsecCard:hover .xsecCardGlow {
@@ -1148,9 +1132,9 @@
 }
 
 .rtagPerm {
-  color: var(--hue-blue-500);
-  background: var(--hue-blue-08);
-  border-color: var(--hue-blue-35);
+  color: var(--accent-line);
+  background: var(--sector-accent-08);
+  border-color: var(--sector-accent-35);
 }
 
 /* ============ EXPERTISE ============ */
@@ -1347,11 +1331,7 @@
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-20, var(--sector-accent-20)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   filter: blur(30px);
   pointer-events: none;
   z-index: 0;
@@ -1371,8 +1351,8 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--card-hue-35, var(--sector-accent-35)) 30%,
-    var(--card-hue, var(--sector-accent)) 100%
+    var(--sector-accent-35) 30%,
+    var(--sector-accent) 100%
   );
   opacity: 0;
   transition: opacity 0.28s ease;
@@ -1383,12 +1363,8 @@
 .expCard:hover,
 .expCardOpen {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 60%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 60%, var(--sector-accent-08));
   box-shadow: inset 0 1px 0 var(--wa15);
 }
 
@@ -1435,10 +1411,10 @@
   border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)),
-    var(--card-hue-08, var(--sector-accent-08))
+    var(--sector-accent-35),
+    var(--sector-accent-08)
   );
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   transition:
@@ -1503,8 +1479,8 @@
   height: 30px;
   padding: 0;
   border-radius: 50%;
-  background: var(--card-hue-08, var(--sector-accent-08));
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  background: var(--sector-accent-08);
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   transition:
     background 0.22s ease,
@@ -1539,7 +1515,7 @@
   padding: 0;
   border-radius: 50%;
   background: transparent;
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   cursor: pointer;
   transition:
@@ -1555,7 +1531,7 @@
 }
 
 .expCardToggleBottom:hover {
-  background: var(--card-hue-08, var(--sector-accent-08));
+  background: var(--sector-accent-08);
 }
 
 .expCardOpen .expCardToggleBottom {
@@ -1601,7 +1577,7 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   flex-shrink: 0;
   margin-top: 7px;
   opacity: 0.8;
@@ -1665,7 +1641,7 @@
 .archCard {
   position: relative;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -1684,12 +1660,8 @@
 
 .archCard:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .archCard:hover .archGlow {
@@ -1712,10 +1684,10 @@
   border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)),
-    var(--card-hue-08, var(--sector-accent-08))
+    var(--sector-accent-35),
+    var(--sector-accent-08)
   );
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   font-family: var(--font-mono);
   font-size: var(--fs-caption);
@@ -1914,18 +1886,18 @@
 }
 
 .segTrigger:hover {
-  background: var(--card-hue-08, var(--wa05));
-  border-color: var(--card-hue-20, var(--sector-accent-20));
+  background: var(--wa05);
+  border-color: var(--sector-accent-20);
   transform: translateX(2px);
 }
 
 .segItemOn .segTrigger {
   background: linear-gradient(
     90deg,
-    var(--card-hue-20, var(--sector-accent-20)) 0%,
-    var(--card-hue-08, var(--sector-accent-08)) 100%
+    var(--sector-accent-20) 0%,
+    var(--sector-accent-08) 100%
   );
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--sector-accent-35);
 }
 
 .segItemDot {
@@ -1940,11 +1912,11 @@
 }
 
 .segTrigger:hover .segItemDot {
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
 }
 
 .segItemOn .segItemDot {
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
 }
 
 .segItemName {
@@ -1983,11 +1955,7 @@
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-20, var(--sector-accent-20)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 2;
@@ -2018,8 +1986,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)) 0%,
-    var(--card-hue-20, var(--sector-accent-20)) 30%,
+    var(--sector-accent-35) 0%,
+    var(--sector-accent-20) 30%,
     transparent 60%
   );
   mix-blend-mode: overlay;
@@ -2036,11 +2004,7 @@
   width: 220px;
   height: 220px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue, var(--sector-accent)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent), transparent 65%);
   filter: blur(50px);
   opacity: 0.55;
   pointer-events: none;
@@ -2105,7 +2069,7 @@
   content: "";
   width: 18px;
   height: 1px;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   opacity: 0.65;
 }
 
@@ -2120,9 +2084,9 @@
   font-size: var(--fs-label);
   padding: 7px 13px;
   border-radius: 0 0 0 var(--r-md);
-  background: var(--card-hue-08, var(--sector-accent-08));
+  background: var(--sector-accent-08);
   color: var(--accent-label);
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   transition:
     background 0.18s ease,
     transform 0.18s ease,
@@ -2130,7 +2094,7 @@
 }
 
 .segRolePill:hover {
-  background: var(--card-hue-20, var(--sector-accent-20));
+  background: var(--sector-accent-20);
   transform: translateY(-1px);
 }
 
@@ -2166,11 +2130,7 @@
 .segCta:hover {
   transform: translateY(-2px);
   color: var(--ink-950);
-  background: color-mix(
-    in oklab,
-    var(--card-hue, var(--sector-accent)) 88%,
-    white
-  );
+  background: color-mix(in oklab, var(--sector-accent) 88%, white);
 }
 
 /* ============ TECHNOLOGY PARTNERS ============ */
@@ -2188,12 +2148,12 @@
   background:
     radial-gradient(
       ellipse 40% 30% at 80% 10%,
-      var(--hue-teal-08),
+      var(--sector-accent-08),
       transparent 55%
     ),
     radial-gradient(
       ellipse 40% 30% at 20% 90%,
-      var(--hue-violet-08),
+      var(--sector-accent-08),
       transparent 55%
     );
   pointer-events: none;
@@ -2238,11 +2198,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
   filter: blur(24px);
   opacity: 0.5;
   pointer-events: none;
@@ -2253,13 +2209,9 @@
 }
 
 .partnerCell:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--sector-accent-35);
   transform: translateY(-3px);
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .partnerCell:hover::before {
@@ -2297,7 +2249,7 @@
   inset: 0;
   background: radial-gradient(
     ellipse 50% 40% at 50% 20%,
-    var(--hue-rose-08),
+    var(--sector-accent-08),
     transparent 55%
   );
   pointer-events: none;
@@ -2378,7 +2330,7 @@
   isolation: isolate;
   color: var(--fg);
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   transition:
     border-color 0.32s ease,
     transform 0.32s ease,
@@ -2386,7 +2338,7 @@
 }
 
 .insCard:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--sector-accent-35);
   transform: translateY(-6px);
 }
 
@@ -2406,7 +2358,7 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)) 0%,
+    var(--sector-accent-35) 0%,
     transparent 55%
   );
   mix-blend-mode: overlay;
@@ -2442,7 +2394,7 @@
   padding: 6px 12px;
   border-radius: 0 0 0 var(--r-md);
   background: color-mix(in oklab, var(--ground) 60%, transparent);
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
 }
 
@@ -2549,7 +2501,7 @@
   height: 100%;
   padding: 0;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -2576,11 +2528,7 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-20, var(--sector-accent-20)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   filter: blur(40px);
   pointer-events: none;
   z-index: 0;
@@ -2599,8 +2547,8 @@
   background: linear-gradient(
     to bottom,
     transparent,
-    var(--card-hue-35, var(--sector-accent-35)) 30%,
-    var(--card-hue, var(--sector-accent)) 100%
+    var(--sector-accent-35) 30%,
+    var(--sector-accent) 100%
   );
   opacity: 0;
   transition: opacity 0.28s ease;
@@ -2610,12 +2558,8 @@
 
 .pillar:hover {
   transform: translateY(-6px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
   box-shadow: inset 0 1px 0 var(--wa15);
 }
 
@@ -2651,10 +2595,10 @@
   border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)),
-    var(--card-hue-08, var(--sector-accent-08))
+    var(--sector-accent-35),
+    var(--sector-accent-08)
   );
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 12px;
@@ -2734,7 +2678,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   flex-shrink: 0;
   margin-top: 6px;
   opacity: 0.75;
@@ -2760,8 +2704,8 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--card-hue-08, var(--sector-accent-08));
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  background: var(--sector-accent-08);
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
   transition:
     background 0.24s ease,
@@ -2888,7 +2832,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 14px;
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-sm);
   color: var(--fg);
   font-size: var(--fs-data);
@@ -2901,12 +2845,8 @@
 }
 
 .readNextChip:hover {
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
-  border-color: var(--card-hue, var(--sector-accent));
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
+  border-color: var(--sector-accent);
   transform: translateX(3px);
 }
 
@@ -2957,8 +2897,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    var(--card-hue-20, var(--sector-accent-20)) 0%,
-    var(--card-hue-08, var(--sector-accent-08)) 40%,
+    var(--sector-accent-20) 0%,
+    var(--sector-accent-08) 40%,
     transparent 70%
   );
   opacity: 0.35;
@@ -2976,11 +2916,7 @@
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
   filter: blur(30px);
   opacity: 0.55;
   pointer-events: none;
@@ -2996,11 +2932,11 @@
 }
 
 .readNextCard {
-  border-color: var(--card-hue-20, var(--hairline));
+  border-color: var(--hairline);
 }
 
 .readNextCard:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--sector-accent-35);
   transform: translateY(-3px);
 }
 
@@ -3014,7 +2950,7 @@
 }
 
 .readNextCat {
-  color: var(--card-hue, var(--fg-subtle));
+  color: var(--fg-subtle);
   opacity: 0.85;
   transition:
     color 0.24s ease,

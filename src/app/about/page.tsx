@@ -6,23 +6,16 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "About Yallo Talent · Architect-led enterprise talent",
+    title: "About Yallo Talent · Specialist-led enterprise talent",
     description:
-      "Yallo Talent is the contract-first workforce partner for enterprise programmes. Architect-led screening, region-deep, across UK, Middle East and India.",
+      "Yallo Talent is the contract-first workforce partner for enterprise programmes. Specialist-led screening, region-deep, across UK, Middle East and India.",
   },
   path: "/about",
 });
 
-const hueStyle: React.CSSProperties = {
-  "--sector-accent": "var(--hue-blue-500)",
-  "--sector-accent-08": "var(--hue-blue-08)",
-  "--sector-accent-20": "var(--hue-blue-20)",
-  "--sector-accent-35": "var(--hue-blue-35)",
-} as React.CSSProperties;
-
 const values = [
   {
-    title: "Architect-led, always",
+    title: "Specialist-led, always",
     copy: "Every shortlist is reviewed by an operator who has run the same programme. No keyword-match, no volume, no filler.",
   },
   {
@@ -42,7 +35,7 @@ const values = [
 const timeline = [
   {
     year: "Founded",
-    title: "The architect team assembles",
+    title: "The specialist team assembles",
     copy: "Sumeet Goenka and a small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
   },
   {
@@ -68,7 +61,7 @@ export default function AboutPage() {
   const hasClients = enterpriseClients.length + integratorPartners.length > 0;
 
   return (
-    <div className={styles.page} style={hueStyle}>
+    <div className={styles.page}>
       {/* HERO */}
       <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
@@ -86,7 +79,7 @@ export default function AboutPage() {
             <span className={styles.emphasis}>enterprise operators.</span>
           </h1>
           <p className={styles.heroLede}>
-            We're not a recruitment agency. Yallo Talent is architect-led — a
+            We're not a recruitment agency. Yallo Talent is specialist-led — a
             small, region-deep team of specialists who have shipped enterprise
             programmes themselves, now screening every shortlist that lands in
             your inbox.
@@ -114,7 +107,7 @@ export default function AboutPage() {
             </h2>
             <p className={styles.sectionLede}>
               Contract, Permanent, Employer of Record and Managed Delivery. Same
-              architect-led screening across all four. What changes is who
+              specialist-led screening across all four. What changes is who
               carries the contract, the visa and the notice period.
             </p>
             <div className={styles.cardGrid2}>

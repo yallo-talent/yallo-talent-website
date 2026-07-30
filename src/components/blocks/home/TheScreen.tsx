@@ -12,7 +12,7 @@ import { SectionHead } from "./SectionHead";
  * not carried: that register is anti-reference.
  *
  * The six specialist desks replace the deleted "people who screen" section —
- * a named-architect gallery would overclaim.
+ * a named-specialist gallery would overclaim.
  */
 export function TheScreen() {
   return (
