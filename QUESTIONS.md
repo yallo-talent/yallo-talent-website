@@ -87,6 +87,39 @@ with the strip-and-rebuild checklist (`docs/status/step-8-rebuild-checklist.md`)
 rather than as a step inside a broader pass. The critique comparison canon §5
 asks for cannot be scored until the light variant actually renders.
 
+## Q5 — India is a demand market in one document and never one in another
+
+Surfaced by the L1 re-critique, which flagged the retail hero as conflicting with
+canon. Checked both sources: they contradict each other, so this is not a copy
+defect to fix but a positioning question to settle.
+
+- **Canon §1:** India is third, "Global Capability Centre staffing for
+  multinationals, **never a demand market**".
+- **PRODUCT.md:** treats India *as* a demand market for Middle East staffing.
+
+The L1 heroes currently sell programmes "across the Middle East, Europe and
+India", which follows PRODUCT.md and reads against canon §1.
+
+**Assumption taken:** copy is left as-is, because canon §1's own sentence
+describes India as a market Yallo staffs *into* for multinationals — which the
+hero wording does not actually contradict, and rewriting six heroes on an
+unresolved reading would be worse than leaving them consistent. Ratify one
+reading and the wording follows in one pass.
+
+## Q6 — The retired per-sector hue system is still one line from returning
+
+Canon §5 bans per-taxonomy-branch ambient assignment. The plumbing is inert but
+fully present: `--card-hue*` is consumed in ~20 places and **declared nowhere**,
+`hueStyle()` and `cardHueStyle()` are no-op stubs threaded through nine
+components, and `hue:` fields persist across five data arrays. Restoring the
+banned system is a one-line change by accident.
+
+**Assumption taken:** left in place this round — deleting it touches nine
+components and five data files, which is its own dispatch, not a step inside a
+critique fix round. Recommend removing it before handback so the ban is
+structural rather than a convention. Note the `--fs-data`/`--fs-caption-sm`
+aliases in `globals.css` carry the same "migrate then delete" instruction.
+
 ## Q4 — The client mark pack has no alpha channel
 
 Canon §8's "uniform monochrome treatment" presumes silhouette-ready sources. The

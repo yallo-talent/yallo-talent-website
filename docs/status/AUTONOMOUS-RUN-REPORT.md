@@ -22,7 +22,8 @@ Canon: `docs/design/yallo-talent-CANON.md` v1.0, read first and treated as autho
 | 10 · `/ai-talent` | **Done** |
 | 11 · Mega menu merge | **Done** |
 | 12 · Logo lockup | **Done** |
-| 13 · adapt / audit / polish | **Done** — axe in CI (47 routes), adapt via the 360 gate, polish run as a discrete pass |
+| 13 · adapt / audit / polish | **Done** — axe in CI, adapt via the 360 gate, polish run as a discrete pass |
+| 14 · L1 re-critique round | **Done** — 5 confirmed defects fixed; see §1a |
 
 **Two corrections to earlier versions of this report.** I first recorded steps 4,
 8 and 9 as "blocked" by the register discovery — they were unstarted work, not
@@ -30,10 +31,70 @@ blocked work, and none of the run's stop conditions applied. And I then reported
 `polish` as unrun. Both are now done. All thirteen steps have been executed.
 
 **What is NOT claimed:** the exit criteria ask for two consecutive passes without
-score gain per page. The homepage has two scored passes (23/28 → 21/28) and the
-L1 has one (20/36) plus an unscored fix round. No page has yet demonstrated two
-consecutive passes without gain, so that criterion is unmet and the next session
-should start by re-scoring the homepage and the L1.
+score gain per page. The L1 re-critique has since landed at **20/36 raw**, which
+the critique itself re-based to **≈15/36 → 20/36 (+13.9pp)** like-for-like after
+finding the earlier pass had scored leniently against task-blocking defects. That
+is a gain, not a plateau, and this round then changed the page again — so no page
+has yet demonstrated two consecutive passes without gain. The criterion remains
+unmet.
+
+### Correction: reduced motion was not honoured, despite being claimed as met
+
+An earlier version of this report listed "reduced-motion honoured" among the
+satisfied criteria. That was wrong, and the L1 re-critique caught it. Two
+independent mechanisms were both absent:
+
+- **Framer Motion** defaults to `reducedMotion: "never"`. There was no
+  `MotionConfig` anywhere in `src/`, so every entrance animation in
+  `L1PageShell`, `ServicePageShell`, `NavBar` and `StickyBriefCTA` ran regardless
+  of the user's setting. A comment at `globals.css:943` had already noted that CSS
+  cannot stop a JS-driven inline transform; nothing acted on it.
+- **The CSS reset was defeated by specificity.** The universal
+  `@media (prefers-reduced-motion: reduce)` block has specificity 0, so any
+  component class declaring a `transition` shorthand beat it outright —
+  `.benefitCard` kept `transition: transform 0.3s` under reduced motion, measured.
+  In combination this produced the exact defect the reset exists to prevent: once
+  `MotionConfig` was added it correctly snapped the inline transform to target,
+  and the surviving CSS transition animated the jump anyway.
+
+Both are fixed, and `scripts/check-motion.mjs` now guards both halves in CI with
+a motion-allowed control pass, so a page that never animates cannot score a
+vacuous pass. Proven load-bearing by injection: unmounting the provider fails 2
+of 3 routes; dropping the `!important` fails `/contract`. This was a real AA and
+canon §5 breach live on every animated surface, and no existing gate could see
+it — the token gate reads CSS, and axe does not evaluate motion.
+
+---
+
+## 1a. The L1 re-critique round
+
+Five findings, each verified in source before being fixed, none taken on the
+critique's word.
+
+| Finding | Verified as | Fix |
+|---|---|---|
+| Reduced motion unguarded | Real, and worse than reported — two mechanisms, both absent | `MotionProvider` + `!important` on the reset + `check-motion.mjs` in CI |
+| `.segCta` 4.38:1 in light | Real. `--sector-accent` → `--gold-deep`, the large-text grade, under 13.5px/700 text | Moved to `--accent-mark` (8.09:1) across all four components sharing the pairing |
+| Four prose blocks at 12px | Real. Bound to `--fs-data`, whose own definition reads "mono: measured values" | Card prose → `--fs-caption`, section ledes → `--fs-body`, hero lede → `--fs-lede` at weight 400 |
+| Four literal font-size clamps | Real | All resolve through the ramp; zero literals remain in the file |
+| A fifth published metric | Real, and on all **eight** L1 data files, not one | Strip renders from `content/metrics.yaml`; `stats` field and `L1Stat` type deleted |
+
+**One claim in the critique did not survive.** It reported the metric strip as a
+`retail.ts`-only defect. Measured, every one of the eight L1 data files had
+replaced "50+ Programmes staffed" with a per-page count, so the fix is a
+structural one — the strip now reads the canonical four from the server page, and
+a quarterly `metrics.yaml` refresh reaches these pages for the first time.
+
+**A false alarm worth recording, because it nearly reached this report.** A local
+axe run produced 26 serious target-size violations on routes I had not touched,
+including a confident diagnosis that `min-height` cannot raise an inline anchor.
+The elements were measuring `font-size: 16px`, `line-height: normal`,
+`display: inline` — browser defaults. `next start` was still holding port 3100
+from an earlier build while `.next` had been rebuilt underneath it, so every CSS
+chunk returned 500 and axe was scoring an unstyled page. `pkill -f "next start"`
+had missed it because the child process has a different command line. The axe
+gate now asserts the stylesheets actually applied before it reports anything, and
+that assertion is injection-proven.
 
 ---
 
