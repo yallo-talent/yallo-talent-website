@@ -19,7 +19,7 @@ export default function InsightsHub() {
 
   return (
     <div className={styles.page}>
-      <section className={styles.hero}>
+      <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
           <div className={styles.heroBgA} />
           <div className={styles.heroBgB} />

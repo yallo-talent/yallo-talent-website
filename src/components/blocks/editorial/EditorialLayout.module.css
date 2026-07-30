@@ -133,13 +133,15 @@
   gap: 12px;
 }
 
+/* --accent-mark (gold), not --accent (gold-deep): ink on gold-deep misses AA
+   at button size. Same correction as the nav CTA. */
 .ctaPrimary {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 14px 24px;
-  background: var(--accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   font-size: 14px;
   font-weight: 700;
   border-radius: 999px;
@@ -149,8 +151,8 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-hover);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 

@@ -11,6 +11,7 @@
     "check:terms": "node scripts/check-terminology.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:type": "node scripts/check-type-scale.mjs",
+    "check:a11y": "node scripts/check-a11y.mjs",
     "check:visual": "node scripts/capture-home.mjs",
     "test": "playwright test",
     "prepare": "husky || true"
@@ -38,6 +39,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@biomejs/biome": "^2.5.5",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",

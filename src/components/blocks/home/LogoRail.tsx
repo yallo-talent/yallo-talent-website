@@ -64,7 +64,7 @@ function LogoItems({
                so it never loads at all — which the served-markup gate correctly
                failed on. Eighteen small marks, and the duplicate half reuses
                the same URLs from cache. */
-            <LogoImage src={c.logo} width={120} height={30} priority />
+            <LogoImage src={c.logo} width={120} height={30} eager />
           ) : (
             <span className={styles.wordmark}>{c.name}</span>
           )}

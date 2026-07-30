@@ -55,6 +55,12 @@ export function WhyRail({ points }: { points: WhyPoint[] }) {
     <ul
       ref={track}
       className={styles.track}
+      /* Below 900px this track scrolls, and SC 2.1.1 requires a scrollable
+         container to be keyboard operable. The cards' own links are reachable,
+         but the container itself must take focus so arrow keys can scroll it. */
+      // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+      tabIndex={0}
+      aria-label="Why Yallo, four points"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}

@@ -964,7 +964,15 @@ function L1Insights({ data }: Props) {
         {data.insightsSub && <p className={styles.sub}>{data.insightsSub}</p>}
       </div>
       <div className={styles.insightsScrollWrap}>
-        <div className={styles.insightsScroll}>
+        {/* SC 2.1.1: a scrollable container must be keyboard operable. The
+            cards' links are reachable already; the container itself was not, so
+            arrow-key scrolling was impossible. Focusability is all the criterion
+            needs — no role, matching how CaseRail handles the same problem. */}
+        <div
+          className={styles.insightsScroll}
+          // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+          tabIndex={0}
+        >
           {data.insights.map((post, _i) => {
             const inner = (
               <>

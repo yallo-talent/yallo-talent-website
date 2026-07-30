@@ -475,13 +475,18 @@
   gap: 8px;
 }
 
+/* --accent-mark (gold), not --accent (gold-deep). Ink on gold-deep measures
+   4.38:1 at 13px bold — a real AA miss on the site's primary conversion
+   control, and one the token gate could not see because the pair is only formed
+   here. Ink on gold clears it comfortably. Gold-on-dark is also the strongest
+   pairing in the system, so this matches the homepage primary button. */
 .ctaPrimary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: var(--accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   font-weight: 700;
   font-size: 13px;
   letter-spacing: -0.005em;
@@ -492,8 +497,8 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-hover);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 

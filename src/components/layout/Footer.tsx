@@ -44,7 +44,13 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
+    /* band-dark: the footer ground is permanently dark in both themes, but the
+       global .eyebrow class reads --accent-label, which resolves to gold-ink in
+       the light theme — 3.16:1 on near-black, a real AA failure that the token
+       contrast gate cannot see because the pair is only formed at render.
+       band-dark restates the semantic layer so descendants resolve against the
+       ground they actually sit on. */
+    <footer className={`${styles.footer} band-dark`}>
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.brandBlock}>

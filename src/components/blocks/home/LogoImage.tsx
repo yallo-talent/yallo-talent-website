@@ -19,12 +19,22 @@ export function LogoImage({
   height,
   className,
   priority = false,
+  eager = false,
 }: {
   src: string;
   width: number;
   height: number;
   className?: string;
+  /** Next's priority: adds a preload link. Use for at most a couple of marks. */
   priority?: boolean;
+  /**
+   * Load immediately WITHOUT a preload link. This is the setting a marquee
+   * needs: a lazily-loaded mark on a horizontally-translated track never enters
+   * the viewport by vertical scrolling, so it never loads at all — but marking
+   * all 36 of them `priority` emitted 36 preload links and stalled the page's
+   * load event outright.
+   */
+  eager?: boolean;
 }) {
   return (
     <Image
@@ -34,7 +44,7 @@ export function LogoImage({
       height={height}
       className={className}
       unoptimized={src.endsWith(".svg")}
-      loading={priority ? undefined : "lazy"}
+      loading={priority || eager ? "eager" : "lazy"}
       priority={priority}
     />
   );
