@@ -630,8 +630,8 @@ function L1Expertise({ data }: Props) {
             return (
               <motion.div
                 key={card.slug}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ y: 16 }}
+                whileInView={{ y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: i * 0.03 }}
                 className={styles.expCardWrap}
@@ -859,7 +859,7 @@ function L1Segments({ data }: Props) {
             className={styles.segPanel}
             style={cardHueStyle()}
             key={activeSeg.id}
-            initial={{ opacity: 0, x: 8 }}
+            initial={{ x: 8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -1114,8 +1114,8 @@ function L1ServicePillars() {
           {servicePillars.map((p, i) => (
             <motion.div
               key={p.slug}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: 16 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.45, delay: i * 0.06 }}
               className={styles.pillarWrap}

@@ -113,8 +113,8 @@ function ServiceBenefits({ data }: Props) {
               // biome-ignore lint/suspicious/noArrayIndexKey: benefit list is static, stable order
               key={i}
               className={styles.benefitCard}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: 20 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
             >
@@ -150,8 +150,8 @@ function ServiceProcess({ data }: Props) {
             <motion.li
               key={s.title}
               className={styles.step}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: 20 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
