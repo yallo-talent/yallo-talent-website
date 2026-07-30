@@ -442,7 +442,6 @@
   --sector-accent: var(--gold);
   --sector-accent-08: color-mix(in oklab, var(--gold) 8%, var(--ground));
   --sector-accent-20: color-mix(in oklab, var(--gold) 20%, var(--ground));
-  --sector-accent-35: color-mix(in oklab, var(--gold) 45%, var(--ground));
   --border: var(--dk-line);
   --border-strong: var(--dk-line-strong);
   --border-accent: var(--gold);
@@ -453,14 +452,6 @@
   --white: var(--dk-txt);
   --gray-100: var(--dk-2);
   --gray-200: var(--dk-3);
-  /* An alpha ladder, not five copies of one hairline: these were authored as
-     3-15% white whispers and flattening them all to --dk-line painted every
-     one as a solid rule. */
-  --wa03: color-mix(in oklab, var(--dk-txt) 3%, transparent);
-  --wa05: color-mix(in oklab, var(--dk-txt) 5%, transparent);
-  --wa08: color-mix(in oklab, var(--dk-txt) 8%, transparent);
-  --wa12: color-mix(in oklab, var(--dk-txt) 12%, transparent);
-  --wa15: color-mix(in oklab, var(--dk-txt) 18%, transparent);
   --wa25: var(--dk-line-strong);
   --wa40: var(--dk-txt-3);
   --wa60: var(--dk-txt-2);
@@ -528,9 +519,20 @@
      ten component types and, because half the usages are hover states, meant
      pointing at a card erased its own edge. */
   --sector-accent: var(--accent-line);
-  --sector-accent-08: color-mix(in oklab, var(--gold-deep) 8%, var(--ground));
-  --sector-accent-20: color-mix(in oklab, var(--gold-deep) 20%, var(--ground));
-  --sector-accent-35: color-mix(in oklab, var(--gold-deep) 45%, var(--ground));
+  /* Built from --accent-line and --ground, both of which already flip per theme,
+     because this shim block is shared: a hardcoded --gold-deep here would have
+     painted the light grade onto the dark register too. */
+  --sector-accent-08: color-mix(in oklab, var(--accent-line) 8%, var(--ground));
+  --sector-accent-20: color-mix(
+    in oklab,
+    var(--accent-line) 20%,
+    var(--ground)
+  );
+  --sector-accent-35: color-mix(
+    in oklab,
+    var(--accent-line) 45%,
+    var(--ground)
+  );
 
   --border: var(--hairline);
   --border-strong: var(--boundary);
@@ -582,13 +584,14 @@
   --ya13: var(--accent-wash);
   --ya20: var(--accent-wash);
   --ya35: transparent;
-  /* Same ladder inverted for paper: ink at low alpha, not five opaque rules.
-     Flattened, `.heroGrid` drew opaque graph paper at 1.34:1 across the H1. */
-  --wa03: color-mix(in oklab, var(--ink) 3%, transparent);
-  --wa05: color-mix(in oklab, var(--ink) 5%, transparent);
-  --wa08: color-mix(in oklab, var(--ink) 7%, transparent);
-  --wa12: color-mix(in oklab, var(--ink) 10%, transparent);
-  --wa15: color-mix(in oklab, var(--ink) 14%, transparent);
+  /* A real alpha ladder off --text, which flips per theme, rather than five
+     copies of one opaque hairline. Flattened, `.heroGrid` drew opaque graph
+     paper at 1.34:1 straight across the H1. */
+  --wa03: color-mix(in oklab, var(--text) 3%, transparent);
+  --wa05: color-mix(in oklab, var(--text) 5%, transparent);
+  --wa08: color-mix(in oklab, var(--text) 7%, transparent);
+  --wa12: color-mix(in oklab, var(--text) 11%, transparent);
+  --wa15: color-mix(in oklab, var(--text) 16%, transparent);
   --wa25: var(--boundary);
   --wa40: var(--text-3);
   --wa60: var(--text-2);
