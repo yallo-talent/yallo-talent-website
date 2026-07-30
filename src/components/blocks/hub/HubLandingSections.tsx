@@ -226,7 +226,7 @@ export function HubArchitects() {
         <div className={styles.archHead}>
           <div className={styles.eyebrow}>Screened by architects</div>
           <h2 className={styles.h2}>
-            The people who screen your shortlist —{" "}
+            Screened by specialists who{" "}
             <span className={styles.emphasis}>
               have run enterprise programmes at scale.
             </span>

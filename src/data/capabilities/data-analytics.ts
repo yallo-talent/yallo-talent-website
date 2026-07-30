@@ -11,6 +11,7 @@ export const dataAnalyticsData: L1PageData = {
 
   eyebrow: "Data & Analytics · Contract-first",
   title: "Data and analytics contractors,",
+  sectorNoun: "data and analytics",
   emphasis: "shortlisted in 72 hours.",
   sub: "Data engineers, analytics engineers, BI developers and migration leads for enterprise programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just certification badges. AI roles have their own practice.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

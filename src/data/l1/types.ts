@@ -178,6 +178,15 @@ export interface L1PageData {
   title: string;
   emphasis: string;
   sub: string;
+  /**
+   * The sector as a NOUN, for use inside prose.
+   *
+   * Body copy used to derive this by splitting the H1, which yielded "every
+   * retail tech contractors programme" in a 38px heading — a broken sentence in
+   * the first thing a cold visitor from organic search reads. Prose takes this
+   * field; the H1 keeps its own wording.
+   */
+  sectorNoun: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   statusDots: string[];

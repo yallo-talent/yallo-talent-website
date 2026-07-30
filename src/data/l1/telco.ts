@@ -11,6 +11,7 @@ export const telcoData: L1PageData = {
 
   eyebrow: "Telco & Media · Contract-first",
   title: "Telco & media tech contractors,",
+  sectorNoun: "telco",
   emphasis: "shortlisted in 72 hours.",
   sub: "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 specialists for OSS, BSS, 5G and media programmes across the Middle East, Europe and India. Screened for carrier-grade delivery depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

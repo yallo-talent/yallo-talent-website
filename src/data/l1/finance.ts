@@ -11,6 +11,7 @@ export const financeData: L1PageData = {
 
   eyebrow: "Banking & Financial Services · Contract-first",
   title: "Banking & FS contractors,",
+  sectorNoun: "financial services",
   emphasis: "shortlisted in 72 hours.",
   sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Architect-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

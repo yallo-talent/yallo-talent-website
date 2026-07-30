@@ -443,7 +443,7 @@
   padding: 22px 24px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-left: 3px solid var(--sector-accent);
+  border-left: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   transition:
     border-color 0.24s ease,
@@ -672,7 +672,6 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   color: var(--accent-label);
-  opacity: 0.5;
 }
 
 @media (max-width: 1000px) {
@@ -918,7 +917,7 @@
     ),
     var(--ground-2);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 22px;
+  border-radius: 0 0 0 var(--r);
   isolation: isolate;
   overflow: hidden;
   box-shadow: inset 0 1px 0 var(--wa12);
@@ -1000,7 +999,7 @@
 }
 
 .scarceH {
-  font-size: clamp(20px, 2.4vw, 30px);
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -1791,7 +1790,7 @@
   grid-template-columns: 340px 1fr;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-radius: 22px;
+  border-radius: 0 0 0 var(--r);
   overflow: hidden;
   box-shadow: inset 0 1px 0 var(--wa08);
 }
@@ -2755,7 +2754,7 @@
     var(--ground-2) 100%
   );
   border: 1px solid var(--sector-accent-35);
-  border-radius: 22px;
+  border-radius: 0 0 0 var(--r);
   overflow: hidden;
   isolation: isolate;
 }
@@ -2796,7 +2795,7 @@
 }
 
 .readNextH {
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -3023,7 +3022,7 @@
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {
   .heroTitle {
-    font-size: clamp(30px, 6vw, 46px);
+    font-size: var(--fs-display);
   }
   .expertiseGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3041,8 +3040,15 @@
   .scarceGrid {
     grid-template-columns: 1fr;
   }
+  /* minmax(0, 1fr), not 1fr: the 14-button index forced the column to
+     max-content, so .segWrap clipped 8 of 10 role pills and truncated the copy
+     mid-word inside overflow:hidden — content lost, not scrollable (1.4.10). */
   .segWrap {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .segPanel,
+  .segListWrap {
+    min-width: 0;
   }
   .segListWrap {
     border-right: 0;
@@ -3057,8 +3063,16 @@
     padding: 12px;
     flex: 1;
   }
+  /* The fade is the only cue that the index scrolls, and it was switched off at
+     precisely the width where the index starts scrolling. Rotated to sit on the
+     horizontal axis instead of removed. */
   .segListFade {
-    display: none;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: 48px;
+    height: 100%;
   }
   .segItem {
     flex-shrink: 0;
@@ -3138,5 +3152,21 @@
   .ctaPrimary,
   .ctaGhost {
     justify-content: center;
+  }
+}
+
+/* The engagement model is half the answer to "on what terms", and it was being
+   clipped off the right edge of every scarce-role row at 390px. Stack it under
+   the role name rather than losing it (1.4.10). */
+@media (max-width: 560px) {
+  .scarceRow {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .scarceTags {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    width: 100%;
   }
 }

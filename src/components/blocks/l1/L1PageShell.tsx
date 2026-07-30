@@ -33,8 +33,16 @@ interface Props {
 export function L1PageShell({ data }: Props) {
   const hasScarce =
     Boolean(data.scarceRoles) && (data.scarceRoles?.length ?? 0) > 0;
+  /**
+   * Gated on PUBLISHED insights, not on the array being non-empty.
+   *
+   * Canon §9 descopes the insight family entirely and every legacy piece is
+   * `published: false`, so this section was rendering five openable-looking
+   * cards with no anchors — ~790px of dead ends closing the page. An unbuilt
+   * destination renders nothing, it does not render a card.
+   */
   const hasInsights =
-    Boolean(data.insights) && (data.insights?.length ?? 0) > 0;
+    (data.insights ?? []).some((p) => p.published !== false) === true;
   const subNavItems: { id: string; label: string }[] = [
     { id: "why", label: "Why us" },
     { id: "deliver", label: "What we deliver" },
@@ -49,7 +57,11 @@ export function L1PageShell({ data }: Props) {
   ];
 
   return (
-    <div className={styles.page} style={hueStyle()}>
+    /* Ambient hues assigned POSITIONALLY (canon §5): the hero takes the first
+       slot, the segment panel the third, the insight rail the fifth. Never keyed
+       to the sector — that is the retired per-sector hue system. Without a host
+       assigning --amb, every PetalPlate rendered as a grey smear. */
+    <div className={`${styles.page} amb-1`} style={hueStyle()}>
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
       <L1SubNav items={subNavItems} />
@@ -300,7 +312,7 @@ const whatWeDeliverCards: {
 ];
 
 function L1WhatWeDeliver({ data }: Props) {
-  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.sectorNoun;
   return (
     <section className={styles.wwd}>
       <div className={styles.wrap}>
@@ -467,7 +479,7 @@ const crossSectorLinks: {
 
 function _L1CrossSector({ data }: Props) {
   const others = crossSectorLinks.filter((s) => s.slug !== data.slug);
-  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.sectorNoun;
   return (
     <section className={styles.xsec}>
       <div className={styles.wrap}>
@@ -759,14 +771,17 @@ const architects: {
 ];
 
 function L1Architects({ data }: Props) {
-  const sector = data.title.split(/[,&]/)[0]?.trim().toLowerCase() ?? data.slug;
+  const sector = data.sectorNoun;
   return (
     <section className={styles.arch}>
       <div className={styles.wrap}>
         <div className={styles.archHead}>
           <div className={styles.eyebrow}>Screened by architects</div>
+          {/* Canon §8: "the people who screen" stays deleted — the desks carry
+              the proof. Practice leads appear as ROLES with real credentials,
+              never as invented individuals. */}
           <h2 className={styles.h2}>
-            The people who screen your shortlist —{" "}
+            Screened by specialists who{" "}
             <span className={styles.heroEmphasis}>
               have run {sector} programmes at scale.
             </span>
@@ -787,13 +802,9 @@ function L1Architects({ data }: Props) {
             >
               <div className={styles.archGlow} aria-hidden="true" />
               <div className={styles.archCardInner}>
-                <div className={styles.archInitials} aria-hidden="true">
-                  {a.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .slice(0, 2)
-                    .join("")}
-                </div>
+                {/* No monogram. Generating initials from a role string produced
+                    "Sp", "Op" and "C&" — an invented identity for something that
+                    is not a person, and a visible fault. */}
                 <div className={styles.archRole}>{a.role}</div>
                 <div className={styles.archName}>{a.name}</div>
                 <p className={styles.archBio}>{a.bio}</p>
@@ -856,7 +867,7 @@ function L1Segments({ data }: Props) {
           </div>
 
           <motion.div
-            className={styles.segPanel}
+            className={`${styles.segPanel} amb-3`}
             style={cardHueStyle()}
             key={activeSeg.id}
             initial={{ x: 8 }}
@@ -929,10 +940,15 @@ function L1Partners({ partners }: { partners?: string[] }) {
     <section className={styles.partners}>
       <div className={styles.wrap}>
         <div className={styles.eyebrow}>Technology partners</div>
-        <h2 className={styles.h2}>The platforms we staff.</h2>
+        {/* NOT "the platforms we staff": canon §3 names six platform
+            destinations and AWS, Shopify, Magento and the rest are not among
+            them — AWS folds into cloud-infrastructure. Calling all sixteen
+            "platforms" dilutes the wedge the six pages exist to prove. This is
+            the wider estate, and it is real capability. */}
+        <h2 className={styles.h2}>The technology we staff into.</h2>
         <p className={styles.sub}>
-          Active contractor benches across every major enterprise retail
-          technology platform.
+          Active contractor benches across the enterprise estate. The six
+          platforms we publish at module level have their own pages.
         </p>
         <div className={styles.partnersGrid}>
           {partnerNames.map((name, _i) => {
@@ -972,7 +988,7 @@ function L1Insights({ data }: Props) {
             arrow-key scrolling was impossible. Focusability is all the criterion
             needs — no role, matching how CaseRail handles the same problem. */}
         <div
-          className={styles.insightsScroll}
+          className={`${styles.insightsScroll} amb-5`}
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >

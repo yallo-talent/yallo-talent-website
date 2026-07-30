@@ -11,6 +11,7 @@ export const healthcareData: L1PageData = {
 
   eyebrow: "Healthcare & Life Sciences · Contract-first",
   title: "Healthcare & life sciences contractors,",
+  sectorNoun: "healthcare",
   emphasis: "shortlisted in 72 hours.",
   sub: "Epic, Cerner, Veeva, Medidata and Guidewire specialists for provider, payer and life-sciences programmes across the Middle East, Europe and India. Screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

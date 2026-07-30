@@ -33,7 +33,7 @@ export function ServicePageShell({ data }: Props) {
   };
 
   return (
-    <div className={styles.page} style={style}>
+    <div className={`${styles.page} amb-4`} style={style}>
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: FAQ JSON-LD is generated server-side from typed FAQ data — no user input

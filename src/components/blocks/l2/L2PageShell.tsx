@@ -38,7 +38,7 @@ interface Props {
  */
 export function L2PageShell({ sector, fn }: Props) {
   return (
-    <div className={styles.page} style={hueStyle()}>
+    <div className={`${styles.page} amb-2`} style={hueStyle()}>
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>

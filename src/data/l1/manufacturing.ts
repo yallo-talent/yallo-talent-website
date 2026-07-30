@@ -11,6 +11,7 @@ export const manufacturingData: L1PageData = {
 
   eyebrow: "Manufacturing & Logistics · Contract-first",
   title: "Manufacturing tech contractors,",
+  sectorNoun: "manufacturing",
   emphasis: "shortlisted in 72 hours.",
   sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

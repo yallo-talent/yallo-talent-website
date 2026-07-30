@@ -440,8 +440,9 @@
   --accent-muted: var(--dk-3);
   --accent-strong: var(--dk-3);
   --sector-accent: var(--gold);
-  --sector-accent-08: var(--dk-3);
-  --sector-accent-20: var(--dk-3);
+  --sector-accent-08: color-mix(in oklab, var(--gold) 8%, var(--ground));
+  --sector-accent-20: color-mix(in oklab, var(--gold) 20%, var(--ground));
+  --sector-accent-35: color-mix(in oklab, var(--gold) 45%, var(--ground));
   --border: var(--dk-line);
   --border-strong: var(--dk-line-strong);
   --border-accent: var(--gold);
@@ -452,11 +453,14 @@
   --white: var(--dk-txt);
   --gray-100: var(--dk-2);
   --gray-200: var(--dk-3);
-  --wa03: var(--dk-line);
-  --wa05: var(--dk-line);
-  --wa08: var(--dk-line);
-  --wa12: var(--dk-line);
-  --wa15: var(--dk-line-strong);
+  /* An alpha ladder, not five copies of one hairline: these were authored as
+     3-15% white whispers and flattening them all to --dk-line painted every
+     one as a solid rule. */
+  --wa03: color-mix(in oklab, var(--dk-txt) 3%, transparent);
+  --wa05: color-mix(in oklab, var(--dk-txt) 5%, transparent);
+  --wa08: color-mix(in oklab, var(--dk-txt) 8%, transparent);
+  --wa12: color-mix(in oklab, var(--dk-txt) 12%, transparent);
+  --wa15: color-mix(in oklab, var(--dk-txt) 18%, transparent);
   --wa25: var(--dk-line-strong);
   --wa40: var(--dk-txt-3);
   --wa60: var(--dk-txt-2);
@@ -516,11 +520,17 @@
   --accent-strong: var(--accent-wash);
   --accent-glow: transparent;
 
-  /* One accent, always: every sector hue now resolves to gold. */
+  /* One accent, always: every sector hue now resolves to gold.
+     The depth ramp is re-derived for PAPER rather than substituted. On ink the
+     accent steps are LIGHTER than the ground; on paper they must be DARKER, or
+     they vanish — -08 and -20 both resolved to --gold-wash (1.005:1 against
+     paper) and -35 resolved to `transparent`, which deleted the boundary from
+     ten component types and, because half the usages are hover states, meant
+     pointing at a card erased its own edge. */
   --sector-accent: var(--accent-line);
-  --sector-accent-08: var(--accent-wash);
-  --sector-accent-20: var(--accent-wash);
-  --sector-accent-35: transparent;
+  --sector-accent-08: color-mix(in oklab, var(--gold-deep) 8%, var(--ground));
+  --sector-accent-20: color-mix(in oklab, var(--gold-deep) 20%, var(--ground));
+  --sector-accent-35: color-mix(in oklab, var(--gold-deep) 45%, var(--ground));
 
   --border: var(--hairline);
   --border-strong: var(--boundary);
@@ -572,11 +582,13 @@
   --ya13: var(--accent-wash);
   --ya20: var(--accent-wash);
   --ya35: transparent;
-  --wa03: var(--hairline);
-  --wa05: var(--hairline);
-  --wa08: var(--hairline);
-  --wa12: var(--hairline);
-  --wa15: var(--boundary);
+  /* Same ladder inverted for paper: ink at low alpha, not five opaque rules.
+     Flattened, `.heroGrid` drew opaque graph paper at 1.34:1 across the H1. */
+  --wa03: color-mix(in oklab, var(--ink) 3%, transparent);
+  --wa05: color-mix(in oklab, var(--ink) 5%, transparent);
+  --wa08: color-mix(in oklab, var(--ink) 7%, transparent);
+  --wa12: color-mix(in oklab, var(--ink) 10%, transparent);
+  --wa15: color-mix(in oklab, var(--ink) 14%, transparent);
   --wa25: var(--boundary);
   --wa40: var(--text-3);
   --wa60: var(--text-2);

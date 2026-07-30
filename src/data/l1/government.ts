@@ -11,6 +11,7 @@ export const governmentData: L1PageData = {
 
   eyebrow: "Government & Public Sector · Contract-first",
   title: "Public sector tech contractors,",
+  sectorNoun: "public sector",
   emphasis: "shortlisted in 72 hours.",
   sub: "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola specialists for central, local and defence programmes across the Middle East, Europe and India. Cleared where the mission demands it.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

@@ -11,6 +11,7 @@ export const cloudInfrastructureData: L1PageData = {
 
   eyebrow: "Cloud & Infrastructure · Contract-first",
   title: "Cloud & Infrastructure contractors,",
+  sectorNoun: "cloud and infrastructure",
   emphasis: "shortlisted in 72 hours.",
   sub: "Cloud architects, platform engineers, SREs and DevOps specialists for AWS, Azure and GCP programmes across the Middle East, Europe and India. Architect-screened for landing-zone depth, FinOps discipline and production resilience — not just certification badges.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
