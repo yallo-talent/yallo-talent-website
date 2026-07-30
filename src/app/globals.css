@@ -191,9 +191,14 @@
   --nav-ground: rgba(234, 233, 228, 0.94);
   --petal-opacity: 0.16;
 
-  /* Uniform monochrome treatment for client and integrator marks (canon §8):
-     ink silhouette on light grounds, paper silhouette on dark. */
-  --mark-mono: brightness(0);
+  /* Uniform monochrome treatment for client and integrator marks (canon §8).
+     The mark pack is 15 opaque rasters (PNG colour-type 3, no alpha) with baked
+     white backgrounds and 3 vectors, so `brightness(0)` alone turned fifteen of
+     eighteen marks into solid black bars — on-canon and illegible. Blend mode
+     does the knockout the assets cannot: on a light ground `multiply` drops
+     white into the paper; grayscale carries the monochrome. */
+  --mark-mono: grayscale(1) contrast(1.15);
+  --mark-blend: multiply;
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
@@ -237,7 +242,10 @@
 
   --nav-ground: rgba(12, 13, 16, 0.94);
   --petal-opacity: 0.2;
-  --mark-mono: brightness(0) invert(1);
+  /* On dark: invert first so the baked white becomes black, then `screen` drops
+     black out, leaving a light silhouette on the near-black ground. */
+  --mark-mono: grayscale(1) invert(1) contrast(1.15);
+  --mark-blend: screen;
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
@@ -279,7 +287,10 @@
   --category-mark: var(--fn-category-mark-d);
   --category-text: var(--fn-category-text-d);
   --petal-opacity: 0.2;
-  --mark-mono: brightness(0) invert(1);
+  /* On dark: invert first so the baked white becomes black, then `screen` drops
+     black out, leaving a light silhouette on the near-black ground. */
+  --mark-mono: grayscale(1) invert(1) contrast(1.15);
+  --mark-blend: screen;
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
@@ -343,7 +354,8 @@
   --category-mark: var(--fn-category-mark-l);
   --category-text: var(--fn-category-text-l);
   --petal-opacity: 0.16;
-  --mark-mono: brightness(0);
+  --mark-mono: grayscale(1) contrast(1.15);
+  --mark-blend: multiply;
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
   --amb-alpha: 8%;
@@ -433,8 +445,8 @@
   --border: var(--dk-line);
   --border-strong: var(--dk-line-strong);
   --border-accent: var(--gold);
-  --glass-bg: var(--dk-2);
-  --glass-border: var(--dk-line);
+  /* --glass-bg and --glass-border are gone: the register was deleted in the
+     step-8 strip and is now CI-banned. */
   --hero-overlay: var(--dk);
   --ink-950: var(--dk);
   --white: var(--dk-txt);
@@ -514,11 +526,11 @@
   --border-strong: var(--boundary);
   --border-accent: var(--accent-line);
 
-  /* Glass and orbs are anti-reference: neutralised rather than tuned. */
-  --glass-bg: var(--ground-2);
-  --glass-border: var(--hairline);
-  --glass-blur: 0px;
-  --glass-highlight: none;
+  /* The glass tokens are DELETED, not neutralised. Neutralising them is what
+     left ~250 dormant declarations that one variable change would have brought
+     back site-wide; the step-8 strip removed the declarations and
+     scripts/check-type-scale.mjs now fails CI on any --glass-* or
+     backdrop-filter outside the sticky nav. */
   --hero-overlay: var(--ground);
   --gradient-accent: linear-gradient(
     90deg,

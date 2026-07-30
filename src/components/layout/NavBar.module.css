@@ -572,11 +572,13 @@
     display: inline-flex;
   }
   /* The CTA stays. Hiding it behind the hamburger left the only conversion on
-     a 21-viewport mobile page invisible for 18 of them. Logo + CTA + burger
-     fit inside 390px at this scale. */
+     a 21-viewport mobile page invisible for 18 of them. `nowrap` is
+     load-bearing: without it the label broke onto four line-boxes and the
+     button rendered as a 92x90px blob beside the hamburger. */
   .ctaPrimary {
     padding: 10px 14px;
-    font-size: var(--fs-body-sm);
+    font-size: 13px;
+    white-space: nowrap;
   }
 }
 

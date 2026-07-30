@@ -37,8 +37,13 @@ export function Instrument() {
   // "settled" is the server state: everything at final width, no animation.
   const [stage, setStage] = useState<Stage>("settled");
   const [outCount, setOutCount] = useState(17);
+  // Canon §5: an auto-advancing element pauses on hover. The candidate rows are
+  // readable content, and resetting them under a reader mid-scan is the exact
+  // failure that rule exists to prevent.
+  const [held, setHeld] = useState(false);
 
   useEffect(() => {
+    if (held) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let alive = true;
@@ -80,7 +85,7 @@ export function Instrument() {
       alive = false;
       for (const t of timers) clearTimeout(t);
     };
-  }, []);
+  }, [held]);
 
   const reached = (s: Stage): boolean => {
     if (stage === "settled" || stage === "done") return true;
@@ -97,6 +102,11 @@ export function Instrument() {
       className={styles.instrument}
       aria-label={instrument.label}
       data-stage={stage}
+      data-held={held || undefined}
+      onPointerEnter={() => setHeld(true)}
+      onPointerLeave={() => setHeld(false)}
+      onFocusCapture={() => setHeld(true)}
+      onBlurCapture={() => setHeld(false)}
     >
       <span className={styles.sweep} aria-hidden="true" />
 

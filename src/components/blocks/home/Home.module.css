@@ -578,7 +578,10 @@
     mask-image: none;
   }
 
-  .logoDup {
+  /* Compound selector deliberately: a bare `.logoDup` loses to `.logo`'s own
+     `display: grid` at equal specificity later in the file, so the duplicate
+     track stayed visible and every client appeared twice. */
+  .logo.logoDup {
     display: none;
   }
 }
@@ -605,7 +608,11 @@
   width: auto;
   object-fit: contain;
   filter: var(--mark-mono);
-  opacity: 0.72;
+  /* Knocks the assets' baked white background out against the ground — 15 of
+     the 18 marks are opaque rasters with no alpha, so a filter alone rendered
+     them as solid bars. */
+  mix-blend-mode: var(--mark-blend);
+  opacity: 0.78;
   transition: opacity 0.28s var(--ease);
 }
 
@@ -1542,18 +1549,19 @@
   max-width: 26ch;
 }
 
-/* Excerpts are schema-budgeted at 220 characters, so the card never needs to
-   cut a sentence. The clamp stays only as a 6-line safety net for the legacy
-   `summary` fallback — measured before the rewrite, every card was clipped
-   mid-sentence, one hiding 60% of its copy. */
+/* The clamp must clear the schema budget, or the devendoring is wasted: a
+   220-character excerpt runs to eight lines in a 300px card at this size, and a
+   six-line clamp cut every one of them mid-sentence. Nine lines leaves headroom
+   and still caps the legacy `summary` fallback, which is what the clamp is
+   actually for. */
 .caseSummary {
   margin-top: 12px;
   font-size: var(--fs-body-sm);
   line-height: 1.6;
   color: var(--text-2);
   display: -webkit-box;
-  -webkit-line-clamp: 6;
-  line-clamp: 6;
+  -webkit-line-clamp: 9;
+  line-clamp: 9;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
