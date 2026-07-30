@@ -195,3 +195,28 @@ the browser.
 **Still worth commissioning:** monochrome SVG silhouettes for the six. Nothing is
 broken without them — a name is a legitimate treatment, not a placeholder — but a
 vector would let all fifteen render as marks.
+
+## Q8 — A3 allow-lists the mega panel for glass, but it cannot have it
+
+Not a decision needed, a finding to record: **the mega-menu panel is a descendant
+of the header**, and the header is glass once scrolled. A `backdrop-filter` inside
+an element that already has one is a no-op — the ancestor's filter establishes the
+backdrop root, so the child has nothing left to sample.
+
+Measured: with the utility applied the panel took the translucent 88% ground and
+reported `backdrop-filter: none`. Translucency with no blur is the one combination
+that actively harms legibility, because page content reads through sharply. A3
+bans stacked blurs for exactly this reason, so the rule caught its own case.
+
+**Shipped:** glass on the header, opaque ground on the panel. Label contrast on
+that ground measures 14.11:1 and the column headings 5.77:1, so nothing is lost
+but the effect.
+
+**If the panel should be glass**, it has to stop being a child of the header —
+render it as a sibling in a portal at the layout root. That is a structural change
+to the nav, worth doing only if the effect is wanted there specifically.
+
+**Also recorded:** the utility is `.glass.glass`, not `.glass`. CSS module
+stylesheets load after `globals.css`, so at equal specificity a component's own
+`background` beats the utility — both allow-listed surfaces carried the class and
+rendered fully opaque until the class was doubled.
