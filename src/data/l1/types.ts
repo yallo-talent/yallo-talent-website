@@ -216,11 +216,9 @@ export interface L1PageData {
   insightsSub?: string;
   insights?: L1Insight[];
 
-  /**
-   * Technology partners tile grid — optional per page.
-   * If omitted, the shell falls back to a shared default list.
-   */
-  partners?: string[];
+  /* No `partners` field. The technology-partners tile grid is gone: ten of its
+     sixteen marks sat outside canon §3's six-platform set, and calling SAP, AWS
+     and Google Cloud "partners" is a commercial claim with nothing behind it. */
 
   /** Read next — cross-links */
   relatedTitle: string;

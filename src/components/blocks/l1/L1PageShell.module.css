@@ -3148,3 +3148,23 @@
     width: 100%;
   }
 }
+
+/* The six specialist desks in the closing card (canon §3's screening proof). */
+.deskLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin: 28px 0 12px;
+}
+
+.deskList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+  margin: 0 0 30px;
+  padding: 0;
+  list-style: none;
+}

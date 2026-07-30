@@ -95,7 +95,7 @@ export const telcoData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty telco & media function areas. Contractor bench across all of them.",
+    "Every telco and media function area, with a contractor bench behind it.",
   expertiseSub:
     "From network operations to advertising ops — we place specialists into every function that moves a carrier or media programme forward.",
   expertise: [
@@ -601,25 +601,6 @@ export const telcoData: L1PageData = {
         "Programme Assurance Consultant",
       ],
     },
-  ],
-
-  partners: [
-    "SAP",
-    "Oracle",
-    "Salesforce",
-    "Microsoft",
-    "Ericsson",
-    "Nokia",
-    "Cisco",
-    "Amdocs",
-    "Netcracker",
-    "Huawei",
-    "Ciena",
-    "AWS",
-    "Google Cloud",
-    "Akamai",
-    "Adobe",
-    "ServiceNow",
   ],
 
   insightsEyebrow: "Insights",

@@ -96,7 +96,7 @@ export const manufacturingData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty manufacturing function areas. Contractor bench across all of them.",
+    "Every manufacturing function area, with a contractor bench behind it.",
   expertiseSub:
     "From shop-floor execution to network-level planning — we place specialists into every function that moves a manufacturing programme forward.",
   expertise: [
@@ -603,25 +603,6 @@ export const manufacturingData: L1PageData = {
         "Supply Planning Specialist",
       ],
     },
-  ],
-
-  partners: [
-    "SAP",
-    "Oracle",
-    "Siemens",
-    "Rockwell Automation",
-    "Honeywell",
-    "Blue Yonder",
-    "Manhattan Associates",
-    "IBM",
-    "Salesforce",
-    "Microsoft",
-    "Infor",
-    "Dassault Systèmes",
-    "Anaplan",
-    "Coupa",
-    "o9 Solutions",
-    "Kinaxis",
   ],
 
   insightsEyebrow: "Insights",

@@ -96,7 +96,7 @@ export const healthcareData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty healthcare & life-sciences function areas. Contractor bench across all of them.",
+    "Every healthcare and life-sciences function area, with a contractor bench behind it.",
   expertiseSub:
     "From clinical systems to lab operations — we place specialists into every function that moves a care or life-sciences programme forward.",
   expertise: [
@@ -586,25 +586,6 @@ export const healthcareData: L1PageData = {
         "Reg Change Programme Manager",
       ],
     },
-  ],
-
-  partners: [
-    "SAP",
-    "Oracle",
-    "Salesforce",
-    "Microsoft",
-    "ServiceNow",
-    "IBM",
-    "Epic Systems",
-    "Cerner",
-    "Veeva Systems",
-    "Medidata",
-    "MasterControl",
-    "Snowflake",
-    "Palo Alto Networks",
-    "Fortinet",
-    "AWS",
-    "Google Cloud",
   ],
 
   insightsEyebrow: "Insights",
