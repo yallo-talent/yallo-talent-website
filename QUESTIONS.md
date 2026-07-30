@@ -41,7 +41,18 @@ them is a Sumeet/client-side call, not a Code decision:
 **Assumption taken:** excerpts compress around the defects (no defective line
 was used); bodies stay verbatim including the defects.
 
-## Q3 — Register test: the light variant is a rebuild, not a variant
+## Q3 — RESOLVED: the light register is built and live
+
+**Superseded by the rebuild.** The finding below stands as the diagnosis; the
+work is done. L1, L2 and service now follow the active register, `band-dark` is
+off the shells, and every built surface passes axe in both themes.
+
+**One line needs your ratification:** canon §5's register clause, which I have
+updated to record light as adopted site-wide. Ratify or correct it.
+
+The original diagnosis, kept because it explains why this took a rebuild:
+
+### Diagnosis (30 Jul)
 
 **This is the largest scope discovery of the run, and it blocks step 8.**
 
