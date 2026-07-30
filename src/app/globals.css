@@ -107,9 +107,17 @@
      figures >=14px tabular. No two adjacent fixed steps closer than a 1.125
      ratio. Fixed chain: 12 -> 13.5 -> 15.5 -> 17.5 -> 20 -> 23(min)
      (ratios 1.125 · 1.148 · 1.129 · 1.143 · 1.15). */
-  --fs-display: clamp(38px, 5.6vw, 72px); /* the H1, once per page */
+  /* 62px max, not 72px. At 72px the H1 broke into six lines inside the hero's
+     text column and pushed the primary CTA below an 800px fold; the cap was
+     never the constraint, the column width was. 62px keeps a 1.147 ratio over
+     --fs-headline, so the 1.125 adjacency rule holds. */
+  --fs-display: clamp(38px, 5.6vw, 62px); /* the H1, once per page */
   --fs-headline: clamp(32px, 4.4vw, 54px); /* section H2 */
-  --fs-numeral: clamp(38px, 4.6vw, 62px); /* metric values — shares the display step at min */
+  --fs-numeral: clamp(
+    38px,
+    4.6vw,
+    62px
+  ); /* metric values — shares the display step at min */
   --fs-title: clamp(23px, 2.4vw, 27px); /* card and panel headings */
   --fs-subtitle: 20px; /* axis names, persona roles */
   --fs-lede: 20px; /* the hero paragraph — shares the subtitle step */
@@ -183,6 +191,10 @@
   --nav-ground: rgba(234, 233, 228, 0.94);
   --petal-opacity: 0.16;
 
+  /* Uniform monochrome treatment for client and integrator marks (canon §8):
+     ink silhouette on light grounds, paper silhouette on dark. */
+  --mark-mono: brightness(0);
+
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
   --amb-alpha: 8%;
@@ -225,6 +237,7 @@
 
   --nav-ground: rgba(12, 13, 16, 0.94);
   --petal-opacity: 0.2;
+  --mark-mono: brightness(0) invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
@@ -266,6 +279,7 @@
   --category-mark: var(--fn-category-mark-d);
   --category-text: var(--fn-category-text-d);
   --petal-opacity: 0.2;
+  --mark-mono: brightness(0) invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
@@ -329,6 +343,7 @@
   --category-mark: var(--fn-category-mark-l);
   --category-text: var(--fn-category-text-l);
   --petal-opacity: 0.16;
+  --mark-mono: brightness(0);
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
   --amb-alpha: 8%;
@@ -636,10 +651,16 @@ h6 {
   line-height: 1.05;
 }
 
+/* 26ch, not 21ch. The 21ch cap existed to stop the H1 running as a banner, but
+   measured at the 72px clamp max it broke this headline into SIX lines with a
+   one-word last line — the exact failure the cap was written to prevent — and
+   pushed the primary CTA to y=826 on a 800px viewport. Wider measure, fewer
+   lines, ask above the fold. */
 h1 {
   font-size: var(--fs-display);
   line-height: 1;
-  max-width: 21ch;
+  max-width: 26ch;
+  text-wrap: balance;
 }
 
 h2 {
@@ -694,12 +715,24 @@ button {
    content is about — per-taxonomy assignment is banned (canon §5). The class
    only sets --amb; the wash below and the PetalPlate consume it.
    -------------------------------------------------------------------------- */
-.amb-1 { --amb: var(--amb-1); }
-.amb-2 { --amb: var(--amb-2); }
-.amb-3 { --amb: var(--amb-3); }
-.amb-4 { --amb: var(--amb-4); }
-.amb-5 { --amb: var(--amb-5); }
-.amb-6 { --amb: var(--amb-6); }
+.amb-1 {
+  --amb: var(--amb-1);
+}
+.amb-2 {
+  --amb: var(--amb-2);
+}
+.amb-3 {
+  --amb: var(--amb-3);
+}
+.amb-4 {
+  --amb: var(--amb-4);
+}
+.amb-5 {
+  --amb: var(--amb-5);
+}
+.amb-6 {
+  --amb: var(--amb-6);
+}
 
 /* The wash: a primary glow breathing up from the bottom-left corner and a
    fainter counter-glow at the opposite corner, each capped at --amb-alpha.
@@ -713,7 +746,11 @@ button {
   background:
     radial-gradient(
       130% 105% at 8% 110%,
-      color-mix(in oklab, var(--amb, var(--amb-1)) var(--amb-alpha), transparent),
+      color-mix(
+        in oklab,
+        var(--amb, var(--amb-1)) var(--amb-alpha),
+        transparent
+      ),
       transparent 58%
     ),
     radial-gradient(
@@ -774,8 +811,10 @@ button {
   align-items: center;
   padding: 7px 13px;
   font-family: var(--font-mono);
-  font-size: var(--fs-data);
-  letter-spacing: 0.06em;
+  /* Role chips carry a 14px minimum (v2.0 §3.4) — body-sm is the compliant
+     step. Other mono stays at --fs-data; this floor is chip-specific. */
+  font-size: var(--fs-body-sm);
+  letter-spacing: 0.04em;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);

@@ -52,7 +52,10 @@ export function TheGap() {
                 tabIndex={i === active ? 0 : -1}
                 className={styles.personaTab}
                 onClick={() => setActive(i)}
-                onMouseEnter={() => setActive(i)}
+                /* onFocus commits deliberately: this is a real tablist with a
+                   roving tabindex, so focus-follows-selection is the WAI-ARIA
+                   automatic-activation pattern. Hover-commit is NOT — a cursor
+                   crossing the index used to change the panel unasked. */
                 onFocus={() => setActive(i)}
                 onKeyDown={(e) => {
                   if (e.key === "ArrowDown" || e.key === "ArrowRight") {

@@ -542,7 +542,21 @@
   .hamburger {
     display: inline-flex;
   }
+  /* The CTA stays. Hiding it behind the hamburger left the only conversion on
+     a 21-viewport mobile page invisible for 18 of them. Logo + CTA + burger
+     fit inside 390px at this scale. */
   .ctaPrimary {
+    padding: 10px 14px;
+    font-size: var(--fs-body-sm);
+  }
+}
+
+@media (max-width: 420px) {
+  .ctaPrimary {
+    padding: 9px 12px;
+  }
+  /* Drop the arrow glyph before dropping the ask. */
+  .ctaPrimary svg {
     display: none;
   }
 }

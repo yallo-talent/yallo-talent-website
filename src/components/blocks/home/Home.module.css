@@ -146,7 +146,10 @@
 
 .heroGrid {
   display: grid;
-  grid-template-columns: 1.02fr 0.98fr;
+  /* Even columns. The instrument gains its presence from internal scale and
+     padding, not from starving the headline — an earlier 0.92/1.08 split left
+     the H1 in a 520px column, which is what forced six lines. */
+  grid-template-columns: 1fr 1fr;
   gap: clamp(28px, 4vw, 56px);
   align-items: center;
   position: relative;
@@ -191,11 +194,16 @@
 }
 
 /* --- The hero instrument: the only lifted element in the system ---------- */
+/* dk-2 with an explicit boundary, not dk: on the dark theme's own ground the
+   panel was measurably invisible — identical background, black-on-black
+   shadow — and the page's one theatrical move vanished for dark-mode
+   visitors. The boundary keeps its silhouette in both themes. */
 .instrument {
-  background: var(--dk);
+  background: var(--dk-2);
   color: var(--dk-txt);
+  border: 1px solid var(--dk-line);
   border-radius: 0 0 0 var(--r);
-  padding: 22px;
+  padding: clamp(24px, 2.3vw, 32px);
   box-shadow: var(--lift);
   position: relative;
   overflow: hidden;
@@ -344,12 +352,25 @@
   overflow: hidden;
 }
 
+/* Width is data, set inline; the live loop drives it, so the growth is a
+   transition rather than a keyframe. Reduced motion collapses the transition
+   via the global kill rule and the loop never starts. */
 .barFill {
   display: block;
   height: 100%;
   background: var(--gold);
   border-radius: 0 0 0 var(--r-micro);
-  animation: bar-grow 1.6s var(--ease-measure) both;
+  transition: width 1.4s var(--ease-measure);
+}
+
+/* A candidate row the live screen has not reached yet. */
+.candidatePending {
+  opacity: 0.45;
+  transition: opacity 0.6s var(--ease);
+}
+
+.candidate {
+  transition: opacity 0.6s var(--ease);
 }
 
 .candidateScore {
@@ -495,27 +516,102 @@
   padding: 0;
 }
 
+/* --- The continuous rail (canon §8, amended 30 Jul) ----------------------- */
+/* One slow loop over a duplicated track. The duplicate is aria-hidden; under
+   reduced motion it is removed from flow and the first set wraps into a
+   static wall, so nothing is lost and nothing moves. */
+.railViewport {
+  overflow: hidden;
+  /* Soft-edge the loop so marks enter and leave a fade, not a hard cut.
+     A mask reads alpha only, so currentColor serves as "fully opaque" and the
+     rule needs no colour value of its own. */
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    currentColor 6%,
+    currentColor 94%,
+    transparent
+  );
+}
+
+.railTrack {
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 4vw, 56px);
+  width: max-content;
+  list-style: none;
+  padding: 6px 0;
+  margin: 0;
+  animation: rail-drift 48s linear infinite;
+}
+
+.railViewport:hover .railTrack {
+  animation-play-state: paused;
+}
+
+@keyframes rail-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Sentence-case mono, deliberately: nine letterspaced-caps words is the
+   hardest possible way to read a full sentence. */
+.railCaption {
+  margin-top: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.02em;
+  color: var(--text-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .railTrack {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    padding-left: var(--pad);
+    padding-right: var(--pad);
+  }
+
+  .railViewport {
+    mask-image: none;
+  }
+
+  .logoDup {
+    display: none;
+  }
+}
+
 /* Each mark sits in a white tile: the pack mixes transparency with opaque
    JPEG, and a printed dossier reproduces client logos on white anyway. */
+/* No tile, ever: canon §8 forbids a mark on a white card. The uniform
+   monochrome treatment (--mark-mono) silhouettes every mark for the ground it
+   sits on, at 72% opacity lifting to full on hover. */
 .logo {
   display: grid;
   place-items: center;
   height: 56px;
-  min-width: 104px;
+  min-width: 88px;
   /* Capped: the pack ranges from square to 14:1, and an uncapped wordmark
      dominates the row and reads as a hierarchy that does not exist. */
   max-width: 190px;
-  padding: 0 16px;
-  background: var(--paper-2);
-  border: 1px solid var(--hairline);
-  border-radius: 0 0 0 var(--r-sm);
+  flex: none;
 }
 
 .logo img {
-  max-height: 30px;
+  max-height: 28px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
+  filter: var(--mark-mono);
+  opacity: 0.72;
+  transition: opacity 0.28s var(--ease);
+}
+
+.logo:hover img,
+.logo:focus-within img {
+  opacity: 1;
 }
 
 /* Consented client, no logo file supplied. Set, never substituted. */
@@ -926,6 +1022,9 @@
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r);
   padding: clamp(22px, 3vw, 32px);
+  /* Fixed floor: every family carries 10-12 roles rendering as two chip rows,
+     and the panel must not change size between selections (v2.0 §3.4). */
+  min-height: 218px;
 }
 
 .roleOut h3 {
@@ -1138,10 +1237,62 @@
   transform: rotate(225deg);
 }
 
+/* Media left, content right — the drawn plate is the model's face. */
 .modelBody {
-  padding: 0 4px 26px;
+  padding: 4px 4px 26px;
   display: grid;
-  gap: 16px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: start;
+}
+
+.modelMedia {
+  position: relative;
+}
+
+.modelPlate {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0 0 0 var(--r);
+  border: 1px solid var(--hairline);
+}
+
+/* The metric callout sits ON the plate, dossier-stamp style — on its own
+   ground chip, so legibility never depends on what the plate drew under it. */
+.modelMetric {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 10px 14px;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+}
+
+.modelMetricValue {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.modelMetricLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+@media (max-width: 700px) {
+  .modelBody {
+    grid-template-columns: 1fr;
+  }
 }
 
 .rightForLabel {
@@ -1381,14 +1532,18 @@
   max-width: 26ch;
 }
 
+/* Excerpts are schema-budgeted at 220 characters, so the card never needs to
+   cut a sentence. The clamp stays only as a 6-line safety net for the legacy
+   `summary` fallback — measured before the rewrite, every card was clipped
+   mid-sentence, one hiding 60% of its copy. */
 .caseSummary {
   margin-top: 12px;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   line-height: 1.6;
   color: var(--text-2);
   display: -webkit-box;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
+  -webkit-line-clamp: 6;
+  line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

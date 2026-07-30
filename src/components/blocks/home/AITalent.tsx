@@ -3,17 +3,18 @@ import styles from "./Home.module.css";
 import { SectionHead } from "./SectionHead";
 
 /**
- * Second and last inverted band on this page — the Two Band Rule is the ceiling.
+ * A light band. This carried the page's second inversion until the two
+ * inversions turned out to be adjacent — WherePlace then AITalent read as one
+ * ~2,800px slab, spending both permitted bands on a single perceived signal.
+ * The second inversion moved to Evidence, which is the actual data surface a
+ * dossier would invert.
  *
  * The Atlas route is unbuilt, so the CTA renders as a flagged non-interactive
  * label rather than a dead link.
  */
 export function AITalent() {
   return (
-    <section
-      className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
-      id="ai-talent"
-    >
+    <section className={`${styles.section} ${styles.g2}`} id="ai-talent">
       <div className={styles.wrap}>
         <SectionHead
           eyebrow={aiCopy.eyebrow}

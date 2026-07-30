@@ -95,7 +95,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         name: "D365 Customer Engagement",
-        scope: "Sales and Service implementations and the integrations around them",
+        scope:
+          "Sales and Service implementations and the integrations around them",
         roles: [
           "D365 CE Functional Consultant",
           "CRM Solution Architect",

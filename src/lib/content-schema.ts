@@ -64,6 +64,18 @@ export const caseStudyFrontmatterSchema = insightFrontmatterSchema.extend({
    */
   outcome: z.string().min(1).optional(),
   metrics: z.array(metricSchema).optional(),
+  /**
+   * The card display line — a faithful compression of the published title,
+   * schema-budgeted so cards never clip or wrap to three lines. The full
+   * `title` stays verbatim and owns the detail page. Sentence case.
+   */
+  cardTitle: z.string().min(1).max(64).optional(),
+  /**
+   * Devendored card excerpt: compression of the study body only, never new
+   * facts. Replaces the vendor-voice `summary` opener on cards; `summary`
+   * remains for metadata description.
+   */
+  excerpt: z.string().min(80).max(220).optional(),
 });
 
 export type InsightFrontmatter = z.infer<typeof insightFrontmatterSchema>;

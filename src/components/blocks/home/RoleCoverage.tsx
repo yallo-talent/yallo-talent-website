@@ -11,8 +11,12 @@ import { SectionHead } from "./SectionHead";
  *
  * Toggle buttons rather than tabs: the output panel is a disclosure of the
  * pressed family, and aria-pressed describes that more honestly than a tablist
- * would. Hover previews, click commits, and the grid is fully keyboard
- * operable through native button focus order.
+ * would. The grid is fully keyboard operable through native button focus order.
+ *
+ * Commit on click only. Hover and focus used to commit too, which meant a
+ * cursor sweep churned the panel through all eight families and a keyboard user
+ * tabbing THROUGH the grid fired eight aria-live announcements they never
+ * asked for. Control belongs to the reader.
  */
 export function RoleCoverage() {
   const [active, setActive] = useState(0);
@@ -37,8 +41,6 @@ export function RoleCoverage() {
               className={styles.roleCard}
               aria-pressed={i === active}
               onClick={() => setActive(i)}
-              onMouseEnter={() => setActive(i)}
-              onFocus={() => setActive(i)}
             >
               <RoleGlyph name={r.icon} />
               <span className={styles.roleName}>{r.name}</span>

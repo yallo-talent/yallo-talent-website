@@ -24,8 +24,11 @@ export function Evidence() {
     )
     .map((s) => ({
       slug: `/case-studies/${s.frontmatter.slug}`,
-      title: s.frontmatter.title,
-      summary: s.frontmatter.summary,
+      // Cards take the budgeted display line and the devendored excerpt where
+      // they exist; the verbatim title and summary still own the detail page
+      // and metadata. Excerpts are compression of the body only.
+      title: s.frontmatter.cardTitle ?? s.frontmatter.title,
+      summary: s.frontmatter.excerpt ?? s.frontmatter.summary,
       client: s.frontmatter.clientPublic
         ? s.frontmatter.client
         : "Undisclosed enterprise",
@@ -44,7 +47,14 @@ export function Evidence() {
     }));
 
   return (
-    <section className={`${styles.section} ${styles.g1}`} id="evidence">
+    // The second inverted band, and the right one for it: a dossier inverts its
+    // evidence appendix. It previously sat on AITalent, directly below
+    // WherePlace, so the two permitted inversions rendered as a single ~2,800px
+    // slab and the signal cost twice what it bought.
+    <section
+      className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
+      id="evidence"
+    >
       <div className={styles.wrap}>
         <SectionHead
           eyebrow={evidenceCopy.eyebrow}
