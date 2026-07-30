@@ -821,6 +821,10 @@ button {
 .role-pill {
   display: inline-flex;
   align-items: center;
+  /* The platform-specific role names are long ("Power Automate / RPA
+     Developer"). As an inline-flex box the label sized to max-content and
+     pushed past a 360px viewport; this lets it shrink and wrap instead. */
+  max-width: 100%;
   padding: 7px 13px;
   font-family: var(--font-mono);
   /* Role chips carry a 14px minimum (v2.0 §3.4) — body-sm is the compliant

@@ -58,7 +58,13 @@ function LogoItems({
           aria-hidden={ariaHidden || undefined}
         >
           {c.logo ? (
-            <LogoImage src={c.logo} width={120} height={30} />
+            /* Eager, deliberately. These marks sit high on the page and the
+               track is a horizontal marquee: a lazily-loaded mark on the
+               duplicated half never enters the viewport by vertical scrolling,
+               so it never loads at all — which the served-markup gate correctly
+               failed on. Eighteen small marks, and the duplicate half reuses
+               the same URLs from cache. */
+            <LogoImage src={c.logo} width={120} height={30} priority />
           ) : (
             <span className={styles.wordmark}>{c.name}</span>
           )}

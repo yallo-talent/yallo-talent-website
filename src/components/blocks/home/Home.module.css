@@ -1307,8 +1307,11 @@
 }
 
 @media (max-width: 700px) {
+  /* minmax(0, 1fr), not 1fr: a bare 1fr is minmax(auto, 1fr), so the SVG plate
+     and the role chips could force the track wider than the viewport — it
+     overflowed the page by 29px at 360. */
   .modelBody {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

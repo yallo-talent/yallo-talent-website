@@ -582,10 +582,34 @@
   }
 }
 
-@media (max-width: 420px) {
-  .ctaPrimary {
-    padding: 9px 12px;
+/* Below 480px the bar carries brand + CTA + hamburger in ~320px of usable
+   width, so every part gives something up rather than one part disappearing.
+   Keeping the CTA at full size overflowed the page by 61px at 360 — the
+   hamburger ended up at x=421. */
+@media (max-width: 480px) {
+  .bar {
+    gap: 10px;
+    padding: 14px 16px;
   }
+
+  .brandFlower {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brandMark {
+    font-size: var(--fs-title);
+  }
+
+  .brandSuffix {
+    letter-spacing: 0.16em;
+    padding-left: 8px;
+  }
+
+  .ctaPrimary {
+    padding: 9px 11px;
+  }
+
   /* Drop the arrow glyph before dropping the ask. */
   .ctaPrimary svg {
     display: none;
