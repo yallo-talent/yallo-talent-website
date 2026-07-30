@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>GTM.01 — end-to-end workflow · Yallo Talent</title>
+<style>
+  /* ── Layer 1: tokens. Mirrors the project's own register so the board reads
+     as part of the same dossier: paper grounds, ink, one gold accent, the
+     quarter-round petal, and a strict serif/sans/mono division by job. Fonts
+     are system stacks — this file must render with no network. ───────────── */
+  :root {
+    --paper: #eae9e4;  --paper-2: #f4f3f0;  --paper-3: #e3e1d9;
+    --ink: #16171a;    --ink-2: #3a3c42;    --ink-3: #5c5e66;
+    --gold: #d4a843;   --gold-deep: #9d7818; --gold-ink: #7b5d13;
+    --gold-wash: #f2e9d2;
+    --rule: #cdcbc3;   --rule-strong: #807e76;
+    --done-mark: #2f7d46;    --done-text: #26643a;
+    --ready-mark: #1d6fa5;   --ready-text: #17557f;
+    --block-mark: #c2410c;   --block-text: #a83a09;
+    --wait-mark: #9d3f7a;    --wait-text: #82305f;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --r: 28px; --r-sm: 12px; --r-xs: 8px;
+    --gutter: clamp(18px, 4vw, 56px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0c0d10;  --paper-2: #151820;  --paper-3: #1f2330;
+      --ink: #f0efec;    --ink-2: #b9bdc6;    --ink-3: #9298a3;
+      --gold-deep: var(--gold); --gold-ink: var(--gold);
+      --gold-wash: #241d0c;
+      --rule: #2e333d;   --rule-strong: #6b7280;
+      --done-mark: #57b478;  --done-text: #7fc796;
+      --ready-mark: #4aa8e8; --ready-text: #6ebcf0;
+      --block-mark: #ff8455; --block-text: #ff9a72;
+      --wait-mark: #cf7fb4;  --wait-text: #dc9ac6;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--sans); font-size: 15px; line-height: 1.55;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 1220px; margin: 0 auto; padding: var(--gutter); }
+
+  /* ── header ─────────────────────────────────────────────────────────── */
+  header { border-bottom: 1px solid var(--rule-strong); padding-bottom: 22px; }
+  .kicker {
+    display: flex; align-items: center; gap: 9px; margin: 0 0 14px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold-ink);
+  }
+  .kicker i { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex: none; }
+  h1 {
+    font-family: var(--serif); font-weight: 500; font-size: clamp(32px, 4.4vw, 54px);
+    line-height: 1.04; letter-spacing: -0.022em; margin: 0 0 12px; max-width: 22ch;
+  }
+  h1 em { font-style: italic; color: var(--gold-deep); }
+  .sub { color: var(--ink-2); max-width: 62ch; margin: 0; }
+
+  /* rollup: a single measured bar, not a ring or a donut */
+  .rollup { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: flex-end; }
+  .bar { flex: 1 1 260px; min-width: 220px; }
+  .bar-track {
+    display: flex; height: 9px; background: var(--paper-3);
+    border: 1px solid var(--rule); overflow: hidden;
+  }
+  .bar-track span { display: block; }
+  .seg-done { background: var(--done-mark); }
+  .seg-ready { background: var(--ready-mark); }
+  .seg-block { background: var(--block-mark); }
+  .bar-key {
+    margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 16px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink-2);
+  }
+  .bar-key b { color: var(--ink); font-weight: 600; }
+
+  /* ── gate strip ─────────────────────────────────────────────────────── */
+  .gates { margin: 30px 0 0; }
+  /* Flex rather than grid so a part-filled last row stretches to fill its line
+     instead of leaving an empty cell that reads as a rendering fault. */
+  .gate-list {
+    list-style: none; margin: 12px 0 0; padding: 0;
+    display: flex; flex-wrap: wrap;
+    background: var(--paper-2); border: 1px solid var(--rule);
+  }
+  .gate-list li {
+    flex: 1 1 184px; padding: 13px 15px;
+    border-left: 1px solid var(--rule); margin-left: -1px;
+  }
+  .gate-name {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--ink-3); display: block; margin-bottom: 5px;
+  }
+  .gate-val { font-family: var(--serif); font-size: 19px; line-height: 1.1; }
+  .gate-val.pass { color: var(--done-text); }
+  .gate-val.fail { color: var(--block-text); }
+  .gate-prov {
+    display: block; margin-top: 5px; font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.04em; color: var(--ink-3);
+  }
+
+  /* ── main grid ──────────────────────────────────────────────────────── */
+  .grid {
+    display: grid; gap: clamp(28px, 4vw, 52px); margin-top: 44px;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  }
+  @media (max-width: 940px) { .grid { grid-template-columns: 1fr; } }
+
+  h2 {
+    font-family: var(--serif); font-weight: 500; font-size: 27px;
+    line-height: 1.12; letter-spacing: -0.018em; margin: 0 0 6px; max-width: 24ch;
+  }
+  .lede { color: var(--ink-2); margin: 0 0 22px; max-width: 56ch; }
+  h3 {
+    font-family: var(--serif); font-weight: 600; font-size: 19px;
+    margin: 0 0 5px; letter-spacing: -0.01em;
+  }
+
+  /* ── the spine: an ordered sequence on a rail, not a grid of tiles ──── */
+  .spine { list-style: none; margin: 0; padding: 0; position: relative; }
+  .spine::before {
+    content: ""; position: absolute; left: 15px; top: 12px; bottom: 12px;
+    width: 1px; background: var(--rule); z-index: 0;
+  }
+  .step {
+    position: relative; z-index: 1; display: grid;
+    grid-template-columns: 32px minmax(0, 1fr); gap: 16px;
+    padding-bottom: 20px;
+  }
+  .step-n {
+    grid-row: 1 / span 2; width: 31px; height: 31px;
+    display: grid; place-items: center; background: var(--paper);
+    border: 1px solid var(--rule-strong); border-radius: 0 0 0 var(--r-xs);
+    font-family: var(--mono); font-size: 12px; font-weight: 600; color: var(--ink-2);
+  }
+  .step[data-state="done"] .step-n {
+    background: var(--done-mark); border-color: var(--done-mark); color: var(--paper-2);
+  }
+  @media (prefers-color-scheme: dark) {
+    .step[data-state="done"] .step-n { color: var(--paper); }
+  }
+  .step-head { display: flex; flex-wrap: wrap; gap: 7px 11px; align-items: baseline; }
+  .step-body { grid-column: 2; margin: 5px 0 0; color: var(--ink-2); max-width: 64ch; }
+  .step-body code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--paper-3); padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* status + owner chips. Every status carries a word, never colour alone. */
+  .chip {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.07em;
+    text-transform: uppercase; padding: 3px 9px; border: 1px solid;
+    border-radius: 0 0 0 var(--r-xs); white-space: nowrap;
+  }
+  .chip.done  { color: var(--done-text);  border-color: var(--done-mark); }
+  .chip.ready { color: var(--ready-text); border-color: var(--ready-mark); }
+  .chip.block { color: var(--block-text); border-color: var(--block-mark); }
+  .chip.wait  { color: var(--wait-text);  border-color: var(--wait-mark); }
+  .owner {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .owner b { color: var(--gold-ink); font-weight: 600; }
+
+  /* ── registers ──────────────────────────────────────────────────────── */
+  .panel {
+    border: 1px solid var(--rule); background: var(--paper-2);
+    border-radius: 0 0 0 var(--r); padding: 22px; margin-bottom: 26px;
+  }
+  .panel.critical { border-color: var(--rule-strong); background: var(--gold-wash); }
+  .panel > h2 { margin-bottom: 4px; }
+  .reg { list-style: none; margin: 16px 0 0; padding: 0; }
+  .reg > li { padding: 14px 0; border-top: 1px solid var(--rule); }
+  .reg > li:first-child { border-top: 0; padding-top: 4px; }
+  .reg p { margin: 4px 0 0; color: var(--ink-2); }
+  .unblocks {
+    display: inline-block; margin-top: 7px; font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.05em; color: var(--gold-ink);
+    border-bottom: 1.5px solid var(--gold-deep); padding-bottom: 1px;
+  }
+  .reg-n {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-3);
+    letter-spacing: 0.06em; margin-right: 8px;
+  }
+
+  footer {
+    margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--rule);
+    color: var(--ink-3);
+  }
+  footer code {
+    font-family: var(--mono); font-size: 12px;
+    background: var(--paper-3); padding: 1px 5px; border-radius: 3px;
+  }
+  a { color: var(--gold-ink); text-decoration: none; border-bottom: 1.5px solid var(--gold-deep); }
+  a:hover { color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--gold-deep); outline-offset: 3px; }
+
+  /* Print restates the light register rather than bleaching to white: a dark-mode
+     reader would otherwise print a near-black page, and the palette has no pure
+     white in it by design. */
+  @media print {
+    :root {
+      --paper: #eae9e4;  --paper-2: #f4f3f0;  --paper-3: #e3e1d9;
+      --ink: #16171a;    --ink-2: #3a3c42;    --ink-3: #5c5e66;
+      --gold-deep: #9d7818; --gold-ink: #7b5d13; --gold-wash: #f2e9d2;
+      --rule: #cdcbc3;   --rule-strong: #807e76;
+      --done-mark: #2f7d46;  --done-text: #26643a;
+      --ready-mark: #1d6fa5; --ready-text: #17557f;
+      --block-mark: #c2410c; --block-text: #a83a09;
+      --wait-mark: #9d3f7a;  --wait-text: #82305f;
+    }
+    .grid { grid-template-columns: 1fr; }
+    .panel, .step { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kicker"><i></i>Project GTM.01 · Yallo Talent · 30 July 2026</p>
+  <h1>Everything on the plate, and <em>whose move it is</em></h1>
+  <p class="sub">
+    The agreed order of work from Chat&nbsp;Relay&nbsp;v2.0, plus three ratified
+    decisions that relay did not schedule, plus what is waiting on the Operator
+    and on Chat. Statuses are measured, not asserted — the gate strip below was
+    re-run this session except where marked.
+  </p>
+
+  <div class="rollup">
+    <div class="bar">
+      <div class="bar-track" role="img" aria-label="Sixteen delivery items: one done, eleven ready to start, four blocked by an earlier step.">
+        <span class="seg-done" style="flex: 1"></span>
+        <span class="seg-ready" style="flex: 11"></span>
+        <span class="seg-block" style="flex: 4"></span>
+      </div>
+      <p class="bar-key">
+        <span><b>1</b> done &amp; verified</span>
+        <span><b>11</b> ready now</span>
+        <span><b>4</b> blocked by sequence</span>
+      </p>
+    </div>
+    <p class="bar-key" style="margin:0">
+      <span><b>8</b> waiting on Operator</span>
+      <span><b>4</b> waiting on Chat</span>
+    </p>
+  </div>
+</header>
+
+<section class="gates">
+  <h2>Gates</h2>
+  <p class="lede">The measured floor. Everything except the last two ran in this session.</p>
+  <ul class="gate-list">
+    <li><span class="gate-name">Banned terminology</span>
+        <span class="gate-val pass">0 / 175 files</span>
+        <span class="gate-prov">re-run · in CI</span></li>
+    <li><span class="gate-name">Contrast, both themes</span>
+        <span class="gate-val pass">32 / 32 pairs</span>
+        <span class="gate-prov">re-run · WCAG 2.2 AA · in CI</span></li>
+    <li><span class="gate-name">TypeScript</span>
+        <span class="gate-val pass">0 errors</span>
+        <span class="gate-prov">re-run · in CI</span></li>
+    <li><span class="gate-name">Lint</span>
+        <span class="gate-val pass">0 errors</span>
+        <span class="gate-prov">re-run · 2 known warnings</span></li>
+    <li><span class="gate-name">Design-system drift</span>
+        <span class="gate-val pass">no drift</span>
+        <span class="gate-prov">re-run · impeccable doctor</span></li>
+    <li><span class="gate-name">Dead internal links</span>
+        <span class="gate-val pass">0 of 75</span>
+        <span class="gate-prov">last session · needs a server</span></li>
+    <li><span class="gate-name">Lighthouse mobile 90+</span>
+        <span class="gate-val fail">not run</span>
+        <span class="gate-prov">blocked · needs the real host</span></li>
+  </ul>
+</section>
+
+<div class="grid">
+
+  <!-- ───────────────────────── the spine ───────────────────────── -->
+  <section>
+    <h2>The order of work</h2>
+    <p class="lede">
+      Chat Relay v2.0 §4, in sequence. Each step names its owner and what holds
+      it up. Steps 8, 10, 11 and 12 are blocked only by the step before them —
+      nothing external.
+    </p>
+
+    <ol class="spine">
+
+      <li class="step" data-state="ready">
+        <span class="step-n">1</span>
+        <span class="step-head">
+          <h3>Merge both branches to <code>main</code></h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Fast-forward is clean — <code>main</code> has not diverged, and the
+          design branch is already an ancestor of the taxonomy branch, so one
+          merge carries both. Then tag <code>post-design-2026-07-30</code>.
+          Holding branches is what created the semantic-drift risk in the first
+          place. <strong>Operator note:</strong> branch protection on
+          <code>main</code> is still unconfirmed (O6).
+        </p>
+      </li>
+
+      <li class="step" data-state="done">
+        <span class="step-n">2</span>
+        <span class="step-head">
+          <h3>Refresh the design-system sidecar</h3>
+          <span class="chip done">Done &amp; verified</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Commit <code>af8cf0a</code>. Regenerated from <code>DESIGN.md</code> by
+          script, not by hand: 13 colours to 36, ramps computed in Oklab,
+          4 fabricated motion tokens removed, 3 components added.
+          <code>impeccable doctor</code> now reports no drift.
+        </p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">3</span>
+        <span class="step-head">
+          <h3>Type-size floor, enforced</h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Nothing renders below 12px anywhere. Two ramp steps break it today —
+          <code>--fs-label</code> at 11px and <code>--fs-data-sm</code> at
+          10.5px — and the 11px label is the eyebrow, the most repeated element
+          on the site. Enforcement goes in a project guard wired to CI and
+          pre-commit, not the Impeccable hook (see conflict D1).
+        </p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">4</span>
+        <span class="step-head">
+          <h3>Copy sweep and a lint rule</h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Four named strings replaced, then the same pattern swept site-wide:
+          sentences that count the items below them, instruct the reader to
+          scroll, or restate the heading. The banned-abstraction list joins
+          <code>check-terminology.mjs</code> so it cannot come back. The buyer's
+          working vocabulary — phase, gate, cutover, hypercare — stays.
+        </p>
+      </li>
+
+      <li class="step" data-state="wait">
+        <span class="step-n">5</span>
+        <span class="step-head">
+          <h3>Ambient colour: build both, recommend one</h3>
+          <span class="chip wait">Build, then Operator decides</span>
+          <span class="owner">Owner <b>Code → Operator</b></span>
+        </span>
+        <p class="step-body">
+          Gold-gradient scheme against multi-hue ambient scheme, shown side by
+          side. Does not merge until you have seen it. Useful precedent: the
+          legacy shells already carry <strong>99 shadow and glow declarations</strong>
+          plumbed for exactly this and currently resolving to
+          <code>transparent</code> — the retired per-sector hue system. That is
+          either the cheapest possible wiring or the thing to delete, and it
+          decides partly on your choice.
+        </p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">6</span>
+        <span class="step-head">
+          <h3>Critique the homepage, then fix what it raises</h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Scores recorded before and after, then <em>typeset</em>,
+          <em>layout</em> and <em>bolder</em> wherever it scores low. This is the
+          step that closes the outstanding report-back item, and the one that
+          produces the validated patterns step 8 depends on.
+        </p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">7</span>
+        <span class="step-head">
+          <h3>Role coverage, accordion, logos</h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          The role data arrived in the relay: 96 platform-specific roles across
+          8 families, replacing lists any agency could publish. Plus a
+          single-open accordion with a drawn media pane per model, and one
+          uniform monochrome logo treatment to end the white boxes.
+        </p>
+      </li>
+
+      <li class="step" data-state="block">
+        <span class="step-n">8</span>
+        <span class="step-head">
+          <h3>Rebuild L1, L2 and service into the light register</h3>
+          <span class="chip block">Blocked by step 6</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          The largest build item: eight sector pages plus function and service
+          templates, moving from one coherent dark surface to light with at most
+          two inverted bands, as the homepage does. Chat's deciding reason is
+          that these are the primary organic entry points, so dark would become
+          the brand's first impression for most traffic. Then critique one L1 and
+          one platform page.
+        </p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">9</span>
+        <span class="step-head">
+          <h3>Build <code>/ai-talent</code></h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Source material is already parked verbatim. Worth pulling earlier than
+          ninth: the nav lists AI talent first and it is a dead entry, so a canon
+          violation is shipping on every page today.
+        </p>
+      </li>
+
+      <li class="step" data-state="block">
+        <span class="step-n">10</span>
+        <span class="step-head">
+          <h3>Responsive pass</h3>
+          <span class="chip block">Blocked by step 8</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Done by hand so far, and the documented breakpoints have drifted:
+          <code>DESIGN.md</code> records three, the code uses ten distinct
+          widths. This pass reconciles them.
+        </p>
+      </li>
+
+      <li class="step" data-state="block">
+        <span class="step-n">11</span>
+        <span class="step-head">
+          <h3>Accessibility and performance audit</h3>
+          <span class="chip block">Part-blocked</span>
+          <span class="owner">Owner <b>Code + Operator</b></span>
+        </span>
+        <p class="step-body">
+          Axe, focus order and landmarks can all run locally now. Lighthouse
+          Mobile 90+ cannot — it needs the real host (O2), and it is a
+          pre-DNS-switch gate.
+        </p>
+      </li>
+
+      <li class="step" data-state="block">
+        <span class="step-n">12</span>
+        <span class="step-head">
+          <h3>Polish</h3>
+          <span class="chip block">Blocked by step 11</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">Last, by design.</p>
+      </li>
+
+      <li class="step" data-state="ready">
+        <span class="step-n">13</span>
+        <span class="step-head">
+          <h3><code>/saudi-arabia</code> market page</h3>
+          <span class="chip ready">Ready</span>
+          <span class="owner">Owner <b>Code</b></span>
+        </span>
+        <p class="step-body">
+          Ahead of the generic regional pages, because an in-country entity is a
+          differentiator no competitor can claim without having one.
+        </p>
+      </li>
+
+    </ol>
+
+    <div class="panel" style="margin-top:34px">
+      <h2>Ratified, but not scheduled</h2>
+      <p class="lede">
+        Three decisions Chat ratified in v2.0 that the 13-step order of work does
+        not cover. These are exactly what falls through the gap between relays.
+      </p>
+      <ol class="reg">
+        <li>
+          <h3><span class="reg-n">G1</span>Fold the amended palette into canon</h3>
+          <p>
+            The three-grade gold and the two-grade functional set are ratified
+            and already in <code>DESIGN.md</code> — but the canon file itself is
+            untracked and unamended, so the AA floor is still a code property
+            rather than a canon property. That was the stated point of the
+            amendment.
+          </p>
+        </li>
+        <li>
+          <h3><span class="reg-n">G2</span>Restore named authorship</h3>
+          <p>
+            Recoverable in full from commit <code>adbf3b3</code>; the sweep that
+            overwrote it was <code>9ce2a0c</code>.
+            <strong>The relay's figures are wrong:</strong> it was
+            <strong>11</strong> articles by Tanzil Ul Ahmed, not thirteen — and
+            <strong>8 were authored by you</strong>, which the relay does not
+            mention. Four by Yallo Interns and two by Yallo Editorial are the
+            only genuine house-byline candidates.
+            <code>PRODUCT.md</code> line 154 records the house-byline policy and
+            needs reversing too. 12 of the 21 insights are live, so this is a
+            real re-attribution, not a theoretical one.
+          </p>
+        </li>
+        <li>
+          <h3><span class="reg-n">G3</span>Park the eight GDPR pieces, hold the redirects</h3>
+          <p>
+            Eight distinct URLs redirecting to one index is a soft-404 pattern,
+            so the 301s wait for Search Console data (O5). Meanwhile the pieces
+            park as unpublished under a distinct category.
+          </p>
+        </li>
+      </ol>
+    </div>
+
+  </section>
+
+  <!-- ───────────────────────── registers ───────────────────────── -->
+  <aside>
+
+    <div class="panel critical">
+      <h2>Waiting on you</h2>
+      <p class="lede">
+        Ordered by what each one unblocks, not by effort. Only items nobody else
+        can do.
+      </p>
+      <ol class="reg">
+        <li>
+          <h3><span class="reg-n">O1</span>Microsoft and Workday module areas</h3>
+          <p>
+            The single highest-value input outstanding. The data holds 12 SAP
+            modules and 11 Oracle against <strong>2 Microsoft and 0 Workday</strong>,
+            so the site is quietest on the platform canon says matters most —
+            Yallo is a Microsoft house. Pages generate only where real data
+            exists, so both currently render non-interactive.
+          </p>
+          <span class="unblocks">Unblocks the two deepest pages on the wedge</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O2</span>The real host, from Raphy</h3>
+          <p>Lighthouse Mobile 90+ is a pre-DNS gate and cannot be measured locally.</p>
+          <span class="unblocks">Unblocks steps 11 and 12, and the launch gate</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O3</span>Choose the ambient colour scheme</h3>
+          <p>
+            After step 5 shows you both. Nothing colour-related merges until you
+            have chosen, and steps 7 and 8 both inherit the answer.
+          </p>
+          <span class="unblocks">Unblocks the merge of steps 5, 7 and 8</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O4</span>Attribution for the client quote</h3>
+          <p>
+            A name, surname initial, title and permission for the real published
+            sentence on the older Majid Al Futtaim page. The homepage slot is
+            built and renders nothing until all four arrive.
+          </p>
+          <span class="unblocks">One-line change · the cheapest credibility upgrade available</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O5</span>Search Console for the eight retired URLs</h3>
+          <p>Needed before their redirects deploy, so G3 stays parked meanwhile.</p>
+          <span class="unblocks">Unblocks G3</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O6</span>Confirm branch protection on <code>main</code></h3>
+          <p>Not verifiable from the repo. Step 1 merges into <code>main</code> either way.</p>
+          <span class="unblocks">De-risks step 1</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O7</span>LinkedIn Talent Insights licence</h3>
+          <p>The Programme Staffing Blueprint needs it. Rate bands live only inside that gated asset, never on a public page.</p>
+          <span class="unblocks">Unblocks the Blueprint, and the second conversion path</span>
+        </li>
+        <li>
+          <h3><span class="reg-n">O8</span>Verify the Alshaya outcome claim</h3>
+          <p>
+            "Accurate and timely financial consolidation" is Hyperion language
+            sitting in a custom-build planning study — almost certainly a
+            copy-paste from the Majid Al Futtaim study. Still live on yallo.co.
+            Flagged and unedited: correcting a client-facing outcome claim is not
+            a code decision.
+          </p>
+          <span class="unblocks">Removes a claim a competitor could screenshot</span>
+        </li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Waiting on Chat</h2>
+      <ol class="reg">
+        <li>
+          <h3><span class="reg-n">C1</span>Rule on ambient hue assignment</h3>
+          <p>
+            v2.0 §3.3 says assign one ambient hue "per section <em>or per
+            taxonomy branch</em>". Per section is safe. <strong>Per taxonomy
+            branch is the retired per-sector hue system returning under a new
+            name</strong> — the same mapping canon deleted, at lower opacity.
+            Recommend per-section only.
+          </p>
+        </li>
+        <li>
+          <h3><span class="reg-n">C2</span>Amend the canon file itself (G1)</h3>
+          <p>The palette amendment is ratified but unwritten where it counts. Chat owns that file.</p>
+        </li>
+        <li>
+          <h3><span class="reg-n">C3</span>Confirm the corrected restore set (G2)</h3>
+          <p>11 Tanzil, 8 Sumeet, 4 Interns, 2 Editorial — not "thirteen by Tanzil". The eight are the Operator's own work, which changes the decision.</p>
+        </li>
+        <li>
+          <h3><span class="reg-n">C4</span>Settle the type-ramp count</h3>
+          <p><code>DESIGN.md</code> prose says 17 steps, the code has 18, the frontmatter documents 13 roles. One canonical number, please.</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="panel">
+      <h2>Where instructions disagree</h2>
+      <p class="lede">Named rather than quietly resolved.</p>
+      <ol class="reg">
+        <li>
+          <h3><span class="reg-n">D1</span>"Add it to the design hook" is not possible</h3>
+          <p>
+            The Impeccable hook is skill-owned and its rules are not
+            project-extensible. The enforceable equivalent — and what will be
+            built — is a project guard in CI and pre-commit, exactly like the
+            existing colour hook. Same outcome, different mechanism.
+          </p>
+        </li>
+        <li>
+          <h3><span class="reg-n">D2</span>Critique an L1 page first, or the homepage first?</h3>
+          <p>
+            The handover said critique a dark L1 before deciding its register.
+            v2.0 overrules that, and <strong>v2.0 is right</strong>: scoring a
+            page that is about to be discarded measures work nobody is keeping.
+            Homepage first, patterns validated once, eight pages rebuilt once.
+          </p>
+        </li>
+        <li>
+          <h3><span class="reg-n">D3</span>Two relay figures do not match the repo</h3>
+          <p>
+            The authorship counts (G2), and the claim that the sidecar carried
+            four duration tokens — it carried four that did not exist in the
+            code at all.
+          </p>
+        </li>
+      </ol>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <p>
+    Source of truth for this view: <code>docs/status/gtm01-workflow.html</code>.
+    Regenerate it whenever a step closes or a relay lands, so it never disagrees
+    with the brief it accompanies. Gate values marked "re-run" were measured in
+    the session that produced this file; the two marked otherwise carry their
+    provenance inline. Nothing here is invented — where a fact was missing it is
+    named as missing.
+  </p>
+</footer>
+
+</div>
+</body>
+</html>
