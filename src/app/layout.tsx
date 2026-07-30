@@ -3,7 +3,7 @@ import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { NavBar } from "@/components/layout/NavBar";
 import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
-import { DEFAULT_THEME, themeInitScript } from "@/config/theme";
+import { AMBIENT_SCHEME, DEFAULT_THEME, themeInitScript } from "@/config/theme";
 import { organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import "./globals.css";
 
@@ -47,6 +47,7 @@ export default function RootLayout({
     <html
       lang="en-GB"
       data-theme={DEFAULT_THEME}
+      data-ambient={AMBIENT_SCHEME}
       className={`${newsreader.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >

@@ -38,6 +38,18 @@ colors:
   category-text: "#82305f"
   category-mark-dark: "#cf7fb4"
   category-text-dark: "#dc9ac6"
+  amb-plum: "#8e4a72"
+  amb-violet: "#5f5694"
+  amb-teal: "#3d7d7d"
+  amb-moss: "#4a7d55"
+  amb-indigo: "#3a5a8a"
+  amb-umber: "#9a6e3e"
+  amb-plum-dark: "#b45c8e"
+  amb-violet-dark: "#7a6fb8"
+  amb-teal-dark: "#4e9a9a"
+  amb-moss-dark: "#5e9a6b"
+  amb-indigo-dark: "#5677b3"
+  amb-umber-dark: "#c08a4e"
 typography:
   display:
     fontFamily: "Newsreader, Georgia, serif"
@@ -53,55 +65,55 @@ typography:
     letterSpacing: "-0.022em"
   title:
     fontFamily: "Newsreader, Georgia, serif"
-    fontSize: "clamp(20px, 2.2vw, 27px)"
+    fontSize: "clamp(23px, 2.4vw, 27px)"
     fontWeight: 550
     lineHeight: 1.15
     letterSpacing: "-0.015em"
   body:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "16.5px"
+    fontSize: "17.5px"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "normal"
   lede:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "18.5px"
+    fontSize: "20px"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "normal"
   label:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "11px"
+    fontSize: "12px"
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: "0.16em"
   numeral:
     fontFamily: "Newsreader, Georgia, serif"
-    fontSize: "clamp(40px, 4.6vw, 62px)"
+    fontSize: "clamp(38px, 4.6vw, 62px)"
     fontWeight: 600
     lineHeight: 1
     letterSpacing: "-0.03em"
   subtitle:
     fontFamily: "Newsreader, Georgia, serif"
-    fontSize: "19px"
+    fontSize: "20px"
     fontWeight: 550
     lineHeight: 1.2
     letterSpacing: "-0.01em"
   card-title:
     fontFamily: "Newsreader, Georgia, serif"
-    fontSize: "17px"
+    fontSize: "17.5px"
     fontWeight: 550
     lineHeight: 1.2
     letterSpacing: "-0.01em"
   body-sm:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "15px"
+    fontSize: "15.5px"
     fontWeight: 500
     lineHeight: 1.55
     letterSpacing: "normal"
   caption:
     fontFamily: "Inter, system-ui, sans-serif"
-    fontSize: "14px"
+    fontSize: "13.5px"
     fontWeight: 400
     lineHeight: 1.6
     letterSpacing: "normal"
@@ -113,7 +125,7 @@ typography:
     letterSpacing: "0.06em"
   data-sm:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
-    fontSize: "10.5px"
+    fontSize: "12px"
     fontWeight: 400
     lineHeight: 1.3
     letterSpacing: "0.06em"
@@ -244,6 +256,25 @@ a clone.
 - **Archive Plum** (`--category-*`): an optional fourth series where three do not suffice. Light
   `#9d3f7a` / `#82305f`; dark `#cf7fb4` / `#dc9ac6`.
 
+### Ambient — atmosphere only
+
+Six desaturated hues that live exclusively in the ambient layer: radial washes on
+bands, PetalPlate gradients, glow at section boundaries. Tonally sibling to the
+saasinator family, tuned per theme. **Never on text, controls, borders, or as a fill
+behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha` —
+8% maximum on light, 14% on dark.
+
+- **Plum** `#8e4a72` / dark `#b45c8e` · **Violet** `#5f5694` / `#7a6fb8` ·
+  **Teal** `#3d7d7d` / `#4e9a9a` · **Moss** `#4a7d55` / `#5e9a6b` ·
+  **Indigo** `#3a5a8a` / `#5677b3` · **Umber** `#9a6e3e` / `#c08a4e` (browner than
+  the brand gold, so the marker stays unmistakable).
+
+**The Rhythm Rule.** A section takes its ambient hue from its *position* in the page
+(`.amb-1`…`.amb-6`), never from what its content is about. Per-taxonomy assignment is
+banned — it is the retired per-sector hue system returning. Two schemes exist behind
+`data-ambient` on `<html>` ("spectrum", the default, and "gold", monochrome); the flip
+is one constant in `src/config/theme.ts`.
+
 ### Neutral
 
 - **Dossier Paper** (`--paper` `#eae9e4`): the default ground. Warm grey-beige, the colour of
@@ -293,7 +324,11 @@ reads. IBM Plex Mono carries only what a dossier would set in monospace. Three f
 division between them is by job, never by taste. `Plus Jakarta Sans` and `DM Mono` are retired.
 
 Every size resolves through an `--fs-*` token in `globals.css` Layer 1. A literal `px`
-font-size in a component is drift: add a step to the ramp or use the nearest one.
+font-size in a component is drift: use the nearest role. **The ramp has exactly the 13
+roles in the frontmatter above — the frontmatter is the single source of truth.** Fixed
+steps run 12 → 13.5 → 15.5 → 17.5 → 20 → 23(min of title), no two adjacent steps closer
+than a 1.125 ratio, and nothing anywhere below the 12px floor
+(`scripts/check-type-scale.mjs`, in CI and pre-commit).
 
 ### Hierarchy
 
@@ -302,10 +337,10 @@ font-size in a component is drift: add a step to the ramp or use the nearest one
   600 in `--gold-deep` marks the one phrase carrying the argument.
 - **Headline** (500, `clamp(32px, 4.4vw, 54px)`, 1.05): section H2, capped at 23ch.
 - **Title** (550, `clamp(20px, 2.2vw, 27px)`, 1.15): card and panel headings.
-- **Lede** (400, 18.5px, 1.6, `--ink-2`, max 52ch): the hero paragraph.
-- **Body** (400, 16.5px, 1.6, `--ink-2`, max 46ch for section ledes, 66ch for article prose).
-- **Label** (400, 11px, 0.16em, uppercase, `--gold-ink`): eyebrows. Always preceded by a 5px
-  gold dot.
+- **Lede** (400, 20px, 1.6, `--ink-2`, max 52ch): the hero paragraph.
+- **Body** (400, 17.5px, 1.6, `--ink-2`, max 46ch for section ledes, 66ch for article prose).
+- **Label** (400, 12px, 0.16em, uppercase, `--gold-ink`): eyebrows. Always preceded by a 5px
+  gold dot. 12px is the hard floor — nothing on the site renders below it.
 - **Data** (500, 12px, 0.06em): measured values, reference numbers, source lines, timestamps,
   and the ghost numerals on step cards.
 

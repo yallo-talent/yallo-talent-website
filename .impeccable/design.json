@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-30T07:38:27.029Z",
+  "generatedAt": "2026-07-30T10:06:26.426Z",
   "title": "Design System: Yallo Talent",
   "extensions": {
     "colorMeta": {
@@ -579,6 +579,198 @@
           "#ffe6f6"
         ],
         "purpose": "The fourth-series label grade tuned for near-black."
+      },
+      "amb-plum": {
+        "role": "tertiary",
+        "displayName": "Ambient Plum",
+        "canonical": "#8e4a72",
+        "tonalRamp": [
+          "#1c0011",
+          "#450430",
+          "#67274e",
+          "#8a476e",
+          "#af6890",
+          "#d48ab4",
+          "#fbaed8",
+          "#ffe6f3"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-violet": {
+        "role": "tertiary",
+        "displayName": "Ambient Violet",
+        "canonical": "#5f5694",
+        "tonalRamp": [
+          "#0d002c",
+          "#261850",
+          "#413772",
+          "#605795",
+          "#8078b9",
+          "#a39bdf",
+          "#c7c0ff",
+          "#edecff"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-teal": {
+        "role": "tertiary",
+        "displayName": "Ambient Teal",
+        "canonical": "#3d7d7d",
+        "tonalRamp": [
+          "#000e0f",
+          "#002c2c",
+          "#004c4d",
+          "#2c6d6d",
+          "#4f8f8f",
+          "#72b2b2",
+          "#96d7d7",
+          "#bbfdfc"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-moss": {
+        "role": "tertiary",
+        "displayName": "Ambient Moss",
+        "canonical": "#4a7d55",
+        "tonalRamp": [
+          "#001003",
+          "#002e10",
+          "#1a4e29",
+          "#3c6e47",
+          "#5d9167",
+          "#7fb489",
+          "#a3d9ad",
+          "#c7ffd1"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-indigo": {
+        "role": "tertiary",
+        "displayName": "Ambient Indigo",
+        "canonical": "#3a5a8a",
+        "tonalRamp": [
+          "#000923",
+          "#05234e",
+          "#234270",
+          "#416292",
+          "#6284b6",
+          "#83a7dc",
+          "#a8cbff",
+          "#e5efff"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-umber": {
+        "role": "tertiary",
+        "displayName": "Ambient Umber",
+        "canonical": "#9a6e3e",
+        "tonalRamp": [
+          "#140800",
+          "#381e00",
+          "#5f3800",
+          "#815726",
+          "#a57848",
+          "#c99b6a",
+          "#efbf8d",
+          "#ffebd6"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-plum-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Plum — dark",
+        "canonical": "#b45c8e",
+        "tonalRamp": [
+          "#1c0010",
+          "#470030",
+          "#6e1c4f",
+          "#933e70",
+          "#b86092",
+          "#de82b5",
+          "#ffabd8",
+          "#ffe7f3"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-violet-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Violet — dark",
+        "canonical": "#7a6fb8",
+        "tonalRamp": [
+          "#0d002c",
+          "#271456",
+          "#423478",
+          "#61559b",
+          "#8176c0",
+          "#a399e6",
+          "#c7c0ff",
+          "#eeecff"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-teal-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Teal — dark",
+        "canonical": "#4e9a9a",
+        "tonalRamp": [
+          "#000e0f",
+          "#002c2c",
+          "#004c4d",
+          "#1c6e6f",
+          "#449191",
+          "#68b4b4",
+          "#8dd9d9",
+          "#b2fffe"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-moss-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Moss — dark",
+        "canonical": "#5e9a6b",
+        "tonalRamp": [
+          "#001003",
+          "#002e10",
+          "#0f4f25",
+          "#357044",
+          "#569264",
+          "#79b685",
+          "#9ddba9",
+          "#c7ffd1"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-indigo-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Indigo — dark",
+        "canonical": "#5677b3",
+        "tonalRamp": [
+          "#000728",
+          "#062055",
+          "#224077",
+          "#40609a",
+          "#6082bf",
+          "#82a5e5",
+          "#accaff",
+          "#e6efff"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
+      },
+      "amb-umber-dark": {
+        "role": "tertiary",
+        "displayName": "Ambient Umber — dark",
+        "canonical": "#c08a4e",
+        "tonalRamp": [
+          "#140800",
+          "#371e00",
+          "#5f3800",
+          "#875411",
+          "#aa7639",
+          "#cf995d",
+          "#f6bd80",
+          "#ffebd6"
+        ],
+        "purpose": "Ambient layer only: washes, PetalPlate gradients, boundary glow at <=8% light / <=14% dark. Never text, controls or borders. Assigned per section rhythm, never per taxonomy."
       }
     },
     "typographyMeta": {

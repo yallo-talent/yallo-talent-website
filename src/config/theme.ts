@@ -40,3 +40,20 @@ export const themeInitScript = `
   document.documentElement.setAttribute('data-theme',t);
 }catch(e){}})();
 `.trim();
+
+/**
+ * Ambient colour scheme — canon §5. A design decision, not a user preference:
+ * no storage, no client script, just an attribute stamped at render time.
+ *
+ * "spectrum": six desaturated hues in the ambient layer (the default).
+ * "gold":     monochrome — ambient stays tonal with the marker.
+ *
+ * THE FLIP: change this constant (or set NEXT_PUBLIC_AMBIENT=gold at build
+ * time). Nothing else moves — every consumer resolves through --amb-N.
+ */
+export type AmbientScheme = "spectrum" | "gold";
+
+const configuredAmbient = process.env.NEXT_PUBLIC_AMBIENT;
+
+export const AMBIENT_SCHEME: AmbientScheme =
+  configuredAmbient === "gold" ? "gold" : "spectrum";

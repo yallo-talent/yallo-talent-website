@@ -11,7 +11,7 @@ import { SectionHead } from "./SectionHead";
 export function AITalent() {
   return (
     <section
-      className={`${styles.section} ${styles.invert} band-invert`}
+      className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
       id="ai-talent"
     >
       <div className={styles.wrap}>

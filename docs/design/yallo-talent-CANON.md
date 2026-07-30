@@ -31,7 +31,7 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 **Microsoft module set (ratified 30 Jul):** Azure Data & AI, Azure Infrastructure, Azure Security, Azure DevOps, D365 Finance & Operations, D365 Customer Engagement, D365 Business Central, D365 Human Resources, Power Platform, Microsoft 365 Copilot — all full desks, at equal or greater depth than Oracle. Data as Relay v2.1 rev 2 §5.
 
-**Workday module set (draft, pending ratification):** HCM, Payroll, Financial Management, Adaptive Planning, Recruiting, Talent Management, Learning, Workforce Planning, Prism Analytics, PSA — built `published: false` until Sumeet ratifies. Data as Relay v2.1 rev 2 §5b.
+**Workday module set (ratified 30 Jul):** HCM, Payroll, Financial Management, Adaptive Planning, Recruiting, Talent Management, Learning, Workforce Planning, Prism Analytics, PSA — full desks, published. Data as Relay v2.1 rev 2 §5b; the legacy outcome figures do not port.
 
 **Six sectors:** retail, finance, manufacturing, government, healthcare, telco.
 
@@ -89,4 +89,4 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 ## 10. Amendment log
 
-30 Jul 2026: three-grade gold and `--ink-3` AA correction · two-grade functional hues · "3 regions" banned in any phrasing · ambient per-section only, per-branch banned · Specialisms+Industries nav merge · merged client rail · logo lockup rule · house authorship · port-and-convert · article descoping · Microsoft modules ratified · Workday modules drafted pending ratification · type floor and 13-role ramp · glass CI ban · register critique test.
+30 Jul 2026: three-grade gold and `--ink-3` AA correction · two-grade functional hues · "3 regions" banned in any phrasing · ambient per-section only, per-branch banned · Specialisms+Industries nav merge · merged client rail · logo lockup rule · house authorship · port-and-convert · article descoping · Microsoft modules ratified · **Workday modules ratified (supersedes the earlier draft status)** · type floor and 13-role ramp · glass CI ban · register critique test.

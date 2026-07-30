@@ -66,6 +66,27 @@
   --fn-category-mark-d: #cf7fb4;
   --fn-category-text-d: #dc9ac6;
 
+  /* --- Ambient palette (canon §5) ----------------------------------------
+     Atmosphere only: section washes, PetalPlate gradients, glow at band
+     boundaries. NEVER text, controls, borders, or a fill behind body copy.
+     Six desaturated hues, tonally sibling to the saasinator family, tuned per
+     theme. Assignment is per-section rhythm only — per-taxonomy-branch is
+     banned (it is the retired per-sector system returning). Consumed at
+     var(--amb-alpha) max: 8% on light, 14% on dark. */
+  --amb-plum-l: #8e4a72;
+  --amb-violet-l: #5f5694;
+  --amb-teal-l: #3d7d7d;
+  --amb-moss-l: #4a7d55;
+  --amb-indigo-l: #3a5a8a;
+  --amb-umber-l: #9a6e3e; /* warm amber — browner than the brand gold */
+
+  --amb-plum-d: #b45c8e;
+  --amb-violet-d: #7a6fb8;
+  --amb-teal-d: #4e9a9a;
+  --amb-moss-d: #5e9a6b;
+  --amb-indigo-d: #5677b3;
+  --amb-umber-d: #c08a4e;
+
   /* --- Non-colour primitives ------------------------------------------- */
   /* The quarter-round petal: three square corners, one radius. Five scales,
      because the same form has to work on a full panel and on a 5px bar. */
@@ -75,31 +96,38 @@
   --r-xs: 8px; /* logo tiles, flags, entity marks */
   --r-micro: 3px; /* progress bars and other hairline-scale fills */
 
-  /* --- Type ramp --------------------------------------------------------
-     Every font-size in the system resolves through one of these. A literal
-     px value in a component is drift: add a step here instead, or use the
-     nearest one. Roles, not a geometric scale — this is a dense editorial
-     page and each step has a distinct job. */
+  /* --- Type ramp: 13 roles, canon §5 -------------------------------------
+     Every font-size in the system resolves through one of these. A literal px
+     value in a component is drift: use the nearest role. Exactly the 13 roles
+     the DESIGN.md frontmatter documents — the frontmatter is the single
+     source of truth and this block mirrors it.
+
+     Constraints (ratified): nothing below 12px; body >=16px (17 preferred);
+     card/list body >=14px; meta >=13px; mono labels 12px at >=0.12em; table
+     figures >=14px tabular. No two adjacent fixed steps closer than a 1.125
+     ratio. Fixed chain: 12 -> 13.5 -> 15.5 -> 17.5 -> 20 -> 23(min)
+     (ratios 1.125 · 1.148 · 1.129 · 1.143 · 1.15). */
   --fs-display: clamp(38px, 5.6vw, 72px); /* the H1, once per page */
   --fs-headline: clamp(32px, 4.4vw, 54px); /* section H2 */
-  --fs-numeral: clamp(40px, 4.6vw, 62px); /* published metric values */
-  --fs-numeral-lg: clamp(48px, 6vw, 84px); /* the single AI-talent figure */
-  --fs-numeral-sm: clamp(30px, 3.4vw, 44px); /* persona statistic values */
-  --fs-title: clamp(20px, 2.2vw, 27px); /* card and panel headings */
-  --fs-subtitle: 19px; /* axis names, persona roles */
-  --fs-lede: 18.5px; /* the hero paragraph */
-  --fs-card-title: 17px; /* role and AI-role names */
-  --fs-body: 16.5px; /* section ledes, body copy */
-  --fs-body-sm: 15px; /* buttons, list terms, quotes */
-  --fs-caption: 14px; /* card copy, metric definitions */
-  --fs-caption-sm: 13px; /* entity roles, pillars */
+  --fs-numeral: clamp(38px, 4.6vw, 62px); /* metric values — shares the display step at min */
+  --fs-title: clamp(23px, 2.4vw, 27px); /* card and panel headings */
+  --fs-subtitle: 20px; /* axis names, persona roles */
+  --fs-lede: 20px; /* the hero paragraph — shares the subtitle step */
+  --fs-card-title: 17.5px; /* role and AI-role names — shares the body step */
+  --fs-body: 17.5px; /* section ledes, body copy (17px preferred: met) */
+  --fs-body-sm: 15.5px; /* buttons, list terms, quotes, table figures */
+  --fs-caption: 13.5px; /* card copy, metric definitions, meta */
   --fs-data: 12px; /* mono: measured values, reference numbers */
   --fs-label: 12px; /* mono: eyebrows, axis labels. 12px is the hard floor */
-  /* Retired: --fs-data-sm was 10.5px, below the floor. Aliased so any missed
-     usage lands on the floor rather than silently breaking. Use --fs-label. */
-  --fs-data-sm: var(--fs-label);
-  --fs-ghost: 82px; /* the ghost numerals bled off step cards */
-  --fs-entity: clamp(22px, 2.4vw, 30px); /* the four-entity strip */
+
+  /* Retired roles, aliased to the nearest surviving step so no usage breaks.
+     Migrate consumers during the rebuild, then delete these. */
+  --fs-data-sm: var(--fs-label); /* was 10.5px, below the floor */
+  --fs-caption-sm: var(--fs-caption); /* was 13px */
+  --fs-numeral-lg: var(--fs-numeral); /* was 48-84px */
+  --fs-numeral-sm: var(--fs-headline); /* was 30-44px */
+  --fs-ghost: var(--fs-display); /* was 82px — decorative bleed numerals */
+  --fs-entity: var(--fs-title); /* was 22-30px */
 
   --pad: clamp(20px, 5vw, 72px);
   --measure-head: 23ch;
@@ -154,6 +182,16 @@
 
   --nav-ground: rgba(234, 233, 228, 0.94);
   --petal-opacity: 0.16;
+
+  /* Ambient layer, light tuning. Atmosphere only — never text or controls.
+     8% is the hard ceiling on light (canon §5). */
+  --amb-alpha: 8%;
+  --amb-1: var(--amb-indigo-l);
+  --amb-2: var(--amb-teal-l);
+  --amb-3: var(--amb-plum-l);
+  --amb-4: var(--amb-moss-l);
+  --amb-5: var(--amb-violet-l);
+  --amb-6: var(--amb-umber-l);
 }
 
 :root[data-theme="dark"] {
@@ -187,6 +225,17 @@
 
   --nav-ground: rgba(12, 13, 16, 0.94);
   --petal-opacity: 0.2;
+
+  /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
+     Gradients on the near-black ground are wanted — this is where the ambient
+     layer earns its keep. */
+  --amb-alpha: 14%;
+  --amb-1: var(--amb-indigo-d);
+  --amb-2: var(--amb-teal-d);
+  --amb-3: var(--amb-plum-d);
+  --amb-4: var(--amb-moss-d);
+  --amb-5: var(--amb-violet-d);
+  --amb-6: var(--amb-umber-d);
 }
 
 /* --------------------------------------------------------------------------
@@ -217,6 +266,45 @@
   --category-mark: var(--fn-category-mark-d);
   --category-text: var(--fn-category-text-d);
   --petal-opacity: 0.2;
+
+  /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
+     Gradients on the near-black ground are wanted — this is where the
+     ambient layer earns its keep. */
+  --amb-alpha: 14%;
+  --amb-1: var(--amb-indigo-d);
+  --amb-2: var(--amb-teal-d);
+  --amb-3: var(--amb-plum-d);
+  --amb-4: var(--amb-moss-d);
+  --amb-5: var(--amb-violet-d);
+  --amb-6: var(--amb-umber-d);
+}
+
+/* --------------------------------------------------------------------------
+   Ambient option switch — data-ambient on <html>, default set in
+   src/config/theme.ts. Two ratified options, flip costs one constant:
+
+     "spectrum" (default): the six desaturated hues above.
+     "gold":    monochrome — every ambient slot resolves to the gold family,
+                so atmosphere stays tonal with the marker.
+
+   Both obey the same alpha ceilings; only the hues change.
+   -------------------------------------------------------------------------- */
+:root[data-ambient="gold"] {
+  --amb-1: var(--gold-deep);
+  --amb-2: var(--gold);
+  --amb-3: var(--gold-ink);
+  --amb-4: var(--gold-deep);
+  --amb-5: var(--gold);
+  --amb-6: var(--gold-ink);
+}
+
+:root[data-ambient="gold"][data-theme="dark"] {
+  --amb-1: var(--gold);
+  --amb-2: var(--gold-deep);
+  --amb-3: var(--gold);
+  --amb-4: var(--gold-deep);
+  --amb-5: var(--gold);
+  --amb-6: var(--gold-deep);
 }
 
 :root[data-theme="dark"] .band-invert {
@@ -241,6 +329,35 @@
   --category-mark: var(--fn-category-mark-l);
   --category-text: var(--fn-category-text-l);
   --petal-opacity: 0.16;
+
+  /* Inverted band on dark shows a light ground — light ambient tuning. */
+  --amb-alpha: 8%;
+  --amb-1: var(--amb-indigo-l);
+  --amb-2: var(--amb-teal-l);
+  --amb-3: var(--amb-plum-l);
+  --amb-4: var(--amb-moss-l);
+  --amb-5: var(--amb-violet-l);
+  --amb-6: var(--amb-umber-l);
+}
+
+/* Gold option inside inverted bands — must outrank the theme band rules above,
+   which it does by source order at equal specificity. */
+:root[data-ambient="gold"] .band-invert {
+  --amb-1: var(--gold);
+  --amb-2: var(--gold-deep);
+  --amb-3: var(--gold);
+  --amb-4: var(--gold-deep);
+  --amb-5: var(--gold);
+  --amb-6: var(--gold-deep);
+}
+
+:root[data-ambient="gold"][data-theme="dark"] .band-invert {
+  --amb-1: var(--gold-deep);
+  --amb-2: var(--gold);
+  --amb-3: var(--gold-ink);
+  --amb-4: var(--gold-deep);
+  --amb-5: var(--gold);
+  --amb-6: var(--gold-ink);
 }
 
 /* --------------------------------------------------------------------------
@@ -570,6 +687,45 @@ button {
 /* ==========================================================================
    Layer 4 — Component classes
    ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Ambient utilities. A section takes one .amb-N class by its POSITION in the
+   page rhythm (1st ambient section .amb-1, 2nd .amb-2 …), never by what its
+   content is about — per-taxonomy assignment is banned (canon §5). The class
+   only sets --amb; the wash below and the PetalPlate consume it.
+   -------------------------------------------------------------------------- */
+.amb-1 { --amb: var(--amb-1); }
+.amb-2 { --amb: var(--amb-2); }
+.amb-3 { --amb: var(--amb-3); }
+.amb-4 { --amb: var(--amb-4); }
+.amb-5 { --amb: var(--amb-5); }
+.amb-6 { --amb: var(--amb-6); }
+
+/* The wash: a primary glow breathing up from the bottom-left corner and a
+   fainter counter-glow at the opposite corner, each capped at --amb-alpha.
+   Needs position:relative on the host. Never behind body copy as a flat fill —
+   this lives on bands and panel edges. */
+.amb-wash::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      130% 105% at 8% 110%,
+      color-mix(in oklab, var(--amb, var(--amb-1)) var(--amb-alpha), transparent),
+      transparent 58%
+    ),
+    radial-gradient(
+      80% 65% at 98% -10%,
+      color-mix(
+        in oklab,
+        var(--amb, var(--amb-1)) calc(var(--amb-alpha) / 2),
+        transparent
+      ),
+      transparent 55%
+    );
+}
 
 /* The most repeated element in the system. Always --accent-label, never
    --accent-line: at 11px it needs 4.5:1, and gold-deep only reaches 3.12:1. */

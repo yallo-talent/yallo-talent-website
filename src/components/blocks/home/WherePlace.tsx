@@ -18,7 +18,7 @@ import { SectionHead } from "./SectionHead";
 export function WherePlace() {
   return (
     <section
-      className={`${styles.section} ${styles.invert} band-invert`}
+      className={`${styles.section} ${styles.invert} band-invert amb-1 amb-wash`}
       id="place"
     >
       <div className={styles.wrap}>

@@ -33,8 +33,14 @@
 /* An inverted band re-declares the semantic layer via .band-invert in
    globals.css, so this only needs the ground and a top rule. */
 .invert {
+  position: relative; /* hosts the ambient wash */
   background: var(--ground);
   border-top: 1px solid var(--hairline);
+}
+
+/* Content above the wash pseudo-element. */
+.invert > * {
+  position: relative;
 }
 
 /* --- The section head: the strongest rhythm in the system ---------------- */
