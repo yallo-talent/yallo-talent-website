@@ -537,7 +537,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 22px 22px 20px;
+  /* More room, for the same reason as the gap above. */
+  padding: 26px 26px 24px;
 }
 
 .tcBadge {
@@ -593,11 +594,16 @@
   margin-bottom: 10px;
 }
 
+/* Cramped is the word the brief used and it was accurate: a 6px gap under
+   chips that step 4 took to 9px/15px padding meant the roles ran together into
+   one grey block, which is the opposite of a list you can scan. 10px matches
+   the chip gap used everywhere else. */
 .tcRoles {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 10px;
+  min-width: 0;
+  margin-bottom: 20px;
   flex: 1;
   align-content: flex-start;
 }

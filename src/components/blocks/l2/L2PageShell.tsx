@@ -164,29 +164,16 @@ function L2Roles({ fn }: { fn: L1ExpertiseCard }) {
   for (const t of fn.tools ?? []) {
     for (const r of t.roles) allRoles.add(r);
   }
-  const roles = Array.from(allRoles);
-  return (
-    <section className={styles.roles}>
-      <div className={styles.rolesInner}>
-        <div className={styles.secLabel}>Roles we deploy</div>
-        <h2 className={styles.rolesH}>
-          Contractor roles Yallo places into {fn.title.toLowerCase()}.
-        </h2>
-        <p className={styles.rolesSub}>
-          Every role below is on an active bench across the Middle East, Europe
-          and India. Send the brief — the specialist is in your inbox in 72
-          hours.
-        </p>
-        <div className={styles.rolesGrid}>
-          {roles.map((r) => (
-            <span key={r} className={styles.rolePill}>
-              {r}
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  /* This section is gone, and it is the "jumble" in the brief.
+     It unioned every role from every tool card further down the page, so the
+     same seventeen names appeared twice: once as a loose wall with nothing to
+     tell you which platform any of them belonged to, and once inside the tool
+     card that answers exactly that. A chip is only informative next to the tool
+     it staffs, so the wall was the same content with the context stripped out.
+     Removing it also takes ~420px off the page and deletes the duplicate the
+     reader had to reconcile.
+     The count is still computed above because the sub-nav uses it. */
+  return null;
 }
 
 /* ============ TOOL / VENDOR CARDS ============ */
@@ -198,9 +185,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
       <div className={styles.toolsInner}>
         <div className={styles.secLabel}>Tools we staff</div>
         <h2 className={styles.toolsH}>
-          {fn.tools.length} tool
-          {fn.tools.length === 1 ? "" : "s"}. Specialist-screened contractor
-          bench for each.
+          The tools we staff, and the bench behind each one.
         </h2>
         <p className={styles.toolsSub}>
           Every card lists the contractor roles Yallo places into that tool.
@@ -487,7 +472,7 @@ function L2Engagement() {
       <div className={styles.engageInner}>
         <div className={styles.secLabel}>How you engage</div>
         <h2 className={styles.engageH}>
-          Four commercial models, one screening standard.
+          One screening standard, whichever commercial model you use.
         </h2>
         <p className={styles.engageSub}>
           Same specialist-screened bench. Four ways to bring them into your
