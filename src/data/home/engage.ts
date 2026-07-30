@@ -16,6 +16,8 @@ export interface EngagementModel {
   lead?: boolean;
   rightFor: string[];
   href: string;
+  /** One callout per model, drawn ONLY from canon §6 metrics or §7 terms. */
+  metric: { value: string; label: string };
 }
 
 export const engagementModels: EngagementModel[] = [
@@ -31,6 +33,7 @@ export const engagementModels: EngagementModel[] = [
       "Time and materials or fixed bid",
     ],
     href: "/contract",
+    metric: { value: "72h", label: "Brief to shortlist" },
   },
   {
     num: "02",
@@ -43,6 +46,7 @@ export const engagementModels: EngagementModel[] = [
       "100-day warranty",
     ],
     href: "/permanent",
+    metric: { value: "100 days", label: "Replacement warranty" },
   },
   {
     num: "03",
@@ -55,6 +59,7 @@ export const engagementModels: EngagementModel[] = [
       "No entity setup",
     ],
     href: "/eor",
+    metric: { value: "2–4 weeks", label: "To onboard, visa and EOR included" },
   },
   {
     num: "04",
@@ -67,6 +72,7 @@ export const engagementModels: EngagementModel[] = [
       "Six to nine months typical",
     ],
     href: "/managed-delivery",
+    metric: { value: "50+", label: "Programmes staffed" },
   },
 ];
 

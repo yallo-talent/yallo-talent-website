@@ -78,4 +78,9 @@ export const logoRail = {
   /** Never describes the commercial arrangement. */
   integratorLabel:
     "The systems integrators delivering them come to us for specialists",
+  /* Canon §8, amended 30 Jul: one continuous rail, the split surviving as data
+     and one caption line — never as two walls. */
+  mergedLabel: "Enterprise programmes staffed for",
+  integratorCaption:
+    "— including the systems integrators who come to us for specialists.",
 } as const;

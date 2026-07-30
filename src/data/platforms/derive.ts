@@ -1,24 +1,29 @@
 import { allL1, type TaxonomyLabel, taxonomyLabels } from "@/data/l1/index";
 import { sectorRegistry } from "@/data/l1/registry";
+import { authoredPlatforms } from "@/data/platforms/authored";
 
 /**
- * Platform coverage, derived from the sector data rather than authored twice.
+ * Platform coverage, from two sources that are never invented:
  *
- * Platform depth at module level is the wedge: the closest competitor treats
- * enterprise platforms as one line item in a profession list. That depth already
- * exists in the sector files as L2Tool entries — real products with the real
- * roles Yallo places into them — it was just only reachable via the sector axis.
- * This re-projects the same data onto the platform axis. Nothing is invented; a
- * platform page can only ever say what a sector page already says.
+ * 1. DERIVED — re-projected from the sector files' L2Tool entries: real
+ *    products with the real roles Yallo places into them. A derived platform
+ *    page can only say what a sector page already says.
+ * 2. AUTHORED — the module sets Sumeet ratified directly (canon §3: Microsoft
+ *    and Workday, Relay v2.1 rev 2 §5/§5b), platform-level desks with scope
+ *    lines. These merge on module name with anything derived, and an authored
+ *    platform always publishes: nothing renders empty where real capability
+ *    exists (his explicit instruction).
  *
- * Consequence, deliberately: a platform with no module data gets no page.
- * `generateStaticParams` is gated on presence, exactly as L2 function pages are,
- * so twenty real pages exist rather than a hundred thin ones.
+ * Consequence, deliberately: a platform with neither source gets no page.
+ * `generateStaticParams` is gated on presence, exactly as L2 function pages
+ * are, so real pages exist rather than thin ones.
  */
 
 export interface PlatformModule {
   /** The product as published — "SAP Customer Experience", not "SAP CX". */
   name: string;
+  /** What Yallo places on it — authored scope line, Talent-speak. */
+  scope?: string;
   /** Contractor roles Yallo places on this product. */
   roles: string[];
   /** Where this module appears, so the reader can reach the detail. */
@@ -101,6 +106,33 @@ function collect(): Map<string, PlatformCoverage> {
           cov.sectors.push({ slug: sector.slug, label: sectorLabel });
         }
       }
+    }
+  }
+
+  // Merge the authored sets. Authored scope and roles lead; derived
+  // appearsIn cross-links attach where the module names match.
+  for (const authored of Object.values(authoredPlatforms)) {
+    let cov = out.get(authored.slug);
+    if (!cov) {
+      cov = {
+        slug: authored.slug,
+        name: authored.name,
+        modules: [],
+        roles: [],
+        sectors: [],
+        moduleCount: 0,
+        roleCount: 0,
+      };
+      out.set(authored.slug, cov);
+    }
+    for (const am of authored.modules) {
+      let mod = cov.modules.find((m) => m.name === am.name);
+      if (!mod) {
+        mod = { name: am.name, roles: [], appearsIn: [] };
+        cov.modules.push(mod);
+      }
+      mod.scope = am.scope;
+      for (const r of am.roles) if (!mod.roles.includes(r)) mod.roles.push(r);
     }
   }
 
