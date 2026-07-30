@@ -1,285 +1,677 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-30T04:14:31.735Z",
+  "generatedAt": "2026-07-30T07:38:27.029Z",
   "title": "Design System: Yallo Talent",
   "extensions": {
     "colorMeta": {
-      "Assessor's Gold": {
+      "gold": {
         "role": "primary",
         "displayName": "Assessor's Gold",
         "canonical": "#d4a843",
         "tonalRamp": [
-          "#261e0c",
-          "#483917",
-          "#6e5723",
-          "#94762f",
-          "#bb943b",
-          "#d4a843",
-          "#e3c685",
-          "#f1e3c3"
+          "#110a00",
+          "#312200",
+          "#553e00",
+          "#7b5c00",
+          "#a47b00",
+          "#ca9e37",
+          "#efc25f",
+          "#ffecc6"
         ],
-        "purpose": "The mark colour. Everything on dark; decorative only on light."
+        "purpose": "The mark colour, lifted from the flower in public/logos/yallo-flower.svg. On dark it does everything at 7.07:1; on light it is decorative only at 1.69:1 and must never carry text or state."
       },
-      "Struck Gold": {
+      "gold-deep": {
         "role": "primary",
         "displayName": "Struck Gold",
         "canonical": "#9d7818",
         "tonalRamp": [
-          "#1c1604",
-          "#352908",
-          "#523e0c",
-          "#6e5411",
-          "#8a6a15",
-          "#9d7818",
-          "#bfa769",
-          "#e0d4b5"
+          "#110a00",
+          "#312200",
+          "#553e00",
+          "#7b5c00",
+          "#a17c1e",
+          "#c69f48",
+          "#ebc46e",
+          "#ffedc6"
         ],
-        "purpose": "Light-theme accent at large size, and every boundary or focus ring."
+        "purpose": "The light-theme accent for anything at large size or acting as a boundary: the italic emphasis inside an H1, oversized numerals, underlines, focus rings. 3.12:1 — clears AA-large and 1.4.11, never small text."
       },
-      "Marker Ink": {
+      "gold-ink": {
         "role": "primary",
         "displayName": "Marker Ink",
         "canonical": "#7b5d13",
         "tonalRamp": [
-          "#161103",
-          "#2a2006",
-          "#40300a",
-          "#56410d",
-          "#6c5211",
-          "#7b5d13",
-          "#a99666",
-          "#d5cbb3"
+          "#110a00",
+          "#312200",
+          "#553e00",
+          "#7a5c11",
+          "#9d7d3a",
+          "#c1a05d",
+          "#e6c581",
+          "#ffecc7"
         ],
-        "purpose": "Light-theme accent for 11px mono eyebrows. Exists to clear 4.5:1."
+        "purpose": "The light-theme accent for anything small. Every 11px mono eyebrow uses this at 4.69:1. The token exists because the prototype set eyebrows in Struck Gold and shipped a real 3.12:1 AA failure."
       },
-      "Dossier Paper": {
+      "gold-wash": {
+        "role": "primary",
+        "displayName": "Gold Wash",
+        "canonical": "#f2e9d2",
+        "tonalRamp": [
+          "#100a00",
+          "#2b2412",
+          "#49412e",
+          "#68614d",
+          "#8a826d",
+          "#ada48f",
+          "#d1c9b2",
+          "#f7eed7"
+        ],
+        "purpose": "The only tinted ground in the system, for the two commitment badges."
+      },
+      "paper": {
         "role": "neutral",
         "displayName": "Dossier Paper",
         "canonical": "#eae9e4",
         "tonalRamp": [
-          "#2a2a29",
-          "#504f4e",
-          "#7a7977",
-          "#a4a3a0",
-          "#cecdc9",
-          "#eae9e4",
-          "#f1f1ed",
-          "#f8f8f6"
+          "#0c0b08",
+          "#262521",
+          "#43423e",
+          "#62615d",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#f0eee9"
         ],
-        "purpose": "Default ground. Uncoated stock, never white."
+        "purpose": "The default ground. Warm grey-beige, the colour of uncoated stock. Pure white appears nowhere in the light theme."
       },
-      "Loose Leaf": {
+      "paper-2": {
         "role": "neutral",
         "displayName": "Loose Leaf",
         "canonical": "#f4f3f0",
         "tonalRamp": [
-          "#2c2c2b",
-          "#535352",
-          "#7f7e7d",
-          "#abaaa8",
-          "#d7d6d3",
-          "#f4f3f0",
-          "#f8f7f5",
-          "#fbfbfa"
+          "#0c0b09",
+          "#262523",
+          "#43423f",
+          "#62615f",
+          "#83827f",
+          "#a6a5a2",
+          "#cac9c6",
+          "#efeeeb"
         ],
-        "purpose": "Second ground, one step lighter."
+        "purpose": "The lighter alternate ground. Adjacent sections step between the three papers so blocks read as separate sheets without borders."
       },
-      "Kraft": {
+      "paper-3": {
         "role": "neutral",
         "displayName": "Kraft",
         "canonical": "#e3e1d9",
         "tonalRamp": [
-          "#292927",
-          "#4d4d4a",
-          "#767571",
-          "#9f9e98",
-          "#c8c6bf",
-          "#e3e1d9",
-          "#edece6",
-          "#f6f5f3"
+          "#0d0b06",
+          "#27251f",
+          "#44423c",
+          "#63615a",
+          "#84827b",
+          "#a7a59d",
+          "#cbc9c1",
+          "#f1efe6"
         ],
-        "purpose": "Third ground, one step darker. Worst-case for contrast maths."
+        "purpose": "The darker alternate ground, and the worst case for every light-theme contrast calculation."
       },
-      "Ink": {
+      "ink": {
         "role": "neutral",
         "displayName": "Ink",
         "canonical": "#16171a",
         "tonalRamp": [
-          "#040405",
-          "#070809",
-          "#0b0c0e",
-          "#0f1012",
-          "#131417",
-          "#16171a",
-          "#68686a",
-          "#b4b5b6"
+          "#0a0b0e",
+          "#242528",
+          "#414245",
+          "#606165",
+          "#818286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef3"
         ],
-        "purpose": "All body copy and headings on light."
+        "purpose": "All body copy and headings on light, at 13.69:1."
       },
-      "Appendix Black": {
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink Two",
+        "canonical": "#3a3c42",
+        "tonalRamp": [
+          "#090b10",
+          "#23252a",
+          "#404248",
+          "#5f6168",
+          "#808289",
+          "#a2a5ac",
+          "#c6c9d0",
+          "#eceef6"
+        ],
+        "purpose": "Section ledes and secondary copy, at 8.42:1."
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink Three",
+        "canonical": "#5c5e66",
+        "tonalRamp": [
+          "#090b11",
+          "#23252c",
+          "#404249",
+          "#5f6169",
+          "#80828a",
+          "#a2a5ad",
+          "#c6c9d2",
+          "#eceef7"
+        ],
+        "purpose": "Captions and meta, at 4.94:1. Raised from the prototype's #63656c, which missed 4.5:1 against Kraft."
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#cdcbc3",
+        "tonalRamp": [
+          "#0d0b06",
+          "#27251f",
+          "#44423b",
+          "#63615a",
+          "#84827b",
+          "#a7a59d",
+          "#cbc9c1",
+          "#f1efe6"
+        ],
+        "purpose": "The decorative divider. Hairline rules do the work borders would do elsewhere."
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Boundary",
+        "canonical": "#807e76",
+        "tonalRamp": [
+          "#0d0b06",
+          "#27251e",
+          "#44423b",
+          "#63615a",
+          "#84827a",
+          "#a7a59d",
+          "#cbc9c0",
+          "#f1efe6"
+        ],
+        "purpose": "The contrast-grade border at 3.11:1, for any control whose only boundary is a rule. Required by 1.4.11."
+      },
+      "dk": {
         "role": "neutral",
         "displayName": "Appendix Black",
         "canonical": "#0c0d10",
         "tonalRamp": [
-          "#020203",
-          "#040405",
-          "#060708",
-          "#08090b",
-          "#0b0b0e",
-          "#0c0d10",
-          "#616264",
-          "#b1b2b3"
+          "#0a0b0e",
+          "#242528",
+          "#414246",
+          "#606165",
+          "#818286",
+          "#a3a5a9",
+          "#c7c9cd",
+          "#edeef3"
         ],
-        "purpose": "Dark-theme ground. Charcoal with a whisper of blue, never navy."
+        "purpose": "The dark-theme ground. Charcoal with a whisper of blue, never navy."
       },
-      "Appendix Text": {
+      "dk-2": {
+        "role": "neutral",
+        "displayName": "Appendix Two",
+        "canonical": "#151820",
+        "tonalRamp": [
+          "#080b12",
+          "#22252d",
+          "#3e424b",
+          "#5d616b",
+          "#7e828d",
+          "#a1a5b0",
+          "#c5c9d4",
+          "#eaeefa"
+        ],
+        "purpose": "The second dark ground, one step up."
+      },
+      "dk-3": {
+        "role": "neutral",
+        "displayName": "Appendix Three",
+        "canonical": "#1f2330",
+        "tonalRamp": [
+          "#070a16",
+          "#202432",
+          "#3d4150",
+          "#5c6170",
+          "#7d8292",
+          "#9fa5b5",
+          "#c3c9da",
+          "#e8eeff"
+        ],
+        "purpose": "The third dark ground, for cards sitting on Appendix Two."
+      },
+      "dk-txt": {
         "role": "neutral",
         "displayName": "Appendix Text",
         "canonical": "#f0efec",
         "tonalRamp": [
-          "#2b2b2a",
-          "#525150",
-          "#7d7c7b",
-          "#a8a7a5",
-          "#d3d2d0",
-          "#f0efec",
-          "#f5f5f3",
-          "#fafaf9"
+          "#0c0b09",
+          "#262523",
+          "#43423f",
+          "#62615f",
+          "#83827f",
+          "#a6a5a2",
+          "#cac9c6",
+          "#efeeeb"
         ],
-        "purpose": "Body copy on dark."
+        "purpose": "Body copy on dark, at 13.62:1."
       },
-      "Kiln Orange": {
+      "dk-txt-2": {
+        "role": "neutral",
+        "displayName": "Appendix Text Two",
+        "canonical": "#b9bdc6",
+        "tonalRamp": [
+          "#090b11",
+          "#22252c",
+          "#3f4249",
+          "#5e6169",
+          "#7f828b",
+          "#a1a5ae",
+          "#c5c9d2",
+          "#eaeef8"
+        ],
+        "purpose": "Secondary copy on dark, at 8.32:1."
+      },
+      "dk-txt-3": {
+        "role": "neutral",
+        "displayName": "Appendix Text Three",
+        "canonical": "#9298a3",
+        "tonalRamp": [
+          "#070b13",
+          "#20252e",
+          "#3d424c",
+          "#5c616c",
+          "#7d838d",
+          "#9fa5b0",
+          "#c3c9d5",
+          "#e8effb"
+        ],
+        "purpose": "Captions and meta on dark, at 5.40:1."
+      },
+      "dk-line": {
+        "role": "neutral",
+        "displayName": "Appendix Hairline",
+        "canonical": "#2e333d",
+        "tonalRamp": [
+          "#070b13",
+          "#20252f",
+          "#3d424d",
+          "#5c616c",
+          "#7d828e",
+          "#9fa5b1",
+          "#c3c9d6",
+          "#e8effc"
+        ],
+        "purpose": "The decorative divider on dark grounds."
+      },
+      "dk-line-strong": {
+        "role": "neutral",
+        "displayName": "Appendix Boundary",
+        "canonical": "#6b7280",
+        "tonalRamp": [
+          "#070b15",
+          "#1f2531",
+          "#3c424f",
+          "#5b616f",
+          "#7b8291",
+          "#9ea5b4",
+          "#c2c9d9",
+          "#e7efff"
+        ],
+        "purpose": "The contrast-grade border on dark, at 3.24:1."
+      },
+      "signal-mark": {
         "role": "secondary",
-        "displayName": "Kiln Orange",
+        "displayName": "Kiln Orange — mark",
         "canonical": "#c2410c",
         "tonalRamp": [
-          "#230c02",
-          "#421604",
-          "#652206",
-          "#882e08",
-          "#ab390b",
-          "#c2410c",
-          "#d78461",
-          "#ebc2b1"
+          "#1c0300",
+          "#461000",
+          "#752100",
+          "#a83400",
+          "#d55325",
+          "#fd784c",
+          "#ffb49c",
+          "#ffe9e2"
         ],
-        "purpose": "Functional: scarcity, criticality, hard to fill."
+        "purpose": "Scarcity, criticality, hard to fill. Graphical grade at 3:1 or better: fills, dots, bars, strokes. Never a label."
       },
-      "Signal Blue": {
+      "signal-text": {
         "role": "secondary",
-        "displayName": "Signal Blue",
+        "displayName": "Kiln Orange — text",
+        "canonical": "#a83a09",
+        "tonalRamp": [
+          "#1b0300",
+          "#451100",
+          "#742300",
+          "#a53704",
+          "#cc5b33",
+          "#f47f57",
+          "#ffb49b",
+          "#ffe9e2"
+        ],
+        "purpose": "The label grade for scarcity, at 4.5:1 or better on light."
+      },
+      "signal-mark-dark": {
+        "role": "secondary",
+        "displayName": "Kiln Orange — mark, dark",
+        "canonical": "#ff8455",
+        "tonalRamp": [
+          "#1b0400",
+          "#441200",
+          "#722500",
+          "#a43900",
+          "#cf5928",
+          "#f77d4e",
+          "#ffb599",
+          "#ffe9e1"
+        ],
+        "purpose": "The scarcity mark grade tuned for near-black."
+      },
+      "signal-text-dark": {
+        "role": "secondary",
+        "displayName": "Kiln Orange — text, dark",
+        "canonical": "#ff9a72",
+        "tonalRamp": [
+          "#1a0400",
+          "#431300",
+          "#712700",
+          "#9d4117",
+          "#c3643d",
+          "#ea875f",
+          "#ffb598",
+          "#ffe9e1"
+        ],
+        "purpose": "The scarcity label grade tuned for near-black."
+      },
+      "info-mark": {
+        "role": "secondary",
+        "displayName": "Signal Blue — mark",
         "canonical": "#1d6fa5",
         "tonalRamp": [
-          "#05141e",
-          "#0a2638",
-          "#0f3a56",
-          "#144e73",
-          "#1a6291",
-          "#1d6fa5",
-          "#6ca1c5",
-          "#b7d1e2"
+          "#000c19",
+          "#002842",
+          "#00466f",
+          "#10679c",
+          "#3c89c1",
+          "#61ade7",
+          "#96d0ff",
+          "#e0f1ff"
         ],
-        "purpose": "Functional: data series, in-region availability, neutral status."
+        "purpose": "Data series, in-region availability, neutral status. Graphical grade only."
       },
-      "Verified Green": {
+      "info-text": {
         "role": "secondary",
-        "displayName": "Verified Green",
+        "displayName": "Signal Blue — text",
+        "canonical": "#17557f",
+        "tonalRamp": [
+          "#000c1a",
+          "#002842",
+          "#00466f",
+          "#2b6691",
+          "#4e88b6",
+          "#70acdb",
+          "#96d0ff",
+          "#e0f1ff"
+        ],
+        "purpose": "The label grade for data series and status, on light."
+      },
+      "info-mark-dark": {
+        "role": "secondary",
+        "displayName": "Signal Blue — mark, dark",
+        "canonical": "#4aa8e8",
+        "tonalRamp": [
+          "#000c19",
+          "#002840",
+          "#00466d",
+          "#00679d",
+          "#268ac8",
+          "#50aeee",
+          "#94d1ff",
+          "#e0f1ff"
+        ],
+        "purpose": "The data-series mark grade tuned for near-black."
+      },
+      "info-text-dark": {
+        "role": "secondary",
+        "displayName": "Signal Blue — text, dark",
+        "canonical": "#6ebcf0",
+        "tonalRamp": [
+          "#000d18",
+          "#00283f",
+          "#00476a",
+          "#0d6897",
+          "#3b8abc",
+          "#60aee1",
+          "#90d2ff",
+          "#dff2ff"
+        ],
+        "purpose": "The data-series label grade tuned for near-black."
+      },
+      "positive-mark": {
+        "role": "secondary",
+        "displayName": "Verified Green — mark",
         "canonical": "#2f7d46",
         "tonalRamp": [
-          "#08170d",
-          "#102b18",
-          "#184124",
-          "#215831",
-          "#296e3e",
-          "#2f7d46",
-          "#78ab87",
-          "#bcd5c4"
+          "#001003",
+          "#002e10",
+          "#005022",
+          "#23733c",
+          "#49955d",
+          "#6db97f",
+          "#91dfa2",
+          "#c6ffd1"
         ],
-        "purpose": "Functional: renewal rate, filled seats, met milestones."
+        "purpose": "Renewal rate, filled seats, met milestones. Graphical grade only."
       },
-      "Archive Plum": {
+      "positive-text": {
+        "role": "secondary",
+        "displayName": "Verified Green — text",
+        "canonical": "#26643a",
+        "tonalRamp": [
+          "#001004",
+          "#002e12",
+          "#0c4f27",
+          "#337045",
+          "#559266",
+          "#78b687",
+          "#9bdbab",
+          "#c6ffd3"
+        ],
+        "purpose": "The label grade for renewal and completion, on light."
+      },
+      "positive-mark-dark": {
+        "role": "secondary",
+        "displayName": "Verified Green — mark, dark",
+        "canonical": "#57b478",
+        "tonalRamp": [
+          "#001004",
+          "#002e14",
+          "#005028",
+          "#00753d",
+          "#38985e",
+          "#5fbc7f",
+          "#84e1a2",
+          "#c5ffd5"
+        ],
+        "purpose": "The renewal mark grade tuned for near-black."
+      },
+      "positive-text-dark": {
+        "role": "secondary",
+        "displayName": "Verified Green — text, dark",
+        "canonical": "#7fc796",
+        "tonalRamp": [
+          "#001004",
+          "#002e15",
+          "#005029",
+          "#297246",
+          "#4d9466",
+          "#70b888",
+          "#94ddab",
+          "#c5ffd6"
+        ],
+        "purpose": "The renewal label grade tuned for near-black."
+      },
+      "category-mark": {
         "role": "tertiary",
-        "displayName": "Archive Plum",
+        "displayName": "Archive Plum — mark",
         "canonical": "#9d3f7a",
         "tonalRamp": [
-          "#1c0b16",
-          "#351529",
-          "#52213f",
-          "#6e2c55",
-          "#8a376b",
-          "#9d3f7a",
-          "#bf82a9",
-          "#e0c2d4"
+          "#1c0011",
+          "#470031",
+          "#711353",
+          "#963974",
+          "#bc5b96",
+          "#e37eba",
+          "#ffaadb",
+          "#ffe6f3"
         ],
-        "purpose": "Functional: optional fourth series only."
+        "purpose": "An optional fourth data series where three do not suffice. Graphical grade only."
+      },
+      "category-text": {
+        "role": "tertiary",
+        "displayName": "Archive Plum — text",
+        "canonical": "#82305f",
+        "tonalRamp": [
+          "#1c0010",
+          "#47002e",
+          "#6e1d4d",
+          "#923f6e",
+          "#b8618f",
+          "#de83b3",
+          "#ffabd6",
+          "#ffe7f2"
+        ],
+        "purpose": "The label grade for the fourth series, on light."
+      },
+      "category-mark-dark": {
+        "role": "tertiary",
+        "displayName": "Archive Plum — mark, dark",
+        "canonical": "#cf7fb4",
+        "tonalRamp": [
+          "#1b0013",
+          "#460035",
+          "#692255",
+          "#8d4376",
+          "#b16498",
+          "#d786bc",
+          "#feaae1",
+          "#ffe6f5"
+        ],
+        "purpose": "The fourth-series mark grade tuned for near-black."
+      },
+      "category-text-dark": {
+        "role": "tertiary",
+        "displayName": "Archive Plum — text, dark",
+        "canonical": "#dc9ac6",
+        "tonalRamp": [
+          "#1b0014",
+          "#410a34",
+          "#622a52",
+          "#854a73",
+          "#a96b95",
+          "#ce8db9",
+          "#f4b1dd",
+          "#ffe6f6"
+        ],
+        "purpose": "The fourth-series label grade tuned for near-black."
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The H1, once per page. Capped 17ch."
+        "purpose": "The H1, once per page. Capped at 21ch so it breaks into four lines and never runs as a banner. One phrase carries italic 600 in Struck Gold."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Section H2. Capped 23ch."
+        "purpose": "Section H2, capped at 23ch."
       },
       "title": {
         "displayName": "Title",
         "purpose": "Card and panel headings."
       },
+      "subtitle": {
+        "displayName": "Subtitle",
+        "purpose": "Axis names and persona roles."
+      },
+      "card-title": {
+        "displayName": "Card Title",
+        "purpose": "Role and AI-role names."
+      },
       "lede": {
         "displayName": "Lede",
-        "purpose": "Hero paragraph. Max 52ch."
+        "purpose": "The hero paragraph, in Ink Two, capped at 52ch."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Everything a reader reads. Max 66ch."
+        "purpose": "Section ledes and body copy, in Ink Two. 46ch for section ledes, 66ch for article prose."
+      },
+      "body-sm": {
+        "displayName": "Body Small",
+        "purpose": "Buttons, list terms and quotes."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Card copy and metric definitions."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Published metric values, in the display serif."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Eyebrows. Uppercase mono, always after a 5px gold dot."
+        "purpose": "Eyebrows: uppercase mono in Marker Ink, always preceded by a 5px gold dot. The most repeated element in the system."
       },
       "data": {
         "displayName": "Data",
-        "purpose": "Measured values, reference numbers, source lines, ghost numerals."
+        "purpose": "Measured values, reference numbers, source lines, timestamps, and the ghost numerals on step cards."
+      },
+      "data-sm": {
+        "displayName": "Data Small",
+        "purpose": "Badges, inline meta and flags."
       }
     },
     "shadows": [
       {
-        "name": "instrument-lift",
+        "name": "lift",
         "value": "0 30px 60px -30px rgba(22, 23, 26, 0.5)",
-        "purpose": "The only shadow in the system. Hero instrument exclusively — it is the one element pretending to be live rather than printed. A second shadow anywhere destroys its meaning."
+        "purpose": "The only shadow in the system, declared as --lift in globals.css Layer 1 and referenced exactly once: the hero instrument, the one element pretending to be live rather than printed. A second shadow anywhere destroys its meaning."
       }
     ],
     "motion": [
       {
-        "name": "ease-considered",
+        "name": "ease",
         "value": "cubic-bezier(0.2, 0.7, 0.2, 1)",
-        "purpose": "Default easing. Button lift, underline wipe, panel swap."
+        "purpose": "The default easing token. Button lift, underline wipe, panel swap, chip state."
       },
       {
         "name": "ease-measure",
         "value": "cubic-bezier(0.22, 0.61, 0.36, 1)",
-        "purpose": "Reveal and count-up easing on data surfaces."
+        "purpose": "Reveal and count-up easing on data surfaces, where the motion should decelerate as if settling on a reading."
       },
       {
-        "name": "dur-quick",
-        "value": "0.35s",
-        "purpose": "Nav underline wipe, chip state."
-      },
-      {
-        "name": "dur-lift",
+        "name": "lift-duration",
         "value": "0.45s",
-        "purpose": "Button translate."
+        "purpose": "The primary button's translateY(-2px). Observed value, not a token — durations are set inline against var(--ease)."
       },
       {
-        "name": "dur-reveal",
-        "value": "0.6s",
-        "purpose": "Card and step reveals, staggered 120ms."
+        "name": "wipe-duration",
+        "value": "0.35s",
+        "purpose": "The nav underline wipe and the secondary button's gap shift. Observed value, not a token."
       },
       {
-        "name": "dur-scan",
+        "name": "state-duration",
+        "value": "0.28s",
+        "purpose": "Card border and ground transitions, the most common state duration in the build. Observed value, not a token."
+      },
+      {
+        "name": "scan-duration",
         "value": "6.5s",
-        "purpose": "Hero instrument sweep. Gated on prefers-reduced-motion."
+        "purpose": "The hero instrument's sweep, the slowest motion in the system. Gated on prefers-reduced-motion, under which it does not run at all."
       }
     ],
     "breakpoints": [
@@ -308,76 +700,100 @@
       "refersTo": "button-primary",
       "description": "The only button on a surface. Gold ground, petal bottom-left, lifts on hover with no shadow.",
       "html": "<a class=\"ds-btn-primary\" href=\"#\">Start a brief →</a>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}.ds-btn-primary:hover{transform:translateY(-2px)}.ds-btn-primary:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;text-decoration:none;padding:14px 24px;border-radius:0 0 0 18px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}.ds-btn-primary:hover{transform:translateY(-2px)}.ds-btn-primary:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Text with a gold underline. No box, no ground — it must never compete with the primary.",
+      "description": "Text with a Struck Gold underline. No box, no ground — it must never compete with the primary.",
       "html": "<a class=\"ds-btn-secondary\" href=\"#\">See how the screen works</a>",
       "css": ".ds-btn-secondary{display:inline-flex;align-items:center;gap:8px;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;color:var(--ink,#16171a);text-decoration:none;border-bottom:1.5px solid var(--gold-deep,#9d7818);padding-bottom:2px;transition:gap .35s cubic-bezier(.2,.7,.2,1)}.ds-btn-secondary:hover{gap:12px}.ds-btn-secondary:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
+    },
+    {
+      "name": "Dark Button",
+      "kind": "button",
+      "refersTo": "button-dark",
+      "description": "Ink ground, Loose Leaf text. Used only where a gold button would be the third gold element in one view.",
+      "html": "<a class=\"ds-btn-dark\" href=\"#\">Request the blueprint</a>",
+      "css": ".ds-btn-dark{display:inline-flex;align-items:center;gap:9px;background:var(--ink,#16171a);color:var(--paper-2,#f4f3f0);font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;text-decoration:none;padding:13px 22px;border-radius:0 0 0 18px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}.ds-btn-dark:hover{transform:translateY(-2px)}.ds-btn-dark:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
     },
     {
       "name": "Eyebrow",
       "kind": "custom",
       "refersTo": "eyebrow",
-      "description": "Section label. Marker Ink at 11px with a 5px gold dot. The most repeated element in the system.",
+      "description": "Section label. Marker Ink at 11px with a 5px gold dot. The most repeated element in the system, and the reason the --gold-ink token exists.",
       "html": "<div class=\"ds-eyebrow\"><i></i>The commitment</div>",
-      "css": ".ds-eyebrow{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-eyebrow i{width:5px;height:5px;background:var(--gold,#d4a843);border-radius:50%;flex:none}"
+      "css": ".ds-eyebrow{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;line-height:1.4;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-eyebrow i{width:5px;height:5px;background:var(--gold,#d4a843);border-radius:50%;flex:none}"
     },
     {
       "name": "Card",
       "kind": "card",
       "refersTo": "card",
-      "description": "Petal at 56px bottom-left, one tonal step from its ground, hairline border. No shadow, ever.",
-      "html": "<div class=\"ds-card\"><h3>Test and quality</h3><p>The under-scoped ones.</p></div>",
-      "css": ".ds-card{background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px;transition:border-color .28s,background .28s}.ds-card:hover{border-color:var(--rule-strong,#807e76);background:var(--paper,#eae9e4)}.ds-card h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:24px;letter-spacing:-.015em;color:var(--ink,#16171a)}.ds-card p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.6;color:var(--ink-2,#3a3c42)}"
+      "description": "Petal at 56px bottom-left, one tonal step from its ground, hairline border. Hover lifts the border and steps the ground; it never adds elevation.",
+      "html": "<div class=\"ds-card\"><h3>Test and quality</h3><p>The seats cut first and missed most.</p></div>",
+      "css": ".ds-card{background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px;transition:border-color .28s cubic-bezier(.2,.7,.2,1),background .28s cubic-bezier(.2,.7,.2,1)}.ds-card:hover{border-color:var(--rule-strong,#807e76);background:var(--paper,#eae9e4)}.ds-card h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:24px;line-height:1.15;letter-spacing:-.015em;color:var(--ink,#16171a)}.ds-card p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--ink-2,#3a3c42)}"
+    },
+    {
+      "name": "Inverted Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "The distinguished member of a pair — the gated Blueprint against the open Atlas. It takes the opposite petal corner (top-right) so the difference reads in silhouette before any label does. The corner flip is not an inverted ground: a page has only two inversions to spend.",
+      "html": "<div class=\"ds-card-inv\"><span class=\"ds-lock\">Gated</span><h3>Programme Staffing Blueprint</h3><p>Role by role, phase by phase.</p></div>",
+      "css": ".ds-card-inv{background:var(--dk-2,#151820);border:1px solid var(--dk-line,#2e333d);border-radius:0 56px 0 0;padding:28px;transition:border-color .28s cubic-bezier(.2,.7,.2,1)}.ds-card-inv:hover{border-color:var(--dk-line-strong,#6b7280)}.ds-lock{display:inline-block;margin-bottom:14px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold,#d4a843)}.ds-card-inv h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:24px;line-height:1.15;letter-spacing:-.015em;color:var(--dk-txt,#f0efec)}.ds-card-inv p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--dk-txt-2,#b9bdc6)}"
     },
     {
       "name": "Chip",
       "kind": "chip",
       "refersTo": "chip",
-      "description": "Non-interactive label. Mono, petal at 12px. Used for role names and 'right for' lists.",
+      "description": "Non-interactive label, mono at 12px, petal at 12px. Used for role names and 'right for' lists. Where a chip is actually a control it takes a Boundary border and a gold left edge when selected — never a gold fill, which would collide with the primary button.",
       "html": "<span class=\"ds-chip\">Enterprise Architect</span>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-2,#3a3c42);background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 12px;padding:7px 13px}"
+      "css": ".ds-chip{display:inline-flex;align-items:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;line-height:1.3;letter-spacing:.06em;color:var(--ink-2,#3a3c42);background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 12px;padding:7px 13px}"
     },
     {
-      "name": "Metric with petal fill",
-      "kind": "custom",
-      "refersTo": "card",
-      "description": "Oversized serif numeral, mono label, definition beneath, and a gold petal whose fill advances across the row of four.",
-      "html": "<div class=\"ds-metric\"><span class=\"ds-petal\"></span><div class=\"ds-metric-n\">80%</div><div class=\"ds-metric-l\">Contracts renewed</div><div class=\"ds-metric-d\">Placed contractors extended at least once.</div></div>",
-      "css": ".ds-metric{position:relative;overflow:hidden;background:var(--paper,#eae9e4);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px}.ds-petal{position:absolute;right:-30px;top:-30px;width:110px;height:110px;background:var(--gold,#d4a843);opacity:.16;border-radius:0 0 0 56px;pointer-events:none}.ds-metric-n{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(44px,5vw,64px);line-height:1;letter-spacing:-.03em;color:var(--ink,#16171a)}.ds-metric-l{margin-top:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-metric-d{margin-top:8px;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.55;color:var(--ink-2,#3a3c42);max-width:30ch}"
-    },
-    {
-      "name": "Step card with ghost numeral",
-      "kind": "custom",
-      "refersTo": "card",
-      "description": "Carried forward from the incumbent build, whose execution was stronger than the prototype's: icon tile, inline hour badge, and an oversized ghost numeral bled off the bottom-right.",
-      "html": "<div class=\"ds-step\" data-n=\"03\"><div class=\"ds-step-ico\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><circle cx=\"11\" cy=\"11\" r=\"6\"/><path d=\"M15.5 15.5L20 20\"/></svg></div><h3>Screen</h3><p>Depth, fit and delivery risk. Never keyword match.</p><span class=\"ds-step-badge\">Hour 8–60</span></div>",
-      "css": ".ds-step{position:relative;overflow:hidden;background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:26px 22px 24px}.ds-step::after{content:attr(data-n);position:absolute;bottom:-14px;right:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:82px;font-weight:500;line-height:1;color:var(--gold,#d4a843);opacity:.13;pointer-events:none}.ds-step-ico{width:44px;height:44px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);border:1px solid var(--rule,#cdcbc3);display:grid;place-items:center;margin-bottom:18px;color:var(--gold-ink,#7b5d13)}.ds-step-ico svg{width:20px;height:20px}.ds-step h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:22px;color:var(--ink,#16171a)}.ds-step p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--ink-2,#3a3c42)}.ds-step-badge{display:inline-block;margin-top:16px;padding:5px 11px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:var(--gold-ink,#7b5d13)}"
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": null,
+      "description": "The border is the control boundary, so it takes the contrast-grade Boundary rather than the decorative hairline. Focus shifts the border to Struck Gold and adds an outline; the ground does not change.",
+      "html": "<label class=\"ds-field\"><span>Programme phase</span><input type=\"text\" placeholder=\"Design gate, cutover, hypercare…\"></label>",
+      "css": ".ds-field{display:block;font-family:Inter,system-ui,sans-serif}.ds-field span{display:block;margin-bottom:7px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-field input{width:100%;background:var(--paper-2,#f4f3f0);color:var(--ink,#16171a);border:1px solid var(--rule-strong,#807e76);border-radius:0 0 0 12px;padding:12px 14px;font-family:inherit;font-size:14px;transition:border-color .28s cubic-bezier(.2,.7,.2,1)}.ds-field input::placeholder{color:var(--ink-3,#5c5e66)}.ds-field input:focus-visible{border-color:var(--gold-deep,#9d7818);outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
     },
     {
       "name": "Navigation",
       "kind": "nav",
       "refersTo": null,
-      "description": "Sticky, paper at 94% with the one permitted blur. Five labels, a gold underline wipe, a quiet Jobs punchout, one button.",
-      "html": "<nav class=\"ds-nav\"><span class=\"ds-wm\">Yallo <em>Talent</em></span><a href=\"#\">Specialisms</a><a href=\"#\">Industries</a><a href=\"#\">How we work</a><a href=\"#\">Evidence</a><a href=\"#\">Intelligence</a><span class=\"ds-nav-r\"><a class=\"ds-jobs\" href=\"#\">Jobs ↗</a><a class=\"ds-btn-primary\" href=\"#\">Start a brief →</a></span></nav>",
-      "css": ".ds-nav{display:flex;align-items:center;gap:23px;padding:14px 24px;background:rgba(234,233,228,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule,#cdcbc3);font-family:Inter,system-ui,sans-serif}.ds-wm{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;color:var(--ink,#16171a)}.ds-wm em{font-style:normal;font-weight:400;color:var(--ink-3,#5c5e66)}.ds-nav>a{position:relative;font-size:14.5px;font-weight:500;color:var(--ink-2,#3a3c42);text-decoration:none;padding-bottom:3px}.ds-nav>a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--gold,#d4a843);transition:right .35s cubic-bezier(.2,.7,.2,1)}.ds-nav>a:hover::after{right:0}.ds-nav-r{margin-left:auto;display:flex;align-items:center;gap:16px}.ds-jobs{font-size:13.5px;color:var(--ink-3,#5c5e66);text-decoration:none}.ds-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;text-decoration:none}"
+      "description": "Sticky, Dossier Paper at 94% with the one permitted backdrop blur — a sticky bar over scrolling content needs it to stay legible. Five outward-facing labels with a gold underline that wipes in left-to-right, one quiet Jobs punchout, one button. No per-item colour, no imagery in panels.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-wm\">Yallo <em>Talent</em></span><a href=\"#\">Specialisms</a><a href=\"#\">Industries</a><a href=\"#\">How we work</a><a href=\"#\">Evidence</a><a href=\"#\">Intelligence</a><span class=\"ds-nav-r\"><a class=\"ds-jobs\" href=\"#\">Jobs ↗</a><a class=\"ds-nav-btn\" href=\"#\">Start a brief →</a></span></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:23px;padding:14px 24px;background:rgba(234,233,228,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule,#cdcbc3);font-family:Inter,system-ui,sans-serif}.ds-wm{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;color:var(--ink,#16171a)}.ds-wm em{font-style:normal;font-weight:400;color:var(--ink-3,#5c5e66)}.ds-nav>a{position:relative;font-size:14.5px;font-weight:500;color:var(--ink-2,#3a3c42);text-decoration:none;padding-bottom:3px}.ds-nav>a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--gold,#d4a843);transition:right .35s cubic-bezier(.2,.7,.2,1)}.ds-nav>a:hover::after{right:0}.ds-nav>a:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}.ds-nav-r{margin-left:auto;display:flex;align-items:center;gap:16px}.ds-jobs{font-size:13.5px;color:var(--ink-3,#5c5e66);text-decoration:none}.ds-nav-btn{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;text-decoration:none}"
+    },
+    {
+      "name": "Metric with petal fill",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Oversized serif numeral, mono label, definition beneath, and a gold petal whose fill advances a quarter, a half, three-quarters, full across the row of four — so the row reads as a sequence rather than four equal facts. Every metric renders a definition and no source line.",
+      "html": "<div class=\"ds-metric\"><span class=\"ds-petal\"></span><div class=\"ds-metric-n\">80%</div><div class=\"ds-metric-l\">Contracts renewed</div><div class=\"ds-metric-d\">Placed contractors extended at least once.</div></div>",
+      "css": ".ds-metric{position:relative;overflow:hidden;background:var(--paper,#eae9e4);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px}.ds-petal{position:absolute;right:-30px;top:-30px;width:110px;height:110px;background:var(--gold,#d4a843);opacity:.16;border-radius:0 0 0 56px;pointer-events:none}.ds-metric-n{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(40px,4.6vw,62px);line-height:1;letter-spacing:-.03em;color:var(--ink,#16171a)}.ds-metric-l{margin-top:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-metric-d{margin-top:8px;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.55;color:var(--ink-2,#3a3c42);max-width:30ch}"
+    },
+    {
+      "name": "Step card with ghost numeral",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Carried forward from the incumbent build, whose execution of this pattern was stronger than the prototype's derivative of it: icon tile, inline hour badge, and an oversized ghost numeral bled off the bottom-right. The glass, orbs and backdrop blur that surrounded it were not carried.",
+      "html": "<div class=\"ds-step\" data-n=\"03\"><div class=\"ds-step-ico\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><circle cx=\"11\" cy=\"11\" r=\"6\"/><path d=\"M15.5 15.5L20 20\"/></svg></div><h3>Screen</h3><p>Depth, fit and delivery risk. Never keyword match.</p><span class=\"ds-step-badge\">Hour 8–60</span></div>",
+      "css": ".ds-step{position:relative;overflow:hidden;background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:26px 22px 24px}.ds-step::after{content:attr(data-n);position:absolute;bottom:-14px;right:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:82px;font-weight:500;line-height:1;color:var(--gold,#d4a843);opacity:.13;pointer-events:none}.ds-step-ico{width:44px;height:44px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);border:1px solid var(--rule,#cdcbc3);display:grid;place-items:center;margin-bottom:18px;color:var(--gold-ink,#7b5d13)}.ds-step-ico svg{width:20px;height:20px}.ds-step h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:22px;line-height:1.2;color:var(--ink,#16171a)}.ds-step p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--ink-2,#3a3c42)}.ds-step-badge{display:inline-block;margin-top:16px;padding:5px 11px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:var(--gold-ink,#7b5d13)}"
     },
     {
       "name": "Scarcity flag (functional colour)",
       "kind": "custom",
       "refersTo": null,
-      "description": "The only sanctioned use of a functional colour: a mark-grade dot plus a text-grade label. Meaning never rests on hue alone.",
+      "description": "The only sanctioned use of a functional colour: a mark-grade dot beside a text-grade label, so meaning never rests on hue alone. Reaching for the mark grade to set the label is the single easiest way to break AA in this system.",
       "html": "<span class=\"ds-flag\"><i></i>Hard to fill in region</span>",
       "css": ".ds-flag{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal-text,#a83a09)}.ds-flag i{width:7px;height:7px;flex:none;border-radius:50%;background:var(--signal-mark,#c2410c)}"
     }
   ],
   "narrative": {
     "northStar": "The Screening Dossier",
-    "overview": "The product Yallo actually delivers is a document: three names, screening notes, and the reasons seventeen other people were rejected. The site is built as that artefact. Paper-stock grounds instead of white. A serif that belongs to prospectuses and annual reports, not to software. Monospace reserved for the things a dossier sets in monospace — reference numbers, timestamps, source lines, measured values. Gold appears the way an assessor's marker appears on a page someone has actually worked through: sparingly, and only where a judgement was made.\n\nThis is chosen against the category, not in ignorance of it. Every benchmarked competitor scores 2 or 3 on visual distinctiveness, and they converge on the same look: photographic hero, rounded cards, blue-to-violet gradient, sans-serif throughout. There is no incumbent to beat here, only a default to refuse. A recruitment site that reads as a printed, annotated document is unclaimed ground, and it happens to be the most honest possible expression of a firm whose entire pitch is we read these people properly before you did.\n\nThe register is confident and quiet. Density is editorial: generous measure, hairline rules doing the work borders would do elsewhere, and long uninterrupted runs of type rather than a grid of equal tiles. The one place the system breaks its own stillness is the hero, where a drawn instrument shows a shortlist mid-assembly — because the claim is speed, and speed has to be visible somewhere.",
+    "overview": "The product Yallo actually delivers is a document: three names, screening notes, and the reasons seventeen other people were rejected. The site is built as that artefact. Paper-stock grounds instead of white. A serif that belongs to prospectuses and annual reports, not to software. Monospace reserved for the things a dossier sets in monospace — reference numbers, timestamps, source lines, measured values. Gold appears the way an assessor's marker appears on a page someone has actually worked through: sparingly, and only where a judgement was made.\n\nThis is chosen against the category, not in ignorance of it. Every benchmarked competitor scores 2 or 3 on visual distinctiveness, and they converge on the same look: photographic hero, rounded cards, blue-to-violet gradient, sans-serif throughout. There is no incumbent to beat here, only a default to refuse. A recruitment site that reads as a printed, annotated document is unclaimed ground, and it happens to be the most honest possible expression of a firm whose entire pitch is we read these people properly before you did.\n\nThe register is confident and quiet. Density is editorial: generous measure, hairline rules doing the work borders would do elsewhere, and long uninterrupted runs of type rather than a grid of equal tiles. The one place the system breaks its own stillness is the hero, where a drawn instrument shows a shortlist mid-assembly — because the claim is speed, and speed has to be visible somewhere. Explicitly rejected: stock photography of any kind, glassmorphism and blurred orbs (the incumbent build's register, now anti-reference), per-sector colour coding, and gradient text.",
     "keyCharacteristics": [
       "Paper grounds, never pure white; ink, never pure black",
       "One accent, gold, on every page — and nothing else decorative",
