@@ -99,6 +99,29 @@ The question as raised: canon §1 said "never a demand market" while `PRODUCT.md
 treated India as one, and the L1 heroes followed `PRODUCT.md`. Code left the copy
 alone and asked rather than picking a side. The "never" line has been rewritten.
 
+## Q7 — A4's sizes and the 1.125 adjacency rule cannot both hold
+
+Both are ratified canon and they conflict directly. A4 enumerates **13px** (mono
+labels), **14px** (meta, footer links) and **15px** (nav, buttons) as required
+sizes. The adjacency rule says no two adjacent fixed steps sit closer than a
+1.125 ratio. But 14/13 = **1.077** and 15.5/14 = **1.107**. There is no ramp that
+satisfies both.
+
+**Resolution taken:** A4 wins, being the later and more specific ratification,
+and the adjacency rule is narrowed to apply **from `--fs-body-sm` (15.5px)
+upward** — the display and heading chain, where its ratios still hold at 1.129,
+1.143, 1.147 and 1.15.
+
+**Why this is defensible rather than convenient:** adjacency exists so a reader
+never meets two heading steps they cannot tell apart. In the small-text band the
+roles are separated by family, case, tracking, weight and colour as well as size
+— mono uppercase tracked at 13px against sans sentence-case at 14px is not a size
+comparison at all. A tight ratio there costs nothing the rule was protecting.
+
+**Correct me if the intent was different** — the alternative is to drop one of
+A4's three sizes (most likely collapsing meta and nav onto a single 15px step),
+which would satisfy adjacency but lose the meta/control distinction.
+
 ## Q6 — The retired per-sector hue system is still one line from returning
 
 Canon §5 bans per-taxonomy-branch ambient assignment. The plumbing is inert but

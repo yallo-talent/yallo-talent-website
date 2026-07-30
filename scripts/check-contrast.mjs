@@ -70,14 +70,14 @@ const LIGHT = {
 };
 
 const DARK = {
-  dk: "#0c0d10",
-  "dk-2": "#151820",
-  "dk-3": "#1f2330",
-  "dk-line": "#2e333d",
-  "dk-line-strong": "#6b7280",
-  "dk-txt": "#f0efec",
-  "dk-txt-2": "#b9bdc6",
-  "dk-txt-3": "#9298a3",
+  dk: "#100f0d",
+  "dk-2": "#191714",
+  "dk-3": "#221f1b",
+  "dk-line": "#2f2b26",
+  "dk-line-strong": "#787167",
+  "dk-txt": "#e8e4dc",
+  "dk-txt-2": "#b4aea3",
+  "dk-txt-3": "#99927f",
   gold: "#d4a843",
   "signal-mark": "#ff8455",
   "signal-text": "#ff9a72",

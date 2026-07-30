@@ -140,7 +140,7 @@
   border: 0;
   color: var(--fg);
   font-family: inherit;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: 500;
   letter-spacing: -0.005em;
   cursor: pointer;
@@ -173,7 +173,7 @@
   padding: 10px 14px;
   color: var(--fg);
   font-family: inherit;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: 500;
   letter-spacing: -0.005em;
   transition: color 0.15s ease;
@@ -214,7 +214,7 @@
 .megaDescription {
   padding: 4px 12px 12px;
   font-family: var(--font-mono);
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -343,7 +343,7 @@
 }
 
 .itemLabel {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.005em;
@@ -367,7 +367,7 @@
 }
 
 .itemDescription {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.4;
 }
@@ -446,7 +446,7 @@
 }
 
 .featuredCopy {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   line-height: 1.55;
   color: var(--fg-muted);
   margin-bottom: 4px;
@@ -488,7 +488,7 @@
   background: var(--accent-mark);
   color: var(--ink);
   font-weight: 700;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -592,9 +592,15 @@
    Keeping the CTA at full size overflowed the page by 61px at 360 — the
    hamburger ended up at x=421. */
 @media (max-width: 480px) {
+  /* The 360px budget, measured rather than guessed. Content box is 360 minus
+     this padding; the brand lockup and the actions row have to fit inside it
+     with the gap. At 16px padding and a --fs-title wordmark that came to 348.6
+     against 328 available, so the page ran to 365. Reclaimed 8px here, 4px on
+     the hamburger and 16px on the wordmark step — the CTA label itself is
+     untouched, because shrinking the ask is the wrong saving. */
   .bar {
     gap: 10px;
-    padding: 14px 16px;
+    padding: 14px 12px;
   }
 
   .brandFlower {
@@ -602,8 +608,16 @@
     height: 28px;
   }
 
+  /* One step down from --fs-title. This is a logotype, so the A4 reading floors
+     do not govern it, and 20px still carries the header. */
   .brandMark {
-    font-size: var(--fs-title);
+    font-size: var(--fs-lede);
+  }
+
+  .hamburger {
+    width: 36px;
+    height: 36px;
+    padding: 9px;
   }
 
   .brandSuffix {
@@ -611,12 +625,22 @@
     padding-left: 8px;
   }
 
+  /* A4 raised this label from 13.5px to 15.5px, which widened the actions row
+     by 7px and pushed the page to 367px at a 360px viewport. The font cannot
+     come back down — A4 sets a 15px floor on buttons — so the padding pays for
+     it. Measured at 360: actions right edge 366.6 before, 359 or less after.
+     Order of sacrifice on a narrow bar is deliberate: glyph, then padding, then
+     the jobs link's own padding. The ask itself never shrinks. */
   .ctaPrimary {
-    padding: 9px 11px;
+    padding: 8px 10px;
   }
 
   /* Drop the arrow glyph before dropping the ask. */
   .ctaPrimary svg {
     display: none;
+  }
+
+  .jobsLink {
+    padding: 8px 6px;
   }
 }

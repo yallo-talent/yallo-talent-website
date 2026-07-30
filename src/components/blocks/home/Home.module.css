@@ -106,7 +106,7 @@
 
 .unbuiltFlag {
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-3);
@@ -184,7 +184,7 @@
 }
 
 .pillars li {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   font-weight: 500;
   padding: 7px 13px;
   background: var(--ground-2);
@@ -281,14 +281,14 @@
 .phaseKey {
   display: block;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.1em;
   color: var(--dk-txt-3);
 }
 
 .phaseName {
   display: block;
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   font-weight: 600;
   color: var(--dk-txt-2);
   margin-top: 5px;
@@ -333,14 +333,14 @@
 }
 
 .candidateName {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--dk-txt);
   font-weight: 500;
 }
 
 .candidateMeta {
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   color: var(--dk-txt-3);
   margin-top: 3px;
 }
@@ -482,7 +482,7 @@
 
 .entityRole {
   display: block;
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--text-3);
   margin-top: 7px;
 }
@@ -941,7 +941,7 @@
   border-radius: 0 0 0 var(--r-sm);
   background: var(--accent-wash);
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.06em;
   color: var(--accent-label);
   position: relative;
@@ -1021,7 +1021,7 @@
 .roleNote {
   display: block;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.04em;
   color: var(--text-3);
   margin-top: 6px;
@@ -1231,7 +1231,7 @@
 .leadFlag {
   margin-left: auto;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink);
@@ -1637,7 +1637,7 @@
   display: inline-block;
   align-self: flex-start;
   font-family: var(--font-mono);
-  font-size: var(--fs-data-sm);
+  font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding: 5px 10px;

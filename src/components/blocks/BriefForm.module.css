@@ -238,7 +238,7 @@
   margin: 0;
   padding: 8px 14px;
   font-family: var(--font-mono);
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   letter-spacing: 0.06em;
   border-radius: 0 0 0 var(--r-xs);
 }
@@ -257,7 +257,7 @@
 
 .error {
   font-family: var(--font-mono);
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   letter-spacing: 0.06em;
   color: var(--accent);
 }
