@@ -98,7 +98,7 @@
 }
 
 .heroTitle {
-  font-size: clamp(38px, 6vw, 80px);
+  font-size: var(--fs-display);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.02;
@@ -112,7 +112,7 @@
 }
 
 .heroLede {
-  font-size: clamp(15px, 1.5vw, 19px);
+  font-size: var(--fs-lede);
   line-height: 1.7;
   color: var(--fg-muted);
   max-width: 60ch;
@@ -217,7 +217,7 @@
 }
 
 .sectionH {
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: var(--fs-headline);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -226,7 +226,7 @@
 }
 
 .sectionLede {
-  font-size: clamp(15px, 1.4vw, 18px);
+  font-size: var(--fs-body);
   line-height: 1.7;
   color: var(--fg-muted);
   max-width: 62ch;
@@ -245,7 +245,7 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 0 0 0 var(--r);
   padding: clamp(40px, 6vw, 72px);
   background: linear-gradient(
     140deg,
@@ -270,7 +270,7 @@
 }
 
 .bottomH {
-  font-size: clamp(28px, 4vw, 44px);
+  font-size: var(--fs-headline);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1.1;

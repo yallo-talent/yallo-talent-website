@@ -69,8 +69,13 @@ export default function AiTalentPage() {
 
           {/* The one statistic, with its source visible — canon §6 requires a
               source on every figure. */}
+          {/* No .panelPetal here. It marks a PANEL, and .personaStat is a bare
+              flex row with a top rule and no ground — so the petal had nothing to
+              bleed off, and because it is positioned at right:-34px on an element
+              flush to the content wrap it pushed the document to 374px at a 360px
+              viewport, the only horizontal overflow left on the site. The same
+              marker is used correctly on the .vow cards below. */}
           <figure className={styles.personaStat}>
-            <span className={styles.panelPetal} aria-hidden="true" />
             <p className={styles.personaStatValue}>{aiCopy.stat.value}</p>
             <p className={styles.personaStatClaim}>{aiCopy.stat.claim}</p>
             <figcaption className={styles.personaStatSource}>

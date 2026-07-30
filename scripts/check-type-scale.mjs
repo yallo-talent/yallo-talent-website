@@ -15,6 +15,9 @@
  *   - literal px font-sizes in components. DESIGN.md holds that every size
  *     resolves through an --fs-* token and a literal is drift, but 119 of them
  *     predate this guard. Pass --strict to fail on these once they are cleared.
+ *     CLEARED 30 Jul 2026 — all 26 remaining literals across the eight shells
+ *     were resolved through the ramp, so CI now runs --strict and a new literal
+ *     font-size fails the build rather than joining a warning list nobody reads.
  *
  * Run: node scripts/check-type-scale.mjs [--strict]
  */
@@ -96,6 +99,25 @@ for (const file of walk("src")) {
     if (clamp && Number.parseFloat(clamp[1]) < FLOOR) {
       errors.push(
         `${file}:${i + 1}  clamp floor ${clamp[1]}px is below the ${FLOOR}px floor  [${selector}]`,
+      );
+    }
+
+    // Canon §5: every font-size resolves through one of the 13 ramp roles, so
+    // anything that is not a var(--fs-*) is drift regardless of its shape.
+    //
+    // This catch-all exists because the two checks above are both anchored
+    // patterns and BOTH missed the real drift. `/font-size:\s*([0-9.]+)px/`
+    // needs a digit straight after the colon, so it never saw a clamp() at all;
+    // the clamp check above only ever tested the floor. Twenty-six literal
+    // clamp() font-sizes across eight shells therefore sat in this repo while
+    // this guard reported "Type scale clean" — including a page H1 and eleven
+    // section headings. Matching on the absence of a token instead of on the
+    // presence of a known-bad shape is the only formulation that cannot be
+    // outflanked by a value written a new way.
+    const decl = line.match(/font-size:\s*([^;]+);/);
+    if (decl && file !== TOKENS && !decl[1].includes("var(--fs-")) {
+      warnings.push(
+        `${file}:${i + 1}  font-size "${decl[1].trim()}" does not resolve through the ramp  [${selector}]`,
       );
     }
   }

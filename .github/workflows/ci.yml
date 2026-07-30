@@ -74,6 +74,13 @@ jobs:
       - name: Reduced motion (Framer + CSS, with a motion-allowed control)
         run: PORT=3100 pnpm check:motion
 
+      # SC 1.4.10 Reflow at the 360px floor, every route, both registers.
+      # capture-home.mjs asserted this for the homepage only — 1 of ~20 routes —
+      # and a decorative petal at right:-34px pushed /ai-talent to 374px in both
+      # themes with nothing in CI able to see it.
+      - name: Reflow (360px, every route, both registers)
+        run: PORT=3100 pnpm check:reflow
+
       - name: Upload captures on failure
         if: failure()
         uses: actions/upload-artifact@v4

@@ -49,7 +49,7 @@
   position: relative;
   isolation: isolate;
   padding: clamp(40px, 5vw, 64px);
-  border-radius: 28px;
+  border-radius: 0 0 0 var(--r);
   overflow: hidden;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
@@ -108,7 +108,7 @@
 }
 
 .h {
-  font-size: clamp(30px, 4.4vw, 48px);
+  font-size: var(--fs-headline);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1.05;

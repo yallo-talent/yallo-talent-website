@@ -673,7 +673,20 @@ function L2RelatedFunctions({
 
 /* ============ INSIGHTS (horizontal scrolling) ============ */
 function L2Insights({ sector }: { sector: L1PageData }) {
-  if (!sector.insights || sector.insights.length === 0) return null;
+  /**
+   * Gated on PUBLISHED insights, not on the array being non-empty — the same
+   * correction already made in L1PageShell.
+   *
+   * Canon §9 descopes the insight family entirely and every legacy piece is
+   * `published: false`. The per-post branch below degrades an unpublished card
+   * to non-interactive text, which meant this section closed every L2 with five
+   * cards that look openable and go nowhere. An unbuilt destination renders
+   * nothing; it does not render a card.
+   */
+  const published = (sector.insights ?? []).filter(
+    (p) => p.published !== false,
+  );
+  if (published.length === 0) return null;
   return (
     <section className={styles.insights}>
       <div className={styles.insightsHead}>
@@ -691,7 +704,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
-          {sector.insights.map((post, _i) => {
+          {published.map((post, _i) => {
             const inner = (
               <>
                 <PetalPlate

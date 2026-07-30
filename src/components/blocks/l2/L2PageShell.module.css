@@ -77,6 +77,15 @@
   pointer-events: none;
 }
 
+/* Graph paper, and deliberate. The generated-UI tell this resembles is a
+   decorative blueprint grid used as generic "tech" texture; canon §5's North
+   Star is the opposite claim — "The Screening Dossier", the site AS the artefact
+   Yallo delivers — which makes a measurement grid the one background texture
+   that is actually load-bearing here. It is also restrained to the point of
+   near-invisibility: hairlines at --wa03 (3% of text colour), a 44px cell, and a
+   radial mask that reaches full transparency by 70%, so it reads as paper tooth
+   behind the first viewport rather than as a grid. An earlier version WAS a
+   defect — opaque and crossing the H1 — and that is what was fixed, not this. */
 .heroGrid {
   position: absolute;
   inset: 0;
@@ -165,7 +174,7 @@
 }
 
 .heroTitle {
-  font-size: clamp(28px, 3.6vw, 48px);
+  font-size: var(--fs-display);
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.08;
@@ -266,7 +275,7 @@
 }
 
 .overviewH {
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -372,7 +381,7 @@
 }
 
 .rolesH {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -443,7 +452,7 @@
 }
 
 .toolsH {
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -548,7 +557,7 @@
   align-self: flex-start;
   background: color-mix(in oklab, var(--ground) 55%, transparent);
   border: 1px solid var(--card-hue-35, var(--wa15));
-  border-radius: 6px;
+  border-radius: 0 0 0 var(--r-xs);
   margin-bottom: 16px;
 }
 
@@ -696,7 +705,11 @@
     color-mix(in oklab, var(--ground-2) 96%, transparent) 55%
   );
   border: 1px solid var(--sector-accent-35);
-  border-left: 3px solid var(--sector-accent);
+  /* 1px, not a 3px accent tab. Canon §5 makes depth flat tonal layering plus
+     hairlines, and a thick coloured edge on one side of a card is the single
+     most recognisable generated-UI tell. Same correction as .introStatCard on
+     the L1, kept identical so the two shells agree. */
+  border-left: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   box-shadow: inset 0 1px 0 var(--wa08);
 }
@@ -868,7 +881,7 @@
 }
 
 .engageH {
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -877,7 +890,7 @@
 }
 
 .engageSub {
-  font-size: clamp(14px, 1.2vw, 16px);
+  font-size: var(--fs-body);
   color: var(--fg-muted);
   line-height: 1.55;
   margin: 0 0 28px;
@@ -1079,7 +1092,7 @@
 }
 
 .bottomH {
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -1156,7 +1169,7 @@
 }
 
 .relatedH {
-  font-size: clamp(18px, 2vw, 22px);
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--fg);
@@ -1258,7 +1271,7 @@
 }
 
 .insightsH {
-  font-size: clamp(18px, 2vw, 24px);
+  font-size: var(--fs-title);
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.25;

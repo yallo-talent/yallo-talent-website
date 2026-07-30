@@ -26,7 +26,7 @@
 }
 
 .h2 {
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.1;

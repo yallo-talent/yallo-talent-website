@@ -101,6 +101,15 @@
   pointer-events: none;
 }
 
+/* Graph paper, and deliberate. The generated-UI tell this resembles is a
+   decorative blueprint grid used as generic "tech" texture; canon §5's North
+   Star is the opposite claim — "The Screening Dossier", the site AS the artefact
+   Yallo delivers — which makes a measurement grid the one background texture
+   that is actually load-bearing here. It is also restrained to the point of
+   near-invisibility: hairlines at --wa03 (3% of text colour), a 44px cell, and a
+   radial mask that reaches full transparency by 70%, so it reads as paper tooth
+   behind the first viewport rather than as a grid. An earlier version WAS a
+   defect — opaque and crossing the H1 — and that is what was fixed, not this. */
 .heroGrid {
   position: absolute;
   inset: 0;

@@ -354,7 +354,13 @@
 
 /* Width is data, set inline; the live loop drives it, so the growth is a
    transition rather than a keyframe. Reduced motion collapses the transition
-   via the global kill rule and the loop never starts. */
+   via the global kill rule and the loop never starts.
+   Deliberately `width` and not `transform: scaleX()`, against the usual advice:
+   the bar is an empty leaf inside a fixed-size track, so nothing reflows beyond
+   its own box and there is no CLS — while scaleX would squash the quarter-round
+   --r-micro corner horizontally, distorting the one structural signature canon
+   §5 puts on every filled shape. Correctness of the mark beats a saved layout
+   pass on a single 4px bar. */
 .barFill {
   display: block;
   height: 100%;
