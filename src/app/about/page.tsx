@@ -114,8 +114,8 @@ export default function AboutPage() {
             </h2>
             <p className={styles.sectionLede}>
               Contract, Permanent, Employer of Record and Managed Delivery. Same
-              architect-led screening across all four — matched to how you want
-              to hold the risk.
+              architect-led screening across all four. What changes is who
+              carries the contract, the visa and the notice period.
             </p>
             <div className={styles.cardGrid2}>
               <Link href="/contract" className={styles.card}>
@@ -170,11 +170,11 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* JOURNEY */}
+      {/* HOW WE GOT HERE */}
       <section className={`${styles.section} ${styles.sectionAlt}`}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>Our journey</span>
+            <span className={styles.sectionEyebrow}>How we got here</span>
             <h2 className={styles.sectionH}>
               Built by operators, not recruiters.
             </h2>

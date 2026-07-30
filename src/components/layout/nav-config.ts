@@ -307,7 +307,7 @@ export const primaryNav: NavGroup[] = [
           {
             label: "AI Talent Atlas",
             href: "/ai-talent",
-            description: "AI role landscape and comp windows",
+            description: "AI roles, scarcity and comp windows",
             icon: "dataAi",
             published: false,
           },

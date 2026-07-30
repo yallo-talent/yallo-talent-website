@@ -69,7 +69,7 @@ export const roleFamilies: RoleFamily[] = [
   {
     icon: "data",
     name: "Data specialists",
-    note: "Pipeline to insight",
+    note: "Migration through to reporting",
     roles: [
       "Data Engineer",
       "Data Scientist",
@@ -83,7 +83,7 @@ export const roleFamilies: RoleFamily[] = [
   {
     icon: "cloud",
     name: "Cloud and platform",
-    note: "Run and reliability",
+    note: "Runs after go-live",
     roles: [
       "Cloud Engineer",
       "Site Reliability Engineer",
@@ -110,7 +110,7 @@ export const roleFamilies: RoleFamily[] = [
   {
     icon: "biz",
     name: "Business and functional",
-    note: "Where the process lives",
+    note: "Who runs it",
     roles: [
       "Programme Manager",
       "Project Manager",
@@ -124,7 +124,7 @@ export const roleFamilies: RoleFamily[] = [
   {
     icon: "prod",
     name: "Product and agile",
-    note: "Delivery cadence",
+    note: "Release and hypercare",
     roles: [
       "Product Owner",
       "Product Manager",

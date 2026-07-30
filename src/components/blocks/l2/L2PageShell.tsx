@@ -515,7 +515,7 @@ function L2Engagement() {
       <div className={styles.engageInner}>
         <div className={styles.secLabel}>How you engage</div>
         <h2 className={styles.engageH}>
-          Four commercial models — pick how you want to hold the risk.
+          Four commercial models, one screening standard.
         </h2>
         <p className={styles.engageSub}>
           Same architect-screened bench. Four ways to bring them into your

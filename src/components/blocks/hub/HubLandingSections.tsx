@@ -58,7 +58,7 @@ const whatWeDeliverCards: {
     icon: "spark",
     eyebrow: "Multi-market flexibility",
     title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
-    copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models let you pick how you hold the risk.",
+    copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
       "Active bench across 3 markets",
       "Contract · EOR · Perm · Managed",
@@ -146,7 +146,7 @@ const howWeWorkSteps: {
   {
     n: "04",
     title: "Deploy the model that fits",
-    copy: "Contract, EOR, Permanent or Managed Delivery — matched to how you need to hold the risk.",
+    copy: "Contract, EOR, Permanent or Managed Delivery — matched to who needs to carry the contract and the visa.",
     hue: "violet",
   },
 ];

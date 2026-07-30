@@ -87,6 +87,68 @@ const GCC_RESOLUTIONS = [
 ];
 
 /**
+ * Banned abstractions, ratified in Chat Relay v2.0 §3.2. These are banned
+ * "wherever they appear as filler" — which is why every one of them needs the
+ * occurrence-by-occurrence method below rather than a blind replace.
+ *
+ * SCOPE: src/ only, ruled in Relay v2.2 §2. content/ bodies are ported verbatim
+ * and the whole legacy insight family is out of scope for this build.
+ *
+ * NOT banned, and deliberately absent from this list: phase, gate, go-live,
+ * cutover, mobilisation, hypercare, brief, shortlist. That is the buyer's own
+ * working vocabulary — a programme director says "we are at the design gate"
+ * every week, and removing it would make the site sound like an outsider.
+ *
+ * "shape" as a verb is banned by the relay but is not mechanically detectable
+ * without false positives ("team shape", "the shape of the programme"), so it is
+ * left to review rather than guessed at here.
+ */
+const ABSTRACTIONS = [
+  "hold the risk",
+  "pipeline to insight",
+  "delivery cadence",
+  "where the process lives",
+  "run and reliability",
+  "seamless",
+  "robust",
+  "unlock",
+  "leverage",
+  "journey",
+  "landscape",
+  "tailored",
+  "best-in-class",
+  "world-class",
+  "cutting-edge",
+  "empower",
+  "streamline",
+  "holistic",
+  "ecosystem",
+];
+
+/**
+ * Occurrences where a banned abstraction is load-bearing rather than filler.
+ * This is the same problem as "GCC", and Relay v2.2 §1 ratified this
+ * occurrence-by-occurrence method as the standing pattern for every banned-terms
+ * sweep: a mechanical sweep here would rename a Salesforce product and rewrite
+ * SAP's own vocabulary.
+ *
+ * Each entry needs a reason. An entry without one is drift.
+ */
+const ABSTRACTION_ALLOWED = [
+  ["Journey Builder", "Salesforce Marketing Cloud product name — not ours to rename"],
+  ["Digital Journey Consultant", "a real role name Yallo places"],
+  ["SAP landscape", "SAP's own word for a system environment"],
+  ["SAP landscapes", "SAP's own word for a system environment"],
+  ["shopper journey", "standard retail CX vocabulary, and the buyer's own"],
+  ["Brand-to-basket journeys", "standard retail vocabulary for the channel path"],
+  ["segmentation, journeys and cross-channel", "standard CRM/CDP vocabulary"],
+  ["highest-leverage function", "specific and measurable, not filler"],
+  ["intelligent ecosystems", "part of a real published article title — a title is a fact"],
+  ["tailored to your specific situation", "legal wording on the terms page"],
+  ["platform ecosystem", "the one literal use of 'ecosystem' canon permits"],
+];
+
+/**
  * Lines that legitimately contain a banned term: the rules that document the
  * ban, and this file. Matched as substrings of the line.
  */
@@ -101,6 +163,18 @@ const ALLOWED_LINES = [
   "check-terminology",
   "means Global Capability Centre",
   "means the Gulf",
+  "ABSTRACTIONS",
+  "ABSTRACTION_ALLOWED",
+  "not ours to rename",
+  "own word for a system environment",
+  "not filler",
+  "a title is a fact",
+  "legal wording on the terms page",
+  "canon permits",
+  "the buyer's own",
+  "vocabulary for the channel path",
+  "CRM/CDP vocabulary",
+  "a real role name Yallo places",
 ];
 
 function walk(dir, out = []) {
@@ -159,6 +233,30 @@ for (const file of files) {
     ]) {
       if (term.test(line)) {
         remaining.push({ file, line: i + 1, label, text: line.trim().slice(0, 100) });
+      }
+    }
+
+    // Banned abstractions, src/ only. Allow-listed occurrences are removed from
+    // the line before matching, so a permitted phrase cannot mask a real hit
+    // elsewhere on the same line.
+    if (!file.startsWith("src/")) return;
+    let scrubbed = line;
+    for (const [phrase] of ABSTRACTION_ALLOWED) {
+      // Case-insensitive: the same phrase appears sentence-cased in a blurb and
+      // lower-cased mid-sentence, and both are the same permitted occurrence.
+      scrubbed = scrubbed.replace(
+        new RegExp(phrase.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"),
+        "",
+      );
+    }
+    for (const abstraction of ABSTRACTIONS) {
+      if (new RegExp(`\\b${abstraction}`, "i").test(scrubbed)) {
+        remaining.push({
+          file,
+          line: i + 1,
+          label: `abstraction: ${abstraction}`,
+          text: line.trim().slice(0, 100),
+        });
       }
     }
   });

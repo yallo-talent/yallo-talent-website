@@ -66,30 +66,36 @@ export default function InsightsHub() {
         </section>
       )}
 
-      <section className={`${styles.section} ${styles.sectionAlt}`}>
-        <div className={styles.wrap}>
-          <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>All insights</span>
-            <h2 className={styles.sectionH}>The library.</h2>
-            <div className={styles.cardGrid3}>
-              {rest.map(({ frontmatter }) => (
-                <Link
-                  key={frontmatter.slug}
-                  href={`/insights/${frontmatter.slug}`}
-                  className={styles.card}
-                >
-                  <span className={styles.sectionEyebrow}>
-                    {frontmatter.category} · {frontmatter.readingTimeMinutes}{" "}
-                    min read
-                  </span>
-                  <h3 className={styles.cardTitle}>{frontmatter.title}</h3>
-                  <p className={styles.cardCopy}>{frontmatter.summary}</p>
-                </Link>
-              ))}
+      {/* The whole legacy insight family is unpublished pending Talent-speak
+          conversion, so this list can legitimately be empty. Render nothing
+          rather than a heading with a void under it — the same rule the
+          testimonial slot follows. */}
+      {rest.length > 0 && (
+        <section className={`${styles.section} ${styles.sectionAlt}`}>
+          <div className={styles.wrap}>
+            <div className={styles.sectionInner}>
+              <span className={styles.sectionEyebrow}>All insights</span>
+              <h2 className={styles.sectionH}>The library.</h2>
+              <div className={styles.cardGrid3}>
+                {rest.map(({ frontmatter }) => (
+                  <Link
+                    key={frontmatter.slug}
+                    href={`/insights/${frontmatter.slug}`}
+                    className={styles.card}
+                  >
+                    <span className={styles.sectionEyebrow}>
+                      {frontmatter.category} · {frontmatter.readingTimeMinutes}{" "}
+                      min read
+                    </span>
+                    <h3 className={styles.cardTitle}>{frontmatter.title}</h3>
+                    <p className={styles.cardCopy}>{frontmatter.summary}</p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <section className={styles.bottomCta}>
         <div className={styles.wrap}>
