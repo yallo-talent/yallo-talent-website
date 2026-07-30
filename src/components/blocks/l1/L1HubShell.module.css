@@ -203,7 +203,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 .cardTitle {
@@ -229,7 +229,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   transition: transform 0.2s ease;
 }
 
@@ -258,7 +258,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-bottom: 12px;
 }
 

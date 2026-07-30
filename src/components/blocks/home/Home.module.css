@@ -731,7 +731,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   position: relative;
 }
 
@@ -857,7 +857,7 @@
   font-size: var(--fs-data);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   position: relative;
 }
 
@@ -1066,7 +1066,7 @@
   font-size: var(--fs-data);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-top: 8px;
   position: relative;
 }
@@ -1106,7 +1106,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   position: relative;
 }
 
@@ -1431,7 +1431,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   padding-bottom: 12px;
   border-bottom: 1px solid var(--boundary);
 }

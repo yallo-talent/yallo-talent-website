@@ -146,7 +146,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 .heroEyebrow {
@@ -155,7 +155,7 @@
   gap: 10px;
   padding: 8px 14px;
   background: color-mix(in oklab, var(--ground) 65%, transparent);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
@@ -230,7 +230,7 @@
   font-size: var(--fs-data);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 /* ============ SHARED SECTION ELEMENTS ============ */
@@ -240,7 +240,7 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -409,9 +409,9 @@
   letter-spacing: 0.02em;
   padding: 8px 14px;
   border-radius: 0 0 0 var(--r-md);
-  background: var(--sector-accent-08);
+  background: var(--wa03);
   color: var(--accent-label);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   transition:
     background 0.18s ease,
     transform 0.18s ease,
@@ -590,7 +590,7 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-bottom: 10px;
 }
 
@@ -613,9 +613,9 @@
   font-size: var(--fs-label);
   padding: 6px 10px;
   border-radius: var(--r-micro);
-  background: var(--sector-accent-08);
+  background: var(--wa03);
   color: var(--accent-label);
-  border: 1px solid var(--sector-accent-20);
+  border: 1px solid var(--hairline);
   line-height: 1;
   transition: background 0.18s ease;
 }
@@ -655,9 +655,9 @@
   font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: -0.005em;
-  background: var(--sector-accent-08);
+  background: var(--wa03);
   color: var(--accent-label);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -702,7 +702,7 @@
     var(--sector-accent-08),
     color-mix(in oklab, var(--ground-2) 96%, transparent) 55%
   );
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   /* 1px, not a 3px accent tab. Canon §5 makes depth flat tonal layering plus
      hairlines, and a thick coloured edge on one side of a card is the single
      most recognisable generated-UI tell. Same correction as .introStatCard on
@@ -719,7 +719,7 @@
   height: 52px;
   border-radius: 0 0 0 var(--r-sm);
   background: var(--sector-accent-20);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   color: var(--accent-label);
   transition: transform 0.32s ease;
 }
@@ -770,9 +770,9 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  color: var(--fg-subtle);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
 }
 
@@ -939,7 +939,7 @@
   display: grid;
   place-items: center;
   border-radius: 0 0 0 var(--r-xs);
-  background: var(--sector-accent-08);
+  background: var(--wa03);
   color: var(--accent-label);
   transition:
     transform 0.2s ease,
@@ -968,11 +968,7 @@
   width: 40px;
   height: 40px;
   border-radius: 0 0 0 var(--r-sm);
-  background: linear-gradient(
-    135deg,
-    var(--sector-accent-35),
-    var(--sector-accent-08)
-  );
+  background: var(--wa05);
   color: var(--accent-label);
   margin-bottom: 14px;
 }
@@ -987,7 +983,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-bottom: 8px;
 }
 
@@ -1062,7 +1058,7 @@
     color-mix(in oklab, var(--ground-2) 92%, transparent) 55%,
     color-mix(in oklab, var(--ground-2) 96%, transparent) 100%
   );
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -1388,8 +1384,8 @@
   padding: 5px 10px;
   border-radius: 0 0 0 var(--r-md);
   background: color-mix(in oklab, var(--ground) 60%, transparent);
-  border: 1px solid var(--sector-accent-35);
-  color: var(--accent-label);
+  border: 1px solid var(--boundary);
+  color: var(--fg-subtle);
 }
 
 .insOverlay {
@@ -1473,7 +1469,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-bottom: 6px;
 }
 
@@ -1542,7 +1538,7 @@
 }
 
 .sbItemActive .sbItemLink {
-  background: var(--sector-accent-08);
+  background: var(--wa03);
   color: var(--fg);
   font-weight: 700;
   border-left-color: var(--sector-accent);

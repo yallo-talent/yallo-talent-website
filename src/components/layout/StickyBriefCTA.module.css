@@ -29,7 +29,7 @@
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 .lede {
