@@ -12,16 +12,13 @@ export const governmentData: L1PageData = {
   eyebrow: "Government & Public Sector · Contract-first",
   title: "Public sector tech contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola specialists for central, local and defence programmes across UK, ME and India. Cleared where the mission demands it.",
-  heroImage:
-    "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Government building with columns",
+  sub: "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola specialists for central, local and defence programmes across the Middle East, Europe and India. Cleared where the mission demands it.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
+    "Middle East · Europe · India",
     "SC / BPSS aware",
   ],
 
@@ -29,7 +26,7 @@ export const governmentData: L1PageData = {
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Public sector function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for government",
@@ -59,7 +56,7 @@ export const governmentData: L1PageData = {
   scarceTitle:
     "The roles every public-sector programme needs — and struggles to find.",
   scarceCopy:
-    "These are the cleared specialists that appear on every public-sector brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have six weeks.",
+    "These are the cleared specialists that appear on every public-sector brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -363,9 +360,6 @@ export const governmentData: L1PageData = {
       name: "Citizen Services",
       intro:
         "Digital-by-default channels, single-view of the citizen and case-driven services. GDS service standard and accessibility depth are the differentiators.",
-      image:
-        "https://images.unsplash.com/photo-1560264280-88b68371db39?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Citizen services counter",
       roles: [
         "Salesforce Public Sector Consultant",
         "Pega Case Management Specialist",
@@ -383,9 +377,6 @@ export const governmentData: L1PageData = {
       name: "Public Safety & Security",
       intro:
         "Police, fire and emergency response. Control-room modernisation, CAD/RMS and cross-agency data-sharing are the recurring priorities.",
-      image:
-        "https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Public safety control room",
       roles: [
         "Motorola Solutions Consultant",
         "CAD / RMS Specialist",
@@ -403,9 +394,6 @@ export const governmentData: L1PageData = {
       name: "Urban Planning & Infrastructure",
       intro:
         "Local authority planning, transport and infrastructure delivery. GIS, BIM and project controls are the platform backbones.",
-      image:
-        "https://images.unsplash.com/photo-1449034446853-66c86144b0ad?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Urban planning cityscape",
       roles: [
         "ArcGIS Enterprise Consultant",
         "Oracle Primavera Specialist",
@@ -423,9 +411,6 @@ export const governmentData: L1PageData = {
       name: "Healthcare Administration",
       intro:
         "NHS trusts, ICBs and public healthcare estates. Workforce systems, patient administration and financial reporting sit at the heart of the brief.",
-      image:
-        "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare administration",
       roles: [
         "Cerner Healthcare Admin Consultant",
         "Epic Systems Specialist",
@@ -443,9 +428,6 @@ export const governmentData: L1PageData = {
       name: "Education Administration",
       intro:
         "Higher education, further education and school-authority systems. Student administration, LMS and finance modernisation are the recurring workstreams.",
-      image:
-        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Education administration",
       roles: [
         "Blackboard Consultant",
         "SAP Education Specialist",
@@ -463,9 +445,6 @@ export const governmentData: L1PageData = {
       name: "Smart City Solutions",
       intro:
         "Connected infrastructure, city ops and mobility. Sensor networks, IoT and unified command are the operating backbone.",
-      image:
-        "https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Smart city infrastructure",
       roles: [
         "Siemens Smart City Consultant",
         "Cisco Smart City Systems Specialist",
@@ -483,9 +462,6 @@ export const governmentData: L1PageData = {
       name: "Disaster & Emergency Management",
       intro:
         "Mass alerting, incident response and business continuity. Public-safety-grade uptime with cross-agency dependencies.",
-      image:
-        "https://images.unsplash.com/photo-1544427920-c49ccfb85579?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Emergency operations centre",
       roles: [
         "Everbridge Critical Event Consultant",
         "Oracle Disaster Recovery Specialist",
@@ -503,9 +479,6 @@ export const governmentData: L1PageData = {
       name: "Cybersecurity for Public Services",
       intro:
         "Threat detection, IAM and zero-trust for government estates. NCSC / CAF alignment and OFFICIAL-SENSITIVE workloads set the operating context.",
-      image:
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Cybersecurity operations centre",
       roles: [
         "Palo Alto Networks for Public Sector Consultant",
         "IBM Security for Government Specialist",
@@ -523,9 +496,6 @@ export const governmentData: L1PageData = {
       name: "Data & AI for Public Services",
       intro:
         "Data platform, machine learning and evidence-led policy. GenAI pilots are moving into production faster than the specialist bench can keep up.",
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Data and AI operations",
       roles: [
         "Google Cloud AI for Public Sector Consultant",
         "Azure AI for Government Specialist",
@@ -543,9 +513,6 @@ export const governmentData: L1PageData = {
       name: "Regulatory Compliance & Governance",
       intro:
         "GRC, audit and controls in a public-money environment. NAO / SO / IIA assurance frameworks drive the platform selection.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Regulatory compliance office",
       roles: [
         "Wolters Kluwer Reg Reporting Consultant",
         "Thomson Reuters ONESOURCE Specialist",
@@ -563,9 +530,6 @@ export const governmentData: L1PageData = {
       name: "IT Infrastructure & Operations",
       intro:
         "Cloud landing zones, ITSM and platform ops for regulated public-sector environments. Legacy midrange decommissioning stays busy across the year.",
-      image:
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "IT infrastructure data centre",
       roles: [
         "ServiceNow ITSM Consultant",
         "BMC Helix Specialist",
@@ -583,9 +547,6 @@ export const governmentData: L1PageData = {
       name: "Procurement & Vendor Management",
       intro:
         "Frameworks, tenders and third-party risk. Crown Commercial, G-Cloud, DOS and DFT frameworks anchor the sourcing pipeline.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Procurement office",
       roles: [
         "SAP Ariba Consultant",
         "Coupa Procurement Specialist",
@@ -603,9 +564,6 @@ export const governmentData: L1PageData = {
       name: "Accounting & Financial Operations",
       intro:
         "Public accounting, appropriations, and consolidated whole-of-government reporting. IFRS + FReM combinations demand experienced consultants.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Finance operations",
       roles: [
         "SAP S/4HANA Finance Public Sector Consultant",
         "Oracle Financials Cloud for Gov Specialist",
@@ -623,9 +581,6 @@ export const governmentData: L1PageData = {
       name: "Human Capital Management",
       intro:
         "Payroll, workforce planning and pensions across huge headcounts. ESR, SuccessFactors and Workday migrations run continuously.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Public sector HCM",
       roles: [
         "SAP SuccessFactors Consultant",
         "Oracle HCM Cloud Specialist",
@@ -674,9 +629,6 @@ export const governmentData: L1PageData = {
         "The service standard is a talent problem before it's a design problem. Where the service designers, content designers and delivery managers actually are.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1560264280-88b68371db39?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Public services digital",
     },
     {
       href: "/insights/arcgis-planning-talent-me",
@@ -688,9 +640,6 @@ export const governmentData: L1PageData = {
         "Every ME smart-city programme in 2024 confirmed the ArcGIS Enterprise architect last. The result was six-month re-planning cycles across the region.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Smart city GIS",
     },
     {
       href: "/insights/palantir-foundry-defence",
@@ -702,9 +651,6 @@ export const governmentData: L1PageData = {
         "The specialist bench is thin, the clearance timelines are long and the frameworks are opaque. What the programmes with the best delivery track record are doing differently.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Defence data platform",
     },
     {
       href: "/insights/ncsc-caf-2025",
@@ -716,9 +662,6 @@ export const governmentData: L1PageData = {
         "CAF alignment programmes have moved from optional to critical path. What we're seeing in placement demand across central and local government.",
       author: "Sumeet Goenka",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Cybersecurity operations",
     },
   ],
 
@@ -742,8 +685,8 @@ export const governmentData: L1PageData = {
     },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -765,7 +708,7 @@ export const governmentData: L1PageData = {
 
   seo: {
     title:
-      "Government & Public Sector Tech Contractors · UK · ME · India | Yallo Talent",
+      "Government & Public Sector Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "Salesforce Public Sector, ArcGIS, ServiceNow, Bentley and Motorola contractors for central, local and defence programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

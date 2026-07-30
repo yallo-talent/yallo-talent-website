@@ -8,9 +8,6 @@ export const managedDeliveryData: ServicePageData = {
   title: "Hand us the workstream.",
   emphasis: "We own the outcome.",
   lede: "For the delivery slice where you need the result — not just the hands. Yallo scopes, staffs and runs the workstream end-to-end, with our specialists accountable for the outcome.",
-  heroImage:
-    "https://images.unsplash.com/photo-1497215842964-222b430dc094?w=1100&q=80&auto=format&fit=crop",
-  heroImageAlt: "Delivery team in a scoping session",
   heroStat: { n: "End-to-end", l: "scoped to the work" },
   primaryCta: { label: "Scope a delivery package", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
@@ -71,7 +68,7 @@ export const managedDeliveryData: ServicePageData = {
     "Programme-level testing",
     "Cutover & hypercare",
     "Post-go-live optimisation",
-    "GCC engineering-centre stand-up",
+    "Global Capability Centre stand-up",
   ],
   faqHeading: "Managed Delivery — common questions",
   faqs: [
@@ -103,6 +100,6 @@ export const managedDeliveryData: ServicePageData = {
   seo: {
     title: "Managed Delivery · Scoped Workstreams | Yallo Talent",
     description:
-      "Hand us the workstream — we own the outcome. Fixed-scope managed delivery for SAP, Oracle, Salesforce, cloud and data programmes across UK, ME and India.",
+      "Hand us the workstream — we own the outcome. Fixed-scope managed delivery for SAP, Oracle, Salesforce, cloud and data programmes across the Middle East, Europe and India.",
   },
 };

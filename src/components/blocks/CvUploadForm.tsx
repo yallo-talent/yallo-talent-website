@@ -57,8 +57,8 @@ export function CvUploadForm() {
           <h2 className={styles.h}>Send us your CV.</h2>
           <p className={styles.sub}>
             We match architect-screened contractors to enterprise programmes
-            across UK, ME and India. Send your CV and mark the areas you work in
-            — we'll be in touch when there's a fit.
+            across the Middle East, Europe and India. Send your CV and mark the
+            areas you work in — we'll be in touch when there's a fit.
           </p>
         </div>
 

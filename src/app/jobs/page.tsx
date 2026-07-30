@@ -8,7 +8,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Job Seekers · Yallo Talent",
     description:
-      "Contract, permanent and EOR opportunities across UK, ME and India. Send your CV — we'll match you to your next enterprise programme.",
+      "Contract, permanent and EOR opportunities across the Middle East, Europe and India. Send your CV — we'll match you to your next enterprise programme.",
   },
   path: "/jobs",
 });
@@ -38,7 +38,7 @@ const openings = [
   {
     role: "Salesforce Commerce Cloud Lead",
     engagement: "Permanent",
-    location: "Riyadh, KSA",
+    location: "Riyadh, Saudi Arabia",
     hue: "teal",
     days: "Immediate start",
   },
@@ -132,8 +132,9 @@ export default function JobsPage() {
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Regional coverage</h3>
                 <p className={styles.cardCopy}>
-                  UK, UAE, KSA, India — with visa cover and payroll support if
-                  the role sits in a market you're not resident in.
+                  the UK, UAE, Saudi Arabia and India — with visa cover and
+                  payroll support if the role sits in a market you're not
+                  resident in.
                 </p>
               </article>
             </div>

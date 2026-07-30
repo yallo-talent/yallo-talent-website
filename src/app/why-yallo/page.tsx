@@ -37,7 +37,7 @@ const differentiators = [
   },
   {
     stat: "3",
-    title: "Delivery regions — UK · ME · India",
+    title: "Four entities — London, Dubai, Riyadh, Bengaluru",
     copy: "Not a global brand pretending to know these markets. Region-deep benches, local visa and compliance knowledge, active in the sectors that are hiring.",
   },
 ];

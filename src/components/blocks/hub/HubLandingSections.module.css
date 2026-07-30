@@ -51,20 +51,9 @@
 }
 
 .glow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--card-hue-35), transparent 65%);
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.6;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 /* ============ WHAT WE DELIVER ============ */

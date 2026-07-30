@@ -143,7 +143,7 @@
   padding: 8px 14px;
   background: color-mix(in oklab, var(--ink-950) 65%, transparent);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   backdrop-filter: saturate(180%) blur(10px);
   -webkit-backdrop-filter: saturate(180%) blur(10px);
   font-family: var(--font-mono);
@@ -410,7 +410,7 @@
   font-size: 11px;
   letter-spacing: 0.02em;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: var(--sector-accent-08);
   color: var(--sector-accent);
   border: 1px solid var(--sector-accent-35);
@@ -497,24 +497,9 @@
 }
 
 .tcGlow {
-  position: absolute;
-  top: -70px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.7;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .tc::before {
@@ -680,7 +665,7 @@
   justify-content: center;
   gap: 8px;
   padding: 11px 16px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: -0.005em;
@@ -799,7 +784,7 @@
   color: var(--sector-accent);
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .screeningChipDot {
@@ -860,7 +845,7 @@
   align-items: center;
   gap: 10px;
   padding: 10px 16px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: var(--glass-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -964,21 +949,9 @@
 }
 
 .engagePillarGlow {
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 70%
-  );
-  filter: blur(48px);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .engagePillar:hover .engagePillarGlow {
@@ -1127,16 +1100,9 @@
 }
 
 .bottomGlow {
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
-  filter: blur(60px);
-  pointer-events: none;
-  z-index: 0;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .bottomContent {
@@ -1183,7 +1149,7 @@
   color: var(--ink-950);
   font-size: 13px;
   font-weight: 700;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow: 0 12px 28px -12px var(--sector-accent-35);
   transition:
     background 0.15s ease,
@@ -1204,7 +1170,7 @@
   padding: 12px 20px;
   color: var(--fg);
   border: 1px solid var(--wa25);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   font-size: 13px;
   font-weight: 500;
   background: color-mix(in oklab, var(--ink-950) 40%, transparent);
@@ -1390,7 +1356,7 @@
 
 .insightsScroll::-webkit-scrollbar-thumb {
   background: var(--wa15);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .insCard {
@@ -1467,7 +1433,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   padding: 5px 10px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: color-mix(in oklab, var(--ink-950) 60%, transparent);
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
   color: var(--card-hue, var(--sector-accent));

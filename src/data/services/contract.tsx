@@ -4,13 +4,10 @@ import type { ServicePageData } from "./types";
 export const contractData: ServicePageData = {
   slug: "contract",
   hue: "orange",
-  eyebrow: "Contract Workforce · UK · ME · India",
+  eyebrow: "Contract Workforce · Middle East · Europe · India",
   title: "Get contract specialists",
   emphasis: "on your programme in 72 hours.",
   lede: "When your programme has a delivery gap or a peak, get architect-screened contract talent — mobilised faster than a permanent hire, screened to the same bar.",
-  heroImage:
-    "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1100&q=80&auto=format&fit=crop",
-  heroImageAlt: "Programme team collaborating on a delivery workstream",
   heroStat: { n: "72h", l: "brief to shortlist" },
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
@@ -89,7 +86,7 @@ export const contractData: ServicePageData = {
     },
     {
       q: "Which regions do you cover?",
-      a: "Active benches across the UK, the Middle East (UAE and KSA primarily), and India (Bengaluru, Pune, Mumbai). We can also place remote contractors into your programme where the engagement model supports it.",
+      a: "Active benches across the UK, the Middle East (UAE and Saudi Arabia primarily), and India (Bengaluru, Pune, Mumbai). We can also place remote contractors into your programme where the engagement model supports it.",
     },
     {
       q: "How do you handle rate cards and margins?",
@@ -107,6 +104,6 @@ export const contractData: ServicePageData = {
   seo: {
     title: "Contract Workforce · Contractors in 72 hours | Yallo Talent",
     description:
-      "Get architect-screened contract specialists on your enterprise programme in 72 hours. UK, ME and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+      "Get architect-screened contract specialists on your enterprise programme in 72 hours. the Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
   },
 };

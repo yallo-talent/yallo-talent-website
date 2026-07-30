@@ -10,13 +10,14 @@ function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
   return <Comp className={className} />;
 }
 
-const cardHueStyle = (hue: L1Hue): React.CSSProperties =>
-  ({
-    "--card-hue": `var(--hue-${hue}-500)`,
-    "--card-hue-08": `var(--hue-${hue}-08)`,
-    "--card-hue-20": `var(--hue-${hue}-20)`,
-    "--card-hue-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/**
+ * One accent, always. Canon retires the six per-sector hues, and this helper
+ * previously wrote them as INLINE custom properties — inline wins over any
+ * class, so it re-introduced a light gold wash on dark surfaces and defeated
+ * .band-dark. It now returns nothing, so --sector-accent* resolves from
+ * globals.css. The `hue` fields left in the data are inert.
+ */
+const cardHueStyle = (): React.CSSProperties => ({});
 
 /* ============ WHAT WE DELIVER ============ */
 const whatWeDeliverCards: {
@@ -55,7 +56,7 @@ const whatWeDeliverCards: {
     hue: "teal",
     icon: "spark",
     eyebrow: "Multi-market flexibility",
-    title: "UK · ME · India — contract, EOR, perm or delivery.",
+    title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models let you pick how you hold the risk.",
     bullets: [
       "Active bench across 3 markets",
@@ -87,7 +88,7 @@ export function HubWhatWeDeliver({ label }: { label: string }) {
             <article
               key={c.title}
               className={styles.wwdCard}
-              style={cardHueStyle(c.hue)}
+              style={cardHueStyle()}
             >
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.wwdCardInner}>
@@ -169,11 +170,7 @@ export function HubHowWeWork() {
         </div>
         <div className={styles.hwwGrid}>
           {howWeWorkSteps.map((s) => (
-            <div
-              key={s.n}
-              className={styles.hwwStep}
-              style={cardHueStyle(s.hue)}
-            >
+            <div key={s.n} className={styles.hwwStep} style={cardHueStyle()}>
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.hwwStepInner}>
                 <div className={styles.hwwStepNum}>{s.n}</div>
@@ -245,7 +242,7 @@ export function HubArchitects() {
             <article
               key={a.name}
               className={styles.archCard}
-              style={cardHueStyle(a.hue)}
+              style={cardHueStyle()}
             >
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.archCardInner}>
@@ -316,7 +313,7 @@ export function HubCrossConnected() {
                   key={p.slug}
                   href={`/platforms/${p.slug}`}
                   className={styles.crossChip}
-                  style={cardHueStyle(p.hue)}
+                  style={cardHueStyle()}
                 >
                   <span className={styles.crossChipLabel}>{p.label}</span>
                   <span className={styles.crossChipArr} aria-hidden="true">
@@ -331,13 +328,13 @@ export function HubCrossConnected() {
             <div className={styles.crossChips}>
               {[
                 {
-                  slug: "data-ai",
-                  label: "Data & AI",
+                  slug: "data-analytics",
+                  label: "Data & Analytics",
                   hue: "violet" as L1Hue,
                 },
                 {
-                  slug: "digital-devops",
-                  label: "Digital & DevOps",
+                  slug: "devops-platform-engineering",
+                  label: "DevOps & Platform Engineering",
                   hue: "blue" as L1Hue,
                 },
                 {
@@ -356,8 +353,8 @@ export function HubCrossConnected() {
                   hue: "green" as L1Hue,
                 },
                 {
-                  slug: "emerging-technologies",
-                  label: "Emerging Technologies",
+                  slug: "testing-quality-engineering",
+                  label: "Testing & Quality Engineering",
                   hue: "orange" as L1Hue,
                 },
               ].map((c) => (
@@ -365,7 +362,7 @@ export function HubCrossConnected() {
                   key={c.slug}
                   href={`/capabilities/${c.slug}`}
                   className={styles.crossChip}
-                  style={cardHueStyle(c.hue)}
+                  style={cardHueStyle()}
                 >
                   <span className={styles.crossChipLabel}>{c.label}</span>
                   <span className={styles.crossChipArr} aria-hidden="true">

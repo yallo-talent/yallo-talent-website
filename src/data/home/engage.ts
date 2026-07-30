@@ -2,8 +2,8 @@
  * Four engagement models, contract leading.
  *
  * One line of positioning per model plus "right for" chips. No paragraphs.
- * Pillar four is Managed Delivery — "subcontract" and "subcontracting" never
- * appear in public copy. The white-label-behind-an-SI mode is real but is not
+ * Pillar four is Managed Delivery. The word this replaced never appears in
+ * public copy; see scripts/check-terminology.mjs for the rule. The white-label-behind-an-SI mode is real but is not
  * published.
  */
 

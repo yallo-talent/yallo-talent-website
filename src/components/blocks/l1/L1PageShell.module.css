@@ -68,21 +68,19 @@
 }
 
 .heroImage {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  object-position: center 35%;
-  opacity: 0.35;
+  opacity: 0.5;
 }
 
 .heroTint {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    135deg,
-    var(--sector-accent-20) 0%,
-    transparent 55%
-  );
-  mix-blend-mode: overlay;
+  /* One accent, always: the per-sector tint is retired. */
+  background: linear-gradient(135deg, var(--accent-wash) 0%, transparent 55%);
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -90,11 +88,12 @@
   position: absolute;
   inset: 0;
   z-index: 2;
+  /* Keeps the copy legible over the drawn plate without burying it. */
   background: linear-gradient(
     to top,
-    var(--ink-950) 0%,
-    color-mix(in oklab, var(--ink-950) 78%, transparent) 40%,
-    color-mix(in oklab, var(--ink-950) 22%, transparent) 100%
+    var(--dk) 0%,
+    color-mix(in oklab, var(--dk) 82%, transparent) 55%,
+    color-mix(in oklab, var(--dk) 55%, transparent) 100%
   );
   pointer-events: none;
 }
@@ -166,7 +165,7 @@
   padding: 8px 14px;
   background: color-mix(in oklab, var(--ink-950) 65%, transparent);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   backdrop-filter: saturate(180%) blur(10px);
   -webkit-backdrop-filter: saturate(180%) blur(10px);
   font-family: var(--font-mono);
@@ -229,7 +228,7 @@
   color: var(--ink-950);
   font-size: 13px;
   font-weight: 700;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow: 0 12px 40px -12px var(--accent-glow);
   transition:
     background 0.15s ease,
@@ -250,7 +249,7 @@
   padding: 14px 22px;
   color: var(--fg);
   border: 1px solid var(--wa25);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   font-weight: 500;
   font-size: 13px;
   background: color-mix(in oklab, var(--ink-950) 40%, transparent);
@@ -423,16 +422,9 @@
 }
 
 .introOrb {
-  position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
-  filter: blur(100px);
-  pointer-events: none;
-  z-index: 0;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .introGrid {
@@ -532,24 +524,9 @@
 }
 
 .wwdGlow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.6;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .wwdCard::before {
@@ -765,24 +742,9 @@
 }
 
 .hwwGlow {
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.55;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .hwwStep:hover {
@@ -898,24 +860,9 @@
 }
 
 .xsecCardGlow {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(30px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.55;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .xsecCard:hover {
@@ -1015,16 +962,9 @@
 }
 
 .scarceGlow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
-  filter: blur(60px);
-  pointer-events: none;
-  z-index: 0;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .scarceGridBg {
@@ -1128,7 +1068,7 @@
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: -0.005em;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow: 0 12px 30px -12px var(--sector-accent-35);
   transition:
     transform 0.2s ease,
@@ -1187,20 +1127,26 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   padding: 4px 9px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   border: 1px solid transparent;
 }
 
+/* Scarcity is the canonical use of the functional signal colour (DESIGN.md
+   §Colors): it carries information, so it earns a hue. The label spells out
+   "High scarcity" alongside, so meaning never rests on colour alone. */
 .rtagHigh {
-  color: var(--hue-rose-500);
-  background: var(--hue-rose-08);
-  border-color: var(--hue-rose-35);
+  color: var(--signal-text);
+  background: transparent;
+  border-color: var(--signal-mark);
 }
 
+/* Medium scarcity is deliberately NOT a second hue — three functional colours
+   in one view is the ceiling and the roles list already carries the engagement
+   chip. It reads as the quieter state of the same signal. */
 .rtagMed {
-  color: var(--hue-orange-500);
-  background: var(--hue-orange-08);
-  border-color: var(--hue-orange-35);
+  color: var(--text-2);
+  background: transparent;
+  border-color: var(--boundary);
 }
 
 .rtagContract {
@@ -1287,7 +1233,7 @@
   padding: 10px 16px;
   background: var(--sector-accent-08);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   color: var(--sector-accent);
   font-family: var(--font-mono);
   font-size: 10px;
@@ -1340,7 +1286,7 @@
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1368,7 +1314,7 @@
   font-family: var(--font-mono);
   font-size: 10px;
   padding: 4px 8px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: var(--sector-accent);
   color: var(--ink-950);
   letter-spacing: 0.1em;
@@ -1401,24 +1347,9 @@
 
 /* Gradient corner glow — top-right (per-card hue) */
 .expCardGlow {
-  position: absolute;
-  top: -60px;
-  right: -60px;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(30px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.7;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 /* Second gradient blob — bottom-left, subtle */
@@ -1767,24 +1698,9 @@
 }
 
 .archGlow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 220px;
-  height: 220px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.6;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .archCard:hover {
@@ -1876,7 +1792,7 @@
   gap: 8px;
   padding: 10px 18px;
   border: 1px solid var(--wa15);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   font-size: 12.5px;
   font-weight: 600;
@@ -1979,7 +1895,7 @@
 
 .segList::-webkit-scrollbar-thumb {
   background: var(--sector-accent-35);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .segList::-webkit-scrollbar-thumb:hover {
@@ -2084,21 +2000,9 @@
 
 /* Per-segment hue corner glow on the panel */
 .segPanelGlow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(60px);
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.8;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .segPanel::after {
@@ -2245,7 +2149,7 @@
   font-family: var(--font-mono);
   font-size: 10.5px;
   padding: 7px 13px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: var(--card-hue-08, var(--sector-accent-08));
   color: var(--card-hue, var(--sector-accent));
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
@@ -2277,7 +2181,7 @@
   font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.005em;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow: 0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35));
   transition:
     transform 0.22s ease,
@@ -2485,7 +2389,7 @@
 
 .insightsScroll::-webkit-scrollbar-thumb {
   background: var(--wa15);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
 }
 
 .insightsScroll::-webkit-scrollbar-thumb:hover {
@@ -2571,7 +2475,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   padding: 6px 12px;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   background: color-mix(in oklab, var(--ink-950) 60%, transparent);
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
   color: var(--card-hue, var(--sector-accent));
@@ -2700,24 +2604,9 @@
 }
 
 .pillarGlow {
-  position: absolute;
-  top: -80px;
-  right: -60px;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-35, var(--sector-accent-35)),
-    transparent 65%
-  );
-  filter: blur(40px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.7;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .pillar::before {
@@ -2962,16 +2851,9 @@
 }
 
 .bottomGlow {
-  position: absolute;
-  top: -80px;
-  right: -80px;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
-  filter: blur(60px);
-  pointer-events: none;
-  z-index: 0;
+  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
+     these sat behind body copy and washed it out. */
+  display: none;
 }
 
 .bottomInner {

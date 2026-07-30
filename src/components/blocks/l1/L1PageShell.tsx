@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
 import styles from "./L1PageShell.module.css";
 import { l1Icons } from "./l1-icons";
@@ -13,30 +13,17 @@ function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
   return <Comp className={className} />;
 }
 
-const hueStyle = (hue: L1Hue): React.CSSProperties =>
-  ({
-    "--sector-accent": `var(--hue-${hue}-500)`,
-    "--sector-accent-08": `var(--hue-${hue}-08)`,
-    "--sector-accent-20": `var(--hue-${hue}-20)`,
-    "--sector-accent-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/**
+ * One accent, always. Canon retires the six per-sector hues, and this helper
+ * previously wrote them as INLINE custom properties — inline wins over any
+ * class, so it re-introduced a light gold wash on dark surfaces and defeated
+ * .band-dark. It now returns nothing, so --sector-accent* resolves from
+ * globals.css. The `hue` fields left in the data are inert.
+ */
+const hueStyle = (): React.CSSProperties => ({});
 
-const cardHueCycle: L1Hue[] = [
-  "blue",
-  "teal",
-  "violet",
-  "rose",
-  "green",
-  "orange",
-];
-
-const cardHueStyle = (hue: L1Hue): React.CSSProperties =>
-  ({
-    "--card-hue": `var(--hue-${hue}-500)`,
-    "--card-hue-08": `var(--hue-${hue}-08)`,
-    "--card-hue-20": `var(--hue-${hue}-20)`,
-    "--card-hue-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/** One accent, always — see hueStyle above. */
+const cardHueStyle = (): React.CSSProperties => ({});
 
 interface Props {
   data: L1PageData;
@@ -61,7 +48,7 @@ export function L1PageShell({ data }: Props) {
   ];
 
   return (
-    <div className={styles.page} style={hueStyle(data.hue)}>
+    <div className={`${styles.page} band-dark`} style={hueStyle()}>
       <L1Hero data={data} />
       <L1StatsStrip data={data} />
       <L1SubNav items={subNavItems} />
@@ -151,14 +138,9 @@ function L1Hero({ data }: Props) {
   return (
     <section className={styles.hero}>
       <div className={styles.heroImageWrap}>
-        <Image
-          src={data.heroImage}
-          alt={data.heroImageAlt}
-          fill
-          priority
-          sizes="100vw"
-          className={styles.heroImage}
-        />
+        {/* Drawn, not photographed: canon forbids stock imagery and every
+            one of these was a hotlinked Unsplash URL. */}
+        <PetalPlate seed={data.slug} className={styles.heroImage} ratio={0.5} />
       </div>
       <div className={styles.heroTint} aria-hidden="true" />
       <div className={styles.heroOverlay} aria-hidden="true" />
@@ -306,7 +288,7 @@ const whatWeDeliverCards: {
     hue: "teal",
     icon: "spark",
     eyebrow: "Multi-market flexibility",
-    title: "UK · ME · India — contract, EOR, perm or delivery.",
+    title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models let you pick how you hold the risk.",
     bullets: [
       "Active bench across 3 markets",
@@ -339,7 +321,7 @@ function L1WhatWeDeliver({ data }: Props) {
             <article
               key={c.title}
               className={styles.wwdCard}
-              style={cardHueStyle(c.hue)}
+              style={cardHueStyle()}
             >
               <div className={styles.wwdGlow} aria-hidden="true" />
               <div className={styles.wwdCardInner}>
@@ -422,11 +404,7 @@ function L1HowWeWork({ data }: Props) {
         </div>
         <div className={styles.hwwGrid}>
           {howWeWorkSteps.map((s) => (
-            <div
-              key={s.n}
-              className={styles.hwwStep}
-              style={cardHueStyle(s.hue)}
-            >
+            <div key={s.n} className={styles.hwwStep} style={cardHueStyle()}>
               <div className={styles.hwwGlow} aria-hidden="true" />
               <div className={styles.hwwStepInner}>
                 <div className={styles.hwwStepNum}>{s.n}</div>
@@ -515,7 +493,7 @@ function _L1CrossSector({ data }: Props) {
               key={s.slug}
               href={`/industries/${s.slug}`}
               className={styles.xsecCard}
-              style={cardHueStyle(s.hue)}
+              style={cardHueStyle()}
             >
               <div className={styles.xsecCardGlow} aria-hidden="true" />
               <div className={styles.xsecCardInner}>
@@ -639,7 +617,6 @@ function L1Expertise({ data }: Props) {
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
         >
           {visible.map((card, i) => {
-            const cardHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             // Auto-derive L2 href when this function has tools configured
             const l2Href =
               card.href ??
@@ -655,7 +632,7 @@ function L1Expertise({ data }: Props) {
                 transition={{ duration: 0.4, delay: i * 0.03 }}
                 className={styles.expCardWrap}
               >
-                <div className={styles.expCard} style={cardHueStyle(cardHue)}>
+                <div className={styles.expCard} style={cardHueStyle()}>
                   <div className={styles.expCardGlow} aria-hidden="true" />
                   <div className={styles.expCardBorder} aria-hidden="true" />
                   <div className={styles.expCardInner}>
@@ -802,7 +779,7 @@ function L1Architects({ data }: Props) {
             <article
               key={a.name}
               className={styles.archCard}
-              style={cardHueStyle(a.hue)}
+              style={cardHueStyle()}
             >
               <div className={styles.archGlow} aria-hidden="true" />
               <div className={styles.archCardInner}>
@@ -837,9 +814,6 @@ function L1Segments({ data }: Props) {
   const activeIdx = data.segments.findIndex((s) => s.id === active);
   const activeSeg = data.segments[activeIdx >= 0 ? activeIdx : 0];
   if (!activeSeg) return null;
-  const activeHue = cardHueCycle[
-    (activeIdx >= 0 ? activeIdx : 0) % cardHueCycle.length
-  ] as L1Hue;
 
   return (
     <section className={styles.segments} id="segments">
@@ -853,12 +827,11 @@ function L1Segments({ data }: Props) {
             <ul className={styles.segList} aria-label="Select a segment">
               {data.segments.map((s, i) => {
                 const isActive = s.id === activeSeg.id;
-                const segHue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
                 return (
                   <li
                     key={s.id}
                     className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
-                    style={cardHueStyle(segHue)}
+                    style={cardHueStyle()}
                   >
                     <button
                       type="button"
@@ -880,7 +853,7 @@ function L1Segments({ data }: Props) {
 
           <motion.div
             className={styles.segPanel}
-            style={cardHueStyle(activeHue)}
+            style={cardHueStyle()}
             key={activeSeg.id}
             initial={{ opacity: 0, x: 8 }}
             animate={{ opacity: 1, x: 0 }}
@@ -888,12 +861,10 @@ function L1Segments({ data }: Props) {
           >
             <div className={styles.segPanelGlow} aria-hidden="true" />
             <div className={styles.segImgWrap}>
-              <Image
-                src={activeSeg.image}
-                alt={activeSeg.imageAlt}
-                fill
-                sizes="(max-width: 900px) 92vw, 640px"
+              <PetalPlate
+                seed={`${data.slug}:${activeSeg.id}`}
                 className={styles.segImg}
+                ratio={0.62}
               />
               <div className={styles.segImgTint} aria-hidden="true" />
               <div className={styles.segImgOverlay} aria-hidden="true" />
@@ -961,12 +932,11 @@ function L1Partners({ partners }: { partners?: string[] }) {
         </p>
         <div className={styles.partnersGrid}>
           {partnerNames.map((name, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             return (
               <div
                 key={name}
                 className={styles.partnerCell}
-                style={cardHueStyle(hue)}
+                style={cardHueStyle()}
               >
                 <span className={styles.partnerName}>{name}</span>
               </div>
@@ -995,15 +965,12 @@ function L1Insights({ data }: Props) {
       <div className={styles.insightsScrollWrap}>
         <div className={styles.insightsScroll}>
           {data.insights.map((post, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             const inner = (
               <>
-                <Image
-                  src={post.image}
-                  alt={post.imageAlt}
-                  fill
-                  sizes="(max-width: 900px) 88vw, 380px"
+                <PetalPlate
+                  seed={post.href}
                   className={styles.insImg}
+                  ratio={0.66}
                 />
                 <div className={styles.insImgTint} aria-hidden="true" />
                 <div className={styles.insImgShade} aria-hidden="true" />
@@ -1026,7 +993,7 @@ function L1Insights({ data }: Props) {
                 <div
                   key={post.href}
                   className={styles.insCard}
-                  style={cardHueStyle(hue)}
+                  style={cardHueStyle()}
                   aria-disabled="true"
                 >
                   {inner}
@@ -1038,7 +1005,7 @@ function L1Insights({ data }: Props) {
                 key={post.href}
                 href={post.href}
                 className={styles.insCard}
-                style={cardHueStyle(hue)}
+                style={cardHueStyle()}
               >
                 {inner}
               </Link>
@@ -1068,7 +1035,7 @@ const servicePillars: {
     icon: "pillarContract",
     eyebrow: "01 · Contract",
     title: "Contract & interim",
-    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across UK, ME and India.",
+    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
     bullets: [
       "72h brief to shortlist",
       "IR35, day-rate or fixed-term",
@@ -1144,7 +1111,7 @@ function L1ServicePillars() {
               <Link
                 href={p.href}
                 className={styles.pillar}
-                style={cardHueStyle(p.hue)}
+                style={cardHueStyle()}
               >
                 <div className={styles.pillarGlow} aria-hidden="true" />
                 <div className={styles.pillarBorder} aria-hidden="true" />
@@ -1255,13 +1222,12 @@ function L1ReadNext({ data }: Props) {
               <div className={styles.readNextRailLabel}>{rail.label}</div>
               <div className={styles.readNextChips}>
                 {rail.items.map((r, i) => {
-                  const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
                   return (
                     <Link
                       key={r.href}
                       href={r.href}
                       className={styles.readNextChip}
-                      style={cardHueStyle(hue)}
+                      style={cardHueStyle()}
                     >
                       <span className={styles.readNextChipLabel}>
                         {r.label}

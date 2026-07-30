@@ -241,6 +241,92 @@
   --petal-opacity: 0.16;
 }
 
+/* --------------------------------------------------------------------------
+   .band-dark — a PERMANENTLY dark surface, identical in both themes.
+
+   Different from .band-invert, which flips relative to the active theme. Some
+   surfaces are dark because of what they are, not as a contrast to their
+   neighbour: the page footer, the closing CTA, and the L1/L2/service hero
+   plates. Those need one register in both themes.
+
+   Crucially this re-declares the Layer 2c compatibility aliases too. Those are
+   declared on :root, so they compute against :root's values and do NOT inherit
+   a local override — which is why the legacy surfaces rendered dark ink on a
+   dark ground once the site default became light. Any legacy component placed
+   inside .band-dark now resolves correctly without being rewritten.
+   -------------------------------------------------------------------------- */
+.band-dark {
+  color-scheme: dark;
+
+  --ground: var(--dk);
+  --ground-2: var(--dk-2);
+  --ground-3: var(--dk-3);
+  --text: var(--dk-txt);
+  --text-2: var(--dk-txt-2);
+  --text-3: var(--dk-txt-3);
+  --accent-line: var(--gold);
+  --accent-label: var(--gold);
+  --accent-mark: var(--gold);
+  --accent-wash: var(--dk-3);
+  --hairline: var(--dk-line);
+  --boundary: var(--dk-line-strong);
+  --signal-mark: var(--fn-signal-mark-d);
+  --signal-text: var(--fn-signal-text-d);
+  --info-mark: var(--fn-info-mark-d);
+  --info-text: var(--fn-info-text-d);
+  --positive-mark: var(--fn-positive-mark-d);
+  --positive-text: var(--fn-positive-text-d);
+  --category-mark: var(--fn-category-mark-d);
+  --category-text: var(--fn-category-text-d);
+  --petal-opacity: 0.2;
+
+  /* Layer 2c aliases, restated so legacy components follow the override. */
+  --fg: var(--dk-txt);
+  --fg-muted: var(--dk-txt-2);
+  --fg-subtle: var(--dk-txt-3);
+  --bg: var(--dk);
+  --surface: var(--dk-2);
+  --surface-raised: var(--dk-3);
+  --surface-glass: var(--dk-2);
+  --surface-glass-strong: var(--dk-3);
+  --accent: var(--gold);
+  --accent-hover: var(--gold);
+  --accent-muted: var(--dk-3);
+  --accent-strong: var(--dk-3);
+  --sector-accent: var(--gold);
+  --sector-accent-08: var(--dk-3);
+  --sector-accent-20: var(--dk-3);
+  --border: var(--dk-line);
+  --border-strong: var(--dk-line-strong);
+  --border-accent: var(--gold);
+  --glass-bg: var(--dk-2);
+  --glass-border: var(--dk-line);
+  --hero-overlay: var(--dk);
+  --ink-950: var(--dk);
+  --white: var(--dk-txt);
+  --gray-100: var(--dk-2);
+  --gray-200: var(--dk-3);
+  --wa03: var(--dk-line);
+  --wa05: var(--dk-line);
+  --wa08: var(--dk-line);
+  --wa12: var(--dk-line);
+  --wa15: var(--dk-line-strong);
+  --wa25: var(--dk-line-strong);
+  --wa40: var(--dk-txt-3);
+  --wa60: var(--dk-txt-2);
+  --wa88: var(--dk-txt);
+  --ba75: var(--dk);
+  --hue-blue-500: var(--gold);
+  --hue-green-500: var(--gold);
+  --hue-orange-500: var(--gold);
+  --hue-rose-500: var(--gold);
+  --hue-teal-500: var(--gold);
+  --hue-violet-500: var(--gold);
+
+  background: var(--dk);
+  color: var(--dk-txt);
+}
+
 /* ==========================================================================
    Layer 2b — Typography tokens
    Three faces, divided strictly by job: serif asserts, sans is read,

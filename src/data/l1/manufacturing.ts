@@ -12,24 +12,21 @@ export const manufacturingData: L1PageData = {
   eyebrow: "Manufacturing & Logistics · Contract-first",
   title: "Manufacturing tech contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across UK, ME and India. Architect-screened for implementation depth — not just platform familiarity.",
-  heroImage:
-    "https://images.unsplash.com/photo-1565034946487-077786996e27?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Manufacturing plant floor with industrial equipment",
+  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
-    "Contract · EOR · Subcontract",
+    "Middle East · Europe · India",
+    "Contract · EOR · Managed Delivery",
   ],
 
   stats: [
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Manufacturing function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for manufacturing",
@@ -59,7 +56,7 @@ export const manufacturingData: L1PageData = {
   scarceTitle:
     "The roles every manufacturing programme needs — and struggles to find.",
   scarceCopy:
-    "These are the specialists that appear on every manufacturing brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have six weeks.",
+    "These are the specialists that appear on every manufacturing brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -363,9 +360,6 @@ export const manufacturingData: L1PageData = {
       name: "Automotive Manufacturing",
       intro:
         "Passenger, commercial and electric vehicle production. Programmes lean on MES, PLM and multi-tier supply chain orchestration where a single missed part cripples the line.",
-      image:
-        "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Automotive production line",
       roles: [
         "Siemens Opcenter Architect",
         "SAP PP / DS Consultant",
@@ -383,9 +377,6 @@ export const manufacturingData: L1PageData = {
       name: "Aerospace & Defence",
       intro:
         "Aircraft, defence systems and space equipment. Precision, traceability and regulatory compliance are non-negotiable — the contractor bench needs configuration-controlled experience.",
-      image:
-        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Aerospace assembly",
       roles: [
         "SAP PLM Consultant",
         "Dassault ENOVIA Specialist",
@@ -403,9 +394,6 @@ export const manufacturingData: L1PageData = {
       name: "Electronics & High-Tech Manufacturing",
       intro:
         "Semiconductor, consumer electronics and IoT device production. Short lifecycle products and complex BOMs demand advanced planning and PLM depth.",
-      image:
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Electronics manufacturing",
       roles: [
         "Siemens Opcenter Consultant",
         "SAP S/4HANA PP Specialist",
@@ -423,9 +411,6 @@ export const manufacturingData: L1PageData = {
       name: "Pharmaceutical & Life Sciences Manufacturing",
       intro:
         "Drug manufacturing, medical devices and biotech. GxP, serialisation and validated systems mean contractors need regulated-industry experience end to end.",
-      image:
-        "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Pharmaceutical manufacturing",
       roles: [
         "SAP QM Validation Consultant",
         "Veeva Quality Specialist",
@@ -443,9 +428,6 @@ export const manufacturingData: L1PageData = {
       name: "Consumer Packaged Goods (CPG)",
       intro:
         "Packaged foods, beverages and household goods. Demand planning, agile supply chain and rapid inventory turnover define the platform selection.",
-      image:
-        "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "CPG production",
       roles: [
         "Blue Yonder Demand Lead",
         "SAP IBP Consultant",
@@ -463,9 +445,6 @@ export const manufacturingData: L1PageData = {
       name: "Food and Beverage Manufacturing",
       intro:
         "Recipe, batch and lot traceability at volume. Quality assurance, HACCP and end-to-end traceability set the operating context.",
-      image:
-        "https://images.unsplash.com/photo-1508615039623-a25605d2b022?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Food and beverage plant",
       roles: [
         "SAP S/4HANA Process Industry Consultant",
         "Recipe Management Specialist",
@@ -483,9 +462,6 @@ export const manufacturingData: L1PageData = {
       name: "Chemical Manufacturing",
       intro:
         "Specialty and petrochemical production. Process industry ERP, EHS and hazardous logistics are the defining requirements.",
-      image:
-        "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Chemical plant",
       roles: [
         "SAP EHS Consultant",
         "Process Industry ERP Lead",
@@ -503,9 +479,6 @@ export const manufacturingData: L1PageData = {
       name: "Textile & Apparel Manufacturing",
       intro:
         "Fabric and garment production. Demand forecasting, sustainable practices and rapid style turnover define the platform mix.",
-      image:
-        "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Textile manufacturing",
       roles: [
         "SAP AFS Consultant",
         "Blue Yonder Demand Planner",
@@ -523,9 +496,6 @@ export const manufacturingData: L1PageData = {
       name: "Industrial Machinery & Equipment",
       intro:
         "Heavy equipment and industrial tools. MES, PLM and aftersales service systems drive uptime and margin.",
-      image:
-        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Industrial machinery manufacturing",
       roles: [
         "Siemens Teamcenter Architect",
         "SAP S/4HANA Manufacturing Consultant",
@@ -543,9 +513,6 @@ export const manufacturingData: L1PageData = {
       name: "Construction & Building Materials",
       intro:
         "Cement, steel and prefabricated structures. Production planning, logistics execution and project-driven manufacturing.",
-      image:
-        "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Construction and building materials",
       roles: [
         "SAP PS Consultant",
         "Oracle Primavera Specialist",
@@ -563,9 +530,6 @@ export const manufacturingData: L1PageData = {
       name: "Energy Equipment & Utilities",
       intro:
         "Renewable energy equipment, oil and gas machinery, and smart grid platforms. Asset lifecycle and logistics execution dominate.",
-      image:
-        "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Energy equipment manufacturing",
       roles: [
         "IBM Maximo Architect",
         "SAP EAM Consultant",
@@ -583,9 +547,6 @@ export const manufacturingData: L1PageData = {
       name: "Logistics & Warehousing",
       intro:
         "DC networks, cross-dock and 3PL operations. WMS, TMS and inventory optimisation set the tempo of the business.",
-      image:
-        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Warehousing and logistics",
       roles: [
         "Manhattan Active WMS Lead",
         "SAP EWM Consultant",
@@ -603,9 +564,6 @@ export const manufacturingData: L1PageData = {
       name: "Cold Chain Logistics",
       intro:
         "Temperature-controlled logistics for pharma, food and biotech. Real-time monitoring and validated cold-chain systems are the differentiator.",
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Cold chain warehouse",
       roles: [
         "Cold Chain WMS Specialist",
         "IoT Temperature Monitoring Lead",
@@ -623,9 +581,6 @@ export const manufacturingData: L1PageData = {
       name: "E-commerce Fulfilment Logistics",
       intro:
         "Fulfilment centres, dark stores and last-mile networks. OMS, WMS and rapid order routing are the top hiring priorities.",
-      image:
-        "https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "E-commerce fulfilment centre",
       roles: [
         "OMS Architect",
         "Manhattan Active Omni Consultant",
@@ -643,9 +598,6 @@ export const manufacturingData: L1PageData = {
       name: "FMCG Manufacturing",
       intro:
         "Fast-moving consumer goods at volume. Demand planning, production efficiency and end-to-end supply chain visibility drive the operating rhythm.",
-      image:
-        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "FMCG production",
       roles: [
         "SAP IBP Specialist",
         "Blue Yonder Demand Lead",
@@ -694,9 +646,6 @@ export const manufacturingData: L1PageData = {
         "The gap between IIoT pilots and plant-wide rollout is now a talent problem, not a technology one. Where the specialists actually are — and what they cost.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Smart factory IoT sensors",
     },
     {
       href: "/insights/supply-chain-resilience-predictive-analytics",
@@ -708,9 +657,6 @@ export const manufacturingData: L1PageData = {
         "Every manufacturer that got hit hardest in 2024 had the same profile — good tools, wrong contractors. What we've learned from placing planners across three continents.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Supply chain warehouse",
     },
     {
       href: "/insights/circular-economy-manufacturing-tech",
@@ -721,9 +667,6 @@ export const manufacturingData: L1PageData = {
         "Carbon accounting, product passports and reverse ops are moving from board decks to programme plans. The specialist bench has not caught up.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Sustainable manufacturing",
     },
     {
       href: "/insights/siemens-opcenter-scarcity-2025",
@@ -735,9 +678,6 @@ export const manufacturingData: L1PageData = {
         "Every ME auto and pharma programme in 2024 chased the same Opcenter architects. What that scarcity means for your 2026 rollout timeline.",
       author: "Sumeet Goenka",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Industrial machinery",
     },
   ],
 
@@ -763,8 +703,8 @@ export const manufacturingData: L1PageData = {
     },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -776,7 +716,7 @@ export const manufacturingData: L1PageData = {
 
   seo: {
     title:
-      "Manufacturing & Logistics Tech Contractors · UK · ME · India | Yallo Talent",
+      "Manufacturing & Logistics Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "SAP, Siemens, Rockwell, Blue Yonder and Manhattan contractors for manufacturing programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

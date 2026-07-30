@@ -12,16 +12,13 @@ export const healthcareData: L1PageData = {
   eyebrow: "Healthcare & Life Sciences · Contract-first",
   title: "Healthcare & life sciences contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Epic, Cerner, Veeva, Medidata and Guidewire specialists for provider, payer and life-sciences programmes across UK, ME and India. Screened for regulated-industry depth.",
-  heroImage:
-    "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Hospital corridor and clinician",
+  sub: "Epic, Cerner, Veeva, Medidata and Guidewire specialists for provider, payer and life-sciences programmes across the Middle East, Europe and India. Screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
+    "Middle East · Europe · India",
     "GxP / HIPAA aware",
   ],
 
@@ -29,7 +26,7 @@ export const healthcareData: L1PageData = {
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Healthcare function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for healthcare & life sciences",
@@ -59,7 +56,7 @@ export const healthcareData: L1PageData = {
   scarceTitle:
     "The roles every healthcare & life-sciences programme needs — and struggles to find.",
   scarceCopy:
-    "These are the specialists that appear on every provider, payer and life-sciences brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India.",
+    "These are the specialists that appear on every provider, payer and life-sciences brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -363,9 +360,6 @@ export const healthcareData: L1PageData = {
       name: "Patient Management",
       intro:
         "Access, scheduling and patient portals. Epic Cadence / Cerner Registration migrations dominate the pipeline.",
-      image:
-        "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Patient reception",
       roles: [
         "Epic Cadence Consultant",
         "Cerner Registration Specialist",
@@ -383,9 +377,6 @@ export const healthcareData: L1PageData = {
       name: "Electronic Health Records (EHR)",
       intro:
         "Provider EHR platforms — clinical documentation, orders, decision support. IEC 62304 and CDSS integration expertise matters.",
-      image:
-        "https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "EHR clinician screen",
       roles: [
         "Epic Systems Consultant",
         "Cerner Millennium Specialist",
@@ -403,9 +394,6 @@ export const healthcareData: L1PageData = {
       name: "Clinical Trials Management",
       intro:
         "Sponsor, CRO and site systems. Rave, Clinical One and Veeva CTMS migrations are the busiest track.",
-      image:
-        "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Clinical trials lab",
       roles: [
         "Medidata Rave Consultant",
         "Oracle Clinical One Specialist",
@@ -423,9 +411,6 @@ export const healthcareData: L1PageData = {
       name: "Pharmaceutical Supply Chain",
       intro:
         "Serialisation, cold chain and multi-echelon planning for pharma. Track & trace obligations dominate.",
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Pharma supply chain",
       roles: [
         "SAP IBP for Pharma Consultant",
         "Kinaxis RapidResponse Specialist",
@@ -443,9 +428,6 @@ export const healthcareData: L1PageData = {
       name: "Regulatory Compliance in Life Sciences",
       intro:
         "Submissions, QMS and audit-readiness for pharma and medical devices. Veeva Vault and MasterControl migrations run hot.",
-      image:
-        "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Life sciences regulation",
       roles: [
         "Veeva QualityOne Consultant",
         "MasterControl Specialist",
@@ -463,9 +445,6 @@ export const healthcareData: L1PageData = {
       name: "Telemedicine & Virtual Care",
       intro:
         "Virtual clinics, RPM and asynchronous care. Post-pandemic scale meets long-term care-model change.",
-      image:
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telemedicine consult",
       roles: [
         "Teladoc Consultant",
         "Amwell Specialist",
@@ -483,9 +462,6 @@ export const healthcareData: L1PageData = {
       name: "Healthcare Analytics & AI",
       intro:
         "Clinical, operational and financial analytics with an ML/GenAI layer. Data platform + interoperability is the constant blocker.",
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare analytics",
       roles: [
         "Snowflake for Health Consultant",
         "Google Cloud AI Health Specialist",
@@ -503,9 +479,6 @@ export const healthcareData: L1PageData = {
       name: "Cybersecurity for Healthcare",
       intro:
         "HIPAA / Data Security & Protection Toolkit workloads. IoMT, ransomware defence and clinical uptime dominate the brief.",
-      image:
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare cybersecurity",
       roles: [
         "Palo Alto Networks Consultant",
         "IBM Security for Healthcare Specialist",
@@ -523,9 +496,6 @@ export const healthcareData: L1PageData = {
       name: "Precision Medicine",
       intro:
         "Genomics, biomarker discovery and personalised therapeutic pipelines. HPC, bioinformatics and clinical trials converge here.",
-      image:
-        "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Genomics lab",
       roles: [
         "Illumina Bioinformatics Consultant",
         "23andMe Health Specialist",
@@ -543,9 +513,6 @@ export const healthcareData: L1PageData = {
       name: "Accounting & Financial Operations",
       intro:
         "Trust finance, revenue cycle management, payer contracts and IFRS/GAAP reporting.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare finance",
       roles: [
         "SAP S/4HANA Finance for Health Consultant",
         "Oracle Financials Cloud Specialist",
@@ -563,9 +530,6 @@ export const healthcareData: L1PageData = {
       name: "Procurement & Vendor Management",
       intro:
         "GPO participation, clinical supply management and third-party risk in a regulated environment.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare procurement",
       roles: [
         "SAP Ariba Consultant",
         "Coupa Procurement Specialist",
@@ -583,9 +547,6 @@ export const healthcareData: L1PageData = {
       name: "Human Capital Management",
       intro:
         "Rostering, credentialing, payroll and pensions for large clinical workforces.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare workforce",
       roles: [
         "SAP SuccessFactors Consultant",
         "Oracle HCM Cloud Specialist",
@@ -603,9 +564,6 @@ export const healthcareData: L1PageData = {
       name: "IT Infrastructure & Operations",
       intro:
         "Cloud landing zones, ITSM and clinical uptime. Legacy midrange decommissioning stays busy across the year.",
-      image:
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare IT infrastructure",
       roles: [
         "ServiceNow ITSM Consultant",
         "BMC Helix Specialist",
@@ -623,9 +581,6 @@ export const healthcareData: L1PageData = {
       name: "Regulatory Compliance & Governance",
       intro:
         "MHRA, EMA, FDA and DHA reporting. IFRS 17 in health-insurance programmes adds another swim-lane.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Regulatory compliance",
       roles: [
         "Wolters Kluwer Reg Reporting Consultant",
         "Thomson Reuters ONESOURCE Specialist",
@@ -674,9 +629,6 @@ export const healthcareData: L1PageData = {
         "Every Gulf hospital that moved off legacy EHR in the last 18 months hunted the same architects. Where the available bench actually is.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1580281657527-47f249e8f4df?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "EHR migration",
     },
     {
       href: "/insights/veeva-vault-scarcity-2025",
@@ -688,9 +640,6 @@ export const healthcareData: L1PageData = {
         "The organisations that delivered Vault on time last year confirmed the QualityDocs architect before the vendor was even signed.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Veeva Vault regulation",
     },
     {
       href: "/insights/fhir-interop-2025",
@@ -702,9 +651,6 @@ export const healthcareData: L1PageData = {
         "Interop programmes are moving from pilot to network-scale. Where the FHIR-native architects actually are.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Healthcare interoperability",
     },
     {
       href: "/insights/pharma-serialisation-talent",
@@ -716,9 +662,6 @@ export const healthcareData: L1PageData = {
         "Serialisation deadlines don't move. What we're seeing in placement demand across UK and the Gulf.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Pharma serialisation",
     },
   ],
 
@@ -742,8 +685,8 @@ export const healthcareData: L1PageData = {
       category: "Platform",
     },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -765,7 +708,7 @@ export const healthcareData: L1PageData = {
 
   seo: {
     title:
-      "Healthcare & Life Sciences Tech Contractors · UK · ME · India | Yallo Talent",
+      "Healthcare & Life Sciences Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "Epic, Cerner, Veeva, Medidata and Salesforce Health Cloud contractors for provider, payer and life-sciences programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

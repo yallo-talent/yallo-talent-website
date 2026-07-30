@@ -8,9 +8,6 @@ export const eorData: ServicePageData = {
   title: "You choose the hire.",
   emphasis: "We carry the employment.",
   lede: "Found the specialist yourself? We handle the UAE visa or the India payroll. You direct the work, we hold the compliance — no local entity setup, no legal exposure.",
-  heroImage:
-    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1100&q=80&auto=format&fit=crop",
-  heroImageAlt: "Business agreement being reviewed",
   heroStat: { n: "2", l: "regions · UAE + India" },
   primaryCta: { label: "Set up an EOR arrangement", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },

@@ -4,13 +4,10 @@ import type { ServicePageData } from "./types";
 export const permanentData: ServicePageData = {
   slug: "permanent",
   hue: "blue",
-  eyebrow: "Permanent Hiring · UK · ME · India",
+  eyebrow: "Permanent Hiring · Middle East · Europe · India",
   title: "Build your permanent bench",
   emphasis: "with specialists placed to stay.",
   lede: "For the programme-critical roles you need long-term — architect-vetted, retention-minded, and matched to the delivery outcomes your team is on the hook for.",
-  heroImage:
-    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1100&q=80&auto=format&fit=crop",
-  heroImageAlt: "Enterprise leader in a working session",
   heroStat: { n: "2:1", l: "CV-to-interview ratio" },
   primaryCta: { label: "Discuss a permanent hire", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
@@ -92,7 +89,7 @@ export const permanentData: ServicePageData = {
     },
     {
       q: "Which regions do you cover?",
-      a: "UK, Middle East (UAE + KSA), and India (Bengaluru, Pune, Mumbai). We support relocation and visa cover through Yallo EOR where needed.",
+      a: "UK, Middle East (UAE and Saudi Arabia), and India (Bengaluru, Pune, Mumbai). We support relocation and visa cover through Yallo EOR where needed.",
     },
     {
       q: "How long from brief to signed offer?",
@@ -106,6 +103,6 @@ export const permanentData: ServicePageData = {
   seo: {
     title: "Permanent Hiring · Enterprise IT Specialists | Yallo Talent",
     description:
-      "Architect-vetted permanent enterprise IT hires with a 2:1 CV-to-interview ratio. Placed to stay. UK, ME, India — SAP, Oracle, Microsoft and more.",
+      "Architect-vetted permanent enterprise IT hires with a 2:1 CV-to-interview ratio. Placed to stay. Middle East, Europe, India — SAP, Oracle, Microsoft and more.",
   },
 };

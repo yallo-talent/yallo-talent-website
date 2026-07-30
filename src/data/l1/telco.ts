@@ -12,24 +12,21 @@ export const telcoData: L1PageData = {
   eyebrow: "Telco & Media · Contract-first",
   title: "Telco & media tech contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 specialists for OSS, BSS, 5G and media programmes across UK, ME and India. Screened for carrier-grade delivery depth.",
-  heroImage:
-    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Telecom control centre",
+  sub: "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 specialists for OSS, BSS, 5G and media programmes across the Middle East, Europe and India. Screened for carrier-grade delivery depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
-    "Contract · EOR · Subcontract",
+    "Middle East · Europe · India",
+    "Contract · EOR · Managed Delivery",
   ],
 
   stats: [
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Telco function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for telco & media",
@@ -58,7 +55,7 @@ export const telcoData: L1PageData = {
   scarceTitle:
     "The roles every telco & media programme needs — and struggles to find.",
   scarceCopy:
-    "These are the specialists that appear on every carrier and media brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India.",
+    "These are the specialists that appear on every carrier and media brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -362,9 +359,6 @@ export const telcoData: L1PageData = {
       name: "Network Operations",
       intro:
         "NOC, service assurance and orchestration. Ericsson / Nokia / Cisco depth is the differentiator.",
-      image:
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Network operations centre",
       roles: [
         "Ericsson NOC Consultant",
         "Nokia NetAct Specialist",
@@ -382,9 +376,6 @@ export const telcoData: L1PageData = {
       name: "Rating & Billing",
       intro:
         "Convergent charging, real-time rating and invoice generation. Migration programmes dominate.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Rating and billing systems",
       roles: [
         "Oracle BRM Consultant",
         "Amdocs Charging Specialist",
@@ -402,9 +393,6 @@ export const telcoData: L1PageData = {
       name: "OSS Inventory Management",
       intro:
         "Physical, logical and service inventory. Migration to Blue Planet / UIM is the recurring theme.",
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "OSS inventory management",
       roles: [
         "Oracle UIM Consultant",
         "Ciena Blue Planet Specialist",
@@ -422,9 +410,6 @@ export const telcoData: L1PageData = {
       name: "Service Activation",
       intro:
         "Provisioning and service orchestration for consumer, enterprise and wholesale.",
-      image:
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Service activation systems",
       roles: [
         "Oracle Service Activation Consultant",
         "Ericsson Activation Specialist",
@@ -442,9 +427,6 @@ export const telcoData: L1PageData = {
       name: "Customer Relationship Management",
       intro:
         "Care, sales, digital self-service and retention. Salesforce Comms Cloud migrations are moving fast.",
-      image:
-        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco customer care",
       roles: [
         "Salesforce Communications Cloud Consultant",
         "Oracle Siebel CRM Specialist",
@@ -462,9 +444,6 @@ export const telcoData: L1PageData = {
       name: "Content Management & Distribution",
       intro:
         "Broadcast, OTT and media asset workflows. DRM, encoding and CDN sit at the core.",
-      image:
-        "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Content management studio",
       roles: [
         "Brightcove Consultant",
         "AWS Media Services Specialist",
@@ -482,9 +461,6 @@ export const telcoData: L1PageData = {
       name: "Advertising Operations",
       intro:
         "Ad tech, DSP/SSP, audience segmentation. Programmatic and identity depth are the differentiators.",
-      image:
-        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Advertising operations",
       roles: [
         "Google Ad Manager Consultant",
         "Xandr Platform Specialist",
@@ -502,9 +478,6 @@ export const telcoData: L1PageData = {
       name: "Subscriber & Billing Management",
       intro:
         "End-to-end subscriber lifecycle. Migrations from legacy billing to convergent stacks run continuously.",
-      image:
-        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Subscriber and billing",
       roles: [
         "Netcracker Billing Consultant",
         "Amdocs RevenueONE Specialist",
@@ -521,10 +494,7 @@ export const telcoData: L1PageData = {
       id: "5g-seg",
       name: "5G Network Management",
       intro:
-        "5G core, RAN, slicing and edge. UK, ME and India carriers are all mid-rollout.",
-      image:
-        "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "5G network infrastructure",
+        "5G core, RAN, slicing and edge. the Middle East, Europe and India carriers are all mid-rollout.",
       roles: [
         "Ericsson 5G Core Consultant",
         "Nokia 5G Specialist",
@@ -542,9 +512,6 @@ export const telcoData: L1PageData = {
       name: "AI & Analytics for Telco & Media",
       intro:
         "Network AI, churn, GenAI-driven personalisation. The specialist bench is thin across all three markets.",
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco analytics dashboard",
       roles: [
         "Google Cloud AI for Media Consultant",
         "AWS Analytics for Telco Specialist",
@@ -561,9 +528,6 @@ export const telcoData: L1PageData = {
       id: "finance-ops-seg",
       name: "Accounting & Financial Operations",
       intro: "Group finance, product P&L and IFRS reporting at MNO scale.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco finance operations",
       roles: [
         "SAP S/4HANA Finance Consultant",
         "Oracle Financials Cloud Specialist",
@@ -581,9 +545,6 @@ export const telcoData: L1PageData = {
       name: "Procurement & Vendor Management",
       intro:
         "Vendor spend, contracts and third-party risk in a heavily regulated industry.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco procurement",
       roles: [
         "SAP Ariba Consultant",
         "Coupa Procurement Specialist",
@@ -601,9 +562,6 @@ export const telcoData: L1PageData = {
       name: "Human Capital Management",
       intro:
         "Payroll, workforce deployment and comp for large distributed engineering teams.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco HCM",
       roles: [
         "SAP SuccessFactors Consultant",
         "Oracle HCM Cloud Specialist",
@@ -621,9 +579,6 @@ export const telcoData: L1PageData = {
       name: "IT Infrastructure & Operations",
       intro:
         "Cloud landing zones, ITSM and edge compute for carriers. Cloud-first is the platform selection.",
-      image:
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco IT infrastructure",
       roles: [
         "ServiceNow ITSM Consultant",
         "BMC Helix Specialist",
@@ -641,9 +596,6 @@ export const telcoData: L1PageData = {
       name: "Regulatory Compliance & Governance",
       intro:
         "Ofcom, TRA, DoT and other national telco regulators. Data sovereignty is the recurring headache.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Telco regulatory compliance",
       roles: [
         "Wolters Kluwer Reg Reporting Consultant",
         "Thomson Reuters ONESOURCE Specialist",
@@ -692,9 +644,6 @@ export const telcoData: L1PageData = {
         "The bench that delivered the last generation of MNO transformations is thinning fast. Where the available architects actually are.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Charging systems",
     },
     {
       href: "/insights/5g-standalone-talent-me",
@@ -706,9 +655,6 @@ export const telcoData: L1PageData = {
         "The rollout has moved from proof of concept to network-wide deployment. Vendor consultants are booked out through 2026.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "5G rollout",
     },
     {
       href: "/insights/salesforce-comms-cloud-2025",
@@ -720,9 +666,6 @@ export const telcoData: L1PageData = {
         "The programmes that hit dates confirmed the Comms Cloud architect before vendor selection was complete.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Telco CRM",
     },
     {
       href: "/insights/oss-bss-modernisation",
@@ -734,9 +677,6 @@ export const telcoData: L1PageData = {
         "The specialist bench you need for a real cloud-native carrier stack — where they are and what they cost.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "OSS BSS modernisation",
     },
   ],
 
@@ -760,8 +700,8 @@ export const telcoData: L1PageData = {
     },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -782,7 +722,8 @@ export const telcoData: L1PageData = {
   ],
 
   seo: {
-    title: "Telco & Media Tech Contractors · UK · ME · India | Yallo Talent",
+    title:
+      "Telco & Media Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 contractors for OSS, BSS, 5G and media programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

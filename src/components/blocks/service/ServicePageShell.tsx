@@ -1,26 +1,27 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import type { ServiceHue, ServicePageData } from "@/data/services/types";
+import { PetalPlate } from "@/components/ui/PetalPlate";
+import type { ServicePageData } from "@/data/services/types";
 import styles from "./ServicePageShell.module.css";
 
-const hueStyle = (hue: ServiceHue): React.CSSProperties =>
-  ({
-    "--sector-accent": `var(--hue-${hue}-500)`,
-    "--sector-accent-08": `var(--hue-${hue}-08)`,
-    "--sector-accent-20": `var(--hue-${hue}-20)`,
-    "--sector-accent-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/**
+ * One accent, always. Canon retires the six per-sector hues, and this helper
+ * previously wrote them as INLINE custom properties — inline wins over any
+ * class, so it re-introduced a light gold wash on dark surfaces and defeated
+ * .band-dark. It now returns nothing, so --sector-accent* resolves from
+ * globals.css. The `hue` fields left in the data are inert.
+ */
+const hueStyle = (): React.CSSProperties => ({});
 
 interface Props {
   data: ServicePageData;
 }
 
 export function ServicePageShell({ data }: Props) {
-  const style = hueStyle(data.hue);
+  const style = hueStyle();
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -32,7 +33,7 @@ export function ServicePageShell({ data }: Props) {
   };
 
   return (
-    <div className={styles.page} style={style}>
+    <div className={`${styles.page} band-dark`} style={style}>
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: FAQ JSON-LD is generated server-side from typed FAQ data — no user input
@@ -83,13 +84,10 @@ function ServiceHero({ data }: Props) {
 
         <div className={styles.heroVisual}>
           <div className={styles.heroFrame}>
-            <Image
-              src={data.heroImage}
-              alt={data.heroImageAlt}
-              fill
-              priority
-              sizes="(max-width: 900px) 92vw, 520px"
+            <PetalPlate
+              seed={data.slug}
               className={styles.heroImage}
+              ratio={0.5}
             />
             <div className={styles.heroImageOverlay} aria-hidden="true" />
             <div className={styles.heroImageTint} aria-hidden="true" />

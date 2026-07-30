@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
+import { PetalPlate } from "@/components/ui/PetalPlate";
 import type {
   L1ExpertiseCard,
   L1Hue,
@@ -11,30 +11,17 @@ import type {
 } from "@/data/l1/types";
 import styles from "./L2PageShell.module.css";
 
-const hueStyle = (hue: L1Hue): React.CSSProperties =>
-  ({
-    "--sector-accent": `var(--hue-${hue}-500)`,
-    "--sector-accent-08": `var(--hue-${hue}-08)`,
-    "--sector-accent-20": `var(--hue-${hue}-20)`,
-    "--sector-accent-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/**
+ * One accent, always. Canon retires the six per-sector hues, and this helper
+ * previously wrote them as INLINE custom properties — inline wins over any
+ * class, so it re-introduced a light gold wash on dark surfaces and defeated
+ * .band-dark. It now returns nothing, so --sector-accent* resolves from
+ * globals.css. The `hue` fields left in the data are inert.
+ */
+const hueStyle = (): React.CSSProperties => ({});
 
-const cardHueCycle: L1Hue[] = [
-  "blue",
-  "teal",
-  "violet",
-  "rose",
-  "green",
-  "orange",
-];
-
-const cardHueStyle = (hue: L1Hue): React.CSSProperties =>
-  ({
-    "--card-hue": `var(--hue-${hue}-500)`,
-    "--card-hue-08": `var(--hue-${hue}-08)`,
-    "--card-hue-20": `var(--hue-${hue}-20)`,
-    "--card-hue-35": `var(--hue-${hue}-35)`,
-  }) as React.CSSProperties;
+/** One accent, always — see hueStyle above. */
+const cardHueStyle = (): React.CSSProperties => ({});
 
 interface Props {
   /** The L1 page data for the parent sector — provides sidebar list + hero image + hue. */
@@ -45,7 +32,7 @@ interface Props {
 
 export function L2PageShell({ sector, fn }: Props) {
   return (
-    <div className={styles.page} style={hueStyle(sector.hue)}>
+    <div className={`${styles.page} band-dark`} style={hueStyle()}>
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
@@ -70,13 +57,10 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
     <section className={styles.hero}>
       <div className={styles.heroImageWrap}>
-        <Image
-          src={sector.heroImage}
-          alt={sector.heroImageAlt}
-          fill
-          priority
-          sizes="(max-width: 900px) 100vw, calc(100vw - 280px)"
+        <PetalPlate
+          seed={sector.slug}
           className={styles.heroImage}
+          ratio={0.5}
         />
       </div>
       <div className={styles.heroTint} aria-hidden="true" />
@@ -124,11 +108,11 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
           </div>
           <div className={styles.heroDot}>
             <span className={styles.heroDotMark} aria-hidden="true" />
-            Active bench · UK · ME · India
+            Active bench · Middle East · Europe · India
           </div>
           <div className={styles.heroDot}>
             <span className={styles.heroDotMark} aria-hidden="true" />
-            Contract · EOR · Subcontract
+            Contract · EOR · Managed Delivery
           </div>
         </div>
       </div>
@@ -144,8 +128,6 @@ function L2Overview({
   sector: L1PageData;
   fn: L1ExpertiseCard;
 }) {
-  const image = fn.overviewImage ?? sector.heroImage;
-  const imageAlt = fn.overviewImageAlt ?? sector.heroImageAlt;
   const copy = fn.overview ?? fn.blurb ?? "";
   return (
     <section className={styles.overview}>
@@ -174,12 +156,10 @@ function L2Overview({
           </ul>
         </div>
         <div className={styles.overviewImageWrap}>
-          <Image
-            src={image}
-            alt={imageAlt}
-            fill
-            sizes="(max-width: 900px) 100vw, 420px"
+          <PetalPlate
+            seed={`${sector.slug}:${fn.slug}`}
             className={styles.overviewImage}
+            ratio={0.8}
           />
           <div className={styles.overviewImageTint} aria-hidden="true" />
         </div>
@@ -204,8 +184,9 @@ function L2Roles({ fn }: { fn: L1ExpertiseCard }) {
           Contractor roles Yallo places into {fn.title.toLowerCase()}.
         </h2>
         <p className={styles.rolesSub}>
-          Every role below is on an active bench across UK, ME and India. Send
-          the brief — the specialist is in your inbox in 72 hours.
+          Every role below is on an active bench across the Middle East, Europe
+          and India. Send the brief — the specialist is in your inbox in 72
+          hours.
         </p>
         <div className={styles.rolesGrid}>
           {roles.map((r) => (
@@ -238,12 +219,11 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
         </p>
         <div className={styles.toolsGrid}>
           {fn.tools.map((tool, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             return (
               <article
                 key={tool.slug}
                 className={styles.tc}
-                style={cardHueStyle(hue)}
+                style={cardHueStyle()}
               >
                 <div className={styles.tcGlow} aria-hidden="true" />
                 <div className={styles.tcInner}>
@@ -263,7 +243,8 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
                   <div className={styles.tcBench}>
                     <span className={styles.tcBenchDot} aria-hidden="true" />
                     <span className={styles.tcBenchTxt}>
-                      {tool.benchNote ?? "Active bench · UK · ME · India"}
+                      {tool.benchNote ??
+                        "Active bench · Middle East · Europe · India"}
                     </span>
                   </div>
                   <Link href={briefHref} className={styles.tcCta}>
@@ -320,7 +301,7 @@ function L2Screening() {
             </span>
             <span className={styles.screeningChip}>
               <span className={styles.screeningChipDot} aria-hidden="true" />
-              Contract · EOR · Subcontract
+              Contract · EOR · Managed Delivery
             </span>
           </div>
         </div>
@@ -340,26 +321,26 @@ const vendorToPlatformSlug: Record<string, string> = {
 };
 
 const fnToCapabilitySlugs: Record<string, string[]> = {
-  "customer-experience": ["data-ai", "integration-middleware"],
-  clienteling: ["data-ai"],
+  "customer-experience": ["data-analytics", "integration-middleware"],
+  clienteling: ["data-analytics"],
   "store-operations": ["cloud-infrastructure", "integration-middleware"],
   "point-of-sale": ["cybersecurity", "cloud-infrastructure"],
-  merchandising: ["data-ai"],
-  "assortment-planning": ["data-ai"],
-  "space-planning": ["data-ai"],
-  "pricing-promotions": ["data-ai"],
-  "loyalty-rewards": ["data-ai", "integration-middleware"],
-  crm: ["data-ai", "integration-middleware"],
+  merchandising: ["data-analytics"],
+  "assortment-planning": ["data-analytics"],
+  "space-planning": ["data-analytics"],
+  "pricing-promotions": ["data-analytics"],
+  "loyalty-rewards": ["data-analytics", "integration-middleware"],
+  crm: ["data-analytics", "integration-middleware"],
   ecommerce: ["cloud-infrastructure", "integration-middleware"],
   "omnichannel-fulfillment": ["integration-middleware", "cloud-infrastructure"],
   "order-management": ["integration-middleware"],
   "warehouse-management": ["integration-middleware", "cloud-infrastructure"],
   "transport-management": ["integration-middleware"],
-  "supply-chain": ["data-ai"],
-  "demand-planning": ["data-ai"],
-  "inventory-replenishment": ["data-ai"],
+  "supply-chain": ["data-analytics"],
+  "demand-planning": ["data-analytics"],
+  "inventory-replenishment": ["data-analytics"],
   "returns-reverse-logistics": ["integration-middleware"],
-  "master-data-pim": ["data-ai", "integration-middleware"],
+  "master-data-pim": ["data-analytics", "integration-middleware"],
 };
 
 const platformLabels: Record<string, string> = {
@@ -372,12 +353,12 @@ const platformLabels: Record<string, string> = {
 };
 
 const capabilityLabels: Record<string, string> = {
-  "data-ai": "Data & AI",
-  "digital-devops": "Digital & DevOps",
+  "data-analytics": "Data & AI",
+  "devops-platform-engineering": "Digital & DevOps",
   "cloud-infrastructure": "Cloud & Infrastructure",
   cybersecurity: "Cybersecurity",
   "integration-middleware": "Integration & Middleware",
-  "emerging-technologies": "Emerging Technologies",
+  "testing-quality-engineering": "Emerging Technologies",
 };
 
 function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
@@ -399,13 +380,12 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
             <div className={styles.crossLabel}>Related platforms</div>
             <div className={styles.crossChips}>
               {platforms.map((slug, i) => {
-                const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
                 return (
                   <Link
                     key={slug}
                     href={`/platforms/${slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle(hue)}
+                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipName}>
                       {platformLabels[slug] ?? slug}
@@ -424,15 +404,12 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
             <div className={styles.crossLabel}>Related capabilities</div>
             <div className={styles.crossChips}>
               {capabilities.map((slug, i) => {
-                const hue = cardHueCycle[
-                  (i + 3) % cardHueCycle.length
-                ] as L1Hue;
                 return (
                   <Link
                     key={slug}
                     href={`/capabilities/${slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle(hue)}
+                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipName}>
                       {capabilityLabels[slug] ?? slug}
@@ -469,7 +446,7 @@ const engagementPillars: {
     icon: "pillarContract",
     eyebrow: "01 · Contract",
     title: "Contract & interim",
-    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across UK, ME and India.",
+    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
     bullets: [
       "72h brief to shortlist",
       "IR35, day-rate or fixed-term",
@@ -540,7 +517,7 @@ function L2Engagement() {
                 key={p.slug}
                 href={p.href}
                 className={styles.engagePillar}
-                style={cardHueStyle(p.hue)}
+                style={cardHueStyle()}
               >
                 <div className={styles.engagePillarGlow} aria-hidden="true" />
                 <span className={styles.engagePillarArrow} aria-hidden="true">
@@ -658,13 +635,12 @@ function L2RelatedFunctions({
         <h3 className={styles.relatedH}>Related functions in this sector</h3>
         <div className={styles.relatedGrid}>
           {picks.map((rf, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             return (
               <Link
                 key={rf.slug}
                 href={`/industries/${sector.slug}/${rf.slug}`}
                 className={styles.relatedCard}
-                style={cardHueStyle(hue)}
+                style={cardHueStyle()}
               >
                 <span className={styles.relatedNum}>{rf.num}</span>
                 <span className={styles.relatedTitle}>{rf.title}</span>
@@ -697,15 +673,12 @@ function L2Insights({ sector }: { sector: L1PageData }) {
       <div className={styles.insightsScrollWrap}>
         <div className={styles.insightsScroll}>
           {sector.insights.map((post, i) => {
-            const hue = cardHueCycle[i % cardHueCycle.length] as L1Hue;
             const inner = (
               <>
-                <Image
-                  src={post.image}
-                  alt={post.imageAlt}
-                  fill
-                  sizes="(max-width: 900px) 88vw, 320px"
+                <PetalPlate
+                  seed={post.href}
                   className={styles.insImg}
+                  ratio={0.66}
                 />
                 <div className={styles.insImgTint} aria-hidden="true" />
                 <div className={styles.insImgShade} aria-hidden="true" />
@@ -728,7 +701,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
                 <div
                   key={post.href}
                   className={styles.insCard}
-                  style={cardHueStyle(hue)}
+                  style={cardHueStyle()}
                   aria-disabled="true"
                 >
                   {inner}
@@ -740,7 +713,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
                 key={post.href}
                 href={post.href}
                 className={styles.insCard}
-                style={cardHueStyle(hue)}
+                style={cardHueStyle()}
               >
                 {inner}
               </Link>
@@ -805,5 +778,5 @@ function L2Sidebar({
   );
 }
 
-// Exported so route pages / tests can reuse if needed.
-export { cardHueCycle, cardHueStyle };
+// cardHueCycle is gone: the six per-sector hues are retired (canon §5).
+export { cardHueStyle };

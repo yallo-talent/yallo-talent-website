@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { PetalPlate } from "@/components/ui/PetalPlate";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -76,12 +76,9 @@ const philosophy = [
   },
   {
     title: "Region-deep, not brand-broad",
-    copy: "We're not a global-brand office in every capital. We're operators who work the UK, ME and India markets we know cold.",
+    copy: "We're not a global-brand office in every capital. We're operators who work the Middle East, Europe and India markets we know cold.",
   },
 ];
-
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1200&q=80&auto=format&fit=crop";
 
 export default function LeadershipPage() {
   return (
@@ -141,13 +138,7 @@ export default function LeadershipPage() {
                     "0 40px 90px -30px rgba(0, 0, 0, 0.75), inset 0 1px 0 var(--wa15)",
                 }}
               >
-                <Image
-                  src={HERO_IMAGE}
-                  alt="Founder in a working session"
-                  fill
-                  sizes="(max-width: 900px) 92vw, 500px"
-                  style={{ objectFit: "cover" }}
-                />
+                <PetalPlate seed="leadership" ratio={1.2} variant="arcs" />
                 <div
                   style={{
                     position: "absolute",

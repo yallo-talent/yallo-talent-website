@@ -12,24 +12,21 @@ export const financeData: L1PageData = {
   eyebrow: "Banking & Financial Services · Contract-first",
   title: "Banking & FS contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across UK, ME and India. Architect-screened for regulated-industry depth.",
-  heroImage:
-    "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Financial trading floor and city skyline",
+  sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Architect-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
-    "Contract · EOR · Subcontract",
+    "Middle East · Europe · India",
+    "Contract · EOR · Managed Delivery",
   ],
 
   stats: [
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Finance function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for banking & financial services",
@@ -59,7 +56,7 @@ export const financeData: L1PageData = {
   scarceTitle:
     "The roles every banking programme needs — and struggles to find.",
   scarceCopy:
-    "These are the specialists that appear on every finance brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have six weeks.",
+    "These are the specialists that appear on every finance brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -363,9 +360,6 @@ export const financeData: L1PageData = {
       name: "Retail Banking",
       intro:
         "Deposits, cards, mortgages and digital channels at consumer scale. Core migrations, digital onboarding and channel modernisation dominate the brief pipeline.",
-      image:
-        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Retail banking branch",
       roles: [
         "Temenos Transact Consultant",
         "Oracle FLEXCUBE Specialist",
@@ -383,9 +377,6 @@ export const financeData: L1PageData = {
       name: "Corporate Banking",
       intro:
         "Cash management, trade finance and lending for corporates. Client portals, KYC-refresh and lending workflows are constant pain points.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Corporate banking office",
       roles: [
         "Finastra Loan IQ Consultant",
         "nCino Corporate Banking Specialist",
@@ -403,9 +394,6 @@ export const financeData: L1PageData = {
       name: "Wealth & Asset Management",
       intro:
         "Portfolio management, advisor productivity and client reporting. Cross-border regulation and household-level views are the recurring differentiators.",
-      image:
-        "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Wealth management office",
       roles: [
         "FIS Wealth Management Consultant",
         "Temenos WealthSuite Specialist",
@@ -423,9 +411,6 @@ export const financeData: L1PageData = {
       name: "Insurance Services",
       intro:
         "P&C, life and health carriers. Policy admin migrations, claims automation and IFRS 17 reporting drive the platform selection.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Insurance office",
       roles: [
         "Guidewire ClaimCenter Consultant",
         "Duck Creek Policy Specialist",
@@ -443,9 +428,6 @@ export const financeData: L1PageData = {
       name: "Investment Banking",
       intro:
         "Front, middle and back-office trading. Murex/Calypso migrations, XVA and FRTB delivery need specialists with capital-markets muscle memory.",
-      image:
-        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Trading floor",
       roles: [
         "Murex Front-Office Consultant",
         "ION Trading Specialist",
@@ -463,9 +445,6 @@ export const financeData: L1PageData = {
       name: "Digital Payments",
       intro:
         "Card issuing, real-time rails and merchant acquiring. Regulatory rails (ISO 20022, SEPA Inst, FedNow) demand tight programme discipline.",
-      image:
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Digital payment terminal",
       roles: [
         "Fiserv Payments Consultant",
         "ACI Worldwide Specialist",
@@ -483,9 +462,6 @@ export const financeData: L1PageData = {
       name: "Risk & Compliance",
       intro:
         "Credit, market, operational and financial-crime risk. Regulator-driven programme cadence and end-of-cycle audit demands.",
-      image:
-        "https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Risk and compliance",
       roles: [
         "SAS Risk Consultant",
         "Oracle FSAA Specialist",
@@ -503,9 +479,6 @@ export const financeData: L1PageData = {
       name: "Treasury & Cash Management",
       intro:
         "Liquidity, FX and cash-flow forecasting. Corporate treasury and bank treasury programmes both live and die on integration quality.",
-      image:
-        "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Treasury operations",
       roles: [
         "SAP TRM Consultant",
         "Kyriba Specialist",
@@ -523,9 +496,6 @@ export const financeData: L1PageData = {
       name: "Lending & Loan Management",
       intro:
         "Origination, servicing and collections across retail, SME and corporate. Digital onboarding and credit-decisioning are the two consistent hotspots.",
-      image:
-        "https://images.unsplash.com/photo-1554224154-26032cbc0b3e?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Lending and loans",
       roles: [
         "nCino Loan Origination Specialist",
         "Finastra Loan IQ Consultant",
@@ -543,9 +513,6 @@ export const financeData: L1PageData = {
       name: "Cybersecurity for Banking",
       intro:
         "SOC, IAM, DLP and threat detection for regulated banks. Zero-trust programmes and payment-security uplift are the biggest bench draws.",
-      image:
-        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Cybersecurity operations",
       roles: [
         "Palo Alto Networks Consultant",
         "IBM Security for FS Specialist",
@@ -563,9 +530,6 @@ export const financeData: L1PageData = {
       name: "Financial Planning & Analytics",
       intro:
         "Group FP&A, product-level P&L and scenario modelling. Modernisation from Excel-heavy stacks to Anaplan/EPM is the recurring theme.",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Financial analytics dashboard",
       roles: [
         "Anaplan FS Model Builder",
         "Oracle EPM / PBCS Specialist",
@@ -583,9 +547,6 @@ export const financeData: L1PageData = {
       name: "Regulatory Compliance & Governance",
       intro:
         "Multi-jurisdiction reporting under FCA, PRA, DFSA, RBI and more. Wolters Kluwer and Axiom migrations continue to dominate the pipeline.",
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Regulatory compliance office",
       roles: [
         "Wolters Kluwer Reg Reporting Consultant",
         "Thomson Reuters ONESOURCE Specialist",
@@ -603,9 +564,6 @@ export const financeData: L1PageData = {
       name: "IT Infrastructure & Operations",
       intro:
         "Cloud landing zones, ITSM and DR programmes for regulated environments. Legacy midrange to cloud rehost/replatform is the busiest track.",
-      image:
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "IT infrastructure data centre",
       roles: [
         "ServiceNow ITSM Consultant",
         "BMC Helix Specialist",
@@ -623,9 +581,6 @@ export const financeData: L1PageData = {
       name: "Procurement & Vendor Management",
       intro:
         "Third-party risk, contracts and sourcing in a regulator-watched environment. Ariba/Coupa migrations run hot every year.",
-      image:
-        "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Procurement office",
       roles: [
         "SAP Ariba Consultant",
         "Coupa Procurement Specialist",
@@ -643,9 +598,6 @@ export const financeData: L1PageData = {
       name: "Data & AI in Financial Services",
       intro:
         "Data platform, ML models and MLOps at bank scale. Fraud, credit and personalisation use-cases dominate the specialist demand.",
-      image:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Data and AI operations",
       roles: [
         "Snowflake for Finance Consultant",
         "Google Cloud AI for FS Specialist",
@@ -694,9 +646,6 @@ export const financeData: L1PageData = {
         "Every Gulf tier-1 that moved off legacy core in the last 18 months chased the same Transact architects. What that scarcity means for your 2026 timeline.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Retail banking core migration",
     },
     {
       href: "/insights/guidewire-claimcenter-talent",
@@ -708,9 +657,6 @@ export const financeData: L1PageData = {
         "The insurers that delivered on time last year confirmed the ClaimCenter tech lead before the vendor was even signed. The fix isn't faster hiring — it's earlier briefing.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Insurance claim office",
     },
     {
       href: "/insights/psd3-open-banking-2025",
@@ -722,9 +668,6 @@ export const financeData: L1PageData = {
         "The rules are moving from consent to true portability. Where the integration and API architects that can actually deliver this are, and what they cost.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Digital payments and open banking",
     },
     {
       href: "/insights/aml-actimize-scarcity-2025",
@@ -733,12 +676,9 @@ export const financeData: L1PageData = {
       title:
         "AML analytics: why NICE Actimize modellers are the hardest hire in FS this year.",
       excerpt:
-        "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across UK and ME.",
+        "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across the Middle East and Europe.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1590650153855-d9e808231d41?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "AML analytics dashboard",
     },
   ],
 
@@ -764,8 +704,8 @@ export const financeData: L1PageData = {
     },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -777,7 +717,7 @@ export const financeData: L1PageData = {
 
   seo: {
     title:
-      "Banking & Financial Services Tech Contractors · UK · ME · India | Yallo Talent",
+      "Banking & Financial Services Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "Temenos, FLEXCUBE, Finacle, Guidewire and Murex contractors for banking, insurance and capital-markets programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

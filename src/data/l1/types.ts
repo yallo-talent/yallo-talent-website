@@ -46,11 +46,6 @@ export interface L1ExpertiseCard {
    */
   overview?: string;
   /**
-   * L2 hero / overview image — square-ish, sits next to the paragraph.
-   */
-  overviewImage?: string;
-  overviewImageAlt?: string;
-  /**
    * Vendor / tool cards rendered on the L2 page for this function.
    * Each card lists a specific tool (SAP Customer Experience, etc.)
    * with the contractor roles Yallo places into it.
@@ -124,14 +119,15 @@ export type L1IconKey =
 
 /**
  * One segment in the interactive "Segments we support" panel.
- * Sidebar list on the left; hovering an item swaps the panel image + copy + role pills.
+ * Sidebar list on the left; hovering an item swaps the panel drawing, copy and
+ * role pills. No image field: the drawing is derived from the segment id by
+ * PetalPlate, because canon forbids photography and every one of these was a
+ * hotlinked Unsplash URL.
  */
 export interface L1Segment {
   id: string;
   name: string;
   intro: string;
-  image: string;
-  imageAlt: string;
   roles: string[];
 }
 
@@ -164,8 +160,6 @@ export interface L1Insight {
   excerpt: string;
   author: string;
   minutes: number;
-  image: string;
-  imageAlt: string;
   /**
    * When false, the card renders as non-interactive text rather than a
    * link. Use where `href` points at a route that has not shipped yet.
@@ -184,8 +178,6 @@ export interface L1PageData {
   title: string;
   emphasis: string;
   sub: string;
-  heroImage: string;
-  heroImageAlt: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   statusDots: string[];

@@ -37,8 +37,6 @@ export interface ServicePageData {
   title: string;
   emphasis: string;
   lede: string;
-  heroImage: string;
-  heroImageAlt: string;
   heroStat: { n: string; l: string };
   primaryCta: ServiceCta;
   secondaryCta: ServiceCta;

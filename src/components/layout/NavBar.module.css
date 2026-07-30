@@ -458,7 +458,7 @@
   font-weight: 700;
   font-size: 13px;
   letter-spacing: -0.005em;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   transition:
     background 0.15s ease,
     transform 0.2s ease;
@@ -531,7 +531,7 @@
   background: var(--accent);
   color: var(--ink-950);
   text-align: center;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   font-weight: 700;
 }
 

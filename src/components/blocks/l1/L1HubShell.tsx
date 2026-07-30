@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IndexEntry } from "@/data/l1/index";
 import styles from "./L1HubShell.module.css";
 
@@ -13,7 +13,7 @@ interface Props {
 
 export function L1HubShell({ eyebrow, title, emphasis, sub, entries }: Props) {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} band-dark`}>
       <section className={styles.hero}>
         <div className={styles.heroOrbA} aria-hidden="true" />
         <div className={styles.heroOrbB} aria-hidden="true" />
@@ -50,12 +50,10 @@ export function L1HubShell({ eyebrow, title, emphasis, sub, entries }: Props) {
                 }
               >
                 <div className={styles.cardImage}>
-                  <Image
-                    src={e.image}
-                    alt={e.imageAlt}
-                    fill
-                    sizes="(max-width: 900px) 92vw, 400px"
+                  <PetalPlate
+                    seed={e.slug}
                     className={styles.cardImg}
+                    ratio={0.7}
                   />
                   <div className={styles.cardTint} aria-hidden="true" />
                   <div className={styles.cardOverlay} aria-hidden="true" />

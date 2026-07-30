@@ -15,7 +15,7 @@
   backdrop-filter: saturate(160%) blur(16px);
   -webkit-backdrop-filter: saturate(160%) blur(16px);
   border: 1px solid var(--border-accent);
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   box-shadow:
     0 20px 60px -20px rgba(0, 0, 0, 0.6),
     0 0 0 1px var(--border-accent),
@@ -53,7 +53,7 @@
   color: var(--black-950);
   font-size: 12px;
   font-weight: 700;
-  border-radius: 999px;
+  border-radius: 0 0 0 var(--r-md);
   transition: background 0.15s ease;
   white-space: nowrap;
 }

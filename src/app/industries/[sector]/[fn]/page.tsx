@@ -55,7 +55,7 @@ export async function generateMetadata({
   return buildMetadata({
     seo: {
       title: `${fn.title} Contractors · ${sector.title.replace(/&.*/, "").trim()} | Yallo Talent`,
-      description: `${roles} and more. Architect-screened contractor shortlists in 72 hours. UK · ME · India.`,
+      description: `${roles} and more. Architect-screened contractor shortlists in 72 hours. Middle East · Europe · India.`,
     },
     path: `/industries/${p.sector}/${p.fn}`,
   });

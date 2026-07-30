@@ -13,7 +13,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Industries · Yallo Talent",
     description:
-      "Talent for retail, banking, government, manufacturing, healthcare and telco enterprise programmes. Architect-screened across UK, ME and India.",
+      "Talent for retail, banking, government, manufacturing, healthcare and telco enterprise programmes. Architect-screened across the Middle East, Europe and India.",
   },
   path: "/industries",
 });

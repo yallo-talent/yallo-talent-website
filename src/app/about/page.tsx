@@ -46,14 +46,14 @@ const timeline = [
     copy: "Sumeet Goenka and a small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
   },
   {
-    year: "UK · ME",
+    year: "Middle East · Europe",
     title: "First benches active",
     copy: "SAP, Oracle and Salesforce contractor benches live across London, Dubai and Riyadh.",
   },
   {
     year: "India",
     title: "Delivery hub opens",
-    copy: "Bengaluru delivery-centre engagements begin, extending managed delivery and GCC stand-up capability.",
+    copy: "Bengaluru delivery-centre engagements begin, extending managed delivery and Global Capability Centre stand-up capability.",
   },
   {
     year: "Today",
@@ -225,7 +225,7 @@ export default function AboutPage() {
               <div className={styles.card}>
                 <h3 className={styles.cardTitle}>saasinator</h3>
                 <p className={styles.cardCopy}>
-                  Enterprise AI, designed, built and run. Launching soon.
+                  Enterprise AI, designed, built and run. Live at saasinator.ai.
                 </p>
               </div>
               <div className={styles.card}>

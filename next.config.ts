@@ -169,6 +169,56 @@ function caseStudyRedirects() {
   return out;
 }
 
+// -----------------------------------------------------------------------------
+// TAXONOMY REDIRECTS
+// -----------------------------------------------------------------------------
+// Canon §5 renames three disciplines, retires a fourth, and tidies one platform
+// slug. Every old URL is a published one, so all of them 301.
+
+/** Old capability slug -> new. `emerging-technologies` retires to /ai-talent. */
+const CAPABILITY_MOVES: Record<string, string> = {
+  "data-ai": "/capabilities/data-analytics",
+  data: "/capabilities/data-analytics",
+  "digital-devops": "/capabilities/devops-platform-engineering",
+  digital: "/capabilities/devops-platform-engineering",
+  cloud: "/capabilities/cloud-infrastructure",
+  integration: "/capabilities/integration-middleware",
+  // AI is a named specialism, not a discipline route.
+  "emerging-technologies": "/ai-talent",
+  innovation: "/ai-talent",
+};
+
+/**
+ * ServiceNow and AWS leave the platform set (§5). ServiceNow remains a tool
+ * Yallo staffs inside sector pages — that is real capability — but it is not a
+ * platform destination, and AWS folds into cloud-infrastructure.
+ */
+const PLATFORM_MOVES: Record<string, string> = {
+  blueyonder: "/platforms/blue-yonder",
+  servicenow: "/platforms",
+  aws: "/capabilities/cloud-infrastructure",
+};
+
+function taxonomyRedirects() {
+  const out: Array<{ source: string; destination: string; permanent: true }> =
+    [];
+  for (const [from, to] of Object.entries(CAPABILITY_MOVES)) {
+    out.push({
+      source: `/capabilities/${from}`,
+      destination: to,
+      permanent: true,
+    });
+  }
+  for (const [from, to] of Object.entries(PLATFORM_MOVES)) {
+    out.push({
+      source: `/platforms/${from}`,
+      destination: to,
+      permanent: true,
+    });
+  }
+  return out;
+}
+
 const nextConfig: NextConfig = {
   async redirects() {
     const specific: Array<{
@@ -176,13 +226,6 @@ const nextConfig: NextConfig = {
       destination: string;
       permanent: boolean;
     }> = [];
-
-    // Platform slug tidy-up (previous branch).
-    specific.push({
-      source: "/platforms/blueyonder",
-      destination: "/platforms/blue-yonder",
-      permanent: true,
-    });
 
     // Retired retail commentary -> /industries/retail.
     for (const slug of RETIRED_TO_RETAIL) {
@@ -269,7 +312,12 @@ const nextConfig: NextConfig = {
       },
     ];
 
-    return [...specific, ...caseStudyRedirects(), ...catchAll];
+    return [
+      ...specific,
+      ...taxonomyRedirects(),
+      ...caseStudyRedirects(),
+      ...catchAll,
+    ];
   },
 };
 

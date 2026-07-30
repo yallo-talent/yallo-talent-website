@@ -65,7 +65,7 @@ export function BriefCTA() {
                 data-hue="rose"
                 aria-hidden="true"
               />
-              UK · ME · India
+              Middle East · Europe · India
             </span>
           </div>
         </div>

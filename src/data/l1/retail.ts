@@ -12,24 +12,21 @@ export const retailData: L1PageData = {
   eyebrow: "Retail & Consumer · Contract-first",
   title: "Retail tech contractors,",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across UK, ME and India. Architect-screened for implementation depth — not just platform familiarity.",
-  heroImage:
-    "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=2000&auto=format&fit=crop&q=80",
-  heroImageAlt: "Retail store interior with display lighting",
+  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
     "72h brief to shortlist",
     "Active contractor bench",
-    "UK · ME · India",
-    "Contract · EOR · Subcontract",
+    "Middle East · Europe · India",
+    "Contract · EOR · Managed Delivery",
   ],
 
   stats: [
     { n: "72h", l: "Brief to shortlist" },
     { n: "2:1", l: "CV to interview ratio" },
     { n: "20", l: "Retail function areas" },
-    { n: "3", l: "Active delivery markets" },
+    { n: "80%", l: "Contracts renewed" },
   ],
 
   introEyebrow: "Why Yallo for retail",
@@ -51,7 +48,7 @@ export const retailData: L1PageData = {
   scarceTitle:
     "The roles every retail programme needs — and struggles to find.",
   scarceCopy:
-    "These are the specialists that appear on every retail programme brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across UK, ME and India. When you need one, you don't have six weeks.",
+    "These are the specialists that appear on every retail programme brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -115,9 +112,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Retail CX programmes stall when the contractor understands the platform but not the shopper journey. We place specialists who have built brand-to-basket flows across web, app and store — with the personalisation stack that supports them.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail customer experience flagship store",
       tools: [
         {
           slug: "sap-customer-experience",
@@ -173,9 +167,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Luxury clienteling is a specialist niche where sales-associate app design meets high-touch CRM. Our contractors have built appointment flows, wardrobe histories and gifting playbooks for maisons and multi-brand groups.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Luxury retail clienteling",
       tools: [
         {
           slug: "salesforce-clienteling",
@@ -229,9 +220,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Store ops is where the ERP meets the shop floor. Our contractors deliver task management, back-office systems and store-portal rollouts across estates from 20 stores to 2,000, integrating with the wider retail stack.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail store operations",
       tools: [
         {
           slug: "oracle-retail",
@@ -287,9 +275,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "POS is the highest-risk piece of the retail stack — outages hit revenue in real time. Our contractors have run POS rollouts at estate scale, from mobile POS in luxury boutiques to hyper-volume grocery checkouts.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail point-of-sale terminal",
       tools: [
         {
           slug: "oracle-xstore",
@@ -344,9 +329,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Merchandising and buying is where product strategy meets the ERP. Our contractors have run range-planning cycles, seasonal buying and open-to-buy budgeting across apparel, grocery, electronics and mass-merchandise programmes.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail merchandising",
       tools: [
         {
           slug: "blue-yonder-merchandise-management",
@@ -402,9 +384,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Assortment planning is the highest-leverage function in retail — the wrong plan wastes months of buying budget. Our contractors have run seasonal assortment cycles across apparel, grocery and mass-merchandise with Anaplan, Blue Yonder and Oracle Retail.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail assortment planning",
       tools: [
         {
           slug: "anaplan-retail-planning",
@@ -460,9 +439,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Space planning turns range strategy into store-level execution. Our contractors have delivered planogram, cluster and micro-space programmes across grocery, apparel and specialty formats.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail space planning",
       tools: [
         {
           slug: "blue-yonder-space-planning",
@@ -518,9 +494,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Pricing and promotions programmes are pure margin work. Our contractors have delivered price optimisation, markdown and offer-engine programmes across apparel, grocery and mass-merchandise at estate scale.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail pricing and promotions",
       tools: [
         {
           slug: "oracle-retail-pricing",
@@ -576,9 +549,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Loyalty is the retail battleground where brands compete on tier design, gamification and lifetime value. Our contractors have run modern points-and-tiers rebuilds across health & beauty, grocery and F&B.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail loyalty and rewards",
       tools: [
         {
           slug: "oracle-loyalty-cloud",
@@ -634,9 +604,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Retail CRM is where segmentation, journeys and cross-channel activation come together. Our contractors have run modern CDP-first stacks that unify email, SMS, app, web and paid-media activation.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail CRM operations",
       tools: [
         {
           slug: "salesforce-marketing-cloud-crm",
@@ -692,9 +659,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "E-commerce contractors are the pointy end of retail delivery — storefront, checkout, headless commerce and everything in between. Our bench spans monolithic Magento estates, Salesforce Commerce Cloud rebuilds, SAP Commerce migrations and Shopify Plus scale-ups.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail e-commerce operations",
       tools: [
         {
           slug: "sap-commerce-cloud",
@@ -750,9 +714,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Omnichannel fulfilment is where the digital and physical estate collide. Our contractors have built ship-from-store, click-and-collect and dark-store programmes at estate scale — from enablement in 50 stores to national rollouts.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail omnichannel fulfilment",
       tools: [
         {
           slug: "blue-yonder-fulfilment",
@@ -808,9 +769,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "OMS is the connective tissue of modern retail — it routes every order, allocates inventory and drives service promises. Our contractors have run distributed order orchestration programmes on IBM Sterling, Manhattan Active Omni and Fluent Commerce.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail order management",
       tools: [
         {
           slug: "ibm-sterling-oms",
@@ -866,9 +824,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "WMS programmes are the highest-stakes retail deliveries — a bad go-live shuts the DC. Our contractors have run Manhattan WMS, SAP EWM and Blue Yonder migrations across grocery, apparel and 3PL estates.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail warehouse management",
       tools: [
         {
           slug: "manhattan-wms",
@@ -924,9 +879,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "TMS is where cost and CX meet — the platform that decides whether the promise gets kept. Our contractors have run OTM, Manhattan Active TMS and Blue Yonder programmes across DC-to-store and last-mile networks.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail transport management",
       tools: [
         {
           slug: "oracle-transportation-management",
@@ -982,9 +934,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "S&OP is the boardroom conversation that runs the network. Our contractors have delivered integrated supply and demand planning programmes on Kinaxis, SAP IBP and Blue Yonder Luminate across grocery, apparel and mass-merchandise portfolios.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail supply chain S&OP",
       tools: [
         {
           slug: "kinaxis-rapidresponse",
@@ -1040,9 +989,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Modern demand planning is a mix of statistical rigour, ML models and demand sensing. Our contractors have delivered demand programmes across grocery, apparel and CPG using Blue Yonder, o9 and SAP IBP.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail demand planning",
       tools: [
         {
           slug: "blue-yonder-demand-planning",
@@ -1098,9 +1044,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Inventory and replenishment programmes drive stock availability and margin. Our contractors have delivered store, DC and network-level optimisation across grocery, apparel and mass merchandise with Blue Yonder, Oracle Retail and SAP F&R.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1601598851547-4302969d0614?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail inventory replenishment",
       tools: [
         {
           slug: "blue-yonder-replenishment",
@@ -1156,9 +1099,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "Returns and reverse logistics have moved from cost centre to CX differentiator. Our contractors have built returns portals, refurb flows and reverse WMS integrations for apparel, electronics and mass-merchandise.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail returns and reverse logistics",
       tools: [
         {
           slug: "returnly",
@@ -1214,9 +1154,6 @@ export const retailData: L1PageData = {
       ],
       overview:
         "PIM and MDM are the unglamorous foundation retail runs on. Our contractors have delivered product, customer and location data programmes at estate scale using Stibo, Informatica and Salsify.",
-      overviewImage:
-        "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=1200&auto=format&fit=crop&q=80",
-      overviewImageAlt: "Retail master data and PIM",
       tools: [
         {
           slug: "stibo-pim",
@@ -1271,9 +1208,6 @@ export const retailData: L1PageData = {
       name: "Apparel, Luxury & Accessories",
       intro:
         "High-SKU, multi-market, seasonally volatile. Luxury programmes demand contractors who understand clienteling, single-view-of-customer and complex omnichannel fulfilment — not just ERP basics.",
-      image:
-        "https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Apparel and luxury retail",
       roles: [
         "SAP CX Consultant",
         "Retail Planning Lead",
@@ -1292,9 +1226,6 @@ export const retailData: L1PageData = {
       name: "Grocery & Hypermarkets",
       intro:
         "Ultra-high transaction volumes, perishable supply chains and complex promotions. Contractors need SAP CAR, Blue Yonder demand planning and WMS depth to make an impact from week one.",
-      image:
-        "https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Grocery and hypermarket retail",
       roles: [
         "SAP CAR Specialist",
         "Blue Yonder WMS Lead",
@@ -1313,9 +1244,6 @@ export const retailData: L1PageData = {
       name: "Consumer Electronics",
       intro:
         "Rapid product cycles, omnichannel complexity and high-return volumes. Programmes need contractors with strong inventory management and reverse logistics depth alongside core ERP skills.",
-      image:
-        "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Consumer electronics retail",
       roles: [
         "Inventory Systems Specialist",
         "Oracle Retail Consultant",
@@ -1333,9 +1261,6 @@ export const retailData: L1PageData = {
       name: "Drugstore, Health & Beauty",
       intro:
         "Loyalty programme complexity, pharmacy integration and multi-channel fulfilment. CRM and loyalty specialists are consistently the hardest roles to fill in this segment.",
-      image:
-        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Health and beauty retail",
       roles: [
         "Loyalty Programme Lead",
         "CRM Functional Consultant",
@@ -1353,9 +1278,6 @@ export const retailData: L1PageData = {
       name: "Mass Merchandise & Department Stores",
       intro:
         "Complex assortment planning, multi-format operations and large-scale SAP landscapes. Programmes often run parallel workstreams — breadth of contractor bench matters here more than anywhere.",
-      image:
-        "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Department store retail",
       roles: [
         "SAP Retail Functional",
         "Assortment Planning Lead",
@@ -1373,9 +1295,6 @@ export const retailData: L1PageData = {
       name: "Home Improvement & Furnishings",
       intro:
         "High-value, low-frequency purchases with complex delivery and installation logistics. WMS, TMS and order management specialists are consistently in demand.",
-      image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Home improvement retail",
       roles: [
         "WMS Functional Lead",
         "TMS Specialist",
@@ -1393,9 +1312,6 @@ export const retailData: L1PageData = {
       name: "Restaurants, Food & Beverage",
       intro:
         "POS, kitchen management, franchise systems and loyalty at scale. NCR, Oracle Hospitality and Salesforce loyalty specialists are the most in-demand contractors across this segment.",
-      image:
-        "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Restaurant and F&B retail",
       roles: [
         "Oracle Hospitality Lead",
         "NCR Aloha Specialist",
@@ -1413,9 +1329,6 @@ export const retailData: L1PageData = {
       name: "Airline Retail & Duty-Free",
       intro:
         "Multi-currency, multi-jurisdiction and integrated with airline reservation systems. A niche that demands contractors who understand both retail systems and the specific regulatory context of travel retail.",
-      image:
-        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Airline duty-free retail",
       roles: [
         "Duty-Free Systems Lead",
         "POS Integration Specialist",
@@ -1433,9 +1346,6 @@ export const retailData: L1PageData = {
       name: "FMCG — Fast-Moving Consumer Goods",
       intro:
         "Trade promotions management, demand planning and supply chain optimisation at volume. SAP IBP and Blue Yonder specialists are consistently the hardest roles to place in this segment.",
-      image:
-        "https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "FMCG production",
       roles: [
         "SAP IBP Specialist",
         "Blue Yonder Demand Lead",
@@ -1453,9 +1363,6 @@ export const retailData: L1PageData = {
       name: "Off-Price / Discounts",
       intro:
         "Opportunistic buying, rapid markdown decisions and high inventory turnover. Pricing and promotions systems expertise — particularly Oracle Retail Pricing and Revionics — is the core requirement.",
-      image:
-        "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Off-price retail",
       roles: [
         "Pricing Systems Lead",
         "Markdown Optimisation Specialist",
@@ -1473,9 +1380,6 @@ export const retailData: L1PageData = {
       name: "Hotels & Resorts",
       intro:
         "Property management, F&B integration and guest experience platforms. Oracle Hospitality and Salesforce Service Cloud specialists are consistently in demand across this segment in the Middle East.",
-      image:
-        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Hotels and resorts",
       roles: [
         "Oracle Hospitality Specialist",
         "SAP REFX Consultant",
@@ -1493,9 +1397,6 @@ export const retailData: L1PageData = {
       name: "Convenience & Fuel",
       intro:
         "POS integration, fuel management systems and high-frequency loyalty programmes. A segment where speed of contractor deployment matters most — programmes run on tight timelines.",
-      image:
-        "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Convenience and fuel retail",
       roles: [
         "POS Systems Lead",
         "Loyalty Programme Specialist",
@@ -1513,9 +1414,6 @@ export const retailData: L1PageData = {
       name: "Specialty Retail",
       intro:
         "Category-specific operations spanning sports, toys, books, pets and DIY. Contractors need deep vertical understanding paired with modern commerce and inventory systems experience.",
-      image:
-        "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=1200&auto=format&fit=crop&q=80",
-      imageAlt: "Specialty retail",
       roles: [
         "Category Systems Lead",
         "Oracle Retail Consultant",
@@ -1545,9 +1443,6 @@ export const retailData: L1PageData = {
         "Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months — here's what we know about where the available contractors are and what they cost.",
       author: "Sumeet Goenka",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Supply chain warehouse operations",
     },
     {
       href: "/insights/sap-commerce-cloud-middle-east",
@@ -1559,9 +1454,6 @@ export const retailData: L1PageData = {
         "Every SAP Commerce programme in the ME region that slipped in 2024 had one thing in common: the technical architect was confirmed after the project structure was already locked. The fix isn't faster hiring — it's earlier briefing.",
       author: "Yallo Talent",
       minutes: 5,
-      image:
-        "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "E-commerce workstation",
     },
     {
       href: "/insights/retail-planning-anaplan-demand",
@@ -1573,9 +1465,6 @@ export const retailData: L1PageData = {
         "Anaplan has moved from finance tool to enterprise planning platform faster than the talent pool has followed. In retail specifically, the demand for Model Builders outstrips supply by a ratio we haven't seen since SAP HANA launched in 2015.",
       author: "Sumeet Goenka",
       minutes: 7,
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Retail planning analytics dashboard",
     },
     {
       href: "/insights/retail-cx-contractor-retention",
@@ -1587,9 +1476,6 @@ export const retailData: L1PageData = {
         "The highest-risk moment in any retail CX programme is the 30 days before and after go-live. What we've learned about contractor exit patterns, commercial triggers, and how to structure engagement to prevent it.",
       author: "Sumeet Goenka",
       minutes: 8,
-      image:
-        "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Retail CX programme",
     },
     {
       href: "/insights/72-hour-talent-benchmark",
@@ -1601,9 +1487,6 @@ export const retailData: L1PageData = {
         "Most retail IT leaders accept 4–6 weeks as normal for contractor shortlisting. It isn't. What makes rapid shortlisting possible, why it needs architect-led screening, and how to brief a talent partner to activate it.",
       author: "Yallo Talent",
       minutes: 6,
-      image:
-        "https://images.unsplash.com/photo-1553413077-190dd305871c?w=1000&auto=format&fit=crop&q=80",
-      imageAlt: "Warehouse fulfilment operations",
     },
   ],
 
@@ -1633,8 +1516,8 @@ export const retailData: L1PageData = {
       category: "Platform",
     },
     {
-      href: "/capabilities/data-ai",
-      label: "Data & AI",
+      href: "/capabilities/data-analytics",
+      label: "Data & Analytics",
       category: "Capability",
     },
     {
@@ -1646,7 +1529,7 @@ export const retailData: L1PageData = {
 
   seo: {
     title:
-      "Retail & Consumer Tech Contractors · UK · ME · India | Yallo Talent",
+      "Retail & Consumer Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
       "SAP, Oracle, Blue Yonder and Salesforce contractors for retail programmes. 72h architect-screened shortlists across UK, Middle East and India.",
   },

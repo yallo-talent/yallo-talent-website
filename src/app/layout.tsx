@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { NavBar } from "@/components/layout/NavBar";
 import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
 import { DEFAULT_THEME, themeInitScript } from "@/config/theme";
+import { organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
 import "./globals.css";
 
 /* Three faces, divided strictly by job: serif asserts, sans is read, mono was
@@ -53,6 +54,17 @@ export default function RootLayout({
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: pre-hydration theme script — trusted static string built in src/config/theme.ts, sets data-theme on <html> before first paint to prevent a flash of the wrong register
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
+        {/* Organisation and the four legal entities. Deliberately carries no
+            street address or telephone: those facts are not established, and
+            fabricated LocalBusiness detail is exactly the wrong thing to feed
+            a search engine. */}
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD built from typed data in src/lib/jsonld.ts, serialised with JSON.stringify
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([organisationJsonLd(), websiteJsonLd()]),
+          }}
         />
       </head>
       <body className="flex min-h-full flex-col">
