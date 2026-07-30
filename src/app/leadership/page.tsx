@@ -155,11 +155,9 @@ export default function LeadershipPage() {
                     left: 20,
                     right: 20,
                     padding: "14px 18px",
-                    background:
-                      "color-mix(in oklab, var(--ink-800) 82%, transparent)",
-                    backdropFilter: "saturate(180%) blur(16px)",
-                    border: "1px solid var(--sector-accent-35)",
-                    borderRadius: 14,
+                    background: "var(--ground-2)",
+                    border: "1px solid var(--hairline)",
+                    borderRadius: "0 0 0 var(--r-md)",
                   }}
                 >
                   <div

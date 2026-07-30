@@ -51,13 +51,8 @@
   padding: clamp(40px, 5vw, 64px);
   border-radius: 28px;
   overflow: hidden;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  box-shadow:
-    0 40px 100px -40px rgba(0, 0, 0, 0.8),
-    0 0 0 1px var(--wa08);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: 40px;
@@ -110,7 +105,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .h {
@@ -160,7 +154,6 @@
   font-size: 15px;
   font-weight: 700;
   border-radius: 999px;
-  box-shadow: 0 12px 40px -12px var(--accent-glow);
   transition:
     background 0.15s ease,
     transform 0.2s ease,
@@ -171,7 +164,6 @@
   background: var(--accent-hover);
   color: var(--ink-950);
   transform: translateY(-2px);
-  box-shadow: 0 18px 50px -12px var(--accent-glow);
 }
 
 .ctaGhost {
@@ -227,17 +219,14 @@
 
 .pillDot[data-hue="blue"] {
   background: var(--hue-blue-500);
-  box-shadow: 0 0 8px var(--hue-blue-35);
 }
 
 .pillDot[data-hue="green"] {
   background: var(--hue-green-500);
-  box-shadow: 0 0 8px var(--hue-green-35);
 }
 
 .pillDot[data-hue="rose"] {
   background: var(--hue-rose-500);
-  box-shadow: 0 0 8px var(--hue-rose-35);
 }
 
 @media (max-width: 900px) {

@@ -12,14 +12,8 @@
   gap: 14px;
   padding: 14px 18px;
   background: color-mix(in oklab, var(--surface) 92%, transparent);
-  backdrop-filter: saturate(160%) blur(16px);
-  -webkit-backdrop-filter: saturate(160%) blur(16px);
   border: 1px solid var(--border-accent);
   border-radius: 0 0 0 var(--r-md);
-  box-shadow:
-    0 20px 60px -20px rgba(0, 0, 0, 0.6),
-    0 0 0 1px var(--border-accent),
-    0 0 40px var(--ya13);
 }
 
 .text {

@@ -179,10 +179,9 @@ export default function WhyYalloPage() {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gap: 20,
-                background: "var(--glass-bg)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid var(--glass-border)",
-                borderRadius: 20,
+                background: "var(--ground-2)",
+                border: "1px solid var(--hairline)",
+                borderRadius: "0 0 0 var(--r)",
                 overflow: "hidden",
               }}
             >

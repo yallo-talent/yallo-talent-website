@@ -144,8 +144,6 @@
   background: color-mix(in oklab, var(--ink-950) 65%, transparent);
   border: 1px solid var(--sector-accent-35);
   border-radius: 0 0 0 var(--r-md);
-  backdrop-filter: saturate(180%) blur(10px);
-  -webkit-backdrop-filter: saturate(180%) blur(10px);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: 500;
@@ -160,7 +158,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--sector-accent);
-  box-shadow: 0 0 10px var(--sector-accent-35);
 }
 
 .heroTitle {
@@ -171,7 +168,6 @@
   color: var(--fg);
   margin: 0 0 18px;
   max-width: 22ch;
-  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
 .heroEmphasis {
@@ -212,7 +208,6 @@
   height: 7px;
   border-radius: 50%;
   background: var(--success-500);
-  box-shadow: 0 0 8px var(--success-glow);
 }
 
 .placeholder {
@@ -319,7 +314,6 @@
   height: 8px;
   border-radius: 50%;
   background: var(--sector-accent);
-  box-shadow: 0 0 6px var(--sector-accent-35);
 }
 
 .overviewImageWrap {
@@ -337,9 +331,6 @@
 
 .overviewImageWrap:hover {
   transform: translateY(-3px);
-  box-shadow:
-    0 24px 48px -20px rgba(0, 0, 0, 0.5),
-    0 0 32px var(--sector-accent-08);
 }
 
 .overviewImage {
@@ -424,7 +415,6 @@
 .rolePill:hover {
   background: var(--sector-accent-20);
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px -6px var(--sector-accent-35);
 }
 
 /* ============ TOOLS ============ */
@@ -481,10 +471,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(180%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
-  border: 1px solid var(--card-hue-20, var(--glass-border));
+  background: var(--ground-2);
+  border: 1px solid var(--card-hue-20, var(--hairline));
   border-radius: 16px;
   overflow: hidden;
   isolation: isolate;
@@ -529,12 +517,9 @@
   border-color: var(--card-hue-35, var(--sector-accent-35));
   background: color-mix(
     in oklab,
-    var(--glass-bg) 55%,
+    var(--ground-2) 55%,
     var(--card-hue-08, var(--sector-accent-08))
   );
-  box-shadow:
-    0 24px 48px -20px rgba(0, 0, 0, 0.6),
-    0 0 40px var(--card-hue-08, var(--sector-accent-08));
 }
 
 .tc:hover .tcGlow {
@@ -567,8 +552,6 @@
   border: 1px solid var(--card-hue-35, var(--wa15));
   border-radius: 6px;
   margin-bottom: 16px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .tcBadgeDot {
@@ -576,7 +559,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--card-hue, var(--sector-accent));
-  box-shadow: 0 0 6px var(--card-hue-35, var(--sector-accent-35));
 }
 
 .tcBadgeName {
@@ -649,7 +631,6 @@
   height: 7px;
   border-radius: 50%;
   background: var(--success-500);
-  box-shadow: 0 0 6px var(--success-glow);
 }
 
 .tcBenchTxt {
@@ -685,7 +666,6 @@
   color: var(--ink-950);
   border-color: var(--card-hue, var(--sector-accent));
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px -12px var(--card-hue-35, var(--sector-accent-35));
 }
 
 @media (max-width: 1200px) {
@@ -792,7 +772,6 @@
   height: 5px;
   border-radius: 50%;
   background: var(--sector-accent);
-  box-shadow: 0 0 6px var(--sector-accent-35);
 }
 
 /* ============ CROSS-LINKS ============ */
@@ -812,9 +791,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 20px 22px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--ground-2);
   border: 1px solid var(--wa08);
   border-radius: 14px;
 }
@@ -846,10 +823,8 @@
   gap: 10px;
   padding: 10px 16px;
   border-radius: 0 0 0 var(--r-md);
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--card-hue-35, var(--glass-border));
+  background: var(--ground-2);
+  border: 1px solid var(--card-hue-35, var(--hairline));
   color: var(--fg);
   font-size: 12.5px;
   font-weight: 600;
@@ -864,12 +839,11 @@
 .crossChip:hover {
   background: color-mix(
     in oklab,
-    var(--glass-bg) 55%,
+    var(--ground-2) 55%,
     var(--card-hue-08, var(--sector-accent-08))
   );
   border-color: var(--card-hue, var(--sector-accent));
   transform: translateY(-2px);
-  box-shadow: 0 10px 22px -10px var(--card-hue-35, var(--sector-accent-35));
 }
 
 .crossChipName {
@@ -922,10 +896,8 @@
   position: relative;
   display: block;
   padding: 22px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--card-hue-20, var(--glass-border));
+  background: var(--ground-2);
+  border: 1px solid var(--card-hue-20, var(--hairline));
   border-radius: 18px;
   color: var(--fg);
   overflow: hidden;
@@ -941,11 +913,10 @@
   border-color: var(--card-hue-35, var(--sector-accent-35));
   background: color-mix(
     in oklab,
-    var(--glass-bg) 55%,
+    var(--ground-2) 55%,
     var(--card-hue-08, var(--sector-accent-08))
   );
   transform: translateY(-4px);
-  box-shadow: 0 18px 40px -18px var(--card-hue-35, var(--sector-accent-35));
 }
 
 .engagePillarGlow {
@@ -1094,9 +1065,7 @@
   border-radius: 20px;
   overflow: hidden;
   isolation: isolate;
-  box-shadow:
-    0 30px 60px -30px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 var(--wa08);
+  box-shadow: inset 0 1px 0 var(--wa08);
 }
 
 .bottomGlow {
@@ -1150,7 +1119,6 @@
   font-size: 13px;
   font-weight: 700;
   border-radius: 0 0 0 var(--r-md);
-  box-shadow: 0 12px 28px -12px var(--sector-accent-35);
   transition:
     background 0.15s ease,
     transform 0.2s ease,
@@ -1159,7 +1127,6 @@
 
 .bottomCtaPrimary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 36px -14px var(--sector-accent-35);
   background: color-mix(in oklab, var(--sector-accent) 88%, white);
   color: var(--ink-950);
 }
@@ -1174,8 +1141,6 @@
   font-size: 13px;
   font-weight: 500;
   background: color-mix(in oklab, var(--ink-950) 40%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -1215,10 +1180,8 @@
   flex-direction: column;
   gap: 6px;
   padding: 20px 22px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--card-hue-20, var(--glass-border));
+  background: var(--ground-2);
+  border: 1px solid var(--card-hue-20, var(--hairline));
   border-radius: 14px;
   color: var(--fg);
   overflow: hidden;
@@ -1233,11 +1196,10 @@
   border-color: var(--card-hue-35, var(--sector-accent-35));
   background: color-mix(
     in oklab,
-    var(--glass-bg) 55%,
+    var(--ground-2) 55%,
     var(--card-hue-08, var(--sector-accent-08))
   );
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px -14px var(--card-hue-35, var(--sector-accent-35));
 }
 
 .relatedNum {
@@ -1371,7 +1333,7 @@
   isolation: isolate;
   color: var(--fg);
   background: var(--ink-900);
-  border: 1px solid var(--card-hue-20, var(--glass-border));
+  border: 1px solid var(--card-hue-20, var(--hairline));
   transition:
     border-color 0.28s ease,
     transform 0.28s ease,
@@ -1381,9 +1343,6 @@
 .insCard:hover {
   border-color: var(--card-hue-35, var(--sector-accent-35));
   transform: translateY(-5px);
-  box-shadow:
-    0 24px 48px -20px rgba(0, 0, 0, 0.65),
-    0 0 32px var(--card-hue-08, var(--sector-accent-08));
 }
 
 .insImg {
@@ -1437,8 +1396,6 @@
   background: color-mix(in oklab, var(--ink-950) 60%, transparent);
   border: 1px solid var(--card-hue-35, var(--sector-accent-35));
   color: var(--card-hue, var(--sector-accent));
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .insOverlay {
@@ -1461,7 +1418,6 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
   transition: color 0.24s ease;
 }
 
@@ -1481,7 +1437,6 @@
 
 .insAuthor {
   color: var(--fg-muted);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .insRead {

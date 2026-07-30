@@ -112,7 +112,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--sector-accent);
-  box-shadow: 0 0 8px var(--sector-accent-35);
 }
 
 .heroTitle {
@@ -160,7 +159,6 @@
   font-size: 14px;
   font-weight: 700;
   border-radius: 0 0 0 var(--r-md);
-  box-shadow: 0 12px 40px -12px var(--accent-glow);
   transition:
     background 0.15s ease,
     transform 0.2s ease,
@@ -171,7 +169,6 @@
   background: var(--accent-hover);
   color: var(--ink-950);
   transform: translateY(-1px);
-  box-shadow: 0 18px 50px -12px var(--accent-glow);
 }
 
 .ctaGhost {
@@ -183,9 +180,7 @@
   border-radius: 0 0 0 var(--r-md);
   font-weight: 500;
   font-size: 14px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--ground-2);
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -224,9 +219,7 @@
   overflow: hidden;
   isolation: isolate;
   border: 1px solid var(--wa15);
-  box-shadow:
-    0 40px 90px -30px rgba(0, 0, 0, 0.75),
-    inset 0 1px 0 var(--wa15);
+  box-shadow: inset 0 1px 0 var(--wa15);
 }
 
 .heroImage {
@@ -271,8 +264,6 @@
   gap: 14px;
   padding: 16px 20px;
   background: color-mix(in oklab, var(--ink-800) 82%, transparent);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
   border: 1px solid var(--sector-accent-35);
   border-radius: 14px;
 }
@@ -332,10 +323,8 @@
 .benefitCard {
   position: relative;
   padding: 32px 28px;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
   border-radius: 18px;
   transition:
     border-color 0.3s ease,
@@ -346,9 +335,6 @@
 .benefitCard:hover {
   border-color: var(--sector-accent-35);
   transform: translateY(-4px);
-  box-shadow:
-    0 20px 40px -20px rgba(0, 0, 0, 0.6),
-    0 0 30px var(--sector-accent-08);
 }
 
 .benefitIcon {
@@ -522,9 +508,7 @@
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  box-shadow:
-    0 8px 24px -8px var(--sector-accent-35),
-    inset 0 1px 0 var(--wa08);
+  box-shadow: inset 0 1px 0 var(--wa08);
   transition:
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     box-shadow 0.28s ease;
@@ -532,10 +516,7 @@
 
 .step:hover .stepNum {
   transform: scale(1.06);
-  box-shadow:
-    0 12px 32px -8px var(--sector-accent-35),
-    0 0 24px var(--sector-accent-20),
-    inset 0 1px 0 var(--wa15);
+  box-shadow: inset 0 1px 0 var(--wa15);
 }
 
 .stepMarkerLabel {
@@ -558,9 +539,7 @@
   background: var(--ink-800);
   border: 1px solid var(--wa08);
   border-radius: 18px;
-  box-shadow:
-    0 20px 40px -20px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 var(--wa05);
+  box-shadow: inset 0 1px 0 var(--wa05);
   transition:
     border-color 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
@@ -570,10 +549,7 @@
 .step:hover .stepCard {
   border-color: var(--sector-accent-35);
   transform: translateX(4px);
-  box-shadow:
-    0 20px 50px -20px rgba(0, 0, 0, 0.7),
-    0 0 0 1px var(--sector-accent-35),
-    inset 0 1px 0 var(--wa08);
+  box-shadow: inset 0 1px 0 var(--wa08);
 }
 
 .stepCardInner {
@@ -761,9 +737,7 @@
   background: linear-gradient(160deg, var(--ink-800) 0%, var(--ink-900) 100%);
   border: 1px solid var(--sector-accent-35);
   border-radius: 22px;
-  box-shadow:
-    0 30px 60px -30px rgba(0, 0, 0, 0.7),
-    inset 0 1px 0 var(--wa08);
+  box-shadow: inset 0 1px 0 var(--wa08);
 }
 
 .faqEyebrow {
@@ -845,7 +819,6 @@
     var(--ink-800) 0%,
     var(--sector-accent-08) 100%
   );
-  box-shadow: 0 20px 40px -20px var(--sector-accent-20);
 }
 
 .faqQ {

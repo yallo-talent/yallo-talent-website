@@ -76,9 +76,7 @@
 
 .wwdCard {
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(180%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
   border-radius: 18px;
   overflow: hidden;
@@ -93,10 +91,7 @@
 .wwdCard:hover {
   transform: translateY(-6px);
   border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--glass-bg) 55%, var(--card-hue-08));
-  box-shadow:
-    0 26px 52px -22px rgba(0, 0, 0, 0.55),
-    0 0 40px var(--card-hue-08);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
 }
 
 .wwdCard:hover .glow {
@@ -229,9 +224,7 @@
 
 .hwwStep {
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(180%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
   border-radius: 16px;
   overflow: hidden;
@@ -246,10 +239,7 @@
 .hwwStep:hover {
   transform: translateY(-4px);
   border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--glass-bg) 55%, var(--card-hue-08));
-  box-shadow:
-    0 20px 40px -20px rgba(0, 0, 0, 0.55),
-    0 0 32px var(--card-hue-08);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
 }
 
 .hwwStep:hover .glow {
@@ -324,9 +314,7 @@
 
 .archCard {
   position: relative;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(180%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(180%) blur(var(--glass-blur));
+  background: var(--ground-2);
   border: 1px solid var(--card-hue-20);
   border-radius: 16px;
   overflow: hidden;
@@ -341,10 +329,7 @@
 .archCard:hover {
   transform: translateY(-4px);
   border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--glass-bg) 55%, var(--card-hue-08));
-  box-shadow:
-    0 22px 44px -20px rgba(0, 0, 0, 0.55),
-    0 0 32px var(--card-hue-08);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
 }
 
 .archCard:hover .glow {
@@ -451,9 +436,7 @@
 
 .crossRail {
   padding: 20px 22px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: var(--ground-2);
   border: 1px solid var(--wa08);
   border-radius: 14px;
 }
@@ -493,10 +476,9 @@
 }
 
 .crossChip:hover {
-  background: color-mix(in oklab, var(--glass-bg) 55%, var(--card-hue-08));
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
   border-color: var(--card-hue);
   transform: translateX(3px);
-  box-shadow: 0 8px 18px -8px var(--card-hue-35);
 }
 
 .crossChipLabel {

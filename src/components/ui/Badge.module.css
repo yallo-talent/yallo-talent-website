@@ -37,5 +37,4 @@
   height: 6px;
   border-radius: 50%;
   background: var(--success-500);
-  box-shadow: 0 0 8px var(--success-glow);
 }

@@ -107,6 +107,33 @@ for (const file of walk("src")) {
   }
 }
 
+// ── 4. The incumbent glass register stays deleted ─────────────────────────
+// Canon §5 bans glass outright, and Relay v2.2 §3 asks for a CI ban once the
+// step-8 strip has landed. The register was previously "removed" by rewiring
+// its tokens to transparent, which left ~250 declarations that one variable
+// change would have brought back site-wide. This makes that impossible.
+//
+// The single exception is the sticky nav's blur, which canon §5 explicitly
+// permits: a sticky bar over scrolling content needs it to stay legible.
+const GLASS_EXCEPTION = "src/components/layout/NavBar.module.css";
+
+for (const file of walk("src")) {
+  if (file === GLASS_EXCEPTION) continue;
+  const lines = readFileSync(file, "utf8").split("\n");
+  for (const [i, line] of lines.entries()) {
+    if (/^\s*[-\w]*backdrop-filter\s*:/.test(line)) {
+      errors.push(
+        `${file}:${i + 1}  backdrop-filter is banned (canon §5). The sticky nav is the only permitted blur.`,
+      );
+    }
+    if (/var\(--glass-/.test(line)) {
+      errors.push(
+        `${file}:${i + 1}  --glass-* token is banned (canon §5); the register was deleted in the step-8 strip.`,
+      );
+    }
+  }
+}
+
 // ── report ────────────────────────────────────────────────────────────────
 if (warnings.length) {
   console.log(

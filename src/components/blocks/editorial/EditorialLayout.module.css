@@ -95,7 +95,6 @@
   height: 6px;
   border-radius: 50%;
   background: var(--sector-accent);
-  box-shadow: 0 0 8px var(--sector-accent-35);
 }
 
 .heroTitle {
@@ -144,7 +143,6 @@
   font-size: 14px;
   font-weight: 700;
   border-radius: 999px;
-  box-shadow: 0 12px 40px -12px var(--accent-glow);
   transition:
     background 0.15s ease,
     transform 0.2s ease;
@@ -165,9 +163,7 @@
   border-radius: 999px;
   font-weight: 500;
   font-size: 14px;
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: var(--ground-2);
   transition:
     border-color 0.15s ease,
     color 0.15s ease;
@@ -316,10 +312,8 @@
 
 .card {
   padding: 32px 28px;
-  background: var(--glass-bg);
-  backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
   border-radius: 18px;
   transition:
     border-color 0.3s ease,

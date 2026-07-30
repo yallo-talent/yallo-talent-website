@@ -26,13 +26,16 @@
   border-bottom: 1px solid transparent;
   transition:
     background 0.25s ease,
-    border-color 0.25s ease,
-    backdrop-filter 0.25s ease;
+    border-color 0.25s ease;
 }
 
+/* The one permitted blur in the system (canon §5): a sticky bar over scrolling
+   content needs it to stay legible. Everything else lost its backdrop-filter in
+   the step-8 strip. */
 .headerScrolled {
   background: color-mix(in oklab, var(--bg) 82%, transparent);
   backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
   border-bottom-color: var(--border);
 }
 
@@ -330,7 +333,6 @@
 
 .megaLink:hover .itemIcon {
   transform: scale(1.05);
-  box-shadow: 0 4px 16px -6px var(--item-hue-35, var(--accent-strong));
 }
 
 .itemBody {
