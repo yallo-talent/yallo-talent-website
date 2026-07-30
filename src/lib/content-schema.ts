@@ -41,11 +41,29 @@ const metricSchema = z.object({
 
 export const caseStudyFrontmatterSchema = insightFrontmatterSchema.extend({
   client: z.string().min(1),
+  /** False where the published page does not name the client. Never guessed. */
   clientPublic: z.boolean(),
   platform: z.string().min(1),
   region: z.string().min(1),
-  outcome: z.string().min(1),
-  metrics: z.array(metricSchema),
+  /** Contract · Permanent · EOR · Managed Delivery · Advisory. */
+  engagement: z.string().min(1).optional(),
+  /** The page's own sub-headline, where it has one. */
+  deck: z.string().min(1).optional(),
+  /** The published URL this was ported from, for provenance. */
+  sourceUrl: z.url().optional(),
+  /**
+   * Homepage rail position (canon's eight, relay §8). Absent means the study
+   * appears on the hub in date order but not in the rail.
+   */
+  featured: z.number().int().positive().optional(),
+  /**
+   * Optional, deliberately. Requiring an outcome line and a metrics array is
+   * what drove the first pass of this content to invent both — the real
+   * published studies carry neither as separate quotable fields. A figure
+   * appears here only when it is genuinely published and attributable.
+   */
+  outcome: z.string().min(1).optional(),
+  metrics: z.array(metricSchema).optional(),
 });
 
 export type InsightFrontmatter = z.infer<typeof insightFrontmatterSchema>;

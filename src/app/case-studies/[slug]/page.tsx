@@ -76,53 +76,64 @@ export default async function CaseStudyPage({ params }: PageProps) {
         </div>
       </section>
 
-      <section className={styles.section}>
-        <div className={styles.wrap}>
-          <div className={styles.sectionInner}>
-            <div className={styles.cardGrid3}>
-              {frontmatter.metrics.map((m) => (
-                <div key={`${m.label}-${m.value}`} className={styles.card}>
-                  <div className={styles.cardTitle}>{m.value}</div>
-                  <div className={styles.cardCopy}>{m.label}</div>
-                  <div className={styles.sectionEyebrow}>
-                    Source: {m.source}
+      {/* Only rendered where the published study carries real, attributable
+          figures. Most do not, and an empty band is correct — the alternative
+          is inventing numbers, which is exactly what the first pass of this
+          content did. */}
+      {frontmatter.metrics?.length ? (
+        <section className={styles.section}>
+          <div className={styles.wrap}>
+            <div className={styles.sectionInner}>
+              <div className={styles.cardGrid3}>
+                {frontmatter.metrics.map((m) => (
+                  <div key={`${m.label}-${m.value}`} className={styles.card}>
+                    <div className={styles.cardTitle}>{m.value}</div>
+                    <div className={styles.cardCopy}>{m.label}</div>
+                    <div className={styles.sectionEyebrow}>
+                      Source: {m.source}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
-      <section className={`${styles.section} ${styles.sectionAlt}`}>
-        <div className={styles.wrap}>
-          <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The outcome</span>
-            <h2 className={styles.sectionH}>{frontmatter.outcome}</h2>
-            <MDXRemote source={body} />
-            {frontmatter.sources && frontmatter.sources.length > 0 && (
-              <aside>
-                <h3 className={styles.sectionEyebrow}>Sources</h3>
-                <ul>
-                  {frontmatter.sources.map((s) => (
-                    <li key={`${s.claim}-${s.source}`}>
-                      <strong>{s.claim}</strong> — {s.source}
-                      {s.url && (
-                        <>
-                          {" "}
-                          <a href={s.url} rel="noopener noreferrer">
-                            (link)
-                          </a>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </aside>
-            )}
+      {/* Same rule as the metrics band: rendered only where the published
+          study states an outcome of its own. The ported studies carry their
+          outcome inside the body instead. */}
+      {frontmatter.outcome ? (
+        <section className={`${styles.section} ${styles.sectionAlt}`}>
+          <div className={styles.wrap}>
+            <div className={styles.sectionInner}>
+              <span className={styles.sectionEyebrow}>The outcome</span>
+              <h2 className={styles.sectionH}>{frontmatter.outcome}</h2>
+              <MDXRemote source={body} />
+              {frontmatter.sources && frontmatter.sources.length > 0 && (
+                <aside>
+                  <h3 className={styles.sectionEyebrow}>Sources</h3>
+                  <ul>
+                    {frontmatter.sources.map((s) => (
+                      <li key={`${s.claim}-${s.source}`}>
+                        <strong>{s.claim}</strong> — {s.source}
+                        {s.url && (
+                          <>
+                            {" "}
+                            <a href={s.url} rel="noopener noreferrer">
+                              (link)
+                            </a>
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
 
       <section className={styles.bottomCta}>
         <div className={styles.wrap}>

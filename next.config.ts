@@ -19,6 +19,18 @@ const RETIRED_TO_RETAIL = [
   "middle-east-retail-boom-2025-trends",
 ];
 
+/**
+ * Insights removed because they were not real: written in an earlier pass with
+ * invented figures and an unauthorised byline. Retired to the hub rather than
+ * rewritten, so no URL 404s.
+ */
+const INSIGHTS_WITHDRAWN = [
+  "sap-talent-gcc",
+  "gcc-ai-skills-gap",
+  "gcc-engineering-centre-90-days",
+  "sap-vs-oracle-migration",
+];
+
 const RENAMED: Array<{ from: string; to: string }> = [
   // Merge (2a): both variants collapse into enterprise-architect-middle-east.
   {
@@ -50,16 +62,114 @@ const RENAMED: Array<{ from: string; to: string }> = [
   },
 ];
 
+// -----------------------------------------------------------------------------
+// CASE STUDY REDIRECTS
+// -----------------------------------------------------------------------------
+// The legacy site served most case studies as `?case-study=<slug>` query
+// strings, which cannot be redirected by path alone — the `has` clause below
+// matches the query parameter and sends it to the canonical path.
+//
+// Of the 29 published entries, 15 are Yallo's own work and are ported. The rest
+// fall into three groups, all redirected so no published URL breaks.
+
+/** Duplicate or stale URLs -> the canonical study. */
+const CASE_STUDY_ALIASES: Record<string, string> = {
+  // Same MAF Hyperion engagement, published twice.
+  "implementing-hyperion-financial-management-for-majid-al-futtaim-dubai-2":
+    "oracle-hyperion-financial-management-hfm-implementation",
+  // Same Alshaya planning engagement, published twice.
+  "decommissioning-by-planning-licenses-with-custom-built-software-for-alshaya-group-dubai":
+    "engineering-a-custom-planning-platform",
+  // Earlier, shorter version of the MAF time-and-materials study. Its own
+  // headings name MAF, so the "unnamed enterprise" framing was cosmetic.
+  "reducing-costs-and-improving-quality-with-yallo":
+    "reducing-time-and-materials-cost-for-majid-al-futtaim",
+  // Listed in the index but 404s on the live site.
+  "reducing-tm-cost-and-improving-quality-with-yallo-for-alshaya-group-dubai":
+    "reducing-time-and-materials-cost-for-majid-al-futtaim",
+  // Slug tidied for readability.
+  "reducing-tm-cost-and-improving-quality-for-majid-al-futtaim-with-yallo":
+    "reducing-time-and-materials-cost-for-majid-al-futtaim",
+  "rapid-recruitment-for-critical-supply-chain-roles-with-yallo":
+    "rapid-recruitment-for-critical-supply-chain-roles",
+};
+
+/**
+ * Not Yallo's work: a GDPR and incident-response teaching series about
+ * Facebook, Google, Uber, Maersk, Equifax, Capital One, Target and Sony. It has
+ * no place in an evidence surface for enterprise staffing, so it is retired to
+ * the insights hub rather than ported.
+ */
+const CASE_STUDY_RETIRED = [
+  "privacy-violations-and-class-action-lawsuit-facebook-2018",
+  "financial-penalties-for-non-compliance-google-2019",
+  "data-leaks-and-customer-trust-erosion-uber-2016",
+  "operational-meltdown-from-cyber-attack-maersk-2017",
+  "mega-breach-with-eye-watering-costs-equifax-2017",
+  "insider-data-theft-capital-one-2019",
+  "target-2013-data-breach-enterprise-governance-lessons",
+  "sony-data-breach-2014-cybersecurity-ip-lessons",
+];
+
+/** Every ported study, so the legacy query-string URL reaches it. */
+const CASE_STUDY_PORTED = [
+  "enabling-sap-s-4hana-transformation-for-al-tayer-group",
+  "rapidly-building-a-high-performing-azure-data-engineering-team",
+  "enabling-azure-data-platform-delivery-at-enterprise-scale",
+  "enabling-supply-chain-transformation-through-targeted-delivery-expertise",
+  "oracle-hyperion-financial-management-hfm-implementation",
+  "building-a-scalable-arabic-speaking-offshore-it-hub-for-al-othaim-markets",
+  "defining-a-target-operating-model-for-sephora-middle-easts-digital-carve-out",
+  "ensuring-reliable-oracle-ebs-integrations-for-mission-critical-enterprise-systems",
+  "engineering-a-custom-planning-platform",
+  "optimising-enterprise-it-delivery-through-a-unified-partner-model",
+  "unlocking-cost-efficiency-across-multi-platform-enterprise-it-landscape",
+  "driving-consistent-it-delivery-across-a-complex-retail-technology-landscape",
+  "enabling-accurate-asset-governance-through-oracle-fusion-fixed-assets",
+];
+
+/** Builds both the `?case-study=` and `/case-studies/<slug>/` forms. */
+function caseStudyRedirects() {
+  const out: Array<{
+    source: string;
+    destination: string;
+    permanent: true;
+    has?: Array<{ type: "query"; key: string; value: string }>;
+  }> = [];
+
+  /**
+   * `alsoPath` adds the `/case-studies/<from>` form. It must stay off for a
+   * ported slug, whose path IS the destination — adding it there produces a
+   * self-redirect and the real page becomes unreachable.
+   */
+  const add = (from: string, to: string, alsoPath = true) => {
+    out.push({
+      source: "/",
+      has: [{ type: "query", key: "case-study", value: from }],
+      destination: to,
+      permanent: true,
+    });
+    if (alsoPath) {
+      out.push({
+        source: `/case-studies/${from}`,
+        destination: to,
+        permanent: true,
+      });
+    }
+  };
+
+  for (const slug of CASE_STUDY_PORTED) {
+    add(slug, `/case-studies/${slug}`, false);
+  }
+  for (const [from, to] of Object.entries(CASE_STUDY_ALIASES)) {
+    add(from, `/case-studies/${to}`);
+  }
+  for (const slug of CASE_STUDY_RETIRED) add(slug, "/insights");
+
+  return out;
+}
+
 const nextConfig: NextConfig = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        pathname: "/**",
-      },
-    ],
-  },
   async redirects() {
     const specific: Array<{
       source: string;
@@ -96,6 +206,22 @@ const nextConfig: NextConfig = {
         destination: "/industries/retail",
         permanent: true,
       });
+    }
+
+    // Withdrawn (not-real) insights -> the hub.
+    for (const slug of INSIGHTS_WITHDRAWN) {
+      for (const prefix of [
+        "/insights",
+        "/insights/news",
+        "/insights/industries/retail",
+        "/insights/category",
+      ]) {
+        specific.push({
+          source: `${prefix}/${slug}`,
+          destination: "/insights",
+          permanent: true,
+        });
+      }
     }
 
     // Merged / renamed slugs -> canonical article URL.
@@ -143,7 +269,7 @@ const nextConfig: NextConfig = {
       },
     ];
 
-    return [...specific, ...catchAll];
+    return [...specific, ...caseStudyRedirects(), ...catchAll];
   },
 };
 
