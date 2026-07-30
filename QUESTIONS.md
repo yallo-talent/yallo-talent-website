@@ -220,3 +220,51 @@ to the nav, worth doing only if the effect is wanted there specifically.
 stylesheets load after `globals.css`, so at equal specificity a component's own
 `background` beats the utility — both allow-listed surfaces carried the class and
 rendered fully opaque until the class was doubled.
+
+## Q9 — Four SAP/Blue Yonder desks the corpus cannot settle
+
+The suite-level platform rebuild (B2) sourced every module name verbatim from the
+legacy corpus at `../yallo-legacy-archive`. Four names the corpus attests but
+which I have **not** published, because attestation is not the same as a desk
+Yallo staffs:
+
+| Name | Where it appears | Why parked |
+|---|---|---|
+| **SAP Special Applications** | `platform/sap.md`, `platform-expertise/sap-expertise.md` | Not a product. The legacy scope line — "enhance industry-specific operations with tailored automation and analytics" — describes a category, so there is no bench to name and no role list that would be honest. |
+| **SAP Business One** | `platform-expertise/sap-expertise.md` | SMB ERP. Canon §1 positions Yallo on enterprise platform programmes; a Business One desk would contradict the wedge unless you actually staff it. |
+| **SAP Business ByDesign** | `platform-expertise/sap-expertise.md` | Same as Business One, and SAP has since sunset new sales of it. |
+| **Blue Yonder — the whole suite** | **no corpus file exists** | There is no `platform/blue-yonder.md` or `blue-yonder-expertise.md` in the corpus, so there is no attested suite list to draft from. |
+
+**What ships meanwhile.** SAP publishes 14 modules, Oracle 9, Salesforce 6 — all
+corpus-attested. **Blue Yonder is left derived**, so it still shows the retail cut
+(Merchandise Management, Assortment Optimization, Space Planning alongside WMS,
+TMS, Luminate and Demand Planning). It is the one platform page still mixing two
+levels, and it stays that way until there is a source: inventing a Blue Yonder
+suite list is exactly what the run's rules forbid.
+
+**What would settle it:** either name the Blue Yonder desks you staff, or point me
+at a source. Same for the three SAP names — a yes on any of them and it publishes
+with roles mapped from the existing families.
+
+## Q10 — The legacy `.wpress` archive is media-only
+
+Recorded because B1 assumed it was a content export and it is not.
+
+Extracted and indexed: **27,645 entries, 5.51 GB**. Of those, **26,921 are
+`uploads/`** — 17,418 PNG, 5,694 JPG, 1,497 WebP, 1,239 JPEG, 181 MP4, 49 MP3.
+There is **no `database.sql` and no WXR** anywhere in it. It is an All-in-One WP
+Migration *files* export, not a full site export.
+
+**Consequences, both already handled:**
+
+1. The archive is the authoritative **media** manifest — `MEDIA-MANIFEST.ndjson`,
+   built from the container itself rather than from a directory walk.
+2. It cannot corroborate a single word of copy. The **content** corpus at
+   `content/` — built earlier from a live-site fetch — remains the only citable
+   source for module names, and it is what B2 used. Its own report notes no WXR
+   was provided, so page content came from HTTP and may carry render artefacts.
+
+**If a full export is available**, a `database.sql` would let the inventory be
+rebuilt from `wp_posts` rather than from fetched HTML, which would settle
+publish/modify dates, drafts and revisions that the fetch cannot see.
+

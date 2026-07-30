@@ -109,8 +109,25 @@ function collect(): Map<string, PlatformCoverage> {
     }
   }
 
-  // Merge the authored sets. Authored scope and roles lead; derived
-  // appearsIn cross-links attach where the module names match.
+  // Merge the authored sets.
+  //
+  // An authored set REPLACES the derived module list rather than joining it, and
+  // that is the fix for a structural skew rather than a preference. Derivation
+  // re-projects sector data onto the platform axis, so a platform inherited
+  // whichever sectors happened to be seeded with its tools — SAP inherited
+  // twelve RETAIL modules (Customer Checkout, Merchandise Management, Space
+  // Optimisation, Promotion Management, Forecasting & Replenishment) purely
+  // because retail was the only sector carrying SAP tools. Correct mechanism,
+  // wrong level: a platform page presents the SUITE FAMILY, and a buyer landing
+  // on /platforms/sap to ask about SuccessFactors met a retail merchandising
+  // bench. Unioning the two would have published 26 modules at two different
+  // levels of abstraction, which is worse than either.
+  //
+  // What survives from derivation: the appearsIn cross-links wherever a module
+  // name matches, and the whole `sectors` list, which is how the platform page
+  // still says which sectors it is staffed into. The retail-flavoured modules
+  // themselves are untouched and stay on the retail L1 and its L2s, where they
+  // are the right level.
   for (const authored of Object.values(authoredPlatforms)) {
     let cov = out.get(authored.slug);
     if (!cov) {
@@ -125,15 +142,16 @@ function collect(): Map<string, PlatformCoverage> {
       };
       out.set(authored.slug, cov);
     }
-    for (const am of authored.modules) {
-      let mod = cov.modules.find((m) => m.name === am.name);
-      if (!mod) {
-        mod = { name: am.name, roles: [], appearsIn: [] };
-        cov.modules.push(mod);
-      }
-      mod.scope = am.scope;
-      for (const r of am.roles) if (!mod.roles.includes(r)) mod.roles.push(r);
-    }
+    const derived = cov.modules;
+    cov.modules = authored.modules.map((am) => {
+      const match = derived.find((m) => m.name === am.name);
+      return {
+        name: am.name,
+        scope: am.scope,
+        roles: [...new Set([...am.roles, ...(match?.roles ?? [])])],
+        appearsIn: match?.appearsIn ?? [],
+      };
+    });
   }
 
   for (const cov of out.values()) {
