@@ -826,7 +826,7 @@ function L1Segments({ data }: Props) {
         <div className={styles.segWrap}>
           <div className={styles.segListWrap}>
             <ul className={styles.segList} aria-label="Select a segment">
-              {data.segments.map((s, i) => {
+              {data.segments.map((s, _i) => {
                 const isActive = s.id === activeSeg.id;
                 return (
                   <li
@@ -932,7 +932,7 @@ function L1Partners({ partners }: { partners?: string[] }) {
           technology platform.
         </p>
         <div className={styles.partnersGrid}>
-          {partnerNames.map((name, i) => {
+          {partnerNames.map((name, _i) => {
             return (
               <div
                 key={name}
@@ -965,7 +965,7 @@ function L1Insights({ data }: Props) {
       </div>
       <div className={styles.insightsScrollWrap}>
         <div className={styles.insightsScroll}>
-          {data.insights.map((post, i) => {
+          {data.insights.map((post, _i) => {
             const inner = (
               <>
                 <PetalPlate
@@ -1224,7 +1224,7 @@ function L1ReadNext({ data }: Props) {
             <div key={rail.label} className={styles.readNextRail}>
               <div className={styles.readNextRailLabel}>{rail.label}</div>
               <div className={styles.readNextChips}>
-                {rail.items.map((r, i) => {
+                {rail.items.map((r, _i) => {
                   return (
                     <Link
                       key={r.href}

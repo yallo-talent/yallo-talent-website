@@ -224,7 +224,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
           Send the brief — the shortlist is in your inbox in 72 hours.
         </p>
         <div className={styles.toolsGrid}>
-          {fn.tools.map((tool, i) => {
+          {fn.tools.map((tool, _i) => {
             return (
               <article
                 key={tool.slug}
@@ -391,7 +391,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
           <div className={styles.crossRail}>
             <div className={styles.crossLabel}>Related platforms</div>
             <div className={styles.crossChips}>
-              {platforms.map((slug, i) => {
+              {platforms.map((slug, _i) => {
                 return (
                   <Link
                     key={slug}
@@ -415,7 +415,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
           <div className={styles.crossRail}>
             <div className={styles.crossLabel}>Related capabilities</div>
             <div className={styles.crossChips}>
-              {capabilities.map((slug, i) => {
+              {capabilities.map((slug, _i) => {
                 return (
                   <Link
                     key={slug}
@@ -648,7 +648,7 @@ function L2RelatedFunctions({
         </div>
         <h3 className={styles.relatedH}>Related functions in this sector</h3>
         <div className={styles.relatedGrid}>
-          {picks.map((rf, i) => {
+          {picks.map((rf, _i) => {
             return (
               <Link
                 key={rf.slug}
@@ -686,7 +686,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
       </div>
       <div className={styles.insightsScrollWrap}>
         <div className={styles.insightsScroll}>
-          {sector.insights.map((post, i) => {
+          {sector.insights.map((post, _i) => {
             const inner = (
               <>
                 <PetalPlate

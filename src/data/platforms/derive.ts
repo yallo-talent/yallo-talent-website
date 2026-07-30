@@ -1,6 +1,5 @@
 import { allL1, type TaxonomyLabel, taxonomyLabels } from "@/data/l1/index";
 import { sectorRegistry } from "@/data/l1/registry";
-import type { L2Tool } from "@/data/l1/types";
 
 /**
  * Platform coverage, derived from the sector data rather than authored twice.
