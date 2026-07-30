@@ -65,6 +65,15 @@ jobs:
       - name: Accessibility (axe, both themes, 1280 and 360)
         run: CAPTURE_BASE=http://localhost:3100 pnpm check:a11y --base http://localhost:3100
 
+      # Canon §5 requires prefers-reduced-motion honoured for EVERY animation.
+      # Neither of the other gates can see this: the token gate reads CSS, and
+      # axe does not evaluate motion. Two things had to be true and neither was
+      # — Framer defaults to reducedMotion "never", and the universal
+      # reduced-motion reset in globals.css lost on specificity to every
+      # component class declaring a `transition` shorthand.
+      - name: Reduced motion (Framer + CSS, with a motion-allowed control)
+        run: PORT=3100 pnpm check:motion
+
       - name: Upload captures on failure
         if: failure()
         uses: actions/upload-artifact@v4

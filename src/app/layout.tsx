@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
+import { MotionProvider } from "@/components/layout/MotionProvider";
 import { NavBar } from "@/components/layout/NavBar";
 import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
 import { AMBIENT_SCHEME, DEFAULT_THEME, themeInitScript } from "@/config/theme";
@@ -69,12 +70,14 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-full flex-col">
-        <NavBar />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-        <StickyBriefCTA />
+        <MotionProvider>
+          <NavBar />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <Footer />
+          <StickyBriefCTA />
+        </MotionProvider>
       </body>
     </html>
   );

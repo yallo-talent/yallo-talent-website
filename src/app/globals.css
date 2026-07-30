@@ -1006,13 +1006,24 @@ button {
   }
 }
 
+/* `!important` is load-bearing here, not laziness.
+   The universal selector has specificity 0, so ANY component class declaring
+   `transition` won this block outright — `.benefitCard { transition: transform
+   0.3s }` kept its 0.3s under reduced motion, measured. That made the reset
+   ineffective almost everywhere, since nearly every interactive class in the
+   system declares a transition shorthand.
+   Worse in combination with Framer: MotionConfig correctly snaps the inline
+   transform to its target, and the surviving CSS transition then animated the
+   jump anyway — so the element moved under reduced motion even though the
+   JS animation had been suppressed. scripts/check-motion.mjs measures both
+   halves. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-    transition-duration: 0.01ms;
-    scroll-behavior: auto;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
