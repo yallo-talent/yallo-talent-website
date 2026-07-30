@@ -96,7 +96,7 @@ export const financeData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty finance function areas. Contractor bench across all of them.",
+    "Every finance function area, with a contractor bench behind it.",
   expertiseSub:
     "From core banking to capital markets — we place specialists into every function that moves a financial-services programme forward.",
   expertise: [
@@ -603,25 +603,6 @@ export const financeData: L1PageData = {
         "Personalisation ML Lead",
       ],
     },
-  ],
-
-  partners: [
-    "SAP",
-    "Oracle",
-    "Temenos",
-    "Finastra",
-    "Infosys Finacle",
-    "Salesforce",
-    "Microsoft",
-    "Anaplan",
-    "Fiserv",
-    "ACI Worldwide",
-    "Guidewire",
-    "Duck Creek",
-    "FIS",
-    "Murex",
-    "Snowflake",
-    "ServiceNow",
   ],
 
   insightsEyebrow: "Insights",

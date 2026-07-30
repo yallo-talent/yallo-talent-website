@@ -89,7 +89,7 @@ export const dataAnalyticsData: L1PageData = {
   ],
 
   expertiseEyebrow: "Our expertise",
-  expertiseTitle: "Six data disciplines. Contractor bench across all of them.",
+  expertiseTitle: "Every data discipline, with a contractor bench behind it.",
   expertiseSub:
     "From ingestion to inference — specialists we place into every function that moves a Data & AI programme forward.",
   expertise: [
@@ -280,17 +280,6 @@ export const dataAnalyticsData: L1PageData = {
       author: "Yallo Talent",
       minutes: 5,
     },
-  ],
-
-  partners: [
-    "Snowflake",
-    "Databricks",
-    "Microsoft Fabric",
-    "AWS",
-    "Google Cloud",
-    "dbt Labs",
-    "Confluent",
-    "Collibra",
   ],
 
   relatedTitle: "Related pages",

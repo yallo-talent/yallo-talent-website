@@ -45,9 +45,6 @@ export function L1PageShell({ data, metrics }: ShellProps) {
     ...(hasScarce ? [{ id: "scarce", label: "Scarce talent" }] : []),
     { id: "expertise", label: "Expertise" },
     { id: "segments", label: "Segments" },
-    { id: "specialists", label: "Specialists" },
-    { id: "partners", label: "Partners" },
-    { id: "engagement", label: "Engagement" },
     ...(hasInsights ? [{ id: "insights", label: "Insights" }] : []),
   ];
 
@@ -76,15 +73,18 @@ export function L1PageShell({ data, metrics }: ShellProps) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
-      <div id="specialists">
-        <L1Architects data={data} />
-      </div>
-      <div id="partners">
-        <L1Partners partners={data.partners} />
-      </div>
-      <div id="engagement">
-        <L1ServicePillars />
-      </div>
+      {/* Three sections dropped, on the re-critique's own finding: six of
+          thirteen were the same figure — eyebrow, counted H2, lede, row of equal
+          tiles — while the page's genuinely distinctive assets were the least
+          designed surfaces on it.
+          · The specialist gallery. Canon §8 assigns the screening proof to the
+            six specialist desks, not to a four-card practice-lead gallery, and
+            the desks appeared nowhere on the page. L1BottomCta carries them now.
+          · Technology partners. Ten of sixteen marks sat outside the
+            six-platform set, and calling SAP, AWS and Google Cloud "partners" is
+            a commercial claim with nothing behind it.
+          · Service pillars. A second four-model grid duplicating the homepage's,
+            sitting ~700px above a CTA that asks for the same thing. Folded in. */}
       <L1BottomCta />
       <L1ReadNext data={data} />
       {hasInsights && (
@@ -326,7 +326,7 @@ function L1WhatWeDeliver({ data }: Props) {
         <div className={styles.wwdHead}>
           <div className={styles.eyebrow}>What we deliver</div>
           <h2 className={styles.h2}>
-            Three things every {sector} programme buys from us —{" "}
+            What every {sector} programme buys from us —{" "}
             <span className={styles.heroEmphasis}>
               speed, screening depth, and coverage.
             </span>
@@ -401,7 +401,7 @@ function L1HowWeWork({ data }: Props) {
         <div className={styles.hwwHead}>
           <div className={styles.eyebrow}>How we work</div>
           <h2 className={styles.h2}>
-            Four steps from brief to bench —{" "}
+            From brief to bench —{" "}
             <span className={styles.heroEmphasis}>
               every {data.slug === "retail" ? "retail" : data.slug} programme,
               same rhythm.
@@ -755,55 +755,6 @@ const architects: {
   },
 ];
 
-function L1Architects({ data }: Props) {
-  const sector = data.sectorNoun;
-  return (
-    <section className={styles.arch}>
-      <div className={styles.wrap}>
-        <div className={styles.archHead}>
-          <div className={styles.eyebrow}>Screened by architects</div>
-          {/* Canon §8: "the people who screen" stays deleted — the desks carry
-              the proof. Practice leads appear as ROLES with real credentials,
-              never as invented individuals. */}
-          <h2 className={styles.h2}>
-            Screened by specialists who{" "}
-            <span className={styles.heroEmphasis}>
-              have run {sector} programmes at scale.
-            </span>
-          </h2>
-          <p className={styles.sub}>
-            Yallo Talent is specialist-led, not sourcer-led. Every practice lead
-            has decades of delivery under them. They review every candidate
-            personally before the shortlist leaves the building. That's the
-            reason our 72h SLA holds up.
-          </p>
-        </div>
-        <div className={styles.archGrid}>
-          {architects.map((a) => (
-            <article key={a.name} className={styles.archCard}>
-              <div className={styles.archGlow} aria-hidden="true" />
-              <div className={styles.archCardInner}>
-                {/* No monogram. Generating initials from a role string produced
-                    "Sp", "Op" and "C&" — an invented identity for something that
-                    is not a person, and a visible fault. */}
-                <div className={styles.archRole}>{a.role}</div>
-                <div className={styles.archName}>{a.name}</div>
-                <p className={styles.archBio}>{a.bio}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className={styles.archFoot}>
-          <Link href="/leadership" className={styles.archFootLink}>
-            Meet the whole team
-            <span aria-hidden="true">→</span>
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ============ SEGMENTS ============ */
 function L1Segments({ data }: Props) {
   const [active, setActive] = useState(data.segments[0]?.id ?? "");
@@ -886,57 +837,6 @@ function L1Segments({ data }: Props) {
               </div>
             </div>
           </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ============ TECHNOLOGY PARTNERS ============ */
-const defaultPartnerNames: string[] = [
-  "SAP",
-  "Oracle",
-  "Salesforce",
-  "Anaplan",
-  "Microsoft",
-  "Blue Yonder",
-  "Workday",
-  "Manhattan Associates",
-  "Google Cloud",
-  "Shopify",
-  "IBM",
-  "Informatica",
-  "AWS",
-  "Magento",
-  "Coupa",
-  "Infor",
-];
-
-function L1Partners({ partners }: { partners?: string[] }) {
-  const partnerNames =
-    partners && partners.length > 0 ? partners : defaultPartnerNames;
-  return (
-    <section className={styles.partners}>
-      <div className={styles.wrap}>
-        <div className={styles.eyebrow}>Technology partners</div>
-        {/* NOT "the platforms we staff": canon §3 names six platform
-            destinations and AWS, Shopify, Magento and the rest are not among
-            them — AWS folds into cloud-infrastructure. Calling all sixteen
-            "platforms" dilutes the wedge the six pages exist to prove. This is
-            the wider estate, and it is real capability. */}
-        <h2 className={styles.h2}>The technology we staff into.</h2>
-        <p className={styles.sub}>
-          Active contractor benches across the enterprise estate. The six
-          platforms we publish at module level have their own pages.
-        </p>
-        <div className={styles.partnersGrid}>
-          {partnerNames.map((name, _i) => {
-            return (
-              <div key={name} className={styles.partnerCell}>
-                <span className={styles.partnerName}>{name}</span>
-              </div>
-            );
-          })}
         </div>
       </div>
     </section>
@@ -1078,67 +978,17 @@ const servicePillars: {
   },
 ];
 
-function L1ServicePillars() {
-  return (
-    <section className={styles.pillars}>
-      <div className={styles.wrap}>
-        <div className={styles.eyebrow}>Engagement models</div>
-        <h2 className={styles.h2}>
-          Four ways to deploy Yallo talent into your programme.
-        </h2>
-        <p className={styles.sub}>
-          Same specialist-screened bench, four commercial models — pick the one
-          that fits how you want to engage.
-        </p>
-        <div className={styles.pillarsGrid}>
-          {servicePillars.map((p, i) => (
-            <motion.div
-              key={p.slug}
-              initial={{ y: 16 }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.45, delay: i * 0.06 }}
-              className={styles.pillarWrap}
-            >
-              <Link href={p.href} className={styles.pillar}>
-                <div className={styles.pillarGlow} aria-hidden="true" />
-                <div className={styles.pillarBorder} aria-hidden="true" />
-                <span className={styles.pillarArrow} aria-hidden="true">
-                  <svg
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <title>Open</title>
-                    <path d="M4 12L12 4M6 4h6v6" />
-                  </svg>
-                </span>
-                <div className={styles.pillarInner}>
-                  <div className={styles.pillarIcon}>
-                    <L1Icon icon={p.icon} className={styles.pillarIconSvg} />
-                  </div>
-                  <div className={styles.pillarEyebrow}>{p.eyebrow}</div>
-                  <h3 className={styles.pillarTitle}>{p.title}</h3>
-                  <p className={styles.pillarCopy}>{p.copy}</p>
-                  <ul className={styles.pillarBullets}>
-                    {p.bullets.map((b) => (
-                      <li key={b} className={styles.pillarBullet}>
-                        {b}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+/* Canon §3, verbatim and in order: "Six specialist desks carry the screening
+   proof: Architecture, Software Development, Cloud & Infrastructure, Packaged
+   Software, Data & Analytics, Agile & DevOps." */
+const SPECIALIST_DESKS = [
+  "Architecture",
+  "Software Development",
+  "Cloud & Infrastructure",
+  "Packaged Software",
+  "Data & Analytics",
+  "Agile & DevOps",
+] as const;
 
 /* ============ BOTTOM CTA ============ */
 function L1BottomCta() {
@@ -1159,6 +1009,19 @@ function L1BottomCta() {
               No CVs until we understand your programme. Specialist-screened
               shortlist matched to your context.
             </p>
+
+            {/* The desks that do the screening, against the ask rather than as
+                their own section 700px above it. Named, not counted — the label
+                does not say "six". */}
+            <p className={styles.deskLabel}>Screened by</p>
+            <ul className={styles.deskList}>
+              {SPECIALIST_DESKS.map((d) => (
+                <li key={d} className="role-pill">
+                  {d}
+                </li>
+              ))}
+            </ul>
+
             <div className={styles.bottomActions}>
               <Link href="/brief" className={styles.ctaPrimary}>
                 Send us a brief

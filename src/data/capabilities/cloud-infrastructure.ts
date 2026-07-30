@@ -91,7 +91,7 @@ export const cloudInfrastructureData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Ten function areas — every enterprise Cloud & Infrastructure programme covered.",
+    "Every enterprise Cloud & Infrastructure programme, covered function by function.",
   expertiseSub:
     "From landing-zone to production resilience — specialists we place into every function that moves a cloud programme forward.",
   expertise: [
@@ -311,17 +311,6 @@ export const cloudInfrastructureData: L1PageData = {
       author: "Yallo Talent",
       minutes: 5,
     },
-  ],
-
-  partners: [
-    "AWS",
-    "Microsoft Azure",
-    "Google Cloud",
-    "HashiCorp",
-    "Kubernetes",
-    "Datadog",
-    "Grafana Labs",
-    "CrowdStrike",
   ],
 
   relatedTitle: "Related pages",

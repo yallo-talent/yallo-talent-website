@@ -96,7 +96,7 @@ export const governmentData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty public-sector function areas. Contractor bench across all of them.",
+    "Every public-sector function area, with a contractor bench behind it.",
   expertiseSub:
     "From citizen services to defence — we place specialists into every function that moves a public-sector programme forward.",
   expertise: [
@@ -586,25 +586,6 @@ export const governmentData: L1PageData = {
         "Time & Attendance Systems Specialist",
       ],
     },
-  ],
-
-  partners: [
-    "SAP",
-    "Oracle",
-    "Salesforce",
-    "Microsoft",
-    "ServiceNow",
-    "IBM",
-    "Palantir",
-    "Motorola Solutions",
-    "Bentley Systems",
-    "ESRI",
-    "Siemens",
-    "Cisco",
-    "Palo Alto Networks",
-    "Fortinet",
-    "AWS",
-    "Snowflake",
   ],
 
   insightsEyebrow: "Insights",

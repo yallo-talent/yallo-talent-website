@@ -88,7 +88,7 @@ export const retailData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Twenty retail function areas. Contractor bench across all of them.",
+    "Every retail function area, with a contractor bench behind it.",
   expertiseSub:
     "From front-of-house customer experience to back-of-house supply chain — we place specialists into every function that moves a retail programme forward.",
   expertise: [
