@@ -642,7 +642,7 @@ export const telcoData: L1PageData = {
         "Amdocs Charging (CES) specialists: why every UK / ME telco is now competing for the same twenty architects.",
       excerpt:
         "The bench that delivered the last generation of MNO transformations is thinning fast. Where the available architects actually are.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -664,7 +664,7 @@ export const telcoData: L1PageData = {
         "Salesforce Communications Cloud: what actually gets a carrier delivery on time.",
       excerpt:
         "The programmes that hit dates confirmed the Comms Cloud architect before vendor selection was complete.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -675,7 +675,7 @@ export const telcoData: L1PageData = {
         "OSS/BSS modernisation: the migration architects who actually delivered legacy-to-cloud in the last 24 months.",
       excerpt:
         "The specialist bench you need for a real cloud-native carrier stack — where they are and what they cost.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
   ],

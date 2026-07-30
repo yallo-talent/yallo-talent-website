@@ -13,8 +13,47 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
-      - run: pnpm biome check .
-      - run: pnpm tsc --noEmit
-      - run: pnpm build
+
+      - name: Lint
+        run: pnpm biome check .
+
+      - name: Types
+        run: pnpm tsc --noEmit
+
+      # Canon §7. Banned for commercial reasons, not stylistic ones — "GCC"
+      # collides with Global Capability Centre in Yallo's own India business.
+      - name: Terminology
+        run: pnpm check:terms
+
+      # Both themes must pass WCAG 2.2 AA independently. Fails on any miss.
+      - name: Contrast
+        run: pnpm check:contrast
+
+      - name: Build
+        run: pnpm build
+
       - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test
+
+      - name: Tests
+        run: pnpm test
+
+      # Asserts what silently regresses: real metric values in the
+      # server-rendered HTML rather than zeros, no banned term on the page, no
+      # horizontal overflow at 360px, no unrendered image. Runs against the
+      # production build because dev-mode image optimisation skews the timings.
+      - name: Visual and served-markup assertions
+        run: |
+          PORT=3100 pnpm start &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:3100 && break
+            sleep 1
+          done
+          PORT=3100 pnpm check:visual
+
+      - name: Upload captures on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-captures
+          path: test-results/visual
+          if-no-files-found: ignore

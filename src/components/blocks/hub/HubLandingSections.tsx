@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
 import type { L1Hue, L1IconKey } from "@/data/l1/types";
+import { routeExists } from "@/lib/routes";
 import styles from "./HubLandingSections.module.css";
 
 function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
@@ -308,19 +309,23 @@ export function HubCrossConnected() {
                   hue: "green" as L1Hue,
                 },
                 { slug: "workday", label: "Workday", hue: "rose" as L1Hue },
-              ].map((p) => (
-                <Link
-                  key={p.slug}
-                  href={`/platforms/${p.slug}`}
-                  className={styles.crossChip}
-                  style={cardHueStyle()}
-                >
-                  <span className={styles.crossChipLabel}>{p.label}</span>
-                  <span className={styles.crossChipArr} aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              ))}
+              ]
+                // Only platforms with a page. Microsoft and Workday have no
+                // module data yet and render nowhere rather than 404.
+                .filter((p) => routeExists(`/platforms/${p.slug}`))
+                .map((p) => (
+                  <Link
+                    key={p.slug}
+                    href={`/platforms/${p.slug}`}
+                    className={styles.crossChip}
+                    style={cardHueStyle()}
+                  >
+                    <span className={styles.crossChipLabel}>{p.label}</span>
+                    <span className={styles.crossChipArr} aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ))}
             </div>
           </div>
           <div className={styles.crossRail}>
@@ -357,19 +362,23 @@ export function HubCrossConnected() {
                   label: "Testing & Quality Engineering",
                   hue: "orange" as L1Hue,
                 },
-              ].map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/capabilities/${c.slug}`}
-                  className={styles.crossChip}
-                  style={cardHueStyle()}
-                >
-                  <span className={styles.crossChipLabel}>{c.label}</span>
-                  <span className={styles.crossChipArr} aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              ))}
+              ]
+                // Only disciplines with a page. The others are real and the nav
+                // names them non-interactively.
+                .filter((c) => routeExists(`/capabilities/${c.slug}`))
+                .map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/capabilities/${c.slug}`}
+                    className={styles.crossChip}
+                    style={cardHueStyle()}
+                  >
+                    <span className={styles.crossChipLabel}>{c.label}</span>
+                    <span className={styles.crossChipArr} aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                ))}
             </div>
           </div>
         </div>

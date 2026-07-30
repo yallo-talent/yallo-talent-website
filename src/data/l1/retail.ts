@@ -1441,7 +1441,7 @@ export const retailData: L1PageData = {
         "Blue Yonder Luminate contractors: why the bench dried up and what retail programmes are doing about it.",
       excerpt:
         "Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months — here's what we know about where the available contractors are and what they cost.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -1463,7 +1463,7 @@ export const retailData: L1PageData = {
         "Anaplan Model Builders in retail: the role that's reshaping how large retailers plan — and why there aren't enough of them.",
       excerpt:
         "Anaplan has moved from finance tool to enterprise planning platform faster than the talent pool has followed. In retail specifically, the demand for Model Builders outstrips supply by a ratio we haven't seen since SAP HANA launched in 2015.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -1474,7 +1474,7 @@ export const retailData: L1PageData = {
         "Why retail CX contractors walk at go-live — and how to keep them.",
       excerpt:
         "The highest-risk moment in any retail CX programme is the 30 days before and after go-live. What we've learned about contractor exit patterns, commercial triggers, and how to structure engagement to prevent it.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 8,
     },
     {

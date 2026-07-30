@@ -4,6 +4,7 @@ import { capabilityRegistry } from "@/data/capabilities";
 import { industriesIndex } from "@/data/l1";
 import { retailData } from "@/data/l1/retail";
 import type { L1PageData } from "@/data/l1/types";
+import { publishedPlatformSlugs } from "@/data/platforms/derive";
 import {
   getAllCaseStudySlugs,
   getAllInsightSlugs,
@@ -63,6 +64,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
         })),
   );
 
+  // Only platforms with real module coverage have a page, so only those are
+  // listed — the sitemap must match the generated route set exactly.
+  const platformRoutes = publishedPlatformSlugs().map((slug) => ({
+    url: `${SITE.url}/platforms/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   const capabilityRoutes = Object.keys(capabilityRegistry).map((slug) => ({
     url: `${SITE.url}/capabilities/${slug}`,
     lastModified: now,
@@ -107,6 +117,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticRoutes,
     ...industryRoutes,
     ...industryL2Routes,
+    ...platformRoutes,
     ...capabilityRoutes,
     ...insightRoutes,
     ...caseStudyRoutes,

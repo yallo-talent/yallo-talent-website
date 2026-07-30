@@ -644,7 +644,7 @@ export const financeData: L1PageData = {
         "Temenos Transact migrations: why the specialist bench in the Gulf has thinned in 2025.",
       excerpt:
         "Every Gulf tier-1 that moved off legacy core in the last 18 months chased the same Transact architects. What that scarcity means for your 2026 timeline.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -666,7 +666,7 @@ export const financeData: L1PageData = {
         "PSD3 and open banking: the API and integration talent that European banks now need on the bench.",
       excerpt:
         "The rules are moving from consent to true portability. Where the integration and API architects that can actually deliver this are, and what they cost.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -677,7 +677,7 @@ export const financeData: L1PageData = {
         "AML analytics: why NICE Actimize modellers are the hardest hire in FS this year.",
       excerpt:
         "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across the Middle East and Europe.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
   ],

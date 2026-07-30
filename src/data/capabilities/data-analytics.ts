@@ -240,17 +240,17 @@ export const dataAnalyticsData: L1PageData = {
   ],
 
   insightsEyebrow: "Insights",
-  insightsTitle: "What's happening in Data & AI talent right now.",
+  insightsTitle: "What's happening in data and analytics talent right now.",
   insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+    "Specific, sourced, and written for the person doing the hiring.",
   insights: [
     {
-      href: "/insights/gcc-ai-skills-gap",
+      href: "/insights/data-engineer-uae-ai-programmes",
       category: "Talent",
-      title: "How Middle East enterprises are closing the AI skills gap.",
+      title: "Why data engineers are becoming the backbone of AI programmes.",
       excerpt:
-        "AI, ML and data roles top the ManpowerGroup shortage index. Here's how the region's biggest enterprises are staffing them.",
-      author: "Sumeet Goenka",
+        "The AI roadmap stalls on the pipeline long before it stalls on the model. Where the scarcity actually sits.",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -260,7 +260,7 @@ export const dataAnalyticsData: L1PageData = {
       title: "GenAI in the enterprise — beyond the demo.",
       excerpt:
         "The gap between an LLM prototype and a production system is a specialist bench most organisations don't have. What separates the shipping teams from the stuck ones.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 8,
     },
     {
@@ -270,7 +270,7 @@ export const dataAnalyticsData: L1PageData = {
       title: "Snowflake or Databricks? The wrong first question.",
       excerpt:
         "Platform choice matters less than the depth of your data engineering bench. A four-week Snowflake shortlist that ships beats a six-month Databricks bench that doesn't.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -280,7 +280,7 @@ export const dataAnalyticsData: L1PageData = {
       title: "The cost of ignoring MLOps until year two.",
       excerpt:
         "Model drift, silent failures and shadow copies. What we've seen when MLOps is the last hire, not the first.",
-      author: "Yallo Research",
+      author: "Yallo Talent",
       minutes: 5,
     },
   ],

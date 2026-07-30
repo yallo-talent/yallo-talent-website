@@ -627,7 +627,7 @@ export const healthcareData: L1PageData = {
         "Epic vs Cerner: where the migration specialists are and what they cost in 2025.",
       excerpt:
         "Every Gulf hospital that moved off legacy EHR in the last 18 months hunted the same architects. Where the available bench actually is.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -649,7 +649,7 @@ export const healthcareData: L1PageData = {
         "FHIR at scale: the integration architects UK ICBs and Gulf networks need on the bench.",
       excerpt:
         "Interop programmes are moving from pilot to network-scale. Where the FHIR-native architects actually are.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -660,7 +660,7 @@ export const healthcareData: L1PageData = {
         "DSCSA / FMD serialisation: the specialist bench pharma manufacturers are running out of.",
       excerpt:
         "Serialisation deadlines don't move. What we're seeing in placement demand across UK and the Gulf.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
   ],

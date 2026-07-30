@@ -7,6 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check:terms": "node scripts/check-terminology.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:visual": "node scripts/capture-home.mjs",
     "test": "playwright test",
     "prepare": "husky || true"
   },
@@ -15,7 +19,6 @@
     "pnpm": "10.x"
   },
   "dependencies": {
-    "@vercel/analytics": "^2.0.1",
     "framer-motion": "12",
     "gray-matter": "^4.0.3",
     "next": "16.2.12",

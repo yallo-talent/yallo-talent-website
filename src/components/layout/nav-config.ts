@@ -83,6 +83,10 @@ export const primaryNav: NavGroup[] = [
             label: "Microsoft",
             href: "/platforms/microsoft",
             icon: "microsoft",
+            // No module data yet. Canon requires Microsoft at equal depth to
+            // Oracle because Yallo is a Microsoft house, so a thin page here
+            // would undercut the wedge rather than support it.
+            published: false,
           },
           {
             label: "Salesforce",
@@ -94,7 +98,12 @@ export const primaryNav: NavGroup[] = [
             href: "/platforms/blue-yonder",
             icon: "blue-yonder",
           },
-          { label: "Workday", href: "/platforms/workday", icon: "workday" },
+          {
+            label: "Workday",
+            href: "/platforms/workday",
+            icon: "workday",
+            published: false,
+          },
         ],
       },
       {

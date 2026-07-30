@@ -18,7 +18,11 @@ export interface PlatformAxis {
    * Yonder only exists as a bitmap.
    */
   mark: string;
-  /** False until /platforms/[platform] ships; renders non-interactive. */
+  /**
+   * Whether /platforms/{slug} exists. Derived at build time from module data
+   * presence in src/data/platforms/derive.ts — a platform with fewer than three
+   * documented modules gets no page, so this is not hand-maintained.
+   */
   published: boolean;
 }
 
@@ -28,14 +32,14 @@ export const platforms: PlatformAxis[] = [
     slug: "sap",
     modules: "S/4HANA · ECC · SuccessFactors",
     mark: "/logos/platforms/sap.svg",
-    published: false,
+    published: true,
   },
   {
     name: "Oracle",
     slug: "oracle",
     modules: "Fusion · EBS · Hyperion · Retail",
     mark: "/logos/platforms/oracle.svg",
-    published: false,
+    published: true,
   },
   {
     name: "Microsoft",
@@ -49,14 +53,14 @@ export const platforms: PlatformAxis[] = [
     slug: "salesforce",
     modules: "Service · Marketing · Commerce",
     mark: "/logos/platforms/salesforce.svg",
-    published: false,
+    published: true,
   },
   {
     name: "Blue Yonder",
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
     mark: "/logos/platforms/blue-yonder.png",
-    published: false,
+    published: true,
   },
   {
     name: "Workday",

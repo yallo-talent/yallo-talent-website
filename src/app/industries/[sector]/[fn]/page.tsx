@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { L2PageShell } from "@/components/blocks/l2/L2PageShell";
-import { retailData } from "@/data/l1/retail";
-import type { L1PageData } from "@/data/l1/types";
+import { taxonomyLabels } from "@/data/l1/index";
+import {
+  expertiseWithTools,
+  sectorRegistry,
+  sectorsWithTools,
+} from "@/data/l1/registry";
 import { buildMetadata } from "@/lib/seo";
-
-/**
- * Sector data registry — extend as more industries get L2 tools.
- * A sector is only listed here when its expertise items carry `tools`.
- */
-const sectorRegistry: Record<string, L1PageData> = {
-  retail: retailData,
-};
 
 interface RouteParams {
   sector: string;
@@ -20,8 +16,8 @@ interface RouteParams {
 
 export function generateStaticParams(): RouteParams[] {
   const params: RouteParams[] = [];
-  for (const [sector, data] of Object.entries(sectorRegistry)) {
-    for (const fn of data.expertise) {
+  for (const [sector, data] of sectorsWithTools()) {
+    for (const fn of expertiseWithTools(data)) {
       if (fn.tools && fn.tools.length > 0) {
         params.push({ sector, fn: fn.slug });
       }
@@ -54,7 +50,7 @@ export async function generateMetadata({
   const roles = fn.roles.slice(0, 3).join(", ");
   return buildMetadata({
     seo: {
-      title: `${fn.title} Contractors · ${sector.title.replace(/&.*/, "").trim()} | Yallo Talent`,
+      title: `${fn.title} Contractors · ${taxonomyLabels(sector.slug).short} | Yallo Talent`,
       description: `${roles} and more. Architect-screened contractor shortlists in 72 hours. Middle East · Europe · India.`,
     },
     path: `/industries/${p.sector}/${p.fn}`,

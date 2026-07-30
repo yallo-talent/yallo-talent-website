@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
+import { routeExists } from "@/lib/routes";
 import styles from "./L1PageShell.module.css";
 import { l1Icons } from "./l1-icons";
 
@@ -1198,7 +1199,9 @@ function L1ReadNext({ data }: Props) {
     Platform: [] as typeof data.related,
     Capability: [] as typeof data.related,
   };
-  for (const r of data.related) {
+  // Only rail links whose target exists — the related arrays are authored data
+  // and several entries point at pages that were never built.
+  for (const r of data.related.filter((x) => routeExists(x.href))) {
     if (r.category === "Industry") buckets.Industry.push(r);
     else if (r.category === "Platform") buckets.Platform.push(r);
     else if (r.category === "Capability") buckets.Capability.push(r);

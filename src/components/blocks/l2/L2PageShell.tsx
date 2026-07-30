@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
 import { PetalPlate } from "@/components/ui/PetalPlate";
+import { taxonomyLabels } from "@/data/l1/index";
 import type {
   L1ExpertiseCard,
   L1Hue,
   L1IconKey,
   L1PageData,
 } from "@/data/l1/types";
+import { routeExists } from "@/lib/routes";
 import styles from "./L2PageShell.module.css";
 
 /**
@@ -30,6 +32,10 @@ interface Props {
   fn: L1ExpertiseCard;
 }
 
+/**
+ * B1: `sector.title` is hero copy ("Retail tech contractors,"), not a label.
+ * The display names come from the index, which is their single source.
+ */
 export function L2PageShell({ sector, fn }: Props) {
   return (
     <div className={`${styles.page} band-dark`} style={hueStyle()}>
@@ -78,7 +84,7 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
             href={`/industries/${sector.slug}`}
             className={styles.crumbLink}
           >
-            {sector.title.split("&")[0]?.trim() ?? sector.title}
+            {taxonomyLabels(sector.slug).short}
           </Link>
           <span className={styles.crumbSep} aria-hidden="true">
             /
@@ -88,7 +94,7 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
 
         <div className={styles.heroEyebrow}>
           <span className={styles.heroEyebrowDot} aria-hidden="true" />
-          {fn.num} · {sector.title.split("&")[0]?.trim() ?? sector.title}
+          {fn.num} · {taxonomyLabels(sector.slug).short}
         </div>
 
         <h1 className={styles.heroTitle}>
@@ -367,8 +373,14 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
     const slug = vendorToPlatformSlug[t.vendor];
     if (slug) platformSlugs.add(slug);
   }
-  const platforms = Array.from(platformSlugs);
-  const capabilities = fnToCapabilitySlugs[fn.slug] ?? [];
+  // Only cross-link to pages that exist. These are data-driven maps, and
+  // several slugs in them point at pages that were never built.
+  const platforms = Array.from(platformSlugs).filter((sl) =>
+    routeExists(`/platforms/${sl}`),
+  );
+  const capabilities = (fnToCapabilitySlugs[fn.slug] ?? []).filter((sl) =>
+    routeExists(`/capabilities/${sl}`),
+  );
 
   if (platforms.length === 0 && capabilities.length === 0) return null;
 
@@ -631,7 +643,9 @@ function L2RelatedFunctions({
   return (
     <section className={styles.related}>
       <div className={styles.relatedInner}>
-        <div className={styles.secLabel}>More {sector.title}</div>
+        <div className={styles.secLabel}>
+          More {taxonomyLabels(sector.slug).label}
+        </div>
         <h3 className={styles.relatedH}>Related functions in this sector</h3>
         <div className={styles.relatedGrid}>
           {picks.map((rf, i) => {
@@ -739,12 +753,15 @@ function L2Sidebar({
         <Link
           href={`/industries/${sector.slug}`}
           className={styles.sbBack}
-          aria-label={`Back to ${sector.title}`}
+          aria-label={`Back to ${taxonomyLabels(sector.slug).label}`}
         >
-          <span aria-hidden="true">←</span> Back to {sector.title}
+          <span aria-hidden="true">←</span> Back to{" "}
+          {taxonomyLabels(sector.slug).short}
         </Link>
         <div className={styles.sbSectorLabel}>{sector.category}</div>
-        <div className={styles.sbSectorName}>{sector.title}</div>
+        <div className={styles.sbSectorName}>
+          {taxonomyLabels(sector.slug).label}
+        </div>
       </div>
       <div className={styles.sbSection}>
         <div className={styles.sbHeading}>All functions</div>

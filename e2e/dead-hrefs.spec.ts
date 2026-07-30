@@ -5,11 +5,10 @@ import { expect, test } from "@playwright/test";
  * every rendered internal link to `/insights/*` or `/case-studies/*`
  * must correspond to a real MDX-backed page.
  *
- * The scope is deliberately narrower than the whole site: `/platforms/*`
- * and several `/capabilities/*` slugs render as links from data-driven
- * cross-chips even though their concrete pages have not shipped yet.
- * Those dead links are a separate gate — track and widen this test's
- * scope once the platform and remaining capability pages exist.
+ * Scope widened: platform pages now exist for every platform with real module
+ * coverage, and the two without it (Microsoft, Workday) render non-interactive.
+ * Capability slugs without seed data do the same. So the test no longer needs to
+ * exempt them — any rendered internal link is expected to resolve.
  */
 
 function normalisePath(href: string): string | null {
@@ -36,9 +35,10 @@ async function fetchSitemapPaths(baseURL: string): Promise<string[]> {
     .map((p) => normalisePath(p) ?? p);
 }
 
-const CONTENT_ROUTE_RE = /^\/(insights|case-studies)\/[^/]+$/;
+const CONTENT_ROUTE_RE =
+  /^\/(insights|case-studies|platforms|capabilities)\/[^/]+$/;
 
-test("every rendered /insights/* and /case-studies/* href matches a real MDX page", async ({
+test("every rendered content, platform and capability href resolves", async ({
   page,
   baseURL,
 }) => {

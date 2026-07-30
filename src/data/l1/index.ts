@@ -4,10 +4,24 @@
  * — the actual L1PageData lives in each page's data file.
  */
 
+/**
+ * A taxonomy label — the display name of a sector, platform or capability
+ * ("Retail & Consumer", "Retail").
+ *
+ * Branded on purpose. `L1PageData.title` holds the first line of the page's H1
+ * ("Retail tech contractors,") and it was being consumed as a taxonomy label in
+ * seven places, so every L2 breadcrumb, sidebar, back link and `<title>` read
+ * "Retail tech contractors," — trailing comma included. The brand means a hero
+ * string can no longer be passed where a label is expected: only this module
+ * mints TaxonomyLabel values, and it mints them from `label`/`short`.
+ */
+declare const taxonomyLabelBrand: unique symbol;
+export type TaxonomyLabel = string & { readonly [taxonomyLabelBrand]: true };
+
 export interface L1IndexEntry {
   slug: string;
-  label: string;
-  short: string;
+  label: TaxonomyLabel;
+  short: TaxonomyLabel;
   category: "industries" | "platforms" | "capabilities";
   hue: "blue" | "green" | "orange" | "teal" | "violet" | "rose";
   tagline: string;
@@ -16,48 +30,48 @@ export interface L1IndexEntry {
 export const industriesIndex: L1IndexEntry[] = [
   {
     slug: "retail",
-    label: "Retail & Consumer",
-    short: "Retail",
+    label: "Retail & Consumer" as TaxonomyLabel,
+    short: "Retail" as TaxonomyLabel,
     category: "industries",
     hue: "orange",
     tagline: "Commerce, POS and supply-chain talent for retail programmes.",
   },
   {
     slug: "finance",
-    label: "Banking & Financial Services",
-    short: "Banking",
+    label: "Banking & Financial Services" as TaxonomyLabel,
+    short: "Banking" as TaxonomyLabel,
     category: "industries",
     hue: "blue",
     tagline: "Core banking, payments, risk and cloud platform specialists.",
   },
   {
     slug: "government",
-    label: "Government & Public Sector",
-    short: "Government",
+    label: "Government & Public Sector" as TaxonomyLabel,
+    short: "Government" as TaxonomyLabel,
     category: "industries",
     hue: "green",
     tagline: "Digital government, smart-services and citizen-facing platforms.",
   },
   {
     slug: "manufacturing",
-    label: "Manufacturing & Logistics",
-    short: "Manufacturing",
+    label: "Manufacturing & Logistics" as TaxonomyLabel,
+    short: "Manufacturing" as TaxonomyLabel,
     category: "industries",
     hue: "orange",
     tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
   },
   {
     slug: "healthcare",
-    label: "Healthcare & Life Sciences",
-    short: "Healthcare",
+    label: "Healthcare & Life Sciences" as TaxonomyLabel,
+    short: "Healthcare" as TaxonomyLabel,
     category: "industries",
     hue: "teal",
     tagline: "Clinical systems, regulated data and compliance-grade delivery.",
   },
   {
     slug: "telco",
-    label: "Telco & Media",
-    short: "Telco",
+    label: "Telco & Media" as TaxonomyLabel,
+    short: "Telco" as TaxonomyLabel,
     category: "industries",
     hue: "violet",
     tagline: "OSS/BSS, network and data engineering for telco transformation.",
@@ -67,48 +81,48 @@ export const industriesIndex: L1IndexEntry[] = [
 export const platformsIndex: L1IndexEntry[] = [
   {
     slug: "sap",
-    label: "SAP",
-    short: "SAP",
+    label: "SAP" as TaxonomyLabel,
+    short: "SAP" as TaxonomyLabel,
     category: "platforms",
     hue: "blue",
     tagline: "S/4HANA, FICO, MM, SD and integration specialists.",
   },
   {
     slug: "oracle",
-    label: "Oracle",
-    short: "Oracle",
+    label: "Oracle" as TaxonomyLabel,
+    short: "Oracle" as TaxonomyLabel,
     category: "platforms",
     hue: "rose",
     tagline: "Fusion Cloud ERP/EPM/HCM/SCM and E-Business Suite specialists.",
   },
   {
     slug: "microsoft",
-    label: "Microsoft",
-    short: "Microsoft",
+    label: "Microsoft" as TaxonomyLabel,
+    short: "Microsoft" as TaxonomyLabel,
     category: "platforms",
     hue: "blue",
     tagline: "Dynamics 365, Azure, Power Platform, M365 engineers.",
   },
   {
     slug: "salesforce",
-    label: "Salesforce",
-    short: "Salesforce",
+    label: "Salesforce" as TaxonomyLabel,
+    short: "Salesforce" as TaxonomyLabel,
     category: "platforms",
     hue: "teal",
     tagline: "Sales, Service, Commerce, Marketing and integration talent.",
   },
   {
     slug: "blue-yonder",
-    label: "Blue Yonder",
-    short: "Blue Yonder",
+    label: "Blue Yonder" as TaxonomyLabel,
+    short: "Blue Yonder" as TaxonomyLabel,
     category: "platforms",
     hue: "orange",
     tagline: "WMS, TMS, Luminate and demand-planning specialists.",
   },
   {
     slug: "workday",
-    label: "Workday",
-    short: "Workday",
+    label: "Workday" as TaxonomyLabel,
+    short: "Workday" as TaxonomyLabel,
     category: "platforms",
     hue: "violet",
     tagline: "HCM, Payroll, Recruiting and Adaptive Planning specialists.",
@@ -118,48 +132,48 @@ export const platformsIndex: L1IndexEntry[] = [
 export const capabilitiesIndex: L1IndexEntry[] = [
   {
     slug: "data-analytics",
-    label: "Data & Analytics",
-    short: "Data & AI",
+    label: "Data & Analytics" as TaxonomyLabel,
+    short: "Data & AI" as TaxonomyLabel,
     category: "capabilities",
     hue: "blue",
     tagline: "Data engineering, ML, GenAI and analytics platform specialists.",
   },
   {
     slug: "devops-platform-engineering",
-    label: "DevOps & Platform Engineering",
-    short: "Digital & DevOps",
+    label: "DevOps & Platform Engineering" as TaxonomyLabel,
+    short: "Digital & DevOps" as TaxonomyLabel,
     category: "capabilities",
     hue: "violet",
     tagline: "SRE, platform engineering and continuous delivery talent.",
   },
   {
     slug: "cloud-infrastructure",
-    label: "Cloud & Infrastructure",
-    short: "Cloud",
+    label: "Cloud & Infrastructure" as TaxonomyLabel,
+    short: "Cloud" as TaxonomyLabel,
     category: "capabilities",
     hue: "teal",
     tagline: "AWS, Azure, GCP architects and platform engineers.",
   },
   {
     slug: "cybersecurity",
-    label: "Cybersecurity",
-    short: "Security",
+    label: "Cybersecurity" as TaxonomyLabel,
+    short: "Security" as TaxonomyLabel,
     category: "capabilities",
     hue: "green",
     tagline: "Security architects, GRC and identity specialists.",
   },
   {
     slug: "integration-middleware",
-    label: "Integration & Middleware",
-    short: "Integration",
+    label: "Integration & Middleware" as TaxonomyLabel,
+    short: "Integration" as TaxonomyLabel,
     category: "capabilities",
     hue: "orange",
     tagline: "MuleSoft, Boomi, Kafka, API and iPaaS specialists.",
   },
   {
     slug: "testing-quality-engineering",
-    label: "Testing & Quality Engineering",
-    short: "Emerging",
+    label: "Testing & Quality Engineering" as TaxonomyLabel,
+    short: "Emerging" as TaxonomyLabel,
     category: "capabilities",
     hue: "rose",
     tagline: "Blockchain, IoT, digital twin and quantum-adjacent talent.",
@@ -171,3 +185,26 @@ export const allL1: Record<string, L1IndexEntry[]> = {
   platforms: platformsIndex,
   capabilities: capabilitiesIndex,
 };
+
+/**
+ * Resolves the display names for an L1 slug.
+ *
+ * Single source of truth: nothing duplicates these into the per-page data
+ * files, so a sector cannot end up with two different display names.
+ */
+export function taxonomyLabels(slug: string): {
+  label: TaxonomyLabel;
+  short: TaxonomyLabel;
+} {
+  for (const group of Object.values(allL1)) {
+    const hit = group.find((e) => e.slug === slug);
+    if (hit) return { label: hit.label, short: hit.short };
+  }
+  // A slug with no index entry is a data error, not a runtime condition worth
+  // papering over — but a hard throw would break the whole route tree, so fall
+  // back to the slug itself rather than to hero copy.
+  return {
+    label: slug as TaxonomyLabel,
+    short: slug as TaxonomyLabel,
+  };
+}

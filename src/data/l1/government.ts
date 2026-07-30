@@ -627,7 +627,7 @@ export const governmentData: L1PageData = {
         "GDS service standard: the specialists central departments cannot deliver a service without.",
       excerpt:
         "The service standard is a talent problem before it's a design problem. Where the service designers, content designers and delivery managers actually are.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -649,7 +649,7 @@ export const governmentData: L1PageData = {
         "Palantir Foundry contractors in defence: what actually gets you shortlisted.",
       excerpt:
         "The specialist bench is thin, the clearance timelines are long and the frameworks are opaque. What the programmes with the best delivery track record are doing differently.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -660,7 +660,7 @@ export const governmentData: L1PageData = {
         "NCSC CAF: the security architects UK public bodies need on the bench now.",
       excerpt:
         "CAF alignment programmes have moved from optional to critical path. What we're seeing in placement demand across central and local government.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 5,
     },
   ],

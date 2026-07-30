@@ -644,7 +644,7 @@ export const manufacturingData: L1PageData = {
         "Smart manufacturing: IoT's role in shaping intelligent ecosystems.",
       excerpt:
         "The gap between IIoT pilots and plant-wide rollout is now a talent problem, not a technology one. Where the specialists actually are — and what they cost.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -665,7 +665,7 @@ export const manufacturingData: L1PageData = {
       title: "Circular economy in manufacturing: tech-enabled sustainability.",
       excerpt:
         "Carbon accounting, product passports and reverse ops are moving from board decks to programme plans. The specialist bench has not caught up.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -676,7 +676,7 @@ export const manufacturingData: L1PageData = {
         "Siemens Opcenter specialists in the Gulf: why the bench has dried up.",
       excerpt:
         "Every ME auto and pharma programme in 2024 chased the same Opcenter architects. What that scarcity means for your 2026 rollout timeline.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 5,
     },
   ],

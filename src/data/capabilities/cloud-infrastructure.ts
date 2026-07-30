@@ -285,7 +285,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "The landing-zone architect is your first hire, not your last.",
       excerpt:
         "The pattern repeats across every migration: teams stand up workloads before the landing-zone is stable. Here's how the shipping programmes sequence the bench.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 6,
     },
     {
@@ -295,7 +295,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "When to hire your first FinOps practitioner.",
       excerpt:
         "Before your monthly cloud bill has a comma, not after. What we've seen across the Middle East and Europe cloud programmes when cost governance is treated as an afterthought.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 7,
     },
     {
@@ -305,7 +305,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Why every Kubernetes platform team of five is really seven.",
       excerpt:
         "The two roles teams forget to hire — and the production incidents that show up six months later. Notes from a decade of platform builds.",
-      author: "Sumeet Goenka",
+      author: "Yallo Talent",
       minutes: 8,
     },
     {
@@ -315,7 +315,7 @@ export const cloudInfrastructureData: L1PageData = {
       title: "SRE inside a regulated cloud — the parts nobody documents.",
       excerpt:
         "Error budgets, incident review and change control when auditors, not just PagerDuty, are watching. How enterprise SREs adapt.",
-      author: "Yallo Research",
+      author: "Yallo Talent",
       minutes: 5,
     },
   ],
