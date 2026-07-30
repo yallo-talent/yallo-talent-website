@@ -1,26 +1,27 @@
+/* The petal at small scale, not a pill: radius is either the petal or square. */
 .toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   background: transparent;
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  color: var(--text-2);
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-sm);
   cursor: pointer;
   transition:
-    color 0.15s ease,
-    border-color 0.15s ease,
-    background 0.15s ease;
+    color 0.28s var(--ease),
+    border-color 0.28s var(--ease),
+    background 0.28s var(--ease);
 }
 
 .toggle:hover,
 .toggle:focus-visible {
-  color: var(--accent);
-  border-color: var(--border-accent);
-  background: var(--accent-muted);
+  color: var(--accent-label);
+  background: var(--accent-wash);
+  border-color: var(--accent-line);
 }
 
 .icon {

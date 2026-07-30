@@ -2,275 +2,506 @@
 
 /* ==========================================================================
    Layer 1 — Raw palette
-   The only place raw hex may live. Semantic tokens (L2) consume these.
+   The only place raw hex may live, enforced by .claude/hooks/check-colours.js.
+   Semantic tokens (Layer 2) consume these. Every value here is verified by
+   `node scripts/check-contrast.mjs` — run it before committing any change.
    ========================================================================== */
 :root {
-  /* Yellow / amber (primary brand accent) */
-  --yellow-400: #d4a843;
-  --yellow-500: #f59e0b;
-  --yellow-600: #a8811f;
-  --gradient-yellow-start: #fcd34d;
+  /* --- Light register: "the dossier" ------------------------------------- */
+  /* Uncoated paper stock. Pure white appears nowhere in the light theme. */
+  --paper: #eae9e4;
+  --paper-2: #f4f3f0;
+  --paper-3: #e3e1d9;
 
-  /* Near-black with a whisper of blue (charcoal, not navy) */
-  --ink-950: #0a0b10;
-  --ink-900: #0e0f16;
-  --ink-800: #14161f;
-  --ink-700: #1b1d28;
-  --ink-600: #23262f;
-  --ink-500: #2c2f38;
+  /* Ink. Never pure black. */
+  --ink: #16171a; /* 13.69:1 on paper-3 */
+  --ink-2: #3a3c42; /* 8.42:1  */
+  --ink-3: #5c5e66; /* 4.94:1  — raised from #63656c, which missed AA */
 
-  /* Legacy black aliases (retained during migration; equal to ink) */
-  --black-950: var(--ink-950);
-  --black-900: var(--ink-900);
-  --black-800: var(--ink-800);
-  --black-700: var(--ink-700);
+  --rule: #cdcbc3; /* decorative hairline */
+  --rule-strong: #807e76; /* 3.11:1 — control boundaries only */
 
-  --gray-800: #2a2d3f;
-  --gray-700: #3a3f52;
-  --gray-200: #e5e5e5;
-  --gray-100: #f5f5f5;
-  --white: #ffffff;
+  /* --- Dark register: "the appendix" ------------------------------------ */
+  /* Charcoal with a whisper of blue. Never navy. */
+  --dk: #0c0d10;
+  --dk-2: #151820;
+  --dk-3: #1f2330;
 
-  /* Yellow alphas */
-  --ya04: rgba(245, 158, 11, 0.04);
-  --ya08: rgba(245, 158, 11, 0.08);
-  --ya13: rgba(245, 158, 11, 0.13);
-  --ya20: rgba(245, 158, 11, 0.2);
-  --ya35: rgba(245, 158, 11, 0.35);
+  --dk-txt: #f0efec; /* 13.62:1 on dk-3 */
+  --dk-txt-2: #b9bdc6; /* 8.32:1  */
+  --dk-txt-3: #9298a3; /* 5.40:1  — lifted from #6b7079 (~3.2:1) */
 
-  /* White alphas */
-  --wa03: rgba(255, 255, 255, 0.03);
-  --wa05: rgba(255, 255, 255, 0.05);
-  --wa08: rgba(255, 255, 255, 0.08);
-  --wa12: rgba(255, 255, 255, 0.12);
-  --wa15: rgba(255, 255, 255, 0.15);
-  --wa25: rgba(255, 255, 255, 0.25);
-  --wa40: rgba(255, 255, 255, 0.4);
-  --wa60: rgba(255, 255, 255, 0.6);
-  --wa88: rgba(255, 255, 255, 0.88);
+  --dk-line: #2e333d; /* decorative hairline */
+  --dk-line-strong: #6b7280; /* 3.24:1 — control boundaries only */
 
-  /* Ink alphas (for light theme + shadow tints) */
-  --ba05: rgba(10, 11, 16, 0.05);
-  --ba08: rgba(10, 11, 16, 0.08);
-  --ba60: rgba(10, 11, 16, 0.6);
-  --ba75: rgba(10, 11, 16, 0.75);
+  /* --- Brand accent: one marker, always --------------------------------- */
+  /* Taken from public/logos/yallo-flower.svg. Three grades because no single
+     value clears AA on both paper and near-black at every type size. */
+  --gold: #d4a843; /* 7.07:1 on dk-3 · decorative only on light */
+  --gold-deep: #9d7818; /* 3.12:1 on paper-3 — large text + boundaries */
+  --gold-ink: #7b5d13; /* 4.69:1 on paper-3 — 11px mono labels */
+  --gold-wash: #f2e9d2; /* the only tinted ground */
 
-  /* Supporting hue palette — sections opt into these for tint variety.
-     Each hue exposes 500 solid + 08/20/35 alpha for glow / muted / active. */
-  --hue-blue-500: #4a8fd2;
-  --hue-blue-08: rgba(74, 143, 210, 0.08);
-  --hue-blue-20: rgba(74, 143, 210, 0.2);
-  --hue-blue-35: rgba(74, 143, 210, 0.35);
+  /* --- Functional palette ----------------------------------------------- */
+  /* Information only. Never decoration, never a per-sector tint. Each hue
+     carries a -mark grade (>=3:1, fills and strokes) and a -text grade
+     (>=4.5:1, labels), tuned separately per theme. */
+  --fn-signal-mark-l: #c2410c; /* scarcity, criticality, hard to fill */
+  --fn-signal-text-l: #a83a09;
+  --fn-signal-mark-d: #ff8455;
+  --fn-signal-text-d: #ff9a72;
 
-  --hue-green-500: #5ac89a;
-  --hue-green-08: rgba(90, 200, 154, 0.08);
-  --hue-green-20: rgba(90, 200, 154, 0.2);
-  --hue-green-35: rgba(90, 200, 154, 0.35);
+  --fn-info-mark-l: #1d6fa5; /* data series, in-region availability */
+  --fn-info-text-l: #17557f;
+  --fn-info-mark-d: #4aa8e8;
+  --fn-info-text-d: #6ebcf0;
 
-  --hue-orange-500: #e89a4e;
-  --hue-orange-08: rgba(232, 154, 78, 0.08);
-  --hue-orange-20: rgba(232, 154, 78, 0.2);
-  --hue-orange-35: rgba(232, 154, 78, 0.35);
+  --fn-positive-mark-l: #2f7d46; /* renewal, filled seats, met milestones */
+  --fn-positive-text-l: #26643a;
+  --fn-positive-mark-d: #57b478;
+  --fn-positive-text-d: #7fc796;
 
-  --hue-rose-500: #d97a9c;
-  --hue-rose-08: rgba(217, 122, 156, 0.08);
-  --hue-rose-20: rgba(217, 122, 156, 0.2);
-  --hue-rose-35: rgba(217, 122, 156, 0.35);
+  --fn-category-mark-l: #9d3f7a; /* optional fourth series only */
+  --fn-category-text-l: #82305f;
+  --fn-category-mark-d: #cf7fb4;
+  --fn-category-text-d: #dc9ac6;
 
-  --hue-teal-500: #46c8b4;
-  --hue-teal-08: rgba(70, 200, 180, 0.08);
-  --hue-teal-20: rgba(70, 200, 180, 0.2);
-  --hue-teal-35: rgba(70, 200, 180, 0.35);
+  /* --- Non-colour primitives ------------------------------------------- */
+  /* The quarter-round petal: three square corners, one radius. */
+  --r: 56px;
+  --r-md: 18px;
+  --r-sm: 12px;
 
-  --hue-violet-500: #8a7fd8;
-  --hue-violet-08: rgba(138, 127, 216, 0.08);
-  --hue-violet-20: rgba(138, 127, 216, 0.2);
-  --hue-violet-35: rgba(138, 127, 216, 0.35);
+  --pad: clamp(20px, 5vw, 72px);
+  --measure-head: 23ch;
+  --measure-body: 66ch;
 
-  --success-500: #6ee7b7;
-  --success-glow: rgba(110, 231, 183, 0.6);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-measure: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* The only shadow in the system. Hero instrument exclusively. */
+  --lift: 0 30px 60px -30px rgba(22, 23, 26, 0.5);
 }
 
 /* ==========================================================================
    Layer 2 ★ — Semantic tokens. EDIT ONLY HERE TO RETHEME.
-   Dark theme is the default. .light overrides.
+
+   Light and dark are peers, not inversions: each is a complete, independently
+   authored block, and each passes WCAG 2.2 AA on its own. The active theme is
+   set as data-theme on <html> — at build time from src/config/theme.ts, then
+   overridden pre-paint by the init script in layout.tsx.
    ========================================================================== */
-:root {
-  /* Foreground / background */
-  --fg: var(--white);
-  --fg-muted: rgba(255, 255, 255, 0.82);
-  --fg-subtle: rgba(255, 255, 255, 0.62);
-  --bg: var(--ink-950);
-  --surface: var(--ink-800);
-  --surface-raised: var(--ink-700);
-  --surface-glass: var(--wa05);
-  --surface-glass-strong: var(--wa08);
+:root,
+:root[data-theme="light"] {
+  color-scheme: light;
 
-  /* Primary accent — amber remains the brand */
-  --accent: var(--yellow-500);
-  --accent-hover: var(--yellow-400);
-  --accent-muted: var(--ya08);
-  --accent-strong: var(--ya20);
-  --accent-glow: var(--ya35);
+  --ground: var(--paper);
+  --ground-2: var(--paper-2);
+  --ground-3: var(--paper-3);
 
-  /* Sector accent (dynamic — set per-section via inline var override) */
-  --sector-accent: var(--accent);
-  --sector-accent-08: var(--accent-muted);
-  --sector-accent-20: var(--accent-strong);
-  --sector-accent-35: var(--accent-glow);
+  --text: var(--ink);
+  --text-2: var(--ink-2);
+  --text-3: var(--ink-3);
 
-  /* Borders */
-  --border: var(--wa08);
-  --border-strong: var(--wa15);
-  --border-accent: var(--ya13);
+  /* accent-line: large text, underlines, focus rings, boundaries (>=3:1)
+     accent-label: small mono labels (>=4.5:1)
+     accent-mark:  decorative fills only — carries no information here */
+  --accent-line: var(--gold-deep);
+  --accent-label: var(--gold-ink);
+  --accent-mark: var(--gold);
+  --accent-wash: var(--gold-wash);
 
-  /* Glass */
-  --glass-bg: color-mix(in oklab, var(--surface) 55%, transparent);
-  --glass-border: var(--wa12);
-  --glass-blur: 14px;
-  --glass-highlight: linear-gradient(180deg, var(--wa05), transparent 60%);
+  --hairline: var(--rule);
+  --boundary: var(--rule-strong);
 
-  --hero-overlay: var(--ba75);
-  --gradient-accent: linear-gradient(
-    120deg,
-    var(--gradient-yellow-start),
-    var(--yellow-500)
-  );
-  --gradient-hero: linear-gradient(
-    135deg,
-    var(--ink-800) 0%,
-    var(--ink-950) 55%,
-    var(--ink-900) 100%
-  );
+  --signal-mark: var(--fn-signal-mark-l);
+  --signal-text: var(--fn-signal-text-l);
+  --info-mark: var(--fn-info-mark-l);
+  --info-text: var(--fn-info-text-l);
+  --positive-mark: var(--fn-positive-mark-l);
+  --positive-text: var(--fn-positive-text-l);
+  --category-mark: var(--fn-category-mark-l);
+  --category-text: var(--fn-category-text-l);
 
-  --font-display:
-    var(--font-plus-jakarta), system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono:
-    var(--font-dm-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --nav-ground: rgba(234, 233, 228, 0.94);
+  --petal-opacity: 0.16;
 }
 
-:root.light {
-  --fg: var(--ink-950);
-  --fg-muted: rgba(10, 11, 16, 0.82);
-  --fg-subtle: rgba(10, 11, 16, 0.62);
-  --bg: var(--white);
-  --surface: var(--gray-100);
-  --surface-raised: var(--gray-200);
-  --surface-glass: rgba(10, 11, 16, 0.04);
-  --surface-glass-strong: rgba(10, 11, 16, 0.08);
+:root[data-theme="dark"] {
+  color-scheme: dark;
 
-  --border: var(--ba08);
-  --border-strong: rgba(10, 11, 16, 0.15);
-  --border-accent: var(--ya20);
+  --ground: var(--dk);
+  --ground-2: var(--dk-2);
+  --ground-3: var(--dk-3);
 
-  --glass-bg: color-mix(in oklab, var(--surface) 65%, transparent);
-  --glass-border: rgba(10, 11, 16, 0.08);
-  --glass-highlight: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.5),
-    transparent 60%
+  --text: var(--dk-txt);
+  --text-2: var(--dk-txt-2);
+  --text-3: var(--dk-txt-3);
+
+  /* On dark, gold clears 4.5:1 — one value does every job. */
+  --accent-line: var(--gold);
+  --accent-label: var(--gold);
+  --accent-mark: var(--gold);
+  --accent-wash: var(--dk-3);
+
+  --hairline: var(--dk-line);
+  --boundary: var(--dk-line-strong);
+
+  --signal-mark: var(--fn-signal-mark-d);
+  --signal-text: var(--fn-signal-text-d);
+  --info-mark: var(--fn-info-mark-d);
+  --info-text: var(--fn-info-text-d);
+  --positive-mark: var(--fn-positive-mark-d);
+  --positive-text: var(--fn-positive-text-d);
+  --category-mark: var(--fn-category-mark-d);
+  --category-text: var(--fn-category-text-d);
+
+  --nav-ground: rgba(12, 13, 16, 0.94);
+  --petal-opacity: 0.2;
+}
+
+/* --------------------------------------------------------------------------
+   Band inversion. One class, correct in both themes: an evidence or data
+   surface flips to the opposite ground by re-declaring the semantic layer
+   locally. Inversion signals content type, never decoration — and no page
+   carries more than two.
+   -------------------------------------------------------------------------- */
+:root[data-theme="light"] .band-invert {
+  color-scheme: dark;
+  --ground: var(--dk);
+  --ground-2: var(--dk-2);
+  --ground-3: var(--dk-3);
+  --text: var(--dk-txt);
+  --text-2: var(--dk-txt-2);
+  --text-3: var(--dk-txt-3);
+  --accent-line: var(--gold);
+  --accent-label: var(--gold);
+  --accent-wash: var(--dk-3);
+  --hairline: var(--dk-line);
+  --boundary: var(--dk-line-strong);
+  --signal-mark: var(--fn-signal-mark-d);
+  --signal-text: var(--fn-signal-text-d);
+  --info-mark: var(--fn-info-mark-d);
+  --info-text: var(--fn-info-text-d);
+  --positive-mark: var(--fn-positive-mark-d);
+  --positive-text: var(--fn-positive-text-d);
+  --category-mark: var(--fn-category-mark-d);
+  --category-text: var(--fn-category-text-d);
+  --petal-opacity: 0.2;
+}
+
+:root[data-theme="dark"] .band-invert {
+  color-scheme: light;
+  --ground: var(--paper);
+  --ground-2: var(--paper-2);
+  --ground-3: var(--paper-3);
+  --text: var(--ink);
+  --text-2: var(--ink-2);
+  --text-3: var(--ink-3);
+  --accent-line: var(--gold-deep);
+  --accent-label: var(--gold-ink);
+  --accent-wash: var(--gold-wash);
+  --hairline: var(--rule);
+  --boundary: var(--rule-strong);
+  --signal-mark: var(--fn-signal-mark-l);
+  --signal-text: var(--fn-signal-text-l);
+  --info-mark: var(--fn-info-mark-l);
+  --info-text: var(--fn-info-text-l);
+  --positive-mark: var(--fn-positive-mark-l);
+  --positive-text: var(--fn-positive-text-l);
+  --category-mark: var(--fn-category-mark-l);
+  --category-text: var(--fn-category-text-l);
+  --petal-opacity: 0.16;
+}
+
+/* ==========================================================================
+   Layer 2b — Typography tokens
+   Three faces, divided strictly by job: serif asserts, sans is read,
+   mono was measured.
+   ========================================================================== */
+:root {
+  --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+}
+
+/* ==========================================================================
+   Layer 2c — COMPATIBILITY SHIM · REMOVE IN PHASE B/E
+   The L1, L2, service and legal surfaces still consume the previous token
+   names. They are mapped onto the new palette here so the canon lands
+   visually everywhere at once without those pages being rebuilt yet. The six
+   per-sector hues all resolve to the single gold accent, which is what
+   retires them. Delete this block once every consumer uses Layer 2 names.
+   ========================================================================== */
+:root {
+  --fg: var(--text);
+  --fg-muted: var(--text-2);
+  --fg-subtle: var(--text-3);
+  --bg: var(--ground);
+  --surface: var(--ground-2);
+  --surface-raised: var(--ground-3);
+  --surface-glass: var(--ground-2);
+  --surface-glass-strong: var(--ground-3);
+
+  --accent: var(--accent-line);
+  --accent-hover: var(--accent-label);
+  --accent-muted: var(--accent-wash);
+  --accent-strong: var(--accent-wash);
+  --accent-glow: transparent;
+
+  /* One accent, always: every sector hue now resolves to gold. */
+  --sector-accent: var(--accent-line);
+  --sector-accent-08: var(--accent-wash);
+  --sector-accent-20: var(--accent-wash);
+  --sector-accent-35: transparent;
+
+  --border: var(--hairline);
+  --border-strong: var(--boundary);
+  --border-accent: var(--accent-line);
+
+  /* Glass and orbs are anti-reference: neutralised rather than tuned. */
+  --glass-bg: var(--ground-2);
+  --glass-border: var(--hairline);
+  --glass-blur: 0px;
+  --glass-highlight: none;
+  --hero-overlay: var(--ground);
+  --gradient-accent: linear-gradient(
+    90deg,
+    var(--accent-line),
+    var(--accent-line)
   );
+  --gradient-hero: none;
 
-  --hero-overlay: rgba(255, 255, 255, 0.75);
+  --hue-blue-500: var(--accent-line);
+  --hue-blue-08: var(--accent-wash);
+  --hue-blue-20: var(--accent-wash);
+  --hue-blue-35: transparent;
+  --hue-green-500: var(--accent-line);
+  --hue-green-08: var(--accent-wash);
+  --hue-green-20: var(--accent-wash);
+  --hue-green-35: transparent;
+  --hue-orange-500: var(--accent-line);
+  --hue-orange-08: var(--accent-wash);
+  --hue-orange-20: var(--accent-wash);
+  --hue-orange-35: transparent;
+  --hue-rose-500: var(--accent-line);
+  --hue-rose-08: var(--accent-wash);
+  --hue-rose-20: var(--accent-wash);
+  --hue-rose-35: transparent;
+  --hue-teal-500: var(--accent-line);
+  --hue-teal-08: var(--accent-wash);
+  --hue-teal-20: var(--accent-wash);
+  --hue-teal-35: transparent;
+  --hue-violet-500: var(--accent-line);
+  --hue-violet-08: var(--accent-wash);
+  --hue-violet-20: var(--accent-wash);
+  --hue-violet-35: transparent;
+
+  --success-500: var(--positive-mark);
+  --success-glow: transparent;
+
+  --ya04: var(--accent-wash);
+  --ya08: var(--accent-wash);
+  --ya13: var(--accent-wash);
+  --ya20: var(--accent-wash);
+  --ya35: transparent;
+  --wa03: var(--hairline);
+  --wa05: var(--hairline);
+  --wa08: var(--hairline);
+  --wa12: var(--hairline);
+  --wa15: var(--boundary);
+  --wa25: var(--boundary);
+  --wa40: var(--text-3);
+  --wa60: var(--text-2);
+  --wa88: var(--text);
+  --ba05: var(--hairline);
+  --ba08: var(--hairline);
+  --ba60: var(--text-2);
+  --ba75: var(--ground);
+
+  --ink-950: var(--ink);
+  --ink-900: var(--dk);
+  --ink-800: var(--dk-2);
+  --ink-700: var(--dk-3);
+  --ink-600: var(--dk-line);
+  --ink-500: var(--dk-line-strong);
+  --black-950: var(--dk);
+  --black-900: var(--dk-2);
+  --black-800: var(--dk-2);
+  --black-700: var(--dk-3);
+  --gray-800: var(--dk-3);
+  --gray-700: var(--dk-line);
+  --gray-200: var(--paper-3);
+  --gray-100: var(--paper-2);
+  --white: var(--paper-2);
+  --yellow-400: var(--gold);
+  --yellow-500: var(--accent-line);
+  --yellow-600: var(--gold-deep);
+  --gradient-yellow-start: var(--gold);
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-fg: var(--fg);
-  --color-accent: var(--accent);
-  --font-sans: var(--font-display);
+  --color-bg: var(--ground);
+  --color-fg: var(--text);
+  --color-accent: var(--accent-line);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
   --font-mono: var(--font-mono);
 }
 
 /* ==========================================================================
    Layer 3 — Element defaults
    ========================================================================== */
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
+  -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-display);
-  font-weight: 300;
-  line-height: 1.6;
+  margin: 0;
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Serif asserts. Display sizes are set per-component; this is the character. */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--fg);
-  font-family: var(--font-display);
-  letter-spacing: -0.03em;
-  font-weight: 800;
-  line-height: 1.1;
   margin: 0;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
 }
 
 h1 {
-  font-size: clamp(38px, 5.5vw, 72px);
-  letter-spacing: -0.04em;
+  font-size: clamp(38px, 5.6vw, 72px);
+  line-height: 1;
+  max-width: 17ch;
 }
 
 h2 {
-  font-size: clamp(24px, 3.2vw, 44px);
+  font-size: clamp(32px, 4.4vw, 54px);
+  max-width: var(--measure-head);
+}
+
+h3 {
+  font-size: clamp(20px, 2.2vw, 27px);
+  font-weight: 550;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
 }
 
 p {
-  color: var(--fg-muted);
-  line-height: 1.75;
   margin: 0;
+  color: var(--text-2);
+  line-height: 1.6;
 }
 
 a {
-  color: var(--accent);
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
 }
 
-a:hover {
-  color: var(--accent-hover);
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--ink-950);
+  background: var(--accent-mark);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 3px;
 }
 
 /* ==========================================================================
    Layer 4 — Component classes
    ========================================================================== */
+
+/* The most repeated element in the system. Always --accent-label, never
+   --accent-line: at 11px it needs 4.5:1, and gold-deep only reaches 3.12:1. */
 .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--accent);
+  font-size: 11px;
   font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent-mark);
+}
+
+/* The petal, used as structure. Three square corners, one radius. */
+.petal {
+  border-radius: 0 0 0 var(--r);
+}
+
+.petal-md {
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.petal-sm {
+  border-radius: 0 0 0 var(--r-sm);
+}
+
+/* Inverted surfaces take the opposite corner, so the flip is legible in
+   silhouette before colour registers. */
+.petal-invert {
+  border-radius: 0 var(--r) 0 0;
 }
 
 .role-pill {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 7px 13px;
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.4px;
-  color: var(--fg);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 999px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
   white-space: nowrap;
 }
 
@@ -278,56 +509,59 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
+  padding: 5px 10px;
   font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 1.2px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-muted);
-  background: var(--accent-muted);
-  border: 1px solid var(--border-accent);
-  border-radius: 4px;
+  color: var(--accent-label);
+  background: var(--accent-wash);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
 }
 
+/* Availability is information, so it takes a functional colour — and a label
+   alongside, never hue alone. */
 .bench-signal {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-family: var(--font-mono);
-  font-size: 8.5px;
-  letter-spacing: 1.5px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-muted);
+  color: var(--positive-text);
 }
 
 .bench-signal::before {
   content: "";
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
+  flex: none;
   border-radius: 50%;
-  background: var(--success-500);
-  box-shadow: 0 0 8px var(--success-glow);
+  background: var(--positive-mark);
 }
 
-/* Glass surface — reusable */
+/* Retained as a no-op: the glass register is anti-reference. Consumers still
+   apply .glass; it now resolves to a flat, ruled surface. */
 .glass {
-  background: var(--glass-bg);
-  backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  -webkit-backdrop-filter: saturate(160%) blur(var(--glass-blur));
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
   position: relative;
   isolation: isolate;
 }
 
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--glass-highlight);
-  pointer-events: none;
-  z-index: 0;
+.container-narrow {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+/* Was a dot-grid on dark glass. Now inert — depth is tonal, not textural. */
+.dot-grid {
+  background-image: none;
 }
 
 .forced-dark {
@@ -338,75 +572,39 @@ a:hover {
   color-scheme: light;
 }
 
-/* Container width */
-.container-narrow {
-  width: 100%;
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* Dot-grid for dark sections (break rule 07) */
-.dot-grid {
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.03) 1px,
-    transparent 1px
-  );
-  background-size: 20px 20px;
-}
-
 /* ==========================================================================
    Layer 5 — Spacing scale
    ========================================================================== */
 .section-xl {
-  padding: 140px 0;
+  padding: clamp(72px, 8vw, 118px) 0;
 }
 
 .section-lg {
-  padding: 100px 0;
+  padding: clamp(52px, 6.5vw, 94px) 0;
 }
 
 .section-md {
-  padding: 72px 0;
+  padding: clamp(40px, 5vw, 72px) 0;
 }
 
 .section-sm {
-  padding: 48px 0;
-}
-
-@media (max-width: 768px) {
-  .section-xl {
-    padding: 80px 0;
-  }
-  .section-lg {
-    padding: 64px 0;
-  }
-  .section-md {
-    padding: 48px 0;
-  }
-  .section-sm {
-    padding: 32px 0;
-  }
+  padding: clamp(28px, 3.5vw, 48px) 0;
 }
 
 /* ==========================================================================
-   Layer 6 — Animations (all respect prefers-reduced-motion)
+   Layer 6 — Animation
+   Every keyframe here is gated by the reduce block at the end. Components
+   that animate a *value* (count-ups, bar widths) must also check
+   prefers-reduced-motion in JS — CSS alone cannot stop those.
    ========================================================================== */
-@keyframes ken-burns-1 {
-  0% {
-    transform: scale(1) translate(0, 0);
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  100% {
-    transform: scale(1.08) translate(-1%, -0.5%);
-  }
-}
-
-@keyframes ken-burns-2 {
-  0% {
-    transform: scale(1.06) translate(-2%, 1%);
-  }
-  100% {
-    transform: scale(1) translate(0, 0);
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -419,44 +617,44 @@ a:hover {
   }
 }
 
-@keyframes counter-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+/* Hero instrument only. */
+@keyframes scan {
+  0% {
+    top: -110px;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+  100% {
+    top: 100%;
   }
 }
 
-@keyframes orb-drift {
+@keyframes pulse {
   0%,
   100% {
-    transform: translate(0, 0) scale(1);
+    opacity: 1;
   }
   50% {
-    transform: translate(-30px, 20px) scale(1.06);
+    opacity: 0.4;
   }
 }
 
-@keyframes shimmer {
+@keyframes bar-grow {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes drift {
   0% {
-    background-position: -200% 0;
+    transform: translate3d(0, 18px, 0);
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: 0.5;
   }
   100% {
-    background-position: 200% 0;
+    transform: translate3d(26px, -150px, 0);
+    opacity: 0;
   }
 }
 

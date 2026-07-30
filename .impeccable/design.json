@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-30T03:35:07.120Z",
+  "title": "Design System: Yallo Talent",
+  "extensions": {
+    "colorMeta": {
+      "Assessor's Gold": {
+        "role": "primary",
+        "displayName": "Assessor's Gold",
+        "canonical": "#d4a843",
+        "tonalRamp": [
+          "#261e0c",
+          "#483917",
+          "#6e5723",
+          "#94762f",
+          "#bb943b",
+          "#d4a843",
+          "#e3c685",
+          "#f1e3c3"
+        ],
+        "purpose": "The mark colour. Everything on dark; decorative only on light."
+      },
+      "Struck Gold": {
+        "role": "primary",
+        "displayName": "Struck Gold",
+        "canonical": "#9d7818",
+        "tonalRamp": [
+          "#1c1604",
+          "#352908",
+          "#523e0c",
+          "#6e5411",
+          "#8a6a15",
+          "#9d7818",
+          "#bfa769",
+          "#e0d4b5"
+        ],
+        "purpose": "Light-theme accent at large size, and every boundary or focus ring."
+      },
+      "Marker Ink": {
+        "role": "primary",
+        "displayName": "Marker Ink",
+        "canonical": "#7b5d13",
+        "tonalRamp": [
+          "#161103",
+          "#2a2006",
+          "#40300a",
+          "#56410d",
+          "#6c5211",
+          "#7b5d13",
+          "#a99666",
+          "#d5cbb3"
+        ],
+        "purpose": "Light-theme accent for 11px mono eyebrows. Exists to clear 4.5:1."
+      },
+      "Dossier Paper": {
+        "role": "neutral",
+        "displayName": "Dossier Paper",
+        "canonical": "#eae9e4",
+        "tonalRamp": [
+          "#2a2a29",
+          "#504f4e",
+          "#7a7977",
+          "#a4a3a0",
+          "#cecdc9",
+          "#eae9e4",
+          "#f1f1ed",
+          "#f8f8f6"
+        ],
+        "purpose": "Default ground. Uncoated stock, never white."
+      },
+      "Loose Leaf": {
+        "role": "neutral",
+        "displayName": "Loose Leaf",
+        "canonical": "#f4f3f0",
+        "tonalRamp": [
+          "#2c2c2b",
+          "#535352",
+          "#7f7e7d",
+          "#abaaa8",
+          "#d7d6d3",
+          "#f4f3f0",
+          "#f8f7f5",
+          "#fbfbfa"
+        ],
+        "purpose": "Second ground, one step lighter."
+      },
+      "Kraft": {
+        "role": "neutral",
+        "displayName": "Kraft",
+        "canonical": "#e3e1d9",
+        "tonalRamp": [
+          "#292927",
+          "#4d4d4a",
+          "#767571",
+          "#9f9e98",
+          "#c8c6bf",
+          "#e3e1d9",
+          "#edece6",
+          "#f6f5f3"
+        ],
+        "purpose": "Third ground, one step darker. Worst-case for contrast maths."
+      },
+      "Ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#16171a",
+        "tonalRamp": [
+          "#040405",
+          "#070809",
+          "#0b0c0e",
+          "#0f1012",
+          "#131417",
+          "#16171a",
+          "#68686a",
+          "#b4b5b6"
+        ],
+        "purpose": "All body copy and headings on light."
+      },
+      "Appendix Black": {
+        "role": "neutral",
+        "displayName": "Appendix Black",
+        "canonical": "#0c0d10",
+        "tonalRamp": [
+          "#020203",
+          "#040405",
+          "#060708",
+          "#08090b",
+          "#0b0b0e",
+          "#0c0d10",
+          "#616264",
+          "#b1b2b3"
+        ],
+        "purpose": "Dark-theme ground. Charcoal with a whisper of blue, never navy."
+      },
+      "Appendix Text": {
+        "role": "neutral",
+        "displayName": "Appendix Text",
+        "canonical": "#f0efec",
+        "tonalRamp": [
+          "#2b2b2a",
+          "#525150",
+          "#7d7c7b",
+          "#a8a7a5",
+          "#d3d2d0",
+          "#f0efec",
+          "#f5f5f3",
+          "#fafaf9"
+        ],
+        "purpose": "Body copy on dark."
+      },
+      "Kiln Orange": {
+        "role": "secondary",
+        "displayName": "Kiln Orange",
+        "canonical": "#c2410c",
+        "tonalRamp": [
+          "#230c02",
+          "#421604",
+          "#652206",
+          "#882e08",
+          "#ab390b",
+          "#c2410c",
+          "#d78461",
+          "#ebc2b1"
+        ],
+        "purpose": "Functional: scarcity, criticality, hard to fill."
+      },
+      "Signal Blue": {
+        "role": "secondary",
+        "displayName": "Signal Blue",
+        "canonical": "#1d6fa5",
+        "tonalRamp": [
+          "#05141e",
+          "#0a2638",
+          "#0f3a56",
+          "#144e73",
+          "#1a6291",
+          "#1d6fa5",
+          "#6ca1c5",
+          "#b7d1e2"
+        ],
+        "purpose": "Functional: data series, in-region availability, neutral status."
+      },
+      "Verified Green": {
+        "role": "secondary",
+        "displayName": "Verified Green",
+        "canonical": "#2f7d46",
+        "tonalRamp": [
+          "#08170d",
+          "#102b18",
+          "#184124",
+          "#215831",
+          "#296e3e",
+          "#2f7d46",
+          "#78ab87",
+          "#bcd5c4"
+        ],
+        "purpose": "Functional: renewal rate, filled seats, met milestones."
+      },
+      "Archive Plum": {
+        "role": "tertiary",
+        "displayName": "Archive Plum",
+        "canonical": "#9d3f7a",
+        "tonalRamp": [
+          "#1c0b16",
+          "#351529",
+          "#52213f",
+          "#6e2c55",
+          "#8a376b",
+          "#9d3f7a",
+          "#bf82a9",
+          "#e0c2d4"
+        ],
+        "purpose": "Functional: optional fourth series only."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The H1, once per page. Capped 17ch."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section H2. Capped 23ch."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and panel headings."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Hero paragraph. Max 52ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Everything a reader reads. Max 66ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Eyebrows. Uppercase mono, always after a 5px gold dot."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Measured values, reference numbers, source lines, ghost numerals."
+      }
+    },
+    "shadows": [
+      {
+        "name": "instrument-lift",
+        "value": "0 30px 60px -30px rgba(22, 23, 26, 0.5)",
+        "purpose": "The only shadow in the system. Hero instrument exclusively — it is the one element pretending to be live rather than printed. A second shadow anywhere destroys its meaning."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-considered",
+        "value": "cubic-bezier(0.2, 0.7, 0.2, 1)",
+        "purpose": "Default easing. Button lift, underline wipe, panel swap."
+      },
+      {
+        "name": "ease-measure",
+        "value": "cubic-bezier(0.22, 0.61, 0.36, 1)",
+        "purpose": "Reveal and count-up easing on data surfaces."
+      },
+      {
+        "name": "dur-quick",
+        "value": "0.35s",
+        "purpose": "Nav underline wipe, chip state."
+      },
+      {
+        "name": "dur-lift",
+        "value": "0.45s",
+        "purpose": "Button translate."
+      },
+      {
+        "name": "dur-reveal",
+        "value": "0.6s",
+        "purpose": "Card and step reveals, staggered 120ms."
+      },
+      {
+        "name": "dur-scan",
+        "value": "6.5s",
+        "purpose": "Hero instrument sweep. Gated on prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "collapse-figure",
+        "value": "1100px"
+      },
+      {
+        "name": "collapse-head",
+        "value": "900px"
+      },
+      {
+        "name": "single-column",
+        "value": "560px"
+      },
+      {
+        "name": "floor",
+        "value": "360px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The only button on a surface. Gold ground, petal bottom-left, lifts on hover with no shadow.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Start a brief →</a>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}.ds-btn-primary:hover{transform:translateY(-2px)}.ds-btn-primary:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Text with a gold underline. No box, no ground — it must never compete with the primary.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">See how the screen works</a>",
+      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;gap:8px;font-family:Inter,system-ui,sans-serif;font-size:15px;font-weight:500;color:var(--ink,#16171a);text-decoration:none;border-bottom:1.5px solid var(--gold-deep,#9d7818);padding-bottom:2px;transition:gap .35s cubic-bezier(.2,.7,.2,1)}.ds-btn-secondary:hover{gap:12px}.ds-btn-secondary:focus-visible{outline:2px solid var(--gold-deep,#9d7818);outline-offset:3px}"
+    },
+    {
+      "name": "Eyebrow",
+      "kind": "custom",
+      "refersTo": "eyebrow",
+      "description": "Section label. Marker Ink at 11px with a 5px gold dot. The most repeated element in the system.",
+      "html": "<div class=\"ds-eyebrow\"><i></i>The commitment</div>",
+      "css": ".ds-eyebrow{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-eyebrow i{width:5px;height:5px;background:var(--gold,#d4a843);border-radius:50%;flex:none}"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Petal at 56px bottom-left, one tonal step from its ground, hairline border. No shadow, ever.",
+      "html": "<div class=\"ds-card\"><h3>Test and quality</h3><p>The under-scoped ones.</p></div>",
+      "css": ".ds-card{background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px;transition:border-color .28s,background .28s}.ds-card:hover{border-color:var(--rule-strong,#807e76);background:var(--paper,#eae9e4)}.ds-card h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:24px;letter-spacing:-.015em;color:var(--ink,#16171a)}.ds-card p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.6;color:var(--ink-2,#3a3c42)}"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Non-interactive label. Mono, petal at 12px. Used for role names and 'right for' lists.",
+      "html": "<span class=\"ds-chip\">Enterprise Architect</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-2,#3a3c42);background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 12px;padding:7px 13px}"
+    },
+    {
+      "name": "Metric with petal fill",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Oversized serif numeral, mono label, definition beneath, and a gold petal whose fill advances across the row of four.",
+      "html": "<div class=\"ds-metric\"><span class=\"ds-petal\"></span><div class=\"ds-metric-n\">80%</div><div class=\"ds-metric-l\">Contracts renewed</div><div class=\"ds-metric-d\">Placed contractors extended at least once.</div></div>",
+      "css": ".ds-metric{position:relative;overflow:hidden;background:var(--paper,#eae9e4);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:28px}.ds-petal{position:absolute;right:-30px;top:-30px;width:110px;height:110px;background:var(--gold,#d4a843);opacity:.16;border-radius:0 0 0 56px;pointer-events:none}.ds-metric-n{font-family:Newsreader,Georgia,serif;font-weight:600;font-size:clamp(44px,5vw,64px);line-height:1;letter-spacing:-.03em;color:var(--ink,#16171a)}.ds-metric-l{margin-top:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-ink,#7b5d13)}.ds-metric-d{margin-top:8px;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.55;color:var(--ink-2,#3a3c42);max-width:30ch}"
+    },
+    {
+      "name": "Step card with ghost numeral",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Carried forward from the incumbent build, whose execution was stronger than the prototype's: icon tile, inline hour badge, and an oversized ghost numeral bled off the bottom-right.",
+      "html": "<div class=\"ds-step\" data-n=\"03\"><div class=\"ds-step-ico\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><circle cx=\"11\" cy=\"11\" r=\"6\"/><path d=\"M15.5 15.5L20 20\"/></svg></div><h3>Screen</h3><p>Depth, fit and delivery risk. Never keyword match.</p><span class=\"ds-step-badge\">Hour 8–60</span></div>",
+      "css": ".ds-step{position:relative;overflow:hidden;background:var(--paper-2,#f4f3f0);border:1px solid var(--rule,#cdcbc3);border-radius:0 0 0 56px;padding:26px 22px 24px}.ds-step::after{content:attr(data-n);position:absolute;bottom:-14px;right:12px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:82px;font-weight:500;line-height:1;color:var(--gold,#d4a843);opacity:.13;pointer-events:none}.ds-step-ico{width:44px;height:44px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);border:1px solid var(--rule,#cdcbc3);display:grid;place-items:center;margin-bottom:18px;color:var(--gold-ink,#7b5d13)}.ds-step-ico svg{width:20px;height:20px}.ds-step h3{margin:0 0 8px;font-family:Newsreader,Georgia,serif;font-weight:550;font-size:22px;color:var(--ink,#16171a)}.ds-step p{margin:0;font-family:Inter,system-ui,sans-serif;font-size:14px;line-height:1.6;color:var(--ink-2,#3a3c42)}.ds-step-badge{display:inline-block;margin-top:16px;padding:5px 11px;border-radius:0 0 0 12px;background:var(--gold-wash,#f2e9d2);font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:10.5px;letter-spacing:.06em;color:var(--gold-ink,#7b5d13)}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Sticky, paper at 94% with the one permitted blur. Five labels, a gold underline wipe, a quiet Jobs punchout, one button.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-wm\">Yallo <em>Talent</em></span><a href=\"#\">Specialisms</a><a href=\"#\">Industries</a><a href=\"#\">How we work</a><a href=\"#\">Evidence</a><a href=\"#\">Intelligence</a><span class=\"ds-nav-r\"><a class=\"ds-jobs\" href=\"#\">Jobs ↗</a><a class=\"ds-btn-primary\" href=\"#\">Start a brief →</a></span></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:23px;padding:14px 24px;background:rgba(234,233,228,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule,#cdcbc3);font-family:Inter,system-ui,sans-serif}.ds-wm{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;color:var(--ink,#16171a)}.ds-wm em{font-style:normal;font-weight:400;color:var(--ink-3,#5c5e66)}.ds-nav>a{position:relative;font-size:14.5px;font-weight:500;color:var(--ink-2,#3a3c42);text-decoration:none;padding-bottom:3px}.ds-nav>a::after{content:'';position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--gold,#d4a843);transition:right .35s cubic-bezier(.2,.7,.2,1)}.ds-nav>a:hover::after{right:0}.ds-nav-r{margin-left:auto;display:flex;align-items:center;gap:16px}.ds-jobs{font-size:13.5px;color:var(--ink-3,#5c5e66);text-decoration:none}.ds-btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--gold,#d4a843);color:var(--ink,#16171a);font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;text-decoration:none}"
+    },
+    {
+      "name": "Scarcity flag (functional colour)",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The only sanctioned use of a functional colour: a mark-grade dot plus a text-grade label. Meaning never rests on hue alone.",
+      "html": "<span class=\"ds-flag\"><i></i>Hard to fill in region</span>",
+      "css": ".ds-flag{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--signal-text,#a83a09)}.ds-flag i{width:7px;height:7px;flex:none;border-radius:50%;background:var(--signal-mark,#c2410c)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Screening Dossier",
+    "overview": "The product Yallo actually delivers is a document: three names, screening notes, and the reasons seventeen other people were rejected. The site is built as that artefact. Paper-stock grounds instead of white. A serif that belongs to prospectuses and annual reports, not to software. Monospace reserved for the things a dossier sets in monospace — reference numbers, timestamps, source lines, measured values. Gold appears the way an assessor's marker appears on a page someone has actually worked through: sparingly, and only where a judgement was made.\n\nThis is chosen against the category, not in ignorance of it. Every benchmarked competitor scores 2 or 3 on visual distinctiveness, and they converge on the same look: photographic hero, rounded cards, blue-to-violet gradient, sans-serif throughout. There is no incumbent to beat here, only a default to refuse. A recruitment site that reads as a printed, annotated document is unclaimed ground, and it happens to be the most honest possible expression of a firm whose entire pitch is we read these people properly before you did.\n\nThe register is confident and quiet. Density is editorial: generous measure, hairline rules doing the work borders would do elsewhere, and long uninterrupted runs of type rather than a grid of equal tiles. The one place the system breaks its own stillness is the hero, where a drawn instrument shows a shortlist mid-assembly — because the claim is speed, and speed has to be visible somewhere.",
+    "keyCharacteristics": [
+      "Paper grounds, never pure white; ink, never pure black",
+      "One accent, gold, on every page — and nothing else decorative",
+      "Serif display over sans body over mono data: three faces, strictly divided by job",
+      "The quarter-round petal: three square corners, one radius, taken from the mark",
+      "Flat by tonal layering and hairline rules; exactly one lifted element in the whole system",
+      "Both themes are first-class and independently AA; neither is an inversion of the other"
+    ],
+    "rules": [
+      {
+        "name": "The One Marker Rule",
+        "body": "Gold is the only colour used decoratively anywhere in the system, and it appears on every page. If a surface needs a second decorative colour, the surface is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The Load-Bearing Colour Rule",
+        "body": "A functional colour may appear only where hue carries information a reader needs. Never in navigation, buttons, headings or backgrounds. At most three functional colours in any single view. Every one carries an equivalent label or icon, so meaning never depends on hue alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The Grade Rule",
+        "body": "Small text takes the -text grade; fills, dots, bars and strokes take the -mark grade. Reaching for a -mark value to set a label is the single easiest way to break AA in this system, and scripts/check-contrast.mjs exists to catch it.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Band Rule",
+        "body": "Within either theme, evidence and data surfaces may invert to the opposite ground. Inversion signals content type, never decoration, and no page carries more than two inverted bands.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Jobs Rule",
+        "body": "Serif for what the page asserts. Sans for what the reader reads. Mono for what was measured. A number that was counted is mono; a number in a sentence is not.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Rule",
+        "body": "No line of body copy exceeds 66ch, and no headline exceeds 23ch. Both are set as max-width in ch units on the element, not left to the container.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Lift Rule",
+        "body": "If a second element in this system acquires a shadow, the first one stops meaning anything. Hover states change ground, border or transform — never elevation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set every 11px mono eyebrow in --gold-ink (#7b5d13), never --gold-deep.",
+      "Do step the ground between adjacent sections (paper → paper-2 → paper-warm) so blocks separate tonally without borders.",
+      "Do give every functional colour a label or icon alongside it, and run node scripts/check-contrast.mjs before committing any colour change.",
+      "Do cap headlines at 23ch and body at 66ch as max-width in ch on the element itself.",
+      "Do put the petal radius on exactly one corner, bottom-left by default, top-right on inverted cards.",
+      "Do server-render real values and animate from zero only after hydration, and only when motion is permitted.",
+      "Do keep both themes independently AA. A change that fixes light and breaks dark is not a fix."
+    ],
+    "donts": [
+      "Don't use --gold for text or state on any light ground — it is 1.69:1 and decorative only.",
+      "Don't add a second shadow anywhere. Hover changes ground, border or transform.",
+      "Don't introduce glass, backdrop blur (outside the sticky nav), blurred orbs, or gradient text. These are the incumbent register and are anti-reference.",
+      "Don't use stock photography, invented headshots, or any remote image host.",
+      "Don't colour-code by sector, platform or discipline. One accent, always.",
+      "Don't put more than two inverted bands on one page, or invert a band for variety rather than to signal content type.",
+      "Don't set a counted number in Inter or a sentence's number in mono.",
+      "Don't apply border-radius for softness. It is the petal, or it is square."
+    ]
+  }
+}

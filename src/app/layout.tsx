@@ -1,39 +1,41 @@
 import type { Metadata } from "next";
-import { DM_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { NavBar } from "@/components/layout/NavBar";
 import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
+import { DEFAULT_THEME, themeInitScript } from "@/config/theme";
 import "./globals.css";
 
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+/* Three faces, divided strictly by job: serif asserts, sans is read, mono was
+   measured. Newsreader carries optical sizing, so it holds at 72px without the
+   brittleness a display serif would show. */
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "700", "800"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-const dmMono = DM_Mono({
-  variable: "--font-dm-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Yallo Talent — Contract, Permanent, EOR, Managed Delivery",
   description:
-    "Architect-screened contractor shortlists in 72 hours. UK · ME · India. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+    "Specialist-screened shortlists in 72 hours. Middle East · Europe · India. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
 };
-
-const themeInitScript = `
-(function(){try{
-  var stored=localStorage.getItem('yallo-theme');
-  var theme=(stored==='light'||stored==='dark')?stored:(window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');
-  var root=document.documentElement;
-  root.classList.toggle('light',theme==='light');
-  root.classList.toggle('dark',theme==='dark');
-}catch(e){}})();
-`.trim();
 
 export default function RootLayout({
   children,
@@ -42,13 +44,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${plusJakarta.variable} ${dmMono.variable} h-full antialiased`}
+      lang="en-GB"
+      data-theme={DEFAULT_THEME}
+      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>
         <script
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: pre-hydration theme script — trusted static string, sets class on <html> before body paint to prevent FOUC
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: pre-hydration theme script — trusted static string built in src/config/theme.ts, sets data-theme on <html> before first paint to prevent a flash of the wrong register
           dangerouslySetInnerHTML={{ __html: themeInitScript }}
         />
       </head>
