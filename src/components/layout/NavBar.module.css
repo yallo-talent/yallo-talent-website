@@ -56,63 +56,6 @@
   letter-spacing: -0.02em;
 }
 
-/* Flower inherits color from itself; set to accent so it matches "Yallo". */
-.brandFlower {
-  width: 36px;
-  height: 36px;
-  flex-shrink: 0;
-  color: var(--accent-label);
-}
-
-/* The lockup, ratified 30 Jul (canon §5): flower, "Yallo" wordmark, then
-   "TALENT" TO THE RIGHT — never beneath it. It was stacked in a column, which
-   is the defect this replaces.
-   Treated as a craft object rather than two text nodes: the wordmark is the
-   display serif, TALENT is letterspaced mono set on the wordmark's baseline,
-   and a hairline rule separates them so the pair reads as one struck mark. */
-.brandText {
-  display: inline-flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 9px;
-  line-height: 1;
-}
-
-.brandMark {
-  font-family: var(--font-display);
-  font-size: var(--fs-title);
-  font-weight: 600;
-  color: var(--accent-label);
-  line-height: 1;
-  letter-spacing: -0.015em;
-}
-
-/* Divider: a hairline the height of the cap, not a slash glyph. */
-.brandSuffix {
-  position: relative;
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  padding-left: 11px;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  line-height: 1;
-  /* Optical: mono caps sit high against a serif baseline. */
-  transform: translateY(-1px);
-}
-
-.brandSuffix::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -1px;
-  width: 1px;
-  height: 13px;
-  background: currentColor;
-  opacity: 0.45;
-}
-
 /* The trailing letterspace on the last glyph would otherwise push the rule
    off-centre against the flower. */
 .brand {
@@ -603,26 +546,13 @@
     padding: 14px 12px;
   }
 
-  .brandFlower {
-    width: 28px;
-    height: 28px;
-  }
-
-  /* One step down from --fs-title. This is a logotype, so the A4 reading floors
-     do not govern it, and 20px still carries the header. */
-  .brandMark {
-    font-size: var(--fs-lede);
-  }
+  /* The lockup steps itself down at this width — see Lockup.module.css. It
+     scales as one object, so the header no longer resizes its parts here. */
 
   .hamburger {
     width: 36px;
     height: 36px;
     padding: 9px;
-  }
-
-  .brandSuffix {
-    letter-spacing: 0.16em;
-    padding-left: 8px;
   }
 
   /* A4 raised this label from 13.5px to 15.5px, which widened the actions row

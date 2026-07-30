@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
 import {
   jobSeekersHref,
@@ -17,7 +18,6 @@ import {
   primaryNav,
 } from "./nav-config";
 import { navIcons } from "./nav-icons";
-import { YalloFlower } from "./YalloFlower";
 
 function NavItemIcon({ icon }: { icon?: NavItem["icon"] }) {
   if (!icon) return null;
@@ -125,11 +125,7 @@ export function NavBar() {
             className={styles.brand}
             aria-label="Yallo Talent home"
           >
-            <YalloFlower size={36} className={styles.brandFlower} />
-            <span className={styles.brandText}>
-              <span className={styles.brandMark}>Yallo</span>
-              <span className={styles.brandSuffix}>Talent</span>
-            </span>
+            <Lockup />
           </Link>
 
           <nav

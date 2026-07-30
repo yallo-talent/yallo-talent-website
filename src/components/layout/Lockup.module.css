@@ -1,0 +1,90 @@
+/* ==========================================================================
+   The lockup — one craft object, shared by header, footer and the favicon
+   derivations (canon §5, ratified 30 Jul).
+
+   Everything here sizes in `em` off the host's font-size, which is what lets the
+   Lockup component scale the whole object with one number instead of resizing
+   parts independently. The optical relationships — the mark's gap against the
+   suffix's gap, the tracking, the baseline offset — are the design, and they
+   only survive scaling if they scale together.
+   ========================================================================== */
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  /* The gap AFTER the mark. Deliberately tighter than the gap before TALENT:
+     the mark and the wordmark are one signature, TALENT is a qualifier on it. */
+  gap: 0.28em;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  /* Through the ramp: --fs-title is the step the header lockup has always used.
+     The mark and the optical offsets size in em off it, so they track it, but
+     both TEXT sizes resolve through ramp roles of their own — em font-sizes are
+     invisible to the type guard, and a logotype is not a reason to blind it. */
+  font-size: var(--fs-title);
+  line-height: 1;
+}
+
+.mark {
+  width: 1.38em;
+  height: 1.38em;
+  flex-shrink: 0;
+  color: var(--accent-label);
+}
+
+.text {
+  display: inline-flex;
+  flex-direction: row;
+  /* Baseline, not centre: the serif wordmark and the mono caps have different
+     cap heights, and centring them leaves TALENT floating high. */
+  align-items: baseline;
+  /* The gap BEFORE TALENT — wider than the mark's, and this plus the tracking
+     below is what replaced the hairline divider. */
+  gap: 0.5em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 600;
+  color: var(--accent-label);
+  line-height: 1;
+  letter-spacing: -0.015em;
+}
+
+/* TALENT: a step down in size and weight, in muted ink rather than the accent,
+   so the eye reads mark → name → qualifier without a rule telling it to. The
+   0.3em tracking is load-bearing, not decoration — it opens the word's own
+   space, which is what makes the divider unnecessary. */
+.suffix {
+  font-family: var(--font-mono);
+  /* A4: mono labels 13px. This is the smallest text in the lockup and it is a
+     mono label, so it lands exactly on the floor rather than under it. */
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  /* The tracking adds a trailing space after the final T; pull it back so the
+     object's right edge is optically flush rather than 0.3em short. */
+  margin-right: -0.3em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  line-height: 1;
+  /* Optical: mono caps sit high against a serif baseline. */
+  transform: translateY(-0.06em);
+}
+
+/* Below 480px the header is width-critical — the bar's budget is measured in
+   NavBar.module.css. Stepping the root down takes the mark and the optical
+   offsets with it; the wordmark follows because --fs-title is itself a clamp
+   that has already reached its 23px minimum at this width. */
+@media (max-width: 480px) {
+  .lockup {
+    font-size: var(--fs-lede);
+  }
+
+  .mark {
+    width: 1.4em;
+    height: 1.4em;
+  }
+}

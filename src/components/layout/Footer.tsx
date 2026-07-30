@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "./Footer.module.css";
-import { YalloFlower } from "./YalloFlower";
+import { Lockup } from "./Lockup";
 
 const serviceLinks = [
   { label: "Contract Workforce", href: "/contract" },
@@ -55,11 +55,7 @@ export function Footer() {
         <div className={styles.top}>
           <div className={styles.brandBlock}>
             <div className={styles.brand}>
-              <YalloFlower size={44} className={styles.brandFlower} />
-              <span className={styles.brandText}>
-                <span className={styles.brandMark}>Yallo</span>
-                <span className={styles.brandSuffix}>Talent</span>
-              </span>
+              <Lockup />
             </div>
             <p className={styles.brandCopy}>
               Enterprise platform talent across the Middle East and Europe.
