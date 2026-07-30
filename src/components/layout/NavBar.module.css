@@ -61,31 +61,59 @@
   color: var(--accent);
 }
 
+/* The lockup, ratified 30 Jul (canon §5): flower, "Yallo" wordmark, then
+   "TALENT" TO THE RIGHT — never beneath it. It was stacked in a column, which
+   is the defect this replaces.
+   Treated as a craft object rather than two text nodes: the wordmark is the
+   display serif, TALENT is letterspaced mono set on the wordmark's baseline,
+   and a hairline rule separates them so the pair reads as one struck mark. */
 .brandText {
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 9px;
   line-height: 1;
-  gap: 4px;
 }
 
 .brandMark {
-  font-size: 20px;
-  font-weight: 900;
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 600;
   color: var(--accent);
   line-height: 1;
-  letter-spacing: 0.03em;
+  letter-spacing: -0.015em;
 }
 
-/* Letter-spacing tuned so "TALENT" visually matches the width of "Yallo". */
+/* Divider: a hairline the height of the cap, not a slash glyph. */
 .brandSuffix {
+  position: relative;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: 0.46em;
-  padding-left: 0.46em;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  padding-left: 11px;
   text-transform: uppercase;
   color: var(--fg-muted);
   line-height: 1;
+  /* Optical: mono caps sit high against a serif baseline. */
+  transform: translateY(-1px);
+}
+
+.brandSuffix::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 1px;
+  height: 13px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+/* The trailing letterspace on the last glyph would otherwise push the rule
+   off-centre against the flower. */
+.brand {
+  padding-right: 0.3em;
 }
 
 .primary {
@@ -163,11 +191,10 @@
   padding: 32px clamp(24px, 4vw, 60px);
   /* Fully opaque surface for text legibility on any bg */
   background: var(--ink-800);
-  border-top: 1px solid var(--wa15);
-  border-bottom: 1px solid var(--wa15);
-  box-shadow:
-    0 40px 120px -30px rgba(0, 0, 0, 0.85),
-    inset 0 1px 0 var(--wa12);
+  /* Opaque ground plus contrast-grade boundaries, no drop shadow: the One Lift
+     Rule keeps elevation for the hero instrument alone. */
+  border-top: 1px solid var(--boundary);
+  border-bottom: 1px solid var(--boundary);
   z-index: 55;
 }
 
@@ -248,7 +275,7 @@
   gap: 12px;
   padding: 10px;
   margin: 0;
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   border: 1px solid transparent;
   color: var(--fg);
   transition:
@@ -285,7 +312,7 @@
   flex-shrink: 0;
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: 0 0 0 var(--r-sm);
   display: grid;
   place-items: center;
   background: var(--item-hue-08, var(--accent-muted));
@@ -350,7 +377,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 0 0 0 var(--r-md);
   background: var(--ink-800);
   border: 1px solid var(--wa08);
   min-height: 100%;
@@ -361,12 +388,10 @@
     box-shadow 0.2s ease;
 }
 
+/* Hover changes ground, border or transform — never elevation (canon §5). */
 .featured:hover {
   border-color: var(--accent-strong);
   transform: translateY(-2px);
-  box-shadow:
-    0 12px 30px -12px rgba(0, 0, 0, 0.6),
-    0 0 24px var(--accent-muted);
 }
 
 .featuredImage {
@@ -489,7 +514,7 @@
   width: 100%;
   height: 2px;
   background: var(--fg);
-  border-radius: 2px;
+  border-radius: var(--r-micro);
 }
 
 .mobileDrawer {
@@ -498,8 +523,10 @@
   width: min(360px, 88vw);
   z-index: 60;
   background: var(--surface);
-  border-left: 1px solid var(--border);
-  box-shadow: -20px 0 60px -20px rgba(0, 0, 0, 0.6);
+  /* No shadow. The One Lift Rule reserves the system's only shadow for the hero
+     instrument; the border is the separation device here, and the drawer sits on
+     an opaque surface so it needs nothing more. */
+  border-left: 1px solid var(--boundary);
 }
 
 .mobileInner {
