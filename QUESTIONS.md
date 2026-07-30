@@ -148,20 +148,50 @@ Every consumer was rerouted to the semantic accent ramp, which flips per theme.
 `-35` now resolves to `--sector-accent-35`, a real colour, rather than the shim's
 `transparent` — the invisible-border defect from the earlier round, at its source.
 
-## Q4 — The client mark pack has no alpha channel
+## Q4 — RESOLVED: the pack now has a real alpha channel, and six marks ship as names
 
-Canon §8's "uniform monochrome treatment" presumes silhouette-ready sources. The
-pack is **15 opaque rasters** (PNG colour-type 3, no alpha) with baked-in white
-backgrounds, plus 3 vectors — and a few marks whose own background is dark.
+**Closed by order step 11.** The durable fix this entry named — extend
+`scripts/build-logos.mjs` to key out backgrounds and emit true-alpha assets — is
+done, so the CSS no longer compensates for the assets.
 
-A CSS filter alone therefore rendered fifteen of eighteen marks as solid black
-bars. The shipped fix knocks the white out with a blend mode per theme
-(`multiply` on light, `invert` + `screen` on dark), which is legible and
-tile-free. A residual light or dark box still shows on the few marks whose
-background is off-white or genuinely dark.
+**Two simpler versions failed first, and the failures are the useful part:**
 
-**Assumption taken:** blend-mode knockout ships now because it is legible and
-canon-shaped. **The durable fix is the asset pipeline** — extend
-`scripts/build-logos.mjs` to key out backgrounds and emit true-alpha assets, or
-commission monochrome SVG silhouettes for all eighteen. That is a content and
-asset task, not a CSS one.
+1. *Greyscale, normalise, invert, use as alpha.* Assumes dark ink on a light
+   ground. Measured, `marks-and-spencer` came out **96.5% partial alpha and 0.1%
+   transparent** — inverting a white-on-dark mark makes the ground opaque and the
+   ink vanish.
+2. *Sample the border ring for the ground luminance.* Better, 9 of 15 clean, but
+   six stayed under 6% transparent because their grounds are gradients or brand
+   colours, and `trim` had already eaten the flat edge on some.
+3. *Otsu's method.* Ships. It finds the threshold that best splits the image into
+   two luminance classes — the ink/ground split — and the border ring is used only
+   to decide which class is the ground, so either polarity works. Alpha is the
+   pixel's position between the two class means, so antialiased edges stay soft.
+
+**Eleven marks key cleanly. Six do not, and they ship as their NAME** — canon §8's
+own rule, applied by measurement rather than by eye. The build refuses to emit an
+asset it cannot vouch for, on two tests: clarity (under 25% transparent, or over
+45% partial alpha, means the ground did not separate) and cap height (a mark too
+wide to reach 15px of ink in the 156px rail cell is a line, not a mark).
+
+| Mark | Why it ships as a name |
+|---|---|
+| Landmark Group | 21.3% transparent, 70.8% partial |
+| Chalhoub Group | 16.8% transparent, 74.4% partial |
+| Al Othaim Markets | 19.4% transparent, 70.5% partial |
+| Sephora | 3.8% transparent, 50.4% partial |
+| Oracle Consulting | 2.2% transparent, 67.4% partial |
+| Richemont | cap height 10.7px at the rail cell |
+
+`src/lib/clients.ts` gained `hasLogoAsset`, because `clients.yaml` still names
+these clients — the consent and the relationship are unchanged, only the asset is
+absent.
+
+**The rail is now genuinely single ink:** uniform 156x56 cells, one 26px cap
+height, one filter per theme (`none` on light, `invert(1)` on dark), **no blend
+mode at all**, one opacity, even 51.2px spacing — every one of those measured in
+the browser.
+
+**Still worth commissioning:** monochrome SVG silhouettes for the six. Nothing is
+broken without them — a name is a legitimate treatment, not a placeholder — but a
+vector would let all fifteen render as marks.

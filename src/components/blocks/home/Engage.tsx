@@ -24,11 +24,20 @@ import { SectionHead } from "./SectionHead";
  * have duplicated the content for screen readers, and a matchMedia switch would
  * have shifted layout on hydration.
  *
- * Semantics are the APG vertical tab pattern: roving tabindex, Up/Down/Home/End,
- * aria-selected and aria-controls, and inactive panels carry `hidden` so they
- * contribute no focus stops. The previous version was four independent
- * <details>, which announced as four unrelated toggles with no stated
- * relationship to the media pane they controlled.
+ * Semantics are the EXCLUSIVE DISCLOSURE pattern, not tabs. Tabs were the first
+ * attempt and axe rejected them as critical `aria-required-children`: a
+ * `role="tablist"` may contain only tabs, and this DOM deliberately interleaves
+ * each panel with its own button so mobile gets the accordion for free. Rather
+ * than split the DOM to satisfy the role, the roles follow the DOM — which is
+ * also the more truthful description, because on mobile this genuinely IS an
+ * accordion. So: `aria-expanded` and `aria-controls` per button, a `<section>`
+ * per panel carrying the region landmark natively, `hidden` on the closed ones so they add no focus stops, and one
+ * open at a time. Every button stays tabbable, as an accordion's should be;
+ * Up/Down/Home/End remain as a convenience for the desktop rail.
+ *
+ * The previous version was four independent <details>, which announced as four
+ * unrelated toggles with no stated relationship to the media pane they
+ * controlled.
  *
  * Each model keeps its drawn media pane — a PetalPlate seeded on the model's
  * route, hued by POSITION (.amb-N) per the ambient rhythm rule — and one metric
@@ -82,12 +91,7 @@ export function Engage() {
           id="engage-heading"
         />
 
-        <div
-          className={styles.engageSplit}
-          role="tablist"
-          aria-orientation="vertical"
-          aria-labelledby="engage-heading"
-        >
+        <div className={styles.engageSplit}>
           {engagementModels.map((m, i) => {
             const selected = i === active;
             return (
@@ -96,11 +100,9 @@ export function Engage() {
               <div key={m.name} className={styles.engagePair}>
                 <button
                   type="button"
-                  role="tab"
                   id={`engage-tab-${i}`}
-                  aria-selected={selected}
+                  aria-expanded={selected}
                   aria-controls={`engage-panel-${i}`}
-                  tabIndex={selected ? 0 : -1}
                   ref={(el) => {
                     tabs.current[i] = el;
                   }}
@@ -120,8 +122,11 @@ export function Engage() {
                   ) : null}
                 </button>
 
-                <div
-                  role="tabpanel"
+                {/* <section>, not a div with role="region" — the element carries
+                    the landmark natively. Only the open panel is exposed, since
+                    the rest are `hidden`, so this adds one landmark and not
+                    four. */}
+                <section
                   id={`engage-panel-${i}`}
                   aria-labelledby={`engage-tab-${i}`}
                   hidden={!selected}
@@ -158,7 +163,7 @@ export function Engage() {
                       </Link>
                     </p>
                   </div>
-                </div>
+                </section>
               </div>
             );
           })}

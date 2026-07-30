@@ -214,8 +214,9 @@
      eighteen marks into solid black bars — on-canon and illegible. Blend mode
      does the knockout the assets cannot: on a light ground `multiply` drops
      white into the paper; grayscale carries the monochrome. */
-  --mark-mono: grayscale(1) contrast(1.15);
-  --mark-blend: multiply;
+  /* Silhouettes are emitted as solid black with true alpha, so light needs
+     no filter at all. See LogoRail and scripts/build-logos.mjs. */
+  --mark-filter: none;
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
@@ -261,8 +262,8 @@
   --petal-opacity: 0.2;
   /* On dark: invert first so the baked white becomes black, then `screen` drops
      black out, leaving a light silhouette on the near-black ground. */
-  --mark-mono: grayscale(1) invert(1) contrast(1.15);
-  --mark-blend: screen;
+  /* Invert turns the black silhouette white and preserves its alpha. */
+  --mark-filter: invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
@@ -306,8 +307,8 @@
   --petal-opacity: 0.2;
   /* On dark: invert first so the baked white becomes black, then `screen` drops
      black out, leaving a light silhouette on the near-black ground. */
-  --mark-mono: grayscale(1) invert(1) contrast(1.15);
-  --mark-blend: screen;
+  /* Invert turns the black silhouette white and preserves its alpha. */
+  --mark-filter: invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
@@ -371,8 +372,9 @@
   --category-mark: var(--fn-category-mark-l);
   --category-text: var(--fn-category-text-l);
   --petal-opacity: 0.16;
-  --mark-mono: grayscale(1) contrast(1.15);
-  --mark-blend: multiply;
+  /* Silhouettes are emitted as solid black with true alpha, so light needs
+     no filter at all. See LogoRail and scripts/build-logos.mjs. */
+  --mark-filter: none;
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
   --amb-alpha: 8%;
@@ -826,17 +828,51 @@ button {
      Developer"). As an inline-flex box the label sized to max-content and
      pushed past a 360px viewport; this lets it shrink and wrap instead. */
   max-width: 100%;
-  padding: 7px 13px;
+  /* Real padding, not a hairline of it: these are the product Yallo sells, and
+     at 7px they read as tags rather than as things worth reading. */
+  padding: 9px 15px;
   font-family: var(--font-mono);
-  /* Role chips carry a 14px minimum (v2.0 §3.4) — body-sm is the compliant
-     step. Other mono stays at --fs-data; this floor is chip-specific. */
+  /* A4: chips carry a 14px minimum, and --fs-body-sm (15.5px) is the compliant
+     step. Other mono stays at --fs-data. */
   font-size: var(--fs-body-sm);
+  line-height: 1.35;
   letter-spacing: 0.04em;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-sm);
-  white-space: nowrap;
+  /* NOT nowrap. nowrap makes the chip's min-content width its full label, and a
+     flex or grid track cannot shrink below that — so one long chip
+     ("Specialist skills you don't hold", widened by the A4 step from 13.5px to
+     15.5px) pushed the homepage to 363px at a 360px viewport. Measured. Wrapping
+     inside the chip costs two lines on the narrowest phone and nothing else;
+     overflowing the document costs every page. */
+  white-space: normal;
+  /* Break inside a word only as a last resort, so a long single token cannot
+     overflow either — but ordinary labels still break at spaces. */
+  overflow-wrap: break-word;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s var(--ease);
+}
+
+/* A5: hover elevation as an interaction state, on chips that are links or
+   buttons only — a chip that does nothing must not advertise that it does.
+   Paired with a ground and border shift so the cue survives reduced motion. */
+a.role-pill:hover,
+button.role-pill:hover,
+a.role-pill:focus-visible,
+button.role-pill:focus-visible {
+  background: var(--ground-3);
+  border-color: var(--rule-strong);
+  transform: translateY(-1px);
+}
+
+a.role-pill:focus-visible,
+button.role-pill:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
 }
 
 .vendor-badge {

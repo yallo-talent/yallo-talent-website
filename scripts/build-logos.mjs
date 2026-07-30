@@ -20,7 +20,13 @@
  *
  *   node scripts/build-logos.mjs
  */
-import { copyFileSync, existsSync, mkdirSync, readdirSync } from "node:fs";
+import {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  writeFileSync,
+} from "node:fs";
 import { basename, extname, join } from "node:path";
 import sharp from "sharp";
 
@@ -30,6 +36,11 @@ const OUT_INTEGRATORS = join(process.cwd(), "public", "logos", "integrators");
 
 const RENDER_HEIGHT = 56;
 const SCALE = 2;
+
+/** The rail's uniform cell, so the legibility gate below matches what ships. */
+const RAIL_CELL = 156;
+const RAIL_CAP = 26;
+const RAIL_CAP_FLOOR = 15;
 
 /** slug -> source filename. Source misspellings are corrected in the slug. */
 const CLIENTS = {
@@ -58,6 +69,11 @@ const INTEGRATORS = {
 
 const missing = [];
 let written = 0;
+/** slug -> intrinsic size of the emitted silhouette, for the rail's legibility
+ *  floor. Written to public/logos/manifest.json. */
+const manifest = {};
+/** Marks that failed the legibility gate and ship as their name instead. */
+const nameOnly = [];
 
 async function convert(slug, file, outDir) {
   const src = join(SRC, file);
@@ -75,22 +91,189 @@ async function convert(slug, file, outDir) {
   }
 
   const out = join(outDir, `${slug}.png`);
-  const info = await sharp(src)
-    // Trim the surrounding flat colour so every mark occupies its tile evenly.
+
+  // A TRUE-ALPHA SILHOUETTE, not a flattened tile.
+  //
+  // The pack is 15 opaque rasters (PNG colour-type 3 and JPEG, no alpha) with
+  // baked white or, on a few, baked dark backgrounds. The previous version
+  // flattened everything onto white, which meant the only way to show them on
+  // the site's paper and charcoal grounds was a CSS filter plus a per-theme
+  // mix-blend-mode — and a blend mode against a baked background cannot give one
+  // tone at one opacity. It left visible boxes on any mark whose own background
+  // was off-white or dark (QUESTIONS.md Q4).
+  //
+  // So the background is keyed out here instead, at build time, where it belongs:
+  // greyscale, normalise, invert, and use the result as the ALPHA of a solid
+  // black image. Ink becomes opaque, background becomes transparent, and the
+  // rail can then paint the mark in a single ink token per theme with no blend
+  // mode at all.
+  //
+  // `normalise` before `negate` matters: several sources are low-contrast scans
+  // where the "white" is around #f2f2f2, and without it the background keyed out
+  // to alpha 13 rather than 0 and left a faint plate.
+  const pre = sharp(src)
+    // Trim the surrounding flat colour so every mark occupies its cell evenly.
     .trim({ threshold: 12 })
-    // Flatten onto white: the pack mixes transparency with opaque JPEG, and the
-    // tiles they render into are white, so this makes them consistent.
+    // Flatten first: this normalises the mix of transparent PNG and opaque JPEG
+    // to one known background before it is keyed out.
     .flatten({ background: "#ffffff" })
     .resize({
       height: RENDER_HEIGHT * SCALE,
-      width: RENDER_HEIGHT * SCALE * 4,
+      width: RENDER_HEIGHT * SCALE * 6,
       fit: "inside",
       withoutEnlargement: false,
+    });
+
+  // Polarity is detected, not assumed. Half this pack is dark ink on a light
+  // ground and half is light ink on a dark or coloured ground, and a single
+  // greyscale-then-invert keys out the wrong half: measured, marks-and-spencer
+  // came out 96.5% PARTIAL alpha and only 0.1% transparent, because inverting a
+  // white-on-dark mark makes the background opaque and the ink vanish.
+  //
+  // So the border ring is sampled to find the actual background luminance, and
+  // the alpha is taken as the DISTANCE from it. That works for either polarity
+  // and for the coloured grounds too. The linear ramp afterwards pushes the
+  // result towards binary: several sources are low-contrast scans where the
+  // ground sits around #f2f2f2, and without it the ground keyed to alpha ~13 and
+  // left a faint visible plate behind the mark.
+  const grey = await pre.clone().greyscale().normalise().raw()
+    .toBuffer({ resolveWithObject: true });
+  const { data: g, info: ai } = grey;
+
+  // Otsu's method, not a border sample. A border ring mean assumes the ground is
+  // flat and still present after the trim; measured, that left six of fifteen
+  // marks at under 6% transparent with 60-85% of pixels stuck at partial alpha,
+  // because their grounds are gradients or brand colours and the trim had
+  // already eaten the flat edge on some.
+  //
+  // Otsu finds the threshold that best separates the image into two luminance
+  // classes, which is exactly the ink/ground split. The border ring is then used
+  // only to decide WHICH class is the ground, so either polarity works. Alpha is
+  // the pixel's position between the two class means, so antialiased edges stay
+  // soft instead of being binarised into jaggies.
+  const hist = new Array(256).fill(0);
+  for (const v of g) hist[v]++;
+  const total = g.length;
+  let sumAll = 0;
+  for (let v = 0; v < 256; v++) sumAll += v * hist[v];
+  let wB = 0;
+  let sumB = 0;
+  let best = -1;
+  let t = 127;
+  for (let v = 0; v < 256; v++) {
+    wB += hist[v];
+    if (wB === 0) continue;
+    const wF = total - wB;
+    if (wF === 0) break;
+    sumB += v * hist[v];
+    const mB = sumB / wB;
+    const mF = (sumAll - sumB) / wF;
+    const between = wB * wF * (mB - mF) * (mB - mF);
+    if (between > best) {
+      best = between;
+      t = v;
+    }
+  }
+  // Class means either side of the threshold.
+  let n0 = 0;
+  let s0 = 0;
+  let n1 = 0;
+  let s1 = 0;
+  for (let v = 0; v < 256; v++) {
+    if (v <= t) {
+      n0 += hist[v];
+      s0 += v * hist[v];
+    } else {
+      n1 += hist[v];
+      s1 += v * hist[v];
+    }
+  }
+  const m0 = n0 ? s0 / n0 : 0;
+  const m1 = n1 ? s1 / n1 : 255;
+
+  // Which class is the ground: whichever side the border ring sits on.
+  let bsum = 0;
+  let bn = 0;
+  for (let y = 0; y < ai.height; y++) {
+    for (let x = 0; x < ai.width; x++) {
+      if (x >= 2 && y >= 2 && x < ai.width - 2 && y < ai.height - 2) continue;
+      bsum += g[y * ai.width + x];
+      bn++;
+    }
+  }
+  const borderMean = bn ? bsum / bn : 255;
+  const groundIsBright = Math.abs(borderMean - m1) < Math.abs(borderMean - m0);
+  const bg = groundIsBright ? m1 : m0;
+  const range = Math.abs(m1 - m0) || 1;
+
+  const alpha = Buffer.allocUnsafe(g.length);
+  for (let k = 0; k < g.length; k++) {
+    const d = Math.abs(g[k] - bg) / range;
+    alpha[k] = Math.round(Math.max(0, Math.min(1, d)) * 255);
+  }
+
+  // LEGIBILITY GATE, measured, not judged by eye.
+  //
+  // Otsu keys eleven of the fifteen cleanly. The rest are multi-tone sources —
+  // gradients and several brand colours in one mark — where a two-class split
+  // necessarily leaves most pixels at partial alpha, so the silhouette would
+  // render as a soft grey smear rather than one ink. Chasing those with more
+  // clever keying means guessing at artwork we do not have.
+  //
+  // Canon §8 and the rail brief both say the same thing: a mark that cannot read
+  // at rail height renders as its NAME, never as a padded box and never redrawn.
+  // So this refuses to emit an asset it cannot vouch for, and content/clients.yaml
+  // keeps the name — src/lib/clients.ts already renders a wordmark for any
+  // consented client with no logo file, so the fallback path is the existing one.
+  //
+  // Two independent tests:
+  //   clarity  — a clean silhouette is mostly transparent with solid ink. Under
+  //              25% transparent, or over 45% of pixels stuck mid-alpha, means
+  //              the ground did not separate.
+  //   capHeight — at the rail's 156px cell a mark this wide is scaled to fit
+  //              width, so its ink height falls out of the aspect ratio. Below
+  //              15px it is a line, not a mark.
+  let tp = 0;
+  let mid = 0;
+  for (const a of alpha) {
+    if (a < 8) tp++;
+    else if (a <= 247) mid++;
+  }
+  const transparentPct = (100 * tp) / alpha.length;
+  const partialPct = (100 * mid) / alpha.length;
+  const capAtCell = Math.min(RAIL_CAP, (RAIL_CELL * ai.height) / ai.width);
+
+  const reasons = [];
+  if (transparentPct < 25) reasons.push(`only ${transparentPct.toFixed(1)}% transparent`);
+  if (partialPct > 45) reasons.push(`${partialPct.toFixed(1)}% partial alpha`);
+  if (capAtCell < RAIL_CAP_FLOOR) reasons.push(`cap height ${capAtCell.toFixed(1)}px at the rail cell`);
+
+  if (reasons.length) {
+    nameOnly.push(`${slug}: ${reasons.join(", ")}`);
+    console.log(`  ${slug}: NAME ONLY — ${reasons.join(", ")}`);
+    return;
+  }
+
+  // Solid black RGB with that alpha. Black is arbitrary: the rail masks the
+  // silhouette and paints it in a theme ink token, so only the alpha is read.
+  const info = await sharp({
+    create: {
+      width: ai.width,
+      height: ai.height,
+      channels: 3,
+      background: { r: 0, g: 0, b: 0 },
+    },
+  })
+    .joinChannel(alpha, {
+      raw: { width: ai.width, height: ai.height, channels: 1 },
     })
-    .png({ compressionLevel: 9, palette: true })
+    .png({ compressionLevel: 9 })
     .toFile(out);
 
-  console.log(`  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB`);
+  manifest[slug] = { w: info.width, h: info.height, bg: Math.round(bg) };
+  console.log(
+    `  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB (alpha silhouette)`,
+  );
   written++;
 }
 
@@ -104,7 +287,17 @@ for (const [slug, file] of Object.entries(INTEGRATORS)) {
   await convert(slug, file, OUT_INTEGRATORS);
 }
 
-console.log(`\n${written} logo files written.`);
+writeFileSync(
+  join(process.cwd(), "public", "logos", "manifest.json"),
+  `${JSON.stringify(manifest, null, 2)}\n`,
+);
+console.log(`\n${written} logo files written, manifest.json updated.`);
+if (nameOnly.length) {
+  console.log(
+    `\n${nameOnly.length} mark(s) ship as their NAME — the source will not key to one clean ink:`,
+  );
+  for (const r of nameOnly) console.log(`  ${r}`);
+}
 
 // Marks committed as vectors outside this script. Verified, not generated.
 for (const [slug, file] of [

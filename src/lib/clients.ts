@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { z } from "zod";
@@ -42,4 +42,21 @@ function loadClients(): z.infer<typeof clientsFileSchema> {
 
 export function getConsentedClients(group: ClientGroup): Client[] {
   return loadClients()[group].filter((c) => c.consentOnFile);
+}
+
+/**
+ * Does the mark actually exist on disk?
+ *
+ * scripts/build-logos.mjs applies a measured legibility gate and refuses to emit
+ * a silhouette it cannot vouch for — six of the fifteen rasters are multi-tone
+ * sources that will not key to one clean ink, and one is too wide to reach a
+ * readable cap height in the rail cell. content/clients.yaml still names those
+ * clients, because the consent and the relationship are unchanged; only the
+ * asset is missing. Canon §8 says such a mark renders as its NAME, never as a
+ * padded box and never redrawn, so consumers ask this rather than trusting the
+ * `logo` field on its own.
+ */
+export function hasLogoAsset(logo: string | undefined): boolean {
+  if (!logo) return false;
+  return existsSync(join(process.cwd(), "public", logo.replace(/^\//, "")));
 }

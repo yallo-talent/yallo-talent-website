@@ -595,30 +595,38 @@
 /* Each mark sits in a white tile: the pack mixes transparency with opaque
    JPEG, and a printed dossier reproduces client logos on white anyway. */
 /* No tile, ever: canon §8 forbids a mark on a white card. The uniform
-   monochrome treatment (--mark-mono) silhouettes every mark for the ground it
+   monochrome treatment (--mark-filter) silhouettes every mark for the ground it
    sits on, at 72% opacity lifting to full on hover. */
+/* UNIFORM CELLS. One width, one height, one cap height, even spacing — so the
+   rail reads as one row of equals rather than fifteen differently-scaled marks.
+   The pack ranges from square to 14:1, and letting each mark size itself made
+   the widest wordmark dominate and read as a hierarchy that does not exist. */
 .logo {
   display: grid;
   place-items: center;
+  width: 156px;
   height: 56px;
-  min-width: 88px;
-  /* Capped: the pack ranges from square to 14:1, and an uncapped wordmark
-     dominates the row and reads as a hierarchy that does not exist. */
-  max-width: 190px;
   flex: none;
 }
 
+/* SINGLE INK, one tone, one opacity, no blend mode.
+   The silhouettes now carry TRUE ALPHA (scripts/build-logos.mjs keys the ground
+   out at build time), and they are emitted as solid black. So one filter per
+   theme is the whole treatment: none on light leaves black ink, invert on dark
+   makes it white, and alpha is preserved either way.
+   What this replaces: a flattened white tile shown through grayscale() plus a
+   per-theme mix-blend-mode. A blend mode composites against each asset's OWN
+   baked background, so the result varied mark by mark and left visible plates
+   wherever that background was off-white or genuinely dark — the "illegible dark
+   blobs". No blend mode can give one tone across a pack like that; only real
+   alpha can. */
 .logo img {
-  max-height: 28px;
+  height: 26px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
-  filter: var(--mark-mono);
-  /* Knocks the assets' baked white background out against the ground — 15 of
-     the 18 marks are opaque rasters with no alpha, so a filter alone rendered
-     them as solid bars. */
-  mix-blend-mode: var(--mark-blend);
-  opacity: 0.78;
+  filter: var(--mark-filter);
+  opacity: 0.82;
   transition: opacity 0.28s var(--ease);
 }
 
@@ -628,12 +636,21 @@
 }
 
 /* Consented client, no logo file supplied. Set, never substituted. */
+/* The NAME, for a mark whose source will not key to one clean ink or cannot
+   reach a readable cap height in the cell. Canon §8: never a padded box, never a
+   redrawn mark. Set in the display face at the same optical weight as the
+   silhouettes so the row still reads as one rank — it is a peer, not a gap.
+   --text-2, not --ink-2: the rail appears in both registers and the hardcoded
+   light ink was invisible on the dark one. */
 .wordmark {
   font-family: var(--font-display);
-  font-size: var(--fs-card-title);
+  font-size: var(--fs-body);
   font-weight: 550;
-  color: var(--ink-2);
+  color: var(--text-2);
   letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.15;
+  opacity: 0.86;
 }
 
 /* ==========================================================================
@@ -1391,7 +1408,11 @@
 .chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  /* Real gap, matching the chips' new padding — at 8px they crowded into a
+     single grey mass and the row read as one object rather than four choices. */
+  gap: 10px;
+  /* min-width: 0 so a long chip can shrink rather than forcing the track. */
+  min-width: 0;
   margin: 0;
   padding: 0;
   list-style: none;
