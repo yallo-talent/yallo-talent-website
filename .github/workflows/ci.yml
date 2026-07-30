@@ -29,6 +29,12 @@ jobs:
       - name: Contrast
         run: pnpm check:contrast
 
+      # Relay v2.0 §3.1. Nothing renders below 12px, and uppercase mono labels
+      # carry at least 0.12em tracking. The 11px eyebrow was the case flagged
+      # as unreadable, and it appeared on every page.
+      - name: Type scale
+        run: pnpm check:type
+
       - name: Build
         run: pnpm build
 

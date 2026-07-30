@@ -1,3 +1,4 @@
 #!/usr/bin/env sh
 pnpm biome check --write .
 node .claude/hooks/check-colours.js
+node scripts/check-type-scale.mjs

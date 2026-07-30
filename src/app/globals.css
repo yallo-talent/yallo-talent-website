@@ -94,8 +94,10 @@
   --fs-caption: 14px; /* card copy, metric definitions */
   --fs-caption-sm: 13px; /* entity roles, pillars */
   --fs-data: 12px; /* mono: measured values, reference numbers */
-  --fs-label: 11px; /* mono: eyebrows, axis labels */
-  --fs-data-sm: 10.5px; /* mono: badges, inline meta, flags */
+  --fs-label: 12px; /* mono: eyebrows, axis labels. 12px is the hard floor */
+  /* Retired: --fs-data-sm was 10.5px, below the floor. Aliased so any missed
+     usage lands on the floor rather than silently breaking. Use --fs-label. */
+  --fs-data-sm: var(--fs-label);
   --fs-ghost: 82px; /* the ghost numerals bled off step cards */
   --fs-entity: clamp(22px, 2.4vw, 30px); /* the four-entity strip */
 
@@ -648,7 +650,7 @@ button {
   gap: 7px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--positive-text);
 }

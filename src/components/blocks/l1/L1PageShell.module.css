@@ -15,7 +15,7 @@
   align-items: center;
   gap: 10px;
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -136,7 +136,7 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -169,7 +169,7 @@
   backdrop-filter: saturate(180%) blur(10px);
   -webkit-backdrop-filter: saturate(180%) blur(10px);
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -276,7 +276,7 @@
   align-items: center;
   gap: 8px;
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-muted);
@@ -352,7 +352,7 @@
   align-items: center;
   padding: 14px 14px 12px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -406,7 +406,7 @@
 
 .statL {
   font-family: var(--font-mono);
-  font-size: 8.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -613,7 +613,7 @@
 
 .wwdEyebrow {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--card-hue, var(--sector-accent));
@@ -656,7 +656,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 11.5px;
+  font-size: var(--fs-label);
   color: var(--fg-muted);
   line-height: 1.55;
   transition: color 0.22s ease;
@@ -773,7 +773,7 @@
 
 .hwwStepNum {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   letter-spacing: 0.22em;
   color: var(--card-hue, var(--sector-accent));
   margin-bottom: 12px;
@@ -903,7 +903,7 @@
 }
 
 .xsecCardCopy {
-  font-size: 11.5px;
+  font-size: var(--fs-caption-sm);
   color: var(--fg-muted);
   line-height: 1.5;
 }
@@ -1122,9 +1122,9 @@
 
 .rtag {
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   padding: 4px 9px;
   border-radius: 0 0 0 var(--r-md);
@@ -1236,7 +1236,7 @@
   border-radius: 0 0 0 var(--r-md);
   color: var(--sector-accent);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1289,7 +1289,7 @@
   border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1312,7 +1312,7 @@
 
 .expertiseHiddenCount {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   padding: 4px 8px;
   border-radius: 0 0 0 var(--r-md);
   background: var(--sector-accent);
@@ -1478,7 +1478,7 @@
 
 .expCardNum {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.16em;
   color: var(--fg-subtle);
   transition: color 0.2s ease;
@@ -1501,7 +1501,7 @@
 }
 
 .expCardBlurb {
-  font-size: 11.5px;
+  font-size: var(--fs-caption-sm);
   color: var(--fg-muted);
   line-height: 1.5;
   font-weight: 300;
@@ -1600,7 +1600,7 @@
 }
 
 .expCardRole {
-  font-size: 11px;
+  font-size: var(--fs-label);
   color: var(--fg-muted);
   font-weight: 400;
   display: flex;
@@ -1758,7 +1758,7 @@
 
 .archRole {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--card-hue, var(--sector-accent));
@@ -2121,7 +2121,7 @@
 
 .segRolesLabel {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--card-hue, var(--sector-accent));
@@ -2147,7 +2147,7 @@
 
 .segRolePill {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-label);
   padding: 7px 13px;
   border-radius: 0 0 0 var(--r-md);
   background: var(--card-hue-08, var(--sector-accent-08));
@@ -2470,7 +2470,7 @@
   left: 16px;
   z-index: 3;
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2517,7 +2517,7 @@
   justify-content: space-between;
   gap: 12px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   letter-spacing: 0.06em;
 }
 
@@ -2721,7 +2721,7 @@
 
 .pillarEyebrow {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--card-hue, var(--sector-accent));
@@ -2765,7 +2765,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 11.5px;
+  font-size: var(--fs-label);
   color: var(--fg-muted);
   line-height: 1.5;
   transition: color 0.24s ease;
@@ -2918,7 +2918,7 @@
 
 .readNextRailLabel {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -3088,7 +3088,7 @@
 
 .readNextCat {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   grid-column: 1;

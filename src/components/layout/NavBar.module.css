@@ -79,7 +79,7 @@
 /* Letter-spacing tuned so "TALENT" visually matches the width of "Yallo". */
 .brandSuffix {
   font-family: var(--font-mono);
-  font-size: 9.5px;
+  font-size: var(--fs-label);
   font-weight: 600;
   letter-spacing: 0.46em;
   padding-left: 0.46em;
@@ -184,7 +184,7 @@
 .megaDescription {
   padding: 4px 12px 12px;
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-caption-sm);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -225,7 +225,7 @@
 
 .megaColHeading {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -326,7 +326,7 @@
 .externalMark {
   display: inline-flex;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-label);
   color: var(--item-hue, var(--accent));
   opacity: 0.7;
   transition: transform 0.15s ease;
@@ -338,7 +338,7 @@
 }
 
 .itemDescription {
-  font-size: 11px;
+  font-size: var(--fs-caption-sm);
   color: var(--fg-muted);
   line-height: 1.4;
 }
@@ -404,7 +404,7 @@
 
 .featuredEyebrow {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
@@ -419,7 +419,7 @@
 }
 
 .featuredCopy {
-  font-size: 11.5px;
+  font-size: var(--fs-caption-sm);
   line-height: 1.55;
   color: var(--fg-muted);
   margin-bottom: 4px;
@@ -427,9 +427,9 @@
 
 .featuredCta {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: var(--fs-label);
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   padding-top: 6px;

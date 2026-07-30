@@ -1004,7 +1004,7 @@
 .vowBadgeLabel {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-2);
 }
