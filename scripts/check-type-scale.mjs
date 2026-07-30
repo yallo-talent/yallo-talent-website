@@ -148,28 +148,48 @@ for (const file of walk("src")) {
   }
 }
 
-// ── 4. The incumbent glass register stays deleted ─────────────────────────
-// Canon §5 bans glass outright, and Relay v2.2 §3 asks for a CI ban once the
-// step-8 strip has landed. The register was previously "removed" by rewiring
-// its tokens to transparent, which left ~250 declarations that one variable
-// change would have brought back site-wide. This makes that impossible.
+// ── 4. Glass: ALLOW-LIST enforcement, not a ban ───────────────────────────
+// Canon amendment A3 (30 Jul) reverses the step-8 strip and sanctions glass —
+// but as one token-governed utility on five named surfaces, not as a register
+// anyone can reach for. So this guard changed from banning `backdrop-filter` to
+// enforcing that allow-list, which is a STRICTER contract than the ban it
+// replaces: the ban had one blanket file exception, and this has none.
 //
-// The single exception is the sticky nav's blur, which canon §5 explicitly
-// permits: a sticky bar over scrolling content needs it to stay legible.
-const GLASS_EXCEPTION = "src/components/layout/NavBar.module.css";
+// Two rules:
+//   1. `backdrop-filter` may be declared in exactly ONE place — the .glass
+//      utility in globals.css. A component authoring its own blur fails, because
+//      then the tokens, the AA pairing and the reduced-transparency fallback are
+//      no longer guaranteed by anything.
+//   2. The .glass class may only be APPLIED on an allow-listed surface. Canon
+//      §5 lists five and the list is exhaustive.
+const GLASS_OWNER = "src/app/globals.css";
+
+/** Canon A3's five surfaces. Matched against the file that applies `glass`. */
+const GLASS_ALLOWED = [
+  "src/components/layout/NavBar.module.css", // nav on scroll, and the mega panel
+  "src/components/layout/NavBar.tsx",
+  "src/components/layout/StickyBriefCTA.module.css", // sticky brief CTA
+  "src/components/layout/StickyBriefCTA.tsx",
+  "src/components/blocks/home/Instrument.tsx", // hero instrument
+  "src/components/blocks/home/Home.module.css", // hero instrument, four-ways media
+];
 
 for (const file of walk("src")) {
-  if (file === GLASS_EXCEPTION) continue;
   const lines = readFileSync(file, "utf8").split("\n");
   for (const [i, line] of lines.entries()) {
-    if (/^\s*[-\w]*backdrop-filter\s*:/.test(line)) {
+    if (/^\s*[-\w]*backdrop-filter\s*:/.test(line) && file !== GLASS_OWNER) {
       errors.push(
-        `${file}:${i + 1}  backdrop-filter is banned (canon §5). The sticky nav is the only permitted blur.`,
+        `${file}:${i + 1}  backdrop-filter may only be declared by the .glass utility in ${GLASS_OWNER} (canon A3). Apply .glass instead of authoring a blur.`,
       );
     }
-    if (/var\(--glass-/.test(line)) {
+    // Applying the utility, in CSS composition or in a className.
+    const applies =
+      /composes:\s*glass\b/.test(line) ||
+      /className=\{?["'`][^"'`]*\bglass\b/.test(line) ||
+      /\bstyles\.glass\b/.test(line);
+    if (applies && !GLASS_ALLOWED.includes(file)) {
       errors.push(
-        `${file}:${i + 1}  --glass-* token is banned (canon §5); the register was deleted in the step-8 strip.`,
+        `${file}:${i + 1}  .glass is applied on a surface canon A3 does not allow-list. The five permitted surfaces are the nav on scroll, the mega panel, the hero instrument, the sticky brief CTA and the four-ways media panel.`,
       );
     }
   }

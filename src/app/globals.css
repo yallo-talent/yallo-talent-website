@@ -875,6 +875,66 @@ button.role-pill:focus-visible {
   outline-offset: 2px;
 }
 
+/* ==========================================================================
+   Liquid glass — canon amendment A3, ratified 30 Jul.
+
+   ONE implementation. `backdrop-filter` is declared here and nowhere else in
+   src/, enforced by scripts/check-type-scale.mjs, which also enforces that this
+   class is only APPLIED on the five surfaces canon A3 allow-lists: the nav once
+   scrolled, the mega-menu panel, the hero instrument, the sticky brief CTA and
+   the four-ways media panel.
+
+   Why a utility rather than a register: the previous glass was ~250 declarations
+   across the codebase, "removed" by rewiring its tokens to transparent, which
+   left every one of them a single variable change away from returning. A3
+   brings glass back deliberately, so it comes back as one governed object.
+
+   The ground is deliberately opaque ENOUGH. Every pair on a glass surface has to
+   pass AA against the worst-case backdrop, and the worst case is whatever the
+   page happens to scroll underneath — which is unknowable. 88% of the register's
+   own ground is the compromise: the blur reads as glass, but the text is
+   effectively on --ground, so its contrast is the register's normal pair rather
+   than a gamble on what is behind it.
+   ========================================================================== */
+/* `.glass.glass`, not `.glass`. CSS module stylesheets load AFTER globals.css,
+   so at equal specificity a component's own `background` beats this utility —
+   measured: both allow-listed surfaces carried the class and rendered fully
+   opaque with no blur, because .header and .megaPanel each set their own ground.
+   Doubling the class raises this to (0,2,0) so the utility wins wherever it is
+   applied, which is the whole point of it being the single implementation. */
+.glass.glass {
+  background: color-mix(in oklab, var(--ground) 88%, transparent);
+  backdrop-filter: saturate(135%) blur(14px);
+  -webkit-backdrop-filter: saturate(135%) blur(14px);
+  border-color: var(--boundary);
+}
+
+/* A3 requires a reduced-transparency fallback, and it is not decorative: users
+   who set this often do so because translucency actively impedes reading. The
+   ground goes fully opaque and the blur is dropped — the surface keeps its
+   boundary and its ink, and loses only the effect. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass.glass {
+    background: var(--ground);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Perf budget, per A3: a blur must never sit on a continuously animating or
+   scroll-linked surface, and blurs must never stack. Both are review rules
+   rather than machine-checkable ones, so they are stated here where the utility
+   lives — the five allow-listed surfaces are all static panels, and none of them
+   nests inside another.
+   Forced-colours mode drops the effect entirely; the system supplies its own. */
+@media (forced-colors: active) {
+  .glass.glass {
+    background: Canvas;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
 .vendor-badge {
   display: inline-flex;
   align-items: center;

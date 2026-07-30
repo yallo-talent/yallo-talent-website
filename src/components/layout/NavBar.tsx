@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
 import {
   jobSeekersHref,
@@ -16,21 +17,16 @@ import {
   primaryCTAHref,
   primaryNav,
 } from "./nav-config";
-import { navIcons } from "./nav-icons";
-import { YalloFlower } from "./YalloFlower";
 
-function NavItemIcon({ icon }: { icon?: NavItem["icon"] }) {
-  if (!icon) return null;
-  const IconComp = navIcons[icon];
-  return <IconComp className={styles.itemIconSvg} />;
-}
-
+/* No per-item icon. Each row carried a 36x36 bordered tile with its own tinted
+   ground, which meant twenty competing objects in one panel and a row height
+   three times what the label needs. The menu's job is to let someone find a
+   platform name fast; the label does that, and the description under it does the
+   rest. The tiles also carried --item-hue-*, the last of the retired per-sector
+   hue plumbing that step 9 missed because of the different prefix. */
 function NavItemBody({ item }: { item: NavItem }) {
   return (
     <>
-      <span className={styles.itemIcon}>
-        <NavItemIcon icon={item.icon} />
-      </span>
       <span className={styles.itemBody}>
         <span className={styles.itemLabel}>
           {item.label}
@@ -125,11 +121,7 @@ export function NavBar() {
             className={styles.brand}
             aria-label="Yallo Talent home"
           >
-            <YalloFlower size={36} className={styles.brandFlower} />
-            <span className={styles.brandText}>
-              <span className={styles.brandMark}>Yallo</span>
-              <span className={styles.brandSuffix}>Talent</span>
-            </span>
+            <Lockup />
           </Link>
 
           <nav

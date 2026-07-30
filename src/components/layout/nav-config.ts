@@ -1,41 +1,7 @@
-type IconKey =
-  | "contract"
-  | "permanent"
-  | "eor"
-  | "managed"
-  | "retail"
-  | "finance"
-  | "manufacturing"
-  | "healthcare"
-  | "government"
-  | "telco"
-  | "sap"
-  | "oracle"
-  | "microsoft"
-  | "salesforce"
-  | "blue-yonder"
-  | "workday"
-  | "capabilities"
-  | "insights"
-  | "cases"
-  | "about"
-  | "why"
-  | "leadership"
-  | "dataAi"
-  | "devops"
-  | "cloud"
-  | "security"
-  | "integration"
-  | "emerging"
-  | "uploadCv"
-  | "manageAccount"
-  | "jobSearch";
-
 export interface NavItem {
   label: string;
   href: string;
   description?: string;
-  icon?: IconKey;
   external?: boolean;
   /**
    * When false the label is rendered as non-interactive text (aria-disabled)
@@ -77,27 +43,23 @@ export const primaryNav: NavGroup[] = [
       {
         heading: "Platforms",
         items: [
-          { label: "SAP", href: "/platforms/sap", icon: "sap" },
-          { label: "Oracle", href: "/platforms/oracle", icon: "oracle" },
+          { label: "SAP", href: "/platforms/sap" },
+          { label: "Oracle", href: "/platforms/oracle" },
           {
             label: "Microsoft",
             href: "/platforms/microsoft",
-            icon: "microsoft",
           },
           {
             label: "Salesforce",
             href: "/platforms/salesforce",
-            icon: "salesforce",
           },
           {
             label: "Blue Yonder",
             href: "/platforms/blue-yonder",
-            icon: "blue-yonder",
           },
           {
             label: "Workday",
             href: "/platforms/workday",
-            icon: "workday",
           },
         ],
       },
@@ -107,42 +69,35 @@ export const primaryNav: NavGroup[] = [
           {
             label: "AI talent",
             href: "/ai-talent",
-            icon: "dataAi",
           },
           {
             label: "Data & Analytics",
             href: "/capabilities/data-analytics",
-            icon: "dataAi",
             published: false,
           },
           {
             label: "Cloud & Infrastructure",
             href: "/capabilities/cloud-infrastructure",
-            icon: "cloud",
             published: false,
           },
           {
             label: "Cybersecurity",
             href: "/capabilities/cybersecurity",
-            icon: "security",
             published: false,
           },
           {
             label: "Integration & Middleware",
             href: "/capabilities/integration-middleware",
-            icon: "integration",
             published: false,
           },
           {
             label: "DevOps & Platform Engineering",
             href: "/capabilities/devops-platform-engineering",
-            icon: "devops",
             published: false,
           },
           {
             label: "Testing & Quality Engineering",
             href: "/capabilities/testing-quality-engineering",
-            icon: "emerging",
             published: false,
           },
         ],
@@ -159,32 +114,26 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Retail & Consumer",
             href: "/industries/retail",
-            icon: "retail",
           },
           {
             label: "Manufacturing & Logistics",
             href: "/industries/manufacturing",
-            icon: "manufacturing",
           },
           {
             label: "Banking & Financial Services",
             href: "/industries/finance",
-            icon: "finance",
           },
           {
             label: "Government & Public Sector",
             href: "/industries/government",
-            icon: "government",
           },
           {
             label: "Healthcare & Life Science",
             href: "/industries/healthcare",
-            icon: "healthcare",
           },
           {
             label: "Telco & Media",
             href: "/industries/telco",
-            icon: "telco",
           },
         ],
       },
@@ -207,25 +156,21 @@ export const primaryNav: NavGroup[] = [
             label: "Contract",
             href: "/contract",
             description: "72-hour shortlists · specialist-screened",
-            icon: "contract",
           },
           {
             label: "Permanent",
             href: "/permanent",
             description: "Long-term fit, specialist-vetted",
-            icon: "permanent",
           },
           {
             label: "Employer of Record",
             href: "/eor",
             description: "UAE visa + India payroll cover",
-            icon: "eor",
           },
           {
             label: "Managed Delivery",
             href: "/managed-delivery",
             description: "Scope-defined, outcome-owned",
-            icon: "managed",
           },
         ],
       },
@@ -248,19 +193,16 @@ export const primaryNav: NavGroup[] = [
             label: "Case studies",
             href: "/case-studies",
             description: "Programmes we've helped staff",
-            icon: "cases",
           },
           {
             label: "Clients",
             href: "/about#clients",
             description: "Who we've delivered for",
-            icon: "about",
           },
           {
             label: "The team who screen",
             href: "/leadership",
             description: "Specialists behind every shortlist",
-            icon: "leadership",
           },
         ],
       },
@@ -283,20 +225,17 @@ export const primaryNav: NavGroup[] = [
             label: "Insights",
             href: "/insights",
             description: "Articles, research and analysis",
-            icon: "insights",
           },
           {
             label: "Programme Staffing Blueprint",
             href: "/intelligence",
             description: "The full staffing framework",
-            icon: "capabilities",
             published: false,
           },
           {
             label: "AI Talent Atlas",
             href: "/ai-talent",
             description: "AI roles, scarcity and comp windows",
-            icon: "dataAi",
             published: false,
           },
         ],
