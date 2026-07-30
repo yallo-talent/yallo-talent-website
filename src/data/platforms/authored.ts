@@ -31,6 +31,385 @@ export interface AuthoredPlatform {
 }
 
 export const authoredPlatforms: Record<string, AuthoredPlatform> = {
+  /**
+   * Oracle — SUITE level, from the legacy corpus, 31 Jul.
+   *
+   * Same skew as SAP and worse: eight of the ten modules the platform page was
+   * publishing were Oracle RETAIL (Xstore, Retail MOM, Assortment Planning,
+   * Space Optimization, Retail Pricing, Retail Order Management), because retail
+   * was the only sector seeded with Oracle tools.
+   *
+   * Names verbatim from content/platform-expertise/oracle-expertise.md, whose
+   * headings enumerate the suite. The industry verticals the legacy page also
+   * lists — Oracle Retail, Hospitality, Food & Beverage, Healthcare, Financial
+   * Services, Communication — are deliberately NOT modules here: they are
+   * sector cuts of the suite, which is the level the sector L1s already work at,
+   * and repeating them would rebuild the skew one layer up.
+   */
+  oracle: {
+    slug: "oracle",
+    name: "Oracle",
+    ratified:
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Oracle expertise page.",
+    modules: [
+      {
+        name: "Oracle Fusion ERP",
+        scope:
+          "Financials and procurement consultants across Fusion Cloud ERP, including the EBS-to-Fusion crews.",
+        roles: [
+          "Oracle Fusion Financials Consultant",
+          "Oracle Integration Cloud Developer",
+          "Finance Transformation Lead",
+          "Data Migration Lead",
+        ],
+      },
+      {
+        name: "Oracle Fusion HCM",
+        scope: "Core HR, payroll and absence consultants on Fusion HCM.",
+        roles: [
+          "Oracle Fusion Financials Consultant",
+          "Functional Architect",
+          "Data Migration Test Analyst",
+        ],
+      },
+      {
+        name: "Oracle Fusion SCM",
+        scope:
+          "Supply chain, inventory and order-management consultants on Fusion SCM.",
+        roles: [
+          "Oracle SCM Consultant",
+          "Supply Chain Lead",
+          "Functional Test Analyst",
+        ],
+      },
+      {
+        name: "Oracle Fusion CX",
+        scope:
+          "Sales, service and marketing consultants across the Fusion CX applications.",
+        roles: [
+          "Oracle SCM Consultant",
+          "Business Analyst",
+          "Integration Architect",
+        ],
+      },
+      {
+        name: "Oracle E-Business Suite",
+        scope:
+          "EBS consultants and PL/SQL developers — the estates still running it, and the ones leaving it.",
+        roles: [
+          "Oracle PL/SQL Developer",
+          "Oracle Fusion Financials Consultant",
+          "Integration Test Analyst",
+        ],
+      },
+      {
+        name: "Oracle Enterprise Performance Management (EPM)",
+        scope:
+          "Planning, close and consolidation consultants, including Hyperion migrations.",
+        roles: [
+          "Finance Transformation Lead",
+          "Oracle Fusion Financials Consultant",
+          "Data Architect",
+        ],
+      },
+      {
+        name: "Oracle Cloud Infrastructure",
+        scope:
+          "OCI engineers and architects for landing zones, migration and run.",
+        roles: [
+          "Cloud Architect",
+          "Platform Engineer",
+          "Network Engineer",
+          "Site Reliability Engineer",
+        ],
+      },
+      {
+        name: "Oracle NetSuite",
+        scope:
+          "NetSuite consultants and integration developers for mid-market estates.",
+        roles: [
+          "Oracle Integration Cloud Developer",
+          "Business Analyst",
+          "Delivery Lead",
+        ],
+      },
+      {
+        name: "Oracle BI Apps",
+        scope:
+          "Reporting and analytics consultants across the Oracle BI estate.",
+        roles: ["Data Architect", "ETL Developer", "Power BI Developer"],
+      },
+    ],
+  },
+
+  /**
+   * Salesforce — SUITE level, from the legacy corpus, 31 Jul.
+   *
+   * The platform page was publishing three modules, all retail: Retail Cloud
+   * (Clienteling), Loyalty Management and Marketing Cloud. Three is also below
+   * the threshold at which a platform page earns its place, so this was thin as
+   * well as skewed.
+   *
+   * Names verbatim from content/platform-expertise/salesforce-expertise.md. That
+   * page also lists feature-level headings (CPQ, AI Recommendations, Digital
+   * Storefronts, Customer Self-Service Portals); those are capabilities INSIDE a
+   * cloud, not desks, so they are not modules here.
+   */
+  salesforce: {
+    slug: "salesforce",
+    name: "Salesforce",
+    ratified:
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Salesforce expertise page.",
+    modules: [
+      {
+        name: "Sales Cloud",
+        scope:
+          "Sales-process consultants and Apex developers across the Sales Cloud estate.",
+        roles: [
+          "Salesforce Apex Developer",
+          "Functional Architect",
+          "Business Analyst",
+        ],
+      },
+      {
+        name: "Service Cloud",
+        scope:
+          "Case management and contact-centre consultants on Service Cloud.",
+        roles: [
+          "Salesforce Service Cloud Consultant",
+          "Salesforce Apex Developer",
+          "Functional Test Analyst",
+        ],
+      },
+      {
+        name: "Marketing Cloud",
+        scope:
+          "Campaign build and audience consultants, and the data feeds behind them.",
+        roles: ["Business Analyst", "Data Engineer", "Integration Architect"],
+      },
+      {
+        name: "Commerce Cloud",
+        scope: "B2C and B2B commerce developers and architects.",
+        roles: [
+          "Salesforce Apex Developer",
+          "Frontend Engineer",
+          "Integration Architect",
+        ],
+      },
+      {
+        name: "Experience Cloud",
+        scope: "Portal and community builds for customers and partners.",
+        roles: [
+          "Salesforce Apex Developer",
+          "Frontend Engineer",
+          "Business Analyst",
+        ],
+      },
+      {
+        name: "MuleSoft Anypoint Platform",
+        scope: "API and integration engineers across the Anypoint estate.",
+        roles: [
+          "Integration Architect",
+          "Platform Engineer",
+          "DevOps Engineer",
+        ],
+      },
+    ],
+  },
+  /**
+   * SAP — SUITE level, rebuilt 31 Jul from the legacy corpus.
+   *
+   * What was wrong: the SAP platform page was rendering twelve RETAIL SAP
+   * modules — Customer Checkout, Merchandise Management, Space Optimisation,
+   * Promotion Management, Forecasting & Replenishment — because derive.ts
+   * re-projects sector data onto the platform axis, and retail was the only
+   * sector seeded with SAP tools. Correct mechanism, wrong level: a platform
+   * page presents the SUITE FAMILY, and a buyer arriving on /platforms/sap to
+   * ask about SuccessFactors or Ariba was shown a retail merchandising bench.
+   * The retail-flavoured modules are untouched and stay where they belong, on
+   * the retail L1 and its L2s.
+   *
+   * PROVENANCE OF THE NAMES. Every module name below is taken verbatim from the
+   * legacy corpus at ../yallo-legacy-archive — specifically the platform-level
+   * pages content/platform/sap.md and content/platform-expertise/sap-expertise.md,
+   * whose own headings enumerate the suite. Nothing here is invented, and nothing
+   * is drafted from memory of the SAP catalogue.
+   *
+   * Two corrections applied to the legacy copy rather than ported:
+   *   · Under "SAP Analytics" the legacy scope line reads "SAP S/4HANA Public
+   *     Cloud offers scalable, subscription-based ERP" — a copy-paste defect in
+   *     the source. Not ported. The product is published as SAP Analytics Cloud
+   *     in the corpus body, so that name is used.
+   *   · Every legacy scope line is platform-speak (what SAP does). Canon §9
+   *     requires Talent-speak (what Yallo places), so the scope lines are
+   *     rewritten. The NAMES are the corpus's; the scope lines are ours.
+   *
+   * Roles are mapped from titles that already exist in roles.ts and the sector
+   * files — no new role vocabulary is introduced here.
+   */
+  sap: {
+    slug: "sap",
+    name: "SAP",
+    ratified:
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",
+    modules: [
+      {
+        name: "SAP S/4HANA On-Premise",
+        scope:
+          "Core finance and logistics consultants for on-premise estates, including the brownfield conversion crews.",
+        roles: [
+          "SAP S/4HANA Architect",
+          "SAP FI/CO Consultant",
+          "SAP MM/SD Consultant",
+          "ABAP Developer",
+          "Data Migration Lead",
+        ],
+      },
+      {
+        name: "SAP S/4HANA Public Cloud",
+        scope:
+          "Consultants who work inside the standard, on a quarterly release cadence rather than a modification backlog.",
+        roles: [
+          "SAP S/4HANA Architect",
+          "SAP FI/CO Consultant",
+          "Functional Architect",
+          "SAP Test Lead",
+        ],
+      },
+      {
+        name: "SAP S/4HANA Cloud, Private Edition",
+        scope:
+          "Mixed benches for private-edition estates that keep custom code but move the hosting.",
+        roles: [
+          "SAP S/4HANA Architect",
+          "ABAP Developer",
+          "SAP CPI Integration Developer",
+          "Cutover Manager",
+        ],
+      },
+      {
+        name: "RISE with SAP S/4HANA",
+        scope:
+          "Transformation-side people for RISE programmes: the architects and cutover leads, not the licence conversation.",
+        roles: [
+          "Enterprise Architect",
+          "SAP S/4HANA Architect",
+          "Cutover Manager",
+          "Hypercare Lead",
+          "PMO Lead",
+        ],
+      },
+      {
+        name: "SAP S/4HANA Finance",
+        scope:
+          "Finance transformation consultants — record to report, treasury and group close.",
+        roles: [
+          "SAP FI/CO Consultant",
+          "Finance Transformation Lead",
+          "SAP Treasury & Risk Consultant",
+          "Data Migration Test Analyst",
+        ],
+      },
+      {
+        name: "SAP Analytics Cloud",
+        scope:
+          "Planning and reporting specialists, including the ones who rebuild legacy BPC models.",
+        roles: [
+          "SAP Analytics Cloud Consultant",
+          "Data Architect",
+          "Power BI Developer",
+          "Business Analyst",
+        ],
+      },
+      {
+        name: "SAP BTP (Business Technology Platform)",
+        scope:
+          "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
+        roles: [
+          "SAP CPI Integration Developer",
+          "Integration Architect",
+          "Platform Engineer",
+          "DevOps Engineer",
+        ],
+      },
+      {
+        name: "SAP Integrated Business Planning",
+        scope:
+          "Demand, supply and response planners, and the APO consultants migrating off it.",
+        roles: [
+          "SAP APO / IBP Consultant",
+          "Supply Chain Lead",
+          "Data Engineer",
+          "Functional Test Analyst",
+        ],
+      },
+      {
+        name: "SAP Customer Experience",
+        scope:
+          "Commerce, marketing and sales-cloud consultants across the CX estate.",
+        roles: [
+          "SAP CX Functional Consultant",
+          "SAP Commerce Cloud Architect",
+          "SAP CRM Consultant",
+          "Frontend Engineer",
+        ],
+      },
+      {
+        name: "SAP Service Cloud",
+        scope:
+          "Service and case-management consultants for contact-centre estates.",
+        roles: [
+          "SAP Service Cloud Consultant",
+          "SAP CX Functional Consultant",
+          "Business Analyst",
+        ],
+      },
+      {
+        name: "SAP Ariba (Procurement & Sourcing)",
+        scope:
+          "Source-to-pay consultants, supplier-enablement leads and the integration side of Ariba.",
+        roles: [
+          "SAP MM/SD Consultant",
+          "SAP CPI Integration Developer",
+          "Business Analyst",
+          "Delivery Lead",
+        ],
+      },
+      {
+        name: "SAP SuccessFactors",
+        scope:
+          "Employee Central, payroll and talent-module consultants, plus the reporting side.",
+        roles: [
+          "SAP SuccessFactors Consultant",
+          "Functional Architect",
+          "Data Migration Lead",
+          "Functional Test Analyst",
+        ],
+      },
+      {
+        name: "SAP Extended Warehouse Management (SAP EWM)",
+        scope:
+          "Warehouse consultants for embedded and decentralised EWM, including go-live floor support.",
+        roles: [
+          "SAP WM Functional",
+          "Supply Chain Lead",
+          "Integration Test Analyst",
+          "Hypercare Lead",
+        ],
+      },
+      {
+        name: "SAP Transportation Management (SAP TM)",
+        scope:
+          "Transport and freight-settlement consultants, and the carrier integrations.",
+        roles: [
+          "SAP TM Consultant",
+          "SAP TM Lead",
+          "SAP CPI Integration Developer",
+          "Supply Chain Lead",
+        ],
+      },
+    ],
+  },
   microsoft: {
     slug: "microsoft",
     name: "Microsoft",
