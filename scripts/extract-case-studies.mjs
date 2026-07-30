@@ -15,8 +15,23 @@
  *      time-and-materials staffing study). Blocks matching DROP are excluded
  *      and reported. Nothing is silently rewritten to cover it up.
  *
- * Usage:
- *   CS_SRC_DIR=/tmp/yallo-cs node scripts/extract-case-studies.mjs [--dry]
+ * Usage — fetch the sources first, then extract:
+ *
+ *   mkdir -p /tmp/yallo-cs && cd /tmp/yallo-cs
+ *   # query-string form (most studies)
+ *   for s in <slug> ...; do
+ *     curl -sL -o "$s.html" -A "yallo-talent-site-migration" \
+ *       "https://www.yallo.co/?case-study=$s"
+ *   done
+ *   # permalink form (three studies)
+ *   for s in <slug> ...; do
+ *     curl -sL -o "$s.html" -A "yallo-talent-site-migration" \
+ *       "https://www.yallo.co/case-studies/$s/"
+ *   done
+ *   cd - && CS_SRC_DIR=/tmp/yallo-cs node scripts/extract-case-studies.mjs
+ *
+ * The source slugs are the `source` fields in REGISTER below. Pass --dry to
+ * inspect the report without writing any MDX.
  */
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
