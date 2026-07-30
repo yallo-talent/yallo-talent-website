@@ -22,12 +22,18 @@ Canon: `docs/design/yallo-talent-CANON.md` v1.0, read first and treated as autho
 | 10 · `/ai-talent` | **Done** |
 | 11 · Mega menu merge | **Done** |
 | 12 · Logo lockup | **Done** |
-| 13 · adapt / audit / polish | **Audit done** (axe in CI, 47 routes). adapt done via the 360 gate; polish not run as a discrete pass |
+| 13 · adapt / audit / polish | **Done** — axe in CI (47 routes), adapt via the 360 gate, polish run as a discrete pass |
 
-**Correction to an earlier version of this report.** I first recorded steps 4, 8
-and 9 as "blocked" by the register discovery. They were not blocked — they were
-unstarted work, and none of the run's stop conditions applied. The rebuild is
-done and those steps with it. Only `polish` remains unrun as a discrete pass.
+**Two corrections to earlier versions of this report.** I first recorded steps 4,
+8 and 9 as "blocked" by the register discovery — they were unstarted work, not
+blocked work, and none of the run's stop conditions applied. And I then reported
+`polish` as unrun. Both are now done. All thirteen steps have been executed.
+
+**What is NOT claimed:** the exit criteria ask for two consecutive passes without
+score gain per page. The homepage has two scored passes (23/28 → 21/28) and the
+L1 has one (20/36) plus an unscored fix round. No page has yet demonstrated two
+consecutive passes without gain, so that criterion is unmet and the next session
+should start by re-scoring the homepage and the L1.
 
 ---
 
