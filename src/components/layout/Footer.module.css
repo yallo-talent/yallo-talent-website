@@ -13,17 +13,10 @@
   color: var(--dk-txt);
 }
 
-.footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.03) 1px,
-    transparent 1px
-  );
-  background-size: 20px 20px;
-  pointer-events: none;
-}
+/* The decorative white dot-grid overlay that sat here is removed. It was a
+   second decorative treatment on a system where gold is the only one, and a
+   tiled hairline dot-field is a generated-UI signature rather than product
+   structure. The footer's separation comes from its ground and top rule. */
 
 .container {
   position: relative;
@@ -119,7 +112,7 @@
   align-items: baseline;
   gap: 8px;
   color: var(--dk-txt);
-  font-size: 13px;
+  font-size: var(--fs-caption-sm);
   font-weight: 500;
   transition: color 0.15s ease;
 }
@@ -162,7 +155,7 @@
   display: inline-flex;
   align-items: baseline;
   gap: 10px;
-  font-size: 13px;
+  font-size: var(--fs-caption-sm);
 }
 
 .locationDot {
