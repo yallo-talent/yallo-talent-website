@@ -132,6 +132,34 @@ Three defects only the light register could expose, each found by measurement:
    transform-only, so content is visible from first paint regardless of JS,
    observer or reduced motion.
 
+### The L1 was then critiqued, and it scored 20/36
+
+Dual-agent, on the rebuilt page. Verdict: **"a dark page repainted, and the
+mechanism is measurable at the token layer."** It was right, and the diagnosis was
+better than my own — the register move had swapped tokens without re-deriving the
+surface:
+
+- `--sector-accent-08` and `-20` both resolved to `--gold-wash`, **1.005:1
+  against paper**, and `-35` resolved to `transparent` — across 42 usages, ten
+  component types. Half those usages are hover states, so **pointing at a card
+  deleted its own edge.** The dark rule "accent is lighter than the ground" had
+  been preserved verbatim instead of inverted for paper.
+- The `--wa*` alpha ladder collapsed the same way — five 3–15% whispers flattened
+  to one opaque hairline, so `.heroGrid` drew **opaque graph paper across the H1**.
+- `--amb` was undefined and nothing carried `.amb-1…6`, so **every PetalPlate was
+  a grey smear** and the ambient system I had built was unimplemented on L1.
+- Two reflow content-loss failures: the segment panel clipped **1,305px** with 8
+  of 10 role pills outside the clip rect; the engagement chip was clipped off
+  every scarce-role row. Both now measure **0**.
+- Canon breaches: "the people who screen" (canon says that section stays
+  deleted), monograms generating **"Sp", "Op", "C&"** for non-people, five
+  `published: false` insight cards rendering as openable articles, and "the
+  platforms we staff" over sixteen wordmarks including **AWS**, which canon
+  excludes from the platform set.
+
+All P0s and the canon breaches are fixed (`ac81f90`). The page has not been
+re-scored — that is the honest state, and the next pass should start there.
+
 Evidence: `docs/status/screens/register-light-rebuilt/`, `l1-light/`,
 `engagement/`, `l2-light/`.
 
