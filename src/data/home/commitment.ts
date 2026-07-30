@@ -48,6 +48,6 @@ export const commitmentColumns: [CommitmentColumn, CommitmentColumn] = [
 export const commitmentCopy = {
   eyebrow: "The commitment",
   heading: "What sits in the contract, not just on the website.",
-  lede: "Two engagement types, two sets of terms, both published.",
+  lede: "Permanent and contract carry different terms. Both are in writing before you brief us.",
   note: "Onboarding includes visa and Employer of Record where you have no entity.",
 } as const;

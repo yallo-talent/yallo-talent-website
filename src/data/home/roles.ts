@@ -139,5 +139,5 @@ export const roleFamilies: RoleFamily[] = [
 export const rolesCopy = {
   eyebrow: "Role coverage",
   heading: "Every seat on the programme, not just the easy ones.",
-  lede: "Eight role families. Select one to see what sits inside it.",
+  lede: "Architects through to hypercare. If it sits on the programme plan, we staff it.",
 } as const;

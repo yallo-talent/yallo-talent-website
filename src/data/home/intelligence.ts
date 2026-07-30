@@ -44,10 +44,11 @@ export const aiCopy = {
   cta: { label: "The AI Talent Atlas", href: "/ai-talent", published: false },
 } as const;
 
+/* No lede. The heading already says the work is published, and a second
+   sentence restating it plus an instruction to scroll added nothing. */
 export const evidenceCopy = {
   eyebrow: "Evidence",
   heading: "Named clients, named platforms, published work.",
-  lede: "Every one of these is already published. Scroll for more.",
   allHref: "/case-studies",
   allLabel: "All case studies",
 } as const;

@@ -49,7 +49,6 @@ export function Evidence() {
         <SectionHead
           eyebrow={evidenceCopy.eyebrow}
           heading={evidenceCopy.heading}
-          lede={evidenceCopy.lede}
           id="evidence-heading"
         />
         <CaseRail studies={studies} testimonial={testimonial} />

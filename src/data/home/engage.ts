@@ -73,5 +73,5 @@ export const engagementModels: EngagementModel[] = [
 export const engageCopy = {
   eyebrow: "How you engage",
   heading: "Four ways to bring in specialists.",
-  lede: "Pick the model that matches how you want to hold the risk.",
+  lede: "Four ways to contract for the same thing: named specialists who have done it before.",
 } as const;
