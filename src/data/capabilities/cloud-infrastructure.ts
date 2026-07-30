@@ -23,13 +23,6 @@ export const cloudInfrastructureData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "10", l: "Cloud & Infra function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for Cloud & Infrastructure",
   introTitle:
     "Cloud programmes stall when the platform depth isn't in the room.",

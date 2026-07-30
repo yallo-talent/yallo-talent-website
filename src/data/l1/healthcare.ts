@@ -23,13 +23,6 @@ export const healthcareData: L1PageData = {
     "GxP / HIPAA aware",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "20", l: "Healthcare function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for healthcare & life sciences",
   introTitle:
     "Care programmes stall when regulated-industry depth isn't in the room.",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { L1PageShell } from "@/components/blocks/l1/L1PageShell";
 import { manufacturingData } from "@/data/l1/manufacturing";
+import { homeMetrics } from "@/data/metrics";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -9,5 +10,5 @@ export const metadata: Metadata = buildMetadata({
 });
 
 export default function ManufacturingPage() {
-  return <L1PageShell data={manufacturingData} />;
+  return <L1PageShell data={manufacturingData} metrics={homeMetrics} />;
 }

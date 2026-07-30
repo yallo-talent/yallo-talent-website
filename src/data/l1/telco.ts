@@ -23,13 +23,6 @@ export const telcoData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "20", l: "Telco function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for telco & media",
   introTitle: "Carrier programmes stall when OSS/BSS depth isn't in the room.",
   introCopy: [

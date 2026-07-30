@@ -23,13 +23,6 @@ export const manufacturingData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "20", l: "Manufacturing function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for manufacturing",
   introTitle:
     "Manufacturing programmes stall when shop-floor depth isn't in the room.",

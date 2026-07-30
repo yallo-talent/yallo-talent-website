@@ -23,13 +23,6 @@ export const governmentData: L1PageData = {
     "SC / BPSS aware",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "20", l: "Public sector function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for government",
   introTitle:
     "Public sector programmes stall when the specialist can't clear the room.",

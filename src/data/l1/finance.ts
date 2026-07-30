@@ -23,13 +23,6 @@ export const financeData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  stats: [
-    { n: "72h", l: "Brief to shortlist" },
-    { n: "2:1", l: "CV to interview ratio" },
-    { n: "20", l: "Finance function areas" },
-    { n: "80%", l: "Contracts renewed" },
-  ],
-
   introEyebrow: "Why Yallo for banking & financial services",
   introTitle:
     "Finance programmes stall when regulated-industry depth isn't in the room.",

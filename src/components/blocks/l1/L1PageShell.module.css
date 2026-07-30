@@ -32,7 +32,7 @@
 }
 
 .h2 {
-  font-size: clamp(24px, 3vw, 40px);
+  font-size: var(--fs-headline);
   font-weight: 800;
   letter-spacing: -0.025em;
   line-height: 1.1;
@@ -40,8 +40,11 @@
   margin: 0 0 12px;
 }
 
+/* --fs-body, the ramp's "section ledes" role. This was --fs-caption (13.5px)
+   under a 54px H2 — a 4x cliff with nothing between, and card copy one step
+   below it, so a section lede read as smaller than the cards it introduced. */
 .sub {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body);
   color: var(--fg-muted);
   max-width: 620px;
   line-height: 1.7;
@@ -187,7 +190,7 @@
 }
 
 .heroTitle {
-  font-size: clamp(34px, 4.8vw, 62px);
+  font-size: var(--fs-display);
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.05;
@@ -200,9 +203,12 @@
   color: var(--accent-line);
 }
 
+/* --fs-lede is the ramp role named "the hero paragraph". This was a literal
+   clamp bottoming out at 14px, and at weight 300 — the most persuasive sentence
+   on the page set two steps below body and lighter than body. */
 .heroSub {
-  font-size: clamp(14px, 1.3vw, 17px);
-  font-weight: 300;
+  font-size: var(--fs-lede);
+  font-weight: 400;
   color: var(--fg-muted);
   max-width: 620px;
   line-height: 1.75;
@@ -385,21 +391,38 @@
   border-right: none;
 }
 
+/* The same four metrics the homepage publishes, so the same house treatment:
+   display serif at --fs-numeral, mono label, definition beneath. It previously
+   used a literal clamp and a sans 800 weight, which made the identical figures
+   read as a different class of fact on the two pages. */
 .statN {
-  font-size: clamp(24px, 3vw, 32px);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--accent-label);
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--fg);
   line-height: 1;
 }
 
 .statL {
   font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  letter-spacing: 0.18em;
+  font-size: var(--fs-data);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-subtle);
-  margin-top: 6px;
+  color: var(--accent-label);
+  margin-top: 10px;
+}
+
+/* Canon §6: a published figure never appears without its definition. The L1
+   pages are the primary organic entry points, so a visitor may read "2:1" here
+   having never seen the homepage block that defines it. */
+.statD {
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+  line-height: 1.5;
+  margin-top: 8px;
+  max-width: 26ch;
+  margin-inline: auto;
 }
 
 /* ============ INTRO ============ */
@@ -615,7 +638,7 @@
 }
 
 .wwdCopy {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0 0 12px;
@@ -778,7 +801,7 @@
 }
 
 .hwwStepCopy {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -873,7 +896,7 @@
 }
 
 .xsecCardCopy {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.5;
 }
@@ -1441,7 +1464,7 @@
 }
 
 .expCardTitle {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-card-title);
   font-weight: 800;
   letter-spacing: -0.01em;
   color: var(--fg);
@@ -1450,7 +1473,7 @@
 }
 
 .expCardBlurb {
-  font-size: var(--fs-caption-sm);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.5;
   font-weight: 300;
@@ -1487,10 +1510,11 @@
   height: 13px;
 }
 
+/* --accent-mark: ink on a filled control carrying small text. See .segCta. */
 .expCardOpenLink:hover,
 .expCard:hover .expCardOpenLink {
-  background: var(--card-hue, var(--sector-accent));
-  border-color: var(--card-hue, var(--sector-accent));
+  background: var(--accent-mark);
+  border-color: var(--accent-mark);
   color: var(--ink-950);
   transform: translate(2px, -2px);
 }
@@ -1526,9 +1550,9 @@
 }
 
 .expCardOpen .expCardToggleBottom {
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--accent-mark);
   color: var(--ink-950);
-  border-color: var(--card-hue, var(--sector-accent));
+  border-color: var(--accent-mark);
   transform: rotate(45deg);
 }
 
@@ -1718,7 +1742,7 @@
 }
 
 .archBio {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.6;
   margin: 0;
@@ -2107,12 +2131,18 @@
   padding-top: 24px;
 }
 
+/* --accent-mark, not --sector-accent. Both are gold, but --sector-accent
+   resolves to --gold-deep on light, which is graded for LARGE text and
+   boundaries at 3.12:1 — ink on it measures 4.38:1, and this label is 13.5px at
+   700, so it needs 4.5:1. --accent-mark is the decorative fill grade and
+   measures 8.09:1 against ink. Every filled control on the site that carries
+   small text uses it; .ctaPrimary above is the reference. */
 .segCta {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   padding: 12px 20px;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--accent-mark);
   color: var(--ink-950);
   font-size: var(--fs-caption);
   font-weight: 700;
@@ -2658,10 +2688,10 @@
 }
 
 .pillarCopy {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.6;
-  font-weight: 300;
+  font-weight: 400;
   margin: 0 0 12px;
 }
 
@@ -2738,8 +2768,8 @@
 }
 
 .pillar:hover .pillarArrow {
-  background: var(--card-hue, var(--sector-accent));
-  border-color: var(--card-hue, var(--sector-accent));
+  background: var(--accent-mark);
+  border-color: var(--accent-mark);
   color: var(--ink-950);
   transform: translate(2px, -2px) rotate(0deg);
 }
@@ -3025,9 +3055,8 @@
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {
-  .heroTitle {
-    font-size: var(--fs-display);
-  }
+  /* .heroTitle no longer needs an override here: the base rule is
+     --fs-display, which is the same clamp this breakpoint was restoring. */
   .expertiseGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

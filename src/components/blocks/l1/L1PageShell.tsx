@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
+import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
 import styles from "./L1PageShell.module.css";
 import { l1Icons } from "./l1-icons";
@@ -26,11 +27,17 @@ const hueStyle = (): React.CSSProperties => ({});
 /** One accent, always — see hueStyle above. */
 const cardHueStyle = (): React.CSSProperties => ({});
 
+/** Every section below this file's top level takes only the page data. */
 interface Props {
   data: L1PageData;
 }
 
-export function L1PageShell({ data }: Props) {
+interface ShellProps extends Props {
+  /** The four published metrics, read server-side. See L1StatsStrip. */
+  metrics: MetricStat[];
+}
+
+export function L1PageShell({ data, metrics }: ShellProps) {
   const hasScarce =
     Boolean(data.scarceRoles) && (data.scarceRoles?.length ?? 0) > 0;
   /**
@@ -63,7 +70,7 @@ export function L1PageShell({ data }: Props) {
        assigning --amb, every PetalPlate rendered as a grey smear. */
     <div className={`${styles.page} amb-1`} style={hueStyle()}>
       <L1Hero data={data} />
-      <L1StatsStrip data={data} />
+      <L1StatsStrip metrics={metrics} />
       <L1SubNav items={subNavItems} />
       <div id="why">
         <L1Intro data={data} />
@@ -218,17 +225,33 @@ function L1Hero({ data }: Props) {
 }
 
 /* ============ STATS STRIP ============ */
-function L1StatsStrip({ data }: Props) {
+/**
+ * The four published metrics, from `content/metrics.yaml` via the server page.
+ *
+ * Each L1 data file used to carry its own `stats` tuple, and all eight of them
+ * had replaced "50+ Programmes staffed" with a per-page count — "20 Retail
+ * function areas", "10 Cloud & Infra function areas". That published a fifth
+ * metric canon §6 does not sanction, dropped a sanctioned one, and put the
+ * figures beyond the reach of the quarterly refresh: editing metrics.yaml would
+ * never have reached these pages. The values arrive as a prop rather than an
+ * import because this is a client component and the loader reads the file
+ * system; a server parent passes them, so they are still in the markup.
+ */
+function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
   return (
     <section className={styles.statsStrip}>
-      <div className={styles.statsInner}>
-        {data.stats.map((s) => (
-          <div key={s.l} className={styles.statCell}>
-            <div className={styles.statN}>{s.n}</div>
-            <div className={styles.statL}>{s.l}</div>
+      <dl className={styles.statsInner}>
+        {metrics.map((m) => (
+          <div key={m.label} className={styles.statCell}>
+            <dd className={styles.statN}>
+              {m.target}
+              {m.suffix ?? ""}
+            </dd>
+            <dt className={styles.statL}>{m.label}</dt>
+            <dd className={styles.statD}>{m.definition}</dd>
           </div>
         ))}
-      </div>
+      </dl>
     </section>
   );
 }

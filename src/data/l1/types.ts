@@ -3,14 +3,6 @@ export type L1Hue = "blue" | "green" | "orange" | "teal" | "violet" | "rose";
 export type L1Category = "industries" | "platforms" | "capabilities";
 
 /**
- * Single stat in the top strip (72h / 2:1 / etc.).
- */
-export interface L1Stat {
-  n: string;
-  l: string;
-}
-
-/**
  * Right-column stat card in the Intro block.
  */
 export interface L1IntroStatCard {
@@ -191,8 +183,10 @@ export interface L1PageData {
   secondaryCta: { label: string; href: string };
   statusDots: string[];
 
-  /** Stats strip (4 items) */
-  stats: [L1Stat, L1Stat, L1Stat, L1Stat];
+  /* No `stats` field. The top strip renders the four metrics from
+     content/metrics.yaml, passed in by the server page — canon §6 permits
+     exactly those four, and a per-page tuple here published a fifth and put
+     all of them beyond the quarterly refresh. See L1StatsStrip. */
 
   /** Intro block */
   introEyebrow: string;
