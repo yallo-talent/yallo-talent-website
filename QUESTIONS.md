@@ -87,24 +87,17 @@ with the strip-and-rebuild checklist (`docs/status/step-8-rebuild-checklist.md`)
 rather than as a step inside a broader pass. The critique comparison canon §5
 asks for cannot be scored until the light variant actually renders.
 
-## Q5 — India is a demand market in one document and never one in another
+## Q5 — RESOLVED: India is a demand market as well as the supply hub
 
-Surfaced by the L1 re-critique, which flagged the retail hero as conflicting with
-canon. Checked both sources: they contradict each other, so this is not a copy
-defect to fix but a positioning question to settle.
+**Closed by canon amendment A6, ratified 30 Jul.** Demand arrives as Global
+Capability Centre staffing — multinationals building capability centres in
+Bengaluru buy from Yallo there. `PRODUCT.md` stands as written, the L1 heroes keep
+"Middle East, Europe and India", and "3 delivery regions" stays banned because
+that ban was always about conflating supply with demand.
 
-- **Canon §1:** India is third, "Global Capability Centre staffing for
-  multinationals, **never a demand market**".
-- **PRODUCT.md:** treats India *as* a demand market for Middle East staffing.
-
-The L1 heroes currently sell programmes "across the Middle East, Europe and
-India", which follows PRODUCT.md and reads against canon §1.
-
-**Assumption taken:** copy is left as-is, because canon §1's own sentence
-describes India as a market Yallo staffs *into* for multinationals — which the
-hero wording does not actually contradict, and rewriting six heroes on an
-unresolved reading would be worse than leaving them consistent. Ratify one
-reading and the wording follows in one pass.
+The question as raised: canon §1 said "never a demand market" while `PRODUCT.md`
+treated India as one, and the L1 heroes followed `PRODUCT.md`. Code left the copy
+alone and asked rather than picking a side. The "never" line has been rewritten.
 
 ## Q6 — The retired per-sector hue system is still one line from returning
 

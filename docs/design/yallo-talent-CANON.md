@@ -13,7 +13,7 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 **Boundary with saasinator.** Talent delivers fixed scope on the client's existing enterprise platforms. saasinator builds new AI-native systems the client owns. Routing test: "make our Salesforce work" goes to Talent; "replace the thing we rent" goes to saasinator.
 
-**Geography.** Middle East (UAE, Saudi Arabia) primary. Europe, UK first, a genuine second demand market. India third: Global Capability Centre staffing for multinationals, never a demand market. Four entities: London, Dubai, Riyadh, Bengaluru.
+**Geography (amended 30 Jul — A6).** Middle East (UAE, Saudi Arabia) primary. Europe, UK first, a genuine second demand market. **India is both the supply hub and a demand market in its own right:** demand arrives as Global Capability Centre staffing — multinationals building capability centres in Bengaluru buy from Yallo there. This supersedes the earlier "never a demand market" line, which was written to stop India being counted as a *delivery region* and overreached into denying real demand. L1 heroes therefore keep "Middle East, Europe and India". `PRODUCT.md` stands as written. **"3 delivery regions" remains banned in any phrasing** — the ban was always about conflating supply with demand, and it still is. Four entities: London, Dubai, Riyadh, Bengaluru.
 
 ## 2. Terminology
 
@@ -22,6 +22,7 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 - "AI talent" is the category; "Claude talent" is depth-proof only.
 - Buyer vocabulary is protected: "phase", "gate", "go-live", "cutover", "mobilisation", "hypercare", "brief", "shortlist" stay wherever they carry specific meaning.
 - Banned abstractions (lint-enforced in `src/`): "shape" as a verb, "hold the risk", "pipeline to insight", "delivery cadence", "where the process lives", "run and reliability", "seamless", "robust", "unlock", "leverage", "journey", "landscape" (except SAP system landscape), "tailored" (except legal wording), "best-in-class", "world-class", "cutting-edge", "empower", "streamline", "holistic", "ecosystem" except "platform ecosystem".
+- **"Specialist-screened" and "specialist-led" replace "architect-screened" and "architect-led" site-wide (amended 30 Jul — A1).** The screening claim is about depth, not about one job title, and "architect-led" narrowed it to a single grade while the six desks in §3 span far more. **Allow-listed as genuine collisions, never rewritten:** real job titles ("Solution Architect · SAP", "Enterprise Architect", every `roles.ts` and job-board title), the **Architecture** desk in §3, and the word "architecture" describing a system. Lint-enforced.
 - **Standing method for every banned-terms sweep:** occurrence-by-occurrence resolution with a documented reason per allow-listed case (the GCC pattern). Product names (Journey Builder), vendor vocabulary and legal wording are allow-listed, never rewritten.
 - Copy tells: any sentence that counts the items below it, instructs the reader to click or scroll, or restates the heading, is removed.
 
@@ -53,17 +54,25 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 **Ambient colour:** desaturated hues live only in the ambient layer — gradients, glows, plate washes — never on text or controls. **Assignment is per-section only. Per-taxonomy-branch assignment is banned**: it is the retired per-sector hue system returning. The retired six-hue system stays retired.
 
-**Type.** Display Newsreader 500/600, body Inter, data IBM Plex Mono (tables and mono labels only). No third face. **Floor: nothing below 12px anywhere; body 16px (17px preferred on light); card/list body 14px; meta 13px; mono labels 12px at ≥0.12em tracking (uppercase); table figures 14px tabular.** The ramp has exactly 13 documented roles; the frontmatter is the single source; no two adjacent steps closer than a 1.125 ratio. Enforced by project guard in CI and pre-commit.
+**Type.** Display Newsreader 500/600, body Inter, data IBM Plex Mono (tables and mono labels only). No third face.
 
-**Structural signature: the quarter-round petal** (three square corners, one 56px radius, from the Yallo mark) — cards, buttons, masks, phase fills, entity strip, background shapes. **Creative North Star: "The Screening Dossier"** — the site is the artefact Yallo delivers. Depth is flat, tonal layering plus hairlines, with **exactly one lifted element: the hero instrument**.
+**Floor raised 30 Jul (A4) — nothing below 13px anywhere.** Superseding the 12px floor: `mono labels 13px` at ≥0.12em tracking (uppercase) · `meta 14px` · `footer links 14px` · `nav 15px` · `buttons 15px` · card/list body 14px · body 16px (17px preferred on light) · table figures 14px tabular. The 12px floor was met and then became the resting size of load-bearing content — role chips, module lists, metric labels — so the product Yallo sells rendered at the smallest size on the page. The ramp has exactly 13 documented roles; the frontmatter is the single source; no two adjacent steps closer than a 1.125 ratio. Enforced by project guard in CI and pre-commit.
+
+**Structural signature: the quarter-round petal** (three square corners, one 56px radius, from the Yallo mark) — cards, buttons, masks, phase fills, entity strip, background shapes. **Creative North Star: "The Screening Dossier"** — the site is the artefact Yallo delivers. Depth is flat, tonal layering plus hairlines, with **exactly one lifted element at rest: the hero instrument**.
+
+**Hover elevation is allowed as an interaction state (amended 30 Jul — A5).** A shadow that appears on `:hover` or `:focus-visible` and returns on exit is feedback, not decoration, and does not spend the One Lift Rule. **Resting flatness is unchanged** — no card, panel or tile carries a shadow when idle, and the hero instrument remains the only resting lift on any page. Hover lift must be paired with a non-motion cue (border or ground shift) so it survives `prefers-reduced-motion`, and must never be the sole indicator of interactivity.
 
 **Register.** Light is the working default with dark bands for evidence and data surfaces, never more than two per page. **Register test resolved 30 Jul — light adopted site-wide, pending Sumeet's ratification of this line.** The test could not be scored as a comparison: removing `band-dark` rendered the L1 dark-ink-on-dark, because the legacy shells painted their grounds from the Layer 2c dark aliases rather than the semantic layer, so no light variant existed to critique. L1, L2 and service were rebuilt onto the semantic ground layer (49 ground declarations), gradient text removed, and the three-grade gold applied; light then rendered correctly and every surface passes axe in both registers. Chat's deciding reason stands: L1 and platform pages are the primary organic entry points, so dark there would make dark the brand's first impression for most traffic.
 
-**Banned in the visual system:** glass (`backdrop-filter`, `--glass-*` — CI-banned after the step-8 strip), blurred orbs, stock photography and hotlinked imagery, gradient text, hero carousels and carousel libraries, people-and-places imagery. Imagery is the deterministic PetalPlate system: gradient and geometric, generated from the page's own slug.
+**Gradient text returns as a display accent only (amended 30 Jul — A2).** Permitted on **headline emphasis spans only** — the `emphasis` half of an H1 or a section H2. Every gradient must be **gold-anchored** (both stops drawn from the gold grades, so the run reads as one brand colour shifting, never as two hues), and **AA-safe at its lightest stop measured against the ground it sits on** — the darkest stop passing is not sufficient, because the lightest pixels are still text. **Never** on body copy, mono labels, links, buttons, chips, metric values or anything under 23px. A gradient span always carries a solid-colour fallback for `background-clip` failure.
+
+**Liquid glass returns, sanctioned (amended 30 Jul — A3).** Reversing the step-8 strip, but as **allow-list enforcement rather than a ban**. One token-governed `.glass` utility is the only implementation; no component may author its own `backdrop-filter`. **Allow-listed surfaces, exhaustively:** the nav bar once scrolled, the mega-menu panel, the hero instrument, the sticky brief CTA, and the four-ways media panel. Conditions on every one: both members of each translucent pair pass AA at the worst-case backdrop; a `prefers-reduced-transparency` fallback to an opaque ground; and the performance budget held (no `backdrop-filter` on a scroll-linked or continuously animating surface, and none stacked behind another). **The CI guard changes from banning `backdrop-filter` to enforcing this allow-list** — an unlisted surface or a raw `backdrop-filter` outside the utility still fails.
+
+**Banned in the visual system:** blurred orbs, stock photography and hotlinked imagery, gradient text outside A2's display-accent rule, hero carousels and carousel libraries, people-and-places imagery. Imagery is the deterministic PetalPlate system: gradient and geometric, generated from the page's own slug.
 
 **Logo lockup (ratified 30 Jul):** flower mark, "Yallo" wordmark, **"TALENT" to the right of the wordmark, never beneath it** — header, footer, favicon derivations.
 
-**Motion:** `prefers-reduced-motion` honoured for every animation; auto-advancing elements pause on hover; zero CLS from motion; text remains the LCP element on the homepage.
+**Motion:** `prefers-reduced-motion` honoured for every animation; auto-advancing elements pause on hover; zero CLS from motion; text remains the LCP element on the homepage. Honouring it takes **two** mechanisms, and both are mandatory: `MotionConfig reducedMotion="user"` for Framer, because a JS-driven inline transform cannot be overridden by any stylesheet rule; and `!important` on the universal reset, because the `*` selector has specificity 0 and loses to every component class that declares a `transition` shorthand. `prefers-reduced-transparency` is honoured wherever A3 glass appears. Guarded by `scripts/check-motion.mjs` with a motion-allowed control pass.
 
 ## 6. Metrics — the only four published
 
@@ -90,3 +99,16 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 ## 10. Amendment log
 
 30 Jul 2026: three-grade gold and `--ink-3` AA correction · two-grade functional hues · "3 regions" banned in any phrasing · ambient per-section only, per-branch banned · Specialisms+Industries nav merge · merged client rail · logo lockup rule · house authorship · port-and-convert · article descoping · Microsoft modules ratified · **Workday modules ratified (supersedes the earlier draft status)** · type floor and 13-role ramp · glass CI ban · register critique test.
+
+**30 Jul 2026, second amendment set (A1–A6, Sumeet-ratified).** Each supersedes the line it names:
+
+| # | Amendment | Supersedes |
+|---|---|---|
+| A1 | "specialist-screened" / "specialist-led" replace "architect-screened" / "architect-led" site-wide; genuine job titles and the Architecture desk allow-listed | the architect-led screening claim throughout §2 and §8 |
+| A2 | Gradient text permitted as a display accent on headline emphasis spans — gold-anchored, AA-safe at its **lightest** stop | the flat "gradient text" ban in §5 |
+| A3 | Liquid glass returns as one token-governed `.glass` utility on five allow-listed surfaces, each AA with a reduced-transparency fallback; the CI guard becomes allow-list enforcement | the §5 glass ban and the step-8 strip |
+| A4 | Type floor raised to **13px**; mono labels 13, meta 14, footer links 14, nav 15, buttons 15 | the 12px floor in §5 |
+| A5 | Hover elevation allowed as an interaction state; resting flatness and the single resting lift unchanged | the absolute reading of the One Lift Rule in §5 |
+| A6 | **India is a demand market as well as the supply hub**, via GCC staffing for multinationals building Bengaluru capability centres; "3 delivery regions" stays banned | "never a demand market" in §1 |
+
+A6 closes `QUESTIONS.md` Q5, which had recorded canon §1 and `PRODUCT.md` as contradicting each other on this exact point.
