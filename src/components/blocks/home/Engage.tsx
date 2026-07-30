@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import { engageCopy, engagementModels } from "@/data/home/engage";
 import styles from "./Home.module.css";
@@ -9,35 +9,68 @@ import { ArrowGlyph } from "./icons";
 import { SectionHead } from "./SectionHead";
 
 /**
- * Four models, contract leading. Exclusive accordion with a media pane.
+ * Four models, contract leading. Vertical master-detail.
  *
- * Native details/summary with the `name` attribute, which gives single-open
- * behaviour without JS in current engines; the effect below is the fallback
- * for engines that ignore it. Contract is open by default because it is the
- * lead motion.
+ * A selector rail on the left, one detail panel on the right. This replaced a
+ * stacked accordion, which made the four models a list of four things to open
+ * rather than one choice with four answers — the reader had to open each in turn
+ * to compare, and the media pane only ever existed for whichever was open.
  *
- * Each model carries a drawn media pane — a PetalPlate seeded on the model's
- * route, hued by POSITION (.amb-N), per the ambient rhythm rule — and one
- * metric callout drawn only from canon §6/§7 terms.
+ * ONE DOM at both widths, and the layout does the responsive work rather than a
+ * hydration switch. Source order is tab, panel, tab, panel — so at mobile the
+ * natural flow already IS the stacked accordion the spec asks for, each panel
+ * directly under the row that opens it. At desktop the grid lifts every tab into
+ * column one and the active panel into column two. Rendering two trees would
+ * have duplicated the content for screen readers, and a matchMedia switch would
+ * have shifted layout on hydration.
+ *
+ * Semantics are the APG vertical tab pattern: roving tabindex, Up/Down/Home/End,
+ * aria-selected and aria-controls, and inactive panels carry `hidden` so they
+ * contribute no focus stops. The previous version was four independent
+ * <details>, which announced as four unrelated toggles with no stated
+ * relationship to the media pane they controlled.
+ *
+ * Each model keeps its drawn media pane — a PetalPlate seeded on the model's
+ * route, hued by POSITION (.amb-N) per the ambient rhythm rule — and one metric
+ * callout drawn only from canon §6/§7 terms.
  */
 export function Engage() {
-  const host = useRef<HTMLDivElement>(null);
+  const leadIndex = Math.max(
+    0,
+    engagementModels.findIndex((m) => m.lead),
+  );
+  const [active, setActive] = useState(leadIndex);
+  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // Fallback exclusivity for engines without <details name>.
-  useEffect(() => {
-    const root = host.current;
-    if (!root) return;
-    const all = [...root.querySelectorAll("details")];
-    const onToggle = (e: Event) => {
-      const opened = e.target as HTMLDetailsElement;
-      if (!opened.open) return;
-      for (const d of all) if (d !== opened && d.open) d.open = false;
-    };
-    for (const d of all) d.addEventListener("toggle", onToggle);
-    return () => {
-      for (const d of all) d.removeEventListener("toggle", onToggle);
-    };
-  }, []);
+  const focusTab = (i: number) => {
+    const next = (i + engagementModels.length) % engagementModels.length;
+    setActive(next);
+    tabs.current[next]?.focus();
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent, i: number) => {
+    // Vertical orientation, so Up and Down move. Left and Right deliberately do
+    // not: at mobile this same control reads as a stacked list.
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        focusTab(i + 1);
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        focusTab(i - 1);
+        break;
+      case "Home":
+        e.preventDefault();
+        focusTab(0);
+        break;
+      case "End":
+        e.preventDefault();
+        focusTab(engagementModels.length - 1);
+        break;
+      default:
+    }
+  };
 
   return (
     <section className={`${styles.section} ${styles.g2}`} id="engage">
@@ -49,61 +82,86 @@ export function Engage() {
           id="engage-heading"
         />
 
-        <div className={styles.accordion} ref={host}>
-          {engagementModels.map((m, i) => (
-            <details
-              key={m.name}
-              className={`${styles.model} amb-${i + 1}`}
-              open={m.lead}
-              name="engage"
-            >
-              <summary className={styles.modelSummary}>
-                <span className={styles.modelNum}>{m.num}</span>
-                <span>
-                  <span className={styles.modelName}>{m.name}</span>
-                  <span className={styles.modelPositioning}>
-                    {m.positioning}
+        <div
+          className={styles.engageSplit}
+          role="tablist"
+          aria-orientation="vertical"
+          aria-labelledby="engage-heading"
+        >
+          {engagementModels.map((m, i) => {
+            const selected = i === active;
+            return (
+              /* Tab and panel stay adjacent in source, which is what gives the
+                 mobile accordion for free. */
+              <div key={m.name} className={styles.engagePair}>
+                <button
+                  type="button"
+                  role="tab"
+                  id={`engage-tab-${i}`}
+                  aria-selected={selected}
+                  aria-controls={`engage-panel-${i}`}
+                  tabIndex={selected ? 0 : -1}
+                  ref={(el) => {
+                    tabs.current[i] = el;
+                  }}
+                  className={`${styles.engageTab} ${selected ? styles.engageTabOn : ""}`}
+                  onClick={() => setActive(i)}
+                  onKeyDown={(e) => onKeyDown(e, i)}
+                >
+                  <span className={styles.modelNum}>{m.num}</span>
+                  <span className={styles.engageTabText}>
+                    <span className={styles.modelName}>{m.name}</span>
+                    <span className={styles.modelPositioning}>
+                      {m.positioning}
+                    </span>
                   </span>
-                </span>
-                {m.lead ? <span className={styles.leadFlag}>Lead</span> : null}
-                <span className={styles.chevron} aria-hidden="true" />
-              </summary>
+                  {m.lead ? (
+                    <span className={styles.leadFlag}>Lead</span>
+                  ) : null}
+                </button>
 
-              <div className={styles.modelBody}>
-                <div className={styles.modelMedia}>
-                  <PetalPlate
-                    seed={m.href}
-                    ratio={0.72}
-                    className={styles.modelPlate}
-                  />
-                  <p className={styles.modelMetric}>
-                    <span className={styles.modelMetricValue}>
-                      {m.metric.value}
-                    </span>
-                    <span className={styles.modelMetricLabel}>
-                      {m.metric.label}
-                    </span>
-                  </p>
-                </div>
-                <div className={styles.modelContent}>
-                  <p className={styles.rightForLabel}>Right for</p>
-                  <ul className={styles.chips}>
-                    {m.rightFor.map((c) => (
-                      <li key={c} className="role-pill">
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                  <p>
-                    <Link className={styles.btnSecondary} href={m.href}>
-                      See how {m.name} works
-                      <ArrowGlyph />
-                    </Link>
-                  </p>
+                <div
+                  role="tabpanel"
+                  id={`engage-panel-${i}`}
+                  aria-labelledby={`engage-tab-${i}`}
+                  hidden={!selected}
+                  className={`${styles.engagePanel} amb-${i + 1}`}
+                >
+                  <div className={styles.modelMedia}>
+                    <PetalPlate
+                      seed={m.href}
+                      ratio={0.72}
+                      className={styles.modelPlate}
+                    />
+                  </div>
+                  <div className={styles.modelContent}>
+                    <p className={styles.modelMetric}>
+                      <span className={styles.modelMetricValue}>
+                        {m.metric.value}
+                      </span>
+                      <span className={styles.modelMetricLabel}>
+                        {m.metric.label}
+                      </span>
+                    </p>
+                    <p className={styles.rightForLabel}>Right for</p>
+                    <ul className={styles.chips}>
+                      {m.rightFor.map((c) => (
+                        <li key={c} className="role-pill">
+                          {c}
+                        </li>
+                      ))}
+                    </ul>
+                    <p>
+                      <Link className={styles.btnSecondary} href={m.href}>
+                        See how {m.name} works
+                        <ArrowGlyph />
+                      </Link>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </details>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
