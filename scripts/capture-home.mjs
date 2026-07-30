@@ -179,7 +179,14 @@ for (const theme of ["light", "dark"]) {
     reducedMotion: "reduce",
   });
   const page = await context.newPage();
-  await page.goto(BASE, { waitUntil: "load" });
+  // `domcontentloaded`, not `load`. This check asserts one thing — that the
+  // count is server-rendered rather than animated up from zero — and it waits
+  // for #metrics explicitly on the next line. `load` additionally waits for
+  // every subresource, including the eighteen optimised client marks, which on
+  // a cold CI runner exceeded the 30s default and failed the whole gate on a
+  // timing artefact rather than on anything about the page. The assertion below
+  // is unchanged.
+  await page.goto(BASE, { waitUntil: "domcontentloaded", timeout: 60000 });
   await page.locator("#metrics").waitFor({ state: "attached" });
   await page.locator("#metrics").scrollIntoViewIfNeeded();
   await page.waitForTimeout(400);
