@@ -155,8 +155,8 @@ export default function AboutPage() {
             <span className={styles.sectionEyebrow}>How we operate</span>
             <h2 className={styles.sectionH}>The Yallo standard.</h2>
             <p className={styles.sectionLede}>
-              Four operating principles that shape every brief, every screening
-              call and every placement.
+              Applied to every brief, every screening call and every placement —
+              or the placement doesn't happen.
             </p>
             <div className={styles.cardGrid2}>
               {values.map((v) => (
