@@ -124,10 +124,15 @@
   padding: 0;
 }
 
+/* WCAG 2.2 SC 2.5.8 sets a 24x24 minimum target. A 13.5px text link is ~19px
+   tall, so the padding is load-bearing rather than decorative — and it appears
+   in the footer of every page on the site. */
 .link {
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
+  min-height: 24px;
+  padding: 2px 0;
   color: var(--dk-txt);
   font-size: var(--fs-caption-sm);
   font-weight: 500;
@@ -221,6 +226,9 @@
 }
 
 .legalLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--dk-txt-2);
   transition: color 0.15s ease;
 }

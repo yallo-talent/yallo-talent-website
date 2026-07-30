@@ -1759,10 +1759,12 @@
   background: var(--gold);
 }
 
+/* 24px minimum target, SC 2.5.8 — a 13.5px text link is ~19px tall. */
 .jobsLink {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-height: 24px;
   font-size: var(--fs-caption);
   color: var(--dk-txt-2);
   border-bottom: 1.5px solid var(--gold);

@@ -110,6 +110,10 @@
 }
 
 .crumbLink {
+  /* 24px minimum target, SC 2.5.8. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
@@ -1447,8 +1451,10 @@
 }
 
 .sbBack {
+  /* 24px minimum target, SC 2.5.8. */
   display: inline-flex;
   align-items: center;
+  min-height: 24px;
   gap: 6px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);

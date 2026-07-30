@@ -142,6 +142,10 @@
 }
 
 .crumbLink {
+  /* 24px minimum target, SC 2.5.8. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   color: var(--fg-subtle);
   transition: color 0.15s ease;
 }
