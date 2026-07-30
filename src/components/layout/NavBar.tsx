@@ -178,7 +178,13 @@ export function NavBar() {
                 <AnimatePresence>
                   {openGroup === group.label && (
                     <motion.div
-                      className={styles.megaPanel}
+                      /* band-dark, not just a dark background: the panel ground
+                         is permanently dark in both themes, but its links read
+                         --fg, which resolves to INK in the light theme — so the
+                         labels rendered dark-on-dark and were effectively
+                         invisible. band-dark restates the Layer 2c aliases so
+                         every descendant resolves against the dark ground. */
+                      className={`${styles.megaPanel} band-dark`}
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}

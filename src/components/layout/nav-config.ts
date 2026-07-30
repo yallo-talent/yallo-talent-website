@@ -83,10 +83,6 @@ export const primaryNav: NavGroup[] = [
             label: "Microsoft",
             href: "/platforms/microsoft",
             icon: "microsoft",
-            // No module data yet. Canon requires Microsoft at equal depth to
-            // Oracle because Yallo is a Microsoft house, so a thin page here
-            // would undercut the wedge rather than support it.
-            published: false,
           },
           {
             label: "Salesforce",
@@ -102,7 +98,6 @@ export const primaryNav: NavGroup[] = [
             label: "Workday",
             href: "/platforms/workday",
             icon: "workday",
-            published: false,
           },
         ],
       },
@@ -152,20 +147,14 @@ export const primaryNav: NavGroup[] = [
           },
         ],
       },
-    ],
-    featured: {
-      eyebrow: "New capability",
-      title: "AI talent, on demand",
-      copy: "Applied AI engineers, prompt architects and data scientists — screened for delivery, not certifications.",
-      href: "/ai-talent",
-      ctaLabel: "Explore AI talent →",
-    },
-  },
-  {
-    label: "Industries",
-    columns: [
+      /* Industries merged in as the third column, canon §4 (ratified 30 Jul):
+         Specialisms and Industries are ONE item. Two top-level entries made the
+         reader hold the taxonomy model in their head to guess which axis a
+         sector lived on; the axes are siblings, so they belong side by side.
+         The retired Industries group's featured card pointed at an insight that
+         is now unpublished, so the merge also removes a would-be dead link. */
       {
-        heading: "Sectors",
+        heading: "Industries",
         items: [
           {
             label: "Retail & Consumer",
@@ -201,11 +190,11 @@ export const primaryNav: NavGroup[] = [
       },
     ],
     featured: {
-      eyebrow: "Latest",
-      title: "Enterprise architects in the Middle East",
-      copy: "Why the hardest role on the programme is the one nobody can hire.",
-      href: "/insights/enterprise-architect-middle-east",
-      ctaLabel: "Read the analysis →",
+      eyebrow: "Named specialism",
+      title: "AI talent, on demand",
+      copy: "Applied AI engineers, prompt architects and data scientists — screened for delivery, not certifications.",
+      href: "/ai-talent",
+      ctaLabel: "Explore AI talent →",
     },
   },
   {

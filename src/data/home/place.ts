@@ -46,7 +46,7 @@ export const platforms: PlatformAxis[] = [
     slug: "microsoft",
     modules: "Azure · Dynamics 365 · Power Platform",
     mark: "/logos/platforms/microsoft.svg",
-    published: false,
+    published: true,
   },
   {
     name: "Salesforce",
@@ -67,7 +67,7 @@ export const platforms: PlatformAxis[] = [
     slug: "workday",
     modules: "HCM · Financials · Adaptive",
     mark: "/logos/platforms/workday.svg",
-    published: false,
+    published: true,
   },
 ];
 
