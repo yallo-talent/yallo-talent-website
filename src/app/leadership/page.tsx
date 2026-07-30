@@ -8,17 +8,10 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Leadership · Yallo Talent",
     description:
-      "Meet the architect team behind Yallo Talent — enterprise operators from Richemont, Landmark and Alshaya EMEA who screen every shortlist.",
+      "Meet the specialist team behind Yallo Talent — enterprise operators from Richemont, Landmark and Alshaya EMEA who screen every shortlist.",
   },
   path: "/leadership",
 });
-
-const hueStyle: React.CSSProperties = {
-  "--sector-accent": "var(--hue-orange-500)",
-  "--sector-accent-08": "var(--hue-orange-08)",
-  "--sector-accent-20": "var(--hue-orange-20)",
-  "--sector-accent-35": "var(--hue-orange-35)",
-} as React.CSSProperties;
 
 const team = [
   {
@@ -26,48 +19,42 @@ const team = [
     name: "Sumeet Goenka",
     role: "Founder & CEO",
     bio: "Enterprise operator with two decades across Richemont, Landmark Group and Alshaya EMEA. Ran the programmes; now runs the team that staffs them.",
-    hue: "orange",
   },
   {
     initials: "AK",
     name: "Architect · SAP",
     role: "SAP practice lead",
     bio: "20+ years of SAP delivery across retail and financial services. Reviews every SAP shortlist personally.",
-    hue: "blue",
   },
   {
     initials: "RM",
     name: "Architect · Oracle",
     role: "Oracle practice lead",
     bio: "Ex-Oracle Fusion delivery leader. Depth-tests every Oracle candidate for functional and technical fit.",
-    hue: "rose",
   },
   {
     initials: "PN",
     name: "Architect · Cloud & Data",
     role: "Cloud and Data practice lead",
     bio: "Azure and AWS platform builder. Runs screening for cloud, data engineering and DevOps roles.",
-    hue: "teal",
   },
   {
     initials: "HL",
     name: "Head of Delivery",
     role: "Managed Delivery lead",
     bio: "Runs Yallo Managed Delivery engagements — from scope to hypercare, accountable for outcomes.",
-    hue: "violet",
   },
   {
     initials: "MS",
     name: "Head of Talent Ops",
     role: "Contract + EOR ops",
     bio: "Runs the operating tempo — brief calibration, rate cards, visa cover, payroll. Where the 72-hour SLA actually lives.",
-    hue: "green",
   },
 ];
 
 const philosophy = [
   {
-    title: "Architects, not sourcers",
+    title: "Specialists, not sourcers",
     copy: "Every practice lead has run the role they screen for. Depth beats keyword-match, every time.",
   },
   {
@@ -82,7 +69,7 @@ const philosophy = [
 
 export default function LeadershipPage() {
   return (
-    <div className={styles.page} style={hueStyle}>
+    <div className={styles.page}>
       {/* HERO */}
       <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
@@ -93,14 +80,14 @@ export default function LeadershipPage() {
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            The architect team
+            The specialist team
           </div>
           <h1 className={styles.heroTitle}>
             The operators screening{" "}
             <span className={styles.emphasis}>every shortlist.</span>
           </h1>
           <p className={styles.heroLede}>
-            Yallo's architect team spent two decades building the programmes
+            Yallo's specialist team spent two decades building the programmes
             you're building. Now they screen the specialists you hire.
           </p>
           <div className={styles.heroCtas}>
@@ -229,7 +216,7 @@ export default function LeadershipPage() {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The architect team</span>
+            <span className={styles.sectionEyebrow}>The specialist team</span>
             <h2 className={styles.sectionH}>Six operators. Six practices.</h2>
             <p className={styles.sectionLede}>
               Each practice lead has been in the role they screen for. Depth
@@ -237,17 +224,7 @@ export default function LeadershipPage() {
             </p>
             <div className={styles.cardGrid3}>
               {team.map((member) => (
-                <article
-                  key={member.initials}
-                  className={styles.card}
-                  style={
-                    {
-                      "--sector-accent": `var(--hue-${member.hue}-500)`,
-                      "--sector-accent-08": `var(--hue-${member.hue}-08)`,
-                      "--sector-accent-35": `var(--hue-${member.hue}-35)`,
-                    } as React.CSSProperties
-                  }
-                >
+                <article key={member.initials} className={styles.card}>
                   <div
                     style={{
                       width: 56,

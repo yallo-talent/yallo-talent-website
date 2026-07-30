@@ -3,7 +3,6 @@ import type { ServicePageData } from "./types";
 
 export const managedDeliveryData: ServicePageData = {
   slug: "managed-delivery",
-  hue: "violet",
   eyebrow: "Managed Delivery · Scoped workstreams",
   title: "Hand us the workstream.",
   emphasis: "We own the outcome.",
@@ -90,7 +89,7 @@ export const managedDeliveryData: ServicePageData = {
     },
     {
       q: "Who are the specialists on my Managed Delivery?",
-      a: "Same architect-screened bench you'd see on Contract. You see the team CVs at SOW signing, and can veto anyone on grounds of fit. We don't swap-in without your sign-off.",
+      a: "Same specialist-screened bench you'd see on Contract. You see the team CVs at SOW signing, and can veto anyone on grounds of fit. We don't swap-in without your sign-off.",
     },
     {
       q: "What happens after go-live?",

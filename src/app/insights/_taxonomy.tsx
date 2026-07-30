@@ -31,7 +31,7 @@ export function taxonomyMetadata(kind: TaxonomyKind, slug: string): Metadata {
   return buildMetadata({
     seo: {
       title: `${label} — ${KIND_LABEL[kind]} insights · Yallo Talent`,
-      description: `Insights and research tagged ${label}, from the Yallo architect team.`,
+      description: `Insights and research tagged ${label}, from the Yallo specialist team.`,
     },
     path: `/insights/${kind}/${slug}`,
   });

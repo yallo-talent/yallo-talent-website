@@ -7,21 +7,11 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { ServicePageData } from "@/data/services/types";
 import styles from "./ServicePageShell.module.css";
 
-/**
- * One accent, always. Canon retires the six per-sector hues, and this helper
- * previously wrote them as INLINE custom properties — inline wins over any
- * class, so it re-introduced a light gold wash on dark surfaces and defeated
- * .band-dark. It now returns nothing, so --sector-accent* resolves from
- * globals.css. The `hue` fields left in the data are inert.
- */
-const hueStyle = (): React.CSSProperties => ({});
-
 interface Props {
   data: ServicePageData;
 }
 
 export function ServicePageShell({ data }: Props) {
-  const style = hueStyle();
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -33,7 +23,7 @@ export function ServicePageShell({ data }: Props) {
   };
 
   return (
-    <div className={`${styles.page} amb-4`} style={style}>
+    <div className={`${styles.page} amb-4`}>
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: FAQ JSON-LD is generated server-side from typed FAQ data — no user input

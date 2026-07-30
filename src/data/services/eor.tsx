@@ -3,7 +3,6 @@ import type { ServicePageData } from "./types";
 
 export const eorData: ServicePageData = {
   slug: "eor",
-  hue: "teal",
   eyebrow: "Employer of Record · UAE + India",
   title: "You choose the hire.",
   emphasis: "We carry the employment.",

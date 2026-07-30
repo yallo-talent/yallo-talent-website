@@ -122,19 +122,31 @@ comparison at all. A tight ratio there costs nothing the rule was protecting.
 A4's three sizes (most likely collapsing meta and nav onto a single 15px step),
 which would satisfy adjacency but lose the meta/control distinction.
 
-## Q6 — The retired per-sector hue system is still one line from returning
+## Q6 — RESOLVED: the per-sector hue system is deleted, not stubbed
 
-Canon §5 bans per-taxonomy-branch ambient assignment. The plumbing is inert but
-fully present: `--card-hue*` is consumed in ~20 places and **declared nowhere**,
-`hueStyle()` and `cardHueStyle()` are no-op stubs threaded through nine
-components, and `hue:` fields persist across five data arrays. Restoring the
-banned system is a one-line change by accident.
+**Closed by order step 9.** Canon §5's ban is now structural: there is nothing
+left to re-enable. Removed in full — 139 `--card-hue*` CSS consumers, 8
+`hueStyle`/`cardHueStyle` call sites, the `L1Hue` type, 48 `hue:` data fields
+across 15 files, and all 30 `--hue-*` shim declarations in `globals.css`.
 
-**Assumption taken:** left in place this round — deleting it touches nine
-components and five data files, which is its own dispatch, not a step inside a
-critique fix round. Recommend removing it before handback so the ban is
-structural rather than a convention. Note the `--fs-data`/`--fs-caption-sm`
-aliases in `globals.css` carry the same "migrate then delete" instruction.
+**Two things were worse than the original note recorded, and both were live
+defects rather than inert plumbing:**
+
+1. **29 bare `var(--card-hue-20)` uses in `HubLandingSections.module.css` had no
+   fallback at all.** With `--card-hue*` declared nowhere, those declarations
+   were invalid at computed-value time and had been silently falling back to
+   `inherit`/`initial` — borders and washes that never rendered.
+2. **Five pages plus the L1 hub were still assigning the accent per taxonomy
+   branch, inline.** `about`, `why-yallo`, `jobs`, `leadership` and
+   `LegalPageShell` each carried a live `hueStyle` object writing
+   `--sector-accent: var(--hue-blue-500)`, and `L1HubShell` wrote
+   `var(--hue-${e.hue}-500)` keyed to each entry's own slug — exactly what canon
+   §5 bans, and inline beats every class. `jobs` and `leadership` did the same
+   per row and per person.
+
+Every consumer was rerouted to the semantic accent ramp, which flips per theme.
+`-35` now resolves to `--sector-accent-35`, a real colour, rather than the shim's
+`transparent` — the invisible-border defect from the earlier round, at its source.
 
 ## Q4 — The client mark pack has no alpha channel
 

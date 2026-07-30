@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const retailData: L1PageData = {
   slug: "retail",
   category: "industries",
-  hue: "orange",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Retail & Consumer" },
@@ -13,7 +12,7 @@ export const retailData: L1PageData = {
   title: "Retail tech contractors,",
   sectorNoun: "retail",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just platform familiarity.",
+  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -1478,7 +1477,7 @@ export const retailData: L1PageData = {
       title:
         "The 72-hour benchmark: what enterprise retailers get wrong about contractor speed.",
       excerpt:
-        "Most retail IT leaders accept 4–6 weeks as normal for contractor shortlisting. It isn't. What makes rapid shortlisting possible, why it needs architect-led screening, and how to brief a talent partner to activate it.",
+        "Most retail IT leaders accept 4–6 weeks as normal for contractor shortlisting. It isn't. What makes rapid shortlisting possible, why it needs specialist-led screening, and how to brief a talent partner to activate it.",
       author: "Yallo Talent",
       minutes: 6,
     },
@@ -1525,6 +1524,6 @@ export const retailData: L1PageData = {
     title:
       "Retail & Consumer Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "SAP, Oracle, Blue Yonder and Salesforce contractors for retail programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "SAP, Oracle, Blue Yonder and Salesforce contractors for retail programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

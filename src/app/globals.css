@@ -474,12 +474,6 @@
   --wa60: var(--dk-txt-2);
   --wa88: var(--dk-txt);
   --ba75: var(--dk);
-  --hue-blue-500: var(--gold);
-  --hue-green-500: var(--gold);
-  --hue-orange-500: var(--gold);
-  --hue-rose-500: var(--gold);
-  --hue-teal-500: var(--gold);
-  --hue-violet-500: var(--gold);
 
   background: var(--dk);
   color: var(--dk-txt);
@@ -567,31 +561,6 @@
     var(--accent-line)
   );
   --gradient-hero: none;
-
-  --hue-blue-500: var(--accent-line);
-  --hue-blue-08: var(--accent-wash);
-  --hue-blue-20: var(--accent-wash);
-  --hue-blue-35: transparent;
-  --hue-green-500: var(--accent-line);
-  --hue-green-08: var(--accent-wash);
-  --hue-green-20: var(--accent-wash);
-  --hue-green-35: transparent;
-  --hue-orange-500: var(--accent-line);
-  --hue-orange-08: var(--accent-wash);
-  --hue-orange-20: var(--accent-wash);
-  --hue-orange-35: transparent;
-  --hue-rose-500: var(--accent-line);
-  --hue-rose-08: var(--accent-wash);
-  --hue-rose-20: var(--accent-wash);
-  --hue-rose-35: transparent;
-  --hue-teal-500: var(--accent-line);
-  --hue-teal-08: var(--accent-wash);
-  --hue-teal-20: var(--accent-wash);
-  --hue-teal-35: transparent;
-  --hue-violet-500: var(--accent-line);
-  --hue-violet-08: var(--accent-wash);
-  --hue-violet-20: var(--accent-wash);
-  --hue-violet-35: transparent;
 
   --success-500: var(--positive-mark);
   --success-glow: transparent;

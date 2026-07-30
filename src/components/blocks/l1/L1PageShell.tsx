@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PetalPlate } from "@/components/ui/PetalPlate";
-import type { L1Hue, L1IconKey, L1PageData } from "@/data/l1/types";
+import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
 import styles from "./L1PageShell.module.css";
@@ -14,18 +14,6 @@ function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
   const Comp = l1Icons[icon];
   return <Comp className={className} />;
 }
-
-/**
- * One accent, always. Canon retires the six per-sector hues, and this helper
- * previously wrote them as INLINE custom properties — inline wins over any
- * class, so it re-introduced a light gold wash on dark surfaces and defeated
- * .band-dark. It now returns nothing, so --sector-accent* resolves from
- * globals.css. The `hue` fields left in the data are inert.
- */
-const hueStyle = (): React.CSSProperties => ({});
-
-/** One accent, always — see hueStyle above. */
-const cardHueStyle = (): React.CSSProperties => ({});
 
 /** Every section below this file's top level takes only the page data. */
 interface Props {
@@ -57,7 +45,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
     ...(hasScarce ? [{ id: "scarce", label: "Scarce talent" }] : []),
     { id: "expertise", label: "Expertise" },
     { id: "segments", label: "Segments" },
-    { id: "architects", label: "Architects" },
+    { id: "specialists", label: "Specialists" },
     { id: "partners", label: "Partners" },
     { id: "engagement", label: "Engagement" },
     ...(hasInsights ? [{ id: "insights", label: "Insights" }] : []),
@@ -68,7 +56,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
        slot, the segment panel the third, the insight rail the fifth. Never keyed
        to the sector — that is the retired per-sector hue system. Without a host
        assigning --amb, every PetalPlate rendered as a grey smear. */
-    <div className={`${styles.page} amb-1`} style={hueStyle()}>
+    <div className={`${styles.page} amb-1`}>
       <L1Hero data={data} />
       <L1StatsStrip metrics={metrics} />
       <L1SubNav items={subNavItems} />
@@ -88,7 +76,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
-      <div id="architects">
+      <div id="specialists">
         <L1Architects data={data} />
       </div>
       <div id="partners">
@@ -289,7 +277,6 @@ function L1Intro({ data }: Props) {
 /* ============ WHAT WE DELIVER ============ */
 type L1IconKeyLocal = L1IconKey;
 const whatWeDeliverCards: {
-  hue: L1Hue;
   icon: L1IconKeyLocal;
   eyebrow: string;
   title: string;
@@ -297,11 +284,10 @@ const whatWeDeliverCards: {
   bullets: string[];
 }[] = [
   {
-    hue: "orange",
     icon: "scarce",
     eyebrow: "Contract-first bench",
     title: "Specialists in the seat — not sourced in a week.",
-    copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the architect leading that practice.",
+    copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the specialist leading that practice.",
     bullets: [
       "72h from brief to shortlist",
       "2:1 CV-to-interview ratio",
@@ -309,11 +295,10 @@ const whatWeDeliverCards: {
     ],
   },
   {
-    hue: "blue",
     icon: "workforce",
-    eyebrow: "Architect-led screening",
+    eyebrow: "Specialist-led screening",
     title: "Screening depth that recruiters can't reproduce.",
-    copy: "Every shortlist is depth-tested by architects who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
+    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
     bullets: [
       "Practice leads screen every candidate",
       "Sector-specific context tests",
@@ -321,7 +306,6 @@ const whatWeDeliverCards: {
     ],
   },
   {
-    hue: "teal",
     icon: "spark",
     eyebrow: "Multi-market flexibility",
     title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
@@ -354,11 +338,7 @@ function L1WhatWeDeliver({ data }: Props) {
         </div>
         <div className={styles.wwdGrid}>
           {whatWeDeliverCards.map((c, i) => (
-            <article
-              key={c.title}
-              className={styles.wwdCard}
-              style={cardHueStyle()}
-            >
+            <article key={c.title} className={styles.wwdCard}>
               <div className={styles.wwdGlow} aria-hidden="true" />
               <div className={styles.wwdCardInner}>
                 <span className={styles.wwdIcon}>
@@ -391,31 +371,26 @@ const howWeWorkSteps: {
   n: string;
   title: string;
   copy: string;
-  hue: L1Hue;
 }[] = [
   {
     n: "01",
     title: "Send us the brief",
     copy: "Role, platform, timeline, engagement model. No CVs traded on speculation — we start from what your programme actually needs.",
-    hue: "orange",
   },
   {
     n: "02",
-    title: "Architect-led screening",
+    title: "Specialist-led screening",
     copy: "Specialists who have run your kind of delivery assess every candidate for implementation depth. Not certificates. Not keywords.",
-    hue: "blue",
   },
   {
     n: "03",
     title: "Shortlist in 72 hours",
-    copy: "Three to five architect-screened candidates in your inbox with rate, notice, engagement model and evidence attached.",
-    hue: "teal",
+    copy: "Three to five specialist-screened candidates in your inbox with rate, notice, engagement model and evidence attached.",
   },
   {
     n: "04",
     title: "Deploy the model that fits",
     copy: "Contract, EOR, Permanent or Managed Delivery — matched to who needs to carry the contract and the visa.",
-    hue: "violet",
   },
 ];
 
@@ -433,14 +408,14 @@ function L1HowWeWork({ data }: Props) {
             </span>
           </h2>
           <p className={styles.sub}>
-            Yallo Talent is a contract-first bench built on architect-led
+            Yallo Talent is a contract-first bench built on specialist-led
             screening. Every engagement follows the same disciplined operating
             rhythm — regardless of sector, platform or model.
           </p>
         </div>
         <div className={styles.hwwGrid}>
           {howWeWorkSteps.map((s) => (
-            <div key={s.n} className={styles.hwwStep} style={cardHueStyle()}>
+            <div key={s.n} className={styles.hwwStep}>
               <div className={styles.hwwGlow} aria-hidden="true" />
               <div className={styles.hwwStepInner}>
                 <div className={styles.hwwStepNum}>{s.n}</div>
@@ -459,43 +434,36 @@ function L1HowWeWork({ data }: Props) {
 const crossSectorLinks: {
   slug: string;
   label: string;
-  hue: L1Hue;
   copy: string;
 }[] = [
   {
     slug: "retail",
     label: "Retail & Consumer",
-    hue: "orange",
     copy: "Omnichannel fulfilment, CX and unit-economics discipline",
   },
   {
     slug: "manufacturing",
     label: "Manufacturing & Logistics",
-    hue: "blue",
     copy: "Shop-floor execution, PLM and network planning",
   },
   {
     slug: "finance",
     label: "Banking & FS",
-    hue: "green",
     copy: "Regulated delivery, risk models and controls",
   },
   {
     slug: "government",
     label: "Government & Public Sector",
-    hue: "violet",
     copy: "GDS service design, cleared delivery and case management",
   },
   {
     slug: "healthcare",
     label: "Healthcare & Life Sciences",
-    hue: "rose",
     copy: "HIPAA / GxP delivery, EHR and clinical trials",
   },
   {
     slug: "telco",
     label: "Telco & Media",
-    hue: "teal",
     copy: "OSS/BSS, 5G rollout and carrier-grade uptime",
   },
 ];
@@ -529,7 +497,6 @@ function _L1CrossSector({ data }: Props) {
               key={s.slug}
               href={`/industries/${s.slug}`}
               className={styles.xsecCard}
-              style={cardHueStyle()}
             >
               <div className={styles.xsecCardGlow} aria-hidden="true" />
               <div className={styles.xsecCardInner}>
@@ -671,7 +638,7 @@ function L1Expertise({ data }: Props) {
                 transition={{ duration: 0.4, delay: i * 0.03 }}
                 className={styles.expCardWrap}
               >
-                <div className={styles.expCard} style={cardHueStyle()}>
+                <div className={styles.expCard}>
                   <div className={styles.expCardGlow} aria-hidden="true" />
                   <div className={styles.expCardBorder} aria-hidden="true" />
                   <div className={styles.expCardInner}>
@@ -765,31 +732,26 @@ const architects: {
   name: string;
   role: string;
   bio: string;
-  hue: L1Hue;
 }[] = [
   {
     name: "Sumeet Goenka",
     role: "Founder & CEO",
-    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them. Reviews every architect-tier shortlist personally.",
-    hue: "orange",
+    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them. Reviews every specialist-tier shortlist personally.",
   },
   {
     name: "SAP practice lead",
     role: "Architect · SAP",
     bio: "20+ years of SAP delivery across retail and financial services. Screens every SAP CX, Commerce, S/4HANA and IBP candidate before they land on your shortlist.",
-    hue: "blue",
   },
   {
     name: "Oracle practice lead",
     role: "Architect · Oracle",
     bio: "Ex-Oracle Fusion delivery leader. Depth-tests every Oracle Retail, FLEXCUBE, OTM and Xstore candidate for functional and technical fit.",
-    hue: "green",
   },
   {
     name: "Cloud & Data practice lead",
     role: "Architect · Cloud & Data",
     bio: "Azure and AWS platform builder. Runs screening for cloud landing zones, data engineering, DevOps and platform-eng roles across all six sectors.",
-    hue: "teal",
   },
 ];
 
@@ -810,7 +772,7 @@ function L1Architects({ data }: Props) {
             </span>
           </h2>
           <p className={styles.sub}>
-            Yallo Talent is architect-led, not sourcer-led. Every practice lead
+            Yallo Talent is specialist-led, not sourcer-led. Every practice lead
             has decades of delivery under them. They review every candidate
             personally before the shortlist leaves the building. That's the
             reason our 72h SLA holds up.
@@ -818,11 +780,7 @@ function L1Architects({ data }: Props) {
         </div>
         <div className={styles.archGrid}>
           {architects.map((a) => (
-            <article
-              key={a.name}
-              className={styles.archCard}
-              style={cardHueStyle()}
-            >
+            <article key={a.name} className={styles.archCard}>
               <div className={styles.archGlow} aria-hidden="true" />
               <div className={styles.archCardInner}>
                 {/* No monogram. Generating initials from a role string produced
@@ -869,7 +827,6 @@ function L1Segments({ data }: Props) {
                   <li
                     key={s.id}
                     className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
-                    style={cardHueStyle()}
                   >
                     <button
                       type="button"
@@ -891,7 +848,6 @@ function L1Segments({ data }: Props) {
 
           <motion.div
             className={`${styles.segPanel} amb-3`}
-            style={cardHueStyle()}
             key={activeSeg.id}
             initial={{ x: 8 }}
             animate={{ opacity: 1, x: 0 }}
@@ -976,11 +932,7 @@ function L1Partners({ partners }: { partners?: string[] }) {
         <div className={styles.partnersGrid}>
           {partnerNames.map((name, _i) => {
             return (
-              <div
-                key={name}
-                className={styles.partnerCell}
-                style={cardHueStyle()}
-              >
+              <div key={name} className={styles.partnerCell}>
                 <span className={styles.partnerName}>{name}</span>
               </div>
             );
@@ -1044,7 +996,6 @@ function L1Insights({ data }: Props) {
                 <div
                   key={post.href}
                   className={styles.insCard}
-                  style={cardHueStyle()}
                   aria-disabled="true"
                 >
                   {inner}
@@ -1052,12 +1003,7 @@ function L1Insights({ data }: Props) {
               );
             }
             return (
-              <Link
-                key={post.href}
-                href={post.href}
-                className={styles.insCard}
-                style={cardHueStyle()}
-              >
+              <Link key={post.href} href={post.href} className={styles.insCard}>
                 {inner}
               </Link>
             );
@@ -1072,7 +1018,6 @@ function L1Insights({ data }: Props) {
 const servicePillars: {
   slug: string;
   href: string;
-  hue: L1Hue;
   icon: L1IconKey;
   eyebrow: string;
   title: string;
@@ -1082,11 +1027,10 @@ const servicePillars: {
   {
     slug: "contract",
     href: "/contract",
-    hue: "orange",
     icon: "pillarContract",
     eyebrow: "01 · Contract",
     title: "Contract & interim",
-    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
+    copy: "Specialist-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
     bullets: [
       "72h brief to shortlist",
       "IR35, day-rate or fixed-term",
@@ -1096,7 +1040,6 @@ const servicePillars: {
   {
     slug: "permanent",
     href: "/permanent",
-    hue: "blue",
     icon: "pillarPermanent",
     eyebrow: "02 · Permanent",
     title: "Permanent placement",
@@ -1110,7 +1053,6 @@ const servicePillars: {
   {
     slug: "eor",
     href: "/eor",
-    hue: "violet",
     icon: "pillarEor",
     eyebrow: "03 · EOR",
     title: "Employer of Record",
@@ -1124,14 +1066,13 @@ const servicePillars: {
   {
     slug: "managed",
     href: "/managed-delivery",
-    hue: "teal",
     icon: "pillarManaged",
     eyebrow: "04 · Managed delivery",
     title: "Managed delivery",
-    copy: "Outcome-based pods stood up end-to-end. Architect-led delivery with fixed-price milestones.",
+    copy: "Outcome-based pods stood up end-to-end. Specialist-led delivery with fixed-price milestones.",
     bullets: [
       "Fixed-price milestones",
-      "Architect-led pods",
+      "Specialist-led pods",
       "SLA on delivery outcomes",
     ],
   },
@@ -1146,7 +1087,7 @@ function L1ServicePillars() {
           Four ways to deploy Yallo talent into your programme.
         </h2>
         <p className={styles.sub}>
-          Same architect-screened bench, four commercial models — pick the one
+          Same specialist-screened bench, four commercial models — pick the one
           that fits how you want to engage.
         </p>
         <div className={styles.pillarsGrid}>
@@ -1159,11 +1100,7 @@ function L1ServicePillars() {
               transition={{ duration: 0.45, delay: i * 0.06 }}
               className={styles.pillarWrap}
             >
-              <Link
-                href={p.href}
-                className={styles.pillar}
-                style={cardHueStyle()}
-              >
+              <Link href={p.href} className={styles.pillar}>
                 <div className={styles.pillarGlow} aria-hidden="true" />
                 <div className={styles.pillarBorder} aria-hidden="true" />
                 <span className={styles.pillarArrow} aria-hidden="true">
@@ -1219,7 +1156,7 @@ function L1BottomCta() {
               </span>
             </h2>
             <p className={styles.sub}>
-              No CVs until we understand your programme. Architect-screened
+              No CVs until we understand your programme. Specialist-screened
               shortlist matched to your context.
             </p>
             <div className={styles.bottomActions}>
@@ -1280,7 +1217,6 @@ function L1ReadNext({ data }: Props) {
                       key={r.href}
                       href={r.href}
                       className={styles.readNextChip}
-                      style={cardHueStyle()}
                     >
                       <span className={styles.readNextChipLabel}>
                         {r.label}

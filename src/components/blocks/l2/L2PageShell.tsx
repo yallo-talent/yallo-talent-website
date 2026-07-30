@@ -4,26 +4,9 @@ import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import { taxonomyLabels } from "@/data/l1/index";
-import type {
-  L1ExpertiseCard,
-  L1Hue,
-  L1IconKey,
-  L1PageData,
-} from "@/data/l1/types";
+import type { L1ExpertiseCard, L1IconKey, L1PageData } from "@/data/l1/types";
 import { routeExists } from "@/lib/routes";
 import styles from "./L2PageShell.module.css";
-
-/**
- * One accent, always. Canon retires the six per-sector hues, and this helper
- * previously wrote them as INLINE custom properties — inline wins over any
- * class, so it re-introduced a light gold wash on dark surfaces and defeated
- * .band-dark. It now returns nothing, so --sector-accent* resolves from
- * globals.css. The `hue` fields left in the data are inert.
- */
-const hueStyle = (): React.CSSProperties => ({});
-
-/** One accent, always — see hueStyle above. */
-const cardHueStyle = (): React.CSSProperties => ({});
 
 interface Props {
   /** The L1 page data for the parent sector — provides sidebar list + hero image + hue. */
@@ -38,7 +21,7 @@ interface Props {
  */
 export function L2PageShell({ sector, fn }: Props) {
   return (
-    <div className={`${styles.page} amb-2`} style={hueStyle()}>
+    <div className={`${styles.page} amb-2`}>
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
@@ -150,7 +133,7 @@ function L2Overview({
           <p className={styles.overviewCopy}>{copy}</p>
           <ul className={styles.overviewBullets}>
             <li className={styles.overviewBullet}>
-              Architect-screened for platform depth, not certificates
+              Specialist-screened for platform depth, not certificates
             </li>
             <li className={styles.overviewBullet}>
               Retail-context screening — high transaction volumes, multi-market
@@ -216,7 +199,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
         <div className={styles.secLabel}>Tools we staff</div>
         <h2 className={styles.toolsH}>
           {fn.tools.length} tool
-          {fn.tools.length === 1 ? "" : "s"}. Architect-screened contractor
+          {fn.tools.length === 1 ? "" : "s"}. Specialist-screened contractor
           bench for each.
         </h2>
         <p className={styles.toolsSub}>
@@ -226,11 +209,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
         <div className={styles.toolsGrid}>
           {fn.tools.map((tool, _i) => {
             return (
-              <article
-                key={tool.slug}
-                className={styles.tc}
-                style={cardHueStyle()}
-              >
+              <article key={tool.slug} className={styles.tc}>
                 <div className={styles.tcGlow} aria-hidden="true" />
                 <div className={styles.tcInner}>
                   <div className={styles.tcBadge}>
@@ -281,14 +260,14 @@ function L2Screening() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <title>Architect screening</title>
+            <title>Specialist screening</title>
             <path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z" />
             <path d="M9 12l2 2 4-4" />
           </svg>
         </div>
         <div className={styles.screeningBody}>
           <h3 className={styles.screeningH}>
-            Architect-screened, not keyword-matched.
+            Specialist-screened, not keyword-matched.
           </h3>
           <p className={styles.screeningCopy}>
             Every contractor on our bench is assessed for implementation depth
@@ -299,7 +278,7 @@ function L2Screening() {
           <div className={styles.screeningChips}>
             <span className={styles.screeningChip}>
               <span className={styles.screeningChipDot} aria-hidden="true" />
-              Architect-screened
+              Specialist-screened
             </span>
             <span className={styles.screeningChip}>
               <span className={styles.screeningChipDot} aria-hidden="true" />
@@ -397,7 +376,6 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                     key={slug}
                     href={`/platforms/${slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipName}>
                       {platformLabels[slug] ?? slug}
@@ -421,7 +399,6 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                     key={slug}
                     href={`/capabilities/${slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipName}>
                       {capabilityLabels[slug] ?? slug}
@@ -444,7 +421,6 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
 const engagementPillars: {
   slug: string;
   href: string;
-  hue: L1Hue;
   icon: L1IconKey;
   eyebrow: string;
   title: string;
@@ -454,11 +430,10 @@ const engagementPillars: {
   {
     slug: "contract",
     href: "/contract",
-    hue: "orange",
     icon: "pillarContract",
     eyebrow: "01 · Contract",
     title: "Contract & interim",
-    copy: "Architect-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
+    copy: "Specialist-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
     bullets: [
       "72h brief to shortlist",
       "IR35, day-rate or fixed-term",
@@ -468,7 +443,6 @@ const engagementPillars: {
   {
     slug: "permanent",
     href: "/permanent",
-    hue: "blue",
     icon: "pillarPermanent",
     eyebrow: "02 · Permanent",
     title: "Permanent placement",
@@ -482,7 +456,6 @@ const engagementPillars: {
   {
     slug: "eor",
     href: "/eor",
-    hue: "violet",
     icon: "pillarEor",
     eyebrow: "03 · EOR",
     title: "Employer of Record",
@@ -496,14 +469,13 @@ const engagementPillars: {
   {
     slug: "managed",
     href: "/managed-delivery",
-    hue: "teal",
     icon: "pillarManaged",
     eyebrow: "04 · Managed delivery",
     title: "Managed delivery",
-    copy: "Outcome-based pods stood up end-to-end. Architect-led delivery with fixed-price milestones.",
+    copy: "Outcome-based pods stood up end-to-end. Specialist-led delivery with fixed-price milestones.",
     bullets: [
       "Fixed-price milestones",
-      "Architect-led pods",
+      "Specialist-led pods",
       "SLA on delivery outcomes",
     ],
   },
@@ -518,19 +490,14 @@ function L2Engagement() {
           Four commercial models, one screening standard.
         </h2>
         <p className={styles.engageSub}>
-          Same architect-screened bench. Four ways to bring them into your
+          Same specialist-screened bench. Four ways to bring them into your
           programme.
         </p>
         <div className={styles.engagePillarsGrid}>
           {engagementPillars.map((p) => {
             const Icon = l1Icons[p.icon];
             return (
-              <Link
-                key={p.slug}
-                href={p.href}
-                className={styles.engagePillar}
-                style={cardHueStyle()}
-              >
+              <Link key={p.slug} href={p.href} className={styles.engagePillar}>
                 <div className={styles.engagePillarGlow} aria-hidden="true" />
                 <span className={styles.engagePillarArrow} aria-hidden="true">
                   <svg
@@ -592,7 +559,7 @@ function L2BottomCta({
           </h2>
           <p className={styles.bottomSub}>
             Send the role, the platform, the timeline — get an
-            architect-screened shortlist inside 72 hours. No CVs until we
+            specialist-screened shortlist inside 72 hours. No CVs until we
             understand your programme.
           </p>
           <div className={styles.bottomActions}>
@@ -654,7 +621,6 @@ function L2RelatedFunctions({
                 key={rf.slug}
                 href={`/industries/${sector.slug}/${rf.slug}`}
                 className={styles.relatedCard}
-                style={cardHueStyle()}
               >
                 <span className={styles.relatedNum}>{rf.num}</span>
                 <span className={styles.relatedTitle}>{rf.title}</span>
@@ -733,7 +699,6 @@ function L2Insights({ sector }: { sector: L1PageData }) {
                 <div
                   key={post.href}
                   className={styles.insCard}
-                  style={cardHueStyle()}
                   aria-disabled="true"
                 >
                   {inner}
@@ -741,12 +706,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
               );
             }
             return (
-              <Link
-                key={post.href}
-                href={post.href}
-                className={styles.insCard}
-                style={cardHueStyle()}
-              >
+              <Link key={post.href} href={post.href} className={styles.insCard}>
                 {inner}
               </Link>
             );
@@ -813,5 +773,5 @@ function L2Sidebar({
   );
 }
 
-// cardHueCycle is gone: the six per-sector hues are retired (canon §5).
-export { cardHueStyle };
+// cardHueCycle and cardHueStyle are both gone: the six per-sector hues are
+// retired (canon §5) and the plumbing is now deleted, not stubbed.

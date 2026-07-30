@@ -206,13 +206,13 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Contract",
             href: "/contract",
-            description: "72-hour shortlists · architect-screened",
+            description: "72-hour shortlists · specialist-screened",
             icon: "contract",
           },
           {
             label: "Permanent",
             href: "/permanent",
-            description: "Long-term fit, architect-vetted",
+            description: "Long-term fit, specialist-vetted",
             icon: "permanent",
           },
           {
@@ -233,7 +233,7 @@ export const primaryNav: NavGroup[] = [
     featured: {
       eyebrow: "Ready to hire?",
       title: "Shortlist in 72 hours.",
-      copy: "Send a brief and we'll return an architect-screened list.",
+      copy: "Send a brief and we'll return an specialist-screened list.",
       href: "/brief",
       ctaLabel: "Send a brief →",
     },
@@ -259,7 +259,7 @@ export const primaryNav: NavGroup[] = [
           {
             label: "The team who screen",
             href: "/leadership",
-            description: "Architects behind every shortlist",
+            description: "Specialists behind every shortlist",
             icon: "leadership",
           },
         ],

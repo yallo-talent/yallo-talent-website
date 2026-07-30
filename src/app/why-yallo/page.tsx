@@ -5,19 +5,12 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "Why Yallo Talent · Architect-led, not agency-volume",
+    title: "Why Yallo Talent · Specialist-led, not agency-volume",
     description:
-      "Four reasons enterprise leaders choose Yallo over traditional recruitment: architect-led screening, 72-hour SLA, region-deep, 2:1 CV-to-interview ratio.",
+      "Four reasons enterprise leaders choose Yallo over traditional recruitment: specialist-led screening, 72-hour SLA, region-deep, 2:1 CV-to-interview ratio.",
   },
   path: "/why-yallo",
 });
-
-const hueStyle: React.CSSProperties = {
-  "--sector-accent": "var(--hue-rose-500)",
-  "--sector-accent-08": "var(--hue-rose-08)",
-  "--sector-accent-20": "var(--hue-rose-20)",
-  "--sector-accent-35": "var(--hue-rose-35)",
-} as React.CSSProperties;
 
 const differentiators = [
   {
@@ -45,7 +38,7 @@ const differentiators = [
 const comparison = [
   {
     them: "Volume recruiters send 20 CVs and hope",
-    us: "We send 3–5 architect-screened fits",
+    us: "We send 3–5 specialist-screened fits",
   },
   {
     them: "Keyword-match against a JD",
@@ -65,7 +58,7 @@ const comparison = [
   },
   {
     them: "No accountability for the placement working",
-    us: "Architect-led — the person who screened them stays involved",
+    us: "Specialist-led — the person who screened them stays involved",
   },
 ];
 
@@ -84,13 +77,13 @@ const credentials = [
   },
   {
     org: "Yallo Talent",
-    role: "Architect team",
+    role: "Specialist team",
   },
 ];
 
 export default function WhyYalloPage() {
   return (
-    <div className={styles.page} style={hueStyle}>
+    <div className={styles.page}>
       {/* HERO */}
       <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
@@ -108,7 +101,7 @@ export default function WhyYalloPage() {
             <span className={styles.emphasis}>delivery team wanted.</span>
           </h1>
           <p className={styles.heroLede}>
-            Not another recruitment agency. Yallo is architect-led — the same
+            Not another recruitment agency. Yallo is specialist-led — the same
             operators who shipped enterprise programmes at Richemont, Landmark
             and Alshaya EMEA are the ones reviewing every shortlist you get.
           </p>
@@ -280,7 +273,7 @@ export default function WhyYalloPage() {
       <section className={`${styles.section} ${styles.sectionAlt}`}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The architect team</span>
+            <span className={styles.sectionEyebrow}>The specialist team</span>
             <h2 className={styles.sectionH}>
               Operators who ran the programmes you're running.
             </h2>

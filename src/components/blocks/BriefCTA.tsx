@@ -27,7 +27,7 @@ export function BriefCTA() {
             </h2>
             <p className={styles.sub}>
               Your programme, your platform, your region — matched.
-              Architect-led screening from operators who've run enterprise
+              Specialist-led screening from operators who've run enterprise
               delivery themselves.
             </p>
           </div>
@@ -57,7 +57,7 @@ export function BriefCTA() {
                 data-hue="green"
                 aria-hidden="true"
               />
-              Architect-screened
+              Specialist-screened
             </span>
             <span className={styles.pill}>
               <span

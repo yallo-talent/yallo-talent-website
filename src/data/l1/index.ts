@@ -23,7 +23,6 @@ export interface L1IndexEntry {
   label: TaxonomyLabel;
   short: TaxonomyLabel;
   category: "industries" | "platforms" | "capabilities";
-  hue: "blue" | "green" | "orange" | "teal" | "violet" | "rose";
   tagline: string;
 }
 
@@ -33,7 +32,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Retail & Consumer" as TaxonomyLabel,
     short: "Retail" as TaxonomyLabel,
     category: "industries",
-    hue: "orange",
     tagline: "Commerce, POS and supply-chain talent for retail programmes.",
   },
   {
@@ -41,7 +39,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Banking & Financial Services" as TaxonomyLabel,
     short: "Banking" as TaxonomyLabel,
     category: "industries",
-    hue: "blue",
     tagline: "Core banking, payments, risk and cloud platform specialists.",
   },
   {
@@ -49,7 +46,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Government & Public Sector" as TaxonomyLabel,
     short: "Government" as TaxonomyLabel,
     category: "industries",
-    hue: "green",
     tagline: "Digital government, smart-services and citizen-facing platforms.",
   },
   {
@@ -57,7 +53,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Manufacturing & Logistics" as TaxonomyLabel,
     short: "Manufacturing" as TaxonomyLabel,
     category: "industries",
-    hue: "orange",
     tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
   },
   {
@@ -65,7 +60,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Healthcare & Life Sciences" as TaxonomyLabel,
     short: "Healthcare" as TaxonomyLabel,
     category: "industries",
-    hue: "teal",
     tagline: "Clinical systems, regulated data and compliance-grade delivery.",
   },
   {
@@ -73,7 +67,6 @@ export const industriesIndex: L1IndexEntry[] = [
     label: "Telco & Media" as TaxonomyLabel,
     short: "Telco" as TaxonomyLabel,
     category: "industries",
-    hue: "violet",
     tagline: "OSS/BSS, network and data engineering for telco transformation.",
   },
 ];
@@ -84,7 +77,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "SAP" as TaxonomyLabel,
     short: "SAP" as TaxonomyLabel,
     category: "platforms",
-    hue: "blue",
     tagline: "S/4HANA, FICO, MM, SD and integration specialists.",
   },
   {
@@ -92,7 +84,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Oracle" as TaxonomyLabel,
     short: "Oracle" as TaxonomyLabel,
     category: "platforms",
-    hue: "rose",
     tagline: "Fusion Cloud ERP/EPM/HCM/SCM and E-Business Suite specialists.",
   },
   {
@@ -100,7 +91,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Microsoft" as TaxonomyLabel,
     short: "Microsoft" as TaxonomyLabel,
     category: "platforms",
-    hue: "blue",
     tagline: "Dynamics 365, Azure, Power Platform, M365 engineers.",
   },
   {
@@ -108,7 +98,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Salesforce" as TaxonomyLabel,
     short: "Salesforce" as TaxonomyLabel,
     category: "platforms",
-    hue: "teal",
     tagline: "Sales, Service, Commerce, Marketing and integration talent.",
   },
   {
@@ -116,7 +105,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Blue Yonder" as TaxonomyLabel,
     short: "Blue Yonder" as TaxonomyLabel,
     category: "platforms",
-    hue: "orange",
     tagline: "WMS, TMS, Luminate and demand-planning specialists.",
   },
   {
@@ -124,7 +112,6 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Workday" as TaxonomyLabel,
     short: "Workday" as TaxonomyLabel,
     category: "platforms",
-    hue: "violet",
     tagline: "HCM, Payroll, Recruiting and Adaptive Planning specialists.",
   },
 ];
@@ -135,7 +122,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Data & Analytics" as TaxonomyLabel,
     short: "Data & AI" as TaxonomyLabel,
     category: "capabilities",
-    hue: "blue",
     tagline: "Data engineering, ML, GenAI and analytics platform specialists.",
   },
   {
@@ -143,7 +129,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "DevOps & Platform Engineering" as TaxonomyLabel,
     short: "Digital & DevOps" as TaxonomyLabel,
     category: "capabilities",
-    hue: "violet",
     tagline: "SRE, platform engineering and continuous delivery talent.",
   },
   {
@@ -151,7 +136,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Cloud & Infrastructure" as TaxonomyLabel,
     short: "Cloud" as TaxonomyLabel,
     category: "capabilities",
-    hue: "teal",
     tagline: "AWS, Azure, GCP architects and platform engineers.",
   },
   {
@@ -159,7 +143,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Cybersecurity" as TaxonomyLabel,
     short: "Security" as TaxonomyLabel,
     category: "capabilities",
-    hue: "green",
     tagline: "Security architects, GRC and identity specialists.",
   },
   {
@@ -167,7 +150,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Integration & Middleware" as TaxonomyLabel,
     short: "Integration" as TaxonomyLabel,
     category: "capabilities",
-    hue: "orange",
     tagline: "MuleSoft, Boomi, Kafka, API and iPaaS specialists.",
   },
   {
@@ -175,7 +157,6 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Testing & Quality Engineering" as TaxonomyLabel,
     short: "Emerging" as TaxonomyLabel,
     category: "capabilities",
-    hue: "rose",
     tagline: "Blockchain, IoT, digital twin and quantum-adjacent talent.",
   },
 ];

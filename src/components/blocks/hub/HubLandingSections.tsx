@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
-import type { L1Hue, L1IconKey } from "@/data/l1/types";
+import type { L1IconKey } from "@/data/l1/types";
 import { routeExists } from "@/lib/routes";
 import styles from "./HubLandingSections.module.css";
 
@@ -18,11 +18,9 @@ function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
  * .band-dark. It now returns nothing, so --sector-accent* resolves from
  * globals.css. The `hue` fields left in the data are inert.
  */
-const cardHueStyle = (): React.CSSProperties => ({});
 
 /* ============ WHAT WE DELIVER ============ */
 const whatWeDeliverCards: {
-  hue: L1Hue;
   icon: L1IconKey;
   eyebrow: string;
   title: string;
@@ -30,11 +28,10 @@ const whatWeDeliverCards: {
   bullets: string[];
 }[] = [
   {
-    hue: "orange",
     icon: "scarce",
     eyebrow: "Contract-first bench",
     title: "Specialists in the seat — not sourced in a week.",
-    copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the architect leading that practice.",
+    copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the specialist leading that practice.",
     bullets: [
       "72h from brief to shortlist",
       "2:1 CV-to-interview ratio",
@@ -42,11 +39,10 @@ const whatWeDeliverCards: {
     ],
   },
   {
-    hue: "blue",
     icon: "workforce",
-    eyebrow: "Architect-led screening",
+    eyebrow: "Specialist-led screening",
     title: "Screening depth that recruiters can't reproduce.",
-    copy: "Every shortlist is depth-tested by architects who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
+    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
     bullets: [
       "Practice leads screen every candidate",
       "Sector-specific context tests",
@@ -54,7 +50,6 @@ const whatWeDeliverCards: {
     ],
   },
   {
-    hue: "teal",
     icon: "spark",
     eyebrow: "Multi-market flexibility",
     title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
@@ -86,11 +81,7 @@ export function HubWhatWeDeliver({ label }: { label: string }) {
         </div>
         <div className={styles.wwdGrid}>
           {whatWeDeliverCards.map((c, i) => (
-            <article
-              key={c.title}
-              className={styles.wwdCard}
-              style={cardHueStyle()}
-            >
+            <article key={c.title} className={styles.wwdCard}>
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.wwdCardInner}>
                 <span className={styles.wwdIcon}>
@@ -123,31 +114,26 @@ const howWeWorkSteps: {
   n: string;
   title: string;
   copy: string;
-  hue: L1Hue;
 }[] = [
   {
     n: "01",
     title: "Send us the brief",
     copy: "Role, platform, timeline, engagement model. No CVs on speculation — we start from what your programme actually needs.",
-    hue: "orange",
   },
   {
     n: "02",
-    title: "Architect-led screening",
+    title: "Specialist-led screening",
     copy: "Specialists who have run your kind of delivery assess every candidate for implementation depth. Not certificates. Not keywords.",
-    hue: "blue",
   },
   {
     n: "03",
     title: "Shortlist in 72 hours",
-    copy: "Three to five architect-screened candidates in your inbox with rate, notice, engagement model and evidence attached.",
-    hue: "teal",
+    copy: "Three to five specialist-screened candidates in your inbox with rate, notice, engagement model and evidence attached.",
   },
   {
     n: "04",
     title: "Deploy the model that fits",
     copy: "Contract, EOR, Permanent or Managed Delivery — matched to who needs to carry the contract and the visa.",
-    hue: "violet",
   },
 ];
 
@@ -164,14 +150,14 @@ export function HubHowWeWork() {
             </span>
           </h2>
           <p className={styles.sub}>
-            Yallo Talent is a contract-first bench built on architect-led
+            Yallo Talent is a contract-first bench built on specialist-led
             screening. Every engagement follows the same disciplined operating
             rhythm — regardless of sector, platform or model.
           </p>
         </div>
         <div className={styles.hwwGrid}>
           {howWeWorkSteps.map((s) => (
-            <div key={s.n} className={styles.hwwStep} style={cardHueStyle()}>
+            <div key={s.n} className={styles.hwwStep}>
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.hwwStepInner}>
                 <div className={styles.hwwStepNum}>{s.n}</div>
@@ -191,31 +177,26 @@ const architects: {
   name: string;
   role: string;
   bio: string;
-  hue: L1Hue;
 }[] = [
   {
     name: "Sumeet Goenka",
     role: "Founder & CEO",
     bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them.",
-    hue: "orange",
   },
   {
     name: "SAP practice lead",
     role: "Architect · SAP",
     bio: "20+ years of SAP delivery across retail and financial services. Screens every SAP CX, Commerce, S/4HANA and IBP candidate.",
-    hue: "blue",
   },
   {
     name: "Oracle practice lead",
     role: "Architect · Oracle",
     bio: "Ex-Oracle Fusion delivery leader. Depth-tests every Oracle Retail, FLEXCUBE, OTM and Xstore candidate for functional and technical fit.",
-    hue: "green",
   },
   {
     name: "Cloud & Data practice lead",
     role: "Architect · Cloud & Data",
     bio: "Azure and AWS platform builder. Runs screening for cloud, data engineering and DevOps roles across all six sectors.",
-    hue: "teal",
   },
 ];
 
@@ -232,7 +213,7 @@ export function HubArchitects() {
             </span>
           </h2>
           <p className={styles.sub}>
-            Yallo Talent is architect-led, not sourcer-led. Every practice lead
+            Yallo Talent is specialist-led, not sourcer-led. Every practice lead
             has decades of delivery under them. They review every candidate
             personally before the shortlist leaves the building — the reason our
             72h SLA holds up.
@@ -240,11 +221,7 @@ export function HubArchitects() {
         </div>
         <div className={styles.archGrid}>
           {architects.map((a) => (
-            <article
-              key={a.name}
-              className={styles.archCard}
-              style={cardHueStyle()}
-            >
+            <article key={a.name} className={styles.archCard}>
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.archCardInner}>
                 <div className={styles.archInitials} aria-hidden="true">
@@ -291,24 +268,21 @@ export function HubCrossConnected() {
             <div className={styles.crossRailLabel}>Platforms we staff</div>
             <div className={styles.crossChips}>
               {[
-                { slug: "sap", label: "SAP", hue: "blue" as L1Hue },
-                { slug: "oracle", label: "Oracle", hue: "orange" as L1Hue },
+                { slug: "sap", label: "SAP" },
+                { slug: "oracle", label: "Oracle" },
                 {
                   slug: "salesforce",
                   label: "Salesforce",
-                  hue: "teal" as L1Hue,
                 },
                 {
                   slug: "microsoft",
                   label: "Microsoft",
-                  hue: "violet" as L1Hue,
                 },
                 {
                   slug: "blue-yonder",
                   label: "Blue Yonder",
-                  hue: "green" as L1Hue,
                 },
-                { slug: "workday", label: "Workday", hue: "rose" as L1Hue },
+                { slug: "workday", label: "Workday" },
               ]
                 // Only platforms with a page. Microsoft and Workday have no
                 // module data yet and render nowhere rather than 404.
@@ -318,7 +292,6 @@ export function HubCrossConnected() {
                     key={p.slug}
                     href={`/platforms/${p.slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipLabel}>{p.label}</span>
                     <span className={styles.crossChipArr} aria-hidden="true">
@@ -335,32 +308,26 @@ export function HubCrossConnected() {
                 {
                   slug: "data-analytics",
                   label: "Data & Analytics",
-                  hue: "violet" as L1Hue,
                 },
                 {
                   slug: "devops-platform-engineering",
                   label: "DevOps & Platform Engineering",
-                  hue: "blue" as L1Hue,
                 },
                 {
                   slug: "cloud-infrastructure",
                   label: "Cloud & Infrastructure",
-                  hue: "teal" as L1Hue,
                 },
                 {
                   slug: "cybersecurity",
                   label: "Cybersecurity",
-                  hue: "rose" as L1Hue,
                 },
                 {
                   slug: "integration-middleware",
                   label: "Integration & Middleware",
-                  hue: "green" as L1Hue,
                 },
                 {
                   slug: "testing-quality-engineering",
                   label: "Testing & Quality Engineering",
-                  hue: "orange" as L1Hue,
                 },
               ]
                 // Only disciplines with a page. The others are real and the nav
@@ -371,7 +338,6 @@ export function HubCrossConnected() {
                     key={c.slug}
                     href={`/capabilities/${c.slug}`}
                     className={styles.crossChip}
-                    style={cardHueStyle()}
                   >
                     <span className={styles.crossChipLabel}>{c.label}</span>
                     <span className={styles.crossChipArr} aria-hidden="true">

@@ -96,7 +96,7 @@ export function BriefForm() {
           <h2 className={styles.h}>Tell us what you're hiring for.</h2>
           <p className={styles.sub}>
             A short brief is all we need to run the calibration call and start
-            the architect-led screen. Shortlists back within 72 hours.
+            the specialist-led screen. Shortlists back within 72 hours.
           </p>
         </div>
 

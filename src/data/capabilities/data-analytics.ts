@@ -3,7 +3,6 @@ import type { L1PageData } from "@/data/l1/types";
 export const dataAnalyticsData: L1PageData = {
   slug: "data-analytics",
   category: "capabilities",
-  hue: "blue",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
     { label: "Data & Analytics" },
@@ -13,7 +12,7 @@ export const dataAnalyticsData: L1PageData = {
   title: "Data and analytics contractors,",
   sectorNoun: "data and analytics",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Data engineers, analytics engineers, BI developers and migration leads for enterprise programmes across the Middle East, Europe and India. Architect-screened for implementation depth — not just certification badges. AI roles have their own practice.",
+  sub: "Data engineers, analytics engineers, BI developers and migration leads for enterprise programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just certification badges. AI roles have their own practice.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -163,7 +162,7 @@ export const dataAnalyticsData: L1PageData = {
   segmentsEyebrow: "Where we deploy",
   segmentsTitle: "Every sector runs a data programme — we staff them all.",
   segmentsSub:
-    "Retail personalisation, banking risk models, healthcare analytics or public-sector data platforms — same architect-screened bench, calibrated to your operating context.",
+    "Retail personalisation, banking risk models, healthcare analytics or public-sector data platforms — same specialist-screened bench, calibrated to your operating context.",
   segments: [
     {
       id: "retail",
@@ -333,6 +332,6 @@ export const dataAnalyticsData: L1PageData = {
   seo: {
     title: "Data & AI Contractors · Yallo Talent",
     description:
-      "Architect-screened Data & AI contractors — data engineering, ML/MLOps, GenAI, analytics platforms. 72h shortlist across the Middle East, Europe and India.",
+      "Specialist-screened Data & AI contractors — data engineering, ML/MLOps, GenAI, analytics platforms. 72h shortlist across the Middle East, Europe and India.",
   },
 };

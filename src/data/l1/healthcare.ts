@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const healthcareData: L1PageData = {
   slug: "healthcare",
   category: "industries",
-  hue: "rose",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Healthcare & Life Sciences" },
@@ -704,6 +703,6 @@ export const healthcareData: L1PageData = {
     title:
       "Healthcare & Life Sciences Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "Epic, Cerner, Veeva, Medidata and Salesforce Health Cloud contractors for provider, payer and life-sciences programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "Epic, Cerner, Veeva, Medidata and Salesforce Health Cloud contractors for provider, payer and life-sciences programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

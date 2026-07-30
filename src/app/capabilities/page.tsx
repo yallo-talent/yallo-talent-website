@@ -8,7 +8,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Capabilities · Yallo Talent",
     description:
-      "Data & AI, DevOps, Cloud, Cybersecurity, Integration and Emerging Tech specialists — architect-screened for enterprise programmes.",
+      "Data & AI, DevOps, Cloud, Cybersecurity, Integration and Emerging Tech specialists — specialist-screened for enterprise programmes.",
   },
   path: "/capabilities",
 });

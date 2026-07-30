@@ -56,6 +56,23 @@ const RULES = [
   [/\bSubcontract\b/g, "Managed Delivery"],
   [/\bsubcontracted\b/g, "delivered under Managed Delivery"],
 
+  // --- A1: the screening claim is specialist-led, not architect-led --------
+  // Canon amendment A1 (30 Jul). The claim is about depth, not one job title,
+  // and "architect-led" narrowed it to a single grade while the six desks in §3
+  // span far more. Deliberately narrow patterns: these match the CLAIM only.
+  // Real job titles ("Solution Architect · SAP"), the Architecture desk, the
+  // "Architects" role family in roles.ts, and "architecture" describing a system
+  // are genuine collisions and must never be rewritten — see ARCHITECT_ALLOWED.
+  [/\barchitect-screened\b/g, "specialist-screened"],
+  [/\bArchitect-screened\b/g, "Specialist-screened"],
+  [/\barchitect-led\b/g, "specialist-led"],
+  [/\bArchitect-led\b/g, "Specialist-led"],
+  [/\barchitect-vetted\b/g, "specialist-vetted"],
+  [/\bArchitect-vetted\b/g, "Specialist-vetted"],
+  [/\barchitect-tier\b/g, "specialist-tier"],
+  [/\barchitect team\b/g, "specialist team"],
+  [/\bArchitect team\b/g, "Specialist team"],
+
   // --- other ---------------------------------------------------------------
   [/\bBangalore\b/g, "Bengaluru"],
   [/Launching soon/g, "Live at saasinator.ai"],

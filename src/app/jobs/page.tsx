@@ -13,61 +13,48 @@ export const metadata: Metadata = buildMetadata({
   path: "/jobs",
 });
 
-const hueStyle: React.CSSProperties = {
-  "--sector-accent": "var(--hue-green-500)",
-  "--sector-accent-08": "var(--hue-green-08)",
-  "--sector-accent-20": "var(--hue-green-20)",
-  "--sector-accent-35": "var(--hue-green-35)",
-} as React.CSSProperties;
-
 const openings = [
   {
     role: "SAP FICO Functional Consultant",
     engagement: "Contract",
     location: "Dubai, UAE",
-    hue: "orange",
     days: "12-month engagement",
   },
   {
     role: "Oracle Fusion Cloud Architect",
     engagement: "Contract",
     location: "London, UK",
-    hue: "rose",
     days: "9-month engagement",
   },
   {
     role: "Salesforce Commerce Cloud Lead",
     engagement: "Permanent",
     location: "Riyadh, Saudi Arabia",
-    hue: "teal",
     days: "Immediate start",
   },
   {
     role: "Blue Yonder WMS Specialist",
     engagement: "Contract",
     location: "Bengaluru, India",
-    hue: "orange",
     days: "6-month engagement",
   },
   {
     role: "Cloud Platform Engineer (Azure)",
     engagement: "Permanent",
     location: "London, UK",
-    hue: "blue",
     days: "Rolling",
   },
   {
     role: "Data Engineering Lead",
     engagement: "Contract",
     location: "Remote (UK/UAE)",
-    hue: "violet",
     days: "12-month engagement",
   },
 ];
 
 export default function JobsPage() {
   return (
-    <div className={styles.page} style={hueStyle}>
+    <div className={styles.page}>
       {/* HERO */}
       <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
@@ -168,9 +155,6 @@ export default function JobsPage() {
                   className={styles.card}
                   style={
                     {
-                      "--sector-accent": `var(--hue-${o.hue}-500)`,
-                      "--sector-accent-08": `var(--hue-${o.hue}-08)`,
-                      "--sector-accent-35": `var(--hue-${o.hue}-35)`,
                       display: "grid",
                       gridTemplateColumns: "1fr auto auto auto",
                       gap: 24,

@@ -74,7 +74,7 @@
 .wwdCard {
   position: relative;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20);
+  border: 1px solid var(--sector-accent-20);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -87,8 +87,8 @@
 
 .wwdCard:hover {
   transform: translateY(-6px);
-  border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .wwdCard:hover .glow {
@@ -111,9 +111,13 @@
   width: 48px;
   height: 48px;
   border-radius: 0 0 0 var(--r-sm);
-  background: linear-gradient(135deg, var(--card-hue-35), var(--card-hue-08));
-  border: 1px solid var(--card-hue-35);
-  color: var(--card-hue);
+  background: linear-gradient(
+    135deg,
+    var(--sector-accent-35),
+    var(--sector-accent-08)
+  );
+  border: 1px solid var(--sector-accent-35);
+  color: var(--sector-accent);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 14px;
   transition: transform 0.32s ease;
@@ -133,7 +137,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--card-hue);
+  color: var(--sector-accent);
   margin-bottom: 4px;
 }
 
@@ -148,7 +152,7 @@
 }
 
 .wwdCard:hover .wwdTitle {
-  color: var(--card-hue);
+  color: var(--sector-accent);
 }
 
 .wwdCopy {
@@ -182,7 +186,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--card-hue);
+  background: var(--sector-accent);
   flex-shrink: 0;
   margin-top: 6px;
   opacity: 0.8;
@@ -197,7 +201,7 @@
   font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: var(--card-hue);
+  color: var(--sector-accent);
   opacity: 0.5;
 }
 
@@ -222,7 +226,7 @@
 .hwwStep {
   position: relative;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20);
+  border: 1px solid var(--sector-accent-20);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -235,8 +239,8 @@
 
 .hwwStep:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .hwwStep:hover .glow {
@@ -254,7 +258,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
-  color: var(--card-hue);
+  color: var(--sector-accent);
   margin-bottom: 12px;
   display: inline-flex;
   align-items: center;
@@ -265,7 +269,7 @@
   content: "";
   width: 18px;
   height: 1px;
-  background: var(--card-hue);
+  background: var(--sector-accent);
   opacity: 0.65;
 }
 
@@ -279,7 +283,7 @@
 }
 
 .hwwStep:hover .hwwStepTitle {
-  color: var(--card-hue);
+  color: var(--sector-accent);
 }
 
 .hwwStepCopy {
@@ -312,7 +316,7 @@
 .archCard {
   position: relative;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20);
+  border: 1px solid var(--sector-accent-20);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -325,8 +329,8 @@
 
 .archCard:hover {
   transform: translateY(-4px);
-  border-color: var(--card-hue-35);
-  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .archCard:hover .glow {
@@ -344,9 +348,13 @@
   width: 44px;
   height: 44px;
   border-radius: 0 0 0 var(--r-sm);
-  background: linear-gradient(135deg, var(--card-hue-35), var(--card-hue-08));
-  border: 1px solid var(--card-hue-35);
-  color: var(--card-hue);
+  background: linear-gradient(
+    135deg,
+    var(--sector-accent-35),
+    var(--sector-accent-08)
+  );
+  border: 1px solid var(--sector-accent-35);
+  color: var(--sector-accent);
   font-family: var(--font-mono);
   font-size: var(--fs-caption);
   font-weight: 700;
@@ -367,7 +375,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--card-hue);
+  color: var(--sector-accent);
   margin-bottom: 4px;
 }
 
@@ -460,7 +468,7 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 14px;
-  border: 1px solid var(--card-hue-20);
+  border: 1px solid var(--sector-accent-20);
   border-radius: 0 0 0 var(--r-sm);
   color: var(--fg);
   font-size: var(--fs-data);
@@ -473,8 +481,8 @@
 }
 
 .crossChip:hover {
-  background: color-mix(in oklab, var(--ground-2) 55%, var(--card-hue-08));
-  border-color: var(--card-hue);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
+  border-color: var(--sector-accent);
   transform: translateX(3px);
 }
 
@@ -483,7 +491,7 @@
 }
 
 .crossChipArr {
-  color: var(--card-hue);
+  color: var(--sector-accent);
   font-family: var(--font-mono);
   transition: transform 0.2s ease;
 }

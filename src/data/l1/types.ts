@@ -1,5 +1,3 @@
-export type L1Hue = "blue" | "green" | "orange" | "teal" | "violet" | "rose";
-
 export type L1Category = "industries" | "platforms" | "capabilities";
 
 /**
@@ -12,8 +10,7 @@ export interface L1IntroStatCard {
 
 /**
  * One card in the Expertise grid.
- * Each card has a background image behind a glass surface, tinted by
- * the page hue; clicks through to the L2 page for that function/module.
+ * Clicks through to the L2 page for that function or module.
  */
 export interface L1ExpertiseCard {
   slug: string;
@@ -22,7 +19,7 @@ export interface L1ExpertiseCard {
   roles: string[];
   /**
    * Icon key from `l1-icons.tsx` — sits in the top-left of the card,
-   * tinted with the sector accent.
+   * drawn in the one brand accent.
    */
   icon: L1IconKey;
   /** Short blurb under the title — one line, sub-heading style. */
@@ -162,7 +159,6 @@ export interface L1Insight {
 export interface L1PageData {
   slug: string;
   category: L1Category;
-  hue: L1Hue;
   breadcrumb: { label: string; href?: string }[];
 
   /** Hero */

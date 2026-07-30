@@ -3,7 +3,6 @@ import type { L1PageData } from "./types";
 export const telcoData: L1PageData = {
   slug: "telco",
   category: "industries",
-  hue: "teal",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
     { label: "Telco & Media" },
@@ -719,6 +718,6 @@ export const telcoData: L1PageData = {
     title:
       "Telco & Media Tech Contractors · Middle East · Europe · India | Yallo Talent",
     description:
-      "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 contractors for OSS, BSS, 5G and media programmes. 72h architect-screened shortlists across UK, Middle East and India.",
+      "Ericsson, Nokia, Amdocs, Netcracker and Salesforce C360 contractors for OSS, BSS, 5G and media programmes. 72h specialist-screened shortlists across UK, Middle East and India.",
   },
 };

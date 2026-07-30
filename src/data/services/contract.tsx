@@ -3,16 +3,15 @@ import type { ServicePageData } from "./types";
 
 export const contractData: ServicePageData = {
   slug: "contract",
-  hue: "orange",
   eyebrow: "Contract Workforce · Middle East · Europe · India",
   title: "Get contract specialists",
   emphasis: "on your programme in 72 hours.",
-  lede: "When your programme has a delivery gap or a peak, get architect-screened contract talent — mobilised faster than a permanent hire, screened to the same bar.",
+  lede: "When your programme has a delivery gap or a peak, get specialist-screened contract talent — mobilised faster than a permanent hire, screened to the same bar.",
   heroStat: { n: "72h", l: "brief to shortlist" },
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine:
-    "Architect-led · region-deep · same specialists we'd hire ourselves",
+    "Specialist-led · region-deep · same specialists we'd hire ourselves",
   benefitsHeading: "What you get with Yallo Contract",
   benefits: [
     {
@@ -21,7 +20,7 @@ export const contractData: ServicePageData = {
       icon: clockIcon,
     },
     {
-      title: "Architect-screened, not keyword-matched",
+      title: "Specialist-screened, not keyword-matched",
       copy: "Every candidate is reviewed by operators who have shipped the same programmes you're running — depth checks before you ever see a CV.",
       icon: shieldIcon,
     },
@@ -33,7 +32,7 @@ export const contractData: ServicePageData = {
   ],
   processHeading: "How Contract works",
   processLede:
-    "No CVs land in your inbox until we've calibrated to your programme. Every shortlist is reviewed by our architect team before you see it.",
+    "No CVs land in your inbox until we've calibrated to your programme. Every shortlist is reviewed by our specialist team before you see it.",
   process: [
     {
       title: "Brief & calibrate",
@@ -41,13 +40,13 @@ export const contractData: ServicePageData = {
       tag: "Day 1",
     },
     {
-      title: "Architect-led screening",
+      title: "Specialist-led screening",
       copy: "Our team assesses candidates for depth and delivery risk — not just keyword match. You review fits, not filler.",
       tag: "Days 1–3",
     },
     {
       title: "Shortlist delivered",
-      copy: "3–5 architect-screened candidates in your inbox, each with reasoning on why they're a fit for your programme.",
+      copy: "3–5 specialist-screened candidates in your inbox, each with reasoning on why they're a fit for your programme.",
       tag: "72h",
     },
     {
@@ -82,7 +81,7 @@ export const contractData: ServicePageData = {
     },
     {
       q: "What screening do you do before I see a CV?",
-      a: "Each candidate is reviewed by our architect team — the same operators who have shipped enterprise programmes at Richemont, Landmark and Alshaya EMEA. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
+      a: "Each candidate is reviewed by our specialist team — the same operators who have shipped enterprise programmes at Richemont, Landmark and Alshaya EMEA. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
     },
     {
       q: "Which regions do you cover?",
@@ -104,6 +103,6 @@ export const contractData: ServicePageData = {
   seo: {
     title: "Contract Workforce · Contractors in 72 hours | Yallo Talent",
     description:
-      "Get architect-screened contract specialists on your enterprise programme in 72 hours. the Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+      "Get specialist-screened contract specialists on your enterprise programme in 72 hours. the Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
   },
 };

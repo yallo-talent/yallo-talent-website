@@ -479,7 +479,7 @@
   display: flex;
   flex-direction: column;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   overflow: hidden;
   isolation: isolate;
@@ -505,11 +505,7 @@
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    var(--card-hue-20, var(--sector-accent-20)),
-    transparent 65%
-  );
+  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
   filter: blur(35px);
   pointer-events: none;
   z-index: 0;
@@ -521,12 +517,8 @@
 
 .tc:hover {
   transform: translateY(-5px);
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
 
 .tc:hover .tcGlow {
@@ -556,7 +548,7 @@
   padding: 0 10px;
   align-self: flex-start;
   background: color-mix(in oklab, var(--ground) 55%, transparent);
-  border: 1px solid var(--card-hue-35, var(--wa15));
+  border: 1px solid var(--wa15);
   border-radius: 0 0 0 var(--r-xs);
   margin-bottom: 16px;
 }
@@ -565,7 +557,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
 }
 
 .tcBadgeName {
@@ -615,15 +607,15 @@
   font-size: var(--fs-label);
   padding: 6px 10px;
   border-radius: var(--r-micro);
-  background: var(--card-hue-08, var(--sector-accent-08));
+  background: var(--sector-accent-08);
   color: var(--accent-label);
-  border: 1px solid var(--card-hue-20, var(--sector-accent-20));
+  border: 1px solid var(--sector-accent-20);
   line-height: 1;
   transition: background 0.18s ease;
 }
 
 .tc:hover .tcRole {
-  background: var(--card-hue-20, var(--sector-accent-20));
+  background: var(--sector-accent-20);
 }
 
 .tcBench {
@@ -657,9 +649,9 @@
   font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: -0.005em;
-  background: var(--card-hue-08, var(--sector-accent-08));
+  background: var(--sector-accent-08);
   color: var(--accent-label);
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -669,9 +661,9 @@
 }
 
 .tcCta:hover {
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
   color: var(--ink-950);
-  border-color: var(--card-hue, var(--sector-accent));
+  border-color: var(--sector-accent);
   transform: translateY(-2px);
 }
 
@@ -835,7 +827,7 @@
   padding: 10px 16px;
   border-radius: 0 0 0 var(--r-md);
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-35, var(--hairline));
+  border: 1px solid var(--hairline);
   color: var(--fg);
   font-size: var(--fs-data);
   font-weight: 600;
@@ -848,12 +840,8 @@
 }
 
 .crossChip:hover {
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
-  border-color: var(--card-hue, var(--sector-accent));
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
+  border-color: var(--sector-accent);
   transform: translateY(-2px);
 }
 
@@ -908,7 +896,7 @@
   display: block;
   padding: 22px;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   overflow: hidden;
@@ -921,12 +909,8 @@
 }
 
 .engagePillar:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
   transform: translateY(-4px);
 }
 
@@ -949,7 +933,7 @@
   display: grid;
   place-items: center;
   border-radius: 0 0 0 var(--r-xs);
-  background: var(--card-hue-08, var(--sector-accent-08));
+  background: var(--sector-accent-08);
   color: var(--accent-label);
   transition:
     transform 0.2s ease,
@@ -964,7 +948,7 @@
 
 .engagePillar:hover .engagePillarArrow {
   transform: translate(2px, -2px);
-  background: var(--card-hue-20, var(--sector-accent-20));
+  background: var(--sector-accent-20);
 }
 
 .engagePillarInner {
@@ -980,8 +964,8 @@
   border-radius: 0 0 0 var(--r-sm);
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)),
-    var(--card-hue-08, var(--sector-accent-08))
+    var(--sector-accent-35),
+    var(--sector-accent-08)
   );
   color: var(--accent-label);
   margin-bottom: 14px;
@@ -1042,7 +1026,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--card-hue, var(--sector-accent));
+  background: var(--sector-accent);
 }
 
 @media (max-width: 1100px) {
@@ -1189,7 +1173,7 @@
   gap: 6px;
   padding: 20px 22px;
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   overflow: hidden;
@@ -1201,12 +1185,8 @@
 }
 
 .relatedCard:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
-  background: color-mix(
-    in oklab,
-    var(--ground-2) 55%,
-    var(--card-hue-08, var(--sector-accent-08))
-  );
+  border-color: var(--sector-accent-35);
+  background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
   transform: translateY(-3px);
 }
 
@@ -1214,7 +1194,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
-  color: var(--card-hue, var(--fg-subtle));
+  color: var(--fg-subtle);
 }
 
 .relatedTitle {
@@ -1341,7 +1321,7 @@
   isolation: isolate;
   color: var(--fg);
   background: var(--ground-2);
-  border: 1px solid var(--card-hue-20, var(--hairline));
+  border: 1px solid var(--hairline);
   transition:
     border-color 0.28s ease,
     transform 0.28s ease,
@@ -1349,7 +1329,7 @@
 }
 
 .insCard:hover {
-  border-color: var(--card-hue-35, var(--sector-accent-35));
+  border-color: var(--sector-accent-35);
   transform: translateY(-5px);
 }
 
@@ -1368,7 +1348,7 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    var(--card-hue-35, var(--sector-accent-35)) 0%,
+    var(--sector-accent-35) 0%,
     transparent 55%
   );
   mix-blend-mode: overlay;
@@ -1402,7 +1382,7 @@
   padding: 5px 10px;
   border-radius: 0 0 0 var(--r-md);
   background: color-mix(in oklab, var(--ground) 60%, transparent);
-  border: 1px solid var(--card-hue-35, var(--sector-accent-35));
+  border: 1px solid var(--sector-accent-35);
   color: var(--accent-label);
 }
 
