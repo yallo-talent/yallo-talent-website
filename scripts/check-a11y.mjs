@@ -70,8 +70,42 @@ for (const theme of ["light", "dark"]) {
 
     for (const route of routes) {
       const page = await ctx.newPage();
-      await page.goto(base + route, { waitUntil: "load", timeout: 30000 });
+      // `domcontentloaded`, not `load` — the same change and the same reason as
+      // in capture-home.mjs. `load` additionally waits for every subresource,
+      // including the eighteen optimised client marks, and on a cold CI runner
+      // that exceeded 30s and failed the gate on a timing artefact rather than
+      // on anything about the page. Stylesheets are render-blocking, so they are
+      // applied before DOMContentLoaded fires, which is what axe actually needs
+      // to compute contrast and target geometry. The rule set below is unchanged.
+      await page.goto(base + route, {
+        waitUntil: "domcontentloaded",
+        timeout: 60000,
+      });
       await page.waitForTimeout(400);
+
+      // Positive assertion that the CSS actually arrived, because axe on an
+      // unstyled page does not error — it reports a wall of plausible-looking
+      // target-size and contrast failures. A stale local server serving a
+      // deleted build (500 on every CSS chunk) produced exactly that, and the
+      // findings read as real defects until the computed styles were inspected.
+      const styled = await page.evaluate(() => {
+        const cs = getComputedStyle(document.body);
+        return {
+          sheets: document.styleSheets.length,
+          // globals.css sets these; unstyled they are the browser defaults.
+          font: cs.fontFamily,
+          bg: cs.backgroundColor,
+        };
+      });
+      if (!styled.sheets || !/inter|newsreader|plex/i.test(styled.font)) {
+        console.error(
+          `\n✗ ${route} ${theme}/${width}: stylesheets did not apply ` +
+            `(${styled.sheets} sheet(s), body font ${styled.font}, bg ${styled.bg}).\n` +
+            "  Refusing to report axe results for an unstyled page. Check the " +
+            "server is serving the current build.",
+        );
+        process.exit(1);
+      }
 
       const { violations } = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
