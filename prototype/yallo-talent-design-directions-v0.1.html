@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yallo Talent — Design Directions v0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600;700&family=Archivo:wdth,wght@75..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   YALLO TALENT — DESIGN DIRECTIONS v0.1
+   Two complete visual worlds. Shared: the family mark, the petal
+   shape unit, the 4-part geometry, Inter as body, the nav structure.
+   Different: display face, palette, surface register.
+   Tokens are authored as CSS custom properties so they port to
+   globals.css verbatim.
+   ═══════════════════════════════════════════════════════════════ */
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#0b0b0d;font-family:Inter,system-ui,sans-serif;color:#e7e5e0}
+img,svg{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+/* ── Meta chrome (not part of either direction) ───────────────── */
+.meta{max-width:1180px;margin:0 auto;padding:56px 32px 8px}
+.meta h1{font-family:Inter;font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#8b8a86;margin:0 0 14px}
+.meta p{max-width:62ch;font-size:15px;line-height:1.65;color:#a8a7a2;margin:0 0 8px}
+.meta code{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#d4a843}
+.divider{height:1px;background:#25252a;max-width:1180px;margin:40px auto}
+.dirlabel{max-width:1180px;margin:0 auto;padding:0 32px 22px;display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+.dirlabel .n{font-family:'IBM Plex Mono',monospace;font-size:12px;color:#d4a843;letter-spacing:.1em}
+.dirlabel .t{font-family:Inter;font-size:26px;font-weight:650;letter-spacing:-.02em;color:#f2f1ee}
+.dirlabel .s{font-size:14px;color:#8b8a86;max-width:52ch;line-height:1.55}
+
+/* ── Token spec panel ─────────────────────────────────────────── */
+.spec{max-width:1180px;margin:0 auto 26px;padding:0 32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:22px}
+.spec section h4{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#6f6e6a;margin:0 0 10px;font-weight:500}
+.sw{display:flex;gap:7px;flex-wrap:wrap}
+.sw i{width:38px;height:38px;border-radius:0 0 0 14px;display:block;border:1px solid rgba(255,255,255,.09)}
+.spec dl{margin:0;font-size:13px;line-height:1.75;color:#a8a7a2}
+.spec dt{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6f6e6a}
+.spec dd{margin:0 0 7px}
+
+/* ── Frame that holds each live direction ─────────────────────── */
+.frame{max-width:1180px;margin:0 auto 8px;padding:0 32px}
+.stage{border-radius:0 0 0 40px;overflow:hidden;border:1px solid #25252a}
+
+/* ═══════════════════════════════════════════════════════════════
+   SHARED PRIMITIVES — petal geometry
+   The mark is four quarter-round petals: three square corners,
+   one large radius, rotated 90° each. That form is the site's
+   universal shape unit.
+   ═══════════════════════════════════════════════════════════════ */
+.petal-tl{border-radius:56px 0 0 0}
+.petal-tr{border-radius:0 56px 0 0}
+.petal-br{border-radius:0 0 56px 0}
+.petal-bl{border-radius:0 0 0 56px}
+
+/* ═══════════════════════════════════════════════════════════════
+   DIRECTION A — "THE PROGRAMME PLAN"
+   Light. The vernacular of the subject's own world: mobilisation
+   charts, phase bands, role rows, resource plans. Not photography,
+   not a broadsheet — a plan. Sturdy editorial serif display so it
+   reads advisory, never hairline-fashion. Cool paper against warm
+   gold for tension.
+   ═══════════════════════════════════════════════════════════════ */
+.dirA{
+  --paper:#eae9e4;
+  --paper-2:#f4f3f0;
+  --ink:#16171a;
+  --ink-2:#3d3f45;
+  --ink-3:#6e7077;
+  --gold:#d4a843;
+  --gold-deep:#a8811f;
+  --rule:#cfcdc5;
+  --font-display:Newsreader,Georgia,serif;
+  --font-body:Inter,system-ui,sans-serif;
+  --font-data:'IBM Plex Mono',monospace;
+  background:var(--paper);color:var(--ink);
+  font-family:var(--font-body);
+}
+.dirA ::selection{background:var(--gold);color:var(--ink)}
+
+/* nav */
+.dirA .nav{display:flex;align-items:center;gap:34px;padding:20px 34px;border-bottom:1px solid var(--rule)}
+.dirA .brand{display:flex;align-items:center;gap:11px;margin-right:8px}
+.dirA .brand .wm{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.015em;line-height:1}
+.dirA .brand .wm em{font-style:normal;color:var(--ink-3);font-weight:400}
+.dirA .navlinks{display:flex;gap:26px;font-size:14.5px;font-weight:500;color:var(--ink-2)}
+.dirA .navlinks span{position:relative;padding-bottom:3px;cursor:default}
+.dirA .navlinks span::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--gold);transition:right .3s cubic-bezier(.2,.7,.2,1)}
+.dirA .navlinks span:hover::after{right:0}
+.dirA .navright{margin-left:auto;display:flex;align-items:center;gap:20px}
+.dirA .jobs{font-size:13.5px;color:var(--ink-3)}
+.dirA .cta{background:var(--ink);color:var(--paper-2);font-size:14px;font-weight:550;padding:11px 20px;border-radius:0 0 0 16px;letter-spacing:.005em}
+
+/* hero */
+.dirA .hero{padding:78px 34px 0;position:relative;overflow:hidden}
+.dirA .eyebrow{font-family:var(--font-data);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);display:flex;gap:11px;align-items:center;margin-bottom:26px}
+.dirA .eyebrow .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.dirA h2.hl{font-family:var(--font-display);font-weight:500;font-size:clamp(34px,4.9vw,62px);line-height:1.04;letter-spacing:-.022em;margin:0;max-width:19ch}
+.dirA h2.hl b{font-weight:600;font-style:italic;color:var(--gold-deep)}
+.dirA .sub{margin:26px 0 0;max-width:54ch;font-size:17px;line-height:1.62;color:var(--ink-2)}
+.dirA .herocta{display:flex;gap:14px;align-items:center;margin:34px 0 0;flex-wrap:wrap}
+.dirA .btnP{background:var(--gold);color:var(--ink);font-weight:600;font-size:15px;padding:14px 26px;border-radius:0 0 0 18px}
+.dirA .btnS{font-size:15px;font-weight:500;color:var(--ink);border-bottom:1.5px solid var(--gold);padding-bottom:2px}
+
+/* proof strip */
+.dirA .proof{margin-top:64px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:22px 34px;display:flex;align-items:center;gap:30px;flex-wrap:wrap;background:var(--paper-2)}
+.dirA .proof .lab{font-family:var(--font-data);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.dirA .proof .names{display:flex;gap:26px;flex-wrap:wrap;font-family:var(--font-display);font-size:16.5px;color:var(--ink);font-weight:500}
+
+/* the plan — signature device */
+.dirA .plan{padding:64px 34px 74px}
+.dirA .plan h3{font-family:var(--font-display);font-weight:500;font-size:30px;letter-spacing:-.018em;margin:0 0 6px}
+.dirA .plan .pt{font-size:15px;color:var(--ink-3);margin:0 0 34px;max-width:56ch;line-height:1.6}
+.dirA .bands{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);background:var(--paper-2)}
+.dirA .band{padding:26px 22px 28px;border-right:1px solid var(--rule);position:relative}
+.dirA .band:last-child{border-right:0}
+.dirA .band .ph{font-family:var(--font-data);font-size:10.5px;letter-spacing:.14em;color:var(--gold-deep);text-transform:uppercase}
+.dirA .band .hh{font-family:var(--font-display);font-size:20px;font-weight:550;margin:12px 0 8px;letter-spacing:-.012em}
+.dirA .band p{margin:0;font-size:13.5px;line-height:1.58;color:var(--ink-2)}
+.dirA .band .clock{margin-top:18px;font-family:var(--font-data);font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+.dirA .band .pet{position:absolute;right:0;bottom:0;width:46px;height:46px;background:var(--gold);opacity:.14;border-radius:56px 0 0 0}
+.dirA .band:nth-child(2) .pet{opacity:.28}
+.dirA .band:nth-child(3) .pet{opacity:.46}
+.dirA .band:nth-child(4) .pet{opacity:.9;border-radius:56px 0 0 0}
+/* the resource rows under the bands — the "plan" language */
+.dirA .rows{margin-top:0;border:1px solid var(--rule);border-top:0;background:var(--paper)}
+.dirA .row{display:grid;grid-template-columns:190px 1fr;align-items:center;gap:0;border-bottom:1px solid var(--rule);font-size:13px}
+.dirA .row:last-child{border-bottom:0}
+.dirA .row .rl{padding:11px 22px;font-weight:550;color:var(--ink);border-right:1px solid var(--rule)}
+.dirA .row .rt{position:relative;height:38px}
+.dirA .row .bar{position:absolute;top:11px;height:15px;background:var(--ink);border-radius:0 0 0 7px}
+.dirA .row .bar.g{background:var(--gold)}
+.dirA .row .bar.o{background:var(--rule)}
+
+/* ═══════════════════════════════════════════════════════════════
+   DIRECTION B — "THE BENCH"
+   Dark, but deliberately — the register of a private-market
+   intelligence product, not a SaaS template. No glass, no glow,
+   no gradient. Tight grotesque, tabular figures, dense evidence.
+   Plays to the one asset no competitor has: real depth of data on
+   who is available and how scarce they are.
+   ═══════════════════════════════════════════════════════════════ */
+.dirB{
+  --base:#0c0d10;
+  --panel:#14161b;
+  --panel-2:#1b1e24;
+  --line:#262a32;
+  --txt:#e9e8e4;
+  --txt-2:#9fa3ac;
+  --txt-3:#6b7079;
+  --gold:#d4a843;
+  --gold-dim:#8a6f2c;
+  --font-display:Archivo,Inter,sans-serif;
+  --font-body:Inter,system-ui,sans-serif;
+  --font-data:'IBM Plex Mono',monospace;
+  background:var(--base);color:var(--txt);font-family:var(--font-body);
+}
+.dirB ::selection{background:var(--gold);color:var(--base)}
+
+.dirB .nav{display:flex;align-items:center;gap:34px;padding:20px 34px;border-bottom:1px solid var(--line)}
+.dirB .brand{display:flex;align-items:center;gap:11px}
+.dirB .brand .wm{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.03em;font-stretch:105%;line-height:1}
+.dirB .brand .wm em{font-style:normal;font-weight:400;color:var(--txt-3)}
+.dirB .navlinks{display:flex;gap:26px;font-size:14px;font-weight:500;color:var(--txt-2)}
+.dirB .navlinks span{cursor:default;transition:color .2s}
+.dirB .navlinks span:hover{color:var(--gold)}
+.dirB .navright{margin-left:auto;display:flex;align-items:center;gap:20px}
+.dirB .jobs{font-size:13.5px;color:var(--txt-3)}
+.dirB .cta{background:var(--gold);color:#17140c;font-size:14px;font-weight:650;padding:11px 20px;border-radius:0 0 0 16px}
+
+.dirB .hero{padding:74px 34px 0}
+.dirB .eyebrow{font-family:var(--font-data);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;gap:11px;align-items:center}
+.dirB .eyebrow .dot{width:5px;height:5px;background:var(--gold);border-radius:50%}
+.dirB h2.hl{font-family:var(--font-display);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1.02;letter-spacing:-.038em;margin:0;max-width:20ch;font-stretch:103%}
+.dirB h2.hl b{color:var(--gold);font-weight:700}
+.dirB .sub{margin:24px 0 0;max-width:54ch;font-size:16.5px;line-height:1.62;color:var(--txt-2)}
+.dirB .herocta{display:flex;gap:14px;align-items:center;margin:32px 0 0;flex-wrap:wrap}
+.dirB .btnP{background:var(--gold);color:#17140c;font-weight:650;font-size:15px;padding:14px 26px;border-radius:0 0 0 18px}
+.dirB .btnS{font-size:15px;font-weight:500;color:var(--txt);border-bottom:1.5px solid var(--gold-dim);padding-bottom:2px}
+
+.dirB .proof{margin-top:60px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 34px;display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:var(--panel)}
+.dirB .proof .lab{font-family:var(--font-data);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--txt-3)}
+.dirB .proof .names{display:flex;gap:24px;flex-wrap:wrap;font-family:var(--font-display);font-size:15.5px;font-weight:600;color:var(--txt);letter-spacing:-.01em}
+
+/* the bench — signature device */
+.dirB .bench{padding:60px 34px 74px}
+.dirB .bench h3{font-family:var(--font-display);font-weight:700;font-size:28px;letter-spacing:-.03em;margin:0 0 6px}
+.dirB .bench .pt{font-size:15px;color:var(--txt-3);margin:0 0 30px;max-width:58ch;line-height:1.6}
+.dirB .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.dirB .cell{background:var(--panel);padding:20px 20px 22px;position:relative;transition:background .25s}
+.dirB .cell:hover{background:var(--panel-2)}
+.dirB .cell .rl{font-family:var(--font-display);font-size:16px;font-weight:650;letter-spacing:-.018em;margin-bottom:5px}
+.dirB .cell .rp{font-size:12.5px;color:var(--txt-3);margin-bottom:16px}
+.dirB .cell .mrow{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-data);font-size:11px;color:var(--txt-3);padding:5px 0;border-top:1px solid var(--line)}
+.dirB .cell .mrow b{color:var(--txt);font-weight:500;font-variant-numeric:tabular-nums}
+.dirB .cell .sc{position:absolute;top:20px;right:20px;font-family:var(--font-data);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border:1px solid var(--gold-dim);color:var(--gold);border-radius:0 0 0 8px}
+.dirB .cell .pet{position:absolute;left:0;bottom:0;width:34px;height:34px;background:var(--gold);opacity:.09;border-radius:0 56px 0 0}
+
+/* ── footprint device: four entities, four petals ─────────────── */
+.foot4{display:flex;gap:0;align-items:stretch;margin-top:34px;border:1px solid currentColor;border-color:inherit}
+.dirA .foot4{border-color:var(--rule);background:var(--paper-2)}
+.dirB .foot4{border-color:var(--line);background:var(--panel)}
+.foot4 .e{flex:1;padding:18px 20px;position:relative}
+.dirA .foot4 .e{border-right:1px solid var(--rule)}
+.dirB .foot4 .e{border-right:1px solid var(--line)}
+.foot4 .e:last-child{border-right:0}
+.foot4 .e .city{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.dirA .foot4 .e .city{font-family:var(--font-display);font-weight:550;font-size:17px}
+.dirB .foot4 .e .city{font-family:var(--font-display);font-weight:650}
+.foot4 .e .role{font-family:var(--font-data);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-top:6px}
+.dirA .foot4 .e .role{color:var(--ink-3)}
+.dirB .foot4 .e .role{color:var(--txt-3)}
+.foot4 .e .mk{position:absolute;right:14px;top:16px;width:13px;height:13px;background:var(--gold)}
+.foot4 .e:nth-child(1) .mk{border-radius:56px 0 0 0}
+.foot4 .e:nth-child(2) .mk{border-radius:0 56px 0 0}
+.foot4 .e:nth-child(3) .mk{border-radius:0 0 56px 0}
+.foot4 .e:nth-child(4) .mk{border-radius:0 0 0 56px}
+
+/* ── responsive ───────────────────────────────────────────────── */
+@media (max-width:900px){
+  .dirA .navlinks,.dirB .navlinks,.dirA .jobs,.dirB .jobs{display:none}
+  .dirA .bands{grid-template-columns:repeat(2,1fr)}
+  .dirA .band:nth-child(2){border-right:0}
+  .dirA .band:nth-child(1),.dirA .band:nth-child(2){border-bottom:1px solid var(--rule)}
+  .foot4{flex-wrap:wrap}
+  .foot4 .e{flex:1 1 48%}
+  .dirA .row{grid-template-columns:130px 1fr}
+}
+@media (max-width:620px){
+  .meta,.frame,.spec,.dirlabel{padding-left:18px;padding-right:18px}
+  .dirA .hero,.dirB .hero,.dirA .plan,.dirB .bench,.dirA .nav,.dirB .nav,.dirA .proof,.dirB .proof{padding-left:18px;padding-right:18px}
+  .dirA .bands{grid-template-columns:1fr}
+  .dirA .band{border-right:0;border-bottom:1px solid var(--rule)}
+}
+:focus-visible{outline:2px solid #d4a843;outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="meta">
+  <h1>Yallo Talent · Phase 4 · Design Directions v0.1</h1>
+  <p>Two complete visual worlds, not two colour schemes. Both share the Yallo family mark, the petal shape unit derived from it, the four-part geometry, <code>Inter</code> as body face, the rebuilt outward-facing navigation, and the brand gold <code>#D4A843</code>. They differ in display face, palette and surface register — which is exactly the axis on which the three Yallo pillars should differ.</p>
+  <p>Pick one. I then build the full twelve-section homepage in it and write <code>DESIGN.md</code> from the tokens below.</p>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════ DIRECTION A ══════════════ -->
+<div class="dirlabel">
+  <span class="n">DIRECTION A</span>
+  <span class="t">The Programme Plan</span>
+  <span class="s">Borrows the vernacular of your buyer's own world — mobilisation charts, phase bands, resource rows. Advisory, not agency. Differentiates hardest from a category built entirely on stock photography.</span>
+</div>
+
+<div class="spec dirA" style="background:none;color:#a8a7a2">
+  <section>
+    <h4>Palette</h4>
+    <div class="sw">
+      <i style="background:#eae9e4" title="#EAE9E4 paper"></i>
+      <i style="background:#f4f3f0" title="#F4F3F0 paper-2"></i>
+      <i style="background:#16171a" title="#16171A ink"></i>
+      <i style="background:#d4a843" title="#D4A843 gold"></i>
+      <i style="background:#a8811f" title="#A8811F gold-deep"></i>
+      <i style="background:#cfcdc5" title="#CFCDC5 rule"></i>
+    </div>
+  </section>
+  <section>
+    <h4>Type</h4>
+    <dl>
+      <dt>display</dt><dd>Newsreader 500/600 — sturdy editorial serif, never hairline</dd>
+      <dt>body</dt><dd>Inter 400/500/600</dd>
+      <dt>data</dt><dd>IBM Plex Mono — tables and rate bands only</dd>
+    </dl>
+  </section>
+  <section>
+    <h4>Signature</h4>
+    <dl>
+      <dt>shape</dt><dd>Quarter-round petal — three square corners, one 56px radius</dd>
+      <dt>device</dt><dd>The four-phase plan, with resource rows beneath</dd>
+      <dt>motion</dt><dd>Pinwheel rotation, 480ms ease-out</dd>
+    </dl>
+  </section>
+</div>
+
+<div class="frame"><div class="stage dirA">
+  <nav class="nav">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 300 300" aria-hidden="true"><g fill="#d4a843" fill-rule="evenodd"><path d="M19.6,214.3c0-32.4,26.1-58.7,58.3-58.7h58.3v58.7c0,32.4-26.1,58.7-58.3,58.7s-58.3-26.3-58.3-58.7Z"/><path d="M272.5,78.9c0,32.4-26.1,58.7-58.3,58.7h-58.3v-58.7c0-32.4,26.1-58.7,58.3-58.7s58.3,26.3,58.3,58.7Z"/><path d="M19.6,78.9c0,32.4,26.1,58.7,58.3,58.7h58.3v-58.7c0-32.4-26.1-58.7-58.3-58.7s-58.3,26.3-58.3,58.7Z"/><path d="M272.5,214.3c0-32.4-26.1-58.7-58.3-58.7h-58.3v58.7c0,32.4,26.1,58.7,58.3,58.7s58.3-26.3,58.3-58.7Z"/></g></svg>
+      <span class="wm">Yallo <em>Talent</em></span>
+    </div>
+    <div class="navlinks"><span>Specialisms</span><span>Industries</span><span>How we work</span><span>Evidence</span><span>Intelligence</span></div>
+    <div class="navright"><a class="jobs" href="#">Jobs&nbsp;↗</a><a class="cta" href="#">Start a brief</a></div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span>London · Dubai · Riyadh · Bengaluru</div>
+    <h2 class="hl">Enterprise programmes rarely fail on budget. They fail on the <b>six people you couldn't find.</b></h2>
+    <p class="sub">Yallo Talent staffs enterprise platform programmes across the Middle East and Europe — SAP, Oracle, Workday, Salesforce. Architect-screened specialists, shortlisted in 72 hours.</p>
+    <div class="herocta"><a class="btnP" href="#">Start a brief</a><a class="btnS" href="#">See how the screen works</a></div>
+    <div class="foot4">
+      <div class="e"><span class="mk"></span><div class="city">London</div><div class="role">European demand</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Dubai</div><div class="role">Regional HQ</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Riyadh</div><div class="role">In-country entity</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Bengaluru</div><div class="role">Supply engine</div></div>
+    </div>
+  </header>
+
+  <div class="proof">
+    <span class="lab">Programmes staffed for</span>
+    <div class="names"><span>Landmark</span><span>Majid Al Futtaim</span><span>Al Tayer</span><span>Chalhoub</span><span>Wickes</span><span>TCS</span></div>
+  </div>
+
+  <section class="plan">
+    <h3>The screen, in four phases.</h3>
+    <p class="pt">Not a process diagram. The actual shape of a mobilisation — what happens, who does it, and how long it takes before names reach you.</p>
+    <div class="bands">
+      <div class="band"><span class="pet"></span><div class="ph">Phase 01</div><div class="hh">Brief</div><p>Role, platform, programme phase and the gate you're working to. Not a job description.</p><div class="clock">Hour 0</div></div>
+      <div class="band"><span class="pet"></span><div class="ph">Phase 02</div><div class="hh">Calibrate</div><p>An architect who has run your platform sets the bar and names the failure modes.</p><div class="clock">Hour 0–8</div></div>
+      <div class="band"><span class="pet"></span><div class="ph">Phase 03</div><div class="hh">Screen</div><p>Technical screening by a practitioner, in region, against the calibrated bar.</p><div class="clock">Hour 8–60</div></div>
+      <div class="band"><span class="pet"></span><div class="ph">Phase 04</div><div class="hh">Shortlist</div><p>Three names with screening notes and the reasons the others were rejected.</p><div class="clock">Hour 72</div></div>
+    </div>
+    <div class="rows">
+      <div class="row"><div class="rl">Solution architect</div><div class="rt"><span class="bar g" style="left:2%;width:26%"></span></div></div>
+      <div class="row"><div class="rl">Functional leads ×3</div><div class="rt"><span class="bar" style="left:14%;width:44%"></span></div></div>
+      <div class="row"><div class="rl">Integration ×2</div><div class="rt"><span class="bar" style="left:30%;width:38%"></span></div></div>
+      <div class="row"><div class="rl">Data migration</div><div class="rt"><span class="bar o" style="left:44%;width:24%"></span></div></div>
+      <div class="row"><div class="rl">Test lead · QA</div><div class="rt"><span class="bar o" style="left:56%;width:30%"></span></div></div>
+      <div class="row"><div class="rl">Change &amp; adoption</div><div class="rt"><span class="bar g" style="left:66%;width:30%"></span></div></div>
+    </div>
+  </section>
+</div></div>
+
+<div class="divider"></div>
+
+<!-- ══════════════ DIRECTION B ══════════════ -->
+<div class="dirlabel">
+  <span class="n">DIRECTION B</span>
+  <span class="t">The Bench</span>
+  <span class="s">Dark on purpose rather than by default — the register of a private-market intelligence product. No glass, no glow, no gradient. Plays to the one asset no competitor holds: real depth on who exists and how scarce they are.</span>
+</div>
+
+<div class="spec" style="color:#a8a7a2">
+  <section>
+    <h4>Palette</h4>
+    <div class="sw">
+      <i style="background:#0c0d10" title="#0C0D10 base"></i>
+      <i style="background:#14161b" title="#14161B panel"></i>
+      <i style="background:#1b1e24" title="#1B1E24 panel-2"></i>
+      <i style="background:#d4a843" title="#D4A843 gold"></i>
+      <i style="background:#8a6f2c" title="#8A6F2C gold-dim"></i>
+      <i style="background:#e9e8e4" title="#E9E8E4 text"></i>
+    </div>
+  </section>
+  <section>
+    <h4>Type</h4>
+    <dl>
+      <dt>display</dt><dd>Archivo 650/700, slightly expanded, tight tracking</dd>
+      <dt>body</dt><dd>Inter 400/500/600</dd>
+      <dt>data</dt><dd>IBM Plex Mono, tabular figures throughout</dd>
+    </dl>
+  </section>
+  <section>
+    <h4>Signature</h4>
+    <dl>
+      <dt>shape</dt><dd>Quarter-round petal, mirrored orientation</dd>
+      <dt>device</dt><dd>The bench — role cells with live scarcity and time-to-hire</dd>
+      <dt>motion</dt><dd>Cell reveal on scroll, 320ms, stagger 40ms</dd>
+    </dl>
+  </section>
+</div>
+
+<div class="frame"><div class="stage dirB">
+  <nav class="nav">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 300 300" aria-hidden="true"><g fill="#d4a843" fill-rule="evenodd"><path d="M19.6,214.3c0-32.4,26.1-58.7,58.3-58.7h58.3v58.7c0,32.4-26.1,58.7-58.3,58.7s-58.3-26.3-58.3-58.7Z"/><path d="M272.5,78.9c0,32.4-26.1,58.7-58.3,58.7h-58.3v-58.7c0-32.4,26.1-58.7,58.3-58.7s58.3,26.3,58.3,58.7Z"/><path d="M19.6,78.9c0,32.4,26.1,58.7,58.3,58.7h58.3v-58.7c0-32.4-26.1-58.7-58.3-58.7s-58.3,26.3-58.3,58.7Z"/><path d="M272.5,214.3c0-32.4-26.1-58.7-58.3-58.7h-58.3v58.7c0,32.4,26.1,58.7,58.3,58.7s58.3-26.3,58.3-58.7Z"/></g></svg>
+      <span class="wm">Yallo <em>Talent</em></span>
+    </div>
+    <div class="navlinks"><span>Specialisms</span><span>Industries</span><span>How we work</span><span>Evidence</span><span>Intelligence</span></div>
+    <div class="navright"><a class="jobs" href="#">Jobs&nbsp;↗</a><a class="cta" href="#">Start a brief</a></div>
+  </nav>
+
+  <header class="hero">
+    <div class="eyebrow"><span class="dot"></span>London · Dubai · Riyadh · Bengaluru</div>
+    <h2 class="hl">The specialists your programme needs are not on the market. <b>They're on ours.</b></h2>
+    <p class="sub">An assessed bench of enterprise platform specialists across the Middle East and Europe, screened by architects who have run the programmes you're staffing. Shortlist in 72 hours.</p>
+    <div class="herocta"><a class="btnP" href="#">Start a brief</a><a class="btnS" href="#">See the bench</a></div>
+    <div class="foot4">
+      <div class="e"><span class="mk"></span><div class="city">London</div><div class="role">European demand</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Dubai</div><div class="role">Regional HQ</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Riyadh</div><div class="role">In-country entity</div></div>
+      <div class="e"><span class="mk"></span><div class="city">Bengaluru</div><div class="role">Supply engine</div></div>
+    </div>
+  </header>
+
+  <div class="proof">
+    <span class="lab">Programmes staffed for</span>
+    <div class="names"><span>Landmark</span><span>Majid Al Futtaim</span><span>Al Tayer</span><span>Chalhoub</span><span>Wickes</span><span>TCS</span></div>
+  </div>
+
+  <section class="bench">
+    <h3>Scarcity, priced honestly.</h3>
+    <p class="pt">The roles enterprise programmes under-scope, with how hard each one actually is to fill in region. Figures shown are placeholders pending the metric definitions and licence check.</p>
+    <div class="grid">
+      <div class="cell"><span class="pet"></span><span class="sc">Scarce</span><div class="rl">S/4HANA architect</div><div class="rp">SAP · Middle East</div>
+        <div class="mrow"><span>Time to shortlist</span><b>72h</b></div><div class="mrow"><span>In-region pool</span><b>—</b></div><div class="mrow"><span>Placed 12mo</span><b>—</b></div></div>
+      <div class="cell"><span class="pet"></span><span class="sc">Critical</span><div class="rl">Data migration lead</div><div class="rp">Cross-platform · UAE, KSA</div>
+        <div class="mrow"><span>Time to shortlist</span><b>72h</b></div><div class="mrow"><span>In-region pool</span><b>—</b></div><div class="mrow"><span>Placed 12mo</span><b>—</b></div></div>
+      <div class="cell"><span class="pet"></span><span class="sc">Scarce</span><div class="rl">Fusion integration</div><div class="rp">Oracle · Middle East</div>
+        <div class="mrow"><span>Time to shortlist</span><b>72h</b></div><div class="mrow"><span>In-region pool</span><b>—</b></div><div class="mrow"><span>Placed 12mo</span><b>—</b></div></div>
+      <div class="cell"><span class="pet"></span><span class="sc">Emerging</span><div class="rl">Agentic AI developer</div><div class="rp">AI talent · Europe, ME</div>
+        <div class="mrow"><span>Time to shortlist</span><b>72h</b></div><div class="mrow"><span>In-region pool</span><b>—</b></div><div class="mrow"><span>Placed 12mo</span><b>—</b></div></div>
+    </div>
+  </section>
+</div></div>
+
+<div class="divider"></div>
+<div class="meta" style="padding-bottom:70px">
+  <h1>What is shared either way</h1>
+  <p>The Yallo family mark, unchanged. The petal shape unit and its four-fold geometry. <code>Inter</code> as body face across all three pillars. The five-item outward-facing nav. The brand gold <code>#D4A843</code> replacing the build's <code>#FBBF24</code>. The four-entity footprint device, which now carries Riyadh. Tabular figures for any published number. And the rule that every figure on the site carries a visible source — the placeholder dashes above are deliberate, not unfinished.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yallo Talent — Homepage v0.1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   YALLO TALENT — HOMEPAGE v0.1
+   Direction A, light editorial register, two dark evidence bands (§8, §9).
+   Signature: the quarter-round petal from the Yallo mark. Three square
+   corners, one large radius. Used on cards, buttons, image masks, bands.
+   Every token below ports to globals.css as-is.
+   Slots marked [SLOT] need real data before publish.
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  --paper:#eae9e4; --paper-2:#f4f3f0; --paper-3:#e0dfd8;
+  --ink:#16171a; --ink-2:#3d3f45; --ink-3:#6e7077;
+  --gold:#d4a843; --gold-deep:#a8811f; --gold-wash:#f0e6cd;
+  --rule:#cfcdc5; --rule-soft:#dcdad2;
+  --dk:#0c0d10; --dk-2:#14161b; --dk-3:#1b1e24;
+  --dk-line:#262a32; --dk-txt:#e9e8e4; --dk-txt-2:#9fa3ac; --dk-txt-3:#6b7079;
+  --f-d:Newsreader,Georgia,serif; --f-b:Inter,system-ui,sans-serif; --f-m:'IBM Plex Mono',monospace;
+  --pad:clamp(20px,5vw,72px);
+  --r:56px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-b);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+h1,h2,h3,h4{margin:0;font-family:var(--f-d);font-weight:500;letter-spacing:-.02em;line-height:1.06}
+p{margin:0}
+::selection{background:var(--gold);color:var(--ink)}
+:focus-visible{outline:2px solid var(--gold-deep);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* shared primitives ------------------------------------------------- */
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+.eye{font-family:var(--f-m);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-deep);display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.eye i{width:5px;height:5px;background:var(--gold);border-radius:50%;flex:none}
+.dk .eye{color:var(--gold)}
+.h2{font-size:clamp(28px,3.5vw,44px);max-width:22ch}
+.lede{font-size:17px;line-height:1.62;color:var(--ink-2);max-width:56ch;margin-top:18px}
+.dk .lede{color:var(--dk-txt-2)}
+.sec{padding:clamp(56px,7vw,104px) 0;border-top:1px solid var(--rule)}
+.dk{background:var(--dk);color:var(--dk-txt);border-top:0}
+.dk h2,.dk h3{color:var(--dk-txt)}
+.btnP{display:inline-flex;align-items:center;gap:9px;background:var(--gold);color:var(--ink);font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.btnP:hover{transform:translateY(-2px)}
+.btnD{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:var(--paper-2);font-weight:600;font-size:15px;padding:14px 24px;border-radius:0 0 0 18px}
+.btnS{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:500;border-bottom:1.5px solid var(--gold);padding-bottom:2px}
+.src{font-family:var(--f-m);font-size:10.5px;line-height:1.5;color:var(--ink-3);letter-spacing:.01em}
+.dk .src{color:var(--dk-txt-3)}
+.slot{font-family:var(--f-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);border:1px dashed var(--gold-deep);padding:3px 7px;border-radius:0 0 0 8px;display:inline-block}
+
+/* ── NAV ───────────────────────────────────────────────────────────── */
+.nav{position:sticky;top:0;z-index:40;background:rgba(234,233,228,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.navIn{max-width:1240px;margin:0 auto;padding:16px var(--pad);display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:11px}
+.brand .wm{font-family:var(--f-d);font-size:21px;font-weight:600;letter-spacing:-.015em}
+.brand .wm em{font-style:normal;font-weight:400;color:var(--ink-3)}
+.nl{display:flex;gap:24px;font-size:14.5px;font-weight:500;color:var(--ink-2)}
+.nl a{position:relative;padding-bottom:3px}
+.nl a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--gold);transition:right .35s cubic-bezier(.2,.7,.2,1)}
+.nl a:hover::after{right:0}
+.nr{margin-left:auto;display:flex;align-items:center;gap:18px}
+.jobs{font-size:13.5px;color:var(--ink-3)}
+
+/* ── 1 · HERO ──────────────────────────────────────────────────────── */
+.hero{padding:clamp(56px,8vw,104px) 0 0}
+.hero h1{font-size:clamp(36px,5.4vw,68px);max-width:19ch;line-height:1.02}
+.hero h1 b{font-weight:600;font-style:italic;color:var(--gold-deep)}
+.hero .lede{font-size:18.5px;max-width:58ch;margin-top:28px}
+.heroCta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:36px}
+.f4{display:flex;margin-top:56px;border:1px solid var(--rule);background:var(--paper-2)}
+.f4 .e{flex:1;padding:18px 20px;position:relative;border-right:1px solid var(--rule)}
+.f4 .e:last-child{border-right:0}
+.f4 .city{font-family:var(--f-d);font-size:18px;font-weight:550}
+.f4 .role{font-family:var(--f-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:6px}
+.f4 .mk{position:absolute;right:16px;top:18px;width:12px;height:12px;background:var(--gold)}
+.f4 .e:nth-child(1) .mk{border-radius:var(--r) 0 0 0}
+.f4 .e:nth-child(2) .mk{border-radius:0 var(--r) 0 0}
+.f4 .e:nth-child(3) .mk{border-radius:0 0 var(--r) 0}
+.f4 .e:nth-child(4) .mk{border-radius:0 0 0 var(--r)}
+
+/* ── 2 · THE GAP (persona index) ───────────────────────────────────── */
+.gap{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(28px,4vw,64px);margin-top:38px;align-items:start}
+.pidx{border-top:1px solid var(--rule)}
+.pidx button{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;width:100%;padding:17px 0;border-bottom:1px solid var(--rule-soft);transition:padding-left .4s cubic-bezier(.2,.7,.2,1)}
+.pidx button .r{font-family:var(--f-d);font-size:21px;font-weight:550;letter-spacing:-.015em}
+.pidx button .c{font-size:12.5px;color:var(--ink-3);text-align:right}
+.pidx button[aria-selected="true"]{padding-left:16px;box-shadow:inset 2px 0 0 var(--gold)}
+.pidx button[aria-selected="true"] .c{color:var(--gold-deep)}
+.pnl{background:var(--paper-2);border:1px solid var(--rule);border-radius:0 0 0 var(--r);padding:clamp(24px,3vw,38px)}
+.pnl .lab{font-family:var(--f-m);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+.pnl h3{font-size:clamp(22px,2.4vw,30px);max-width:24ch}
+.qs{margin:24px 0 0;display:grid;gap:0}
+.qs blockquote{margin:0;padding:16px 0 16px 20px;border-left:2px solid var(--gold-wash);font-family:var(--f-d);font-size:17.5px;line-height:1.5;color:var(--ink)}
+.qs blockquote + blockquote{border-top:1px solid var(--rule-soft)}
+.pstat{margin-top:26px;padding-top:22px;border-top:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.pstat .n{font-family:var(--f-d);font-size:clamp(32px,4vw,46px);font-weight:600;color:var(--gold-deep);line-height:.95;white-space:nowrap}
+.pstat .t{font-size:14.5px;line-height:1.55;color:var(--ink-2)}
+.pstat .src{margin-top:8px;display:block}
+
+/* ── 3 · PROOF ─────────────────────────────────────────────────────── */
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);background:var(--paper-2);margin-top:34px}
+.mgrid .m{padding:26px 22px 24px;border-right:1px solid var(--rule);position:relative}
+.mgrid .m:last-child{border-right:0}
+.mgrid .n{font-family:var(--f-d);font-size:clamp(38px,4.6vw,54px);font-weight:600;line-height:.92;letter-spacing:-.03em}
+.mgrid .l{font-size:14px;font-weight:550;margin-top:14px}
+.mgrid .d{font-size:12.5px;color:var(--ink-3);margin-top:5px;line-height:1.45}
+.mgrid .pet{position:absolute;right:0;bottom:0;width:38px;height:38px;background:var(--gold);opacity:.16;border-radius:var(--r) 0 0 0}
+.asat{margin-top:14px;display:flex;gap:18px;flex-wrap:wrap}
+.walls{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3vw,48px);margin-top:44px}
+.wall h4{font-family:var(--f-b);font-size:12.5px;font-weight:600;letter-spacing:.02em;color:var(--ink-3);margin-bottom:16px}
+.wall .row{display:flex;flex-wrap:wrap;gap:10px}
+.wall .lg{font-family:var(--f-d);font-size:17px;font-weight:550;padding:9px 15px;background:var(--paper-2);border:1px solid var(--rule);border-radius:0 0 0 14px}
+.ask{margin-top:40px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ask .t{font-size:15px;color:var(--ink-2)}
+
+/* ── 4 · THE SCREEN ────────────────────────────────────────────────── */
+.bands{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);background:var(--paper-2);margin-top:34px}
+.bands .b{padding:26px 22px 30px;border-right:1px solid var(--rule);position:relative}
+.bands .b:last-child{border-right:0}
+.bands .ph{font-family:var(--f-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep)}
+.bands .hh{font-family:var(--f-d);font-size:22px;font-weight:550;margin:12px 0 9px}
+.bands p{font-size:13.5px;line-height:1.56;color:var(--ink-2)}
+.bands .ck{margin-top:20px;font-family:var(--f-m);font-size:11px;color:var(--ink-3);letter-spacing:.05em}
+.bands .pet{position:absolute;right:0;bottom:0;width:44px;height:44px;background:var(--gold);border-radius:var(--r) 0 0 0}
+.bands .b:nth-child(1) .pet{opacity:.14}
+.bands .b:nth-child(2) .pet{opacity:.3}
+.bands .b:nth-child(3) .pet{opacity:.52}
+.bands .b:nth-child(4) .pet{opacity:.92}
+.rows{border:1px solid var(--rule);border-top:0}
+.rows .rw{display:grid;grid-template-columns:210px 1fr;border-bottom:1px solid var(--rule-soft);font-size:13px}
+.rows .rw:last-child{border-bottom:0}
+.rows .rl{padding:11px 22px;font-weight:550;border-right:1px solid var(--rule)}
+.rows .rt{position:relative;height:38px}
+.rows .bar{position:absolute;top:11.5px;height:15px;background:var(--ink);border-radius:0 0 0 7px}
+.rows .bar.g{background:var(--gold)}
+.rows .bar.o{background:var(--rule)}
+.rowKey{margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;font-family:var(--f-m);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em}
+.rowKey i{display:inline-block;width:14px;height:8px;margin-right:6px;border-radius:0 0 0 4px;vertical-align:middle}
+
+/* ── 5 · WHO SCREENS ───────────────────────────────────────────────── */
+.people{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+.people .p{background:var(--paper-2);padding:24px 22px 26px;position:relative}
+.people .av{width:52px;height:52px;background:var(--paper-3);border:1px solid var(--rule);border-radius:0 0 0 20px;margin-bottom:18px}
+.people .nm{font-family:var(--f-d);font-size:19px;font-weight:550}
+.people .rl2{font-size:13px;color:var(--ink-3);margin-top:4px}
+.people dl{margin:18px 0 0;font-size:12.5px;line-height:1.7}
+.people dt{font-family:var(--f-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.people dd{margin:0 0 9px;color:var(--ink-2)}
+.rtb{margin-top:26px;padding:18px 22px;background:var(--paper-2);border:1px solid var(--rule);border-radius:0 0 0 20px;font-size:14.5px;color:var(--ink-2);max-width:76ch}
+
+/* ── 6 · THE COMMITMENT ────────────────────────────────────────────── */
+.vow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+.vow .v{background:var(--paper-2);padding:28px 24px 30px;position:relative}
+.vow .k{font-family:var(--f-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-deep);margin-bottom:14px}
+.vow h3{font-size:21px;line-height:1.2;max-width:20ch}
+.vow p{font-size:14px;line-height:1.6;color:var(--ink-2);margin-top:12px}
+.vowNote{margin-top:18px;font-size:13px;color:var(--ink-3);max-width:74ch}
+
+/* ── 7 · ENGAGE ────────────────────────────────────────────────────── */
+.models{margin-top:34px;border:1px solid var(--rule)}
+.models .md{display:grid;grid-template-columns:190px 1fr auto;gap:24px;align-items:center;padding:22px;border-bottom:1px solid var(--rule-soft);background:var(--paper-2)}
+.models .md:last-child{border-bottom:0}
+.models .md.lead{background:var(--gold-wash)}
+.models .mn{font-family:var(--f-d);font-size:21px;font-weight:550}
+.models .mt{font-family:var(--f-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep);margin-top:5px}
+.models .mb{font-size:14px;color:var(--ink-2);line-height:1.55}
+.models .ml{font-size:13.5px;font-weight:550;white-space:nowrap;border-bottom:1.5px solid var(--gold);padding-bottom:2px}
+
+/* ── 8 · WHERE WE PLACE (dark) ─────────────────────────────────────── */
+.axis{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,60px);margin-top:34px}
+.axis h3{font-family:var(--f-b);font-size:12.5px;font-weight:600;letter-spacing:.02em;color:var(--dk-txt-3);text-transform:none;margin-bottom:18px}
+.plist{border-top:1px solid var(--dk-line)}
+.plist a{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;padding:15px 0;border-bottom:1px solid var(--dk-line);transition:padding-left .4s cubic-bezier(.2,.7,.2,1)}
+.plist a:hover{padding-left:14px;box-shadow:inset 2px 0 0 var(--gold)}
+.plist .pn{font-family:var(--f-d);font-size:20px;font-weight:550;color:var(--dk-txt)}
+.plist .pd{font-size:12.5px;color:var(--dk-txt-3);text-align:right}
+
+/* ── 9 · AI TALENT (dark) ──────────────────────────────────────────── */
+.airoles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--dk-line);border:1px solid var(--dk-line);margin-top:32px}
+.airoles .a{background:var(--dk-2);padding:18px 20px 20px;position:relative}
+.airoles .an{font-family:var(--f-d);font-size:17px;font-weight:550;color:var(--dk-txt);line-height:1.2}
+.airoles .ad{font-size:12px;color:var(--dk-txt-3);margin-top:7px}
+.airoles .pet{position:absolute;left:0;bottom:0;width:26px;height:26px;background:var(--gold);opacity:.1;border-radius:0 var(--r) 0 0}
+.aiFoot{margin-top:30px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.dk .btnS{border-bottom-color:var(--gold);color:var(--dk-txt)}
+
+/* ── 10 · CASES ────────────────────────────────────────────────────── */
+.cases{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+.cases .c{background:var(--paper-2);padding:26px 24px 28px}
+.cases .ct{font-family:var(--f-m);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-deep)}
+.cases h3{font-size:22px;margin-top:12px;max-width:26ch}
+.cases p{font-size:14px;color:var(--ink-2);line-height:1.58;margin-top:12px}
+.cm{display:flex;gap:26px;margin-top:20px;padding-top:18px;border-top:1px solid var(--rule)}
+.cm .v{font-family:var(--f-d);font-size:26px;font-weight:600}
+.cm .k{font-family:var(--f-m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-top:4px}
+.tmn{margin-top:26px;padding:26px 28px;background:var(--paper-2);border:1px solid var(--rule);border-radius:0 0 0 var(--r)}
+.tmn blockquote{margin:0;font-family:var(--f-d);font-size:clamp(19px,2.2vw,25px);line-height:1.42;max-width:44ch}
+.tmn cite{display:block;margin-top:16px;font-style:normal;font-size:13px;color:var(--ink-3)}
+
+/* ── 11 · INTELLIGENCE ─────────────────────────────────────────────── */
+.intel{display:grid;grid-template-columns:1.2fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:34px}
+.intel .i{background:var(--paper-2);padding:28px 26px 30px;position:relative}
+.intel .flag{font-family:var(--f-m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--gold-deep);color:var(--gold-deep);border-radius:0 0 0 8px;display:inline-block;margin-bottom:16px}
+.intel h3{font-size:24px;max-width:24ch}
+.intel p{font-size:14px;color:var(--ink-2);line-height:1.58;margin-top:12px;max-width:48ch}
+.intel ul{margin:18px 0 0;padding:0;list-style:none;font-size:13.5px;line-height:1.9;color:var(--ink-2)}
+.intel ul li::before{content:"";display:inline-block;width:5px;height:5px;background:var(--gold);border-radius:50%;margin-right:10px;vertical-align:middle}
+.intel .pet{position:absolute;right:0;bottom:0;width:40px;height:40px;background:var(--gold);opacity:.13;border-radius:var(--r) 0 0 0}
+
+/* ── 12 · CLOSE ────────────────────────────────────────────────────── */
+.close{background:var(--paper-2);border-top:1px solid var(--rule)}
+.close .in{max-width:1240px;margin:0 auto;padding:clamp(56px,7vw,96px) var(--pad);display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,64px);align-items:start}
+.close h2{font-size:clamp(30px,3.8vw,48px);max-width:20ch}
+.close h2 b{font-weight:600;font-style:italic;color:var(--gold-deep)}
+.brief{border:1px solid var(--rule);background:var(--paper);border-radius:0 0 0 var(--r);padding:26px 24px}
+.brief .bt{font-family:var(--f-m);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:16px}
+.brief ol{margin:0;padding-left:20px;font-size:14.5px;line-height:1.85;color:var(--ink-2)}
+.brief .btnP{margin-top:22px}
+
+/* ── FOOTER ────────────────────────────────────────────────────────── */
+.ft{background:var(--dk);color:var(--dk-txt-2);font-size:13.5px}
+.ftIn{max-width:1240px;margin:0 auto;padding:52px var(--pad) 30px;display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:34px}
+.ft h5{font-family:var(--f-b);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--dk-txt-3);margin:0 0 14px;font-weight:600}
+.ft ul{margin:0;padding:0;list-style:none;line-height:2}
+.ft .wm{font-family:var(--f-d);font-size:20px;color:var(--dk-txt);font-weight:600}
+.ft .wm em{font-style:normal;font-weight:400;color:var(--dk-txt-3)}
+.ftBar{border-top:1px solid var(--dk-line);padding:18px var(--pad);max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-family:var(--f-m);font-size:11px;letter-spacing:.05em;color:var(--dk-txt-3)}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────────── */
+@media (max-width:1080px){
+  .mgrid,.bands{grid-template-columns:repeat(2,1fr)}
+  .mgrid .m:nth-child(2),.bands .b:nth-child(2){border-right:0}
+  .mgrid .m:nth-child(1),.mgrid .m:nth-child(2),.bands .b:nth-child(1),.bands .b:nth-child(2){border-bottom:1px solid var(--rule)}
+  .people,.vow,.airoles{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:900px){
+  .nl,.jobs{display:none}
+  .gap,.walls,.axis,.cases,.intel,.close .in{grid-template-columns:1fr}
+  .models .md{grid-template-columns:1fr;gap:10px}
+  .f4{flex-wrap:wrap}.f4 .e{flex:1 1 50%}
+  .f4 .e:nth-child(2){border-right:0}
+  .f4 .e:nth-child(1),.f4 .e:nth-child(2){border-bottom:1px solid var(--rule)}
+  .rows .rw{grid-template-columns:140px 1fr}
+}
+@media (max-width:620px){
+  .mgrid,.bands,.people,.vow,.airoles{grid-template-columns:1fr}
+  .mgrid .m,.bands .b{border-right:0;border-bottom:1px solid var(--rule)}
+  .pstat{grid-template-columns:1fr;gap:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<header class="nav"><div class="navIn">
+  <a class="brand" href="/">
+    <svg width="25" height="25" viewBox="0 0 300 300" aria-hidden="true"><g fill="#d4a843" fill-rule="evenodd"><path d="M19.6,214.3c0-32.4,26.1-58.7,58.3-58.7h58.3v58.7c0,32.4-26.1,58.7-58.3,58.7s-58.3-26.3-58.3-58.7Z"/><path d="M272.5,78.9c0,32.4-26.1,58.7-58.3,58.7h-58.3v-58.7c0-32.4,26.1-58.7,58.3-58.7s58.3,26.3,58.3,58.7Z"/><path d="M19.6,78.9c0,32.4,26.1,58.7,58.3,58.7h58.3v-58.7c0-32.4-26.1-58.7-58.3-58.7s-58.3,26.3-58.3,58.7Z"/><path d="M272.5,214.3c0-32.4-26.1-58.7-58.3-58.7h-58.3v58.7c0,32.4,26.1,58.7,58.3,58.7s58.3-26.3,58.3-58.7Z"/></g></svg>
+    <span class="wm">Yallo <em>Talent</em></span>
+  </a>
+  <nav class="nl" aria-label="Primary">
+    <a href="#place">Specialisms</a><a href="#place">Industries</a><a href="#engage">How we work</a><a href="#proof">Evidence</a><a href="#intel">Intelligence</a>
+  </nav>
+  <div class="nr"><a class="jobs" href="/jobs">Jobs ↗</a><a class="btnD" href="/brief">Start a brief</a></div>
+</div></header>
+
+<main>
+
+<!-- ══ 1 · HERO — WHY ══ -->
+<section class="hero"><div class="wrap">
+  <div class="eye"><i></i>London · Dubai · Riyadh · Bengaluru</div>
+  <h1>Enterprise programmes rarely fail on budget. They fail on the <b>six people you couldn't find.</b></h1>
+  <p class="lede">Yallo Talent staffs enterprise platform programmes across the Middle East and Europe. SAP, Oracle, Microsoft, Salesforce. Architect-screened specialists, shortlisted in 72 hours.</p>
+  <div class="heroCta"><a class="btnP" href="/brief">Start a brief →</a><a class="btnS" href="#screen">See how the screen works</a></div>
+  <div class="f4">
+    <div class="e"><span class="mk"></span><div class="city">London</div><div class="role">Europe</div></div>
+    <div class="e"><span class="mk"></span><div class="city">Dubai</div><div class="role">Regional headquarters</div></div>
+    <div class="e"><span class="mk"></span><div class="city">Riyadh</div><div class="role">In-country entity</div></div>
+    <div class="e"><span class="mk"></span><div class="city">Bengaluru</div><div class="role">India and capability centres</div></div>
+  </div>
+</div></section>
+
+<!-- ══ 2 · THE GAP — WHY ══ -->
+<section class="sec" id="gap"><div class="wrap">
+  <div class="eye"><i></i>The gap</div>
+  <h2 class="h2">The same shortage looks different from every seat.</h2>
+  <div class="gap">
+    <div class="pidx" role="tablist" aria-label="Choose your role">
+      <button role="tab" aria-selected="true" data-p="0"><span class="r">Delivery Director</span><span class="c">Can't staff fast enough</span></button>
+      <button role="tab" aria-selected="false" data-p="1"><span class="r">Head of TA</span><span class="c">Buried in CVs, not fit</span></button>
+      <button role="tab" aria-selected="false" data-p="2"><span class="r">PMO Director</span><span class="c">Every open seat is red</span></button>
+      <button role="tab" aria-selected="false" data-p="3"><span class="r">VP Engineering</span><span class="c">Backlog stalls on specialists</span></button>
+      <button role="tab" aria-selected="false" data-p="4"><span class="r">Practice Lead</span><span class="c">Bench is thin at the top</span></button>
+    </div>
+    <div class="pnl" role="tabpanel" aria-live="polite">
+      <div class="lab" id="pRole">Delivery Director · what we hear</div>
+      <h3 id="pHead">You win the work faster than you can staff it.</h3>
+      <div class="qs" id="pQuotes"></div>
+      <div class="pstat"><span class="n" id="pNum">95%</span><span><span class="t" id="pTxt"></span><span class="src" id="pSrc"></span></span></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 3 · PROOF — PROOF · ASK 1 ══ -->
+<section class="sec" id="proof"><div class="wrap">
+  <div class="eye"><i></i>Measured, not marketed</div>
+  <h2 class="h2">Four numbers, and what each one means.</h2>
+  <p class="lede">Every figure here has one definition and one date. Where we cannot define it, we do not publish it.</p>
+  <div class="mgrid">
+    <div class="m"><span class="pet"></span><div class="n">72h</div><div class="l">Brief to shortlist</div><div class="d">Three architect-screened candidates, from a complete brief.</div></div>
+    <div class="m"><span class="pet"></span><div class="n">2:1</div><div class="l">CVs per interview</div><div class="d">Candidates sent for every one your team interviews.</div></div>
+    <div class="m"><span class="pet"></span><div class="n">80%</div><div class="l">Contracts renewed</div><div class="d">Placed contractors extended at least once by the client.</div></div>
+    <div class="m"><span class="pet"></span><div class="n">50+</div><div class="l">Programmes staffed</div><div class="d">Enterprise platform programmes, not individual placements.</div></div>
+  </div>
+  <div class="asat">
+    <span class="src">As at 31 July 2026. Source: Vincere placement records. Refreshed quarterly. <span class="slot">owner needed</span></span>
+  </div>
+  <div class="walls">
+    <div class="wall">
+      <h4>Enterprise programmes staffed for</h4>
+      <div class="row"><span class="lg">Landmark</span><span class="lg">Majid Al Futtaim</span><span class="lg">Al Tayer</span><span class="lg">Chalhoub</span><span class="lg">Wickes</span><span class="lg">Radwell</span></div>
+      <p class="src" style="margin-top:12px">Named with written consent. <span class="slot">consent pending</span></p>
+    </div>
+    <div class="wall">
+      <h4>The integrators delivering them come to us for specialists</h4>
+      <div class="row"><span class="lg">TCS</span><span class="lg">Infosys</span><span class="lg">Capgemini</span><span class="lg">Wipro</span><span class="lg">Oracle Consulting</span></div>
+      <p class="src" style="margin-top:12px">Vendor marks used with permission. <span class="slot">consent pending</span></p>
+    </div>
+  </div>
+  <div class="ask"><span class="t">Have a programme to staff?</span><a class="btnP" href="/brief">Start a brief →</a></div>
+</div></section>
+
+<!-- ══ 4 · THE SCREEN — HOW ══ -->
+<section class="sec" id="screen"><div class="wrap">
+  <div class="eye"><i></i>The screen</div>
+  <h2 class="h2">Four phases, seventy-two hours, and an architect at the centre.</h2>
+  <p class="lede">Not a process diagram. What actually happens between your brief and three names, and who does each part.</p>
+  <div class="bands">
+    <div class="b"><span class="pet"></span><div class="ph">Phase 01</div><div class="hh">Brief</div><p>The role, the platform, the programme phase and the gate you are working to. Not a job description.</p><div class="ck">Hour 0</div></div>
+    <div class="b"><span class="pet"></span><div class="ph">Phase 02</div><div class="hh">Calibrate</div><p>An architect who has delivered on your platform sets the bar and names the failure modes to screen for.</p><div class="ck">Hour 0–8</div></div>
+    <div class="b"><span class="pet"></span><div class="ph">Phase 03</div><div class="hh">Screen</div><p>Technical screening by a practitioner, in region, against the calibrated bar rather than against the CV.</p><div class="ck">Hour 8–60</div></div>
+    <div class="b"><span class="pet"></span><div class="hh">Shortlist</div><div class="ph" style="margin-top:-34px">Phase 04</div><p>Three names, each with the architect's screening notes, and the reasons the others were rejected.</p><div class="ck">Hour 72</div></div>
+  </div>
+  <div class="rows">
+    <div class="rw"><div class="rl">Solution architect</div><div class="rt"><span class="bar g" style="left:2%;width:26%"></span></div></div>
+    <div class="rw"><div class="rl">Functional leads ×3</div><div class="rt"><span class="bar" style="left:14%;width:44%"></span></div></div>
+    <div class="rw"><div class="rl">Integration ×2</div><div class="rt"><span class="bar" style="left:30%;width:38%"></span></div></div>
+    <div class="rw"><div class="rl">Data migration</div><div class="rt"><span class="bar o" style="left:44%;width:24%"></span></div></div>
+    <div class="rw"><div class="rl">Test lead and QA</div><div class="rt"><span class="bar o" style="left:56%;width:30%"></span></div></div>
+    <div class="rw"><div class="rl">Change and adoption</div><div class="rt"><span class="bar g" style="left:66%;width:30%"></span></div></div>
+  </div>
+  <div class="rowKey">
+    <span><i style="background:var(--gold)"></i>Scarce in region</span>
+    <span><i style="background:var(--ink)"></i>Available on assessed bench</span>
+    <span><i style="background:var(--rule)"></i>Routinely under-scoped</span>
+  </div>
+</div></section>
+
+<!-- ══ 5 · WHO SCREENS — PROOF ══ -->
+<section class="sec" id="people"><div class="wrap">
+  <div class="eye"><i></i>The people who screen</div>
+  <h2 class="h2">Architect-led screening means an architect does the screening.</h2>
+  <p class="lede">Every shortlist is calibrated and screened by someone who has delivered on the platform in question. These are the practice leads who run it.</p>
+  <div class="people">
+    <div class="p"><div class="av"></div><div class="nm"><span class="slot">name pending</span></div><div class="rl2">SAP practice lead</div>
+      <dl><dt>Platforms</dt><dd>S/4HANA, ECC, SuccessFactors</dd><dt>Region</dt><dd>UAE, Saudi Arabia</dd><dt>Depth</dt><dd>20+ years, retail and manufacturing programmes</dd></dl></div>
+    <div class="p"><div class="av"></div><div class="nm"><span class="slot">name pending</span></div><div class="rl2">Oracle practice lead</div>
+      <dl><dt>Platforms</dt><dd>Fusion, EBS, Retail</dd><dt>Region</dt><dd>UAE, UK</dd><dt>Depth</dt><dd>18+ years, finance and public sector</dd></dl></div>
+    <div class="p"><div class="av"></div><div class="nm"><span class="slot">name pending</span></div><div class="rl2">Microsoft practice lead</div>
+      <dl><dt>Platforms</dt><dd>Azure, Dynamics 365</dd><dt>Region</dt><dd>Saudi Arabia, India</dd><dt>Depth</dt><dd>15+ years, capability centres and data platforms</dd></dl></div>
+  </div>
+  <p class="rtb">We are also an AI-native firm ourselves. saasinator builds production AI systems and Yallo AI Academy certifies the skills, which is how we know what an AI engineer is actually worth and how to screen for one.</p>
+</div></section>
+
+<!-- ══ 6 · THE COMMITMENT — HOW ══ -->
+<section class="sec" id="vow"><div class="wrap">
+  <div class="eye"><i></i>The commitment</div>
+  <h2 class="h2">Three things we put in writing.</h2>
+  <div class="vow">
+    <div class="v"><div class="k">01 · Speed</div><h3>Shortlist in 72 hours, or you hear why on day one.</h3><p>Three architect-screened candidates within 72 hours of a complete brief. Where the role cannot be filled to that bar in that window, we tell you at the start and give the market reason, rather than sending volume to look busy.</p></div>
+    <div class="v"><div class="k">02 · Transparency</div><h3>You see the screen, not just the shortlist.</h3><p>Every candidate arrives with the architect's screening notes attached, and with the reasons the others were rejected. You are buying a judgement, so you get to inspect it.</p></div>
+    <div class="v"><div class="k">03 · Risk</div><h3>The first ten working days are at our risk.</h3><p>If a contractor we place does not meet the brief within ten working days, we replace them and you do not pay for those days.</p></div>
+  </div>
+  <p class="vowNote">Full terms apply per engagement and are set out in the contract. <span class="slot">contract review needed before publish</span></p>
+</div></section>
+
+<!-- ══ 7 · ENGAGE — WHAT ══ -->
+<section class="sec" id="engage"><div class="wrap">
+  <div class="eye"><i></i>How you engage</div>
+  <h2 class="h2">One proposition. Four ways to hold the risk.</h2>
+  <p class="lede">We staff and deliver enterprise platform programmes. How you contract for that depends on where the risk should sit.</p>
+  <div class="models">
+    <div class="md lead"><div><div class="mn">Contract</div><div class="mt">Direct to end client · leads</div></div><p class="mb">Named specialists on your programme, on your paper, for the phase that needs them. Extensions when the work extends.</p><a class="ml" href="/contract">Contract →</a></div>
+    <div class="md"><div><div class="mn">Permanent</div><div class="mt">Senior and selective</div></div><p class="mb">The architect or programme director you build the team around. Retained or exclusive, never contingent volume.</p><a class="ml" href="/permanent">Permanent →</a></div>
+    <div class="md"><div><div class="mn">Employer of Record</div><div class="mt">Inside contract</div></div><p class="mb">Hire in Saudi Arabia, the UAE or India without an entity of your own. Payroll, visas and compliance sit with us.</p><a class="ml" href="/eor">Employer of Record →</a></div>
+    <div class="md"><div><div class="mn">Managed Delivery</div><div class="mt">Fixed scope, outcome owned</div></div><p class="mb">A defined scope of work on your existing platforms, delivered to milestones by a named team we are accountable for.</p><a class="ml" href="/managed-delivery">Managed Delivery →</a></div>
+  </div>
+</div></section>
+
+<!-- ══ 8 · WHERE WE PLACE — WHAT · dark ══ -->
+<section class="sec dk" id="place"><div class="wrap">
+  <div class="eye"><i></i>Where we place</div>
+  <h2 class="h2">Platform depth first, because that is where programmes break.</h2>
+  <p class="lede">Most firms in this market organise by profession and treat enterprise platforms as one line. We go the other way: module-level coverage on the platforms your programme actually runs on.</p>
+  <div class="axis">
+    <div>
+      <h3>By platform</h3>
+      <div class="plist">
+        <a href="/platforms/sap"><span class="pn">SAP</span><span class="pd">S/4HANA · ECC · SuccessFactors · Commerce</span></a>
+        <a href="/platforms/oracle"><span class="pn">Oracle</span><span class="pd">Fusion · EBS · Retail · Cloud Infrastructure</span></a>
+        <a href="/platforms/microsoft"><span class="pn">Microsoft</span><span class="pd">Azure · Dynamics 365 · Power Platform</span></a>
+        <a href="/platforms/salesforce"><span class="pn">Salesforce</span><span class="pd">Service · Marketing · Commerce Cloud</span></a>
+        <a href="/platforms/servicenow"><span class="pn">ServiceNow</span><span class="pd">ITSM · ITOM · CSM</span></a>
+        <a href="/platforms/blue-yonder"><span class="pn">Blue Yonder</span><span class="pd">Luminate · WMS · planning</span></a>
+        <a href="/platforms/workday"><span class="pn">Workday</span><span class="pd">HCM · Financials · Adaptive</span></a>
+      </div>
+    </div>
+    <div>
+      <h3>By sector</h3>
+      <div class="plist">
+        <a href="/industries/retail"><span class="pn">Retail &amp; Consumer</span><span class="pd">Commerce, POS, supply chain</span></a>
+        <a href="/industries/finance"><span class="pn">Banking &amp; Financial Services</span><span class="pd">Core banking, payments, risk</span></a>
+        <a href="/industries/manufacturing"><span class="pn">Manufacturing &amp; Logistics</span><span class="pd">ERP, WMS, TMS</span></a>
+        <a href="/industries/government"><span class="pn">Government &amp; Public Sector</span><span class="pd">Digital delivery, data platforms</span></a>
+        <a href="/industries/healthcare"><span class="pn">Healthcare &amp; Life Sciences</span><span class="pd">Clinical systems, EMR, validation</span></a>
+        <a href="/industries/telco"><span class="pn">Telco &amp; Media</span><span class="pd">OSS/BSS, network, data engineering</span></a>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ 9 · AI TALENT — WHAT · dark ══ -->
+<section class="sec dk" id="ai"><div class="wrap">
+  <div class="eye"><i></i>AI talent</div>
+  <h2 class="h2">The hardest roles to fill are ones that did not exist two years ago.</h2>
+  <p class="lede">AI skills are now the hardest of all to find, ahead of engineering and traditional IT. The recruitment industry has responded by buying AI tools for itself. We built a practice that places the people instead.</p>
+  <div class="airoles">
+    <div class="a"><span class="pet"></span><div class="an">Agentic AI Developer</div><div class="ad">Tool-calling systems, orchestration, evals</div></div>
+    <div class="a"><span class="pet"></span><div class="an">Prompt &amp; LLM Engineer</div><div class="ad">Context design, retrieval, model selection</div></div>
+    <div class="a"><span class="pet"></span><div class="an">AI Evaluation Specialist</div><div class="ad">Test harnesses, red-teaming, regression</div></div>
+    <div class="a"><span class="pet"></span><div class="an">MLOps Engineer</div><div class="ad">Serving, monitoring, cost and drift</div></div>
+    <div class="a"><span class="pet"></span><div class="an">AI &amp; Ethics Governance Lead</div><div class="ad">Policy, assurance, regulatory readiness</div></div>
+    <div class="a"><span class="pet"></span><div class="an">AI Solution Architect</div><div class="ad">Reference architecture on your enterprise stack</div></div>
+  </div>
+  <div class="aiFoot">
+    <a class="btnP" href="/ai-talent">The AI Talent Atlas →</a>
+    <span class="src">72% of employers cannot find the skills they need, with AI now the hardest category. Source: ManpowerGroup Talent Shortage Survey, 2026</span>
+  </div>
+</div></section>
+
+<!-- ══ 10 · CASES — PROOF · ASK 2 ══ -->
+<section class="sec" id="cases"><div class="wrap">
+  <div class="eye"><i></i>Evidence</div>
+  <h2 class="h2">Programmes that shipped on the date they were promised.</h2>
+  <div class="cases">
+    <div class="c"><div class="ct">Contract · SAP · Banking · UAE</div><h3>Three SAP specialists on a core banking programme inside 72 hours.</h3><p>A go-live date was fixed and three functional seats were open with six weeks to mobilisation. The architect calibration named the failure modes on day one, and the shortlist ran to two candidates per interview.</p><div class="cm"><div><div class="v">72h</div><div class="k">To shortlist</div></div><div><div class="v">2:1</div><div class="k">CV to interview</div></div><div><div class="v">0</div><div class="k">Re-hires needed</div></div></div></div>
+    <div class="c"><div class="ct">Managed Delivery · Salesforce · UK and Middle East</div><h3>A fixed-scope Salesforce delivery, six consultants, nine months.</h3><p>Service Cloud and Marketing Cloud delivered as a defined scope of work against milestones, with Yallo accountable for the outcome rather than for supplying time. <span class="slot">client consent pending</span></p><div class="cm"><div><div class="v">9mo</div><div class="k">Programme length</div></div><div><div class="v">6</div><div class="k">Named specialists</div></div><div><div class="v">100%</div><div class="k">Milestones met</div></div></div></div>
+  </div>
+  <div class="tmn">
+    <blockquote>[SLOT] One attributed client sentence about the screen, the speed or the quality of the shortlist.</blockquote>
+    <cite>First name, surname initial · Job title · Company <span class="slot">testimonial and permission needed</span></cite>
+  </div>
+  <div class="ask"><span class="t">Want the detail behind these?</span><a class="btnP" href="/brief">Start a brief →</a></div>
+</div></section>
+
+<!-- ══ 11 · INTELLIGENCE — PROOF ══ -->
+<section class="sec" id="intel"><div class="wrap">
+  <div class="eye"><i></i>Intelligence</div>
+  <h2 class="h2">Nobody publishes what it takes to staff a programme. We do.</h2>
+  <div class="intel">
+    <div class="i"><span class="pet"></span><span class="flag">Gated</span><h3>The Programme Staffing Blueprint</h3><p>What it actually takes to staff a transformation programme, role by role and phase by phase. One per archetype.</p>
+      <ul><li>Team shape by phase, with FTE counts</li><li>Scarcity per role, in region</li><li>Realistic time to hire, from placement history</li><li>The roles that always get under-scoped</li></ul>
+      <div style="margin-top:22px"><a class="btnP" href="/intelligence">Request the Blueprint →</a></div></div>
+    <div class="i"><span class="flag">Open</span><h3>The AI Talent Atlas</h3><p>Every AI role we place: what it does, how we screen for it, how scarce it is, and which of them did not exist eighteen months ago.</p>
+      <ul><li>Role definitions and screening criteria</li><li>In-region scarcity signals</li><li>Published open, no email required</li></ul>
+      <div style="margin-top:22px"><a class="btnS" href="/ai-talent">Read the Atlas →</a></div></div>
+  </div>
+</div></section>
+
+<!-- ══ 12 · CLOSE — CTA · ASK 3 ══ -->
+<section class="close"><div class="in">
+  <div>
+    <h2>Tell us about the programme, <b>not the vacancy.</b></h2>
+    <p class="lede">The more we know about the phase you are in and the gate you are working to, the better the calibration and the shorter the shortlist. A complete brief starts the 72 hours.</p>
+    <div class="heroCta" style="margin-top:30px"><a class="btnP" href="/brief">Start a brief →</a><a class="btnS" href="/jobs">Looking for a role instead? ↗</a></div>
+  </div>
+  <div class="brief">
+    <div class="bt">What a complete brief contains</div>
+    <ol><li>The platform and the modules in scope</li><li>The programme phase and the next gate</li><li>The roles and how many of each</li><li>Location, and whether you have an entity there</li><li>Start date and expected duration</li></ol>
+    <a class="btnP" href="/brief">Send it →</a>
+  </div>
+</div></section>
+
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer class="ft">
+  <div class="ftIn">
+    <div>
+      <div class="wm">Yallo <em>Talent</em></div>
+      <p style="margin-top:14px;max-width:34ch">Enterprise platform talent across the Middle East and Europe. Part of Yallo, alongside saasinator and Yallo AI Academy.</p>
+      <p class="src" style="margin-top:18px">London · Dubai · Riyadh · Bengaluru</p>
+    </div>
+    <div><h5>Specialisms</h5><ul><li><a href="/platforms/sap">SAP</a></li><li><a href="/platforms/oracle">Oracle</a></li><li><a href="/platforms/microsoft">Microsoft</a></li><li><a href="/ai-talent">AI talent</a></li></ul></div>
+    <div><h5>How we work</h5><ul><li><a href="/contract">Contract</a></li><li><a href="/permanent">Permanent</a></li><li><a href="/eor">Employer of Record</a></li><li><a href="/managed-delivery">Managed Delivery</a></li></ul></div>
+    <div><h5>Company</h5><ul><li><a href="/about">About</a></li><li><a href="/leadership">The team</a></li><li><a href="/insights">Intelligence</a></li><li><a href="/jobs">Jobs ↗</a></li></ul></div>
+  </div>
+  <div class="ftBar"><span>© 2026 Yallo. All rights reserved.</span><span>Privacy · Terms · Cookies</span></div>
+</footer>
+
+<script>
+/* Persona panel. All five personas, headlines, quotes and sourced stats
+   preserved verbatim from src/components/blocks/TheProblem.tsx.
+   Only the surface changed: no console chevron, no numbered markers, no
+   chat bubbles, and "in their words" becomes "what we hear" because the
+   quotes are composites rather than attributed statements. */
+const P=[
+{r:"Delivery Director",h:"You win the work faster than you can staff it.",
+ q:["We've signed the programme, now I need a team on the ground, fast.","Contractor churn keeps resetting delivery every few months.","Half the budget sits benched, waiting on the right specialists."],
+ n:"95%",t:"of UAE employers actively seek tech professionals from outside the region; 83% say offshoring is a key part of their business model.",s:"Source: UAE Future Tech Talent Report 2024, UAE Ministry of Economy with Integra Seven"},
+{r:"Head of TA",h:"Drowning in CVs, starving for fit.",
+ q:["Two hundred applications a role, and maybe five worth a call.","I spend more time filtering noise than talking to real candidates.","The good ones drop off before I've even finished screening."],
+ n:"250+",t:"applications land on the average corporate opening, yet only four to six are worth interviewing.",s:"Source: SHRM"},
+{r:"PMO Director",h:"Every red seat is a red programme.",
+ q:["Half my status pack is awaiting hire. Leadership sees red before delivery does.","Recruitment says four weeks, but by week six the sprint has already slipped twice.","By the time the seat is filled, the mitigation plan has become the plan."],
+ n:"~63 days",t:"median time to fill a role today, and specialist technology roles routinely run longer, dragging every milestone behind them.",s:"Source: Employ Recruiting Benchmarks Report, 2026"},
+{r:"VP Engineering",h:"The backlog isn't the problem. The bench is.",
+ q:["I've got the roadmap. What I don't have is two senior specialists who can actually ship it.","Contract agencies send me profiles. I need people who've built this at scale.","I'm three weeks into shortlisting and the sprint window is closing."],
+ n:"72%",t:"of employers cannot find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",s:"Source: ManpowerGroup Talent Shortage Survey, 2026"},
+{r:"Practice Lead",h:"Certified isn't the same as delivered.",
+ q:["Ninety percent of the CVs look right on paper. Five percent have actually shipped this platform.","I end up screening every candidate myself because generalist recruiters can't tell the difference.","The good ones aren't on the market, they're already placed on someone else's programme."],
+ n:"up to 30%",t:"of first-year salary is the cost of a single bad hire, and replacing a senior specialist can reach two times salary.",s:"Source: U.S. Department of Labor; SHRM"}];
+
+const tabs=[...document.querySelectorAll('.pidx button')];
+const elR=document.getElementById('pRole'),elH=document.getElementById('pHead'),
+      elQ=document.getElementById('pQuotes'),elN=document.getElementById('pNum'),
+      elT=document.getElementById('pTxt'),elS=document.getElementById('pSrc');
+function show(i){
+  const p=P[i];
+  tabs.forEach((b,j)=>b.setAttribute('aria-selected',String(j===i)));
+  elR.textContent=p.r+' · what we hear';
+  elH.textContent=p.h;
+  elQ.innerHTML=p.q.map(q=>'<blockquote>'+q+'</blockquote>').join('');
+  elN.textContent=p.n; elT.textContent=p.t; elS.textContent=p.s;
+}
+tabs.forEach((b,i)=>{
+  b.addEventListener('mouseenter',()=>show(i));
+  b.addEventListener('focus',()=>show(i));
+  b.addEventListener('click',()=>show(i));
+  b.addEventListener('keydown',e=>{
+    if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();tabs[(i+1)%tabs.length].focus()}
+    if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();tabs[(i-1+tabs.length)%tabs.length].focus()}
+  });
+});
+show(0);
+</script>
+</body>
+</html>

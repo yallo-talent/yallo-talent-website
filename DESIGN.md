@@ -482,3 +482,49 @@ the petal fill to feel finished, the surface is under-designed.
   than to signal content type.
 - **Don't** set a counted number in Inter or a sentence's number in mono.
 - **Don't** apply border-radius for softness. It is the petal, or it is square.
+
+## Departures from the v0.3 prototype
+
+The combined relay §2 treats `yallo-talent-home-v0.3.html` as direction and intent rather than
+specification, and §12.9 asks for the departures to be recorded. Each one below is a deliberate
+change, not a shortfall.
+
+### Accessibility corrections — the prototype would have shipped these
+
+| Change | Why |
+|---|---|
+| Added `--gold-ink` `#7b5d13` for small labels | The prototype set every 11px mono eyebrow in `--gold-deep`, which is **3.12:1 on paper** — a live WCAG AA failure on the most-repeated element in the system |
+| Raised `--ink-3` from `#63656c` to `#5c5e66` | The prototype's value missed 4.5:1 against the darkest light ground |
+| Added `--rule-strong` and `--dk-line-strong` | Neither the prototype nor the relay had a contrast-grade border, so any control whose only boundary is a rule would have failed 1.4.11 |
+| Split every functional colour into `-mark` (≥3:1) and `-text` (≥4.5:1) grades, per theme | The relay specified one value per hue. No single value clears both a graphical and a text threshold on both paper and near-black |
+| Count-up checks `prefers-reduced-motion` in JS | CSS cannot stop a JS-driven value animation, so the CSS-only gate the prototype relied on was ineffective |
+
+### Structure and content
+
+| Change | Why |
+|---|---|
+| Persona content taken from `TheProblem.tsx`, not the prototype | The prototype's copy had drifted — em-dashes flattened, "actually" dropped, and the UAE report mis-attributed to the ministry alone. The relay requires verbatim, so the component won |
+| The static two-group logo wall replaces the two opposite-direction marquees | A marquee makes logos unreadable, is a motion liability under reduced-motion, and pause-on-hover excludes keyboard users. Canon §9's "two groups, never merged" is better served by a wall |
+| Added the six specialist desks to The Screen | Canon §10 deletes the named-architect gallery and says the desks carry that proof; the prototype dropped both |
+| Case-study titles and summaries are the real published text | The prototype carried shortened editorial rewrites. Published wording is what survives a screenshot |
+| Cards for unported case studies render non-interactive | An unbuilt route must not be linked, and a plausible summary must not lead somewhere that invents the rest |
+| The testimonial renders nothing, not `[SLOT]` | A visible placeholder on a marketing page is worse than an absent section |
+| Metric cards render a `definition` and no source line | Canon §7 forbids source and "as at" lines for these four; a number needs its definition instead |
+
+### Execution carried from the previous build instead
+
+| Change | Why |
+|---|---|
+| Step cards use the previous build's ghost numerals, icon tiles, connector and inline badges | Raphy's execution of this pattern was stronger than the prototype's derivative of it. The glass, orbs and backdrop blur around it were not carried |
+| Engage is native `details`/`summary` | Keyboard accessible and functional without JS, with no ARIA of our own to get wrong |
+
+### System refinements
+
+| Change | Why |
+|---|---|
+| Type ramp tokenised to 17 named steps | The mechanical detector found 44 literal font-size and radius values off the documented scale. A seven-role ramp under-specified a page this dense |
+| Petal scale extended from three to five (`8px`, `3px` added) | The same form has to survive on a 560px panel and on a 5px score bar |
+| H1 measure widened from 17ch to 21ch | 17ch broke the two-sentence headline into six lines |
+| The gated Intelligence card takes the inverted corner, not an inverted ground | The page already spends both permitted inverted bands on WherePlace and AITalent |
+| The AI role tiles lost their petal fill | At low opacity over near-black the hard-edged fill read as a rendering artefact, and six repetitions in one grid worked against the One Marker Rule |
+| The footer hardcodes the dark register | It sits on a permanently dark ground, and the Layer 2c compatibility aliases cannot follow `.band-invert` |
