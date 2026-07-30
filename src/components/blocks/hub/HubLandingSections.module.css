@@ -117,7 +117,7 @@
     var(--sector-accent-08)
   );
   border: 1px solid var(--sector-accent-35);
-  color: var(--sector-accent);
+  color: var(--accent-label);
   box-shadow: inset 0 1px 0 var(--wa12);
   margin-bottom: 14px;
   transition: transform 0.32s ease;
@@ -137,7 +137,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 4px;
 }
 
@@ -152,7 +152,7 @@
 }
 
 .wwdCard:hover .wwdTitle {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .wwdCopy {
@@ -201,8 +201,13 @@
   font-size: var(--fs-data);
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: var(--sector-accent);
-  opacity: 0.5;
+  /* --accent-label, and no opacity. This is the SAME defect fixed on
+     L1PageShell's .wwdBadge in an earlier round — opacity 0.5 over an accent
+     that is already the large-text grade measured 2.11:1 there. The hub kept its
+     own copy of the rule, so the fix never reached it; axe caught it on
+     /industries in both registers once the hero work brought the page under
+     test. --accent-label is the small-text gold grade and needs no dimming. */
+  color: var(--accent-label);
 }
 
 /* ============ HOW WE WORK ============ */
@@ -258,7 +263,7 @@
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 12px;
   display: inline-flex;
   align-items: center;
@@ -283,7 +288,7 @@
 }
 
 .hwwStep:hover .hwwStepTitle {
-  color: var(--sector-accent);
+  color: var(--accent-label);
 }
 
 .hwwStepCopy {
@@ -375,7 +380,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--sector-accent);
+  color: var(--accent-label);
   margin-bottom: 4px;
 }
 
@@ -482,7 +487,7 @@
 
 .crossChip:hover {
   background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
-  border-color: var(--sector-accent);
+  border-color: var(--accent-label);
   transform: translateX(3px);
 }
 
@@ -491,7 +496,7 @@
 }
 
 .crossChipArr {
-  color: var(--sector-accent);
+  color: var(--accent-label);
   font-family: var(--font-mono);
   transition: transform 0.2s ease;
 }

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { ServicePageData } from "@/data/services/types";
 import styles from "./ServicePageShell.module.css";
@@ -43,11 +44,9 @@ export function ServicePageShell({ data }: Props) {
 function ServiceHero({ data }: Props) {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroBg} aria-hidden="true">
-        <div className={styles.heroBgA} />
-        <div className={styles.heroBgB} />
-        <div className={styles.heroGrid} />
-      </div>
+      {/* B3. Replaces a hand-rolled three-layer gradient-and-grid stack with the
+          shared field, so a service hero and an L1 hero are the same object. */}
+      <HeroAtmosphere seed={data.slug} />
       <div className={styles.heroWrap}>
         <div className={styles.heroText}>
           <div className={styles.eyebrow}>

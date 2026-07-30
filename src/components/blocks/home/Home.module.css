@@ -1346,7 +1346,6 @@
   padding: 12px 16px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
-  border-left: 2px solid var(--accent-mark);
   border-radius: 0 0 0 var(--r-sm);
 }
 

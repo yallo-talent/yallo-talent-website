@@ -64,69 +64,6 @@
   padding-top: 100px;
 }
 
-.heroImageWrap {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.heroImage {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.5;
-}
-
-.heroTint {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* One accent, always: the per-sector tint is retired. */
-  background: linear-gradient(135deg, var(--accent-wash) 0%, transparent 55%);
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  /* Keeps the copy legible over the drawn plate without burying it. */
-  background: linear-gradient(
-    to top,
-    var(--ground) 0%,
-    color-mix(in oklab, var(--ground) 82%, transparent) 55%,
-    color-mix(in oklab, var(--ground) 55%, transparent) 100%
-  );
-  pointer-events: none;
-}
-
-/* Graph paper, and deliberate. The generated-UI tell this resembles is a
-   decorative blueprint grid used as generic "tech" texture; canon §5's North
-   Star is the opposite claim — "The Screening Dossier", the site AS the artefact
-   Yallo delivers — which makes a measurement grid the one background texture
-   that is actually load-bearing here. It is also restrained to the point of
-   near-invisibility: hairlines at --wa03 (3% of text colour), a 44px cell, and a
-   radial mask that reaches full transparency by 70%, so it reads as paper tooth
-   behind the first viewport rather than as a grid. An earlier version WAS a
-   defect — opaque and crossing the H1 — and that is what was fixed, not this. */
-.heroGrid {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  background-image:
-    linear-gradient(var(--wa03) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wa03) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(
-    ellipse at 50% 30%,
-    black 10%,
-    transparent 70%
-  );
-  mask-image: radial-gradient(ellipse at 50% 30%, black 10%, transparent 70%);
-  pointer-events: none;
-}
-
 .heroInner {
   position: relative;
   z-index: 4;

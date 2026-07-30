@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IndexEntry } from "@/data/l1/index";
 import styles from "./L1HubShell.module.css";
@@ -15,9 +16,9 @@ export function L1HubShell({ eyebrow, title, emphasis, sub, entries }: Props) {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <div className={styles.heroOrbA} aria-hidden="true" />
-        <div className={styles.heroOrbB} aria-hidden="true" />
-        <div className={styles.heroGrid} aria-hidden="true" />
+        {/* B3. The two "orbs" were exactly the blurred-orb treatment canon §5
+            bans by name; the field replaces them with drawn geometry. */}
+        <HeroAtmosphere seed={eyebrow} />
         <div className={styles.heroInner}>
           <div className={styles.heroEyebrow}>
             <span className={styles.heroEyebrowDot} aria-hidden="true" />
