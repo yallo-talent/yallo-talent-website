@@ -41,10 +41,11 @@ list in `scripts/check-terminology.mjs` so the register cannot return. The stick
 nav's one permitted blur is the single exception DESIGN.md allows and needs an
 explicit allow-list entry.
 
-## 2. The four-violation side-tab
+## 2. The side-tabs — two of them, and they render
 
-`L1PageShell.module.css:463` — one rule breaking four DESIGN.md prohibitions at
-once. v2.2 §5 asks for it on this list so it is dismantled deliberately.
+v2.2 §5 asks for these on this list so they are dismantled deliberately.
+
+**`L1PageShell.module.css:463`** — one rule breaking four DESIGN.md prohibitions:
 
 ```css
 background: var(--glass-bg);                      /* glass — anti-reference */
@@ -53,7 +54,36 @@ border-left: 3px solid var(--sector-accent);      /* coloured side-tab; also per
 border-radius: 14px;                              /* off the petal scale */
 ```
 
-Unlike the glass above, **the 3px side border does render**, in gold.
+**`L2PageShell.module.css:721`** — the same pattern, missed on the first pass:
+a `--sector-accent-08` gradient ground, a dead `--sector-accent-35` border, the
+same `border-left: 3px solid var(--sector-accent)`, the same off-scale `14px`
+radius, and an `inset` shadow.
+
+Unlike the glass above, **the 3px side border renders.** Measured on
+`/industries/retail`: `.introStatCard` computes
+`border-left: 3px solid rgb(212, 168, 67)` — gold. The craft floor names a
+coloured side border above 1px as the single most recognisable generated-UI tell.
+
+## 2b. The decorative grid field — renders, and was missed
+
+`L1PageShell.module.css:101` and `L2PageShell.module.css:80`, identical
+`.heroGrid` rules: a two-axis hairline field tiled at `44px 44px` from
+`--wa03`, masked radially.
+
+**This one is not neutralised.** `--wa03` resolves to `--dk-line` (`#2e333d`) on
+dark and `--hairline` on light, so unlike the ~250 glass and shadow declarations
+it paints. Measured on `/industries/retail`:
+`linear-gradient(rgb(46, 51, 61) 1px, transparent 1px)` at `44px 44px`, both axes.
+
+Scope checked rather than assumed: 21 files reference a `heroGrid`, but the
+**homepage's is already dead** (`background-image: none` on `Home.module.css`'s
+`.heroGrid`). So this is genuinely a shell problem, not a site-wide one — the same
+class of decoration as the footer dot-grid removed in `6a8697d`, left in place
+here only because these files are being rebuilt rather than patched.
+
+Check the remaining shells during the rebuild — `service/ServicePageShell`,
+`l1/L1HubShell`, `editorial/EditorialLayout`, `editorial/LegalPageShell` all
+declare one too.
 
 ## 3. Gradient text — renders, and is explicitly banned
 
