@@ -598,10 +598,19 @@ function L1Expertise({ data }: Props) {
   const visible = data.expertise;
   // First function that has an L2 page — the "Explore all functions in
   // detail" hint links here, and the L2 sidebar shows every function.
+  //
+  // routeExists is the second half of the test and not belt-and-braces. Having
+  // `tools` only means the DATA could support an L2; it does not mean the route
+  // is built. L2 functions exist under /industries/[sector]/[fn] and
+  // /platforms/[platform]/[module], and there is no /capabilities/[cap]/[fn] at
+  // all — so on a capability page this template composed a URL that would 404
+  // if anyone ever populated the field.
   const firstL2 = data.expertise.find((e) => (e.tools?.length ?? 0) > 0);
-  const firstL2Href = firstL2
+  const candidateHref = firstL2
     ? `/${data.category}/${data.slug}/${firstL2.slug}`
     : null;
+  const firstL2Href =
+    candidateHref && routeExists(candidateHref) ? candidateHref : null;
 
   return (
     <section className={styles.expertise} id="expertise">
@@ -612,17 +621,19 @@ function L1Expertise({ data }: Props) {
             <h2 className={styles.h2}>{data.expertiseTitle}</h2>
             <p className={styles.sub}>{data.expertiseSub}</p>
           </div>
+          {/* No destination renders NOTHING. The fallback used to be a <div>
+              carrying the same class as the link — same gold, same arrow, same
+              hover translate — so on every capability page the section's only
+              apparent exit was a dead affordance that could not be clicked,
+              focused or announced. A missing destination is not a styling
+              problem to solve with a disabled state; it is content that does
+              not exist, and content that does not exist renders nothing. */}
           {firstL2Href ? (
             <Link href={firstL2Href} className={styles.expertiseHint}>
               Explore all functions in detail
               <span aria-hidden="true"> →</span>
             </Link>
-          ) : (
-            <div className={styles.expertiseHint}>
-              Explore all functions in detail
-              <span aria-hidden="true"> →</span>
-            </div>
-          )}
+          ) : null}
         </div>
         {/* Focusable because it scrolls at narrow widths (SC 2.1.1). */}
         <div
@@ -751,35 +762,92 @@ function L1Segments({ data }: Props) {
 
         <div className={styles.segWrap}>
           <div className={styles.segListWrap}>
-            <ul className={styles.segList} aria-label="Select a segment">
-              {data.segments.map((s, _i) => {
+            {/* A real tablist, and this replaces three separate defects.
+                The triggers used to activate on FOCUS and carry aria-pressed:
+                that models thirteen independent toggles rather than a
+                thirteen-way single select, so a keyboard user tabbing towards
+                the CTA below swapped the panel thirteen times and landed on
+                whichever segment they passed through last, while a screen
+                reader announced nothing about the 400px of content that had
+                just changed. axe cannot see any of it.
+
+                Roving tabindex is what fixes the tab-stop count — exactly one
+                trigger is in the tab sequence, so Tab enters the group and Tab
+                leaves it, and the arrows move within. Activation follows focus
+                only when focus was moved deliberately by an arrow key, which is
+                the automatic-activation pattern and is safe here because the
+                panel is already rendered.
+
+                The <li> elements are role="presentation" on purpose: role=tablist
+                requires role=tab CHILDREN, and a list item between them breaks
+                that relationship. That is the aria-required-children failure
+                that made Engage use disclosure instead of tabs. */}
+            {/* A div, not a ul. Once every item is role="presentation" the list
+                semantics are already gone, so keeping the list elements bought
+                nothing and cost a lint suppression: a tablist is not a list. */}
+            <div
+              className={styles.segList}
+              role="tablist"
+              aria-label="Select a segment"
+              aria-orientation="vertical"
+              onKeyDown={(e) => {
+                const delta =
+                  e.key === "ArrowDown" || e.key === "ArrowRight"
+                    ? 1
+                    : e.key === "ArrowUp" || e.key === "ArrowLeft"
+                      ? -1
+                      : e.key === "Home"
+                        ? -activeIdx
+                        : e.key === "End"
+                          ? data.segments.length - 1 - activeIdx
+                          : 0;
+                if (delta === 0) return;
+                e.preventDefault();
+                const next =
+                  (activeIdx + delta + data.segments.length) %
+                  data.segments.length;
+                const target = data.segments[next];
+                if (!target) return;
+                setActive(target.id);
+                document
+                  .getElementById(`${data.slug}-segtab-${target.id}`)
+                  ?.focus();
+              }}
+            >
+              {data.segments.map((s) => {
                 const isActive = s.id === activeSeg.id;
                 return (
-                  <li
+                  <div
                     key={s.id}
                     className={`${styles.segItem} ${isActive ? styles.segItemOn : ""}`}
                   >
                     <button
                       type="button"
+                      id={`${data.slug}-segtab-${s.id}`}
+                      role="tab"
+                      aria-selected={isActive}
+                      aria-controls={`${data.slug}-segpanel`}
+                      tabIndex={isActive ? 0 : -1}
                       onMouseEnter={() => setActive(s.id)}
-                      onFocus={() => setActive(s.id)}
                       onClick={() => setActive(s.id)}
-                      aria-pressed={isActive}
                       className={styles.segTrigger}
                     >
                       <span className={styles.segItemDot} aria-hidden="true" />
                       <span className={styles.segItemName}>{s.name}</span>
                     </button>
-                  </li>
+                  </div>
                 );
               })}
-            </ul>
+            </div>
             <div className={styles.segListFade} aria-hidden="true" />
           </div>
 
           <motion.div
             className={`${styles.segPanel} amb-3`}
             key={activeSeg.id}
+            id={`${data.slug}-segpanel`}
+            role="tabpanel"
+            aria-labelledby={`${data.slug}-segtab-${activeSeg.id}`}
             initial={{ x: 8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
@@ -800,7 +868,7 @@ function L1Segments({ data }: Props) {
               <div className={styles.segRolesLabel}>Roles in demand now</div>
               <div className={styles.segRolesPills}>
                 {activeSeg.roles.map((r) => (
-                  <span key={r} className={styles.segRolePill}>
+                  <span key={r} className="role-pill">
                     {r}
                   </span>
                 ))}

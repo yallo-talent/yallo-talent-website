@@ -38,7 +38,8 @@ export function StickyBriefCTA() {
        prompt appears on top of the closing ask it exists to avoid duplicating.
        Deriving progress from y makes the two impossible to disagree. */
     const max =
-      document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
     const progress = max > 0 ? y / max : 0;
     setVisible(y > SHOW_AFTER_PX && progress < HIDE_NEAR_END);
   });

@@ -107,8 +107,14 @@
   color: var(--wa15);
 }
 
+/* The current segment is the one crumb you CANNOT click, so it does not get the
+   interactive colour. It had gold while the real links were neutral grey —
+   canon §5's single interactive accent, spent on the dead item and withheld
+   from the live ones. Gold now appears here only on :hover of a link, which is
+   the whole point of reserving it. Weight carries "you are here" instead. */
 .crumbCurrent {
-  color: var(--accent-label);
+  color: var(--fg-muted);
+  font-weight: var(--fw-medium);
 }
 
 .heroEyebrow {
@@ -1491,8 +1497,10 @@
   border-top: 1px solid var(--wa08);
 }
 
+/* --fs-caption, not --fs-label: A4 sets the card and list body floor at 14px,
+   and 13px is the MONO label step. These are job titles in a card list. */
 .expCardRole {
-  font-size: var(--fs-label);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   font-weight: var(--fw-body);
   display: flex;
@@ -2010,24 +2018,13 @@
   gap: 8px;
 }
 
-.segRolePill {
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  padding: 7px 13px;
-  border-radius: 0 0 0 var(--r-md);
-  background: var(--wa03);
-  color: var(--accent-label);
-  border: 1px solid var(--boundary);
-  transition:
-    background 0.18s ease,
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-.segRolePill:hover {
-  background: var(--sector-accent-20);
-  transform: translateY(-1px);
-}
+/* .segRolePill is deleted, not restyled. A job title had THREE treatments on
+   one page — .role-pill (Inter 15.5px), this one (IBM Plex Mono 13px) and
+   .expCardRole — and only the first is the ratified one. Mono is the register
+   for measured values and machine labels, so setting job titles in it made the
+   product Yallo sells read as system output. It also carried --accent-label on
+   an inert <span>, which spends canon §5's one interactive colour on something
+   you cannot click. The panel now uses the global .role-pill. */
 
 /* CTA row pushed to bottom of the panel to fill remaining vertical space */
 .segCtaRow {
