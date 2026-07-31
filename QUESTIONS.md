@@ -99,28 +99,15 @@ The question as raised: canon §1 said "never a demand market" while `PRODUCT.md
 treated India as one, and the L1 heroes followed `PRODUCT.md`. Code left the copy
 alone and asked rather than picking a side. The "never" line has been rewritten.
 
-## Q7 — A4's sizes and the 1.125 adjacency rule cannot both hold
+## Q7 — RESOLVED: the adjacency narrowing is ratified
 
-Both are ratified canon and they conflict directly. A4 enumerates **13px** (mono
-labels), **14px** (meta, footer links) and **15px** (nav, buttons) as required
-sizes. The adjacency rule says no two adjacent fixed steps sit closer than a
-1.125 ratio. But 14/13 = **1.077** and 15.5/14 = **1.107**. There is no ramp that
-satisfies both.
-
-**Resolution taken:** A4 wins, being the later and more specific ratification,
-and the adjacency rule is narrowed to apply **from `--fs-body-sm` (15.5px)
-upward** — the display and heading chain, where its ratios still hold at 1.129,
-1.143, 1.147 and 1.15.
-
-**Why this is defensible rather than convenient:** adjacency exists so a reader
-never meets two heading steps they cannot tell apart. In the small-text band the
-roles are separated by family, case, tracking, weight and colour as well as size
-— mono uppercase tracked at 13px against sans sentence-case at 14px is not a size
-comparison at all. A tight ratio there costs nothing the rule was protecting.
-
-**Correct me if the intent was different** — the alternative is to drop one of
-A4's three sizes (most likely collapsing meta and nav onto a single 15px step),
-which would satisfy adjacency but lose the meta/control distinction.
+**Closed by R1, 31 Jul.** The 1.125 minimum ratio applies **from `--fs-body-sm`
+(15.5px) upward** — the display and heading chain, where a reader compares steps
+by size alone. Below it the roles differ by family, case, tracking, weight and
+colour as well as size, so A4's 13/14/15 sizes stand and the ratio does not
+govern them. Canon §5's type clause now says this outright, so the conflict
+between A4 and the earlier blanket rule is closed in the text rather than in a
+comment.
 
 ## Q6 — RESOLVED: the per-sector hue system is deleted, not stubbed
 
@@ -196,55 +183,34 @@ the browser.
 broken without them — a name is a legitimate treatment, not a placeholder — but a
 vector would let all fifteen render as marks.
 
-## Q8 — A3 allow-lists the mega panel for glass, but it cannot have it
+## Q8 — RESOLVED: no glass on the mega panel
 
-Not a decision needed, a finding to record: **the mega-menu panel is a descendant
-of the header**, and the header is glass once scrolled. A `backdrop-filter` inside
-an element that already has one is a no-op — the ancestor's filter establishes the
-backdrop root, so the child has nothing left to sample.
+**Closed by R3, 31 Jul.** Accepted as measured: the panel is a child of the glass
+header, a nested `backdrop-filter` is a no-op, and translucency without blur is
+the one combination that harms legibility. **No portal** — the panel is not being
+re-parented to chase the effect. The ambient field stands there instead, which
+needs no `backdrop-filter` at all.
 
-Measured: with the utility applied the panel took the translucent 88% ground and
-reported `backdrop-filter: none`. Translucency with no blur is the one combination
-that actively harms legibility, because page content reads through sharply. A3
-bans stacked blurs for exactly this reason, so the rule caught its own case.
 
-**Shipped:** glass on the header, opaque ground on the panel. Label contrast on
-that ground measures 14.11:1 and the column headings 5.77:1, so nothing is lost
-but the effect.
+## Q9 — NARROWED: Blue Yonder only
 
-**If the panel should be glass**, it has to stop being a child of the header —
-render it as a sibling in a portal at the layout root. That is a structural change
-to the nav, worth doing only if the effect is wanted there specifically.
+**R2, 31 Jul, settled three of the four.** SAP Special Applications, Business One
+and Business ByDesign are **retired** from the platform page — a category and two
+SMB products, against canon §1's enterprise-programme wedge. Corpus attestation
+was never the same as a desk Yallo staffs, and that is now recorded in canon §3.
 
-**Also recorded:** the utility is `.glass.glass`, not `.glass`. CSS module
-stylesheets load after `globals.css`, so at equal specificity a component's own
-`background` beats the utility — both allow-listed surfaces carried the class and
-rendered fully opaque until the class was doubled.
+**Still open, and it is the one page still wrong:** Blue Yonder has **no corpus
+file at all** — no `platform/blue-yonder.md`, no `blue-yonder-expertise.md` — so
+there is no attested suite list to draft from. Its platform page therefore still
+mixes two levels: the retail cut (Merchandise Management, Assortment
+Optimization, Space Planning) sits alongside genuinely suite-level modules (WMS,
+TMS, Luminate, Demand Planning).
 
-## Q9 — Four SAP/Blue Yonder desks the corpus cannot settle
+**Sumeet is naming the desks.** Until then it stays as-is: under R5 a module name
+may now come from the current market rather than only from the corpus, but Blue
+Yonder's desks are a question of *what Yallo staffs*, which no market research can
+answer.
 
-The suite-level platform rebuild (B2) sourced every module name verbatim from the
-legacy corpus at `../yallo-legacy-archive`. Four names the corpus attests but
-which I have **not** published, because attestation is not the same as a desk
-Yallo staffs:
-
-| Name | Where it appears | Why parked |
-|---|---|---|
-| **SAP Special Applications** | `platform/sap.md`, `platform-expertise/sap-expertise.md` | Not a product. The legacy scope line — "enhance industry-specific operations with tailored automation and analytics" — describes a category, so there is no bench to name and no role list that would be honest. |
-| **SAP Business One** | `platform-expertise/sap-expertise.md` | SMB ERP. Canon §1 positions Yallo on enterprise platform programmes; a Business One desk would contradict the wedge unless you actually staff it. |
-| **SAP Business ByDesign** | `platform-expertise/sap-expertise.md` | Same as Business One, and SAP has since sunset new sales of it. |
-| **Blue Yonder — the whole suite** | **no corpus file exists** | There is no `platform/blue-yonder.md` or `blue-yonder-expertise.md` in the corpus, so there is no attested suite list to draft from. |
-
-**What ships meanwhile.** SAP publishes 14 modules, Oracle 9, Salesforce 6 — all
-corpus-attested. **Blue Yonder is left derived**, so it still shows the retail cut
-(Merchandise Management, Assortment Optimization, Space Planning alongside WMS,
-TMS, Luminate and Demand Planning). It is the one platform page still mixing two
-levels, and it stays that way until there is a source: inventing a Blue Yonder
-suite list is exactly what the run's rules forbid.
-
-**What would settle it:** either name the Blue Yonder desks you staff, or point me
-at a source. Same for the three SAP names — a yes on any of them and it publishes
-with roles mapped from the existing families.
 
 ## Q10 — The legacy `.wpress` archive is media-only
 

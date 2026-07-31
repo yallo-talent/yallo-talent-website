@@ -85,6 +85,28 @@
   --amb-indigo-l: #3a5a8a;
   --amb-umber-l: #9a6e3e; /* warm amber — browner than the brand gold */
 
+  /* --- Identity hues (canon §5, R4, 31 Jul) -------------------------------
+     ONE hue per platform, discipline and sector, used only in that family's
+     ambient layer. Deliberately drawn from the SAME six-hue ambient family
+     above rather than a new palette: the requirement is "one family feel", and
+     inventing a second set of hues to sit beside the first is how a system
+     becomes a rainbow.
+
+     Gold is untouched by this. An identity hue never reaches text, controls,
+     borders or state — that reach is exactly what killed the retired per-sector
+     system, and R4 exists because the constraint, not the idea, was the problem.
+
+     Lead trio only. The full mapping is proposed in the run report for
+     ratification rather than assumed here. */
+  --id-sap-l: var(
+    --amb-indigo-l
+  ); /* SAP reads blue; indigo is its family member */
+  --id-sap-d: var(--amb-indigo-d);
+  --id-data-analytics-l: var(--amb-teal-l); /* data visualisation convention */
+  --id-data-analytics-d: var(--amb-teal-d);
+  --id-retail-l: var(--amb-plum-l); /* consumer warmth, away from the gold */
+  --id-retail-d: var(--amb-plum-d);
+
   --amb-plum-d: #b45c8e;
   --amb-violet-d: #7a6fb8;
   --amb-teal-d: #4e9a9a;
@@ -730,6 +752,68 @@ button {
    content is about — per-taxonomy assignment is banned (canon §5). The class
    only sets --amb; the wash below and the PetalPlate consume it.
    -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Identity, per domain family (R4).
+
+   A page declares `data-identity` once, at its root. Every `.amb-N` inside then
+   resolves to that ONE hue, and the section rhythm comes from alpha rather than
+   from a different colour — which is the difference between R4's governed system
+   and the retired one. Six positions still read as six steps; they now read as
+   six steps of the same hue.
+
+   A page with no `data-identity` keeps the positional six-hue rhythm, so the
+   homepage and the editorial surfaces are unaffected.
+   -------------------------------------------------------------------------- */
+:root[data-theme] [data-identity="sap"] {
+  --id: var(--id-sap-l);
+}
+:root[data-theme="dark"] [data-identity="sap"] {
+  --id: var(--id-sap-d);
+}
+:root[data-theme] [data-identity="data-analytics"] {
+  --id: var(--id-data-analytics-l);
+}
+:root[data-theme="dark"] [data-identity="data-analytics"] {
+  --id: var(--id-data-analytics-d);
+}
+:root[data-theme] [data-identity="retail"] {
+  --id: var(--id-retail-l);
+}
+:root[data-theme="dark"] [data-identity="retail"] {
+  --id: var(--id-retail-d);
+}
+
+/* Inside an identity family every position takes the family hue. The rhythm is
+   carried by --amb-step, which the .amb-N rules below set, and which the
+   consuming surfaces multiply into their own alpha. */
+[data-identity] .amb-1,
+[data-identity] .amb-2,
+[data-identity] .amb-3,
+[data-identity] .amb-4,
+[data-identity] .amb-5,
+[data-identity] .amb-6 {
+  --amb: var(--id);
+}
+
+[data-identity] .amb-1 {
+  --amb-step: 1;
+}
+[data-identity] .amb-2 {
+  --amb-step: 0.82;
+}
+[data-identity] .amb-3 {
+  --amb-step: 1.12;
+}
+[data-identity] .amb-4 {
+  --amb-step: 0.9;
+}
+[data-identity] .amb-5 {
+  --amb-step: 1.06;
+}
+[data-identity] .amb-6 {
+  --amb-step: 0.86;
+}
+
 .amb-1 {
   --amb: var(--amb-1);
 }

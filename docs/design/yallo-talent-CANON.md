@@ -28,7 +28,9 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 ## 3. Taxonomy
 
-**Six platforms**, in this order (Yallo is a Microsoft house): SAP, Oracle, Microsoft (Azure and Dynamics 365), Salesforce, Blue Yonder, Workday. ServiceNow and AWS are not platform destinations; ServiceNow survives as role-level capability, AWS folds into cloud-infrastructure.
+**Six platforms**, in this order (Yallo is a Microsoft house): SAP, Oracle, Microsoft (Azure and Dynamics 365), Salesforce, Blue Yonder, Workday.
+
+**Retired from the SAP platform page (ratified 31 Jul — R2):** SAP Special Applications (a category, not a product), SAP Business One and SAP Business ByDesign (SMB ERP, against canon §1's enterprise-programme wedge). Corpus attestation is not the same as a desk Yallo staffs. **Blue Yonder's module set stays parked** pending Sumeet naming its desks — it is the one platform page still mixing suite and sector levels, and inventing its suite list is forbidden. ServiceNow and AWS are not platform destinations; ServiceNow survives as role-level capability, AWS folds into cloud-infrastructure.
 
 **Microsoft module set (ratified 30 Jul):** Azure Data & AI, Azure Infrastructure, Azure Security, Azure DevOps, D365 Finance & Operations, D365 Customer Engagement, D365 Business Central, D365 Human Resources, Power Platform, Microsoft 365 Copilot — all full desks, at equal or greater depth than Oracle. Data as Relay v2.1 rev 2 §5.
 
@@ -52,11 +54,17 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 **Functional hues:** two grades per hue per theme, `-mark` (≥3:1, fills/strokes) and `-text` (≥4.5:1, labels). Reaching for `-mark` on a label is the canonical misuse.
 
-**Ambient colour:** desaturated hues live only in the ambient layer — gradients, glows, plate washes — never on text or controls. **Assignment is per-section only. Per-taxonomy-branch assignment is banned**: it is the retired per-sector hue system returning. The retired six-hue system stays retired.
+**Ambient colour (amended 31 Jul — R4: per-domain identity, governed).** Desaturated hues live only in the ambient layer — hero atmospheric fields, PetalPlates, section washes — **never on text, controls, borders or state**.
+
+**Each platform, discipline and sector carries ONE identity hue**, used only in that family's ambient layer. This supersedes the per-taxonomy-branch *ban* with a governed system, and the distinction is the whole point: the retired six-hue system failed because its hues reached into borders, labels and card washes, so a page's accent changed with its branch and the brand lost one marker. Under R4 the hue never leaves the ambient layer, so a page is recognisably SAP or retail at a glance while **gold remains the sole interactive and brand accent everywhere**.
+
+Conditions on every identity hue: one curated family so the set reads as one system rather than a rainbow; tuned per register; desaturated enough to sit under `--amb-alpha` without competing with gold; and if any text grade is ever derived from one, that grade must clear AA on its own. Tokenised in Layer 1 — a component never names a hue, it inherits `--amb` from its page.
+
+Within a page, section rhythm still varies by position (`.amb-1…6`), now within the family's hue rather than across six unrelated ones.
 
 **Type.** Display Newsreader 500/600, body Inter, data IBM Plex Mono (tables and mono labels only). No third face.
 
-**Floor raised 30 Jul (A4) — nothing below 13px anywhere.** Superseding the 12px floor: `mono labels 13px` at ≥0.12em tracking (uppercase) · `meta 14px` · `footer links 14px` · `nav 15px` · `buttons 15px` · card/list body 14px · body 16px (17px preferred on light) · table figures 14px tabular. The 12px floor was met and then became the resting size of load-bearing content — role chips, module lists, metric labels — so the product Yallo sells rendered at the smallest size on the page. The ramp has exactly 13 documented roles; the frontmatter is the single source; no two adjacent steps closer than a 1.125 ratio. Enforced by project guard in CI and pre-commit.
+**Floor raised 30 Jul (A4) — nothing below 13px anywhere.** Superseding the 12px floor: `mono labels 13px` at ≥0.12em tracking (uppercase) · `meta 14px` · `footer links 14px` · `nav 15px` · `buttons 15px` · card/list body 14px · body 16px (17px preferred on light) · table figures 14px tabular. The 12px floor was met and then became the resting size of load-bearing content — role chips, module lists, metric labels — so the product Yallo sells rendered at the smallest size on the page. The ramp has exactly 13 documented roles; the frontmatter is the single source. **Adjacency (ratified 31 Jul — R1): the 1.125 minimum ratio applies from `--fs-body-sm` (15.5px) upward**, the display and heading chain where a reader compares steps by size alone. Below it the roles are separated by family, case, tracking, weight and colour as well as size — mono uppercase tracked at 13px against sans sentence-case at 14px is not a size comparison — so A4's 13/14/15 sizes stand and the ratio does not govern them. This closes the direct conflict between A4 and the earlier blanket rule. Enforced by project guard in CI and pre-commit.
 
 **Structural signature: the quarter-round petal** (three square corners, one 56px radius, from the Yallo mark) — cards, buttons, masks, phase fills, entity strip, background shapes. **Creative North Star: "The Screening Dossier"** — the site is the artefact Yallo delivers. Depth is flat, tonal layering plus hairlines, with **exactly one lifted element at rest: the hero instrument**.
 
@@ -94,6 +102,7 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 - **Talent-speak, always:** what Yallo places, screens and staffs — never what the platform does.
 - **Port-and-convert principle (ratified 30 Jul):** the legacy site was Talent + Delivery + Consulting; everything worth keeping ports, and everything that ports converts to Talent-speak. Legacy delivery outcome figures do not port without a client and record.
 - **Workstream split (ratified 30 Jul):** case studies are Sumeet-and-Chat scope, first-class in the build. Insight articles are descoped from this build entirely — all legacy-ported insights `published: false` — and transfer to Raphy's pod post-handover with a Chat-authored brief.
+- **IA modernisation (authorised 31 Jul — R5).** The legacy corpus IA is two to three years old, so it is the source for what Yallo *published*, not for what the market *is*. Per lead domain the module taxonomy is critiqued against the current market and the portion that has moved is amended — expected to be 20–30%. Every change lands in a logged was/now/why table for Sumeet's ratification. Module names must be **real market products**; an uncertain desk parks in `QUESTIONS.md` rather than shipping. This narrows, and does not repeal, the corpus-only rule: names still may not be invented, but a name may now come from the current market rather than only from the corpus.
 - **The one rule above all:** never invent a person, quotation, client, metric, source, case study or date. Where something is missing, render nothing and name the gap. Enforced structurally by CI guards that are never weakened.
 
 ## 10. Amendment log
@@ -112,3 +121,13 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 | A6 | **India is a demand market as well as the supply hub**, via GCC staffing for multinationals building Bengaluru capability centres; "3 delivery regions" stays banned | "never a demand market" in §1 |
 
 A6 closes `QUESTIONS.md` Q5, which had recorded canon §1 and `PRODUCT.md` as contradicting each other on this exact point.
+
+**31 Jul 2026, third amendment set (R1–R5, Sumeet-ratified).**
+
+| # | Ruling | Effect |
+|---|---|---|
+| R1 | The adjacency narrowing is ratified | §5 type clause: the 1.125 ratio applies from 15.5px upward. **Closes Q7.** |
+| R2 | Three SAP names retired from the platform page | §3: SAP Special Applications, Business One, ByDesign. **Q9 narrows to Blue Yonder only.** |
+| R3 | No glass on the mega panel, and no portal | The ambient field stands there. **Closes Q8.** |
+| R4 | **Per-domain identity colour, governed** | §5 ambient clause rewritten: one identity hue per platform, discipline and sector, ambient layer only. Supersedes the per-branch ban. Gold stays the sole interactive and brand accent. |
+| R5 | IA modernisation authorised | §9: the module taxonomy may be amended against the current market, with a logged was/now/why table per domain. |
