@@ -165,8 +165,39 @@
   max-width: 22ch;
 }
 
+/* A2 gradient text, taken up per order item 8. The L1 hero headline is display
+   emphasis at 62px, gold-anchored, which is what the permission is for — and the
+   retail pass noted A2 was "not even in play" here.
+
+   The ground is NOT flat under this one: HeroAtmosphere paints an ambient field
+   plus a scrim behind it, so the lightest stop has to clear 3:1 against the
+   composed ground at every point the glyph run covers, not against a token.
+   Measured across the run rather than assumed. Both stops are gold grades so the
+   run reads as one colour shifting; the solid colour is the no-background-clip
+   fallback and forced-colors drops the clip entirely. */
 .heroEmphasis {
   color: var(--accent-line);
+  background: linear-gradient(
+    100deg,
+    var(--accent-line) 0%,
+    var(--accent-label) 55%,
+    var(--accent-line) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .heroEmphasis {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .heroEmphasis {
+    background: none;
+    -webkit-text-fill-color: currentcolor;
+  }
 }
 
 /* --fs-lede is the ramp role named "the hero paragraph". This was a literal

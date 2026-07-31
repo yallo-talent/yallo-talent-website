@@ -72,23 +72,23 @@ export function L1PageShell({ data, metrics }: ShellProps) {
           only way off this page other than the brief form. Scoped here, sticky
           releases when the last navigated section ends. */}
       <div className={styles.subNavScope}>
-      <L1SubNav items={subNavItems} />
-      <div id="why">
-        <L1Intro data={data} />
-      </div>
-      <div id="deliver">
-        <L1WhatWeDeliver data={data} />
-      </div>
-      <div id="how">
-        <L1HowWeWork data={data} />
-      </div>
-      {hasScarce && (
-        <div id="scarce">
-          <L1ScarceTalent data={data} />
+        <L1SubNav items={subNavItems} />
+        <div id="why">
+          <L1Intro data={data} />
         </div>
-      )}
-      <L1Expertise data={data} />
-      <L1Segments data={data} />
+        <div id="deliver">
+          <L1WhatWeDeliver data={data} />
+        </div>
+        <div id="how">
+          <L1HowWeWork data={data} />
+        </div>
+        {hasScarce && (
+          <div id="scarce">
+            <L1ScarceTalent data={data} />
+          </div>
+        )}
+        <L1Expertise data={data} />
+        <L1Segments data={data} />
       </div>
       {/* Three sections dropped, on the re-critique's own finding: six of
           thirteen were the same figure — eyebrow, counted H2, lede, row of equal

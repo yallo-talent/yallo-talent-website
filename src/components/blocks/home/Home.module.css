@@ -157,6 +157,33 @@
   pointer-events: none;
 }
 
+/* Order item 7's slow drift, and this is where it was missing. The 90s field
+   drift shipped with HeroAtmosphere, which the L1/L2/platform/service heroes
+   use — but the homepage hero uses .heroPetal instead, so a critique correctly
+   found zero 90s animation on the one page the order names first.
+
+   Transform-only and on an element that is absolutely positioned, aria-hidden
+   and pointer-events:none, so it cannot move layout and cannot touch CLS. The
+   petal is already 640px and bled off two edges; a 24px excursion over 90s is
+   below the threshold at which anyone would call it motion, which is the point
+   — canon §5 wants atmosphere, not animation. Gated on no-preference rather
+   than relying on the global reset, so the rule does not exist at all for a
+   reader who has asked for stillness. */
+@media (prefers-reduced-motion: no-preference) {
+  .heroPetal {
+    animation: petal-drift 90s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes petal-drift {
+  from {
+    transform: rotate(12deg) translate3d(0, 0, 0);
+  }
+  to {
+    transform: rotate(12deg) translate3d(-24px, 16px, 0);
+  }
+}
+
 .heroGrid {
   display: grid;
   /* Even columns. The instrument gains its presence from internal scale and
@@ -173,10 +200,41 @@
 }
 
 /* The one phrase carrying the argument. */
+/* A2 gradient text, taken up here per order item 8. This is exactly what the
+   permission describes: a display emphasis span inside the page's largest
+   headline, gold-anchored, at 62px.
+
+   Both stops are gold grades, so the run reads as one brand colour shifting
+   rather than as two hues — and the LIGHTEST stop is the one that must clear AA,
+   because the lightest pixels are still text. On light that is --gold-deep at
+   3.12:1 against paper, over the 3:1 large-text threshold; on dark it is --gold
+   at 7.41:1. The solid colour underneath is the fallback for any engine that
+   drops background-clip, and forced-colors drops the clip entirely. */
 .heroHeadline em {
   font-style: italic;
   font-weight: var(--fw-strong);
   color: var(--accent-line);
+  background: linear-gradient(
+    100deg,
+    var(--accent-line) 0%,
+    var(--accent-label) 55%,
+    var(--accent-line) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .heroHeadline em {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@media (forced-colors: active) {
+  .heroHeadline em {
+    background: none;
+    -webkit-text-fill-color: currentcolor;
+  }
 }
 
 .heroLede {
