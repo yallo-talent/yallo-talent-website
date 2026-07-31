@@ -132,18 +132,105 @@ for (const file of walk("src")) {
   const src = readFileSync(file, "utf8");
   const blocks = src.split("}");
   for (const block of blocks) {
-    if (!/font-size:\s*var\(--fs-label\)/.test(block)) continue;
+    // A4 governs "mono labels 13px", which is BOTH 13px roles — --fs-label and
+    // --fs-data. Checking only --fs-label is how .statL shipped uppercase mono
+    // at 0.06em: the four canon §6 metric labels, half the required tracking,
+    // and green. R1 leans on this tracking to justify exempting the 13/14/15px
+    // roles from the 1.125 ratio, so an untracked 13px cap undercuts the ratio
+    // rule's own reasoning as well as A4.
+    if (!/font-size:\s*var\(--fs-(label|data)\)/.test(block)) continue;
     if (!/text-transform:\s*uppercase/.test(block)) continue;
     const ls = block.match(/letter-spacing:\s*([0-9.]+)em/);
     const selector = (block.match(/([.#][\w-]+[^{]*)\{/) || [, "?"])[1].trim();
     if (!ls) {
       errors.push(
-        `${file}  uppercase --fs-label with no letter-spacing  [${selector}]`,
+        `${file}  uppercase 13px mono with no letter-spacing  [${selector}]`,
       );
     } else if (Number.parseFloat(ls[1]) < TRACKING_FLOOR) {
       errors.push(
-        `${file}  uppercase --fs-label at ${ls[1]}em tracking, below ${TRACKING_FLOOR}em  [${selector}]`,
+        `${file}  uppercase 13px mono at ${ls[1]}em tracking, below ${TRACKING_FLOOR}em  [${selector}]`,
       );
+    }
+  }
+}
+
+// ── 3b. Rendered adjacency (R1) ───────────────────────────────────────────
+//
+// The floor check above is necessary and was never sufficient. R1 ratifies a
+// 1.125 minimum ratio between adjacent ramp steps from --fs-body-sm upward, and
+// nothing enforced it — a critique caught .statN rendering at 58.88px against
+// every .h2 at 54.00px, a 1.09 ratio and a visible hierarchy inversion, while
+// this guard reported clean.
+//
+// The cause is structural rather than a typo, which is why it needs a guard:
+// --fs-numeral is clamp(38px, 4.6vw, 62px) and --fs-headline is
+// clamp(32px, 4.4vw, 54px). Their MAXIMA are correctly ordered, so reading the
+// tokens tells you nothing is wrong. But headline reaches its cap at 1227px
+// while numeral keeps growing to 1348px, so between those widths a third
+// display step exists that the source never declares. Evaluating the clamps
+// across a width sweep is the only way to see it.
+const RAMP_ORDER = [
+  "--fs-display",
+  "--fs-headline",
+  "--fs-numeral",
+  "--fs-title",
+  "--fs-subtitle",
+  "--fs-body",
+  "--fs-body-sm",
+];
+const ADJACENCY_FLOOR = 15.5; // R1: the rule applies from --fs-body-sm upward.
+const RATIO = 1.125;
+const SWEEP = [390, 768, 1024, 1227, 1280, 1348, 1440, 1680, 1920];
+
+/** clamp(min, preferred-vw, max) evaluated at a viewport width. */
+function evalSize(decl, width) {
+  const clamp = decl.match(
+    /clamp\(\s*([\d.]+)px\s*,\s*([\d.]+)vw\s*,\s*([\d.]+)px\s*\)/,
+  );
+  if (clamp) {
+    const [, min, vw, max] = clamp.map(Number);
+    return Math.min(Math.max(min, (vw * width) / 100), max);
+  }
+  const fixed = decl.match(/^\s*([\d.]+)px\s*$/);
+  return fixed ? Number(fixed[1]) : null;
+}
+
+{
+  const src = readFileSync(TOKENS, "utf8").replace(/\s+/g, " ");
+  const declared = new Map();
+  for (const role of RAMP_ORDER) {
+    const m = src.match(
+      new RegExp(`${role}:\\s*(clamp\\([^)]*\\)|[\\d.]+px)`),
+    );
+    if (m) declared.set(role, m[1]);
+  }
+
+  for (const width of SWEEP) {
+    // Roles that land on the SAME size are ONE step, not two adjacent ones, so
+    // they collapse before the ratio is applied. Without this the guard reports
+    // a 1.000 "violation" wherever two roles deliberately share a step — which
+    // --fs-display and --fs-numeral do at the mobile floor by design.
+    const distinct = [];
+    for (const role of RAMP_ORDER) {
+      const v = evalSize(declared.get(role) ?? "", width);
+      if (v === null || v < ADJACENCY_FLOOR) continue;
+      const last = distinct.at(-1);
+      if (last && Math.abs(last[1] - v) < 0.01) last[0] += ` / ${role}`;
+      else distinct.push([role, v]);
+    }
+    const sizes = distinct;
+    for (let i = 1; i < sizes.length; i++) {
+      const [prevRole, prev] = sizes[i - 1];
+      const [role, cur] = sizes[i];
+      if (cur > prev + 0.01) {
+        errors.push(
+          `ramp order inverted at ${width}px: ${role} (${cur.toFixed(2)}px) is LARGER than ${prevRole} (${prev.toFixed(2)}px)`,
+        );
+      } else if (prev / cur < RATIO - 0.001) {
+        errors.push(
+          `ramp adjacency at ${width}px: ${prevRole} (${prev.toFixed(2)}px) over ${role} (${cur.toFixed(2)}px) is ${(prev / cur).toFixed(3)}, below R1's ${RATIO}`,
+        );
+      }
     }
   }
 }
@@ -233,5 +320,5 @@ if (strict && warnings.length) {
 }
 
 console.log(
-  `\nType scale clean: nothing below ${FLOOR}px, all --fs-label tracking at or above ${TRACKING_FLOOR}em.`,
+  `\nType scale clean: nothing below ${FLOOR}px, all 13px mono tracking at or above ${TRACKING_FLOOR}em.`,
 );

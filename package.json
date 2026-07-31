@@ -13,6 +13,7 @@
     "check:type": "node scripts/check-type-scale.mjs --strict",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:motion": "node scripts/check-motion.mjs",
+    "check:weights": "node scripts/check-font-weights.mjs",
     "check:reflow": "node scripts/check-reflow.mjs",
     "check:visual": "node scripts/capture-home.mjs",
     "test": "playwright test",

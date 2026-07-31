@@ -123,6 +123,26 @@
   --r-xs: 8px; /* logo tiles, flags, entity marks */
   --r-micro: 3px; /* progress bars and other hairline-scale fills */
 
+  /* ---- weight, and why there are only three ----------------------------
+     Two independent critique passes converged on the same defect: 92 of 181
+     font-weight declarations named a face that is never loaded. layout.tsx
+     ships Newsreader 400/500/600, Inter 400/500/600 and Plex Mono 400/500, but
+     the modules declared 300, 550, 700, 800 and 900. Every one of those was
+     SYNTHESISED by the browser — a geometric smear of the nearest real face,
+     not a drawn weight. It degraded the largest type on the site: at 2x zoom
+     the H1's counters visibly closed, which is precisely the failure the
+     comment in layout.tsx says Newsreader's optical sizing was chosen to avoid.
+
+     The fix is to correct the declarations, NOT to load 800. Canon §5 reads
+     "Display Newsreader 500/600", so 800 was never sanctioned; loading it would
+     be amending a ratified clause to match a bug. Three weights, and mono stops
+     at 500 because Plex Mono ships no 600. */
+  --fw-body: 400;
+  --fw-medium: 500;
+  --fw-strong: 600; /* the heaviest real face — display and emphasis */
+  --fw-mono: 400;
+  --fw-mono-strong: 500; /* Plex Mono has no 600; do not reach past this */
+
   /* --- Type ramp: 13 roles, canon §5 -------------------------------------
      Every font-size in the system resolves through one of these. A literal px
      value in a component is drift: use the nearest role. Exactly the 13 roles
@@ -153,11 +173,18 @@
      --fs-headline, so the 1.125 adjacency rule holds. */
   --fs-display: clamp(38px, 5.6vw, 62px); /* the H1, once per page */
   --fs-headline: clamp(32px, 4.4vw, 54px); /* section H2 */
-  --fs-numeral: clamp(
-    38px,
-    4.6vw,
-    62px
-  ); /* metric values — shares the display step at min */
+  /* A real step BELOW the headline, and this is a correction. The old curve
+     was clamp(38px, 4.6vw, 62px), which the comment described as "shares the
+     display step at min" — true at both ends and false everywhere between.
+     --fs-headline caps at 1227px while this kept growing to 1348px, so across
+     that span a THIRD display size existed that no token declared: at 1280px
+     the metric figures rendered 58.88px against every H2 at 54.00px. Louder
+     than the headings they sat under, a 1.090 ratio, and invisible in the
+     source because the two maxima are correctly ordered. Only evaluating the
+     clamps across a width sweep shows it, which is what the guard now does.
+
+     47px also fills a real hole: 54 -> 27 was a 2.0x jump with nothing in it. */
+  --fs-numeral: clamp(28px, 3.85vw, 47px); /* metric values */
   --fs-title: clamp(23px, 2.4vw, 27px); /* card and panel headings */
   --fs-subtitle: 20px; /* axis names, persona roles */
   --fs-lede: 20px; /* the hero paragraph — shares the subtitle step */
@@ -172,7 +199,7 @@
      --fs-data-sm and --fs-caption-sm are now GONE, not aliased: every consumer
      was migrated in the A4 pass, which is what the instruction here asked for. */
   --fs-numeral-lg: var(--fs-numeral); /* was 48-84px */
-  --fs-numeral-sm: var(--fs-headline); /* was 30-44px */
+  --fs-numeral-sm: var(--fs-title); /* was 30-44px; must stay under -lg */
   --fs-ghost: var(--fs-display); /* was 82px — decorative bleed numerals */
   --fs-entity: var(--fs-title); /* was 22-30px */
 
@@ -748,9 +775,18 @@ h2 {
 
 h3 {
   font-size: var(--fs-title);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   letter-spacing: -0.015em;
   line-height: 1.15;
+}
+
+/* The UA sets <cite> italic, and both citation styles on this site are set in
+   IBM Plex Mono, which ships no italic face — so the browser was slanting the
+   roman to fake one. Synthesised mono obliques smear at 13px. Reset globally
+   rather than per class: nothing in this design wants an italic citation, and
+   the two instances that existed were fixed one at a time and one was missed. */
+cite {
+  font-style: normal;
 }
 
 p {
@@ -1076,8 +1112,14 @@ button.role-pill:focus-visible {
    applied, which is the whole point of it being the single implementation. */
 .glass.glass {
   background: color-mix(in oklab, var(--ground) 88%, transparent);
+  /* Standard property ONLY — do not hand-write the -webkit- twin here. The
+     build's Lightning CSS treats an author-written prefix pair as one property
+     and re-emits from its own targets; given both, it emitted ONLY
+     -webkit-backdrop-filter and dropped the standard form, so the blur never
+     rendered in Chromium and A3's glass has been inert since it shipped.
+     Tailwind's own backdrop utilities emit both because Tailwind generates the
+     pair internally. Left alone, Lightning CSS prefixes this correctly. */
   backdrop-filter: saturate(135%) blur(14px);
-  -webkit-backdrop-filter: saturate(135%) blur(14px);
   border-color: var(--boundary);
 }
 
@@ -1089,7 +1131,6 @@ button.role-pill:focus-visible {
   .glass.glass {
     background: var(--ground);
     backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
 }
 
@@ -1103,7 +1144,6 @@ button.role-pill:focus-visible {
   .glass.glass {
     background: Canvas;
     backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
 }
 

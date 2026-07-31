@@ -47,7 +47,7 @@
 .wordmark {
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--accent-label);
   line-height: 1;
   letter-spacing: -0.015em;
@@ -62,7 +62,7 @@
   /* A4: mono labels 13px. This is the smallest text in the lockup and it is a
      mono label, so it lands exactly on the floor rather than under it. */
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.3em;
   /* The tracking adds a trailing space after the final T; pull it back so the
      object's right edge is optically flush rather than 0.3em short. */

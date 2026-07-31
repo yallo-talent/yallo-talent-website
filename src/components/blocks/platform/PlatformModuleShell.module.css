@@ -67,7 +67,7 @@
 
 .title {
   font-size: var(--fs-display);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.035em;
   line-height: 1.05;
   color: var(--fg);
@@ -132,7 +132,7 @@
   background: var(--accent-mark);
   color: var(--ink-950);
   font-size: var(--fs-body-sm);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   border-radius: 0 0 0 var(--r-md);
   transition:
     transform 0.18s var(--ease),
@@ -151,7 +151,7 @@
   border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   transition:
     border-color 0.15s ease,
     background 0.15s ease;
@@ -189,7 +189,7 @@
 .statN {
   font-family: var(--font-display);
   font-size: var(--fs-numeral);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.03em;
   color: var(--fg);
   line-height: 1;
@@ -198,7 +198,7 @@
 .statL {
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-label);
   margin-top: 10px;
@@ -221,7 +221,7 @@
 
 .h2 {
   font-size: var(--fs-headline);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.025em;
   line-height: 1.1;
   color: var(--fg);

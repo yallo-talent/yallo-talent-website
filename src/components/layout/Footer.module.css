@@ -84,7 +84,7 @@
   padding: 2px 0;
   color: var(--dk-txt);
   font-size: var(--fs-caption);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   transition: color 0.15s ease;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .locationCity {
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   color: var(--dk-txt);
   letter-spacing: -0.005em;
 }
@@ -147,7 +147,7 @@
 .locationCountry {
   color: var(--dk-txt-2);
   font-size: var(--fs-data);
-  font-weight: 400;
+  font-weight: var(--fw-body);
 }
 
 .bottom {

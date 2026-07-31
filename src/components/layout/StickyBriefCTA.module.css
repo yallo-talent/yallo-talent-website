@@ -26,7 +26,7 @@
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -34,7 +34,7 @@
 
 .lede {
   font-size: var(--fs-caption);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   color: var(--fg);
 }
 
@@ -46,7 +46,7 @@
   background: var(--accent-mark);
   color: var(--black-950);
   font-size: var(--fs-data);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   border-radius: 0 0 0 var(--r-md);
   transition: background 0.15s ease;
   white-space: nowrap;

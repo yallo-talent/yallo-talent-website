@@ -8,7 +8,7 @@
   color: var(--ink-950);
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  letter-spacing: 1px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: top 0.2s ease;
 }
@@ -89,7 +89,7 @@
   color: var(--fg);
   font-family: inherit;
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: -0.005em;
   cursor: pointer;
   transition: color 0.15s ease;
@@ -122,7 +122,7 @@
   color: var(--fg);
   font-family: inherit;
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: -0.005em;
   transition: color 0.15s ease;
 }
@@ -317,7 +317,7 @@
 
 .itemLabel {
   font-size: var(--fs-body-sm);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--fg);
   letter-spacing: -0.005em;
   display: inline-flex;
@@ -412,7 +412,7 @@
 
 .featuredTitle {
   font-size: var(--fs-body-sm);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   color: var(--fg);
   letter-spacing: -0.01em;
   line-height: 1.25;
@@ -428,7 +428,7 @@
 .featuredCta {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -460,7 +460,7 @@
   padding: 10px 16px;
   background: var(--accent-mark);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   font-size: var(--fs-body-sm);
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
@@ -528,7 +528,7 @@
   padding: 10px 0;
   color: var(--fg);
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   border-bottom: 1px solid var(--border);
 }
 
@@ -539,7 +539,7 @@
   color: var(--ink-950);
   text-align: center;
   border-radius: 0 0 0 var(--r-md);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
 }
 
 @media (max-width: 1024px) {

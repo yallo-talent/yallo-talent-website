@@ -10,7 +10,7 @@
   gap: 10px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -27,7 +27,7 @@
 
 .h2 {
   font-size: var(--fs-headline);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.025em;
   line-height: 1.1;
   color: var(--fg);
@@ -39,7 +39,7 @@
   color: var(--fg-muted);
   max-width: 62ch;
   line-height: 1.7;
-  font-weight: 400;
+  font-weight: var(--fw-body);
   margin: 0 0 28px;
 }
 
@@ -139,7 +139,7 @@
 
 .wwdTitle {
   font-size: var(--fs-body);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.01em;
   color: var(--fg);
   line-height: 1.25;
@@ -195,7 +195,7 @@
   z-index: 3;
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  font-weight: 700;
+  font-weight: var(--fw-mono-strong);
   letter-spacing: 0.14em;
   /* --accent-label, and no opacity. This is the SAME defect fixed on
      L1PageShell's .wwdBadge in an earlier round — opacity 0.5 over an accent
@@ -276,7 +276,7 @@
 
 .hwwStepTitle {
   font-size: var(--fs-body-sm);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.01em;
   color: var(--fg);
   line-height: 1.25;
@@ -360,7 +360,7 @@
 
 .archName {
   font-size: var(--fs-body-sm);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.01em;
   color: var(--fg);
   line-height: 1.25;
@@ -388,7 +388,7 @@
   border-radius: 999px;
   color: var(--fg);
   font-size: var(--fs-data);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   transition:
     border-color 0.2s ease,
     color 0.2s ease,
@@ -428,7 +428,7 @@
 .crossRailLabel {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -451,7 +451,7 @@
   border-radius: 0 0 0 var(--r-sm);
   color: var(--fg);
   font-size: var(--fs-data);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   transition:
     background 0.2s ease,
     border-color 0.2s ease,

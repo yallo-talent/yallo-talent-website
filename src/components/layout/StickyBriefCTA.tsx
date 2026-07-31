@@ -23,12 +23,24 @@ const SHOW_AFTER_PX = 1100;
 const HIDE_NEAR_END = 0.96;
 
 export function StickyBriefCTA() {
-  const { scrollY, scrollYProgress } = useScroll();
+  const { scrollY } = useScroll();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (y) => {
-    setVisible(y > SHOW_AFTER_PX && scrollYProgress.get() < HIDE_NEAR_END);
+    /* Both conditions are derived from the SAME y, and that is the fix rather
+       than a tidy-up. This used to read scrollYProgress.get() inside the scrollY
+       handler — two separate motion values updated by the same scroll frame with
+       no ordering guarantee between them, so the progress read could be one
+       frame stale. The visible symptom is at the foot of the page: a fast scroll
+       or a jump to the end fires the handler with the final y while progress
+       still holds the previous value, HIDE_NEAR_END does not trip, and the
+       prompt appears on top of the closing ask it exists to avoid duplicating.
+       Deriving progress from y makes the two impossible to disagree. */
+    const max =
+      document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = max > 0 ? y / max : 0;
+    setVisible(y > SHOW_AFTER_PX && progress < HIDE_NEAR_END);
   });
 
   const shouldShow = visible && !dismissed;

@@ -94,7 +94,7 @@
   gap: 10px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--accent);
@@ -109,7 +109,7 @@
 
 .h {
   font-size: var(--fs-headline);
-  font-weight: 900;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.03em;
   line-height: 1.05;
   color: var(--fg);
@@ -126,7 +126,7 @@
   font-size: var(--fs-body-sm);
   color: var(--fg-muted);
   line-height: 1.7;
-  font-weight: 300;
+  font-weight: var(--fw-body);
   margin: 0;
   max-width: 44ch;
 }
@@ -151,7 +151,7 @@
   background: var(--accent);
   color: var(--ink-950);
   font-size: var(--fs-body-sm);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   border-radius: 999px;
   transition:
     background 0.15s ease,
@@ -173,7 +173,7 @@
   color: var(--fg);
   border: 1px solid var(--wa25);
   border-radius: 999px;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   font-size: var(--fs-caption);
   background: var(--wa03);
   transition:
@@ -204,7 +204,7 @@
   gap: 8px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-muted);

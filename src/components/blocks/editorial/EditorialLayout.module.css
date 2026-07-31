@@ -80,7 +80,7 @@
   padding: 8px 14px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -99,7 +99,7 @@
 
 .heroTitle {
   font-size: var(--fs-display);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.04em;
   line-height: 1.02;
   color: var(--fg);
@@ -136,7 +136,7 @@
   background: var(--accent-mark);
   color: var(--ink);
   font-size: var(--fs-caption);
-  font-weight: 700;
+  font-weight: var(--fw-strong);
   border-radius: 999px;
   transition:
     background 0.15s ease,
@@ -156,7 +156,7 @@
   color: var(--fg);
   border: 1px solid var(--border-strong);
   border-radius: 999px;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   font-size: var(--fs-caption);
   background: var(--ground-2);
   transition:
@@ -208,7 +208,7 @@
 .sectionEyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--fg-subtle);
@@ -218,7 +218,7 @@
 
 .sectionH {
   font-size: var(--fs-headline);
-  font-weight: 900;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--fg);
@@ -271,7 +271,7 @@
 
 .bottomH {
   font-size: var(--fs-headline);
-  font-weight: 900;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--fg);
@@ -339,7 +339,7 @@
 
 .cardTitle {
   font-size: var(--fs-body);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.01em;
   color: var(--fg);
   margin: 0 0 10px;

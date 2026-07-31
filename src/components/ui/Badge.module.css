@@ -5,7 +5,7 @@
   padding: 4px 10px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   border-radius: 999px;

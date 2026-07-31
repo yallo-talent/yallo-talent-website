@@ -71,7 +71,7 @@
   gap: 9px;
   background: var(--accent-mark);
   color: var(--ink);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   font-size: var(--fs-body-sm);
   padding: 14px 24px;
   border-radius: 0 0 0 var(--r-md);
@@ -87,7 +87,7 @@
   align-items: center;
   gap: 8px;
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--text);
   border-bottom: 1.5px solid var(--accent-line);
   padding-bottom: 2px;
@@ -162,7 +162,7 @@
 /* The one phrase carrying the argument. */
 .heroHeadline em {
   font-style: italic;
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--accent-line);
 }
 
@@ -185,7 +185,7 @@
 
 .pillars li {
   font-size: var(--fs-caption);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   padding: 7px 13px;
   background: var(--ground-2);
   border: 1px solid var(--hairline);
@@ -289,7 +289,7 @@
 .phaseName {
   display: block;
   font-size: var(--fs-caption);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--dk-txt-2);
   margin-top: 5px;
 }
@@ -335,7 +335,7 @@
 .candidateName {
   font-size: var(--fs-caption);
   color: var(--dk-txt);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 }
 
 .candidateMeta {
@@ -369,10 +369,32 @@
   transition: width 1.4s var(--ease-measure);
 }
 
-/* A candidate row the live screen has not reached yet. */
+/* A candidate row the live screen has not reached yet.
+
+   The dim no longer touches the text, and that is an accessibility fix rather
+   than a preference. `opacity: 0.45` on the whole row composited the name to
+   3.79:1 and the meta line to 2.16:1 against this ground — real content, not
+   aria-hidden, and the only axe violation on the homepage. It had been there
+   since the section shipped.
+
+   Raising the opacity until it passed would have cost the state: 0.85 is the
+   first value that clears AA on both, and 0.85 does not read as "pending". So
+   the signal moves instead of weakening. It can afford to: the row ALREADY
+   says pending twice without colour — the bar sits at 4% instead of the score,
+   and the score column reads · instead of a number. The dim was a redundant
+   third telling. What remains is the bar's dim plus one step down the text
+   ramp, which is legible at 8.11:1 and still visibly quieter than 14.11:1. */
 .candidatePending {
+  transition: color 0.6s var(--ease);
+}
+
+.candidatePending .bar {
   opacity: 0.45;
   transition: opacity 0.6s var(--ease);
+}
+
+.candidatePending .candidateName {
+  color: var(--dk-txt-2);
 }
 
 .candidate {
@@ -415,7 +437,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--gold);
   line-height: 1;
 }
@@ -425,7 +447,7 @@
   font-size: var(--fs-data);
   color: var(--dk-txt-2);
   margin-top: 7px;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
 }
 
 /* --- Four entities ------------------------------------------------------- */
@@ -476,7 +498,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-entity);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
 }
 
@@ -656,7 +678,7 @@
   /* Grows with the marks: at 17.5px beside a 37px silhouette the names would
      read as a second, lesser rank instead of a peer. */
   font-size: var(--fs-title);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text-2);
   letter-spacing: -0.01em;
   text-align: center;
@@ -701,7 +723,7 @@
 .personaRole {
   font-family: var(--font-display);
   font-size: var(--fs-subtitle);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
 }
 
@@ -784,7 +806,7 @@
 .personaStatValue {
   font-family: var(--font-display);
   font-size: var(--fs-numeral-sm);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--text);
@@ -853,7 +875,7 @@
 
 .metricValue {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   font-size: var(--fs-numeral);
   line-height: 1;
   letter-spacing: -0.03em;
@@ -866,7 +888,7 @@
   margin-top: 12px;
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-subtle);
   position: relative;
@@ -930,7 +952,7 @@
   right: 12px;
   font-family: var(--font-mono);
   font-size: var(--fs-ghost);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   line-height: 1;
   color: var(--accent-mark);
   opacity: 0.13;
@@ -1041,7 +1063,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-card-title);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
   line-height: 1.2;
 }
@@ -1075,7 +1097,7 @@
 .roleOutNote {
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-subtle);
   margin-top: 8px;
@@ -1139,12 +1161,21 @@
   position: relative;
 }
 
+/* --accent-label, not --accent-line, and the reason is that this figure stopped
+   being large text. It used to render at 54px/800, which cleared WCAG's
+   large-text bar and let it use the --gold-deep grade at 3.38:1 on the wash.
+   Two corrections landed on it at once: --fs-numeral-sm was re-pointed off
+   --fs-headline (it had become LARGER than --fs-numeral-lg), and the weight
+   dropped 800 -> 600 because no 800 face is loaded. At 23px/600 it is small
+   text by axe's rule — 600 is not bold — so the threshold is 4.5:1 and the
+   decorative grade no longer qualifies. --gold-ink is the grade the three-tier
+   gold exists for: 5.08:1 here. */
 .vowBadgeValue {
   font-family: var(--font-display);
   font-size: var(--fs-numeral-sm);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   line-height: 1;
-  color: var(--accent-line);
+  color: var(--accent-label);
 }
 
 .vowBadgeLabel {
@@ -1170,7 +1201,7 @@
   padding: 13px 0;
   border-bottom: 1px solid var(--hairline);
   font-size: var(--fs-body-sm);
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--text);
 }
 
@@ -1290,7 +1321,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
   line-height: 1.15;
 }
@@ -1363,7 +1394,7 @@
 .modelMetricValue {
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.02em;
   color: var(--text);
 }
@@ -1498,7 +1529,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-subtitle);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
 }
 
@@ -1529,7 +1560,7 @@
 .aiStatValue {
   font-family: var(--font-display);
   font-size: var(--fs-numeral-lg);
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   line-height: 0.95;
   letter-spacing: -0.03em;
   color: var(--accent-line);
@@ -1570,7 +1601,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: var(--fs-card-title);
-  font-weight: 550;
+  font-weight: var(--fw-medium);
   color: var(--text);
   position: relative;
 }
@@ -1823,7 +1854,7 @@
 
 .closeGrid h2 em {
   font-style: italic;
-  font-weight: 600;
+  font-weight: var(--fw-strong);
   color: var(--gold);
 }
 

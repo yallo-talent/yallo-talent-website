@@ -96,7 +96,7 @@
 
 .sectionH {
   font-size: var(--fs-headline);
-  font-weight: 800;
+  font-weight: var(--fw-strong);
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: var(--fg);
