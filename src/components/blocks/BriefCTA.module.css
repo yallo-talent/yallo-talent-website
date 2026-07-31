@@ -1,9 +1,16 @@
+/* R10 sweep: `composes: band-dark` rather than a hand-set dark ground.
+   A permanently dark band must RESTATE the Layer 2c aliases or its descendants
+   resolve --fg against the light register — which produced ink on ink at 1.00:1
+   and 1.07:1 on the case-studies headings. Setting the background alone is the
+   defect; the utility carries the restatement. Swept site-wide rather than fixed
+   per instance, because the composed-contrast check found two and grep found
+   four more. */
 .section {
+  composes: band-dark from global;
   position: relative;
   padding: clamp(72px, 9vw, 120px) 0;
   overflow: hidden;
   color: var(--fg);
-  background: var(--ink-950);
   isolation: isolate;
 }
 

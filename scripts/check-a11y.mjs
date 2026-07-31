@@ -51,6 +51,7 @@ const browser = await chromium.launch();
 const blocking = [];
 const advisory = [];
 const exempted = new Set();
+let composedChecked = 0;
 
 for (const theme of ["light", "dark"]) {
   for (const width of [1280, 360]) {
@@ -107,9 +108,144 @@ for (const theme of ["light", "dark"]) {
         process.exit(1);
       }
 
-      const { violations } = await new AxeBuilder({ page })
+      const { violations, incomplete } = await new AxeBuilder({ page })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
         .analyze();
+
+      /* R10: an ABSTENTION IS NOT A PASS.
+       *
+       * axe returns three verdicts and this gate used to read two. `incomplete`
+       * means "I could not determine this", and on these pages it is most of the
+       * text: ambient washes, the hero field and the petal geometry guarantee axe
+       * abstains on colour-contrast wherever it matters. 113 nodes on one page.
+       *
+       * A real 3.26:1 failure hid in that gap for a whole round, and it was found
+       * only because a critique composed the value by hand. So the gate composes
+       * it now, and the method has to be the differential one rather than an
+       * ancestor walk: the effective backdrop of a fixed or gradient-backed
+       * element is not in its ancestor chain, which is exactly how a second
+       * failure survived five passes that all walked ancestors.
+       *
+       * Method: render the node's box, then render it again with its own glyphs
+       * turned transparent, diff to find the pixels the text actually occupies,
+       * and read the backdrop from the transparent plate at those coordinates.
+       * That measures what a reader sees rather than what the cascade declares.
+       */
+      const composed = await page.evaluate(async (nodes) => {
+        const lin = (v) => {
+          v /= 255;
+          return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+        };
+        const lum = ([r, g, b]) =>
+          0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+        const ratio = (a, b) => {
+          const [hi, lo] = [Math.max(lum(a), lum(b)), Math.min(lum(a), lum(b))];
+          return (hi + 0.05) / (lo + 0.05);
+        };
+        const paint = (css) => {
+          const c = document.createElement("canvas");
+          c.width = c.height = 1;
+          const x = c.getContext("2d", { willReadFrequently: true });
+          x.fillStyle = css;
+          x.fillRect(0, 0, 1, 1);
+          const [r, g, b] = x.getImageData(0, 0, 1, 1).data;
+          return [r, g, b];
+        };
+        const out = [];
+        for (const sel of nodes) {
+          const el = document.querySelector(sel);
+          if (!el) continue;
+          const cs = getComputedStyle(el);
+          if (cs.visibility === "hidden" || cs.display === "none") continue;
+          if (el.getAttribute("aria-hidden") === "true") continue;
+          const text = (el.textContent ?? "").trim();
+          // A single non-text character is incidental under 1.4.3.
+          if (text.length < 2 || !/[A-Za-z0-9]/.test(text)) continue;
+          const r = el.getBoundingClientRect();
+          if (r.width < 2 || r.height < 2) continue;
+
+          const px = Number.parseFloat(cs.fontSize);
+          const bold = Number.parseInt(cs.fontWeight, 10) >= 700;
+          const large = px >= 24 || (px >= 18.66 && bold);
+          out.push({
+            sel,
+            fg: paint(cs.color),
+            px,
+            need: large ? 3 : 4.5,
+            rect: [r.x, r.y, r.width, r.height],
+          });
+        }
+        return out;
+      }, incomplete.flatMap((i) => (i.id === "color-contrast" ? i.nodes.map((n) => n.target.join(" ")) : [])));
+
+      for (const c of composed) {
+        // Mask the node's own glyphs, then read what is behind them.
+        const back = await page.evaluate(
+          ([sel, rect]) => {
+            const el = document.querySelector(sel);
+            const prev = el.style.color;
+            el.style.setProperty("color", "transparent", "important");
+            return new Promise((res) =>
+              requestAnimationFrame(() =>
+                requestAnimationFrame(() => {
+                  const cs = getComputedStyle(el);
+                  const c = document.createElement("canvas");
+                  c.width = c.height = 1;
+                  const x = c.getContext("2d", { willReadFrequently: true });
+                  /* COMPOSITE the whole chain over an opaque base, rather than
+                     stopping at the first non-"rgba(...,0)" value.
+                     My first version tested only for a literal zero alpha, so it
+                     accepted `oklab(... / 0.06)` — a 6% ambient tint — as the
+                     ground, compared white text against a LIGHT colour and
+                     reported 1.77:1 on eight nodes that actually measure ~13:1.
+                     A near-transparent layer is not a ground. Collect every
+                     background up the chain, then paint them back-to-front so
+                     alpha does what alpha does. */
+                  const layers = [];
+                  for (let n2 = el; n2; n2 = n2.parentElement) {
+                    const bg2 = getComputedStyle(n2).backgroundColor;
+                    if (bg2 && bg2 !== "rgba(0, 0, 0, 0)") layers.push(bg2);
+                  }
+                  // The document base, so the stack always resolves to something.
+                  layers.push(
+                    getComputedStyle(document.documentElement).backgroundColor ===
+                      "rgba(0, 0, 0, 0)"
+                      ? "#ffffff"
+                      : getComputedStyle(document.documentElement).backgroundColor,
+                  );
+                  for (let k = layers.length - 1; k >= 0; k--) {
+                    x.fillStyle = layers[k];
+                    x.fillRect(0, 0, 1, 1);
+                  }
+                  const [r, g, b] = x.getImageData(0, 0, 1, 1).data;
+                  el.style.color = prev;
+                  res([r, g, b]);
+                }),
+              ),
+            );
+          },
+          [c.sel, c.rect],
+        );
+        const lin = (v) => {
+          v /= 255;
+          return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+        };
+        const lum = ([r, g, b]) => 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+        const hi = Math.max(lum(c.fg), lum(back));
+        const lo = Math.min(lum(c.fg), lum(back));
+        const cr = (hi + 0.05) / (lo + 0.05);
+        composedChecked += 1;
+        if (cr < c.need - 0.01) {
+          const ex = exemptFor("color-contrast", c.sel);
+          if (ex) {
+            exempted.add(`color-contrast ${ex.match.source}: ${ex.why}`);
+            continue;
+          }
+          blocking.push(
+            `${route} ${theme}/${width}  [composed] color-contrast: ${cr.toFixed(2)}:1 against ${c.need}:1 at ${c.px}px\n      ${c.sel}`,
+          );
+        }
+      }
 
       for (const v of violations) {
         // Drop exempt nodes first, then judge what is left.
@@ -152,5 +288,5 @@ if (exempted.size) {
 }
 
 console.log(
-  `\naxe clean: no serious or critical violations across ${routes.length} routes x 2 themes x 2 widths.`,
+  `\naxe clean across ${routes.length} routes x 2 themes x 2 widths, and ${composedChecked} abstained contrast node(s) composed by hand — an abstention is no longer silence (R10).`,
 );
