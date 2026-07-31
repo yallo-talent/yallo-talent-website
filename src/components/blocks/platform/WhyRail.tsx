@@ -74,7 +74,14 @@ export function WhyRail({ points }: { points: WhyPoint[] }) {
       {points.map((p) => (
         <li key={p.title} className={styles.card}>
           <p className={styles.kicker}>{p.kicker}</p>
-          <h3 className={styles.title}>{p.title}</h3>
+          {/* A card title, not a document section. These four sat as <h3> with
+              no <h2> above them, so the page's outline skipped h1 -> h3 — a real
+              structural defect that axe does not report, because heading-order is
+              tagged best-practice and the run filters to WCAG tags. Demoted
+              rather than promoted: a four-card rail is not four sections of the
+              page, so inventing an <h2> to cover it would make the outline worse,
+              not better. */}
+          <p className={styles.title}>{p.title}</p>
           <p className={styles.body}>{p.body}</p>
           {p.figure ? (
             <p className={styles.figure}>

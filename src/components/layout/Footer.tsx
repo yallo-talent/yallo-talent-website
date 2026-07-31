@@ -58,8 +58,8 @@ export function Footer() {
               <Lockup />
             </div>
             <p className={styles.brandCopy}>
-              Enterprise platform talent across the Middle East and Europe.
-              Specialist-screened shortlists in 72 hours.
+              Enterprise platform talent across the Middle East, Europe and
+              India. Specialist-screened shortlists in 72 hours.
             </p>
             <div className={styles.locations}>
               <div className={styles.locationsLabel}>Locations</div>

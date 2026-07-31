@@ -46,7 +46,7 @@ export function whyPoints(cov: PlatformCoverage): WhyPoint[] {
       kicker: "In region, at pace",
       title: sectorLine
         ? `Placed into ${sectorLine} programmes`
-        : "Placed across the Middle East and Europe",
+        : "Placed across the Middle East, Europe and India",
       body: "Four entities across London, Dubai, Riyadh and Bengaluru, so a specialist can start on your paper or ours without an entity of your own.",
       figure: { value: "72h", label: "Brief to shortlist" },
     },

@@ -10,15 +10,25 @@ import Link from "next/link";
 import { useState } from "react";
 import styles from "./StickyBriefCTA.module.css";
 
-const SHOW_AT = 0.4;
+/* An ABSOLUTE scroll distance, not a fraction of the page.
+   scrollYProgress > 0.4 sounds reasonable and behaves badly: the trigger point
+   moves with document height, so on the homepage it fires around 4,300px and on
+   a 9,588px platform page at 390px it fires at 3,955px — leaving roughly 3,800px
+   of scroll with no conversion affordance at all, because the hero CTA has been
+   gone since about 830px. Measured on both.
+   1,100px is just past the hero on every template at every width, so the prompt
+   appears when the reader loses the first one and not a screen later. */
+const SHOW_AFTER_PX = 1100;
+/* Still suppressed near the foot, where the page has its own closing ask. */
+const HIDE_NEAR_END = 0.96;
 
 export function StickyBriefCTA() {
-  const { scrollYProgress } = useScroll();
+  const { scrollY, scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
-  useMotionValueEvent(scrollYProgress, "change", (v) => {
-    setVisible(v > SHOW_AT && v < 0.98);
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setVisible(y > SHOW_AFTER_PX && scrollYProgress.get() < HIDE_NEAR_END);
   });
 
   const shouldShow = visible && !dismissed;

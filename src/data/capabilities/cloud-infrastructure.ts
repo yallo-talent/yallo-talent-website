@@ -287,7 +287,7 @@ export const cloudInfrastructureData: L1PageData = {
       category: "FinOps",
       title: "When to hire your first FinOps practitioner.",
       excerpt:
-        "Before your monthly cloud bill has a comma, not after. What we've seen across the Middle East and Europe cloud programmes when cost governance is treated as an afterthought.",
+        "Before your monthly cloud bill has a comma, not after. What we've seen across the Middle East, Europe and India cloud programmes when cost governance is treated as an afterthought.",
       author: "Yallo Talent",
       minutes: 7,
     },

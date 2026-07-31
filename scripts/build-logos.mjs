@@ -21,7 +21,6 @@
  *   node scripts/build-logos.mjs
  */
 import {
-  copyFileSync,
   existsSync,
   mkdirSync,
   readdirSync,
@@ -83,12 +82,15 @@ async function convert(slug, file, outDir) {
   }
   mkdirSync(outDir, { recursive: true });
 
-  if (extname(file).toLowerCase() === ".svg") {
-    copyFileSync(src, join(outDir, `${slug}.svg`));
-    console.log(`  ${slug}.svg (vector, copied)`);
-    written++;
-    return;
-  }
+  // SVG is NOT copied through. It used to be — "a vector needs no raster
+  // treatment" — and that reasoning was wrong in the way that matters: the
+  // treatment the rail needs is not rasterisation, it is KEYING. Measured, the
+  // three vectors shipped at mean chroma 103, 184 and 175 against 0.0 for every
+  // keyed raster, so Alshaya rendered brand blue, Capgemini orange on dark, and
+  // Radwell a solid plate that inverted to a gold-orange block — a non-brand
+  // element reading as gold in a rail canon §8 requires to be uniform
+  // monochrome. Vectors go through the same gate as everything else; the only
+  // difference is they rasterise at 3x for crispness first.
 
   const out = join(outDir, `${slug}.png`);
 
@@ -111,7 +113,7 @@ async function convert(slug, file, outDir) {
   // `normalise` before `negate` matters: several sources are low-contrast scans
   // where the "white" is around #f2f2f2, and without it the background keyed out
   // to alpha 13 rather than 0 and left a faint plate.
-  const pre = sharp(src)
+  const pre = sharp(src, { density: 300 })
     // Trim the surrounding flat colour so every mark occupies its cell evenly.
     .trim({ threshold: 12 })
     // Flatten first: this normalises the mix of transparent PNG and opaque JPEG
@@ -301,8 +303,8 @@ if (nameOnly.length) {
 
 // Marks committed as vectors outside this script. Verified, not generated.
 for (const [slug, file] of [
-  ["radwell", join(OUT_CLIENTS, "radwell.svg")],
-  ["capgemini", join(OUT_INTEGRATORS, "capgemini.svg")],
+  ["radwell", join(OUT_CLIENTS, "radwell.png")],
+  ["capgemini", join(OUT_INTEGRATORS, "capgemini.png")],
 ]) {
   if (!existsSync(file)) {
     missing.push(`${slug} (expected committed vector at ${file})`);

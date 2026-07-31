@@ -317,6 +317,21 @@
    carries more than two.
    -------------------------------------------------------------------------- */
 :root[data-theme="light"] .band-invert {
+  /* The Layer 2c ALIASES have to be restated here, not just the Layer 2 names.
+     --fg-subtle is declared as `var(--text-3)` on :root, so its value is
+     computed AT :root and inherited — redeclaring --text-3 inside a band does
+     not reach it. Measured: .axisLabel inside .band-invert came out at 2.96:1 on
+     light and 2.55:1 on dark against a 4.5:1 requirement, while every sibling in
+     the same band passed at 8.7-15.1:1, which is what proved the inversion works
+     and only the aliases leak. Restating them fixes every alias consumer in an
+     inverted band, not just the one class that exposed it. */
+  --fg: var(--text);
+  --fg-muted: var(--text-2);
+  --fg-subtle: var(--text-3);
+  --bg: var(--ground);
+  --surface: var(--ground-2);
+  --surface-raised: var(--ground-3);
+
   color-scheme: dark;
   --ground: var(--dk);
   --ground-2: var(--dk-2);
@@ -384,6 +399,21 @@
 }
 
 :root[data-theme="dark"] .band-invert {
+  /* The Layer 2c ALIASES have to be restated here, not just the Layer 2 names.
+     --fg-subtle is declared as `var(--text-3)` on :root, so its value is
+     computed AT :root and inherited — redeclaring --text-3 inside a band does
+     not reach it. Measured: .axisLabel inside .band-invert came out at 2.96:1 on
+     light and 2.55:1 on dark against a 4.5:1 requirement, while every sibling in
+     the same band passed at 8.7-15.1:1, which is what proved the inversion works
+     and only the aliases leak. Restating them fixes every alias consumer in an
+     inverted band, not just the one class that exposed it. */
+  --fg: var(--text);
+  --fg-muted: var(--text-2);
+  --fg-subtle: var(--text-3);
+  --bg: var(--ground);
+  --surface: var(--ground-2);
+  --surface-raised: var(--ground-3);
+
   color-scheme: light;
   --ground: var(--paper);
   --ground-2: var(--paper-2);

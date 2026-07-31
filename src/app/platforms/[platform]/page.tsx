@@ -107,25 +107,38 @@ export default async function PlatformPage({
         </div>
       </section>
 
-      {/* Module coverage — the substance of the page. */}
+      {/* Module coverage — the substance of the page.
+          The lede no longer promises function-page links. That clause was
+          measured false 16 times out of 17: the suite-level rebuild moved the
+          module names away from the sector tool names the appearsIn join matches
+          on, and only SAP Customer Experience still collides. A conservative
+          normalised match was tested and joins exactly the same one — the suite
+          modules are genuinely different products from the retail-seeded sector
+          tools, so the join is not broken, the connection does not exist.
+          Inventing cross-links would be worse than having none, so the promise
+          goes rather than the data being stretched to meet it. The module pages
+          carry sector links wherever they do exist. */}
       <section className={`${styles.section} ${styles.g1}`} id="modules">
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="Module coverage"
             heading={`Every ${cov.name} module we staff, and who we put in it.`}
-            lede="Each module lists the contractor roles we place into it, and the function pages where that work sits."
+            lede="Each module lists the contractor roles we place into it."
             id="modules-heading"
           />
 
           <div className={styles.commitment}>
             {cov.modules.map((mod) => (
               <article key={mod.name} className={styles.vow}>
-                <span className={styles.panelPetal} aria-hidden="true" />
-                {axis ? (
-                  <span className={styles.caseLogo} aria-hidden="true">
-                    <LogoImage src={axis.mark} width={96} height={24} />
-                  </span>
-                ) : null}
+                {/* No vendor mark and no petal fill on these cards.
+                    The mark was 17 identical full-colour logos, aria-hidden and
+                    carrying no information on a page that IS that vendor — and
+                    canon §5's One Marker Rule says gold is the only colour used
+                    decoratively anywhere. The petal fill was 17 gold quarter
+                    discs pinned top-right while each card's own radius is
+                    bottom-left, two competing corner signals per card; DESIGN.md
+                    already retired that fill from a SIX-tile grid for working
+                    against the same rule. */}
                 {/* The drill-down. `slug` is present only on AUTHORED modules,
                     which is exactly the set generateStaticParams builds — so a
                     title links when there is a page behind it and stays plain

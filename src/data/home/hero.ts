@@ -7,7 +7,7 @@
  */
 
 export const hero = {
-  eyebrow: "Enterprise platform talent · Middle East & Europe",
+  eyebrow: "Enterprise platform talent · Middle East · Europe · India",
   /** Split so the italic gold emphasis can carry the argument. "Enterprise"
       is carried by the eyebrow directly above — repeating it cost the H1 two
       extra lines and pushed the primary CTA below the fold at 1280×800. */
@@ -15,7 +15,7 @@ export const hero = {
     lead: "Programmes rarely fail on budget. They fail on the",
     emphasis: "six people you couldn't find.",
   },
-  lede: "We staff and deliver enterprise platform programmes across the Middle East and Europe. SAP, Oracle, Microsoft, Salesforce. Screened by specialists, shortlisted in 72 hours.",
+  lede: "We staff and deliver enterprise platform programmes across the Middle East, Europe and India. SAP, Oracle, Microsoft, Salesforce. Screened by specialists, shortlisted in 72 hours.",
   pillars: ["Contract", "Permanent", "Employer of Record", "Managed Delivery"],
   primaryCta: { label: "Start a brief", href: "/brief" },
   secondaryCta: { label: "See how the screen works", href: "#screen" },

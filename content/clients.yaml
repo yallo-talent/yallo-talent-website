@@ -13,7 +13,7 @@
 # `logo` and it renders as a set wordmark; never substitute a similar logo.
 enterprise:
   - name: Alshaya Group
-    logo: /logos/clients/alshaya.svg
+    logo: /logos/clients/alshaya.png
     consentOnFile: true
   - name: Landmark Group
     logo: /logos/clients/landmark-group.png
@@ -49,7 +49,7 @@ enterprise:
     logo: /logos/clients/wickes.png
     consentOnFile: true
   - name: Radwell
-    logo: /logos/clients/radwell.svg
+    logo: /logos/clients/radwell.png
     consentOnFile: true
 
 # Heading on the site: "the systems integrators delivering them come to us for
@@ -65,7 +65,7 @@ integrators:
     logo: /logos/integrators/infosys.png
     consentOnFile: true
   - name: Capgemini
-    logo: /logos/integrators/capgemini.svg
+    logo: /logos/integrators/capgemini.png
     consentOnFile: true
   - name: Oracle Consulting
     logo: /logos/integrators/oracle-consulting.png

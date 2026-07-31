@@ -650,7 +650,7 @@ export const financeData: L1PageData = {
       title:
         "AML analytics: why NICE Actimize modellers are the hardest hire in FS this year.",
       excerpt:
-        "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across the Middle East and Europe.",
+        "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across the Middle East, Europe and India.",
       author: "Yallo Talent",
       minutes: 6,
     },

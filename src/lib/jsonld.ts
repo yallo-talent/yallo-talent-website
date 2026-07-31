@@ -74,7 +74,7 @@ export function organisationJsonLd() {
     url: SITE.url,
     logo: `${SITE.url}/logos/yallo-flower.svg`,
     description:
-      "Yallo Talent staffs and delivers enterprise platform programmes across the Middle East and Europe with specialist-screened people, including AI talent.",
+      "Yallo Talent staffs and delivers enterprise platform programmes across the Middle East, Europe and India with specialist-screened people, including AI talent.",
     areaServed: ENTITIES.map((e) => ({
       "@type": "Country",
       name: e.country,
