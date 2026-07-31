@@ -9,18 +9,40 @@ consecutive critique passes with **no gain and no critical/high finding**.
 
 ## 1. Plateau status
 
-| Surface | Pass 1 | Pass 2 | Gain | P0/P1 open | Plateaued |
-|---|---|---|---|---|---|
-| `/platforms/sap` | 16/24 | 17/24 | **+1** | — | **No** — a gain disqualifies |
-| Homepage | 25/36 | 25/36 | 0 | rail ink density, platform-mark chroma | **No** — P1s open |
-| `/capabilities/data-analytics` | 23/36 | *running* | — | — | **No** |
-| `/industries/retail` | 22/32 | *running* | — | — | **No** |
+| Surface | Pass 1 | Pass 2 | Verdict |
+|---|---|---|---|
+| `/platforms/sap` | 16/24 (67%) | 17/24 (71%) | **No** — a gain disqualifies |
+| Homepage | 25/36 (69%) | 25/36 (69%) | **No** — P1s open |
+| `/capabilities/data-analytics` | 23/36 (64%) | 22/36 (61%) | **No** — 3 P1s |
+| `/industries/retail` | 22/32 (69%) | 21/32 (66%) | **No** — 2 P1s |
 
-**0 of 4 plateaued.** Two passes are in flight against the current build.
+**0 of 4 plateaued.** No surface met either condition.
 
-A note on the scores: the passes use different heuristic counts (a surface with
-no form n/a's Error Recovery), so **read the percentages, not the raw totals**.
-SAP 17/24 is 71%; the homepage 25/36 is 69%; retail 22/32 is 69%.
+**The scores did not move, and the reason is not regression.** Both pass-2
+critiques verified the pass-1 fixes by measurement rather than accepting them on
+report: Data & Analytics found **7½ of 8** landed, Retail found **4 of 5** fully
+landed. The totals held because each pass reached categories the previous one
+had not sampled — A4's role minimums, canon §5's blurred-orb clause, the mobile
+clamp — and found defects of comparable size there.
+
+### The finding that matters more than any individual defect
+
+Both passes, independently, named the same pattern:
+
+> every fix was scoped to its named instance rather than its class
+
+The evidence is specific and it is fair. `.expCardRole` was raised and four
+siblings left. The `.wwdGlow` divs were killed and their pseudo-element twins
+left. The breadcrumb's dead item lost its gold and the live link gained nothing.
+Pass 1 fixed five sites of one defect; pass 2 found eleven more in components
+pass 1 had not opened.
+
+**That is what this round changed.** The A4 role rules are now enforced in CI by
+`scripts/check-rendered-type.mjs`, so the class cannot recur silently — and the
+guard immediately found three sites (`/contract`, `/brief`, `.requisition`)
+that neither critique had sampled. Retail's closing line was the right test:
+*"until check-type-scale grows the role table, a third pass will find a twelfth
+site."*
 
 ---
 

@@ -375,14 +375,23 @@
   margin-top: 8px;
   max-width: 26ch;
   margin-inline: auto;
-  /* B4: two lines, hard. Each definition is a single clause from
-     content/metrics.yaml; a third line means the copy has drifted, and clamping
-     surfaces that in review instead of letting the strip grow quietly. */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
+
+/* The two-line clamp is GONE, and it was deleting the clause that makes the
+   figure mean anything. The comment above it argued that a third line signals
+   drifted copy and that clamping surfaces it in review — sound reasoning, but
+   only at a fixed width. At 390px the column is 162px and the UNCHANGED copy
+   needs three lines, so two of the four definitions truncated mid-clause in
+   both themes: "Enterprise platform programmes, not placements." rendered as
+   "…programmes, not…" and lost exactly the words canon §6 uses to define the
+   metric. A review signal that fires on viewport width is not a review signal.
+
+   Canon §6 says a published figure never appears without its definition, and
+   this template is the primary organic entry point — a visitor may read "2:1"
+   here having never seen the homepage block that defines it. So the definition
+   wins and the strip grows. The drift check moves to where it can actually be
+   judged: metrics.yaml is the source, and a definition long enough to wrap
+   three times at 1280px is visible there. */
 
 /* ============ INTRO ============ */
 .intro {
