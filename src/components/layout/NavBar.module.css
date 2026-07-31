@@ -157,9 +157,23 @@
      in QUESTIONS.md Q8.
      No drop shadow either: the One Lift Rule keeps resting elevation for the
      hero instrument alone. */
-  background: var(--ground);
+  /* ORDER 5: a DISTINCT tone, so the panel reads as an overlay rather than as
+     another band of the page. It used to take --ground, the same value the page
+     beneath it uses, so the only thing separating them was a hairline — and on a
+     light page a full-width panel in the page's own colour reads as furniture.
+     --ground-2 is one step off the page in either register, which is enough to
+     say "this is on top" without the drop shadow canon §5's One Lift Rule
+     reserves for the hero instrument.
+     R3 stands: no glass here. The header above is already glass once scrolled,
+     and a nested backdrop-filter is a no-op. */
+  background: var(--ground-2);
   border-top: 1px solid var(--boundary);
   border-bottom: 1px solid var(--boundary);
+  /* The panel animates its own opacity in. Until it is fully in, it must not
+     intercept a pointer aimed at the page beneath — that was the other half of
+     the flicker: a half-faded panel eating the click that would have dismissed
+     it. */
+  pointer-events: auto;
   z-index: 55;
 }
 

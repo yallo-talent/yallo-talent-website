@@ -7,7 +7,8 @@ import {
   useScroll,
 } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
@@ -100,6 +101,45 @@ function MegaItem({ item }: { item: NavItem }) {
 
 export function NavBar() {
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+
+  /* ORDER 5: hover-INTENT, not hover.
+     Opening on raw mouseenter meant a pointer crossing the nav on its way
+     elsewhere opened and closed panels in sequence — the flicker. A short dwell
+     means a pass-through never opens anything, while a deliberate move still
+     feels immediate. The same timer cancels on leave, so nothing opens after the
+     pointer has gone. */
+  const intent = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearIntent = () => {
+    if (intent.current) clearTimeout(intent.current);
+    intent.current = null;
+  };
+  const openWithIntent = (label: string) => {
+    clearIntent();
+    // Already open: switch immediately, since intent is established.
+    if (openGroup) {
+      setOpenGroup(label);
+      return;
+    }
+    intent.current = setTimeout(() => setOpenGroup(label), 120);
+  };
+
+  /* ORDER 5: close on route change. A panel that survives navigation is a panel
+     covering the page the reader just asked for. pathname is the only reliable
+     signal here — a click handler on each link misses keyboard activation and
+     browser back. */
+  const pathname = usePathname();
+  useEffect(() => {
+    /* pathname is READ here, not merely listed as a trigger — biome was right
+       that a dependency the body never touches is a dependency it cannot verify.
+       The timer clear is inlined for the same reason: referencing clearIntent
+       would make this effect depend on a function identity that changes every
+       render. */
+    if (pathname !== null) {
+      if (intent.current) clearTimeout(intent.current);
+      intent.current = null;
+      setOpenGroup(null);
+    }
+  }, [pathname]);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -226,7 +266,10 @@ export function NavBar() {
           <nav
             className={styles.primary}
             aria-label="Primary"
-            onMouseLeave={() => setOpenGroup(null)}
+            onMouseLeave={() => {
+              clearIntent();
+              setOpenGroup(null);
+            }}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                 setOpenGroup(null);
@@ -238,7 +281,7 @@ export function NavBar() {
                 key={group.label}
                 className={styles.groupWrap}
                 role="none"
-                onMouseEnter={() => setOpenGroup(group.label)}
+                onMouseEnter={() => openWithIntent(group.label)}
               >
                 <button
                   type="button"

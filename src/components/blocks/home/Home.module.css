@@ -729,11 +729,16 @@
    with the cell widened and deepened to hold it. These are the proof that the
    claim is real, and at 26px in a 156px cell they read as a footer strip rather
    than as clients. The rail is one row on one page; it can afford the space. */
+/* ORDER 6: bigger again. 156x56 -> 208x76 -> 268x96, and the mark 26 -> 37 -> 48.
+   Sumeet's note after the last enlargement was "still too tiny", so this is a
+   further 29% on the cell and 30% on the cap height rather than a nudge. The ink
+   also goes to full strength: opacity was carrying a deliberate lightness that
+   reads as timid at this scale. */
 .logo {
   display: grid;
   place-items: center;
-  width: 208px;
-  height: 76px;
+  width: 268px;
+  height: 96px;
   flex: none;
 }
 
@@ -749,14 +754,16 @@
    blobs". No blend mode can give one tone across a pack like that; only real
    alpha can. */
 .logo img {
-  height: 37px;
+  height: 48px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
   filter: var(--mark-filter);
   /* Weightier ink. The silhouettes are solid black with true alpha, so opacity
      IS the ink weight here — no colour shift, just more of it. */
-  opacity: 0.95;
+  /* ORDER 6: full ink. At 48px a 5% veil reads as a printing fault rather
+     than as restraint. */
+  opacity: 1;
   transition: opacity 0.28s var(--ease);
 }
 

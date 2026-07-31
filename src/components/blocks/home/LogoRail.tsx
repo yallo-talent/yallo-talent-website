@@ -73,7 +73,7 @@ function LogoItems({
                reduced-motion navigation at 30s. The duplicate is aria-hidden
                decoration sharing the same URLs, so it paints from cache without
                ever blocking load. */
-            /* 208x37, the box the mark actually occupies — not 120x26, which
+            /* 268x48 — ORDER 6's enlarged cell. The box the mark actually occupies — not 120x26, which
                is the geometry the rail had BEFORE it was enlarged. These props
                are not decoration: next/image builds its srcset from the
                declared width, so a stale 120 made the optimiser serve a
@@ -88,8 +88,8 @@ function LogoItems({
               /* The name, not an empty string — and empty on the duplicate half
                  only, which is aria-hidden decoration sharing the same URLs. */
               alt={ariaHidden ? "" : c.name}
-              width={208}
-              height={37}
+              width={268}
+              height={48}
               eager={!ariaHidden}
             />
           ) : (
