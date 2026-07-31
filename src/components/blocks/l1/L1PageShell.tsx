@@ -566,34 +566,59 @@ function L1ScarceTalent({ data }: Props) {
                 )}
               </div>
             </div>
+            {/* A chip only earns its place if it says something the row next to
+                it does not. Measured on retail: the scarcity chip was IDENTICAL
+                on all eight rows — 0.000 bits — and the engagement chip carried
+                0.544, seven CONTRACT against one variant. Sixteen chips for
+                half a bit, and they were the loudest thing in the block: 13px
+                signal-orange tracked mono inside a 4.37:1 bordered box, against
+                a neutral role name. The salience order inverted the information
+                order, on the one column a buyer actually reads.
+
+                So the scarcity chip goes entirely — the section HEADING is the
+                scarcity claim, and repeating it eight times in a coloured box
+                adds nothing — and the engagement chip renders only where it
+                DEVIATES from the section's norm. A uniform value stated once in
+                prose beats a badge on every row. */}
+            {/* Wrapped with the list in a SINGLE grid child, and that matters:
+                .scarceGrid is `1fr 1.15fr`, so adding this as a third sibling
+                put it in column 2 and pushed the list into column 1 row 2 —
+                the whole right half of the card went empty. Grid children are
+                positional; a new element is a new cell unless you say otherwise. */}
+            <div className={styles.scarceRight}>
+            {/* The norm stated once, DERIVED from the rows rather than written.
+                Dropping a uniform chip only works if the value it carried is
+                still somewhere, and computing it means the line cannot drift
+                out of step with the data the way authored copy would. */}
+            {(() => {
+              const counts = new Map();
+              for (const r of data.scarceRoles ?? [])
+                counts.set(r.engagement ?? "contract", (counts.get(r.engagement ?? "contract") ?? 0) + 1);
+              const total = data.scarceRoles?.length ?? 0;
+              const [norm, n] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0] ?? [];
+              return norm && n > total / 2 ? (
+                <p className={styles.scarceNorm}>
+                  {norm === "perm" ? "Permanent" : "Contract"} unless noted.
+                </p>
+              ) : null;
+            })()}
             <div className={styles.scarceList}>
-              {data.scarceRoles.map((r) => (
-                <div key={r.name} className={styles.scarceRow}>
-                  <span className={styles.scarceRowName}>{r.name}</span>
-                  <span className={styles.scarceTags}>
-                    <span
-                      className={`${styles.rtag} ${
-                        r.scarcity === "high" ? styles.rtagHigh : styles.rtagMed
-                      }`}
-                    >
-                      {r.scarcity === "high" ? "High scarcity" : "Med scarcity"}
-                    </span>
-                    <span
-                      className={`${styles.rtag} ${
-                        r.engagement === "perm"
-                          ? styles.rtagPerm
-                          : styles.rtagContract
-                      }`}
-                    >
-                      {r.engagement === "perm"
-                        ? "Perm"
-                        : r.engagement === "contract-perm"
-                          ? "Perm / Contract"
-                          : "Contract"}
-                    </span>
-                  </span>
-                </div>
-              ))}
+              {(() => {
+                const norm = "contract";
+                return data.scarceRoles.map((r) => (
+                  <div key={r.name} className={styles.scarceRow}>
+                    <span className={styles.scarceRowName}>{r.name}</span>
+                    {r.engagement && r.engagement !== norm ? (
+                      <span className={styles.scarceTags}>
+                        <span className={`${styles.rtag} ${styles.rtagPerm}`}>
+                          {r.engagement === "perm" ? "Perm" : "Perm / Contract"}
+                        </span>
+                      </span>
+                    ) : null}
+                  </div>
+                ));
+              })()}
+            </div>
             </div>
           </div>
         </div>

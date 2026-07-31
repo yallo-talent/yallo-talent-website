@@ -1016,6 +1016,14 @@
   color: var(--ink-950);
 }
 
+/* The right-hand grid cell: the norm line plus the list, as one child. */
+.scarceRight {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
 .scarceList {
   display: flex;
   flex-direction: column;
@@ -1036,9 +1044,18 @@
     border-color 0.2s ease;
 }
 
-.scarceRow:hover {
-  background: color-mix(in oklab, var(--sector-accent) 12%, transparent);
-  border-color: var(--sector-accent-35);
+/* No hover treatment. These rows are plain divs with no destination — the
+   section's only exit is its CTA — and a background-and-border shift on hover is
+   an affordance promise nothing answers. Eight of them, measured. */
+
+/* The engagement norm, stated once above the list. */
+.scarceNorm {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin: 0 0 10px;
 }
 
 /* --fs-body-sm, and this is the sharpest case A4 exists for. These are JOB
