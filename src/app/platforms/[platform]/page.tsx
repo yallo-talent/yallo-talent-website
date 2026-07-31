@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
-import { LogoImage } from "@/components/blocks/home/LogoImage";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
@@ -61,8 +60,6 @@ export default async function PlatformPage({
   const { platform } = await params;
   const cov = getPlatformCoverage(platform);
   if (!cov) notFound();
-
-  const axis = platformAxis.find((p) => p.slug === platform);
 
   return (
     /* R4: the platform's identity hue, declared once at the root. Every .amb-N
