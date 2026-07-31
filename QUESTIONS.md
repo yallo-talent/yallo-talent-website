@@ -351,3 +351,35 @@ pass.**
 Worth weighing alongside it: A3's glass permission carries a performance
 condition, and eleven `filter: blur()` compositing layers per page is a cost
 that clause did not anticipate.
+
+## Q15 — Two platform marks cannot render at rail scale
+
+**Same class as Q13, found while closing the homepage's §8 breach.**
+
+The `#place` axis marks were full-colour vendor logos on a `--paper-2` tile
+inside a band whose ground is near-black in the light register — canon §8's
+"never a mark on a white card", eight sections below a client rail that had just
+been taken to zero chroma. That breach is fixed: the opaque tile is gone, a
+hairline frame matches the sectors column beside it, and `--mark-flatten` gives
+single ink in both registers.
+
+**Two of the six do not survive it, and neither is a CSS problem:**
+
+| Mark | Measured | Problem |
+|---|---|---|
+| **Blue Yonder** | renders **48×7px** | A 7:1 wordmark in a 76px column gives 7px of ink — under half the 15px legibility floor `build-logos.mjs` enforces on the client rail. The source `blue-yonder.png` also has **0.0% transparency**, so it is a baked ground rather than an alpha silhouette |
+| **SAP** | `sap.svg` is **24.5% transparent** | A box lockup — a filled trapezoid with knockout type. Flattening a box gives a slab, exactly the defect the rail's new perimeter-ink test catches |
+
+Neither can be fixed by styling. The options are the same two Q13 offers:
+commission a monochrome letterform-only vector, or drop these to the drawn-glyph
+treatment the sectors column already uses — `.axisMarkDrawn` exists and works.
+
+**My recommendation:** the drawn glyph, because the platform NAME is already
+rendered beside the mark in Newsreader at full size, and the marks are
+`aria-hidden`. They carry recognition, not information, so a mark that cannot be
+recognised is carrying nothing. But swapping vendor logos for glyphs is a
+brand-presentation call, not a design-system one, so I have left them.
+
+Worth noting alongside it: a prior round deleted the "technology partners"
+section because presenting those marks implied a partnership claim with nothing
+behind it. The same question applies here in visual form.

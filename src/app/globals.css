@@ -277,6 +277,7 @@
   /* Silhouettes are emitted as solid black with true alpha, so light needs
      no filter at all. See LogoRail and scripts/build-logos.mjs. */
   --mark-filter: none;
+  --mark-flatten: grayscale(1);
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
@@ -324,6 +325,7 @@
      black out, leaving a light silhouette on the near-black ground. */
   /* Invert turns the black silhouette white and preserves its alpha. */
   --mark-filter: invert(1);
+  --mark-flatten: grayscale(1) invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
@@ -384,6 +386,7 @@
      black out, leaving a light silhouette on the near-black ground. */
   /* Invert turns the black silhouette white and preserves its alpha. */
   --mark-filter: invert(1);
+  --mark-flatten: grayscale(1) invert(1);
 
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
@@ -465,6 +468,7 @@
   /* Silhouettes are emitted as solid black with true alpha, so light needs
      no filter at all. See LogoRail and scripts/build-logos.mjs. */
   --mark-filter: none;
+  --mark-flatten: grayscale(1);
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
   --amb-alpha: 8%;

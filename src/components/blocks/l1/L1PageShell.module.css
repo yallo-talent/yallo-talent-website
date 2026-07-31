@@ -90,12 +90,19 @@
   text-transform: uppercase;
 }
 
+/* Gold on the LINK, neutral on the current segment. The previous round moved
+   gold off the dead crumb and stopped there, so the clickable item ended up the
+   fainter of the two — 1.71:1 apart from the inert one, no underline, and gold
+   only on :hover, which touch never fires. Canon §5 makes gold the marker for
+   what is interactive, so it belongs on the item you can click. --accent-label
+   is the small-text grade (gold-ink, 4.69:1 on paper), which is the one these
+   13px uppercase labels need. */
 .crumbLink {
   /* 24px minimum target, SC 2.5.8. */
   display: inline-flex;
   align-items: center;
   min-height: 24px;
-  color: var(--fg-subtle);
+  color: var(--accent-label);
   transition: color 0.15s ease;
 }
 

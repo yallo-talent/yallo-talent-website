@@ -1500,13 +1500,34 @@
   background: var(--ground-2);
 }
 
+/* No tile, and single ink. This was a --paper-2 card inside a band whose ground
+   is near-black in the light register: canon §8's "never a mark on a white
+   card", stated outright. It also put vendor brand colour on a page eight
+   sections below a client rail that had just been taken to ZERO chroma — two
+   logo treatments under opposite rules on one surface, which is what both
+   critiques named.
+
+   --mark-flatten is the composite that fixes it, declared beside --mark-filter
+   in all four register blocks so it flips inside .band-invert as well as
+   between themes. grayscale removes the third colour system; the invert half
+   makes the ink read against whichever ground the band resolves to.
+
+   These marks are aria-hidden and .axisName renders the platform's name right
+   beside them, so nothing is lost by removing the colour — the mark is
+   recognition, not information. */
 .axisMark {
   display: grid;
   place-items: center;
   height: 40px;
-  background: var(--paper-2);
-  border-radius: 0 0 0 var(--r-xs);
   padding: 0 6px;
+  /* A hairline frame, matching .axisMarkDrawn in the sectors column beside it.
+     A 1px boundary is not a "card" in canon §8's sense — the banned thing is an
+     opaque plate carrying the mark, and removing the --paper-2 fill is what
+     closed that. Keeping the frame is what stops the two columns of the same
+     comparison rendering under different rules, which was the other half of the
+     finding. */
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-xs);
 }
 
 .axisMark img {
@@ -1514,6 +1535,8 @@
   max-width: 100%;
   width: auto;
   object-fit: contain;
+  filter: var(--mark-flatten);
+  opacity: 0.9;
 }
 
 .axisMarkDrawn {
