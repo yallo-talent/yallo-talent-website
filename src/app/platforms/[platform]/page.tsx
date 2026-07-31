@@ -74,7 +74,14 @@ export default async function PlatformPage({
     /* R4: the platform's identity hue, declared once at the root. Every .amb-N
        inside now resolves to it, so the hero field and section washes are
        recognisably this suite's while gold stays the only interactive colour. */
-    <div data-identity={cov.slug}>
+    /* `amb-1` alongside data-identity, and without it the whole R4 chain is
+       inert on this page. --id resolved correctly from the slug, but --amb is
+       assigned by the `[data-identity].amb-N` rule, so with no position class
+       nothing ever read --id and --amb computed to the empty string. Measured:
+       SAP returned `--amb: ""` while retail returned its plum, which made my first
+       "SAP is distinct from Retail" reading plum-against-nothing rather than
+       indigo-against-plum. */
+    <div data-identity={cov.slug} className="amb-1">
       {/* Hero. Dark because a platform page is a data surface — and now carrying
           the shared atmospheric field (B3), which was the one hero the rollout
           missed. `.amb-1` is what lets R4's identity hue reach it: with

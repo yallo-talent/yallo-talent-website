@@ -58,7 +58,7 @@ export function HeroAtmosphere({
       corner: ((n >> 11) % 4) as 0 | 1 | 2 | 3,
       // Nearer petals slightly stronger, so the field has depth rather than
       // reading as one flat pattern.
-      opacity: 0.1 + ((n >> 13) % 4) * 0.045,
+      opacity: 0.22 + ((n >> 13) % 4) * 0.07,
     };
   });
 
@@ -79,14 +79,14 @@ export function HeroAtmosphere({
           {/* The ambient field. --amb is the section's assigned hue; --ground
               keeps both ends resolving through the register. */}
           <radialGradient id={`${gid}-a`} cx="22%" cy="18%" r="88%">
-            <stop offset="0%" stopColor="var(--amb)" stopOpacity="0.5" />
-            <stop offset="55%" stopColor="var(--amb)" stopOpacity="0.16" />
+            <stop offset="0%" stopColor="var(--amb)" stopOpacity="0.82" />
+            <stop offset="55%" stopColor="var(--amb)" stopOpacity="0.42" />
             <stop offset="100%" stopColor="var(--ground)" stopOpacity="0" />
           </radialGradient>
           {/* A second, cooler pass from the opposite corner gives the field a
               direction. Same hue, so it never reads as two colours. */}
           <radialGradient id={`${gid}-b`} cx="88%" cy="96%" r="76%">
-            <stop offset="0%" stopColor="var(--amb)" stopOpacity="0.34" />
+            <stop offset="0%" stopColor="var(--amb)" stopOpacity="0.6" />
             <stop offset="100%" stopColor="var(--ground)" stopOpacity="0" />
           </radialGradient>
 
@@ -126,7 +126,7 @@ export function HeroAtmosphere({
           d={`M0 ${420 + (h % 60)} L1200 ${360 + ((h >> 3) % 80)}`}
           stroke="var(--accent-line)"
           strokeWidth="1"
-          opacity="0.28"
+          opacity="0.16"
           fill="none"
         />
 

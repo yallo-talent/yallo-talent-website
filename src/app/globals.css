@@ -986,6 +986,14 @@ button {
 
 /* The wash: a primary glow breathing up from the bottom-left corner and a
    fainter counter-glow at the opposite corner, each capped at --amb-alpha.
+
+   R11 widened both. At 130%/105% with a hard stop at 58% the hue occupied a
+   corner and the rest of every band was neutral, so the identity read as a
+   smudge rather than as the page's colour. Now 180%/150% with a mid stop at 46%
+   and falloff to 88%, so the gradient covers area and decays slowly instead of
+   ending. The counter-glow doubles in reach and rises from alpha/2 to alpha/1.5.
+   Presence is coverage first and alpha second — a 20% tint over a tenth of a band
+   is invisible whatever its alpha says.
    Needs position:relative on the host. Never behind body copy as a flat fill —
    this lives on bands and panel edges. */
 .amb-wash::before {
@@ -995,19 +1003,25 @@ button {
   pointer-events: none;
   background:
     radial-gradient(
-      130% 105% at 8% 110%,
+      180% 150% at 8% 112%,
       color-mix(
         in oklab,
         var(--amb, var(--amb-1)) var(--amb-alpha),
         transparent
       ),
-      transparent 58%
+      color-mix(
+          in oklab,
+          var(--amb, var(--amb-1)) calc(var(--amb-alpha) / 2.2),
+          transparent
+        )
+        46%,
+      transparent 88%
     ),
     radial-gradient(
-      80% 65% at 98% -10%,
+      120% 100% at 98% -12%,
       color-mix(
         in oklab,
-        var(--amb, var(--amb-1)) calc(var(--amb-alpha) / 2),
+        var(--amb, var(--amb-1)) calc(var(--amb-alpha) / 1.5),
         transparent
       ),
       transparent 55%
