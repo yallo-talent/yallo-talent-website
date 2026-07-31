@@ -277,3 +277,41 @@ an uncited figure is a visible omission.
 a source and they can come straight back. If they were placeholders, the
 cloud-infrastructure intro now has no stat rail and that composition gap wants a
 decision — a sourced figure, or a different right-hand element.
+
+## Q13 — Radwell's mark is a box lockup, and it was committed by hand
+
+**Measured, reported, deliberately not changed.**
+
+The client rail's legibility gate gained a third test this round. A **box
+lockup** — a logo whose artwork is a filled rectangle with knockout type — keys
+to its *box* rather than its letterform, so the silhouette is a solid slab: black
+on light, and on the dark rail a near-white card, which canon §8 forbids
+outright. The clarity test cannot see this, because a filled box is a perfectly
+clean two-class key.
+
+Ink density alone does not separate the cases either: **Infosys is a legitimate
+wordmark at 31.8% ink, above Radwell's 34.9% box.** Perimeter ink does — a box
+runs ink along its outer frame while a wordmark's letters float inside the
+trimmed bounding box. Measured across the whole pack:
+
+| Mark | Perimeter ink | |
+|---|---|---|
+| wickes | 30.5% | box — now ships as its NAME |
+| **radwell** | **25.0%** | **box — still shipping as a silhouette** |
+| tcs | 5.0% | highest legitimate wordmark |
+| capgemini | 1.4% | fine |
+| everything else | ≤4.6% | fine |
+
+The threshold sits at 15%, in a gap five times wider than the spread it has to
+resolve. `wickes` is now correctly a name.
+
+**Why Radwell was left alone.** It is one of two marks committed *by hand* and
+labelled in the script "verified, not generated" — plausibly committed precisely
+because the automated path could not do it justice. Deleting a curated asset on a
+heuristic written after the fact would be the script overruling a human decision
+it has no standing to overrule. So the build now measures the committed vectors
+too and **prints a warning every run** rather than passing it in silence.
+
+**Your call:** either Radwell ships as its name like Wickes, or a monochrome
+letterform-only SVG replaces the box artwork. It cannot stay a slab on the dark
+rail and also satisfy §8.

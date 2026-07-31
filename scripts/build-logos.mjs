@@ -33,13 +33,21 @@ const SRC = join(process.cwd(), "assets", "client-logos");
 const OUT_CLIENTS = join(process.cwd(), "public", "logos", "clients");
 const OUT_INTEGRATORS = join(process.cwd(), "public", "logos", "integrators");
 
-const RENDER_HEIGHT = 56;
+/* These four MUST track .logo and .logo img in Home.module.css. They were left
+   behind when the rail was enlarged — cell 156 -> 208, cap 26 -> 37 — and a
+   stale cell is not a cosmetic drift: RAIL_CELL and RAIL_CAP decide which
+   clients ship as a keyed silhouette and which fall back to a typeset name, so
+   the pack was being chosen by geometry the page no longer uses. Marks that
+   were correctly rejected as illegible at a 26px cap can be legible at 37px. */
+const RENDER_HEIGHT = 76; // the cell's height; SCALE covers retina
 const SCALE = 2;
 
 /** The rail's uniform cell, so the legibility gate below matches what ships. */
-const RAIL_CELL = 156;
-const RAIL_CAP = 26;
+const RAIL_CELL = 208;
+const RAIL_CAP = 37;
 const RAIL_CAP_FLOOR = 15;
+/** Above this share of perimeter ink the mark is a box, not a letterform. */
+const SLAB_PERIMETER_PCT = 15;
 
 /** slug -> source filename. Source misspellings are corrected in the slug. */
 const CLIENTS = {
@@ -228,13 +236,27 @@ async function convert(slug, file, outDir) {
   // keeps the name — src/lib/clients.ts already renders a wordmark for any
   // consented client with no logo file, so the fallback path is the existing one.
   //
-  // Two independent tests:
+  // Three independent tests:
   //   clarity  — a clean silhouette is mostly transparent with solid ink. Under
   //              25% transparent, or over 45% of pixels stuck mid-alpha, means
   //              the ground did not separate.
-  //   capHeight — at the rail's 156px cell a mark this wide is scaled to fit
+  //   capHeight — at the rail's RAIL_CELL a mark this wide is scaled to fit
   //              width, so its ink height falls out of the aspect ratio. Below
   //              15px it is a line, not a mark.
+  //   slab     — a BOX LOCKUP keys to its box, not its letterform. Silhouetting
+  //              one gives a solid rectangle: black on light, and on the dark
+  //              rail a near-white card, which canon §8 forbids outright. Two
+  //              marks were shipping that way and the clarity test cannot see
+  //              it, because a filled box IS a clean two-class key.
+  //
+  //              Ink density alone does not separate them either: Infosys is a
+  //              legitimate wordmark at 31.8% ink, ABOVE Radwell's 34.9% box.
+  //              PERIMETER ink does. A box runs its ink along the outer frame;
+  //              a wordmark's letters float inside the trimmed bounding box and
+  //              touch the edge only in places. Measured across the whole pack:
+  //              the two boxes are 25.0% and 30.5%, every real wordmark is at or
+  //              under 5.0%. The threshold sits in a gap five times wider than
+  //              the spread it has to resolve.
   let tp = 0;
   let mid = 0;
   for (const a of alpha) {
@@ -245,10 +267,29 @@ async function convert(slug, file, outDir) {
   const partialPct = (100 * mid) / alpha.length;
   const capAtCell = Math.min(RAIL_CAP, (RAIL_CELL * ai.height) / ai.width);
 
+  const alphaAt = (x, y) => alpha[y * ai.width + x];
+  let edgeInk = 0;
+  let edgeTotal = 0;
+  for (let x = 0; x < ai.width; x++) {
+    for (const y of [0, ai.height - 1]) {
+      edgeTotal++;
+      if (alphaAt(x, y) > 191) edgeInk++;
+    }
+  }
+  for (let y = 1; y < ai.height - 1; y++) {
+    for (const x of [0, ai.width - 1]) {
+      edgeTotal++;
+      if (alphaAt(x, y) > 191) edgeInk++;
+    }
+  }
+  const perimeterPct = (100 * edgeInk) / edgeTotal;
+
   const reasons = [];
   if (transparentPct < 25) reasons.push(`only ${transparentPct.toFixed(1)}% transparent`);
   if (partialPct > 45) reasons.push(`${partialPct.toFixed(1)}% partial alpha`);
   if (capAtCell < RAIL_CAP_FLOOR) reasons.push(`cap height ${capAtCell.toFixed(1)}px at the rail cell`);
+  if (perimeterPct > SLAB_PERIMETER_PCT)
+    reasons.push(`box lockup — ${perimeterPct.toFixed(1)}% perimeter ink`);
 
   if (reasons.length) {
     nameOnly.push(`${slug}: ${reasons.join(", ")}`);
@@ -301,15 +342,52 @@ if (nameOnly.length) {
   for (const r of nameOnly) console.log(`  ${r}`);
 }
 
-// Marks committed as vectors outside this script. Verified, not generated.
+// Marks committed as vectors outside this script. Verified, not generated —
+// so this MEASURES them and reports, rather than replacing or deleting them.
+//
+// The distinction is deliberate. These two were committed by hand, plausibly
+// because the keying path could not do them justice, and dropping a curated
+// asset on a heuristic written afterwards would be the script overruling a
+// human decision it has no standing to overrule. But the slab test does apply
+// to what ships regardless of how it got there, and radwell measures as a box
+// lockup — so the gate says so out loud every run instead of passing it in
+// silence. QUESTIONS.md Q13 carries the decision.
 for (const [slug, file] of [
   ["radwell", join(OUT_CLIENTS, "radwell.png")],
   ["capgemini", join(OUT_INTEGRATORS, "capgemini.png")],
 ]) {
   if (!existsSync(file)) {
     missing.push(`${slug} (expected committed vector at ${file})`);
+    continue;
+  }
+  const { data, info } = await sharp(file)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const at = (x, y) => data[(y * info.width + x) * 4 + 3];
+  let ink = 0;
+  let total = 0;
+  for (let x = 0; x < info.width; x++) {
+    for (const y of [0, info.height - 1]) {
+      total++;
+      if (at(x, y) > 191) ink++;
+    }
+  }
+  for (let y = 1; y < info.height - 1; y++) {
+    for (const x of [0, info.width - 1]) {
+      total++;
+      if (at(x, y) > 191) ink++;
+    }
+  }
+  const perimeterPct = (100 * ink) / total;
+  if (perimeterPct > SLAB_PERIMETER_PCT) {
+    console.log(
+      `  ${slug}: committed vector present — WARNING, ${perimeterPct.toFixed(1)}% perimeter ink reads as a box lockup on the dark rail (canon §8)`,
+    );
   } else {
-    console.log(`  ${slug}: committed vector present`);
+    console.log(
+      `  ${slug}: committed vector present, ${perimeterPct.toFixed(1)}% perimeter ink`,
+    );
   }
 }
 

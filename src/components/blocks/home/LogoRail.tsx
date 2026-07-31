@@ -77,10 +77,20 @@ function LogoItems({
                reduced-motion navigation at 30s. The duplicate is aria-hidden
                decoration sharing the same URLs, so it paints from cache without
                ever blocking load. */
+            /* 208x37, the box the mark actually occupies — not 120x26, which
+               is the geometry the rail had BEFORE it was enlarged. These props
+               are not decoration: next/image builds its srcset from the
+               declared width, so a stale 120 made the optimiser serve a
+               variant sized for a box 42% narrower than the real one, and
+               every mark resampled up to fill 208px. The source PNGs were
+               never the problem — build-logos.mjs emits them 112px tall and
+               they DOWNSCALE 0.66x — the request was.
+               Width is the cell's inner max; .logo img keeps width:auto, so
+               the intrinsic aspect still governs what is painted. */
             <LogoImage
               src={c.logo}
-              width={120}
-              height={26}
+              width={208}
+              height={37}
               eager={!ariaHidden}
             />
           ) : (
