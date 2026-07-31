@@ -781,6 +781,9 @@ button {
 :root[data-theme="dark"] [data-identity="sap"] {
   --id: var(--id-sap-d);
 }
+/* The capability L1 and the sector L1 pass their own slug, so the selector list
+   covers every slug in the lead trio. Domains not yet mapped simply do not match
+   and keep the positional rhythm — the fallback is the absence of a rule. */
 :root[data-theme] [data-identity="data-analytics"] {
   --id: var(--id-data-analytics-l);
 }
@@ -816,30 +819,69 @@ button {
 /* Inside an identity family every position takes the family hue. The rhythm is
    carried by --amb-step, which the .amb-N rules below set, and which the
    consuming surfaces multiply into their own alpha. */
-[data-identity] .amb-1,
-[data-identity] .amb-2,
-[data-identity] .amb-3,
-[data-identity] .amb-4,
-[data-identity] .amb-5,
-[data-identity] .amb-6 {
-  --amb: var(--id);
+/* Both the descendant form AND the compound form. The L1 shells put
+   `data-identity` and `.amb-1` on the SAME element, so the descendant selector
+   alone silently missed them and they fell through to the positional hue —
+   invisible on SAP, whose identity hue is the same indigo as position one, and
+   caught only because retail rendered indigo instead of plum.
+
+   Each position falls back to ITS OWN positional hue, not to a single default.
+   A domain with no identity token yet still matches these selectors, and
+   `var(--id)` with no fallback resolved to nothing — measured: /industries/finance
+   came back with an empty --amb, so five unmapped sectors would have rendered
+   their plates and hero fields colourless. The two-argument var is the graceful
+   degradation R4 assumes. */
+[data-identity].amb-1,
+[data-identity] .amb-1 {
+  --amb: var(--id, var(--amb-1));
 }
 
+[data-identity].amb-2,
+[data-identity] .amb-2 {
+  --amb: var(--id, var(--amb-2));
+}
+
+[data-identity].amb-3,
+[data-identity] .amb-3 {
+  --amb: var(--id, var(--amb-3));
+}
+
+[data-identity].amb-4,
+[data-identity] .amb-4 {
+  --amb: var(--id, var(--amb-4));
+}
+
+[data-identity].amb-5,
+[data-identity] .amb-5 {
+  --amb: var(--id, var(--amb-5));
+}
+
+[data-identity].amb-6,
+[data-identity] .amb-6 {
+  --amb: var(--id, var(--amb-6));
+}
+
+[data-identity].amb-1,
 [data-identity] .amb-1 {
   --amb-step: 1;
 }
+[data-identity].amb-2,
 [data-identity] .amb-2 {
   --amb-step: 0.82;
 }
+[data-identity].amb-3,
 [data-identity] .amb-3 {
   --amb-step: 1.12;
 }
+[data-identity].amb-4,
 [data-identity] .amb-4 {
   --amb-step: 0.9;
 }
+[data-identity].amb-5,
 [data-identity] .amb-5 {
   --amb-step: 1.06;
 }
+[data-identity].amb-6,
 [data-identity] .amb-6 {
   --amb-step: 0.86;
 }

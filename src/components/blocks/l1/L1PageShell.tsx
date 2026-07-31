@@ -50,11 +50,16 @@ export function L1PageShell({ data, metrics }: ShellProps) {
   ];
 
   return (
-    /* Ambient hues assigned POSITIONALLY (canon §5): the hero takes the first
-       slot, the segment panel the third, the insight rail the fifth. Never keyed
-       to the sector — that is the retired per-sector hue system. Without a host
-       assigning --amb, every PetalPlate rendered as a grey smear. */
-    <div className={`${styles.page} amb-1`}>
+    /* R4: the sector's identity hue, declared once. Section rhythm still varies
+       by POSITION (.amb-1 hero, .amb-3 segment panel, .amb-5 insight rail) — it
+       now varies within one hue instead of across six.
+       This is not the retired per-sector system returning: that one pushed its
+       hue into borders, labels and card washes, so the page's ACCENT changed
+       with the branch. Here the hue never leaves the ambient layer and gold
+       stays the only interactive colour, which is the whole distinction R4
+       draws. A sector with no identity token falls back to the positional
+       rhythm, so nothing breaks for the sectors not yet mapped. */
+    <div className={`${styles.page} amb-1`} data-identity={data.slug}>
       <L1Hero data={data} />
       <L1StatsStrip metrics={metrics} />
       <L1SubNav items={subNavItems} />
