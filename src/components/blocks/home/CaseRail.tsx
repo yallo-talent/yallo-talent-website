@@ -68,7 +68,20 @@ export function CaseRail({
             <h3>{c.title}</h3>
             <p className={styles.caseSummary}>{c.summary}</p>
             <p className={styles.caseFoot}>
-              <Link className={styles.btnSecondary} href={c.slug}>
+              {/* A unique accessible name, and the whole card as the target.
+                  Eight of these resolved to "Read the case study" with eight
+                  different hrefs — it passes 2.4.4 via context but hands a
+                  screen-reader user a links list of clones. The visible label
+                  stays short; aria-label carries the study.
+                  The card is also one destination, so it takes the stretched
+                  pseudo-element the expertise cards use: before this, the card
+                  lit its full border on hover while only a 173x28 link — about
+                  3% of a 300x535 article — was clickable. */}
+              <Link
+                className={styles.btnSecondary}
+                href={c.slug}
+                aria-label={`Read the case study: ${c.title}`}
+              >
                 Read the case study
                 <ArrowGlyph />
               </Link>

@@ -87,6 +87,18 @@ jobs:
       - name: Reduced motion (Framer + CSS, with a motion-allowed control)
         run: PORT=3100 pnpm check:motion
 
+      # The four classes no other gate can see, and every one of them caught a
+      # real defect: SC 1.4.13 dismissibility (the mega panels opened on focus
+      # and Escape did nothing, so the primary CTA was 33 tab stops away),
+      # fixed-overlay occlusion (two sticky surfaces each reduced a live link to
+      # zero clickable area), section heading level versus role (axe's
+      # heading-order passes 2->3, but AT nests the section as a child), and
+      # canon §2's copy tell. Four rounds of critique found the design system
+      # holding while every new P1 arrived in an uninstrumented category; this is
+      # what closes those four.
+      - name: Interaction (dismissible, occlusion, outline, repetition)
+        run: node scripts/check-interaction.mjs http://localhost:3100
+
       # SC 1.4.10 Reflow at the 360px floor, every route, both registers.
       # capture-home.mjs asserted this for the homepage only — 1 of ~20 routes —
       # and a decorative petal at right:-34px pushed /ai-talent to 374px in both

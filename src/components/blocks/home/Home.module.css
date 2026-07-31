@@ -1784,6 +1784,10 @@
 }
 
 .caseCard {
+  /* The containing block for the stretched link below. Without it the overlay
+     resolves against whichever ancestor happens to be positioned and covers the
+     wrong box — measured: the card centre still hit a <p>. */
+  position: relative;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
@@ -1852,6 +1856,17 @@
 .caseFoot {
   margin-top: auto;
   padding-top: 20px;
+}
+
+/* The card is the target; the gold link stays the cue. .caseCard is already
+   position: relative and nothing else inside it is interactive, so a stretched
+   pseudo-element keeps exactly ONE anchor per card rather than wrapping and
+   duplicating the destination. */
+.caseFoot .btnSecondary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .railNav {
