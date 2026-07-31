@@ -248,9 +248,23 @@
   transform: translateX(2px);
 }
 
+/* B7: no dimming. opacity 0.55 over already-muted label text says "disabled,
+   and possibly broken" — but these are real desks canon §3 names, with no page
+   yet. The label reads at full strength and an explicit marker does the telling,
+   the same decision as the planned cards on the capabilities hub. Dimming was
+   also a contrast risk: an opacity on a muted colour compounds. */
 .megaLink[aria-disabled="true"] {
   cursor: default;
-  opacity: 0.55;
+}
+
+.megaPlannedMark {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
 }
 
 .megaLink[aria-disabled="true"]:hover,
@@ -263,6 +277,20 @@
 .mobileLink[aria-disabled="true"] {
   color: var(--fg-muted);
   cursor: default;
+}
+
+/* The ambient field, as on the heroes (B7). The panel cannot take A3 glass — it
+   is a child of the glass header, so a nested backdrop-filter is a no-op
+   (QUESTIONS.md Q8) — but the field needs no backdrop-filter at all, so the
+   panel gets the same atmospheric treatment the heroes do. Behind the columns,
+   above the panel ground. */
+.megaAtmosphere {
+  z-index: 0;
+}
+
+.megaPanelInner {
+  position: relative;
+  z-index: 1;
 }
 
 .megaLink:hover .itemIcon {

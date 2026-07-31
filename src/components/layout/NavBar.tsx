@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
 import {
@@ -75,6 +76,8 @@ function MegaItem({ item }: { item: NavItem }) {
     return (
       <span className={styles.megaLink} aria-disabled="true">
         <NavItemBody item={item} />
+        {/* B7: says what it is, at full strength, instead of being dimmed. */}
+        <span className={styles.megaPlannedMark}>Desk in build</span>
       </span>
     );
   }
@@ -182,6 +185,14 @@ export function NavBar() {
                       exit={{ opacity: 0, y: -8 }}
                       transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
                     >
+                      {/* B7: hero-grade ambient field on the panel, seeded per
+                          group so each menu draws its own. Deterministic, static,
+                          and needs no backdrop-filter — which is why the panel can
+                          have this where it cannot have A3 glass (Q8). */}
+                      <HeroAtmosphere
+                        seed={group.label}
+                        className={styles.megaAtmosphere}
+                      />
                       <div className={styles.megaPanelInner}>
                         {group.description && (
                           <div className={styles.megaDescription}>
