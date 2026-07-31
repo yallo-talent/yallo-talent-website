@@ -1,9 +1,24 @@
+/* pointer-events: none on the shell, auto on the controls — and this is the half
+   of the occlusion fix I got wrong first time.
+
+   `body:has(main :focus-visible) .cta { display: none }` closed SC 2.4.11 for
+   KEYBOARD users and left touch open, because touch has neither hover nor
+   :focus-visible. A frozen pass proved the harm with a real event rather than
+   geometry: a touchscreen tap at the exact centre of "How Contract works" hit
+   this panel and the URL stayed at "/". The mechanism I chose was
+   modality-specific; the harm never was.
+
+   Scoping pointer-events means a tap aimed at content beneath passes THROUGH to
+   that content, while the panel's own link and dismiss button stay live. It
+   still overlaps visually on a narrow viewport, which is a composition cost — but
+   it can no longer take an interaction that was aimed at something else. */
 .cta {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 40;
   max-width: min(420px, calc(100vw - 40px));
+  pointer-events: none;
 }
 
 .inner {
@@ -115,4 +130,16 @@
    make it flicker. */
 body:has(main :focus-visible) .cta {
   display: none;
+}
+
+/* Only the CONTROLS opt back in — not .inner.
+   My first version listed .inner here, and .inner spans the whole panel, so
+   re-enabling it handed the entire 366x116 area back to the hit test and undid
+   the fix. Measured: probes across the band returned `.lede` and `.button`,
+   both inside the panel. With only the two controls live, a tap on the panel's
+   own copy passes through to whatever sits beneath it, while the link and the
+   dismiss button stay fully operable. */
+.button,
+.close {
+  pointer-events: auto;
 }

@@ -640,4 +640,24 @@
   .bar {
     padding: 0 8px;
   }
+
+  /* The arrow is a <span>, not an <svg>, so the ≤480 rule that hides
+     `.ctaPrimary svg` never reached it — the glyph and its 10px gap survived to
+     320px and were still in the overflow. Every descendant goes, which is
+     tag-agnostic and cannot be defeated by a later markup change. */
+  .ctaPrimary > * {
+    display: none;
+  }
+
+  .ctaPrimary {
+    gap: 0;
+    padding: 8px;
+  }
+
+  /* Still above the 24px SC 2.5.8 floor with room to spare. */
+  .hamburger {
+    width: 32px;
+    height: 32px;
+    padding: 7px;
+  }
 }
