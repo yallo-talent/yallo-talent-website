@@ -22,6 +22,18 @@ export interface AuthoredModule {
   scope: string;
   /** Contractor roles Yallo places on this module. */
   roles: string[];
+  /**
+   * Deployment variants INSIDE one module, per ORDER 1.
+   *
+   * A deployment is not a product. S/4HANA shipped as four sibling modules —
+   * On-Premise, Public Cloud, Cloud Private Edition and "RISE with SAP S/4HANA" —
+   * which read as four things to staff when they are one product deployed four
+   * ways, and the last of them is not a deployment at all: RISE is SAP's
+   * COMMERCIAL programme, bundling S/4HANA Cloud (Public or Private) with managed
+   * infrastructure and BTP. Listing it beside the deployments was a category
+   * error in our own IA.
+   */
+  variants?: string[];
 }
 
 export interface AuthoredPlatform {
@@ -359,52 +371,33 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",
     modules: [
       {
-        slug: "sap-s4hana-on-premise",
-        name: "SAP S/4HANA On-Premise",
+        slug: "sap-s4hana",
+        name: "SAP S/4HANA",
         scope:
-          "Core finance and logistics consultants for on-premise estates, including the brownfield conversion crews.",
+          "Core finance and logistics consultants across every deployment — brownfield conversion crews on-premise, standard-first consultants on public cloud, and mixed benches on private edition.",
+        /* ORDER 1: one entry, deployment variants inside. Verified against SAP's
+           2026 portfolio — the deployments are On-Premise, Cloud Public Edition
+           and Cloud Private Edition. RISE is named as what it is, a commercial
+           programme, rather than as a fourth deployment. GROW with SAP is real and
+           OMITTED: no role in the repo names it, and R13's rule holds here too. */
+        variants: [
+          "On-Premise",
+          "Cloud Public Edition",
+          "Cloud Private Edition",
+          "delivered via RISE with SAP",
+        ],
         roles: [
           "SAP S/4HANA Architect",
           "SAP FI/CO Consultant",
           "SAP MM/SD Consultant",
           "ABAP Developer",
           "Data Migration Lead",
-        ],
-      },
-      {
-        slug: "sap-s4hana-public-cloud",
-        name: "SAP S/4HANA Public Cloud",
-        scope:
-          "Consultants who work inside the standard, on a quarterly release cadence rather than a modification backlog.",
-        roles: [
-          "SAP S/4HANA Architect",
-          "SAP FI/CO Consultant",
           "Functional Architect",
           "SAP Test Lead",
-        ],
-      },
-      {
-        slug: "sap-s4hana-cloud-private-edition",
-        name: "SAP S/4HANA Cloud, Private Edition",
-        scope:
-          "Mixed benches for private-edition estates that keep custom code but move the hosting.",
-        roles: [
-          "SAP S/4HANA Architect",
-          "ABAP Developer",
           "SAP CPI Integration Developer",
           "Cutover Manager",
-        ],
-      },
-      {
-        slug: "rise-with-sap-s4hana",
-        name: "RISE with SAP S/4HANA",
-        scope:
-          "Transformation-side people for RISE programmes: the architects and cutover leads, not the licence conversation.",
-        roles: [
-          "Enterprise Architect",
-          "SAP S/4HANA Architect",
-          "Cutover Manager",
           "Hypercare Lead",
+          "Enterprise Architect",
           "PMO Lead",
         ],
       },

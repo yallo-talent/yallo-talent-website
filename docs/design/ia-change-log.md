@@ -157,3 +157,50 @@ amends what moved and logs the rest.
 | Workday | ratified; no flags |
 | Blue Yonder | blocked on Q9 |
 | Data & Analytics | **Done** — 1 added, 1 flagged, 3 parked (14%) |
+
+---
+
+# SAP IA round 2 — ORDER 1, 1 August 2026
+
+## The fold: four S/4HANA entries become one
+
+| Was | Now | Why |
+|---|---|---|
+| `SAP S/4HANA On-Premise` | **`SAP S/4HANA`**, one entry | A deployment is not a product. Four sibling modules read as four things to staff when they are one product deployed three ways. |
+| `SAP S/4HANA Public Cloud` | variant "Cloud Public Edition" | SAP's own 2026 name is **Public Edition**, not "Public Cloud". |
+| `SAP S/4HANA Cloud, Private Edition` | variant "Cloud Private Edition" | Retained as a deployment; it is one. |
+| `RISE with SAP S/4HANA` | variant "delivered via RISE with SAP" | **This was a category error in our IA.** RISE is SAP's *commercial programme* — it bundles S/4HANA Cloud (Public **or** Private Edition) with managed infrastructure and BTP. It was never a fourth deployment sitting beside the other three. |
+
+Verified against SAP's 2026 portfolio by web search rather than from memory. The
+deployment options are **On-Premise**, **Cloud Public Edition** and **Cloud
+Private Edition**; RISE and GROW are commercial programmes that wrap them.
+
+The four variants render as chips inside the module page, so folding organises the
+information rather than losing it — the deployment distinction is exactly what a
+buyer asks about first.
+
+**Route effect:** `sap-s4hana-on-premise`, `sap-s4hana-public-cloud`,
+`sap-s4hana-cloud-private-edition` and `rise-with-sap-s4hana` now 404, replaced by
+`sap-s4hana`. No redirect is added because none of these has ever been published —
+the DNS switch is still pending, so there is no inbound link to preserve. If that
+changes before launch, four redirects belong in `next.config.ts` alongside the
+legacy insight rules.
+
+SAP module count: **17 → 14**.
+
+## Omitted from the 2026 portfolio check
+
+| Candidate | Why omitted |
+|---|---|
+| **GROW with SAP** | Real, and current — SAP's midmarket programme alongside RISE. **No role in the repo names it.** R13's hard rule applies here as much as it did to Blue Yonder: a product being real is necessary and not sufficient. |
+| SAP Business Data Cloud | Announced since the corpus was written. Not corpus-attested and no role names it. |
+| SAP Joule / Business AI | Same. Flagged in the round-1 log and still parked. |
+
+## Not re-verified
+
+The other eleven SAP modules were checked for *name currency* in round 1 against
+the corpus, not against SAP's 2026 portfolio. This round verified the S/4HANA
+family only, because that is what ORDER 1 named. A full portfolio pass on the
+remaining eleven is outstanding and would most likely raise SAP Datasphere's
+relationship to Business Data Cloud, and whether "SAP Analytics Cloud" is still
+the shipping name.

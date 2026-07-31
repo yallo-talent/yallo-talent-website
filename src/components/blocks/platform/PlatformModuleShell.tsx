@@ -79,6 +79,22 @@ export function PlatformModuleShell({
 
           {module.scope ? <p className={styles.lede}>{module.scope}</p> : null}
 
+          {/* ORDER 1: deployment variants INSIDE the module, not beside it.
+              S/4HANA shipped as four sibling entries, which read as four things to
+              staff when they are one product deployed three ways — and the fourth,
+              RISE, is SAP's commercial programme rather than a deployment. Folding
+              them without showing them would lose information; showing them here
+              keeps the distinction a buyer actually asks about. */}
+          {module.variants && module.variants.length > 0 ? (
+            <ul className={styles.variants}>
+              {module.variants.map((v) => (
+                <li key={v} className="role-pill">
+                  {v}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+
           <div className={styles.ctas}>
             <Link
               href={`/brief?platform=${platform.slug}&module=${module.slug}`}

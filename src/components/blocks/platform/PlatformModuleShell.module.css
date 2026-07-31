@@ -125,6 +125,17 @@
   margin: 0 0 30px;
 }
 
+/* The deployment row. Same chip treatment as a role, because a deployment is a
+   fact about the engagement in the same register as the desk. */
+.variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 26px;
+  padding: 0;
+  list-style: none;
+}
+
 .ctas {
   display: flex;
   flex-wrap: wrap;

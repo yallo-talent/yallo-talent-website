@@ -35,6 +35,8 @@ export interface PlatformModule {
   scope?: string;
   /** Contractor roles Yallo places on this product. */
   roles: string[];
+  /** Deployment variants inside one product — ORDER 1. */
+  variants?: string[];
   /** Where this module appears, so the reader can reach the detail. */
   appearsIn: Array<{
     sectorSlug: string;
@@ -158,6 +160,7 @@ function collect(): Map<string, PlatformCoverage> {
         slug: am.slug,
         name: am.name,
         scope: am.scope,
+        variants: am.variants,
         roles: [...new Set([...am.roles, ...(match?.roles ?? [])])],
         appearsIn: match?.appearsIn ?? [],
       };
