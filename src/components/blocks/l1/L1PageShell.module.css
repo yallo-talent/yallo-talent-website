@@ -909,29 +909,6 @@
   box-shadow: inset 0 1px 0 var(--wa12);
 }
 
-.scarceGlow {
-  /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
-     these sat behind body copy and washed it out. */
-  display: none;
-}
-
-.scarceGridBg {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--wa03) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wa03) 1px, transparent 1px);
-  background-size: 32px 32px;
-  -webkit-mask-image: radial-gradient(
-    ellipse at 15% 50%,
-    black 5%,
-    transparent 55%
-  );
-  mask-image: radial-gradient(ellipse at 15% 50%, black 5%, transparent 55%);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .scarceGrid {
   position: relative;
   z-index: 1;

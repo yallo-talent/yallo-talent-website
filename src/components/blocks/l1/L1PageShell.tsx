@@ -538,8 +538,17 @@ function L1ScarceTalent({ data }: Props) {
     <section className={styles.scarce}>
       <div className={styles.wrap}>
         <div className={styles.scarceCard}>
-          <div className={styles.scarceGlow} aria-hidden="true" />
-          <div className={styles.scarceGridBg} aria-hidden="true" />
+          {/* Two decorative layers removed, markup and all.
+              .scarceGlow had already been neutralised to display:none as a
+              DESIGN.md anti-reference, but a hidden div is dead weight rather
+              than a fix, so it goes properly.
+              .scarceGridBg was a hairline grid-line field tiled at 32px — the
+              generated-UI signature, one rule below a block deleted on exactly
+              that principle. A grid overlay belongs on a canvas, a map, a
+              blueprint or a measurement surface; the scarce-talent card is
+              none of those, and canon has no clause admitting it. The card
+              already carries a gradient, a hairline and an inset highlight;
+              this was a fourth texture doing nothing the other three don't. */}
           <div className={styles.scarceGrid}>
             <div className={styles.scarceLeft}>
               <div className={styles.scarceIcon}>
