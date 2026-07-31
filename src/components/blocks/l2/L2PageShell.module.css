@@ -872,7 +872,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 /* ============ ENGAGEMENT PILLARS (detailed — mirrors L1) ============ */
 .engage {
@@ -1239,7 +1240,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 @media (max-width: 900px) {
   .relatedGrid {
@@ -1356,7 +1358,8 @@
   transform: scale(1.06);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 .insImgTint {
   position: absolute;
@@ -1452,7 +1455,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 /* ============ SIDEBAR ============ */
 .sbTop {

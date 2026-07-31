@@ -890,7 +890,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 @media (max-width: 1100px) {
   .xsecGrid {
@@ -1717,7 +1718,8 @@
   transform: rotate(-6deg) scale(1.08);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 .archRole {
   font-family: var(--font-mono);
@@ -2356,7 +2358,8 @@
   transform: scale(1.06);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 /* Diagonal hue wash over the image */
 .insImgTint {
@@ -2456,7 +2459,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 /* ============ SERVICE PILLARS ============ */
 .pillars {
@@ -2872,7 +2876,8 @@
   transform: translateX(3px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 @media (max-width: 900px) {
   .readNextRails {
@@ -3008,7 +3013,8 @@
   transform: translateX(4px);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 /* ============ RESPONSIVE ============ */
 @media (max-width: 1100px) {

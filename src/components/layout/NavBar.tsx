@@ -7,7 +7,7 @@ import {
   useScroll,
 } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
@@ -107,6 +107,46 @@ export function NavBar() {
   useMotionValueEvent(scrollY, "change", (value) => {
     setScrolled(value > 24);
   });
+
+  /**
+   * Escape closes the drawer, and the page underneath stops scrolling.
+   *
+   * Neither was true. The drawer covers the full 844px viewport at 390 and
+   * carries 23 links, and a critique verified that Escape — pressed with focus
+   * on the trigger AND with focus on a drawer link — left `aria-expanded` true
+   * and the drawer visible. Because it fills the viewport there is no "outside"
+   * to tap either: every click lands on a link and navigates. So the only exit
+   * was the hamburger itself, and a keyboard user who had tabbed into the list
+   * had to tab back out to reach it.
+   *
+   * The scroll lock is the second half. `body` was `overflow: visible` and
+   * `position: static`, so the document scrolled freely behind a fixed overlay —
+   * the reader loses their place and, on iOS, the drawer and the page fight.
+   * The scrollbar width is not compensated because the drawer only exists at
+   * widths where the scrollbar is an overlay, so there is no layout shift to
+   * correct.
+   */
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
+    };
+    /* documentElement, not just body. layout.tsx deliberately keeps `h-full`
+       off <html>, so <html> is the scroll container and `body { overflow:
+       hidden }` alone left the page scrolling freely behind the overlay —
+       measured. Both are set because which element scrolls depends on the
+       engine's viewport-propagation rules, and getting it wrong is silent. */
+    const prevBody = document.body.style.overflow;
+    const prevRoot = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevBody;
+      document.documentElement.style.overflow = prevRoot;
+    };
+  }, [mobileOpen]);
 
   return (
     <>

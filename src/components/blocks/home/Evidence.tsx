@@ -47,14 +47,24 @@ export function Evidence() {
     }));
 
   return (
-    // The second inverted band, and the right one for it: a dossier inverts its
-    // evidence appendix. It previously sat on AITalent, directly below
+    // NOT an inverted band any more, and this is canon arithmetic rather than a
+    // change of mind. §5 permits at most two dark bands per page. In the light
+    // register the homepage was running four dark regions — #place (inverted),
+    // this one (inverted), .close (which hardcodes --dk, so it is dark in BOTH
+    // registers) and the footer — measured at 3,617px, about a third of the
+    // document, with the last third flipping register four times.
+    //
+    // Of the three non-chrome candidates this is the one to give up. #place is a
+    // data surface and inverts for that reason; .close plus the footer read as
+    // one closing block and inverting only half of it would be worse. Case
+    // studies are editorial content and read perfectly well on paper — the
+    // earlier note below is still true about WHERE this band sat, just no longer
+    // about whether it should be one.
+    //
+    // Kept for the record: this band previously sat on AITalent, directly below
     // WherePlace, so the two permitted inversions rendered as a single ~2,800px
     // slab and the signal cost twice what it bought.
-    <section
-      className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
-      id="evidence"
-    >
+    <section className={`${styles.section} ${styles.g2} amb-2`} id="evidence">
       <div className={styles.wrap}>
         <SectionHead
           eyebrow={evidenceCopy.eyebrow}

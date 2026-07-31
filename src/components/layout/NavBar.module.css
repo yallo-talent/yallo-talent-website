@@ -310,7 +310,8 @@
   transform: scale(1.05);
 
   border-color: var(--rule-strong);
-  background: var(--ground-3);}
+  background: var(--ground-3);
+}
 
 .itemBody {
   display: flex;
