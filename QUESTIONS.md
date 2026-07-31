@@ -509,3 +509,36 @@ clause is what leaves 2.2.2 unmet, because hover is not a mechanism for keyboard
 or touch. If you ratify the control, the clause should read "a mechanism" rather
 than "hover" — otherwise the next implementer builds the same gap from the same
 sentence.
+
+---
+
+# RESOLUTION LOG — 31 July 2026, rulings R6–R15
+
+Eight entries close here. Each is struck by a ruling recorded in
+`docs/design/yallo-talent-CANON.md`; nothing below is closed by Code's own
+judgement except where S3 delegation is named explicitly.
+
+| Q | Was | Closed by | What Code does |
+|---|---|---|---|
+| **Q2** | Six defects in published case-study bodies | **R14** | Delete what is demonstrably wrong — lines belonging to another study, the empty heading. Where text repeats across two unrelated studies, keep it where it belongs and remove the other. **No rewriting.** Removals logged |
+| **Q3** | Which register is the site-wide default | **R12** | Light. Recorded in canon §5 as adopted, not under test |
+| **Q8** | Glass on the mega panel | R3 (30 Jul) | Already closed |
+| **Q9** | Blue Yonder's module set | **R13** | Ships at suite level from repo evidence only — the ratified homepage line plus the Blue Yonder roles the retail data names. A module ships **only** if it maps to an existing role or the homepage line. Moss hue. Evidence table logged |
+| **Q14** | Four blurred-orb pseudo-element sites | **R8** | The ban stands. All four deleted |
+| **Q15** | Two vendor marks rendering as light slabs | **R9** | Key them, or set them as NAME text. No third option |
+| **Q16** | `check-a11y` cannot tell an abstention from a pass | **R10** | The gate composes contrast for every axe abstention |
+| **Q17** | The SAP L2 returns byte-identical content | **R6** | Routes stay. Depth comes from JOINING data already held — sectors and functions staffing the module, role detail with screening notes, case studies on the platform tag, siblings. **One marked slot per module is reserved for Chat copy and Code must not write it** |
+| **Q18** | SC 2.2.2 — no pointer-free pause | **R7** | Stop the loops rather than add UI. The hero instrument plays once then rests, so 2.2.2 stops applying. The rail keeps its loop and gains a small keyboard-reachable pause/play. Canon §5 gains "plus a control" |
+
+## Still open, and why
+
+| Q | Status |
+|---|---|
+| **Q1** | Ambient intensity inside PetalPlates. **Superseded in practice by R11**, which requires ambient presence to rise until the hue is perceptible — the opposite direction to the 8%/14% cap this asked about. Will be restated against whatever R11 lands on |
+| **Q4** | Closed 30 Jul (true-alpha pack shipped) |
+| **Q5, Q6, Q7** | Closed by A6, order step 9 and R1 |
+| **Q10** | The legacy `.wpress` archive is media-only. Informational; no decision needed |
+| **Q11** | "Active bench across 3 markets" against §2's supply/demand ban. **Needs Sumeet** — it turns on whether there is a genuine bench in all three markets, which is a fact about the business, not the build. Under S3 the least-overclaiming option is to soften the claim; recorded and not yet applied, because softening a ratified positioning line is a bigger step than S3 contemplates |
+| **Q12** | Three removed figures. **Needs a source, not a decision.** If 68% and "4–6 wks" are real they can return with attribution |
+| **Q13** | Radwell's mark is a box lockup at 25.0% perimeter ink. **R9 settles the principle** for `blue-yonder` and `sap`; Radwell was hand-committed and labelled "verified, not generated", so it is treated the same way — key it or set it as a name |
+| **Q19** (new) | `data-ambient="spectrum"` renders the retired six-hue rhythm on the homepage: engage panels at 216°, 178°, 327° and 127° against 40–45° everywhere else. **Superseded by R11**, which rebuilds ambient presence site-wide — this will be resolved by that work rather than by flipping the constant. Also open in the same breath: whether footer chrome counts against §5's two-dark-band ceiling (three bands render in light: `#place`, `#start`, `footer`) |
