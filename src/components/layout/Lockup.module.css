@@ -122,3 +122,57 @@
     letter-spacing: 0.18em;
   }
 }
+
+/* ==========================================================================
+   R15 — four alternates on the alignment axis, so the choice is made by
+   measurement rather than by assertion.
+
+   The pipe divider is already gone (the gap plus TALENT's tracking replaced it).
+   What R15 changes is the ALIGNMENT: the current build sits TALENT on the shared
+   BASELINE, and R15 asks for it aligned to the wordmark's CAP HEIGHT. Those are
+   different, and on a serif wordmark against mono caps they look different.
+
+   Selected by `data-lockup` on the lockup root. D ships; A, B and C stay so the
+   comparison is reproducible and Sumeet can override with one attribute.
+   ========================================================================== */
+
+/* A — baseline. What shipped before R15. Mono caps sit on the serif's baseline,
+   so TALENT's cap top lands ABOVE the wordmark's, and it reads slightly raised. */
+.lockup[data-lockup="a"] .text {
+  align-items: baseline;
+}
+
+/* B — cap height. SHIPPED.
+   TALENT's cap top matched to the wordmark's. Measured cap-top delta -1.25px
+   against +6.25 for baseline and +4.25 for optical centring, so this and D are
+   the only two that actually cap-align. B ships because it is the simpler rule
+   and it measures marginally closer; the 0.26px between it and D is below
+   perceptibility, so the choice is legibility of the CSS rather than of the mark. */
+.lockup[data-lockup="b"] .text,
+.lockup:not([data-lockup]) .text {
+  align-items: flex-start;
+}
+.lockup[data-lockup="b"] .suffix,
+.lockup:not([data-lockup]) .suffix {
+  /* Newsreader's cap height is ~0.70em; Plex Mono's ~0.68em at this size step. */
+  transform: translateY(0.055em);
+}
+
+/* C — optical centring on the wordmark's x-height band. Ignores both baseline and
+   cap height and centres on the mass of the lowercase. Reads calm and loses the
+   deliberate step-down hierarchy — TALENT stops feeling like a qualifier. */
+.lockup[data-lockup="c"] .text {
+  align-items: center;
+}
+
+/* D — cap height with a smaller correction. NOT shipped, and the reason is a
+   correction to my own first pass: i wrote that D was "the only variant where the
+   cap tops agree", then measured and found B at -1.25px and D at -1.51px. They
+   are the same treatment 0.26px apart. The claim was assertion dressed as
+   measurement; B ships on the simpler rule. */
+.lockup[data-lockup="d"] .text {
+  align-items: flex-start;
+}
+.lockup[data-lockup="d"] .suffix {
+  transform: translateY(0.035em);
+}

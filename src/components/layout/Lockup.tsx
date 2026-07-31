@@ -22,9 +22,22 @@ import { YalloFlower } from "./YalloFlower";
  * run larger, but "identical header, footer and favicon derivations" is the
  * actual instruction, and a second size is a second thing to keep in step.
  */
-export function Lockup({ className }: { className?: string }) {
+export function Lockup({
+  className,
+  variant,
+}: {
+  className?: string;
+  /**
+   * R15 alternate. Omit for the shipped treatment (D). a/b/c exist so the
+   * comparison stays reproducible and can be overridden with one attribute.
+   */
+  variant?: "a" | "b" | "c" | "d";
+}) {
   return (
-    <span className={`${styles.lockup} ${className ?? ""}`}>
+    <span
+      className={`${styles.lockup} ${className ?? ""}`}
+      data-lockup={variant}
+    >
       <YalloFlower size={36} className={styles.mark} />
       <span className={styles.text}>
         <span className={styles.wordmark}>Yallo</span>
