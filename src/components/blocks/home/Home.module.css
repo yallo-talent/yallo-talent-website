@@ -78,8 +78,13 @@
   transition: transform 0.45s var(--ease);
 }
 
+/* A5 requires the lift be PAIRED with a non-motion cue, and this had only the
+   transform — so under prefers-reduced-motion the page's primary CTA had NO
+   hover affordance at all, and with motion on it was a 2px nudge. The fill
+   deepens as well, which survives the reduced-motion reset. */
 .btnPrimary:hover {
   transform: translateY(-2px);
+  background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink));
 }
 
 .btnSecondary {
@@ -1045,6 +1050,17 @@
     background 0.28s var(--ease);
 }
 
+/* Eight of these are <button>s and NONE had a hover rule — a computed-style
+   diff across every card's subtree and both pseudo-elements returned zero
+   changed properties. Their resting boundary is 1.24:1 against the parent, so
+   seven of the eight read as inert boxes. A5 sanctions hover elevation; this
+   surface took neither it nor an alternative. Border and ground, so the cue
+   survives the reduced-motion reset. */
+.roleCard:hover {
+  border-color: var(--rule-strong);
+  background: var(--ground-2);
+}
+
 .roleCard[aria-pressed="true"] {
   border-color: var(--accent-line);
   background: var(--accent-wash);
@@ -1143,10 +1159,18 @@
   position: relative;
 }
 
+/* No max-width on the linked variant. 24ch is a sensible measure for a heading
+   read as prose, but here the heading IS the card's primary control, and the
+   measure was capping the target at 381px of a 569px card. The cap stays where
+   the title is plain text. */
 .vow h3 {
   margin-top: 12px;
   max-width: 24ch;
   position: relative;
+}
+
+.vow h3:has(.moduleLink) {
+  max-width: none;
 }
 
 .vowBadge {
@@ -1556,11 +1580,15 @@
   color: var(--text);
 }
 
+/* 0.12em, A4's floor. This reads as tracked-out caps — "ERP, WMS, TMS" — but
+   the capitals come from the DATA rather than from text-transform, so the guard
+   keyed on the property never reached it. A4 governs how uppercase mono looks,
+   not how it was produced. */
 .axisModules {
   display: block;
   font-family: var(--font-mono);
   font-size: var(--fs-data);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.12em;
   color: var(--text-3);
   margin-top: 4px;
 }
@@ -1921,6 +1949,11 @@
   padding-bottom: 2px;
 }
 
+.jobsLink:hover {
+  color: var(--accent-label);
+  border-bottom-color: var(--accent-label);
+}
+
 .brief {
   background: var(--dk-2);
   border: 1px solid var(--dk-line);
@@ -2078,6 +2111,30 @@
   gap: 8px;
   color: inherit;
   transition: color 0.16s ease;
+}
+
+/* Deliberately NOT a stretched full-card link, and the reason is worth keeping.
+   The expertise cards took that fix because each holds exactly one destination.
+   These do not: a module card can also carry a cross-link to the sector page it
+   appears in, and an inset:0 overlay would sit on top of it and make it
+   unclickable. I applied the overlay first and measured it — `.vow h3` is
+   position:relative, so it resolved against the HEADING rather than the card and
+   covered nothing. Both facts point the same way: this card is not a single
+   link and should not pretend to be one.
+   What it gets instead is a full-WIDTH title row, so the primary target grows
+   from roughly 340x31 to the card's width, plus a card-level hover cue. */
+.moduleLink {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+/* Scoped with :has so it only fires on cards that actually link — the derived
+   modules render their name as plain text and must not claim to be clickable. */
+.vow:has(.moduleLink):hover {
+  border-color: var(--rule-strong);
+  background: var(--ground-3);
 }
 
 .moduleLink:hover,

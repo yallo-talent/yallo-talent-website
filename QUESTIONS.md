@@ -383,3 +383,44 @@ brand-presentation call, not a design-system one, so I have left them.
 Worth noting alongside it: a prior round deleted the "technology partners"
 section because presenting those marks implied a partnership claim with nothing
 behind it. The same question applies here in visual form.
+
+## Q16 — `check-a11y` cannot tell an abstention from a pass
+
+**A real AA failure lived in this gap for a whole round, and the gate was green.**
+
+axe returns three verdicts per rule: `violations`, `passes`, and **`incomplete`** —
+"I could not determine this." `check-a11y.mjs` fails on violations only, so an
+`incomplete` is silence, and silence reads as a pass.
+
+On `/capabilities/data-analytics` a pass-3 critique measured **113 `incomplete`
+`color-contrast` nodes** — most of the page's text, including `h1`, `h2`,
+`.wwdTitle`, `.wwdCopy`, `.expCardTitle` and `.scarceRowName`. The stated reasons
+are all structural to this design: *"background could not be determined due to a
+background gradient"*, *"…due to a pseudo element"*, *"…partially overlaps other
+elements"*, *"…contains an image node"*. Ambient washes, the hero field and the
+petal geometry guarantee axe abstains on the surfaces that matter most.
+
+**`.rtagPerm` was in that set** and composed to 3.26:1 against its real ground —
+the only AA-failing informational text on the page, invisible to CI, found only
+because a critique composed the value by hand. It is fixed (4.89:1 light /
+6.84:1 dark), but the hole it came through is still open.
+
+**Recommendation, and it needs your word because it changes what green means.**
+`check-a11y` should compose contrast itself for every `incomplete` node —
+walking ancestors, multiplying alphas, and evaluating gradients analytically at
+the element's own position — and fail on a real shortfall. Every critique pass
+has had to build that compositor from scratch to do its job; the gate should own
+it instead. That is a substantial addition rather than a flag, which is why it is
+a question and not a commit.
+
+**Two related gate rulings I also need:**
+
+1. **320 vs 360 for reflow.** `check-reflow.mjs` asserts 360px and says so
+   deliberately, citing canon's performance gate. **SC 1.4.10 is specified at
+   320px**, and at 320 the nav's actions row overflows by 32px on every route in
+   both themes — long-standing, not new. Either canon's 360 is the authority and
+   WCAG's 320 is accepted as out of scope, or the guard moves to 320 and the nav
+   row is rebuilt. One number has to be authoritative.
+2. **A4 for a filled MONO control.** `.skipLink` is uppercase mono at 0.12em on a
+   gold fill. A4 gives mono labels 13px and buttons 15px; this is both. I raised
+   it to 15.5px on the reading that "filled control" wins, but A4 does not say.

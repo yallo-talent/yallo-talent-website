@@ -160,7 +160,9 @@
 
 .card:hover .cardImg {
   transform: scale(1.06);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 .cardTint {
   position: absolute;
@@ -235,7 +237,9 @@
 
 .card:hover .cardArr {
   transform: translateX(4px);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 /* Bottom CTA */
 .bottomCta {

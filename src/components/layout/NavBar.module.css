@@ -1,3 +1,5 @@
+/* A4: buttons 15px. The skip link is a filled gold control — the FIRST control
+   a keyboard user meets — and it was on the 13px mono step. */
 .skipLink {
   position: absolute;
   top: -40px;
@@ -7,7 +9,7 @@
   background: var(--accent-mark);
   color: var(--ink-950);
   font-family: var(--font-mono);
-  font-size: var(--fs-data);
+  font-size: var(--fs-body-sm);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: top 0.2s ease;
@@ -306,7 +308,9 @@
 
 .megaLink:hover .itemIcon {
   transform: scale(1.05);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 .itemBody {
   display: flex;
@@ -553,9 +557,14 @@
      a 21-viewport mobile page invisible for 18 of them. `nowrap` is
      load-bearing: without it the label broke onto four line-boxes and the
      button rendered as a 92x90px blob beside the hamburger. */
+  /* A4 puts buttons at 15px and does not exempt narrow widths, so the size
+     holds and the PADDING gives instead — which is the right thing to trade
+     anyway, since the label's legibility is what the button is for. The
+     rendered-type gate now sweeps 390 as well as 1280, which is how this was
+     found: a desktop-only sweep reported clean over it on all seven templates. */
   .ctaPrimary {
-    padding: 10px 14px;
-    font-size: var(--fs-caption);
+    padding: 10px 12px;
+    font-size: var(--fs-body-sm);
     white-space: nowrap;
   }
 }
@@ -571,8 +580,14 @@
      against 328 available, so the page ran to 365. Reclaimed 8px here, 4px on
      the hamburger and 16px on the wordmark step — the CTA label itself is
      untouched, because shrinking the ask is the wrong saving. */
+  /* gap 8, not 10. Raising .ctaPrimary to A4's 15px floor in the 1024 block
+     above widened the actions row by 2px and took the page to 362 at a 360
+     viewport — check-reflow caught it on 40 route/theme combinations. The bar
+     has two gaps, so 2px each pays for it exactly, and a gap is the cheapest
+     thing on this row to give up: the ask keeps its size and the hamburger
+     keeps its target. */
   .bar {
-    gap: 10px;
+    gap: 8px;
     padding: 0 12px;
   }
 

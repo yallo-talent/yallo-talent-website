@@ -146,8 +146,10 @@
     box-shadow 0.18s ease;
 }
 
+/* A5: the lift is paired with a fill shift, so the cue survives reduced motion. */
 .ctaPrimary:hover {
   transform: translateY(-1px);
+  background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink));
 }
 
 .ctaGhost {
@@ -202,13 +204,25 @@
   line-height: 1;
 }
 
+/* The label leads now, so it sits above the figure rather than under it. */
 .statL {
   font-family: var(--font-mono);
   font-size: var(--fs-data);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-label);
-  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+/* Canon §6: a published figure never appears without its definition. No clamp —
+   a two-line clamp on the L1 shell was truncating these mid-clause at 390px. */
+.statD {
+  font-size: var(--fs-caption);
+  color: var(--fg-muted);
+  line-height: 1.5;
+  margin-top: 8px;
+  max-width: 26ch;
+  margin-inline: auto;
 }
 
 /* ---- sections ---- */

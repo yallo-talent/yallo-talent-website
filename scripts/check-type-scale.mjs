@@ -235,6 +235,39 @@ function evalSize(decl, width) {
   }
 }
 
+// ── 3c. A5: a hover lift must be PAIRED with a non-motion cue ─────────────
+//
+// Canon A5 permits hover elevation as an interaction state and requires it be
+// paired with a border or ground shift. The reason is not decoration: the
+// reduced-motion reset in globals.css zeroes every transition and transform, so
+// a hover rule that changes ONLY a transform leaves users who set that
+// preference with no affordance whatsoever. A critique measured exactly that on
+// the homepage's two primary CTAs — the whole hover state was a 1-2px nudge
+// with motion on, and nothing at all with it off.
+//
+// Only CONTROL-like selectors are judged. Panels, image wrappers and media
+// surfaces legitimately move on hover without being clickable, and holding them
+// to a control's rule would produce noise that teaches everyone to ignore this.
+const MOTION_ONLY = /^(transform|translate|scale|rotate)$/;
+const CONTROL = /(btn|cta|button|link|card|chip|pill|tab|trigger|row|item)/i;
+
+{
+  for (const file of walk("src").filter((f) => f.endsWith(".css"))) {
+    const src = readFileSync(file, "utf8");
+    for (const m of src.matchAll(/([^{}]*):hover[^{}]*\{([^}]*)\}/g)) {
+      const selector = m[1].trim().split("\n").pop().trim().split(",").pop().trim();
+      if (!CONTROL.test(selector)) continue;
+      const props = [...m[2].matchAll(/(^|;)\s*([a-z-]+)\s*:/g)].map((d) => d[2]);
+      if (props.length === 0) continue;
+      if (props.every((d) => MOTION_ONLY.test(d))) {
+        errors.push(
+          `${file}  ${selector}:hover changes only ${props.join(", ")} — A5 requires a non-motion cue alongside the lift`,
+        );
+      }
+    }
+  }
+}
+
 // ── 4. Glass: ALLOW-LIST enforcement, not a ban ───────────────────────────
 // Canon amendment A3 (30 Jul) reverses the step-8 strip and sanctions glass —
 // but as one token-governed utility on five named surfaces, not as a register

@@ -91,12 +91,22 @@ export function PlatformModuleShell({
       <section className={styles.stats}>
         <dl className={styles.statsInner}>
           {metrics.map((m) => (
+            /* <dt> BEFORE <dd>, and the definition renders. Two defects in
+               four lines: the term/definition pairing was inverted for
+               assistive tech — value first, label second, which axe does not
+               check — and content/metrics.yaml states outright that
+               `definition` renders beneath each value, which canon §6 requires
+               and this template alone omitted. A figure without its definition
+               is the §6 breach the L1 shells already avoid. */
             <div key={m.label} className={styles.statCell}>
+              <dt className={styles.statL}>{m.label}</dt>
               <dd className={styles.statN}>
                 {m.target}
                 {m.suffix ?? ""}
               </dd>
-              <dt className={styles.statL}>{m.label}</dt>
+              {m.definition ? (
+                <dd className={styles.statD}>{m.definition}</dd>
+              ) : null}
             </div>
           ))}
         </dl>

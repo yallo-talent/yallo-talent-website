@@ -121,7 +121,9 @@
 
 .wwdCard:hover .wwdIcon {
   transform: rotate(-6deg) scale(1.08);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 .wwdIconSvg {
   width: 22px;
@@ -347,7 +349,9 @@
 
 .archCard:hover .archInitials {
   transform: rotate(-6deg) scale(1.08);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 .archRole {
   font-family: var(--font-mono);
@@ -477,7 +481,9 @@
 
 .crossChip:hover .crossChipArr {
   transform: translateX(3px);
-}
+
+  border-color: var(--rule-strong);
+  background: var(--ground-3);}
 
 @media (max-width: 1100px) {
   .wwdGrid,

@@ -62,19 +62,44 @@ const PAGES = [
   "/brief",
 ];
 
+// Two viewports, because one was the gate's second blind axis. Reporting CLEAN
+// at 1280 says nothing about 390: NavBar's .ctaPrimary steps DOWN to 14px on a
+// gold fill at the mobile width, an A4 breach that a desktop-only sweep can
+// never reach. Sizes that change at a breakpoint need the breakpoint measured.
+const VIEWPORTS = [
+  { width: 1280, height: 900 },
+  { width: 1024, height: 900 }, // where the nav's mobile step-down begins
+  { width: 768, height: 900 },
+  { width: 390, height: 844 },
+];
+
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
 const failures = [];
 let pairsChecked = 0;
 
+for (const viewport of VIEWPORTS) {
+const page = await browser.newPage({ viewport });
 for (const path of PAGES) {
   const res = await page.goto(BASE + path, { waitUntil: "networkidle" });
   if (!res?.ok()) {
-    failures.push(`${path}  did not load (HTTP ${res?.status() ?? "no response"})`);
+    failures.push(`${path} @${viewport.width}  did not load (HTTP ${res?.status() ?? "no response"})`);
     continue;
   }
   await page.evaluate(() => document.fonts.ready);
+
+  // Reveal the controls that do not exist at rest, because this gate reported
+  // CLEAN over two real A4 breaches it simply never saw. The sticky brief CTA
+  // mounts only past 1100px of scroll and the skip link is off-screen until
+  // focused — both are filled gold controls at 13px. A gate that only inspects
+  // the resting, unfocused, unscrolled page audits a fraction of the surface.
+  await page.evaluate(() => window.scrollTo(0, 2500));
+  await page.waitForTimeout(500);
+  await page.evaluate(() => {
+    const first = document.querySelector("a[href^='#'], a[href], button");
+    if (first instanceof HTMLElement) first.focus();
+  });
+  await page.waitForTimeout(150);
 
   const { loaded, used } = await page.evaluate(() => {
     const loaded = new Set();
@@ -119,7 +144,7 @@ for (const path of PAGES) {
     if (!loadedSet.has(key)) {
       const [, weight, style] = key.split("|");
       failures.push(
-        `${path}  ${family} ${weight}${style === "italic" ? " italic" : ""} is SYNTHESISED — ${count} element(s), e.g. .${sample}`,
+        `${path} @${viewport.width}  ${family} ${weight}${style === "italic" ? " italic" : ""} is SYNTHESISED — ${count} element(s), e.g. .${sample}`,
       );
     }
   }
@@ -162,8 +187,18 @@ for (const path of PAGES) {
       if (control && filled && !mono && px < CONTROL_FLOOR)
         out.control.set(`${name} @ ${px}px`, true);
 
-      // Uppercase mono tracking, with text-transform resolved rather than read.
-      if (mono && cs.textTransform === "uppercase") {
+      // Uppercase mono tracking. Keying on text-transform ALONE missed
+      // .axisModules — "ERP, WMS, TMS" is natively capitalised in the data, so
+      // it renders as tracked-out caps without ever setting the property. A4
+      // governs how uppercase mono LOOKS, not how it was produced, so the test
+      // also accepts a string that is already caps.
+      const txt = [...el.childNodes]
+        .filter((n) => n.nodeType === Node.TEXT_NODE)
+        .map((n) => n.textContent)
+        .join("");
+      const letters = txt.replace(/[^A-Za-z]/g, "");
+      const nativeCaps = letters.length >= 3 && letters === letters.toUpperCase();
+      if (mono && (cs.textTransform === "uppercase" || nativeCaps)) {
         const ls = Number.parseFloat(cs.letterSpacing) || 0;
         if (ls / px < TRACKING_FLOOR)
           out.tracking.set(`${name} @ ${px}px, ${(ls / px).toFixed(3)}em`, true);
@@ -177,11 +212,13 @@ for (const path of PAGES) {
   });
 
   for (const s of roles.sans)
-    failures.push(`${path}  sans text below A4's 14px floor — ${s}`);
+    failures.push(`${path} @${viewport.width}  sans text below A4's 14px floor — ${s}`);
   for (const c of roles.control)
-    failures.push(`${path}  filled control below A4's 15px button/nav role — ${c}`);
+    failures.push(`${path} @${viewport.width}  filled control below A4's 15px button/nav role — ${c}`);
   for (const t of roles.tracking)
-    failures.push(`${path}  uppercase mono below A4's 0.12em tracking — ${t}`);
+    failures.push(`${path} @${viewport.width}  uppercase mono below A4's 0.12em tracking — ${t}`);
+}
+await page.close();
 }
 
 await browser.close();
@@ -200,6 +237,6 @@ if (failures.length) {
 }
 
 console.log(
-  `Rendered type clean across ${PAGES.length} templates: ${pairsChecked} family/weight pairs all real, ` +
+  `Rendered type clean across ${PAGES.length} templates x ${VIEWPORTS.length} widths: ${pairsChecked} family/weight pairs all real, ` +
     "no sans under 14px, no filled control under 15px, no under-tracked uppercase mono.",
 );
