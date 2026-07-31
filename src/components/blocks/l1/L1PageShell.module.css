@@ -106,8 +106,15 @@
   transition: color 0.15s ease;
 }
 
+/* A regression I introduced and this closes it. Moving the crumb's resting
+   colour to --accent-label (correct — gold marks what is interactive) left this
+   hover rule declaring the colour it already had, so a navigational link had
+   ZERO hover response in either theme. Declared is not changed. The hover now
+   goes to full ink and underlines, which reads as a state rather than a repeat. */
 .crumbLink:hover {
-  color: var(--accent-label);
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .crumbSep {
@@ -272,6 +279,15 @@
 }
 
 /* ============ IN-PAGE STICKY SUB-NAV ============ */
+/* The containing block for the sticky sub-nav. It must generate a real BOX —
+   `display: contents` was my first attempt and it defeats the purpose entirely,
+   because an element that generates no box establishes no containing block, so
+   sticky would keep resolving against .page exactly as before. A plain block is
+   layout-neutral here: these sections were already block children in this order. */
+.subNavScope {
+  display: block;
+}
+
 .subNav {
   position: sticky;
   /* Sits below the main NavBar; the 72px top offset creates the
@@ -1263,6 +1279,10 @@
   padding-top: 24px;
 }
 
+/* 15.5px, matching .skipLink. Q16 logs the open question — A4 gives mono
+   labels 13px and buttons 15px, and a filled mono control is both — but until it
+   is ruled, answering it two ways on one page is the one option that is wrong
+   either way. Filled control wins here as it does there. */
 .expertiseShowAll {
   display: inline-flex;
   align-items: center;
@@ -1273,7 +1293,7 @@
   border-radius: 0 0 0 var(--r-md);
   color: var(--fg);
   font-family: var(--font-mono);
-  font-size: var(--fs-label);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
   letter-spacing: 0.14em;
   text-transform: uppercase;

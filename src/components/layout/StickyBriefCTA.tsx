@@ -7,7 +7,7 @@ import {
   useScroll,
 } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./StickyBriefCTA.module.css";
 
 /* An ABSOLUTE scroll distance, not a fraction of the page.
@@ -19,8 +19,14 @@ import styles from "./StickyBriefCTA.module.css";
    1,100px is just past the hero on every template at every width, so the prompt
    appears when the reader loses the first one and not a screen later. */
 const SHOW_AFTER_PX = 1100;
-/* Still suppressed near the foot, where the page has its own closing ask. */
-const HIDE_NEAR_END = 0.96;
+/* Suppressed across the whole closing quarter, not just the last 4%.
+   0.96 was measured too late: on the retail L1 the prompt still covered a live
+   "Cloud & Infrastructure" read-next chip at scrollY 6248 of 7739 — progress
+   0.807 — reducing it to ZERO clickable area, and that row is the only way off
+   the page other than this form. The last fifth of every L1 is the closing ask
+   plus that row, which is precisely where a floating repeat of the same ask
+   earns least and costs most. */
+const HIDE_NEAR_END = 0.78;
 
 export function StickyBriefCTA() {
   const { scrollY } = useScroll();
@@ -43,6 +49,20 @@ export function StickyBriefCTA() {
     const progress = max > 0 ? y / max : 0;
     setVisible(y > SHOW_AFTER_PX && progress < HIDE_NEAR_END);
   });
+
+  /* Escape dismisses it. A critique found the undersized close button was the
+     ONLY way out of a panel covering 13.7% of a phone viewport, which is a
+     dependency on a single small target rather than a choice. Bound only while
+     the prompt is showing, so it never competes with the nav drawer's own
+     Escape handler. */
+  useEffect(() => {
+    if (!visible || dismissed) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDismissed(true);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [visible, dismissed]);
 
   const shouldShow = visible && !dismissed;
 

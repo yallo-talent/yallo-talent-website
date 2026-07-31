@@ -248,7 +248,14 @@ function evalSize(decl, width) {
 // Only CONTROL-like selectors are judged. Panels, image wrappers and media
 // surfaces legitimately move on hover without being clickable, and holding them
 // to a control's rule would produce noise that teaches everyone to ignore this.
-const MOTION_ONLY = /^(transform|translate|scale|rotate)$/;
+/* Not just transforms. `gap` slipped through and it is the same defect: twelve
+   secondary CTAs had `.btnSecondary:hover { gap: 12px }` as their ONLY hover
+   declaration — a 4px reflow of a trailing arrow, no colour, border, ground or
+   underline — and under reduced motion it degrades to an instant jump rather
+   than a state. A layout nudge is not a visual cue, so the set covers anything
+   that only moves or resizes something. */
+const MOTION_ONLY =
+  /^(transform|translate|scale|rotate|gap|row-gap|column-gap|margin|margin-[a-z]+|padding|padding-[a-z]+|top|left|right|bottom|inset|letter-spacing|width|height)$/;
 const CONTROL = /(btn|cta|button|link|card|chip|pill|tab|trigger|row|item)/i;
 
 {

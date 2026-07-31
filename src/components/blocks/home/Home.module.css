@@ -99,8 +99,16 @@
   transition: gap 0.35s var(--ease);
 }
 
+/* A real state, not just a 4px reflow of the arrow. `gap` was the ONLY
+   declaration here, so twelve secondary CTAs — including all eight "Read the
+   case study" links — had no colour, border, ground or underline change on
+   hover, and under reduced motion the gap became an instant jump rather than a
+   state. My A5 guard passed it because `gap` is not a transform; a layout nudge
+   is not a visual cue either, and the guard now says so. */
 .btnSecondary:hover {
   gap: 12px;
+  color: var(--accent-label);
+  border-bottom-color: var(--accent-label);
 }
 
 /* A card whose destination does not exist yet. Never a link. */

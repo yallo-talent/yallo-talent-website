@@ -57,9 +57,16 @@
   color: var(--black-950);
 }
 
+/* flex: none and a min-width, because 24px was DECLARED and not RENDERED. The
+   button sits in a flex row and was shrinking with it: measured 22.3x24 at 390
+   and 17.7x24 at 360, under SC 2.5.8's 24x24 AA floor, with only 14px of
+   clearance to the next target so the spacing exception does not apply. It is
+   the only exit from a panel covering 13.7% of an 844px viewport. */
 .close {
+  flex: none;
   padding: 0;
   width: 24px;
+  min-width: 24px;
   height: 24px;
   border-radius: 50%;
   background: transparent;

@@ -158,6 +158,22 @@ export function NavBar() {
     return () => document.removeEventListener("keydown", onKey);
   }, [openGroup]);
 
+  /**
+   * The drawer is a modal, and last round it only looked like one.
+   *
+   * A critique measured it at 390: no `role`, no `aria-modal`, no accessible
+   * name, no scrim, and `main` neither inert nor aria-hidden. Tab walked the 23
+   * drawer links and then CARRIED ON into the page behind — and as the browser
+   * scrolled those hidden controls into view, scrollY crept 0 to 44px, defeating
+   * the very scroll lock this effect installs. Escape closed it but dropped
+   * focus on <body> rather than the trigger.
+   *
+   * So: `inert` on the rest of the document, which removes the page from both
+   * the tab order and the accessibility tree in one property and is why no
+   * hand-rolled focus trap is needed here; focus moved into the drawer on open
+   * and returned to the hamburger on close; and the dialog semantics that tell
+   * a screen reader what this is.
+   */
   useEffect(() => {
     if (!mobileOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -172,11 +188,21 @@ export function NavBar() {
     const prevRoot = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
+    /* Everything except the drawer goes inert. The drawer is a sibling of
+       <header>, so the targets are the header and <main> plus the footer. */
+    const outside = [...document.body.children].filter(
+      (el) => !el.hasAttribute("data-drawer"),
+    );
+    for (const el of outside) el.setAttribute("inert", "");
+
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevBody;
       document.documentElement.style.overflow = prevRoot;
+      for (const el of outside) el.removeAttribute("inert");
+      // Focus belongs back on the control that opened it, not on <body>.
+      document.querySelector<HTMLElement>("[data-hamburger]")?.focus();
     };
   }, [mobileOpen]);
 
@@ -315,6 +341,8 @@ export function NavBar() {
             <button
               type="button"
               className={styles.hamburger}
+              data-hamburger=""
+              aria-controls="mobile-drawer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((v) => !v)}
@@ -331,6 +359,11 @@ export function NavBar() {
         {mobileOpen && (
           <motion.div
             className={styles.mobileDrawer}
+            data-drawer=""
+            id="mobile-drawer"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}

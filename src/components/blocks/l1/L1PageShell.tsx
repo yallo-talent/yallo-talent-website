@@ -62,6 +62,16 @@ export function L1PageShell({ data, metrics }: ShellProps) {
     <div className={`${styles.page} amb-1`} data-identity={data.slug}>
       <L1Hero data={data} />
       <L1StatsStrip metrics={metrics} />
+      {/* The sub-nav and the sections it navigates share one containing block,
+          and that is the fix for a measured occlusion rather than tidying. A
+          sticky element sticks for the length of its containing block, so as a
+          direct child of the page it stayed pinned over the read-next rail and
+          the closing card — content it does not navigate. At the terminal scroll
+          position, where End lands, it covered the top row of read-next chips
+          and reduced three live links to ZERO clickable area; that rail is the
+          only way off this page other than the brief form. Scoped here, sticky
+          releases when the last navigated section ends. */}
+      <div className={styles.subNavScope}>
       <L1SubNav items={subNavItems} />
       <div id="why">
         <L1Intro data={data} />
@@ -79,6 +89,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
       )}
       <L1Expertise data={data} />
       <L1Segments data={data} />
+      </div>
       {/* Three sections dropped, on the re-critique's own finding: six of
           thirteen were the same figure — eyebrow, counted H2, lede, row of equal
           tiles — while the page's genuinely distinctive assets were the least
