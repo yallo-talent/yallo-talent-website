@@ -28,7 +28,7 @@ const T = {
   candB: 1900,
   candC: 3100,
   shortlist: 4600, // phase 04 flips done, ticks land
-  dwell: 12000, // hold the completed state, then loop
+  // R7: no dwell and no loop. The reveal runs ONCE and rests at 'done'.
 } as const;
 
 type Stage = "settled" | "reset" | "a" | "b" | "c" | "done";
@@ -56,7 +56,7 @@ export function Instrument() {
       );
     };
 
-    const loop = () => {
+    const run = () => {
       if (!alive) return;
       at(T.reset, () => {
         setStage("reset");
@@ -75,11 +75,17 @@ export function Instrument() {
         setOutCount(17);
       });
       at(T.shortlist, () => setStage("done"));
-      at(T.dwell, loop);
+      /* R7: nothing re-arms. This used to `at(T.dwell, loop)` and restart every
+         12s, which made the panel auto-advancing content under SC 2.2.2 (Level A)
+         with hover as its only pause — no mechanism for keyboard or touch. The
+         ruling is to stop the loop rather than add a control: the reveal plays
+         once on entry, rests at "done", and 2.2.2 no longer applies because
+         nothing moves after that. The demonstration is unchanged for anyone who
+         sees it; only the third and fourth repeats are gone. */
     };
 
-    // First pass starts after a beat, so the settled state is what paints.
-    at(1400, loop);
+    // One pass, after a beat, so the settled state is what paints first.
+    at(1400, run);
 
     return () => {
       alive = false;

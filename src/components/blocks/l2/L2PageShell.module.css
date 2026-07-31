@@ -502,25 +502,10 @@
   /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
      these sat behind body copy and washed it out. */
   display: none;
-}
+}/* R8: DELETED. Canon §5's blurred-orb ban stands, and the sweep that removed
+   the L1's six sites found these two by grepping the whole of src rather than the
+   file the critique named — the class, not the instance. */
 
-.tc::before {
-  content: "";
-  position: absolute;
-  bottom: -70px;
-  left: -50px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--sector-accent-20), transparent 65%);
-  filter: blur(35px);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.5;
-  transition:
-    opacity 0.32s ease,
-    transform 0.32s ease;
-}
 
 .tc:hover {
   transform: translateY(-5px);
