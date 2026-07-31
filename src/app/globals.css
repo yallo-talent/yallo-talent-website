@@ -116,6 +116,10 @@
   --id-sap-d: var(--amb-indigo-d);
   --id-data-analytics-l: var(--amb-teal-l); /* data visualisation convention */
   --id-data-analytics-d: var(--amb-teal-d);
+  /* R13: moss for Blue Yonder. Last of the six hues to be claimed, and the
+     platform whose module set is evidence-only. */
+  --id-blue-yonder-l: var(--amb-moss-l);
+  --id-blue-yonder-d: var(--amb-moss-d);
   --id-retail-l: var(--amb-plum-l); /* consumer warmth, away from the gold */
   --id-retail-d: var(--amb-plum-d);
 
@@ -887,6 +891,12 @@ button {
 }
 :root[data-theme="dark"] [data-identity="data-analytics"] {
   --id: var(--id-data-analytics-d);
+}
+:root[data-theme] [data-identity="blue-yonder"] {
+  --id: var(--id-blue-yonder-l);
+}
+:root[data-theme="dark"] [data-identity="blue-yonder"] {
+  --id: var(--id-blue-yonder-d);
 }
 :root[data-theme] [data-identity="retail"] {
   --id: var(--id-retail-l);

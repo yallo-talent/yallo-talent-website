@@ -8,7 +8,7 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 48px);
-}/* R10 sweep: `composes: band-dark` rather than a hand-set dark ground.
+} /* R10 sweep: `composes: band-dark` rather than a hand-set dark ground.
    A permanently dark band must RESTATE the Layer 2c aliases or its descendants
    resolve --fg against the light register — which produced ink on ink at 1.00:1
    and 1.07:1 on the case-studies headings. Setting the background alone is the
@@ -175,7 +175,7 @@
   isolation: isolate;
   overflow: hidden;
   padding: clamp(72px, 9vw, 112px) 0;
-}/* R10 sweep: `composes: band-dark` rather than a hand-set dark ground.
+} /* R10 sweep: `composes: band-dark` rather than a hand-set dark ground.
    A permanently dark band must RESTATE the Layer 2c aliases or its descendants
    resolve --fg against the light register — which produced ink on ink at 1.00:1
    and 1.07:1 on the case-studies headings. Setting the background alone is the

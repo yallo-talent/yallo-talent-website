@@ -48,6 +48,94 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
    * sector cuts of the suite, which is the level the sector L1s already work at,
    * and repeating them would rebuild the skew one layer up.
    */
+  /**
+   * Blue Yonder — R13, and every module below is EVIDENCE, not judgement.
+   *
+   * Q9 sat parked for two rounds because there is no Blue Yonder file in the
+   * legacy corpus, so there was no attested suite list to draft from. R13 unparks
+   * it with a hard rule: a module ships only if it maps to an existing role in the
+   * data layer or to the ratified homepage line. Everything else is omitted rather
+   * than guessed — including genuinely real Blue Yonder products, because a
+   * product being real is necessary and not sufficient.
+   *
+   * The homepage line (src/data/home/place.ts) is "Luminate · WMS · planning".
+   * Every role cited below already exists in src/data/l1/*.ts. The evidence table
+   * is logged in docs/design/blue-yonder-evidence.md.
+   *
+   * Moss hue per R13.
+   */
+  "blue-yonder": {
+    slug: "blue-yonder",
+    name: "Blue Yonder",
+    ratified:
+      "Suite level, R13, 1 Aug 2026. Every module maps to a role already named in the data layer or to the ratified homepage line. No module is inferred.",
+    modules: [
+      {
+        slug: "blue-yonder-luminate-planning",
+        name: "Blue Yonder Luminate Planning",
+        scope:
+          "Demand, supply and inventory planners on Luminate, and the crews running seasonal planning cycles.",
+        roles: [
+          "Blue Yonder Luminate Supply Chain Planner",
+          "Blue Yonder Demand Planner",
+          "Blue Yonder Inventory Optimisation Lead",
+          "Blue Yonder SCP Specialist",
+        ],
+      },
+      {
+        slug: "blue-yonder-wms",
+        name: "Blue Yonder WMS",
+        scope:
+          "Warehouse management consultants on Blue Yonder, including the DC cutover crews.",
+        roles: ["Blue Yonder WMS Consultant", "Blue Yonder WMS Specialist"],
+      },
+      {
+        slug: "blue-yonder-tms",
+        name: "Blue Yonder TMS",
+        scope:
+          "Transport management architects on Blue Yonder across DC-to-store and last-mile networks.",
+        roles: ["Blue Yonder TMS Architect"],
+      },
+      {
+        slug: "blue-yonder-merchandise-management",
+        name: "Blue Yonder Merchandise Management",
+        scope:
+          "Merchandise financial planning consultants, and the MFP crews behind seasonal buying.",
+        roles: [
+          "Blue Yonder Merchandise Consultant",
+          "Blue Yonder MFP Specialist",
+        ],
+      },
+      {
+        slug: "blue-yonder-assortment-optimization",
+        name: "Blue Yonder Assortment Optimization",
+        scope:
+          "Assortment planners running seasonal cycles across apparel, grocery and mass merchandise.",
+        roles: ["Blue Yonder Assortment Specialist"],
+      },
+      {
+        slug: "blue-yonder-space-planning",
+        name: "Blue Yonder Space Planning",
+        scope: "Space and floor-plan planners on Blue Yonder.",
+        roles: ["Blue Yonder Space Planner"],
+      },
+      {
+        slug: "blue-yonder-price-promotion",
+        name: "Blue Yonder Price & Promotion",
+        scope:
+          "Pricing and promotion leads on Blue Yonder across markdown and campaign cycles.",
+        roles: ["Blue Yonder Price / Promotion Lead"],
+      },
+      {
+        slug: "blue-yonder-fulfillment",
+        name: "Blue Yonder Fulfillment",
+        scope:
+          "Order fulfilment leads on Blue Yonder across store, DC and direct-to-consumer flows.",
+        roles: ["Blue Yonder Fulfillment Lead", "Blue Yonder Fulfilment Lead"],
+      },
+    ],
+  },
+
   oracle: {
     slug: "oracle",
     name: "Oracle",
