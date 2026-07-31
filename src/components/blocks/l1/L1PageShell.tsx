@@ -586,39 +586,45 @@ function L1ScarceTalent({ data }: Props) {
                 the whole right half of the card went empty. Grid children are
                 positional; a new element is a new cell unless you say otherwise. */}
             <div className={styles.scarceRight}>
-            {/* The norm stated once, DERIVED from the rows rather than written.
+              {/* The norm stated once, DERIVED from the rows rather than written.
                 Dropping a uniform chip only works if the value it carried is
                 still somewhere, and computing it means the line cannot drift
                 out of step with the data the way authored copy would. */}
-            {(() => {
-              const counts = new Map();
-              for (const r of data.scarceRoles ?? [])
-                counts.set(r.engagement ?? "contract", (counts.get(r.engagement ?? "contract") ?? 0) + 1);
-              const total = data.scarceRoles?.length ?? 0;
-              const [norm, n] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0] ?? [];
-              return norm && n > total / 2 ? (
-                <p className={styles.scarceNorm}>
-                  {norm === "perm" ? "Permanent" : "Contract"} unless noted.
-                </p>
-              ) : null;
-            })()}
-            <div className={styles.scarceList}>
               {(() => {
-                const norm = "contract";
-                return data.scarceRoles.map((r) => (
-                  <div key={r.name} className={styles.scarceRow}>
-                    <span className={styles.scarceRowName}>{r.name}</span>
-                    {r.engagement && r.engagement !== norm ? (
-                      <span className={styles.scarceTags}>
-                        <span className={`${styles.rtag} ${styles.rtagPerm}`}>
-                          {r.engagement === "perm" ? "Perm" : "Perm / Contract"}
-                        </span>
-                      </span>
-                    ) : null}
-                  </div>
-                ));
+                const counts = new Map();
+                for (const r of data.scarceRoles ?? [])
+                  counts.set(
+                    r.engagement ?? "contract",
+                    (counts.get(r.engagement ?? "contract") ?? 0) + 1,
+                  );
+                const total = data.scarceRoles?.length ?? 0;
+                const [norm, n] =
+                  [...counts.entries()].sort((a, b) => b[1] - a[1])[0] ?? [];
+                return norm && n > total / 2 ? (
+                  <p className={styles.scarceNorm}>
+                    {norm === "perm" ? "Permanent" : "Contract"} unless noted.
+                  </p>
+                ) : null;
               })()}
-            </div>
+              <div className={styles.scarceList}>
+                {(() => {
+                  const norm = "contract";
+                  return data.scarceRoles.map((r) => (
+                    <div key={r.name} className={styles.scarceRow}>
+                      <span className={styles.scarceRowName}>{r.name}</span>
+                      {r.engagement && r.engagement !== norm ? (
+                        <span className={styles.scarceTags}>
+                          <span className={`${styles.rtag} ${styles.rtagPerm}`}>
+                            {r.engagement === "perm"
+                              ? "Perm"
+                              : "Perm / Contract"}
+                          </span>
+                        </span>
+                      ) : null}
+                    </div>
+                  ));
+                })()}
+              </div>
             </div>
           </div>
         </div>
@@ -638,6 +644,12 @@ function L1Expertise({ data }: Props) {
   // Render every card; CSS hides cards past the limit on desktop when
   // collapsed, and shows all in the mobile horizontal-scroll layout.
   const visible = data.expertise;
+  /* The largest column count up to four that divides the card total evenly, so
+     the last desktop row is never short. auto-fill cannot do this job: the track
+     width that yields four columns for twenty cards yields four for six as well,
+     because the container is the same width either way. Falls back to four for
+     counts with no such divisor (17, say), where raggedness is unavoidable. */
+  const expCols = [4, 3, 2].find((n) => visible.length % n === 0) ?? 4;
   // First function that has an L2 page — the "Explore all functions in
   // detail" hint links here, and the L2 sidebar shows every function.
   //
@@ -680,6 +692,7 @@ function L1Expertise({ data }: Props) {
         {/* Focusable because it scrolls at narrow widths (SC 2.1.1). */}
         <div
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
+          style={{ "--exp-cols": expCols } as React.CSSProperties}
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
@@ -870,7 +883,13 @@ function L1Segments({ data }: Props) {
                       aria-selected={isActive}
                       aria-controls={`${data.slug}-segpanel`}
                       tabIndex={isActive ? 0 : -1}
-                      onMouseEnter={() => setActive(s.id)}
+                      /* No hover activation. A pointer crossing thirteen
+                         vertical triggers on its way down the page fired up to
+                         six swaps of a 636px panel, with no way to pin one —
+                         and the tab that ended up selected was whichever the
+                         cursor passed last, not one the reader chose. A tablist
+                         activates on click and on arrow keys; both are
+                         deliberate acts. */
                       onClick={() => setActive(s.id)}
                       className={styles.segTrigger}
                     >

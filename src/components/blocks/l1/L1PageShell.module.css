@@ -1211,9 +1211,19 @@
   transform: translateY(-2px);
 }
 
+/* The column count follows the CARD count, and auto-fill cannot do this job.
+   A fixed four is right for a sector page's twenty cards and wrong for a
+   discipline page's six: at 1280px six-in-four left a measured 570x246px hole in
+   the second row. auto-fill does not help either, because the track width that
+   yields four columns for twenty also yields four for six — the container is the
+   same. No single number divides both 6 and 20.
+   So the component computes the largest count up to four that divides its own
+   card total evenly and passes it here. Six becomes three columns and two full
+   rows; twenty stays four. The media queries below still override for narrow
+   widths, where available width, not item count, is the constraint. */
 .expertiseGrid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--exp-cols, 4), minmax(0, 1fr));
   gap: 12px;
   margin-top: 8px;
   align-items: start;
