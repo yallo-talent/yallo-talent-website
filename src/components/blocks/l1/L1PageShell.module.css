@@ -1513,19 +1513,19 @@
   color: var(--fg);
   line-height: 1.3;
   margin: 0 0 3px;
-}
-
+}/* No clamp. Removed as a CLASS this time, not an instance.
+   I removed .caseSummary's clamp for SC 1.4.12 and left three siblings live; a
+   frozen pass then found this one hiding "Oracle Analytics Cloud" AT REST at
+   1280 — and the expertise cards carry no interactive element, so a real product
+   name was unreachable by any means. A clamp sized to default spacing fails
+   1.4.12 by construction, and every one of these truncated either at rest or
+   under the criterion's metrics. */
 .expCardBlurb {
   font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.5;
   font-weight: var(--fw-body);
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: calc(11.5px * 1.5 * 2);
 }
 
 /* Top-right open-page link (external-arrow chip) — always visible */
@@ -2477,8 +2477,13 @@
   flex-direction: column;
   gap: 14px;
   padding: 24px 22px 22px;
-}
-
+}/* No clamp. Removed as a CLASS this time, not an instance.
+   I removed .caseSummary's clamp for SC 1.4.12 and left three siblings live; a
+   frozen pass then found this one hiding "Oracle Analytics Cloud" AT REST at
+   1280 — and the expertise cards carry no interactive element, so a real product
+   name was unreachable by any means. A clamp sized to default spacing fails
+   1.4.12 by construction, and every one of these truncated either at rest or
+   under the criterion's metrics. */
 .insTitle {
   font-size: var(--fs-body);
   font-weight: var(--fw-strong);
@@ -2486,10 +2491,6 @@
   color: var(--fg);
   line-height: 1.3;
   margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   transition: color 0.24s ease;
 }
 

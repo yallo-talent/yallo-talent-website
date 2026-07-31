@@ -701,9 +701,16 @@ function L1Expertise({ data }: Props) {
               focused or announced. A missing destination is not a styling
               problem to solve with a disabled state; it is content that does
               not exist, and content that does not exist renders nothing. */}
-          {firstL2Href ? (
+          {/* The label NAMES its destination. It used to read "Explore all
+              functions in detail" and resolve to a single function's page — one
+              of twenty — which a frozen pass caught as an SC 2.4.4 Link Purpose
+              failure on the section's primary taxonomy exit. The href is derived
+              as the first function with an L2, so the honest label is that
+              function's own name; when there is no destination it still renders
+              nothing rather than a promise. */}
+          {firstL2Href && firstL2 ? (
             <Link href={firstL2Href} className={styles.expertiseHint}>
-              Explore all functions in detail
+              {firstL2.title} in detail
               <span aria-hidden="true"> →</span>
             </Link>
           ) : null}

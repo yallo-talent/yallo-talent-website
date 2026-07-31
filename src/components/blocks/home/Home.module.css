@@ -1227,15 +1227,26 @@
   margin: 0 0 28px;
 }
 
+/* Gold at rest, and this is canon §5 applied rather than a preference.
+   A frozen pass measured these 17 real jump links as BYTE-IDENTICAL to the 72
+   inert .role-pill chips on the same page — same background, colour, border,
+   radius and font — with the inert set having no hover at all. A reader learns
+   "pale tile + hairline + bottom-left petal = clickable" from these and then
+   meets 72 identical dead ones, and on touch there is no discriminator
+   whatsoever. §5 makes gold the only colour that is ever interactive, and these
+   carried none of it. The label and boundary now take the gold grades that the
+   three-tier system exists for: --accent-label is the small-text grade at
+   4.69:1, so a 15.5px label clears AA on its own. */
 .moduleIndexLink {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
   padding: 7px 13px;
   font-size: var(--fs-body-sm);
-  color: var(--fg-muted);
+  font-weight: var(--fw-medium);
+  color: var(--accent-label);
   background: var(--ground-2);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--border-accent);
   border-radius: 0 0 0 var(--r-sm);
   transition:
     color 0.15s ease,
