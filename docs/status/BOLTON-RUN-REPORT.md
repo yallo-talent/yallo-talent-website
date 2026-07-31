@@ -1,6 +1,6 @@
 # Bolt-on run report — 1 August 2026
 
-**Branch `main` · pushed · `5ef5824` · nine CI gates 9/9 green**
+**Branch `main` · pushed · `8d83990` · nine CI gates 9/9 green**
 Covers the bolt-on `/goal`: S1–S3, R6–R15 and the seven-item ORDER.
 
 Canon, evidence tables and the change log are the authorities; this report does
@@ -19,8 +19,16 @@ The exit condition S1 sets — zero P1 — is **met on the three surfaces scored
 this run** (SAP, Data & Analytics, Blue Yonder) against the frozen build
 `bolton-freeze-1` = `96bf6bc`, with every finding fixed as a class and re-verified.
 
-**One ratified item is only partially delivered: R11.** I reported it as shipped
-earlier in the run. Measured properly now, it is not. Section 4 gives the figures.
+**R11 is now delivered, and I had over-reported it.** Earlier in the run I called
+it shipped because its tokens resolved — which is precisely what its own wording
+told me not to do ("iterate until visibly distinct, not until tokens resolve").
+The class carrying the wash was applied to nothing. §4 has the cause and the
+after figures.
+
+ORDER 1–7 are all addressed. ORDER 7's four items were measured across seven
+routes in three families: identity hue landed this session, and the other three
+already held — including one density defect I reported and then disproved with a
+better instrument.
 
 ---
 
@@ -75,41 +83,43 @@ measured from ground pixels beside the glyphs.
 
 ---
 
-## 4. R11 identity hues — partially delivered, and I over-reported it
+## 4. R11 identity hues — DELIVERED, after I first over-reported it
 
 R11's target was "SAP visibly distinct from Retail at a glance, both themes",
 iterating "until visibly distinct, not until tokens resolve".
 
-Measured on the **hero field mean**, like against like (ΔE76; 2.3 = just
-noticeable, 5.0 = distinct):
+**I reported it shipped when the tokens resolved. That was the error the wording
+warned against.** The tokens were correct all along — `--amb` resolved to plum on
+Retail, teal on Data & Analytics, indigo on SAP, at the ratified alphas. What was
+wrong is that **`.amb-wash`, the class carrying the gradient that consumes `--amb`,
+appeared ZERO times in any `.tsx`.** The rule existed, was well tuned, and painted
+nothing. Identity reached only the petal plates. That is why every page read the
+same coffee-brown however the tokens resolved.
 
-| Pair | Theme | ΔE76 | Verdict |
+Three faults, all now fixed:
+
+| Fault | Detail |
+|---|---|
+| No wash hosts | `.amb-1` sat on `.page` — the whole document, 7,235px on Retail. The gradient sizes in percentages of its host, so on a box that tall it scales to the document and reads as nothing at viewport scale. Canon §5 already said the wash "lives on bands and panel edges". It now sits on four L1 bands, plus the platform L1's hero and two bands — that template is bespoke on `Home.module.css` and never received anything the L1 shell got |
+| `.band-dark` inherited the LIGHT ambient tuning | It restates grounds, text and the Layer 2c aliases but not `--amb-alpha`, so in light theme a permanently dark surface laid a 20% tint chosen against a 233 ground over a 15 ground. SAP's hero measured `rgb(15,15,15)` — no hue at all, so SAP had nothing to be distinct from Retail **with** |
+| It could not restate the HUE either | The hue is per-domain and `data-identity` is on an ancestor, so `--id` arrives already resolved to the light variant. 18 domain-paired rules now hand `.band-dark` the dark variant. They outrank `[data-identity].amb-1` on specificity (0,4,0 against 0,2,0), not on source order |
+
+Measured after, hero band mean, ΔE76 (2.3 just-noticeable, 5.0 distinct):
+
+| Pair | Light | Dark | Note |
 |---|---|---|---|
-| Retail vs Data & Analytics | light | **3.8** | perceptible, **not distinct** |
-| Retail vs Data & Analytics | dark | **7.5** | distinct |
-| SAP vs Retail | light | not comparable — see below | — |
+| **SAP vs Oracle** | **7.3** | **7.3** | The real identity test: same register, differing only by hue |
+| SAP vs Retail | 73.2 | 5.7 | Light figure is mostly register, not hue |
+| Retail vs Data & Analytics | 5.0 | 8.7 | |
 
-On the **matched ambient section field**, Retail vs Data & Analytics separates by
-only **1.1 ΔE** in light and 0.8–1.8 in dark — **below the just-noticeable
-threshold**. The hue is carried by the hero and plates, and has effectively not
-reached the section washes R11 named.
+Before the change, Retail and Data & Analytics separated by 3.8 on the hero and
+**0.0** where the washes should have been, because there were none.
 
-**SAP cannot be compared to Retail on hue at all.** Its L1 hero *and* its first
-ambient section render near-black — `rgb(16,17,18)` — in **light** theme. There is
-no hue there to differentiate. That also sits against **R12**, which ratified
-light as the site-wide register, and it is the two-dark-band ceiling logged as
-**Q19**.
+**AA held**: contrast and a11y both re-run after the washes darkened every ground.
 
-So: R11's tokens are all live and all 18 domains resolve, hue is perceptible
-between two light-hero pages, and the strongest surfaces R11 named — section
-washes, and SAP itself — are **not** delivered. I should have measured this
-before reporting R11 shipped instead of after.
-
-I also reached that figure wrongly twice more in this run: my first two passes
-compared a dark hero band against light ones and returned 65.1 and 86.3 ΔE. Both
-meaningless — the same container-not-thing error the run has now made four times.
-
----
+I reached the wrong figure twice more before getting here, both times by comparing
+a dark hero band against light ones (65.1, then 86.3 — meaningless). That is the
+container-not-thing error, and this run has now made it four times.
 
 ## 5. Gates, and two phantom failures
 
@@ -164,11 +174,83 @@ Each is the least-overclaiming option available, per S3.
 
 ---
 
-## 8. Not done
+## 8. ORDER 5 — mega menu
 
-- **ORDER 7's remaining sweep** — balanced adjacent grids, de-densification and
-  humanised chips are landed on the surfaces scored in this run, but the sweep
-  across *every* remaining platform, discipline and sector is not complete, and
-  the one-sample-per-family critique is not written.
+Hover-intent (120ms), close-on-route-change and the `band-dark` panel tone were
+already in. Two things were not, and both were measured rather than reasoned:
+
+- **The flicker was a REMOUNT.** Every group owned its own `AnimatePresence`, so
+  moving between triggers unmounted one panel and mounted another. Measured 60ms
+  into a switch: **two** panels on screen at opacity 0.32 and 0.67, cross-fading
+  at two different x positions. `.megaPanel` is `position: fixed; left: 0;
+  right: 0` and is never positioned by its group wrapper, so the panel hoists out
+  of the loop for free. One panel now renders the active group's *content* —
+  switching swaps children with no remount and no enter/exit. Re-measured across
+  five rapid switches: **max 1 panel**, `aria-expanded` consistent with it.
+- **Selection did not close it.** The pathname effect cannot: a link to the route
+  you are already on changes no pathname. From `/platforms/sap`, choosing SAP
+  from the menu left the panel over the page just requested. Verified both ways.
+
+## 9. ORDER 6 — client rail
+
+"Still too tiny", and the measurement says why: **the cap was the binding
+constraint, not the cell.** At a 48px cap a wide mark reached 267px of its 268px
+cell while a square one rendered 48×48 — 18% of the cell width. The rail read as
+mostly-empty cells with a few full ones, and the square enterprise marks stayed
+small whatever the cell did.
+
+Cap 48 → **68**, cell 268×96 → **300×112**, and the build constants moved with
+them so the three legibility tests measure what ships. Source art is emitted
+224px tall, so a 68px cap still downscales — nothing is resampled up. Narrowest
+mark 48px → 68px, widest 267 → 300. 13 marks ship as silhouettes, 5 as their
+name; the build gate still declines every source that will not key to one clean
+ink, per canon §8.
+
+## 10. ORDER 7 — replicate, and one critique per family
+
+Measured across 7 routes in three families rather than assumed:
+
+| Item | Finding | State |
+|---|---|---|
+| Identity hue | All three families carry `data-identity` and 3 wash hosts each, verified painting at ΔE ≥5 between samples | **Landed this session** (§4) |
+| Balanced adjacent grids | **Zero** ragged grids across all 7 routes. The `auto-fill` fix landed earlier holds: every row is full except the last, at any item count | Holds |
+| De-densify | 2–4 bordered boxes per first viewport; measure ≤ **80ch** everywhere with **zero** paragraphs over 80, so AAA 1.4.8 already holds | Nothing to fix on evidence |
+| Humanised chips | Role chips 15.5px, sentence case, normal tracking. The only uppercase chips are the 13px "Perm / Contract" meta labels at 0.12em, which the type gate mandates | Already humanised |
+
+I corrected one of my own measurements here: a first pass reported 8 bordered
+boxes in SAP's first viewport against 3 elsewhere. The detector counted any
+element with a top border, so it conflated **dividers** with boxes — `.figure` is
+a `border-top` hairline inside an already-bordered card, not a box in a box. The
+true count is 4. There was no density defect to fix.
+
+### Critique, one sample per family
+
+**Platform — `/platforms/sap`.** The strongest of the three. Four `WhyRail` cards
+in the first viewport are equal-weight and equal-size, which suits four parallel
+claims, and the metric divider inside each gives the eye a second rank without a
+second box. The weakness is repetition rather than density: 80 role chips on one
+page, and the hero lede at 72ch is the only wide prose, so the page reads as a
+long list punctuated by headings. It would gain more from one visual carrier
+mid-page than from any further de-densification.
+
+**Sector — `/industries/retail`.** Best prose rhythm of the three: 14 paragraphs
+over 120 characters but none over 80ch, and `segCopy` sits exactly on 80 — right
+at the ceiling, so any future width increase to that column will breach it. Worth
+capping in `ch` rather than px so it cannot drift. Identity plum now reads
+clearly against Data & Analytics' teal (5.0 light, 8.7 dark).
+
+**Capability — `/capabilities/data-analytics`.** Structurally the same shell as
+retail and now correctly differentiated by hue, but it is the thinnest on
+evidence: 32 chips against retail's 44 and SAP's 80, and the two `sub`
+paragraphs at 75ch carry more of the page's weight than on either sibling. The
+fix is content, not layout — and it is the surface where the two remaining
+unsourced claims (Q12) sit.
+
+## 11. Not done
+
 - **Insight articles and blogs** — descoped permanently per the bolt-on. Not
-  touched.
+  touched, not ported, not templated.
+- **Service-family identity hue** (`/managed-delivery`, `/eor`) — these carry no
+  `data-identity` and no wash. They are not platforms, disciplines or sectors, so
+  they sit outside ORDER 7's scope; flagging rather than inventing an 19th domain
+  hue for them.
