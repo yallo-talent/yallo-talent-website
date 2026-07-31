@@ -89,6 +89,9 @@ function LogoItems({
                the intrinsic aspect still governs what is painted. */
             <LogoImage
               src={c.logo}
+              /* The name, not an empty string — and empty on the duplicate half
+                 only, which is aria-hidden decoration sharing the same URLs. */
+              alt={ariaHidden ? "" : c.name}
               width={208}
               height={37}
               eager={!ariaHidden}

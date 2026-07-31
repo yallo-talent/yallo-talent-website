@@ -3,8 +3,16 @@ import Image from "next/image";
 /**
  * A client, integrator or vendor mark.
  *
- * Always decorative: the accessible name is carried by the surrounding group
- * label or heading, never by the logo, so `alt` is deliberately empty.
+ * NOT decorative when it names a client. The `alt` was empty on every mark on
+ * the reasoning that "the surrounding group label carries the name" — but that
+ * label is "Clients and integrators", not the client's name, so eleven of
+ * eighteen marks were silent and the rail's whole accessible text was the seven
+ * clients that happen to ship as typeset names. Canon §8 makes this rail the
+ * proof, and 61% of the proof was invisible; every integrator is an image, so
+ * the caption's claim about integrators had zero exposed referents.
+ *
+ * `alt` now takes the client's name when one is given. Pass `alt=""` explicitly
+ * for a mark that genuinely is decoration.
  *
  * SVG sources skip the image optimiser. Next only passes SVG through the
  * optimiser when `dangerouslyAllowSVG` is enabled, and enabling that
@@ -15,6 +23,7 @@ import Image from "next/image";
  */
 export function LogoImage({
   src,
+  alt = "",
   width,
   height,
   className,
@@ -22,6 +31,8 @@ export function LogoImage({
   eager = false,
 }: {
   src: string;
+  /** The client or integrator name. Empty only for true decoration. */
+  alt?: string;
   width: number;
   height: number;
   className?: string;
@@ -39,7 +50,7 @@ export function LogoImage({
   return (
     <Image
       src={src}
-      alt=""
+      alt={alt}
       width={width}
       height={height}
       className={className}

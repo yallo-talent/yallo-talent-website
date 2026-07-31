@@ -59,13 +59,22 @@
   padding-left: 4px;
 }
 
+/* --fg-muted, not --ink-3, and this closes what composing .glass only reduced.
+   A3's condition is AA at the WORST-CASE backdrop, and for a fixed panel the
+   worst case is whatever scrolls beneath it. Over the inverted #place band the
+   glass ground renders rgb(208,207,202) rather than paper, and --ink-3 at 5.08:1
+   on paper fell to 4.14:1 there — measured after the .glass fix landed, so the
+   utility narrowed the gap without closing it. The blur normalises the backdrop;
+   it cannot make a 4.94:1 grade survive a 12% transmission of near-black.
+   --fg-muted is the next grade up and carries the headroom that a translucent
+   surface needs. */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: var(--fw-medium);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--fg-subtle);
+  color: var(--fg-muted);
 }
 
 .lede {

@@ -244,7 +244,15 @@ export function NavBar() {
                   type="button"
                   className={styles.groupTrigger}
                   aria-expanded={openGroup === group.label}
-                  aria-haspopup="true"
+                  /* No aria-haspopup, and aria-controls instead. `true` is
+                     ARIA-equivalent to `menu`, so assistive tech announced a
+                     menu and the user got a disclosure — there is no role=menu,
+                     no role=menuitem and no arrow-key navigation anywhere in the
+                     panel, which is a bare div of links. axe cannot see it
+                     because `true` is a valid value, which is how it survived
+                     six passes. aria-expanded plus aria-controls describes what
+                     this actually is. */
+                  aria-controls={`megapanel-${group.label.replace(/\s+/g, "-").toLowerCase()}`}
                   data-group={group.label}
                   onClick={() =>
                     setOpenGroup(openGroup === group.label ? null : group.label)
@@ -278,6 +286,10 @@ export function NavBar() {
                          invisible. band-dark restates the Layer 2c aliases so
                          every descendant resolves against the dark ground. */
                       className={`${styles.megaPanel} band-dark`}
+                      /* The id aria-controls points at. Without it the attribute
+                         references nothing and the association is a claim rather
+                         than a fact. */
+                      id={`megapanel-${group.label.replace(/\s+/g, "-").toLowerCase()}`}
                       initial={{ opacity: 0, y: -8 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -8 }}
