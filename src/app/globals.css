@@ -794,6 +794,25 @@ button {
   --id: var(--id-retail-d);
 }
 
+.amb-1 {
+  --amb: var(--amb-1);
+}
+.amb-2 {
+  --amb: var(--amb-2);
+}
+.amb-3 {
+  --amb: var(--amb-3);
+}
+.amb-4 {
+  --amb: var(--amb-4);
+}
+.amb-5 {
+  --amb: var(--amb-5);
+}
+.amb-6 {
+  --amb: var(--amb-6);
+}
+
 /* Inside an identity family every position takes the family hue. The rhythm is
    carried by --amb-step, which the .amb-N rules below set, and which the
    consuming surfaces multiply into their own alpha. */
@@ -823,25 +842,6 @@ button {
 }
 [data-identity] .amb-6 {
   --amb-step: 0.86;
-}
-
-.amb-1 {
-  --amb: var(--amb-1);
-}
-.amb-2 {
-  --amb: var(--amb-2);
-}
-.amb-3 {
-  --amb: var(--amb-3);
-}
-.amb-4 {
-  --amb: var(--amb-4);
-}
-.amb-5 {
-  --amb: var(--amb-5);
-}
-.amb-6 {
-  --amb: var(--amb-6);
 }
 
 /* The wash: a primary glow breathing up from the bottom-left corner and a

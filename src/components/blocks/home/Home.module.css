@@ -2003,3 +2003,38 @@
     padding: 0 12px;
   }
 }
+
+/* The module title as a drill-down on a platform page. Inherits the heading's
+   own size and weight — a link that changes the type is a different heading,
+   not a link — and takes the accent plus an arrow to say it goes somewhere. */
+.moduleLink {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: inherit;
+  transition: color 0.16s ease;
+}
+
+.moduleLink:hover,
+.moduleLink:focus-visible {
+  color: var(--accent-label);
+}
+
+.moduleLink svg {
+  flex: none;
+  color: var(--accent-label);
+}
+
+/* The platform hero, once it carries the atmospheric field: the field is
+   absolutely positioned, so the section needs a stacking context and the
+   content needs to sit above it. */
+.platformHero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.platformHeroInner {
+  position: relative;
+  z-index: 2;
+}

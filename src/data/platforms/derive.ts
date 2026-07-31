@@ -20,6 +20,15 @@ import { authoredPlatforms } from "@/data/platforms/authored";
  */
 
 export interface PlatformModule {
+  /**
+   * Route segment for the module's own page, where one exists.
+   *
+   * Only AUTHORED modules carry a slug: a derived module is a re-projection of
+   * a sector's tool entry and has no depth of its own to justify a page. So the
+   * presence of a slug IS the "does this drill down" test, and a card links only
+   * when there is something behind the link.
+   */
+  slug?: string;
   /** The product as published — "SAP Customer Experience", not "SAP CX". */
   name: string;
   /** What Yallo places on it — authored scope line, Talent-speak. */
@@ -146,6 +155,7 @@ function collect(): Map<string, PlatformCoverage> {
     cov.modules = authored.modules.map((am) => {
       const match = derived.find((m) => m.name === am.name);
       return {
+        slug: am.slug,
         name: am.name,
         scope: am.scope,
         roles: [...new Set([...am.roles, ...(match?.roles ?? [])])],
@@ -210,3 +220,36 @@ export function sectorsForPlatform(slug: string) {
 
 /** Referenced so the index stays the single source of taxonomy labels. */
 export const L1_GROUPS = allL1;
+
+/**
+ * One module's page data, or null where the module has no page.
+ *
+ * A module earns a page only if it is AUTHORED — a derived module is a
+ * re-projection of a sector's tool entry, so a page for it would restate the
+ * sector page it came from at a shallower depth. `slug` is the test.
+ */
+export function getPlatformModule(
+  platformSlug: string,
+  moduleSlug: string,
+): { platform: PlatformCoverage; module: PlatformModule } | null {
+  const platform = getPlatformCoverage(platformSlug);
+  if (!platform) return null;
+  const module = platform.modules.find((m) => m.slug === moduleSlug);
+  return module ? { platform, module } : null;
+}
+
+/** Every platform/module pair with a page, for generateStaticParams. */
+export function publishedModuleParams(): Array<{
+  platform: string;
+  module: string;
+}> {
+  const out: Array<{ platform: string; module: string }> = [];
+  for (const slug of publishedPlatformSlugs()) {
+    const cov = getPlatformCoverage(slug);
+    if (!cov) continue;
+    for (const m of cov.modules) {
+      if (m.slug) out.push({ platform: slug, module: m.slug });
+    }
+  }
+  return out;
+}

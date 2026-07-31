@@ -6,6 +6,7 @@ import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { LogoImage } from "@/components/blocks/home/LogoImage";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { platforms as platformAxis } from "@/data/home/place";
 import {
   getPlatformCoverage,
@@ -64,10 +65,20 @@ export default async function PlatformPage({
   const axis = platformAxis.find((p) => p.slug === platform);
 
   return (
-    <>
-      {/* Hero. Dark because a platform page is a data surface. */}
-      <section className={`${styles.section} band-dark`}>
-        <div className={styles.wrap}>
+    /* R4: the platform's identity hue, declared once at the root. Every .amb-N
+       inside now resolves to it, so the hero field and section washes are
+       recognisably this suite's while gold stays the only interactive colour. */
+    <div data-identity={cov.slug}>
+      {/* Hero. Dark because a platform page is a data surface — and now carrying
+          the shared atmospheric field (B3), which was the one hero the rollout
+          missed. `.amb-1` is what lets R4's identity hue reach it: with
+          data-identity on the root, position one resolves to the suite's hue
+          instead of the generic first ambient. */}
+      <section
+        className={`${styles.section} ${styles.platformHero} band-dark amb-1`}
+      >
+        <HeroAtmosphere seed={cov.slug} />
+        <div className={`${styles.wrap} ${styles.platformHeroInner}`}>
           <p className="eyebrow">Platform depth · {cov.name}</p>
           <h1 className={styles.heroHeadline}>
             {cov.name} specialists, <em>by module.</em>
@@ -115,7 +126,24 @@ export default async function PlatformPage({
                     <LogoImage src={axis.mark} width={96} height={24} />
                   </span>
                 ) : null}
-                <h3>{mod.name}</h3>
+                {/* The drill-down. `slug` is present only on AUTHORED modules,
+                    which is exactly the set generateStaticParams builds — so a
+                    title links when there is a page behind it and stays plain
+                    text when there is not, rather than every card promising
+                    depth and two thirds 404ing. */}
+                <h3>
+                  {mod.slug ? (
+                    <Link
+                      href={`/platforms/${cov.slug}/${mod.slug}`}
+                      className={styles.moduleLink}
+                    >
+                      {mod.name}
+                      <ArrowGlyph />
+                    </Link>
+                  ) : (
+                    mod.name
+                  )}
+                </h3>
                 {/* The scope line: what Yallo places on this module, never what
                     the module does. Only authored modules carry one; derived
                     modules render the roles alone rather than a written-for-them
@@ -171,6 +199,6 @@ export default async function PlatformPage({
           </ul>
         </div>
       </section>
-    </>
+    </div>
   );
 }

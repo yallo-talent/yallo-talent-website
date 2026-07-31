@@ -14,6 +14,8 @@
  */
 
 export interface AuthoredModule {
+  /** URL-safe, stable — this is the module page's route segment. */
+  slug: string;
   /** The product as published. */
   name: string;
   /** What Yallo places on it — one line, Talent-speak. */
@@ -53,6 +55,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Oracle expertise page.",
     modules: [
       {
+        slug: "oracle-fusion-erp",
         name: "Oracle Fusion ERP",
         scope:
           "Financials and procurement consultants across Fusion Cloud ERP, including the EBS-to-Fusion crews.",
@@ -64,6 +67,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-fusion-hcm",
         name: "Oracle Fusion HCM",
         scope: "Core HR, payroll and absence consultants on Fusion HCM.",
         roles: [
@@ -73,6 +77,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-fusion-scm",
         name: "Oracle Fusion SCM",
         scope:
           "Supply chain, inventory and order-management consultants on Fusion SCM.",
@@ -83,6 +88,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-fusion-cx",
         name: "Oracle Fusion CX",
         scope:
           "Sales, service and marketing consultants across the Fusion CX applications.",
@@ -93,6 +99,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-e-business-suite",
         name: "Oracle E-Business Suite",
         scope:
           "EBS consultants and PL/SQL developers — the estates still running it, and the ones leaving it.",
@@ -103,6 +110,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-enterprise-performance-management",
         name: "Oracle Enterprise Performance Management (EPM)",
         scope:
           "Planning, close and consolidation consultants, including Hyperion migrations.",
@@ -113,6 +121,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-cloud-infrastructure",
         name: "Oracle Cloud Infrastructure",
         scope:
           "OCI engineers and architects for landing zones, migration and run.",
@@ -124,6 +133,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-netsuite",
         name: "Oracle NetSuite",
         scope:
           "NetSuite consultants and integration developers for mid-market estates.",
@@ -134,6 +144,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "oracle-bi-apps",
         name: "Oracle BI Apps",
         scope:
           "Reporting and analytics consultants across the Oracle BI estate.",
@@ -162,6 +173,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Salesforce expertise page.",
     modules: [
       {
+        slug: "sales-cloud",
         name: "Sales Cloud",
         scope:
           "Sales-process consultants and Apex developers across the Sales Cloud estate.",
@@ -172,6 +184,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "service-cloud",
         name: "Service Cloud",
         scope:
           "Case management and contact-centre consultants on Service Cloud.",
@@ -182,12 +195,14 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "marketing-cloud",
         name: "Marketing Cloud",
         scope:
           "Campaign build and audience consultants, and the data feeds behind them.",
         roles: ["Business Analyst", "Data Engineer", "Integration Architect"],
       },
       {
+        slug: "commerce-cloud",
         name: "Commerce Cloud",
         scope: "B2C and B2B commerce developers and architects.",
         roles: [
@@ -197,6 +212,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "experience-cloud",
         name: "Experience Cloud",
         scope: "Portal and community builds for customers and partners.",
         roles: [
@@ -206,6 +222,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "mulesoft-anypoint-platform",
         name: "MuleSoft Anypoint Platform",
         scope: "API and integration engineers across the Anypoint estate.",
         roles: [
@@ -254,6 +271,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",
     modules: [
       {
+        slug: "sap-s4hana-on-premise",
         name: "SAP S/4HANA On-Premise",
         scope:
           "Core finance and logistics consultants for on-premise estates, including the brownfield conversion crews.",
@@ -266,6 +284,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-s4hana-public-cloud",
         name: "SAP S/4HANA Public Cloud",
         scope:
           "Consultants who work inside the standard, on a quarterly release cadence rather than a modification backlog.",
@@ -277,6 +296,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-s4hana-cloud-private-edition",
         name: "SAP S/4HANA Cloud, Private Edition",
         scope:
           "Mixed benches for private-edition estates that keep custom code but move the hosting.",
@@ -288,6 +308,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "rise-with-sap-s4hana",
         name: "RISE with SAP S/4HANA",
         scope:
           "Transformation-side people for RISE programmes: the architects and cutover leads, not the licence conversation.",
@@ -300,6 +321,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-s4hana-finance",
         name: "SAP S/4HANA Finance",
         scope:
           "Finance transformation consultants — record to report, treasury and group close.",
@@ -311,6 +333,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-analytics-cloud",
         name: "SAP Analytics Cloud",
         scope:
           "Planning and reporting specialists, including the ones who rebuild legacy BPC models.",
@@ -322,6 +345,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-btp",
         name: "SAP BTP (Business Technology Platform)",
         scope:
           "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
@@ -333,6 +357,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-integrated-business-planning",
         name: "SAP Integrated Business Planning",
         scope:
           "Demand, supply and response planners, and the APO consultants migrating off it.",
@@ -344,6 +369,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-customer-experience",
         name: "SAP Customer Experience",
         scope:
           "Commerce, marketing and sales-cloud consultants across the CX estate.",
@@ -355,6 +381,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-service-cloud",
         name: "SAP Service Cloud",
         scope:
           "Service and case-management consultants for contact-centre estates.",
@@ -365,6 +392,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-ariba",
         name: "SAP Ariba (Procurement & Sourcing)",
         scope:
           "Source-to-pay consultants, supplier-enablement leads and the integration side of Ariba.",
@@ -376,6 +404,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-successfactors",
         name: "SAP SuccessFactors",
         scope:
           "Employee Central, payroll and talent-module consultants, plus the reporting side.",
@@ -387,6 +416,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "sap-extended-warehouse-management",
         name: "SAP Extended Warehouse Management (SAP EWM)",
         scope:
           "Warehouse consultants for embedded and decentralised EWM, including go-live floor support.",
@@ -398,6 +428,52 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        /* R5 IA modernisation, 31 Jul. SAP's current data platform, and the
+           clearest gap in a 2-3 year old corpus IA: it supersedes SAP Data
+           Warehouse Cloud, sits directly beside Analytics Cloud which was
+           already listed, and is named on the legacy SAP expertise page and the
+           data-expertise page — attested, not guessed. */
+        slug: "sap-datasphere",
+        name: "SAP Datasphere",
+        scope:
+          "Data engineers and modellers on the semantic layer, and the crews migrating off BW.",
+        roles: [
+          "Data Architect",
+          "Data Engineer",
+          "SAP Analytics Cloud Consultant",
+          "ETL Developer",
+        ],
+      },
+      {
+        /* R5. External workforce management — unusually relevant here, since it
+           is the system a client uses to engage contractors. Named on the legacy
+           SAP expertise page. */
+        slug: "sap-fieldglass",
+        name: "SAP Fieldglass",
+        scope:
+          "Consultants for external-workforce and services-procurement rollouts, including supplier onboarding.",
+        roles: [
+          "Functional Architect",
+          "Business Analyst",
+          "SAP CPI Integration Developer",
+          "Delivery Lead",
+        ],
+      },
+      {
+        /* R5. SAP's customer-engagement product, named on the legacy SAP
+           expertise page as both Customer Engagement and Account Engagement. */
+        slug: "sap-emarsys",
+        name: "SAP Emarsys",
+        scope:
+          "Campaign and customer-data consultants on the Emarsys engagement platform.",
+        roles: [
+          "Business Analyst",
+          "Data Engineer",
+          "SAP CX Functional Consultant",
+        ],
+      },
+      {
+        slug: "sap-transportation-management",
         name: "SAP Transportation Management (SAP TM)",
         scope:
           "Transport and freight-settlement consultants, and the carrier integrations.",
@@ -416,6 +492,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
     ratified: "Relay v2.1 rev 2 §5, ratified by Sumeet Goenka 30 Jul 2026",
     modules: [
       {
+        slug: "azure-data-and-ai",
         name: "Azure Data & AI",
         scope:
           "Data platforms on Fabric, Synapse, Databricks and Power BI, from migration to reporting",
@@ -429,6 +506,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "azure-infrastructure",
         name: "Azure Infrastructure",
         scope: "Landing zones, migrations and hybrid estates, built and run",
         roles: [
@@ -440,6 +518,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "azure-security",
         name: "Azure Security",
         scope: "Identity, access and compliance across the Azure estate",
         roles: [
@@ -450,6 +529,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "azure-devops",
         name: "Azure DevOps",
         scope: "Pipelines, containers and reliability after go-live",
         roles: [
@@ -461,6 +541,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "d365-finance-and-operations",
         name: "D365 Finance & Operations",
         scope:
           "Finance and supply chain implementations, rollouts and localisations",
@@ -473,6 +554,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "d365-customer-engagement",
         name: "D365 Customer Engagement",
         scope:
           "Sales and Service implementations and the integrations around them",
@@ -483,6 +565,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "d365-business-central",
         name: "D365 Business Central",
         scope: "Mid-market ERP implementations and NAV-to-BC migrations",
         roles: [
@@ -492,6 +575,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "d365-human-resources",
         name: "D365 Human Resources",
         scope: "HR implementations and payroll integrations",
         roles: [
@@ -501,6 +585,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "power-platform",
         name: "Power Platform",
         scope:
           "Apps, automation and governance on the platform the business already owns",
@@ -512,6 +597,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "microsoft-365-copilot",
         name: "Microsoft 365 Copilot",
         scope: "Readiness, data governance and adoption for Copilot rollouts",
         roles: [
@@ -530,6 +616,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       "Relay v2.1 rev 2 §5b, ratified by Sumeet Goenka 30 Jul 2026 (canon §3 amendment log)",
     modules: [
       {
+        slug: "workday-hcm",
         name: "Workday HCM",
         scope:
           "Core HR implementations, employee lifecycle and the integrations around them",
@@ -541,6 +628,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "workday-payroll",
         name: "Workday Payroll",
         scope:
           "Payroll builds, absence and time tracking, multi-country compliance",
@@ -551,6 +639,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "workday-financial-management",
         name: "Workday Financial Management",
         scope: "Record-to-report implementations and ERP coexistence",
         roles: [
@@ -560,6 +649,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "workday-adaptive-planning",
         name: "Workday Adaptive Planning",
         scope: "Budgeting, forecasting and workforce cost models",
         roles: [
@@ -569,6 +659,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "workday-recruiting",
         name: "Workday Recruiting",
         scope: "Recruiting and onboarding configuration",
         roles: [
@@ -577,26 +668,31 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        slug: "workday-talent-management",
         name: "Workday Talent Management",
         scope: "Performance, career and succession configuration",
         roles: ["Workday Talent & Performance Consultant"],
       },
       {
+        slug: "workday-learning",
         name: "Workday Learning",
         scope: "Learning rollouts and adoption",
         roles: ["Workday Learning Consultant", "Adoption and Change Lead"],
       },
       {
+        slug: "workday-workforce-planning",
         name: "Workday Workforce Planning",
         scope: "Headcount planning, scenario modelling and forecasting",
         roles: ["Workforce Planning Consultant", "HR Data Analyst"],
       },
       {
+        slug: "workday-prism-analytics",
         name: "Workday Prism Analytics",
         scope: "Reporting and data hub work across HR and finance",
         roles: ["Prism Analytics Consultant", "Workday Reporting Developer"],
       },
       {
+        slug: "workday-psa",
         name: "Workday PSA",
         scope: "Resource scheduling, time tracking and project billing",
         roles: ["Workday PSA Consultant", "Resource Management Analyst"],

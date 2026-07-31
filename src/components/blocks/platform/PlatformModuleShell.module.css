@@ -1,0 +1,333 @@
+/* ==========================================================================
+   Platform L2 — one module of one suite.
+
+   Deliberately a SHORT page. The L1 above it is dense by necessity (seventeen
+   modules), so the module page earns its place by being the opposite: a claim,
+   a bench, where the work comes from, and a way out. Prose budgets are tight
+   and there are three bordered surfaces on the whole page, not thirty.
+   ========================================================================== */
+.page {
+  color: var(--fg);
+}
+
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+/* ---- hero ---- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(72px, 9vw, 116px) 0 clamp(48px, 6vw, 76px);
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 56px);
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.crumbLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: var(--fg-subtle);
+  transition: color 0.15s ease;
+}
+
+.crumbLink:hover {
+  color: var(--accent-label);
+}
+
+.crumbSep {
+  color: var(--fg-subtle);
+  opacity: 0.6;
+}
+
+.crumbCurrent {
+  color: var(--fg-muted);
+}
+
+.title {
+  font-size: var(--fs-display);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--fg);
+  margin: 0 0 20px;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+/* A2 gradient text, taken up here because a module H1 is exactly the display
+   emphasis the permission describes: a headline span, gold-anchored, at 38px
+   and up. Both stops are gold grades, so the run reads as one brand colour
+   shifting rather than as two hues — and the LIGHTEST stop is the one that has
+   to clear AA, since the lightest pixels are still text. On light that stop is
+   --gold-deep at 3.12:1 against paper, which clears the 3:1 large-text
+   threshold; on dark it is --gold at 7.41:1. The solid colour underneath is the
+   fallback for any engine that drops background-clip. */
+.emphasis {
+  color: var(--accent-line);
+  background: linear-gradient(
+    100deg,
+    var(--accent-line) 0%,
+    var(--accent-label) 55%,
+    var(--accent-line) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .emphasis {
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Forced colours: drop the clip entirely and let the system paint the text. */
+@media (forced-colors: active) {
+  .emphasis {
+    background: none;
+    -webkit-text-fill-color: currentcolor;
+  }
+}
+
+.lede {
+  font-size: var(--fs-lede);
+  line-height: 1.65;
+  color: var(--fg-muted);
+  max-width: 56ch;
+  margin: 0 0 30px;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 24px;
+  background: var(--accent-mark);
+  color: var(--ink-950);
+  font-size: var(--fs-body-sm);
+  font-weight: 700;
+  border-radius: 0 0 0 var(--r-md);
+  transition:
+    transform 0.18s var(--ease),
+    box-shadow 0.18s ease;
+}
+
+.ctaPrimary:hover {
+  transform: translateY(-1px);
+}
+
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 22px;
+  color: var(--fg);
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-md);
+  font-size: var(--fs-body-sm);
+  font-weight: 500;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.ctaGhost:hover {
+  border-color: var(--rule-strong);
+  background: var(--wa03);
+}
+
+/* ---- metric strip ---- */
+.stats {
+  background: var(--ground-2);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.statsInner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.statCell {
+  padding: 24px clamp(16px, 3vw, 32px);
+  text-align: center;
+  border-right: 1px solid var(--hairline);
+}
+
+.statCell:last-child {
+  border-right: none;
+}
+
+.statN {
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  line-height: 1;
+}
+
+.statL {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  margin-top: 10px;
+}
+
+/* ---- sections ---- */
+.section {
+  position: relative;
+  padding: clamp(48px, 6vw, 76px) 0;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin-bottom: 12px;
+}
+
+.h2 {
+  font-size: var(--fs-headline);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--fg);
+  margin: 0 0 12px;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.sub {
+  font-size: var(--fs-body);
+  color: var(--fg-muted);
+  max-width: 58ch;
+  line-height: 1.7;
+  margin: 0 0 26px;
+}
+
+.roleList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- balanced grids ----
+   auto-fill with a minimum track, NOT a fixed column count. A fixed count is
+   what produced the 2-4-2 raggedness on the adjacent-links rows: the tracks
+   were fixed and the item count was not, so the last row was whatever remained.
+   With auto-fill every row fills to the width and only the final row is short,
+   at any item count and any viewport. */
+.sectorGrid,
+.siblingGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sectorCard,
+.siblingCard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100%;
+  padding: 18px 20px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  color: var(--fg);
+  font-size: var(--fs-body-sm);
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    transform 0.18s var(--ease);
+}
+
+/* A5 hover elevation, paired with border and ground shifts so the cue survives
+   reduced motion where the transform is suppressed. */
+.sectorCard:hover,
+.siblingCard:hover,
+.sectorCard:focus-visible,
+.siblingCard:focus-visible {
+  border-color: var(--rule-strong);
+  background: var(--ground-3);
+  transform: translateY(-2px);
+}
+
+.sectorCard {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.sectorCat {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.sectorFn {
+  font-size: var(--fs-body-sm);
+  color: var(--fg);
+}
+
+.sectorArrow {
+  margin-left: auto;
+  color: var(--accent-label);
+  flex: none;
+}
+
+@media (max-width: 700px) {
+  .statsInner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statCell:nth-child(2n) {
+    border-right: none;
+  }
+
+  .statCell:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--hairline);
+  }
+}
