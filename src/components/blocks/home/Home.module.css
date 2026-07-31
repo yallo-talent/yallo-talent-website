@@ -647,8 +647,36 @@
   animation: rail-drift 64s linear infinite;
 }
 
-.railViewport:hover .railTrack {
+/* Hover stays — it is a good pointer affordance — and the attribute is what
+   serves everyone else. R7: "pause on hover plus a control". */
+.railViewport:hover .railTrack,
+.railViewport[data-paused] .railTrack {
   animation-play-state: paused;
+}
+
+/* Small, quiet and permanent. It sits with the caption rather than over the
+   marks, so it never competes with the proof it governs. */
+.railPause {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-sm);
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: var(--fs-body-sm);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.railPause:hover,
+.railPause:focus-visible {
+  color: var(--accent-label);
+  border-color: var(--border-accent);
+  background: var(--wa03);
 }
 
 @keyframes rail-drift {

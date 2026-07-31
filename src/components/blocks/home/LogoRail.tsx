@@ -1,6 +1,7 @@
 import { logoRail } from "@/data/home/hero";
 import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
 import styles from "./Home.module.css";
+import { RailViewport } from "./RailViewport";
 import { LogoImage } from "./LogoImage";
 
 /**
@@ -39,16 +40,11 @@ export function LogoRail() {
       <div className={styles.wrap}>
         <p className={styles.railLabel}>{logoRail.mergedLabel}</p>
       </div>
-      <div className={styles.railViewport}>
-        <ul className={styles.railTrack}>
-          <LogoItems clients={clients} />
-          {/* The loop's second half. Hidden from AT and from reduced motion. */}
-          <LogoItems clients={clients} ariaHidden />
-        </ul>
-      </div>
-      <div className={styles.wrap}>
-        <p className={styles.railCaption}>{logoRail.integratorCaption}</p>
-      </div>
+      <RailViewport caption={logoRail.integratorCaption}>
+        <LogoItems clients={clients} />
+        {/* The loop's second half. Hidden from AT and from reduced motion. */}
+        <LogoItems clients={clients} ariaHidden />
+      </RailViewport>
     </section>
   );
 }

@@ -24,10 +24,9 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-}/* R8: DELETED. Canon §5's blurred-orb ban stands, and the sweep that removed
+} /* R8: DELETED. Canon §5's blurred-orb ban stands, and the sweep that removed
    the L1's six sites found these two by grepping the whole of src rather than the
    file the critique named — the class, not the instance. */
-
 
 .heroBgA {
   width: 620px;

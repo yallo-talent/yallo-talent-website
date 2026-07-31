@@ -589,12 +589,11 @@
   /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
      these sat behind body copy and washed it out. */
   display: none;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .wwdCard:hover {
   transform: translateY(-6px);
@@ -1369,12 +1368,11 @@
   /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
      these sat behind body copy and washed it out. */
   display: none;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 /* Diagonal accent line — left edge (per-card hue) */
 .expCardBorder {
@@ -1998,12 +1996,11 @@
   /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
      these sat behind body copy and washed it out. */
   display: none;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .segImgWrap {
   position: relative;
@@ -2036,12 +2033,11 @@
   mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 1;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .segImgOverlay {
   position: absolute;
@@ -2208,12 +2204,11 @@
     transform 0.28s ease,
     background 0.28s ease,
     box-shadow 0.28s ease;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .partnerCell:hover {
   border-color: var(--sector-accent-35);
@@ -2532,12 +2527,11 @@
   /* Neutralised: the blurred orb is anti-reference in DESIGN.md and
      these sat behind body copy and washed it out. */
   display: none;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .pillarBorder {
   position: absolute;
@@ -2909,12 +2903,11 @@
   pointer-events: none;
   z-index: 0;
   transition: opacity 0.24s ease;
-}/* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
+} /* R8: DELETED, not neutralised. Canon §5's blurred-orb ban stands, and six
    pseudo-element sites survived three rounds because the named divs were killed
    and their ::before / ::after twins were not — the instance-not-class pattern
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
-
 
 .readNextCard > * {
   position: relative;
