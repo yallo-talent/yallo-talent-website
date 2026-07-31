@@ -926,12 +926,17 @@ button {
   /* Real padding, not a hairline of it: these are the product Yallo sells, and
      at 7px they read as tags rather than as things worth reading. */
   padding: 9px 15px;
-  font-family: var(--font-mono);
-  /* A4: chips carry a 14px minimum, and --fs-body-sm (15.5px) is the compliant
-     step. Other mono stays at --fs-data. */
+  /* Inter, not mono (order item 6). A role chip is a JOB TITLE — the thing
+     Yallo actually sells — and mono is the register for measured values and
+     machine labels, so setting job titles in it made the product read as system
+     output. Product names inside a title keep their own casing because they are
+     names: "SAP CPI Integration Developer" is written exactly that way, and the
+     chip no longer uppercases anything, so that casing survives.
+     A4 floor: --fs-body-sm is 15.5px, comfortably over the 14px chip minimum. */
+  font-family: var(--font-body);
   font-size: var(--fs-body-sm);
   line-height: 1.35;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);

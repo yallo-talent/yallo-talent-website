@@ -180,7 +180,7 @@
   min-height: 24px;
   /* A4: footer links 14px. These inherited the 13px mono label size from
      .legal, which made the legal row the smallest text on the page. */
-  font-family: var(--font-inter, inherit);
+  font-family: var(--font-body);
   font-size: var(--fs-caption);
   letter-spacing: 0;
   text-transform: none;
