@@ -131,3 +131,60 @@ A6 closes `QUESTIONS.md` Q5, which had recorded canon §1 and `PRODUCT.md` as co
 | R3 | No glass on the mega panel, and no portal | The ambient field stands there. **Closes Q8.** |
 | R4 | **Per-domain identity colour, governed** | §5 ambient clause rewritten: one identity hue per platform, discipline and sector, ambient layer only. Supersedes the per-branch ban. Gold stays the sole interactive and brand accent. |
 | R5 | IA modernisation authorised | §9: the module taxonomy may be amended against the current market, with a logged was/now/why table per domain. |
+
+---
+
+## Standing amendments S1–S3 · rulings R6–R15 — 31 July 2026, ratified by Sumeet
+
+### S1 — the exit criterion is ZERO P1
+
+**The "no gain" limb is dropped as sub-resolution.** Three raters scoring one
+identical frozen build returned 28, 29 and 31 of 36; a fourth rater's rubric
+scored the same retail page 80.6% against a prior series' 72.2%. The score
+carries roughly ±1.5 points of rater noise and no cross-rubric comparability, so
+"no gain over the previous pass" measured noise rather than convergence.
+
+**A surface is done when a scoring pass against a frozen build returns no P0 and
+no P1.** One pass per surface per freeze — not two.
+
+### S2 — speed discipline, ratified as method
+
+1. **Freeze before scoring.** Tag the commit; no commits of any kind while a pass
+   is measuring. Broken twice on 31 Jul — once a docs file, once a rebuild and
+   server restart mid-pass — and the second cost a pass part of its validity.
+2. **Batch fixes between freezes.** Never fix inside a scoring window.
+3. **Fix CLASSES, not instances.** Grep site-wide before declaring a fix done.
+   Four recurrences on this run: one clamp removed and three left live; two
+   motion-only hovers fixed and sixteen found later; one `<cite>` reset and one
+   missed; one card's stretched link fixed and its sibling template's not.
+4. **Restart the server before every browser gate.** A stale `next start` over a
+   rebuilt `.next` produced two phantom gate failures and one phantom axe run.
+5. **Match class tokens exactly.** `[class*=expCard]` matches `expCardOpenLink`;
+   `[class*=readNextChip]` matches `readNextChips`. Both produced false P1s.
+6. **Two freezes per surface, maximum.**
+
+### S3 — delegated judgement
+
+Where a question needs Sumeet's business knowledge and he is not available, take
+the **least-overclaiming option**, log it in `QUESTIONS.md` with the reasoning,
+and continue. Never invent a person, client, metric, quote, source or date.
+Never idle waiting for an answer.
+
+### R6–R15
+
+| # | Ruling | Canon effect |
+|---|---|---|
+| **R6** | Q17: the 17 SAP L2 routes stay. The defect is zero net-new information, not the route. | §9: an L2 earns its place by JOINING data already held — the sectors and function pages staffing that module, role detail with screening notes, case studies carrying the platform tag, siblings. **One marked depth slot per module is reserved for Chat copy and must not be written by Code.** |
+| **R7** | Q18: stop the loops rather than adding UI. | §5 motion: the hero instrument **plays once on entry, then rests**, so SC 2.2.2 no longer applies to it. The client rail keeps its loop and gains a small persistent keyboard-reachable pause/play. The clause reads "pause on hover **plus a control**". **Closes Q18.** |
+| **R8** | Q14: the blurred-orb ban stands. | All four surviving pseudo-element orb sites are deleted. **Closes Q14.** |
+| **R9** | Q15: key the two marks or set them as names. | §8: `blue-yonder` and `sap` either key to one clean ink or render as NAME text. No third option. **Closes Q15.** |
+| **R10** | Q16: the a11y gate composes contrast for every axe abstention. | An `incomplete` verdict is no longer silence. **Closes Q16.** |
+| **R11** | The 18-domain identity palette is ratified in full — **and it is imperceptible.** Every page reads the same coffee-brown. | §5: raise ambient presence until **SAP is visibly distinct from Retail at a glance in both registers**. `--amb-alpha` up; field scale and gradient range wider; the hue must read in the hero, the plates and the section washes. **Pull umber and gold OUT of the neutral base** so gold is accent, not atmosphere. AA held throughout; gold owns every control. Iterate until visibly distinct, not until the tokens resolve. |
+| **R12** | Q3: **light is the site-wide register.** | §5 register clause records light as adopted, not under test. **Closes Q3.** |
+| **R13** | Q9 unparked: Blue Yonder ships at suite level from evidence already in the repo. | §3: the ratified homepage line (Luminate, WMS, planning) plus the Blue Yonder roles the retail data names. **HARD RULE — a module ships only if it maps to an existing role in the data layer or to the homepage line. Omit the rest; never guess.** Moss hue. Evidence table logged. **Closes Q9.** |
+| **R14** | Q2: delete what is demonstrably wrong in the case studies. | Lines belonging to another study, and the empty heading, are removed. Where text repeats across two unrelated studies it is kept where it belongs and removed from the other. **No rewriting.** Removals logged. **Closes Q2.** |
+| **R15** | The logo drops the pipe divider. | §5: TALENT as tracked small caps aligned to the wordmark's cap height. Four alternates built and self-critiqued; the strongest ships; all four shown for override. |
+
+**Descoped permanently:** insight articles and blogs. Raphy revamps them fresh.
+Code does not port, rewrite, template or touch them, and porting is struck from
+the backlog.
