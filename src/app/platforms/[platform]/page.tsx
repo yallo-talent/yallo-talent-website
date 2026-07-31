@@ -131,7 +131,10 @@ export default async function PlatformPage({
           Inventing cross-links would be worse than having none, so the promise
           goes rather than the data being stretched to meet it. The module pages
           carry sector links wherever they do exist. */}
-      <section className={`${styles.section} ${styles.g1} amb-wash amb-2`} id="modules">
+      <section
+        className={`${styles.section} ${styles.g1} amb-wash amb-2`}
+        id="modules"
+      >
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="Module coverage"
