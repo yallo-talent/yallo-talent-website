@@ -21,12 +21,33 @@
   pointer-events: none;
 }
 
+/* composes .glass — it authored its own alpha, and that was an SC 1.4.3 failure.
+   A3 allow-lists this surface for glass and attaches two conditions: both members
+   of each translucent pair pass AA at the WORST-CASE backdrop, and a
+   prefers-reduced-transparency fallback to an opaque ground. The .glass utility
+   satisfies both. This rule used `color-mix(... 92%, transparent)` with no
+   backdrop-filter, so it got neither.
+
+   The consequence is worse than a missing effect. The effective backdrop of a
+   `position: fixed` panel is the CONTENT SCROLLING BENEATH IT, and at 8%
+   transmission that content bleeds through the label. Measured by differential
+   render — the same panel with and without the content beneath, restricted to the
+   label's own box: 5.78:1 clean falls to 3.08:1 (light 1280) and 5.05:1 falls to
+   1.53:1 (dark 1280). At 1.53:1 the label and the body text behind it are the
+   same luminance, and "Personalisation Architect" reads straight through
+   "72H SHORTLISTS".
+
+   Five prior passes hand-composed every one of axe's contrast abstentions and
+   missed this, and the reason is structural rather than careless: composing the
+   ANCESTOR chain cannot see it, because the scrolled content is not an ancestor.
+   The blur is what normalises that backdrop, which is why A3 requires the
+   utility and not just the alpha. */
 .inner {
+  composes: glass from global;
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: color-mix(in oklab, var(--surface) 92%, transparent);
   border: 1px solid var(--border-accent);
   border-radius: 0 0 0 var(--r-md);
 }

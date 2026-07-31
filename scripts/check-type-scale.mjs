@@ -345,6 +345,57 @@ if (warnings.length) {
   if (warnings.length > 12) console.log(`  … and ${warnings.length - 12} more`);
 }
 
+// ── 4b. An allow-listed translucent surface must USE the utility ───────────
+//
+// The A3 check below polices `backdrop-filter` declarations, and that turned out
+// to be the wrong half of the rule. The sticky brief CTA — an allow-listed glass
+// surface — authored `color-mix(in oklab, var(--surface) 92%, transparent)` with
+// no backdrop-filter at all, so the guard never fired while the surface got
+// neither the blur nor A3's prefers-reduced-transparency fallback.
+//
+// That was an SC 1.4.3 failure, not a missing effect. The effective backdrop of a
+// position:fixed panel is the content SCROLLING BENEATH IT, so at 8%
+// transmission the label fell from 5.05:1 to 1.53:1 against body text passing
+// behind it. Five critique passes hand-composed every one of axe's contrast
+// abstentions and could not see it, because composing an ancestor chain cannot
+// reach a backdrop that is not an ancestor.
+//
+// So the rule becomes: if a file on the allow-list makes a surface translucent,
+// that surface must compose the utility, which carries the blur and the fallback.
+// One level of nesting matters: the real value is
+// `color-mix(in oklab, var(--surface) 92%, transparent)`, and `[^)]*` stops at
+// the `)` of `var(--surface)` — so my first version of this pattern never
+// matched, and the guard passed over the very defect it was written for. I only
+// found that by re-injecting the defect and watching it stay green, which is the
+// check every guard in this repo now gets.
+const TRANSLUCENT =
+  /(color-mix\((?:[^()]|\([^()]*\))*\btransparent\b|rgba?\([^)]*,\s*0?\.\d+\s*\)|\/\s*0?\.\d+\s*\))/;
+
+{
+  for (const file of GLASS_ALLOWED) {
+    let src;
+    try {
+      src = readFileSync(file, "utf8");
+    } catch {
+      continue;
+    }
+    const bare = stripComments(src);
+    for (const m of bare.matchAll(/([^{}]*)\{([^}]*)\}/g)) {
+      const body = m[2];
+      if (!/^\s*background(-color)?\s*:/m.test(body)) continue;
+      if (!TRANSLUCENT.test(body)) continue;
+      // The utility itself, and anything composing it, is compliant.
+      if (/composes:\s*glass/.test(body)) continue;
+      // A gradient wash or an ambient tint is not a glass surface.
+      if (/gradient|var\(--amb|var\(--wa|var\(--sector-accent/.test(body)) continue;
+      const selector = m[1].trim().split("\n").pop().trim();
+      errors.push(
+        `${file}  ${selector} is translucent without composing .glass — A3 requires the utility, which carries the blur and the reduced-transparency fallback`,
+      );
+    }
+  }
+}
+
 if (errors.length) {
   console.error(`\n${errors.length} type-scale violation(s):\n`);
   for (const e of errors) console.error(`  ${e}`);
