@@ -39,54 +39,83 @@ const ratio = (a, b) => {
   return (l1 + 0.05) / (l2 + 0.05);
 };
 
+import { readFileSync } from "node:fs";
+
 // ---------------------------------------------------------------------------
 // Token candidates. Keep in lockstep with globals.css Layer 1.
 // ---------------------------------------------------------------------------
 
+/* READ FROM globals.css, not from a copy of it.
+ *
+ * These two tables used to be hardcoded here, and that made this gate capable of
+ * passing while the real palette failed — it was validating a duplicate that
+ * could drift from Layer 1 without anything noticing. R11's neutralisation of the
+ * base is exactly the change that exposed it: fourteen tokens moved in
+ * globals.css and this gate reported the OLD values and the OLD ratios, all
+ * green.
+ *
+ * A guard that reads a copy of the thing it guards is not guarding it. Layer 1 is
+ * the single source of truth, so the tables are derived from it and a missing
+ * token is a hard failure rather than a silent stale value.
+ */
+const TOKENS = "src/app/globals.css";
+const layer1 = readFileSync(TOKENS, "utf8");
+
+/** Resolve `--name` from Layer 1, following one level of `var()` indirection. */
+function token(name) {
+  const direct = layer1.match(
+    new RegExp(`^\\s+--${name}:\\s*(#[0-9a-fA-F]{3,8})`, "m"),
+  );
+  if (direct) return direct[1];
+  const alias = layer1.match(
+    new RegExp(`^\\s+--${name}:\\s*var\\(\\s*--([a-z0-9-]+)`, "m"),
+  );
+  if (alias) return token(alias[1]);
+  throw new Error(
+    `check-contrast: --${name} not found in ${TOKENS}. The gate reads Layer 1 directly; add the token or correct the name.`,
+  );
+}
+
 const LIGHT = {
-  // grounds
-  paper: "#eae9e4",
-  "paper-2": "#f4f3f0",
-  "paper-3": "#e3e1d9",
-  // ink
-  ink: "#16171a",
-  "ink-2": "#3a3c42",
-  "ink-3": "#5c5e66",
-  // brand
-  gold: "#d4a843",
-  "gold-deep": "#9d7818",
-  "gold-ink": "#7b5d13",
-  rule: "#cdcbc3",
-  "rule-strong": "#807e76",
-  // functional — mark (graphical) and text (label) grades
-  "signal-mark": "#c2410c",
-  "signal-text": "#a83a09",
-  "info-mark": "#1d6fa5",
-  "info-text": "#17557f",
-  "positive-mark": "#2f7d46",
-  "positive-text": "#26643a",
-  "category-mark": "#9d3f7a",
-  "category-text": "#82305f",
+  paper: token("paper"),
+  "paper-2": token("paper-2"),
+  "paper-3": token("paper-3"),
+  ink: token("ink"),
+  "ink-2": token("ink-2"),
+  "ink-3": token("ink-3"),
+  gold: token("gold"),
+  "gold-deep": token("gold-deep"),
+  "gold-ink": token("gold-ink"),
+  rule: token("rule"),
+  "rule-strong": token("rule-strong"),
+  "signal-mark": token("fn-signal-mark-l"),
+  "signal-text": token("fn-signal-text-l"),
+  "info-mark": token("fn-info-mark-l"),
+  "info-text": token("fn-info-text-l"),
+  "positive-mark": token("fn-positive-mark-l"),
+  "positive-text": token("fn-positive-text-l"),
+  "category-mark": token("fn-category-mark-l"),
+  "category-text": token("fn-category-text-l"),
 };
 
 const DARK = {
-  dk: "#100f0d",
-  "dk-2": "#191714",
-  "dk-3": "#221f1b",
-  "dk-line": "#2f2b26",
-  "dk-line-strong": "#787167",
-  "dk-txt": "#e8e4dc",
-  "dk-txt-2": "#b4aea3",
-  "dk-txt-3": "#99927f",
-  gold: "#d4a843",
-  "signal-mark": "#ff8455",
-  "signal-text": "#ff9a72",
-  "info-mark": "#4aa8e8",
-  "info-text": "#6ebcf0",
-  "positive-mark": "#57b478",
-  "positive-text": "#7fc796",
-  "category-mark": "#cf7fb4",
-  "category-text": "#dc9ac6",
+  dk: token("dk"),
+  "dk-2": token("dk-2"),
+  "dk-3": token("dk-3"),
+  "dk-line": token("dk-line"),
+  "dk-line-strong": token("dk-line-strong"),
+  "dk-txt": token("dk-txt"),
+  "dk-txt-2": token("dk-txt-2"),
+  "dk-txt-3": token("dk-txt-3"),
+  gold: token("gold"),
+  "signal-mark": token("fn-signal-mark-d"),
+  "signal-text": token("fn-signal-text-d"),
+  "info-mark": token("fn-info-mark-d"),
+  "info-text": token("fn-info-text-d"),
+  "positive-mark": token("fn-positive-mark-d"),
+  "positive-text": token("fn-positive-text-d"),
+  "category-mark": token("fn-category-mark-d"),
+  "category-text": token("fn-category-text-d"),
 };
 
 // Grounds each foreground is permitted to sit on.

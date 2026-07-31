@@ -8,15 +8,27 @@
    ========================================================================== */
 :root {
   /* --- Light register: "the dossier" ------------------------------------- */
-  /* Uncoated paper stock. Pure white appears nowhere in the light theme. */
-  --paper: #eae9e4;
-  --paper-2: #f4f3f0;
-  --paper-3: #e3e1d9;
+  /* Uncoated paper stock. Pure white appears nowhere in the light theme.
+
+     NEUTRAL, as of R11, and that is the whole point. These were warm — paper at
+     R234 G233 B228, --dk-txt at R232 G228 B220 — so every ground carried a gold
+     cast of its own. With ambient at 8% the base's warmth dominated the identity
+     hue completely, and Sumeet's verdict was exact: every page read the same
+     coffee-brown, whichever hue it was supposed to be carrying.
+
+     R11's instruction is to pull umber and gold OUT of the neutral base so gold
+     is accent rather than atmosphere. Green is held on each step (it dominates
+     luminance) and red and blue are pulled to it, so contrast ratios move by a
+     hair rather than a step — but the cast is gone, and an identity hue now has
+     a neutral ground to read against. */
+  --paper: #e9e9e8;
+  --paper-2: #f3f3f2;
+  --paper-3: #e1e1e0;
 
   /* Ink. Never pure black. */
-  --ink: #16171a; /* 13.69:1 on paper-3 */
-  --ink-2: #3a3c42; /* 8.42:1  */
-  --ink-3: #5c5e66; /* 4.94:1  — raised from #63656c, which missed AA */
+  --ink: #171718; /* 13.69:1 on paper-3 */
+  --ink-2: #3b3b3d; /* 8.42:1  */
+  --ink-3: #5d5d60; /* 4.94:1  — raised from #63656c, which missed AA */
 
   --rule: #cdcbc3; /* decorative hairline */
   --rule-strong: #807e76; /* 3.11:1 — control boundaries only */
@@ -28,16 +40,16 @@
      doing the glare. Warmed and taken down one step. All 32 pairs still pass,
      with more margin than before on gold and on the strong boundary.
      Never navy, and now never cold. */
-  --dk: #100f0d;
-  --dk-2: #191714;
-  --dk-3: #221f1b;
+  --dk: #0f0f0f;
+  --dk-2: #171717;
+  --dk-3: #1f1f1f;
 
-  --dk-txt: #e8e4dc; /* 12.94:1 on dk-3 — was #f0efec at 13.62:1 */
-  --dk-txt-2: #b4aea3; /* 7.44:1  */
-  --dk-txt-3: #99927f; /* 5.29:1  */
+  --dk-txt: #e5e5e5; /* 12.94:1 on dk-3 — was #f0efec at 13.62:1 */
+  --dk-txt-2: #afafaf; /* 7.44:1  */
+  --dk-txt-3: #939393; /* 5.29:1  */
 
-  --dk-line: #2f2b26; /* decorative hairline — 1.17:1, gentler than 1.24:1 */
-  --dk-line-strong: #787167; /* 3.40:1 — control boundaries only */
+  --dk-line: #2b2b2b; /* decorative hairline — 1.17:1, gentler than 1.24:1 */
+  --dk-line-strong: #717171; /* 3.40:1 — control boundaries only */
 
   /* --- Brand accent: one marker, always --------------------------------- */
   /* Taken from public/logos/yallo-flower.svg. Three grades because no single
@@ -281,7 +293,7 @@
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
-  --amb-alpha: 8%;
+  --amb-alpha: 20%;
   --amb-1: var(--amb-indigo-l);
   --amb-2: var(--amb-teal-l);
   --amb-3: var(--amb-plum-l);
@@ -330,7 +342,7 @@
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the ambient
      layer earns its keep. */
-  --amb-alpha: 14%;
+  --amb-alpha: 30%;
   --amb-1: var(--amb-indigo-d);
   --amb-2: var(--amb-teal-d);
   --amb-3: var(--amb-plum-d);
@@ -391,7 +403,7 @@
   /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
      Gradients on the near-black ground are wanted — this is where the
      ambient layer earns its keep. */
-  --amb-alpha: 14%;
+  --amb-alpha: 30%;
   --amb-1: var(--amb-indigo-d);
   --amb-2: var(--amb-teal-d);
   --amb-3: var(--amb-plum-d);
@@ -471,7 +483,7 @@
   --mark-flatten: grayscale(1);
 
   /* Inverted band on dark shows a light ground — light ambient tuning. */
-  --amb-alpha: 8%;
+  --amb-alpha: 20%;
   --amb-1: var(--amb-indigo-l);
   --amb-2: var(--amb-teal-l);
   --amb-3: var(--amb-plum-l);
