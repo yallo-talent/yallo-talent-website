@@ -185,7 +185,8 @@ function collect(): Map<string, PlatformCoverage> {
        accident of retail.ts. Authored order is a decision; role count is a
        side effect. */
     cov.modules.sort(
-      (a, b) => authoredOrder(cov.slug, a.slug) - authoredOrder(cov.slug, b.slug),
+      (a, b) =>
+        authoredOrder(cov.slug, a.slug) - authoredOrder(cov.slug, b.slug),
     );
     cov.roles = [...new Set(cov.modules.flatMap((m) => m.roles))].sort();
     cov.moduleCount = cov.modules.length;

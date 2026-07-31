@@ -224,7 +224,7 @@ export function PlatformModuleShell({
           then the page renders the joins and nothing else.
           data-depth-slot marks it for the next author rather than for the DOM. */}
 
-            {/* nav + h2, not a styled div. This shipped as a bare `<div>` eyebrow
+      {/* nav + h2, not a styled div. This shipped as a bare `<div>` eyebrow
           above up to 13 links: no heading, no accessible name, no landmark, so
           the whole block was unreachable by heading or landmark navigation and
           a screen-reader user met an unlabelled list of platform names with no
