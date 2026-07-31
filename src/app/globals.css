@@ -100,7 +100,11 @@
      Six desaturated hues, tonally sibling to the saasinator family, tuned per
      theme. Assignment is per-section rhythm only — per-taxonomy-branch is
      banned (it is the retired per-sector system returning). Consumed at
-     var(--amb-alpha) max: 8% on light, 14% on dark. */
+     var(--amb-alpha): 20% on light, 30% on dark. Those were 8% and 14% when the
+     ambient layer was decoration; R11 raised them because at 8% the identity hue
+     was below the just-noticeable threshold and every page read the same brown.
+     A permanently dark surface (.band-dark) takes the DARK figure in both
+     themes — it restates it locally, since these live on :root. */
   --amb-plum-l: #8e4a72;
   --amb-violet-l: #5f5694;
   --amb-teal-l: #3d7d7d;
@@ -386,7 +390,7 @@
   --mark-filter: invert(1);
   --mark-flatten: grayscale(1) invert(1);
 
-  /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
+  /* Ambient layer, dark tuning — 30% since R11 (canon §5, amended).
      Gradients on the near-black ground are wanted — this is where the ambient
      layer earns its keep. */
   --amb-alpha: 30%;
@@ -447,7 +451,7 @@
   --mark-filter: invert(1);
   --mark-flatten: grayscale(1) invert(1);
 
-  /* Ambient layer, dark tuning. 14% is the hard ceiling on dark (canon §5).
+  /* Ambient layer, dark tuning — 30% since R11 (canon §5, amended).
      Gradients on the near-black ground are wanted — this is where the
      ambient layer earns its keep. */
   --amb-alpha: 30%;

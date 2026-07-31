@@ -48,7 +48,9 @@ The Phase 2 artefact. Supersedes `SESSION-STATE-and-DESIGN-CANON.md` as the auth
 
 ## 5. Design system
 
-**Grounds and ink.** Paper grounds, never white: `--paper #eae9e4`, `--paper-2 #f4f3f0`, `--paper-3 #e0ded6`; ink scale with `--ink-3` at `#5c5e66` (AA-corrected). Dark set per `DESIGN.md`.
+**Grounds and ink.** Paper grounds, never white: `--paper #e9e9e8`, `--paper-2 #f3f3f2`, `--paper-3 #e1e1e0`; ink scale with `--ink-3` at `#5d5d60`. Dark set per `DESIGN.md`. *(Corrected 1 Aug 2026: these recorded the pre-R11 warm values `#eae9e4 / #f4f3f0 / #e0ded6` and `#5c5e66`. R11 pulled umber and gold OUT of the neutral base so gold reads as accent rather than atmosphere, which neutralised all fourteen base tokens; canon had kept the superseded figures.)*
+
+**Ambient alpha.** `--amb-alpha` is 20% on light and 30% on dark, raised from 8%/14% by R11 — at 8% the identity hue sat below the just-noticeable threshold. `.band-dark` restates the dark figure locally in both themes, because these are declared on `:root` and do not inherit a local override.
 
 **Gold — three grades on light (AA amendment, ratified):** `--gold #d4a843` decorative only, never text or state; `--gold-deep #9d7818` large text, underlines, focus rings; `--gold-ink #7b5d13` all small text and every mono label. Gold is the only colour that is ever interactive, navigational or brand-bearing.
 
