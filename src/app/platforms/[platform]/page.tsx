@@ -119,7 +119,7 @@ export default async function PlatformPage({
           <SectionHead
             eyebrow="Module coverage"
             heading={`Every ${cov.name} module we staff, and who we put in it.`}
-            lede="Each module lists the contractor roles we place into it."
+            lede="Send the brief and the specialist is in your inbox in 72 hours."
             id="modules-heading"
           />
 
@@ -167,18 +167,25 @@ export default async function PlatformPage({
                     </li>
                   ))}
                 </ul>
-                <p className={styles.vowFoot}>
-                  {mod.appearsIn.slice(0, 3).map((a) => (
-                    <Link
-                      key={`${a.sectorSlug}-${a.fnSlug}`}
-                      className={styles.btnSecondary}
-                      href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
-                    >
-                      {a.fnTitle}
-                      <ArrowGlyph />
-                    </Link>
-                  ))}
-                </p>
+                {/* Rendered only when there ARE sector links. Removing the
+                    vendor mark left this slot bottom-anchored and EMPTY on 16 of
+                    17 cards — measured 607px of dead space across the grid, 150px
+                    on one card, and the single card that did carry a link read as
+                    an unexplained inconsistency rather than as honest data. */}
+                {mod.appearsIn.length > 0 ? (
+                  <p className={styles.vowFoot}>
+                    {mod.appearsIn.slice(0, 3).map((a) => (
+                      <Link
+                        key={`${a.sectorSlug}-${a.fnSlug}`}
+                        className={styles.btnSecondary}
+                        href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
+                      >
+                        {a.fnTitle}
+                        <ArrowGlyph />
+                      </Link>
+                    ))}
+                  </p>
+                ) : null}
               </article>
             ))}
           </div>
