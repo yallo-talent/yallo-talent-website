@@ -162,12 +162,15 @@
   width: 100%;
 }
 
+/* B5: sentence case, sans, no tracking. This is a PHRASE, not a mono label —
+   canon §5 reserves uppercase mono for short labels because caps need the
+   tracking to stay legible, and a whole phrase set that way reads as machine
+   output. "WHAT WE CAN FIND FOR YOU" was the example in the brief; the same
+   treatment was flattening every group description. --fs-caption is a sans role,
+   so sentence case is what the ramp allows here. */
 .megaDescription {
   padding: 4px 12px 12px;
-  font-family: var(--font-mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--fg-subtle);
   border-bottom: 1px solid var(--wa05);
   margin-bottom: 14px;
