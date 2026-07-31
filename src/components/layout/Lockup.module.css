@@ -132,7 +132,7 @@
    BASELINE, and R15 asks for it aligned to the wordmark's CAP HEIGHT. Those are
    different, and on a serif wordmark against mono caps they look different.
 
-   Selected by `data-lockup` on the lockup root. D ships; A, B and C stay so the
+   Selected by `data-lockup` on the lockup root. B ships; A, C and D stay so the
    comparison is reproducible and Sumeet can override with one attribute.
    ========================================================================== */
 

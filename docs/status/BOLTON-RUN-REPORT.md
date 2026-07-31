@@ -246,7 +246,45 @@ paragraphs at 75ch carry more of the page's weight than on either sibling. The
 fix is content, not layout — and it is the surface where the two remaining
 unsourced claims (Q12) sit.
 
-## 11. Not done
+## 11. R15 — the logo
+
+Delivered earlier in the run; recorded here because the REPORT asks for the
+shipped mark plus its alternates and this document had not carried them.
+
+The pipe divider is gone — verified, no `|` glyph and no divider rule in the
+lockup. TALENT sets as tracked mono small caps at `--fs-label` (13px, exactly the
+A4 mono floor) with 0.3em tracking, and a −0.3em right margin so the trailing
+tracking space does not leave the object optically short on its right edge.
+
+What R15 actually changed is the **alignment**: the previous build sat TALENT on
+the shared baseline, and R15 asks for it aligned to the wordmark's **cap height**.
+On a serif wordmark against mono caps those are visibly different.
+
+| Variant | Treatment | Cap-top delta | Verdict |
+|---|---|---|---|
+| A | Baseline — what shipped before R15 | 8.22px | Rejected. TALENT's cap top lands well above the wordmark's, so it reads raised |
+| **B** | **Cap height, 0.055em correction** | **0.72px** | **SHIPPED** |
+| C | Optical centring on the x-height band | 6.22px | Rejected. Reads calm but loses the step-down hierarchy — TALENT stops feeling like a qualifier |
+| D | Cap height, 0.035em correction | 0.45px | Not shipped. The same treatment as B, 0.27px away |
+
+**Self-critique, including a correction to my own first pass.** I first wrote that
+D was "the only variant where the cap tops agree". Measured, B and D are both
+cap-aligned and sit 0.27px apart — that claim was assertion dressed as
+measurement. Since 0.27px is far below perceptibility, the choice is not about the
+mark at all but about the CSS: **B ships because it is the simpler rule.** A and C
+are genuinely different treatments and both are worse for stated reasons.
+
+All four are captured **header and footer, light and dark** — 16 images in
+`docs/status/shots/r15-logo/` (`{a,b,c,d}-{header,footer}-{light,dark}.png`), so
+an override is one attribute: `<Lockup variant="d" />`.
+
+**One conflict found and closed while writing this.** Canon recorded "SHIPPED —
+variant B" while two code comments said D ships — the CSS block header and the
+`Lockup` prop doc, both left over from before the D correction. Canon was right:
+`Lockup.module.css` pairs `:not([data-lockup])` with `[data-lockup="b"]`, and the
+default measures 0.72px, identical to B. The two comments are corrected.
+
+## 12. Not done
 
 - **Insight articles and blogs** — descoped permanently per the bolt-on. Not
   touched, not ported, not templated.

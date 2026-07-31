@@ -28,8 +28,8 @@ export function Lockup({
 }: {
   className?: string;
   /**
-   * R15 alternate. Omit for the shipped treatment (D). a/b/c exist so the
-   * comparison stays reproducible and can be overridden with one attribute.
+   * R15 alternate. Omit for the shipped treatment, which is B. a/c/d exist so
+   * the comparison stays reproducible and can be overridden with one attribute.
    */
   variant?: "a" | "b" | "c" | "d";
 }) {
