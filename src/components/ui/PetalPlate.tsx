@@ -18,34 +18,11 @@
  * and inside inverted bands.
  */
 
+import { hashSeed, petalPath } from "./petal-geometry";
+
 export type PlateVariant = "bloom" | "field" | "strata" | "arcs";
 
 const VARIANTS: PlateVariant[] = ["bloom", "field", "strata", "arcs"];
-
-/** Deterministic, stable across builds — not Math.random(). */
-function hash(seed: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < seed.length; i++) {
-    h ^= seed.charCodeAt(i);
-    h = Math.imul(h, 16777619);
-  }
-  return Math.abs(h);
-}
-
-/** The quarter-round petal as a path: one rounded corner, three square. */
-function petalPath(x: number, y: number, s: number, corner: 0 | 1 | 2 | 3) {
-  const r = s;
-  switch (corner) {
-    case 0: // rounded bottom-left
-      return `M${x} ${y} L${x + s} ${y} L${x + s} ${y + s} L${x + r} ${y + s} A${r} ${r} 0 0 1 ${x} ${y + s - r} Z`;
-    case 1: // rounded top-left
-      return `M${x + s} ${y} L${x + s} ${y + s} L${x} ${y + s} L${x} ${y + r} A${r} ${r} 0 0 1 ${x + r} ${y} Z`;
-    case 2: // rounded top-right
-      return `M${x} ${y} L${x + s - r} ${y} A${r} ${r} 0 0 1 ${x + s} ${y + r} L${x + s} ${y + s} L${x} ${y + s} Z`;
-    default: // rounded bottom-right
-      return `M${x} ${y} L${x + s} ${y} L${x + s} ${y + s - r} A${r} ${r} 0 0 1 ${x + s - r} ${y + s} L${x} ${y + s} Z`;
-  }
-}
 
 export function PetalPlate({
   seed,
@@ -61,7 +38,7 @@ export function PetalPlate({
   /** Height as a multiple of width. 1 is square; 0.6 is a wide band. */
   ratio?: number;
 }) {
-  const h = hash(seed);
+  const h = hashSeed(seed);
   const kind = variant ?? VARIANTS[h % VARIANTS.length] ?? "bloom";
   const w = 600;
   const ht = Math.round(w * ratio);
@@ -185,7 +162,7 @@ function Bloom({
 }) {
   const n = 3 + (seed % 2);
   const petals = Array.from({ length: n }, (_, i) => {
-    const k = hash(`${seed}:bloom:${i}`);
+    const k = hashSeed(`${seed}:bloom:${i}`);
     const s = w * (0.34 + (k % 30) / 100);
     const x = (k % Math.max(1, Math.round(w - s * 0.7))) - s * 0.15;
     const y =
@@ -196,7 +173,7 @@ function Bloom({
       fill: i % 2 === 0 ? `url(#${uid}-petal)` : `url(#${uid}-petal2)`,
     };
   });
-  const strike = hash(`${seed}:strike`);
+  const strike = hashSeed(`${seed}:strike`);
   return (
     <g>
       {petals.map((p) => (
@@ -241,7 +218,7 @@ function Field({
 
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
-      const n = hash(`${seed}:${x}:${y}`);
+      const n = hashSeed(`${seed}:${x}:${y}`);
       if (n % 3 === 0) continue;
       const cx = x * cell + (cell - size) / 2;
       const cy = y * cell + (cell - size) / 2;
@@ -256,7 +233,7 @@ function Field({
     }
   }
   // One cell struck gold: the candidate that made the shortlist.
-  const g = hash(`${seed}:gold`);
+  const g = hashSeed(`${seed}:gold`);
   const gx = g % cols;
   const gy = Math.floor(g / cols) % rows;
   return (
@@ -291,7 +268,7 @@ function Strata({
   const bands = 9;
   const gap = h / bands;
   const rows = Array.from({ length: bands }, (_, i) => {
-    const n = hash(`${seed}:band:${i}`);
+    const n = hashSeed(`${seed}:band:${i}`);
     return { n, y: i * gap + gap * 0.22, width: w * (0.28 + (n % 60) / 100) };
   });
   return (

@@ -38,7 +38,7 @@ export interface NavGroup {
 export const primaryNav: NavGroup[] = [
   {
     label: "Specialisms",
-    description: "What we can find for you",
+    description: "Platforms, disciplines and industries",
     columns: [
       {
         heading: "Platforms",
@@ -160,7 +160,7 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Permanent",
             href: "/permanent",
-            description: "Long-term fit, specialist-vetted",
+            description: "Permanent hires, screened by specialists",
           },
           {
             label: "Employer of Record",
@@ -170,7 +170,7 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Managed Delivery",
             href: "/managed-delivery",
-            description: "Scope-defined, outcome-owned",
+            description: "A scoped workstream, delivered by our pod",
           },
         ],
       },
@@ -200,9 +200,9 @@ export const primaryNav: NavGroup[] = [
             description: "Who we've delivered for",
           },
           {
-            label: "The team who screen",
+            label: "The specialists who screen",
             href: "/leadership",
-            description: "Specialists behind every shortlist",
+            description: "The six desks that screen your shortlist",
           },
         ],
       },
@@ -229,7 +229,7 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Programme Staffing Blueprint",
             href: "/intelligence",
-            description: "The full staffing framework",
+            description: "How we scope and staff a programme",
             published: false,
           },
           {

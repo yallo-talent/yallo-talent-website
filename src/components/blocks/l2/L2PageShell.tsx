@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import { taxonomyLabels } from "@/data/l1/index";
 import type { L1ExpertiseCard, L1IconKey, L1PageData } from "@/data/l1/types";
@@ -45,16 +46,10 @@ export function L2PageShell({ sector, fn }: Props) {
 function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroImageWrap}>
-        <PetalPlate
-          seed={sector.slug}
-          className={styles.heroImage}
-          ratio={0.5}
-        />
-      </div>
-      <div className={styles.heroTint} aria-hidden="true" />
-      <div className={styles.heroOverlay} aria-hidden="true" />
-      <div className={styles.heroGrid} aria-hidden="true" />
+      {/* B3, as on the L1. Seeded on the FUNCTION slug rather than the
+          sector's, so sibling L2s under one sector each get their own field
+          instead of twenty pages sharing one. */}
+      <HeroAtmosphere seed={`${sector.slug}-${fn.slug}`} />
       <div className={styles.heroInner}>
         <nav className={styles.crumb} aria-label="Breadcrumb">
           <Link href="/industries" className={styles.crumbLink}>

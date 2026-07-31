@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Hero atmosphere — B3. The full-bleed field behind an L1/L2/service hero.
+
+   Sits behind the hero's own content, which the host positions above it. This
+   file owns only the field and the scrim; nothing here touches type.
+   ========================================================================== */
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Its own stacking context, so the scrim cannot escape upward over content
+     and the grain filter cannot promote itself above the text. */
+  isolation: isolate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* The scrim, and the reason the headline can sit in the field at all.
+   Two directions at once: a vertical pass that keeps the top edge readable
+   under the sticky nav, and a horizontal pass that is near-opaque across the
+   text column and clears towards the outer edge where the field can be seen.
+
+   88% and 96% rather than a flat wash: every text pair on the hero is then
+   measured against effectively --ground, so the contrast is the register's own
+   documented pair rather than a gamble on what the field drew underneath. That
+   is the same reasoning as the A3 glass ground — legibility must not depend on
+   a generated backdrop. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--ground) 96%, transparent) 0%,
+      color-mix(in oklab, var(--ground) 88%, transparent) 42%,
+      color-mix(in oklab, var(--ground) 54%, transparent) 78%,
+      color-mix(in oklab, var(--ground) 38%, transparent) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--ground) 72%, transparent) 0%,
+      transparent 28%,
+      transparent 72%,
+      color-mix(in oklab, var(--ground) 66%, transparent) 100%
+    );
+}
+
+/* Narrow viewports read the hero as a single column, so the horizontal clearing
+   would put the field directly behind the last lines of the lede. Flat and
+   near-opaque instead: the field still shows at the edges of the petal geometry
+   and behind the bottom rule, but never under a line of text. */
+@media (max-width: 900px) {
+  .scrim {
+    background: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--ground) 82%, transparent) 0%,
+      color-mix(in oklab, var(--ground) 92%, transparent) 45%,
+      color-mix(in oklab, var(--ground) 88%, transparent) 100%
+    );
+  }
+}
+
+/* Forced-colours mode: drop the whole field. The system supplies its own
+   background and a generated one only fights it. */
+@media (forced-colors: active) {
+  .atmosphere {
+    display: none;
+  }
+}

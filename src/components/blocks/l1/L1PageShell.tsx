@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
@@ -145,14 +146,16 @@ function L1SubNav({ items }: { items: { id: string; label: string }[] }) {
 function L1Hero({ data }: Props) {
   return (
     <section className={styles.hero}>
-      <div className={styles.heroImageWrap}>
-        {/* Drawn, not photographed: canon forbids stock imagery and every
-            one of these was a hotlinked Unsplash URL. */}
-        <PetalPlate seed={data.slug} className={styles.heroImage} ratio={0.5} />
-      </div>
-      <div className={styles.heroTint} aria-hidden="true" />
-      <div className={styles.heroOverlay} aria-hidden="true" />
-      <div className={styles.heroGrid} aria-hidden="true" />
+      {/* B3: one full-bleed atmospheric field replaces four stacked layers — a
+          bounded PetalPlate pinned into a corner, plus a tint, an overlay and a
+          grid, each fighting the others for the same pixels. The plate was card
+          imagery doing a background's job: at hero scale its own gold corner was
+          painted out by the overlay (the earlier critique measured that), and the
+          composition read as a flat band with a picture stuck to one side.
+          HeroAtmosphere is the field, the geometry, the grain and the scrim as
+          one object, deterministic from the slug and tinted by the section's
+          assigned --amb. */}
+      <HeroAtmosphere seed={data.slug} />
       <div className={styles.heroInner}>
         <nav className={styles.crumb} aria-label="Breadcrumb">
           {data.breadcrumb.map((c, i) => {

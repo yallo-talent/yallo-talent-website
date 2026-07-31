@@ -203,7 +203,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 .cardTitle {
@@ -229,7 +229,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   transition: transform 0.2s ease;
 }
 
@@ -258,7 +258,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   margin-bottom: 12px;
 }
 
@@ -346,4 +346,38 @@
   .cards {
     grid-template-columns: 1fr;
   }
+}
+
+/* B6: a planned discipline. Same card, honestly inert — no hover lift, no
+   pointer, and a marker that names the state. It is deliberately NOT dimmed to
+   40%: greying a card says "disabled, and possibly broken", where this is a real
+   desk with no page yet. It reads at full strength with one label doing the
+   telling. */
+.cardPlanned {
+  cursor: default;
+}
+
+.cardPlanned:hover {
+  transform: none;
+  border-color: var(--hairline);
+}
+
+.cardPlannedMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.cardPlannedMark::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1px solid var(--rule-strong);
 }

@@ -162,12 +162,15 @@
   width: 100%;
 }
 
+/* B5: sentence case, sans, no tracking. This is a PHRASE, not a mono label —
+   canon §5 reserves uppercase mono for short labels because caps need the
+   tracking to stay legible, and a whole phrase set that way reads as machine
+   output. "WHAT WE CAN FIND FOR YOU" was the example in the brief; the same
+   treatment was flattening every group description. --fs-caption is a sans role,
+   so sentence case is what the ramp allows here. */
 .megaDescription {
   padding: 4px 12px 12px;
-  font-family: var(--font-mono);
   font-size: var(--fs-caption);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--fg-subtle);
   border-bottom: 1px solid var(--wa05);
   margin-bottom: 14px;
@@ -245,9 +248,23 @@
   transform: translateX(2px);
 }
 
+/* B7: no dimming. opacity 0.55 over already-muted label text says "disabled,
+   and possibly broken" — but these are real desks canon §3 names, with no page
+   yet. The label reads at full strength and an explicit marker does the telling,
+   the same decision as the planned cards on the capabilities hub. Dimming was
+   also a contrast risk: an opacity on a muted colour compounds. */
 .megaLink[aria-disabled="true"] {
   cursor: default;
-  opacity: 0.55;
+}
+
+.megaPlannedMark {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
 }
 
 .megaLink[aria-disabled="true"]:hover,
@@ -260,6 +277,20 @@
 .mobileLink[aria-disabled="true"] {
   color: var(--fg-muted);
   cursor: default;
+}
+
+/* The ambient field, as on the heroes (B7). The panel cannot take A3 glass — it
+   is a child of the glass header, so a nested backdrop-filter is a no-op
+   (QUESTIONS.md Q8) — but the field needs no backdrop-filter at all, so the
+   panel gets the same atmospheric treatment the heroes do. Behind the columns,
+   above the panel ground. */
+.megaAtmosphere {
+  z-index: 0;
+}
+
+.megaPanelInner {
+  position: relative;
+  z-index: 1;
 }
 
 .megaLink:hover .itemIcon {
@@ -365,7 +396,7 @@
   font-size: var(--fs-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
 }
 
 .featuredTitle {
@@ -389,7 +420,7 @@
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   padding-top: 6px;
   border-top: 1px solid var(--wa05);
   transition: transform 0.15s ease;

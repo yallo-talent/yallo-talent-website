@@ -224,13 +224,12 @@ export function HubArchitects() {
             <article key={a.name} className={styles.archCard}>
               <div className={styles.glow} aria-hidden="true" />
               <div className={styles.archCardInner}>
-                <div className={styles.archInitials} aria-hidden="true">
-                  {a.name
-                    .split(" ")
-                    .map((w) => w[0])
-                    .slice(0, 2)
-                    .join("")}
-                </div>
+                {/* No monogram tile. The same two-letter initials block was
+                    deleted from the L1 in an earlier round — canon §8 has no
+                    place for it and it fails contrast as a tinted tile — but the
+                    hub kept its own copy, so the deletion never reached here.
+                    axe flagged it on /industries once B3 brought the page under
+                    test. */}
                 <div className={styles.archRole}>{a.role}</div>
                 <div className={styles.archName}>{a.name}</div>
                 <p className={styles.archBio}>{a.bio}</p>

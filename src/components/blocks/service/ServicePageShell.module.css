@@ -26,51 +26,6 @@
   background: var(--ground);
 }
 
-.heroBg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.heroBgA,
-.heroBgB {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-}
-
-.heroBgA {
-  width: 600px;
-  height: 600px;
-  top: -20%;
-  right: -8%;
-  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
-}
-
-.heroBgB {
-  width: 500px;
-  height: 500px;
-  bottom: -25%;
-  left: -8%;
-  background: radial-gradient(circle, var(--accent-strong), transparent 65%);
-}
-
-.heroGrid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--wa03) 1px, transparent 1px),
-    linear-gradient(90deg, var(--wa03) 1px, transparent 1px);
-  background-size: 44px 44px;
-  -webkit-mask-image: radial-gradient(
-    ellipse at 50% 30%,
-    black 20%,
-    transparent 75%
-  );
-  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%);
-}
-
 .heroWrap {
   position: relative;
   z-index: 1;
@@ -100,9 +55,9 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  color: var(--fg-subtle);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   width: fit-content;
 }
@@ -257,7 +212,7 @@
   gap: 14px;
   padding: 16px 20px;
   background: color-mix(in oklab, var(--ground-3) 82%, transparent);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
 }
 
@@ -336,8 +291,8 @@
   border-radius: 0 0 0 var(--r-sm);
   display: grid;
   place-items: center;
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   color: var(--accent-label);
   margin-bottom: 20px;
 }
@@ -410,9 +365,9 @@
   font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent-label);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  color: var(--fg-subtle);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   margin-bottom: 20px;
 }
@@ -478,7 +433,7 @@
   width: 88px;
   height: 88px;
   border-radius: 50%;
-  border: 1px solid var(--sector-accent-20);
+  border: 1px solid var(--hairline);
   background: radial-gradient(
     circle,
     var(--sector-accent-08) 0%,
@@ -572,9 +527,9 @@
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-label);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  color: var(--fg-subtle);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   padding: 4px 10px;
   border-radius: 0 0 0 var(--r-md);
 }
@@ -593,8 +548,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   color: var(--accent-label);
   opacity: 0.55;
   transition:
@@ -694,8 +649,8 @@
   font-size: var(--fs-caption);
   font-weight: 500;
   color: var(--fg);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
 }
 
@@ -728,7 +683,7 @@
   top: 96px;
   padding: 32px 28px;
   background: linear-gradient(160deg, var(--ground-3) 0%, var(--ground-2) 100%);
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   box-shadow: inset 0 1px 0 var(--wa08);
 }
@@ -741,9 +696,9 @@
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--accent-label);
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  color: var(--fg-subtle);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   margin-bottom: 20px;
 }
@@ -829,16 +784,19 @@
   cursor: pointer;
 }
 
+/* B4: a numbering label is not an accent duty. Gold here also failed contrast
+   once the card ground moved from a gold wash to a neutral tonal step, which is
+   the same change that made the label unnecessary. */
 .faqQNum {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: 500;
   letter-spacing: 0.14em;
-  color: var(--accent-label);
+  color: var(--fg-subtle);
   padding: 4px 10px;
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-xs);
-  background: var(--sector-accent-08);
+  background: var(--wa03);
 }
 
 .faqOpen .faqQNum {
@@ -870,8 +828,8 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--sector-accent-08);
-  border: 1px solid var(--sector-accent-35);
+  background: var(--wa03);
+  border: 1px solid var(--boundary);
   flex-shrink: 0;
 }
 
@@ -949,7 +907,7 @@
     var(--sector-accent-08) 0%,
     var(--accent-muted) 100%
   );
-  border: 1px solid var(--sector-accent-35);
+  border: 1px solid var(--boundary);
 }
 
 .bottomGlow {
