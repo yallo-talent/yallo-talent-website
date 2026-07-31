@@ -378,7 +378,8 @@ export function NavBar() {
                     <div
                       className={styles.megaGrid}
                       data-cols={
-                        activeGroup.columns.length + (activeGroup.featured ? 1 : 0)
+                        activeGroup.columns.length +
+                        (activeGroup.featured ? 1 : 0)
                       }
                     >
                       {activeGroup.columns.map((col) => (
@@ -390,9 +391,9 @@ export function NavBar() {
                             {col.items.map((item) => (
                               <li key={item.href}>
                                 <MegaItem
-                              item={item}
-                              onSelect={() => setOpenGroup(null)}
-                            />
+                                  item={item}
+                                  onSelect={() => setOpenGroup(null)}
+                                />
                               </li>
                             ))}
                           </ul>
