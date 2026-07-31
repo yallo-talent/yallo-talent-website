@@ -275,8 +275,11 @@ mark at all but about the CSS: **B ships because it is the simpler rule.** A and
 are genuinely different treatments and both are worse for stated reasons.
 
 All four are captured **header and footer, light and dark** — 16 images in
-`docs/status/shots/r15-logo/` (`{a,b,c,d}-{header,footer}-{light,dark}.png`), so
-an override is one attribute: `<Lockup variant="d" />`.
+`docs/status/shots/r15-logo/`
+(`{a,b,c,d}-{header,footer}-{light,dark}.png`), with all sixteen composited into
+one sheet at `docs/status/shots/r15-logo/ALL-FOUR-contact-sheet.png` (columns
+A/B/C/D, rows header-light / header-dark / footer-light / footer-dark). An
+override is one attribute: `<Lockup variant="d" />`.
 
 **One conflict found and closed while writing this.** Canon recorded "SHIPPED —
 variant B" while two code comments said D ships — the CSS block header and the
