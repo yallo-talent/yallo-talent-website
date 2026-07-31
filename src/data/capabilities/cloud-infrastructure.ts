@@ -27,7 +27,7 @@ export const cloudInfrastructureData: L1PageData = {
     "Cloud programmes stall when the platform depth isn't in the room.",
   introCopy: [
     "Every AWS landing-zone, every Azure migration, every GCP data platform rollout shares the same failure mode — the outcome depends on the depth of the engineer running the build. Recruiters place tool names. We place production track records.",
-    "Our contractor bench is assessed by cloud architects who have shipped landing-zones, hardened Kubernetes clusters and run FinOps at enterprise scale. We screen for the specific operating context — regulated workloads, multi-region resilience, cost governance, zero-trust networking — not just certification badges.",
+    "Our contractor bench is assessed by cloud architects who have shipped landing-zones, hardened Kubernetes clusters and run FinOps at enterprise scale. We screen for the specific operating context — regulated workloads, multi-region resilience, cost governance, zero-trust networking.",
   ],
   /**
    * Both cards deleted, and this is the more serious of the two capability

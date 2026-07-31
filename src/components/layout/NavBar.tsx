@@ -150,7 +150,7 @@ export function NavBar() {
       setOpenGroup(null);
       // Focus would otherwise be stranded inside a panel that no longer exists.
       const trigger = document.querySelector<HTMLElement>(
-        '[aria-haspopup="true"][data-group="' + openGroup + '"]',
+        `[aria-haspopup="true"][data-group="${openGroup}"]`,
       );
       trigger?.focus();
     };

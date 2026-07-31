@@ -27,7 +27,7 @@ export const dataAnalyticsData: L1PageData = {
     "Data & AI programmes stall when the platform depth isn't in the room.",
   introCopy: [
     "Every Snowflake migration, every dbt-driven analytics platform, every GenAI production rollout shares the same failure mode — the outcome depends on the depth of the specialist in the room. Recruiters place tool names. We place implementation track records.",
-    "Our contractor bench is assessed by specialists who have built data platforms and shipped ML at enterprise scale. We screen for the specific operating context — high-throughput pipelines, regulated data domains, real-time inference, LLM safety — not just certification badges.",
+    "Our contractor bench is assessed by specialists who have built data platforms and shipped ML at enterprise scale. We screen for the specific operating context — high-throughput pipelines, regulated data domains, real-time inference, LLM safety.",
   ],
   /**
    * One card, and the second is deleted rather than replaced.

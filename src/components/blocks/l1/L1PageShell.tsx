@@ -556,7 +556,15 @@ function L1ScarceTalent({ data }: Props) {
               </div>
               <div className={styles.scarceLeftMid}>
                 <div className={styles.eyebrow}>{data.scarceEyebrow}</div>
-                <h3 className={styles.scarceH}>{data.scarceTitle}</h3>
+                {/* h2, not h3, and the 27px class is unchanged. These are top-level
+                    sections whose only heading was an h3, so an assistive-tech
+                    outline nested the scarce-talent band — the page's
+                    differentiating product — underneath the how-we-work
+                    section as a child rather than a sibling. axe's
+                    heading-order passes because 2 to 3 is not a skip.
+                    Visual size and semantic level are independent; the head
+                    stays 27px because it sits inside a bordered panel. */}
+                <h2 className={styles.scarceH}>{data.scarceTitle}</h2>
                 <p className={styles.scarceCopy}>{data.scarceCopy}</p>
                 {data.scarceCta && (
                   <Link href={data.scarceCta.href} className={styles.scarceCta}>
@@ -1112,7 +1120,7 @@ function L1ReadNext({ data }: Props) {
       <div className={styles.wrap}>
         <div className={styles.readNextHead}>
           <div className={styles.eyebrow}>Also connected</div>
-          <h3 className={styles.readNextH}>{data.relatedTitle}</h3>
+          <h2 className={styles.readNextH}>{data.relatedTitle}</h2>
         </div>
         <div className={styles.readNextRails}>
           {rails.map((rail) => (

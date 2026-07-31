@@ -433,12 +433,18 @@
   margin: 0 0 20px;
 }
 
+/* --fs-body and a measure. These two paragraphs are the page's positioning
+   argument, not card copy, and they were on --fs-caption — 14px, documented as
+   "meta, footer links, card copy" — with NO max-width, so they rendered 645px
+   wide at 92 characters per line. A4 puts body at 16px with 17 preferred; the
+   siblings .scarceCopy and .segCopy already cap at 46ch and 62ch. */
 .introPara {
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body);
   color: var(--fg-muted);
   line-height: 1.8;
   font-weight: var(--fw-body);
   margin: 0 0 16px;
+  max-width: 62ch;
 }
 
 .introRight {
