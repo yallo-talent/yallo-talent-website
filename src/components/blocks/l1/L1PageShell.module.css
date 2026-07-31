@@ -197,8 +197,14 @@
     box-shadow 0.2s ease;
 }
 
+/* The fill DEEPENS. This rule already declared background and color, but both
+   repeated the resting values, so the computed style did not change on hover and
+   the whole affordance was a 1px slide — a critique measured it across fifteen
+   properties and both pseudo-elements and found transform alone. Declaring a
+   property is not the same as changing it, which is the gap my static A5 guard
+   cannot see: it counts declarations. */
 .ctaPrimary:hover {
-  background: var(--accent-mark);
+  background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink-950));
   color: var(--ink-950);
   transform: translateY(-1px);
 }

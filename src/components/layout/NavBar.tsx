@@ -126,6 +126,38 @@ export function NavBar() {
    * widths where the scrollbar is an overlay, so there is no layout shift to
    * correct.
    */
+  /**
+   * Escape dismisses an open mega panel, and focus no longer opens one.
+   *
+   * SC 1.4.13 (Content on Hover or Focus) requires additional content to be
+   * DISMISSIBLE without moving the pointer or focus. It was not: tabbing to a
+   * group trigger flipped `aria-expanded` to true and painted a 611px panel,
+   * Escape did nothing, and the next Tab walked into the panel's contents — so
+   * reaching "Start a brief" from a fresh load took THIRTY-THREE tab stops,
+   * because forward traversal opened all four panels in turn and traversed each.
+   * axe cannot see any of it.
+   *
+   * Two changes, and the second is the one that fixes the tab count. Escape
+   * closes and returns focus to the trigger. And opening moves from `onFocus` to
+   * a real click/Enter/Space toggle: focus-to-open is what put four panels'
+   * worth of links into a linear tab traversal. Pointer users keep hover-open,
+   * which is unaffected.
+   */
+  useEffect(() => {
+    if (!openGroup) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOpenGroup(null);
+      // Focus would otherwise be stranded inside a panel that no longer exists.
+      const trigger = document.querySelector<HTMLElement>(
+        '[aria-haspopup="true"][data-group="' + openGroup + '"]',
+      );
+      trigger?.focus();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [openGroup]);
+
   useEffect(() => {
     if (!mobileOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -187,7 +219,10 @@ export function NavBar() {
                   className={styles.groupTrigger}
                   aria-expanded={openGroup === group.label}
                   aria-haspopup="true"
-                  onFocus={() => setOpenGroup(group.label)}
+                  data-group={group.label}
+                  onClick={() =>
+                    setOpenGroup(openGroup === group.label ? null : group.label)
+                  }
                 >
                   {group.label}
                   <svg

@@ -146,7 +146,10 @@ export default async function PlatformPage({
               tab stop per module instead of the eighteen a control would add.
               It renders only when the set is big enough to need it. */}
           {cov.modules.length > 8 ? (
-            <nav className={styles.moduleIndex} aria-label={`${cov.name} modules`}>
+            <nav
+              className={styles.moduleIndex}
+              aria-label={`${cov.name} modules`}
+            >
               {cov.modules.map((mod) => (
                 <a
                   key={mod.name}
