@@ -1,4 +1,13 @@
-# R4 identity palette — the full mapping, proposed
+# R4 identity palette — the full mapping, SHIPPED
+
+**Status: all 18 wired, 1 August 2026 (ORDER 7).** Fourteen have live routes and
+all fourteen resolve their ratified hue, verified by reading `--amb` on each page.
+The remaining four — cybersecurity, integration & middleware, devops & platform
+engineering, testing & quality engineering — are wired and will resolve when those
+routes land. Zero identity-hue leaks onto any control, measured across colour,
+border, outline and background on every `a`, `button` and `input`.
+
+Superseded below: the "lead trio built, fifteen proposed" framing.
 
 **31 July 2026 · for Sumeet's ratification · Code**
 Canon §5 as amended by R4. The **lead trio is built and live**; the remaining

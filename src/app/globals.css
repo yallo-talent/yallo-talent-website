@@ -110,18 +110,50 @@
 
      Lead trio only. The full mapping is proposed in the run report for
      ratification rather than assumed here. */
-  --id-sap-l: var(
-    --amb-indigo-l
-  ); /* SAP reads blue; indigo is its family member */
+/* ORDER 7: all EIGHTEEN domains, not the lead trio.
+   R11 ratified the full mapping and only four slugs were wired, so fourteen live
+   routes fell back to the positional rhythm and read as whichever hue their
+   section position happened to assign. Six hues across eighteen domains means
+   each is reused about three times — deliberate, and safe because a hue is only
+   ever seen against its own family: no two platforms share, no two disciplines
+   share, no two sectors share. A visitor is on a platform page or a sector page,
+   never comparing SAP to Retail side by side. */
+  --id-sap-l: var(--amb-indigo-l);
   --id-sap-d: var(--amb-indigo-d);
-  --id-data-analytics-l: var(--amb-teal-l); /* data visualisation convention */
-  --id-data-analytics-d: var(--amb-teal-d);
-  /* R13: moss for Blue Yonder. Last of the six hues to be claimed, and the
-     platform whose module set is evidence-only. */
+  --id-oracle-l: var(--amb-umber-l);
+  --id-oracle-d: var(--amb-umber-d);
+  --id-microsoft-l: var(--amb-teal-l);
+  --id-microsoft-d: var(--amb-teal-d);
+  --id-salesforce-l: var(--amb-violet-l);
+  --id-salesforce-d: var(--amb-violet-d);
   --id-blue-yonder-l: var(--amb-moss-l);
   --id-blue-yonder-d: var(--amb-moss-d);
-  --id-retail-l: var(--amb-plum-l); /* consumer warmth, away from the gold */
+  --id-workday-l: var(--amb-plum-l);
+  --id-workday-d: var(--amb-plum-d);
+  --id-data-analytics-l: var(--amb-teal-l);
+  --id-data-analytics-d: var(--amb-teal-d);
+  --id-cloud-infrastructure-l: var(--amb-indigo-l);
+  --id-cloud-infrastructure-d: var(--amb-indigo-d);
+  --id-cybersecurity-l: var(--amb-violet-l);
+  --id-cybersecurity-d: var(--amb-violet-d);
+  --id-integration-middleware-l: var(--amb-moss-l);
+  --id-integration-middleware-d: var(--amb-moss-d);
+  --id-devops-platform-engineering-l: var(--amb-umber-l);
+  --id-devops-platform-engineering-d: var(--amb-umber-d);
+  --id-testing-quality-engineering-l: var(--amb-plum-l);
+  --id-testing-quality-engineering-d: var(--amb-plum-d);
+  --id-retail-l: var(--amb-plum-l);
   --id-retail-d: var(--amb-plum-d);
+  --id-finance-l: var(--amb-indigo-l);
+  --id-finance-d: var(--amb-indigo-d);
+  --id-manufacturing-l: var(--amb-umber-l);
+  --id-manufacturing-d: var(--amb-umber-d);
+  --id-government-l: var(--amb-moss-l);
+  --id-government-d: var(--amb-moss-d);
+  --id-healthcare-l: var(--amb-teal-l);
+  --id-healthcare-d: var(--amb-teal-d);
+  --id-telco-l: var(--amb-violet-l);
+  --id-telco-d: var(--amb-violet-d);
 
   --amb-plum-d: #b45c8e;
   --amb-violet-d: #7a6fb8;
@@ -883,14 +915,23 @@ button {
 :root[data-theme="dark"] [data-identity="sap"] {
   --id: var(--id-sap-d);
 }
-/* The capability L1 and the sector L1 pass their own slug, so the selector list
-   covers every slug in the lead trio. Domains not yet mapped simply do not match
-   and keep the positional rhythm — the fallback is the absence of a rule. */
-:root[data-theme] [data-identity="data-analytics"] {
-  --id: var(--id-data-analytics-l);
+:root[data-theme] [data-identity="oracle"] {
+  --id: var(--id-oracle-l);
 }
-:root[data-theme="dark"] [data-identity="data-analytics"] {
-  --id: var(--id-data-analytics-d);
+:root[data-theme="dark"] [data-identity="oracle"] {
+  --id: var(--id-oracle-d);
+}
+:root[data-theme] [data-identity="microsoft"] {
+  --id: var(--id-microsoft-l);
+}
+:root[data-theme="dark"] [data-identity="microsoft"] {
+  --id: var(--id-microsoft-d);
+}
+:root[data-theme] [data-identity="salesforce"] {
+  --id: var(--id-salesforce-l);
+}
+:root[data-theme="dark"] [data-identity="salesforce"] {
+  --id: var(--id-salesforce-d);
 }
 :root[data-theme] [data-identity="blue-yonder"] {
   --id: var(--id-blue-yonder-l);
@@ -898,11 +939,83 @@ button {
 :root[data-theme="dark"] [data-identity="blue-yonder"] {
   --id: var(--id-blue-yonder-d);
 }
+:root[data-theme] [data-identity="workday"] {
+  --id: var(--id-workday-l);
+}
+:root[data-theme="dark"] [data-identity="workday"] {
+  --id: var(--id-workday-d);
+}
+:root[data-theme] [data-identity="data-analytics"] {
+  --id: var(--id-data-analytics-l);
+}
+:root[data-theme="dark"] [data-identity="data-analytics"] {
+  --id: var(--id-data-analytics-d);
+}
+:root[data-theme] [data-identity="cloud-infrastructure"] {
+  --id: var(--id-cloud-infrastructure-l);
+}
+:root[data-theme="dark"] [data-identity="cloud-infrastructure"] {
+  --id: var(--id-cloud-infrastructure-d);
+}
+:root[data-theme] [data-identity="cybersecurity"] {
+  --id: var(--id-cybersecurity-l);
+}
+:root[data-theme="dark"] [data-identity="cybersecurity"] {
+  --id: var(--id-cybersecurity-d);
+}
+:root[data-theme] [data-identity="integration-middleware"] {
+  --id: var(--id-integration-middleware-l);
+}
+:root[data-theme="dark"] [data-identity="integration-middleware"] {
+  --id: var(--id-integration-middleware-d);
+}
+:root[data-theme] [data-identity="devops-platform-engineering"] {
+  --id: var(--id-devops-platform-engineering-l);
+}
+:root[data-theme="dark"] [data-identity="devops-platform-engineering"] {
+  --id: var(--id-devops-platform-engineering-d);
+}
+:root[data-theme] [data-identity="testing-quality-engineering"] {
+  --id: var(--id-testing-quality-engineering-l);
+}
+:root[data-theme="dark"] [data-identity="testing-quality-engineering"] {
+  --id: var(--id-testing-quality-engineering-d);
+}
 :root[data-theme] [data-identity="retail"] {
   --id: var(--id-retail-l);
 }
 :root[data-theme="dark"] [data-identity="retail"] {
   --id: var(--id-retail-d);
+}
+:root[data-theme] [data-identity="finance"] {
+  --id: var(--id-finance-l);
+}
+:root[data-theme="dark"] [data-identity="finance"] {
+  --id: var(--id-finance-d);
+}
+:root[data-theme] [data-identity="manufacturing"] {
+  --id: var(--id-manufacturing-l);
+}
+:root[data-theme="dark"] [data-identity="manufacturing"] {
+  --id: var(--id-manufacturing-d);
+}
+:root[data-theme] [data-identity="government"] {
+  --id: var(--id-government-l);
+}
+:root[data-theme="dark"] [data-identity="government"] {
+  --id: var(--id-government-d);
+}
+:root[data-theme] [data-identity="healthcare"] {
+  --id: var(--id-healthcare-l);
+}
+:root[data-theme="dark"] [data-identity="healthcare"] {
+  --id: var(--id-healthcare-d);
+}
+:root[data-theme] [data-identity="telco"] {
+  --id: var(--id-telco-l);
+}
+:root[data-theme="dark"] [data-identity="telco"] {
+  --id: var(--id-telco-d);
 }
 
 .amb-1 {
