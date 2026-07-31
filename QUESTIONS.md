@@ -474,3 +474,38 @@ ratification step rather than something to slip in.
    list, and revisit when the content exists.
 
 My recommendation is 1, gated on your ratification of the resulting table.
+
+## Q18 — SC 2.2.2 needs a pause control, and that is a design decision
+
+**Level A, found by the paired frozen passes. I tried a fix, reverted it, and am asking instead.**
+
+Two surfaces auto-run past WCAG's five-second threshold and neither offers a
+pause mechanism reachable without a pointer:
+
+| Surface | Duration | Current pause | Reaches |
+|---|---|---|---|
+| Client rail | `rail-drift` **64s** infinite | `.railViewport:hover` — and it genuinely works, transform frozen across 900ms of hover | mouse only. The viewport contains **0 focusable elements**, so there is no keyboard route and, on touch, none at all |
+| Hero instrument | rewrites three rows every **~12s** | `onPointerEnter` works; `onFocusCapture` is **declared and can never fire** — the figure has no focusable descendant and no tabindex | mouse only |
+
+Both are fully static under `prefers-reduced-motion`, verified — but WCAG does
+not accept an OS setting as the page's mechanism, and a touch user has no hover.
+
+**What I tried and backed out.** `tabIndex={0}` on the instrument's `<figure>`
+made the declared focus-hold fire, and I measured it working — focus set
+`data-held`, the stage froze across 4s. I reverted it because biome objected
+correctly: a non-interactive element in the tab order confuses more than it
+helps, and a focusable figure whose only behaviour is "pauses while focused" is a
+weak mechanism that announces nothing about itself.
+
+**The criterion wants a control**, and that is the ask: a small pause/play toggle
+on the rail and on the instrument. It is genuinely reachable by keyboard and
+touch, it is self-describing, and it satisfies 2.2.2 outright. It also puts new
+UI into the hero and onto the rail, which is a composition decision on the two
+most deliberately-restrained surfaces on the site — so it is yours, not mine.
+
+**A canon note that goes with it.** §5's motion clause says auto-advancing
+elements "pause on hover", and the build honours that clause *exactly*. The
+clause is what leaves 2.2.2 unmet, because hover is not a mechanism for keyboard
+or touch. If you ratify the control, the clause should read "a mechanism" rather
+than "hover" — otherwise the next implementer builds the same gap from the same
+sentence.

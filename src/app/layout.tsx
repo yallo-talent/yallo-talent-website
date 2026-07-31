@@ -80,7 +80,17 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <MotionProvider>
           <NavBar />
-          <main id="main" className="flex-1">
+          {/* tabIndex -1 so the skip link MOVES FOCUS rather than only scrolling.
+              Measured before: activeElement stayed on <body>, and Chromium's
+              sequential-focus starting point happened to rescue traversal — which
+              is luck, not conformance. scroll-margin-top clears the sticky header,
+              which had been burying the hero eyebrow by its full 40px height. */}
+          <main
+            id="main"
+            className="flex-1"
+            tabIndex={-1}
+            style={{ scrollMarginTop: "96px" }}
+          >
             {children}
           </main>
           <Footer />

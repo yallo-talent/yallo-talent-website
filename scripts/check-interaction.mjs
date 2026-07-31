@@ -48,12 +48,25 @@ const MAX_REPEATS = 2;
 const browser = await chromium.launch();
 const failures = [];
 const notes = [];
+let tabStopsProbed = 0;
 
+/* Two viewports. Both paired plateau passes found the same SC 2.4.11 failure
+   independently and both named the same cause: this gate opened ONE 1280x900
+   page and sampled three arbitrary fractions of page height, so a defect that
+   lives at 390px and at the scroll offsets Tab itself produces was unreachable.
+   The fix is not a bigger threshold, it is visiting the conditions a keyboard
+   user actually creates. */
+const VIEWPORTS = [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+];
+
+for (const viewport of VIEWPORTS) {
 for (const path of PAGES) {
-  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  const page = await browser.newPage({ viewport });
   const res = await page.goto(BASE + path, { waitUntil: "networkidle" });
   if (!res?.ok()) {
-    failures.push(`${path}  did not load (HTTP ${res?.status() ?? "none"})`);
+    failures.push(`${path} @${viewport.width}  did not load (HTTP ${res?.status() ?? "none"})`);
     await page.close();
     continue;
   }
@@ -74,7 +87,7 @@ for (const path of PAGES) {
   });
   if (styled.rules < 600) {
     failures.push(
-      `${path}  only ${styled.rules} CSS rules — a partial build, refusing to judge it`,
+      `${path} @${viewport.width}  only ${styled.rules} CSS rules — a partial build, refusing to judge it`,
     );
     await page.close();
     continue;
@@ -90,7 +103,7 @@ for (const path of PAGES) {
     // Focus alone must not open it: focus-to-open is what inflates tab traversal.
     if ((await t.getAttribute("aria-expanded")) === "true") {
       failures.push(
-        `${path}  trigger ${i} opens on FOCUS — SC 1.4.13, and it puts the panel's contents in the tab sequence`,
+        `${path} @${viewport.width}  trigger ${i} opens on FOCUS — SC 1.4.13, and it puts the panel's contents in the tab sequence`,
       );
       continue;
     }
@@ -101,7 +114,7 @@ for (const path of PAGES) {
     await page.waitForTimeout(250);
     if ((await t.getAttribute("aria-expanded")) === "true") {
       failures.push(
-        `${path}  trigger ${i} cannot be dismissed with Escape — SC 1.4.13 (Dismissible)`,
+        `${path} @${viewport.width}  trigger ${i} cannot be dismissed with Escape — SC 1.4.13 (Dismissible)`,
       );
     }
   }
@@ -126,7 +139,7 @@ for (const path of PAGES) {
   }
   if (reached && stops + 1 > MAX_STOPS_TO_CTA) {
     failures.push(
-      `${path}  ${stops + 1} tab stops to the header CTA, over the ${MAX_STOPS_TO_CTA} budget`,
+      `${path} @${viewport.width}  ${stops + 1} tab stops to the header CTA, over the ${MAX_STOPS_TO_CTA} budget`,
     );
   }
 
@@ -154,8 +167,20 @@ for (const path of PAGES) {
       for (const a of document.querySelectorAll("a[href], button")) {
         const r = a.getBoundingClientRect();
         if (r.width < 4 || r.height < 4) continue;
+        // Bound the target on BOTH axes. Checking only the vertical was a bug in
+        // this probe: a link scrolled off to the right inside a horizontal
+        // scroller sits at x=424 in a 390px viewport, elementFromPoint returns
+        // null there, and null was being counted as "covered". That produced ten
+        // false positives against one real defect.
         if (r.bottom < 0 || r.top > innerHeight) continue;
+        if (r.right < 0 || r.left > innerWidth) continue;
         if (fixed.some((f) => f.contains(a))) continue; // the overlay's own controls
+        // And require an overlay to actually intersect the target before judging.
+        const overlaps = fixed.some((f) => {
+          const g = f.getBoundingClientRect();
+          return !(g.right < r.left || g.left > r.right || g.bottom < r.top || g.top > r.bottom);
+        });
+        if (!overlaps) continue;
         let hits = 0;
         for (let i = 1; i <= 3; i++) {
           for (let j = 1; j <= 3; j++) {
@@ -174,10 +199,67 @@ for (const path of PAGES) {
       }
       return out;
     });
+    /* ADVISORY, not failing, and the distinction is the success criterion.
+       SC 2.4.11 is about the element that has FOCUS — that is what the Tab-driven
+       probe below tests, and that is the hard gate. A link merely sitting under a
+       fixed overlay at some scroll offset is something a reader scrolls past; it
+       is worth knowing and it is not a conformance failure. Reporting it as one
+       would make this gate cry wolf, which is how a gate gets ignored. */
     for (const bl of blocked) {
-      failures.push(
-        `${path} @${Math.round(frac * 100)}% scroll  a fixed overlay fully covers "${bl}" — 0 of 9 hit points`,
+      notes.push(
+        `${path} @${viewport.width} @${Math.round(frac * 100)}% scroll  a fixed overlay covers "${bl}" — reachable by scrolling`,
       );
+    }
+  }
+
+  // Focus-driven occlusion: Tab through the page and check, at each stop, that
+  // no fixed overlay covers the element the browser just scrolled to. This is
+  // the case three arbitrary scroll fractions cannot reach — SC 2.4.11 fails on
+  // ENTIRELY hidden, and a Tab-produced offset put a taxonomy link 100% under
+  // the sticky prompt at 390px.
+  await page.goto(BASE + path, { waitUntil: "networkidle" });
+  for (let i = 0; i < 45; i++) {
+    await page.keyboard.press("Tab");
+    // Let smooth scrolling settle, or the reading races the scroll.
+    await page.waitForTimeout(180);
+    const hidden = await page.evaluate(() => {
+      const a = document.activeElement;
+      if (!a || a === document.body) return null;
+      const r = a.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return null;
+      if (r.bottom < 0 || r.top > innerHeight) return null;
+      if (r.right < 0 || r.left > innerWidth) return null;
+      const fixed = [...document.querySelectorAll("*")].filter((el) => {
+        const cs = getComputedStyle(el);
+        return (
+          cs.position === "fixed" &&
+          cs.visibility !== "hidden" &&
+          cs.display !== "none" &&
+          !el.contains(a) &&
+          el.getBoundingClientRect().width > 0
+        );
+      });
+      if (!fixed.length) return null;
+      let covered = 0;
+      const pts = 9;
+      for (let x = 1; x <= 3; x++) {
+        for (let y = 1; y <= 3; y++) {
+          const el = document.elementFromPoint(
+            r.x + (r.width * x) / 4,
+            r.y + (r.height * y) / 4,
+          );
+          if (el && fixed.some((f) => f === el || f.contains(el))) covered++;
+        }
+      }
+      if (covered < pts) return null; // partial is SC 2.4.11 Minimum-compliant
+      return (a.textContent ?? "").trim().slice(0, 34) || a.tagName;
+    });
+    tabStopsProbed += 1;
+    if (hidden) {
+      failures.push(
+        `${path} @${viewport.width}  tab stop ${i + 1} "${hidden}" is ENTIRELY under a fixed overlay — SC 2.4.11`,
+      );
+      break; // one report per template is enough to act on
     }
   }
 
@@ -201,7 +283,7 @@ for (const path of PAGES) {
     for (const o of outline) {
       if (o.level !== modal && o.level !== 1) {
         failures.push(
-          `${path}  a top-level section leads with h${o.level} while its peers use h${modal} — "${o.text}"`,
+          `${path} @${viewport.width}  a top-level section leads with h${o.level} while its peers use h${modal} — "${o.text}"`,
         );
       }
     }
@@ -242,10 +324,11 @@ for (const path of PAGES) {
     [PHRASE_WORDS, MAX_REPEATS],
   );
   for (const [phrase, n] of repeats) {
-    notes.push(`${path}  "${phrase}" rendered ${n}x — canon §2 copy tell`);
+    notes.push(`${path} @${viewport.width}  "${phrase}" rendered ${n}x — canon §2 copy tell`);
   }
 
   await page.close();
+}
 }
 
 await browser.close();
@@ -267,7 +350,17 @@ if (failures.length) {
   process.exit(1);
 }
 
+/* A gate that cannot be seen to have run is not evidence. If the focus probe
+   never reached a stop, something silently broke and "clean" would be a lie. */
+if (tabStopsProbed < 20) {
+  console.error(
+    `\nThe focus-occlusion probe only reached ${tabStopsProbed} tab stops — too few to trust. Refusing to report clean.`,
+  );
+  process.exit(1);
+}
+
 console.log(
-  `\nInteraction clean across ${PAGES.length} templates: every popup dismissible, ` +
-    "no fixed overlay covering a control, section heading levels consistent.",
+  `\nInteraction clean across ${PAGES.length} templates x ${VIEWPORTS.length} widths: ` +
+    `every popup dismissible, ${tabStopsProbed} focused stops none entirely obscured, ` +
+    "section heading levels consistent.",
 );

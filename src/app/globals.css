@@ -789,6 +789,22 @@ h3 {
    roman to fake one. Synthesised mono obliques smear at 13px. Reset globally
    rather than per class: nothing in this design wants an italic citation, and
    the two instances that existed were fixed one at a time and one was missed. */
+/* Reserve the sticky prompt's height at the bottom of every scroll-into-view.
+   Both paired plateau passes found the same SC 2.4.11 failure independently: at
+   390px the fixed brief prompt covered a Tab-focused taxonomy link ENTIRELY —
+   100% by rect geometry, with elementFromPoint at the link's centre returning
+   the prompt's own button, so a tap aimed at one fired the other. Six more stops
+   were 52-90% covered.
+
+   scroll-padding-bottom is the standards mechanism for exactly this: the browser
+   honours it when it scrolls an element into view for focus, so the focused
+   target lands above the overlay instead of under it. 140px is the prompt's
+   116px at 390 plus its 20px offset and a little air. It costs nothing when the
+   prompt is not mounted, because there is then nothing in that band to avoid. */
+html {
+  scroll-padding-bottom: 140px;
+}
+
 cite {
   font-style: normal;
 }

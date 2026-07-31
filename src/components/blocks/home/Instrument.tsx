@@ -98,6 +98,19 @@ export function Instrument() {
   const shortlistDone = stage === "settled" || stage === "done";
 
   return (
+    /* The pause-on-focus declared below CANNOT FIRE, and it is logged rather
+       than patched. onFocusCapture/onBlurCapture are here, but the figure has no
+       focusable descendant and no tabindex, so focus never lands inside it — a
+       declared behaviour that changes nothing, the same class as a hover rule
+       that re-declares its resting value.
+
+       It matters for SC 2.2.2 (Pause, Stop, Hide, Level A): this panel rewrites
+       three rows every ~12s and hover is its only pause, which serves a mouse
+       and nothing else. I tried tabIndex={0} on the figure and reverted it —
+       biome objects correctly that a non-interactive element in the tab order
+       confuses more than it helps, and a focusable figure that only pauses is a
+       weak mechanism. The criterion wants a CONTROL, and adding a visible
+       pause button to the hero is a design decision. QUESTIONS.md Q18. */
     <figure
       className={styles.instrument}
       aria-label={instrument.label}

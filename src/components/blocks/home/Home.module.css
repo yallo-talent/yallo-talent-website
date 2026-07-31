@@ -1622,6 +1622,25 @@
   transition: background 0.28s var(--ease);
 }
 
+/* display: block, and this is a WCAG SC 2.4.7 fix at Level A rather than a
+   layout preference. There was no .axisLink rule at all — a bare <a> wrapping a
+   display:grid child, so it stayed inline.
+
+   As an inline box its getClientRects() returned three fragments — [0x0, 550x88,
+   0x0] — and the focus outline painted around the ZERO-SIZE ones, so all twelve
+   platform and sector links had no visible focus indicator. A pixel diff of
+   focused against blurred differed in 0 of 67,048 pixels.
+
+   It defeats every style-reading check by construction: getBoundingClientRect()
+   unions the fragments and reports a healthy 550x88, and the computed outline is
+   a correct 2px solid gold at 3px offset. The declaration was right; only the
+   paint was wrong. Nineteen other anchors share the inline-wrapping-block shape
+   and are fine because they use inline-flex or inline-block and so establish
+   their own box — this was the only bare inline one. */
+.axisLink {
+  display: block;
+}
+
 .axisLink:hover .axisItem {
   background: var(--ground-2);
 }
