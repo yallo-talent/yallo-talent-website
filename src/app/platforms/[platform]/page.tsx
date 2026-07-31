@@ -51,6 +51,16 @@ export async function generateMetadata({
   });
 }
 
+/* Every card needs an anchor, including the derived modules that carry no
+   `slug` — that field marks the ones with an L2 page, which is a different
+   question from having a place on this page. */
+function slugify(name: string) {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export default async function PlatformPage({
   params,
 }: {
@@ -123,9 +133,39 @@ export default async function PlatformPage({
             id="modules-heading"
           />
 
+          {/* A compact index of the set, and on mobile it is the difference
+              between a list and a wall. Measured: 17 stacked cards run 6,862px
+              at 390 — 85% of the page, about 4.6 viewports of near-identical
+              composition — with no index, no filter and no jump list. The page
+              title promises seventeen modules and nothing enumerated them
+              compactly, so the only way to learn the set's shape was to scroll
+              all of it.
+
+              Anchors rather than a scroller: every card already has a stable
+              id, so this needs no new state, works with JS off, and costs one
+              tab stop per module instead of the eighteen a control would add.
+              It renders only when the set is big enough to need it. */}
+          {cov.modules.length > 8 ? (
+            <nav className={styles.moduleIndex} aria-label={`${cov.name} modules`}>
+              {cov.modules.map((mod) => (
+                <a
+                  key={mod.name}
+                  href={`#module-${slugify(mod.name)}`}
+                  className={styles.moduleIndexLink}
+                >
+                  {mod.name}
+                </a>
+              ))}
+            </nav>
+          ) : null}
+
           <div className={styles.commitment}>
             {cov.modules.map((mod) => (
-              <article key={mod.name} className={styles.vow}>
+              <article
+                key={mod.name}
+                id={`module-${slugify(mod.name)}`}
+                className={styles.vow}
+              >
                 {/* No vendor mark and no petal fill on these cards.
                     The mark was 17 identical full-colour logos, aria-hidden and
                     carrying no information on a page that IS that vendor — and

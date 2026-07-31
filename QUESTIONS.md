@@ -424,3 +424,48 @@ a question and not a commit.
 2. **A4 for a filled MONO control.** `.skipLink` is uppercase mono at 0.12em on a
    gold fill. A4 gives mono labels 13px and buttons 15px; this is both. I raised
    it to 15.5px on the reading that "filled control" wins, but A4 does not say.
+
+## Q17 — The SAP module pages repeat their parent card, and the corpus cannot fix it alone
+
+**The last open P1 on `/platforms/sap`, and it is a content-scope question rather than a build defect.**
+
+A pass-3 critique measured it string-for-string: the L2 page for SAP Datasphere
+carries the **identical scope line** and the **identical four role names** as the
+SAP Datasphere card on the L1. What the L2 adds is the four sitewide metrics
+(byte-identical on every module page) and 16 links back out — 540 of its 1,646px
+is the sibling grid. **Net new module-specific information: zero.** On a platform
+whose entire wedge is module-level depth, the destination does not pay for the
+click.
+
+**What the corpus does and does not give.** `platform-expertise/sap-expertise.md`
+in the legacy archive is 662 lines with a real section per module, so the source
+exists. But the prose is **platform-speak** — *"SAP Analytics delivers an
+integrated suite of tools for real-time reporting, AI-driven forecasting…"* —
+which describes what SAP does, not what Yallo places. The IA change log already
+recorded this: the names are the corpus's and the scope lines are ours. Converting
+that prose to Talent-speak means writing new claims about what Yallo staffs, which
+is a claim about Yallo that no corpus answers.
+
+**The one genuinely convertible asset** is the sub-product list inside each
+module. For SAP Analytics the corpus names Analytics Cloud, Datasphere,
+BW/4HANA, BusinessObjects, Crystal Reports, Lumira and the BI Suite. That is real,
+attested, module-specific depth the L1 card does not carry — and it is exactly the
+kind of list an L2 should hold.
+
+**Why I have not built it.** Each name needs an R5 market pass before it ships:
+SAP Lumira is discontinued, BusinessObjects and Crystal Reports are legacy but
+still sold, and R5 requires real market products with a logged was/now/why table
+per change. That is a scoped piece of work with a ratification step, not something
+to slip in. Doing it fast would mean publishing retired products as staffed desks.
+
+**Three ways forward, and it is your call which:**
+
+1. **Build the sub-product layer** — I run the R5 market pass per name across all
+   17 modules, ship the survivors as the L2's depth, and log the table. Largest
+   and the one that makes the L2 worth its click.
+2. **Thin the L2 set** — keep module pages only where there is real depth to
+   publish, and let the rest resolve to the L1 anchor the new index provides.
+3. **Leave them** — accept that the L2s are currently SEO surface with a bench
+   list, and revisit when the content exists.
+
+My recommendation is 1, gated on your ratification of the resulting table.

@@ -1139,7 +1139,43 @@
   gap: 14px;
 }
 
+/* The module index. A wrapping row of chips, not a scroller: at 390 a
+   horizontal scroller would hide most of the set again, which is the problem it
+   exists to solve. --fs-body-sm because A4 puts nav at 15px and these are
+   navigation. */
+.moduleIndex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+
+.moduleIndexLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 13px;
+  font-size: var(--fs-body-sm);
+  color: var(--fg-muted);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.moduleIndexLink:hover,
+.moduleIndexLink:focus-visible {
+  color: var(--fg);
+  border-color: var(--rule-strong);
+  background: var(--ground-3);
+}
+
 .vow {
+  /* Clears the sticky header on an anchor jump from the index above. */
+  scroll-margin-top: 104px;
   position: relative;
   overflow: hidden;
   background: var(--ground-2);
