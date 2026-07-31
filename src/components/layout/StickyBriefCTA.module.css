@@ -93,3 +93,26 @@
     justify-content: space-between;
   }
 }
+
+/* The prompt WITHDRAWS while keyboard focus is inside the page, and this closes
+   two findings from the paired frozen passes at once.
+
+   scroll-padding-bottom alone was not enough: it only applies when the browser
+   actually scrolls an element into view, so a control already on screen but
+   underneath this overlay never triggers a scroll and nothing reserves space for
+   it. The interaction gate caught exactly that — "Open page" at tab stop 19 on
+   retail at 390px, entirely covered.
+
+   The other finding was that this panel's own controls are unreachable by Tab:
+   it is the last child of <body>, so its stops fall after the whole footer, but
+   reaching the footer's end requires scrolling past the point where it unmounts.
+   A keyboard user could see a dismiss button they could never focus.
+
+   Both dissolve if the prompt is treated as what it is — a POINTER affordance.
+   A keyboard user traversing the page meets the real CTAs inline (hero, section
+   and closing), so the floating repeat earns nothing and costs occlusion.
+   :focus-visible rather than :focus, so a mouse click on page content does not
+   make it flicker. */
+body:has(main :focus-visible) .cta {
+  display: none;
+}

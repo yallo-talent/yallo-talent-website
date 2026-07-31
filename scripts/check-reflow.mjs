@@ -1,7 +1,14 @@
 #!/usr/bin/env node
 /**
  * WCAG 2.2 SC 1.4.10 Reflow: no horizontal scrolling at a 320px-equivalent
- * viewport. Canon's performance gate names 360px, so that is what this asserts,
+ * viewport. BOTH 320 and 360 are asserted now, and 320 is the one that matters:
+ * SC 1.4.10 is specified at 320 CSS px, because that is 1280px at 400% zoom.
+ * This gate previously asserted 360 alone, citing canon's performance gate — and
+ * a frozen critique pass found 40px of horizontal scroll at 320 on every route in
+ * both registers, un-gated by construction for as long as the gate existed. The
+ * contributors were the header's action cluster and, for the last 7px, an
+ * unwrappable "Launching" row in the FOOTER. Both fixed; both now guarded.
+ * Canon's 360 is kept as well, since a wider assertion catches different things,
  * across every built route in both registers.
  *
  * capture-home.mjs already asserted this — for the homepage only, 1 of ~20
@@ -27,7 +34,10 @@ const arg = (n, d) => {
 
 const PORT = process.env.PORT ?? "3000";
 const BASE = process.env.CAPTURE_BASE ?? `http://localhost:${PORT}`;
-const WIDTH = Number.parseInt(arg("width", "360"), 10);
+/* SC 1.4.10's own width first. A --width argument still overrides, for probing. */
+const WIDTHS = arg("width", "")
+  ? [Number.parseInt(arg("width", "320"), 10)]
+  : [320, 360];
 
 const ROUTES = [
   "/",
@@ -55,6 +65,7 @@ const ROUTES = [
 const browser = await chromium.launch();
 const failures = [];
 
+for (const WIDTH of WIDTHS) {
 for (const theme of ["light", "dark"]) {
   const ctx = await browser.newContext({
     viewport: { width: WIDTH, height: 800 },
@@ -113,20 +124,21 @@ for (const theme of ["light", "dark"]) {
         );
       }
     } catch (e) {
-      failures.push(`${route} ${theme}: ${e.message.split("\n")[0]}`);
+      failures.push(`${route} @${WIDTH} ${theme}: ${e.message.split("\n")[0]}`);
     }
     await page.close();
   }
   await ctx.close();
 }
+}
 
 await browser.close();
 
 if (failures.length) {
-  console.error(`\n${failures.length} reflow failure(s) at ${WIDTH}px:`);
+  console.error(`\n${failures.length} reflow failure(s):`);
   for (const f of failures) console.error(`  ✗ ${f}`);
   process.exit(1);
 }
 console.log(
-  `\nNo horizontal overflow: ${ROUTES.length} routes x 2 themes at ${WIDTH}px.`,
+  `\nNo horizontal overflow: ${ROUTES.length} routes x 2 themes at ${WIDTHS.join(" and ")}px — SC 1.4.10 asserted at its own 320.`,
 );

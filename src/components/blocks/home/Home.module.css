@@ -818,6 +818,17 @@
   padding: clamp(22px, 3vw, 36px);
 }
 
+/* The petal must CLEAR the label, and this is a 1.4.3 fix at Level AA rather
+   than a tidy-up. At narrow widths the panel is too tight for a 120px
+   quarter-round pinned at -34px to stay clear of .panelLabel, so the label
+   rendered partly over it: measured 3.95:1 in the dark register at 320, 360,
+   390 and 430px, with 14-24% of glyph pixels below threshold. Dark only,
+   because the dark petal runs at 0.20 opacity against light's 0.16.
+   axe returns it as `incomplete` rather than a violation, so the project's own
+   a11y gate could not see it — Q16's blindness exactly.
+   Canon §5 says ambient never touches text. It was behind rather than on the
+   label, so not a breach by the letter — but the letter is what let this ship,
+   and the clause wants "must clear text" in it. */
 .panelPetal {
   position: absolute;
   right: -34px;
@@ -1860,16 +1871,19 @@
    six-line clamp cut every one of them mid-sentence. Nine lines leaves headroom
    and still caps the legacy `summary` fallback, which is what the clamp is
    actually for. */
+/* No line clamp, and removing it costs nothing. SC 1.4.12 (Text Spacing, AA)
+   requires text to survive line-height 1.5, letter-spacing 0.12em and
+   word-spacing 0.16em without loss of content. This carried
+   -webkit-line-clamp: 9 with exactly ONE line of headroom at rest, and those
+   metrics consume it: seven of the eight excerpts lost their last line.
+   The clamp was doing no work either way — measured at 1280, 640 and 390 it
+   truncated nothing at rest at any width, so its only effect on the built page
+   was the failure. */
 .caseSummary {
   margin-top: 12px;
   font-size: var(--fs-body-sm);
   line-height: 1.6;
   color: var(--text-2);
-  display: -webkit-box;
-  -webkit-line-clamp: 9;
-  line-clamp: 9;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .caseFoot {
@@ -2295,4 +2309,20 @@
 .platformHeroInner {
   position: relative;
   z-index: 2;
+}
+
+/* The petal is REMOVED below 700px, not shrunk. I tried shrinking it to 76px
+   first and measured the result: the panel offers only 22px between its top edge
+   and the label, so a corner quarter-round of any useful size still reaches the
+   label band — 32px of a 304px label still sat over it.
+   Lifting the label with z-index does not help either, and that was my second
+   wrong attempt: the label has no background, so the GROUND behind its glyphs is
+   still petal-composited and contrast is glyph-against-ground. Stacking order
+   changes what paints on top, not what the text is measured against.
+   So it goes. It is decorative ambient with no informational job, canon §5 says
+   ambient never touches text, and 3.95:1 on a label is the cost of keeping it. */
+@media (max-width: 700px) {
+  .panelPetal {
+    display: none;
+  }
 }

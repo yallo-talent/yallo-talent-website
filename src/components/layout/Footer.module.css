@@ -77,10 +77,18 @@
    tall, so the padding is load-bearing rather than decorative — and it appears
    in the footer of every page on the site. */
 /* A family member with no site yet. Not a link, and it says why. */
+/* flex-wrap, and this is the last 7px of the SC 1.4.10 fix at 320px.
+   The row is `label + "Launching"` on one unwrappable line, and at 320 the
+   longest of them pushed .plannedMark's right edge to 326.6 — the whole
+   document's 7px of horizontal scroll, in the FOOTER, nowhere near the header
+   I had been trimming. Located by filtering rect overflow to elements with no
+   clipping ancestor, which is what separated it from the client rail's
+   deliberately-8448px-wide marquee track. */
 .linkPlanned {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px;
+  gap: 4px 8px;
   font-size: var(--fs-caption);
   color: var(--dk-txt-3);
 }

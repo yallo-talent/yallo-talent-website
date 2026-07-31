@@ -626,3 +626,18 @@
     padding: 8px 6px;
   }
 }
+
+/* SC 1.4.10 again, and the last 7px of it. Hiding the lockup suffix took the
+   320px overflow from 40px down to 7px; the bar's own gutter closes the rest.
+
+   Appended at the END of the file deliberately. My first attempt inserted this
+   query in the middle of the max-width:480 block, which closed that block early
+   and swept its remaining rules — the hamburger sizing, the CTA padding, the
+   arrow-glyph hide — into the narrow query. They then stopped applying between
+   360 and 480, and 360px regressed to +8px overflow while 320 improved. A media
+   query inserted mid-block silently re-scopes everything after it. */
+@media (max-width: 359px) {
+  .bar {
+    padding: 0 8px;
+  }
+}
