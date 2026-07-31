@@ -78,11 +78,30 @@ for (const theme of ["light", "dark"]) {
       // on anything about the page. Stylesheets are render-blocking, so they are
       // applied before DOMContentLoaded fires, which is what axe actually needs
       // to compute contrast and target geometry. The rule set below is unchanged.
-      await page.goto(base + route, {
-        waitUntil: "domcontentloaded",
-        timeout: 60000,
-      });
-      await page.waitForTimeout(400);
+      /* "load", not "domcontentloaded". A stylesheet is a LOAD-blocking
+         resource, so reading computed styles at DOMContentLoaded + a fixed 400ms
+         is a race — and it lost: the guard below failed the very first route of a
+         run against a server that was demonstrably serving correct CSS (verified
+         independently: 3 sheets, Inter, rgb(233,233,232)). A fixed sleep cannot
+         stand in for the event that actually means "CSS has arrived".
+         The guard is unchanged and still fails a genuinely unstyled page — this
+         only stops it firing on a page that simply had not finished loading. */
+      await page.goto(base + route, { waitUntil: "load", timeout: 60000 });
+      /* Then poll for the assertion itself rather than sleeping a guessed amount:
+         a cold first request can still be compiling the CSS chunk. */
+      await page
+        .waitForFunction(
+          () => {
+            const cs = getComputedStyle(document.body);
+            return (
+              document.styleSheets.length > 0 &&
+              /inter|newsreader|plex/i.test(cs.fontFamily)
+            );
+          },
+          { timeout: 10000 },
+        )
+        .catch(() => {}); // fall through to the guard, which reports properly
+      await page.waitForTimeout(200);
 
       // Positive assertion that the CSS actually arrived, because axe on an
       // unstyled page does not error — it reports a wall of plausible-looking

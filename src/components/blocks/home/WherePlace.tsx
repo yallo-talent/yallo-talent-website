@@ -37,15 +37,26 @@ export function WherePlace() {
                 const body = (
                   <div className={styles.axisItem}>
                     {/* R9: a keyed silhouette or the vendor's NAME — never a
-                        padded box. The name variant is NOT aria-hidden, because
-                        unlike a decorative mark beside a visible label it is the
-                        only rendering of that vendor in this cell. */}
+                        padded box.
+
+                        BOTH variants are aria-hidden. My previous comment here
+                        claimed the name variant "is the only rendering of that
+                        vendor in this cell" and that was simply false — read the
+                        next element: .axisName renders p.name again, always. So
+                        the link announced "Blue Yonder | Blue Yonder | Luminate ·
+                        WMS · planning", stuttering the vendor twice before the
+                        content, and only for the two vendors whose mark would not
+                        key. The visual substitute is a substitute for the MARK,
+                        which was already decorative; the label beside it is what
+                        carries the name to AT. */}
                     {p.mark ? (
                       <span className={styles.axisMark} aria-hidden="true">
                         <LogoImage src={p.mark} width={44} height={22} />
                       </span>
                     ) : (
-                      <span className={styles.axisMarkName}>{p.name}</span>
+                      <span className={styles.axisMarkName} aria-hidden="true">
+                        {p.name}
+                      </span>
                     )}
                     <span>
                       <span className={styles.axisName}>{p.name}</span>

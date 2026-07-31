@@ -244,7 +244,10 @@
 .ctaPrimary:hover {
   background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink-950));
   color: var(--ink-950);
-  transform: translateY(-1px);
+  /* 2px, not 1px. The page's primary action had the SMALLEST hover movement of
+     any element on it — below four display cards. It should not be the quietest
+     thing on the page. */
+  transform: translateY(-2px);
 }
 
 .ctaGhost {
@@ -324,7 +327,15 @@
   /* Sits below the main NavBar; the 72px top offset creates the
      visible gap only while pinned. No margin-top so it stays flush
      with the stats strip in normal flow. */
-  top: 72px;
+  /* var(--header-h), not 72px. This was the FOURTH hardcoded header offset in the
+     codebase and the only one never migrated: NavBar.module.css moved three to the
+     token, each with a comment saying a hardcoded 72 against the real height left
+     a sliver. --header-h is 80px (65px with its border at narrow widths), so 72
+     opened a 7px SLOT below 430px with live page content scrolling through it —
+     measured at 14.75:1 ink in rows y65-71 — and tucked the bar 9px UNDER the
+     header above 600px, pushing its labels 5px off the visible band's centre.
+     Shared L1 shell, so all 18 domain pages. */
+  top: var(--header-h);
   z-index: 40;
   background: color-mix(in oklab, var(--ground) 92%, transparent);
   border-bottom: 1px solid var(--wa08);
@@ -595,8 +606,15 @@
    again. A `filter: blur()` on a 50%-radius decorative layer is the anti-reference
    DESIGN.md names, whatever element carries it. */
 
+/* NO LIFT. A hover that raises an element off the page is a click affordance —
+   it says "this responds". Nothing in this card does: measured, all 3 instances
+   contain no `a` and no `button`. The site's ladder was exactly INVERTED — the
+   four largest hover lifts (6px, 4px, 4px, 2px) were all on non-interactive
+   cards, while every real control moved 1-2px, so the strongest promise of
+   interactivity on the page belonged to the things that had none.
+   The hover still responds — border, wash and glow all change — it just no
+   longer promises a click. Motion magnitude now tracks interactivity. */
 .wwdCard:hover {
-  transform: translateY(-6px);
   border-color: var(--sector-accent-35);
   background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
@@ -774,8 +792,15 @@
   display: none;
 }
 
+/* NO LIFT. A hover that raises an element off the page is a click affordance —
+   it says "this responds". Nothing in this card does: measured, all 4 instances
+   contain no `a` and no `button`. The site's ladder was exactly INVERTED — the
+   four largest hover lifts (6px, 4px, 4px, 2px) were all on non-interactive
+   cards, while every real control moved 1-2px, so the strongest promise of
+   interactivity on the page belonged to the things that had none.
+   The hover still responds — border, wash and glow all change — it just no
+   longer promises a click. Motion magnitude now tracks interactivity. */
 .hwwStep:hover {
-  transform: translateY(-4px);
   border-color: var(--sector-accent-35);
   background: color-mix(in oklab, var(--ground-2) 55%, var(--sector-accent-08));
 }
@@ -1393,9 +1418,13 @@
   pointer-events: none;
 }
 
+/* A lift is kept here, at the control scale rather than above it. Unlike the
+   two cards above, this rule is also the OPEN-STATE indicator (.expCardOpen), and
+   some instances do carry a real link — so movement is earned. 4px put it above
+   every actual control; 2px sits level with them. */
 .expCard:hover,
 .expCardOpen {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   border-color: var(--sector-accent-35);
   background: color-mix(in oklab, var(--ground-2) 60%, var(--sector-accent-08));
   box-shadow: inset 0 1px 0 var(--wa15);

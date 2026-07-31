@@ -55,8 +55,19 @@
   /* Taken from public/logos/yallo-flower.svg. Three grades because no single
      value clears AA on both paper and near-black at every type size. */
   --gold: #d4a843; /* 7.07:1 on dk-3 · decorative only on light */
-  --gold-deep: #9d7818; /* 3.12:1 on paper-3 — large text + boundaries */
-  --gold-ink: #7b5d13; /* 4.69:1 on paper-3 — 11px mono labels */
+  /* Re-derived against the FIELD, not against paper-3. Both grades were
+     calibrated when the lightest thing behind gold was --paper-3 (225); R11
+     strengthened the ambient wash so the real painted ground under this ink now
+     runs 205-229, and a DARKER ground lowers contrast for mid-dark ink. Measured
+     from screenshot pixels on a ground band beside the glyphs at five widths:
+     gold-deep sat at 2.78:1 on /capabilities/data-analytics at 1024 and 2.91 at
+     1280 against a 3.0 threshold, and gold-ink at 4.36-4.41 below 1024 against
+     4.5. I wrote "AA held throughout" when I shipped R11 and it did not; this is
+     that claim made true.
+     Darkening the ink ~6% rather than weakening the wash, because the wash IS
+     R11 — the whole point was that SAP must not read the same as Retail. */
+  --gold-deep: #906e16; /* 3.23:1 on the darkest field stop — large text + boundaries */
+  --gold-ink: #725612; /* 4.68:1 on the darkest field stop — small text + mono labels */
   --gold-wash: #f2e9d2; /* the only tinted ground */
 
   /* --- Functional palette ----------------------------------------------- */

@@ -1720,19 +1720,45 @@
 /* The NAME treatment, per R9. Same 40px cell and hairline as .axisMark so the
    column stays even, but typeset rather than boxed — canon §8's rule is that an
    unkeyable mark becomes text, never a padded plate. */
+/* The NAME substitute for a mark that will not key — canon §8's fallback.
+   It has to look chosen rather than broken, and at --fs-caption with negative
+   tracking "Blue Yonder" measured 81.9px in a 76px slot: it overhung a VISIBLE
+   border by 5.9px on the right while sitting 9px in from the left, which reads
+   as text escaping its box, i.e. exactly the rendering fault the fallback is
+   meant to avoid. Tracked small caps at the caption-lock size fit, and match
+   R15's treatment of TALENT in the wordmark — the same answer to the same
+   problem, so the two now agree. */
 .axisMarkName {
   display: grid;
   place-items: center;
   height: 40px;
-  padding: 0 8px;
+  /* TWO LINES, because one will not fit and the floor may not move. "Blue Yonder"
+     sets 81.5px of ink in a 76px slot at --fs-caption, and --fs-caption IS the A4
+     sans floor of 14px — so shrinking it to fit would mean weakening the type
+     gate to hide a layout problem, which is backwards. Wrapping on the space puts
+     the longest word, YONDER, at ~55px inside 76px with room either side, and two
+     14px lines at line-height 1 occupy 28px of the 40px slot.
+     A stacked two-word lockup is also what this treatment should have been: it
+     reads as a considered substitute for a mark rather than a label that ran out
+     of box. */
+  padding: 0 6px;
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-xs);
   font-family: var(--font-display);
   font-size: var(--fs-caption);
   font-weight: var(--fw-medium);
-  letter-spacing: -0.01em;
+  font-variant-caps: all-small-caps;
+  /* POSITIVE tracking, not -0.01em. Small caps without it set too tight to read
+     at this size, and the negative value was inherited from body-copy display
+     text where it belongs. */
+  letter-spacing: 0.06em;
+  line-height: 1;
   color: var(--fg-muted);
-  white-space: nowrap;
+  /* Balanced over two lines, centred as a block. Was `nowrap`, which is what
+     forced the overhang past a visible border in the first place. */
+  white-space: normal;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .axisMark {

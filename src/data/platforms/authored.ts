@@ -143,7 +143,13 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Blue Yonder Fulfillment",
         scope:
           "Order fulfilment leads on Blue Yonder across store, DC and direct-to-consumer flows.",
-        roles: ["Blue Yonder Fulfillment Lead", "Blue Yonder Fulfilment Lead"],
+        /* ONE role. Both spellings of the same job title shipped, and the chips
+           render adjacent on the same row 4px apart at 241px and 237px wide —
+           indistinguishable from a duplicate-render bug, and it put three
+           spellings of the word in one card. The product name is a proper noun
+           and keeps the vendor's own "Fulfillment"; UK spelling still governs
+           our own prose, which is why the scope line reads "fulfilment". */
+        roles: ["Blue Yonder Fulfillment Lead"],
       },
     ],
   },

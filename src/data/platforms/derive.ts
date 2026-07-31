@@ -2,6 +2,14 @@ import { allL1, type TaxonomyLabel, taxonomyLabels } from "@/data/l1/index";
 import { sectorRegistry } from "@/data/l1/registry";
 import { authoredPlatforms } from "@/data/platforms/authored";
 
+/** Index of a module in its platform's authored list; unauthored sort last. */
+function authoredOrder(platformSlug: string, moduleSlug?: string): number {
+  const mods = authoredPlatforms[platformSlug]?.modules;
+  if (!mods || !moduleSlug) return Number.MAX_SAFE_INTEGER;
+  const i = mods.findIndex((m) => m.slug === moduleSlug);
+  return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+}
+
 /**
  * Platform coverage, from two sources that are never invented:
  *
@@ -168,7 +176,17 @@ function collect(): Map<string, PlatformCoverage> {
   }
 
   for (const cov of out.values()) {
-    cov.modules.sort((a, b) => b.roles.length - a.roles.length);
+    /* AUTHORED order, not role count. Sorting by roles.length looked like
+       "most-staffed first" and was not: line 164 unions the authored roles with a
+       matched retail sector tool's roles, so the count is inflated by whatever
+       unrelated seed data happened to collide by name. Blue Yonder's Luminate
+       Planning — the module the ratified homepage line names FIRST — got no match
+       and rendered 7th of 8, below Space Planning. The suite's spine was an
+       accident of retail.ts. Authored order is a decision; role count is a
+       side effect. */
+    cov.modules.sort(
+      (a, b) => authoredOrder(cov.slug, a.slug) - authoredOrder(cov.slug, b.slug),
+    );
     cov.roles = [...new Set(cov.modules.flatMap((m) => m.roles))].sort();
     cov.moduleCount = cov.modules.length;
     cov.roleCount = cov.roles.length;

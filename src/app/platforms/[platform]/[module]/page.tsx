@@ -50,27 +50,37 @@ export default async function PlatformModulePage({
   const hit = getPlatformModule(platform, module);
   if (!hit) notFound();
 
-  /* R6: the L2's depth comes from JOINING data already held, not from new copy.
-     Published case studies carry a `platform` frontmatter tag, so a study whose
-     tag names this suite is real evidence this page can show and its parent card
-     cannot. Read server-side and matched on the tag rather than on prose.
-     "Multi-platform" counts: those studies span suites by definition, so a suite
-     page is a legitimate place for them. Everything else is excluded — a study
-     tagged Oracle Fusion is not evidence about SAP. */
+  /* R6, corrected. The heading over this section names the suite — "SAP
+     programmes we have staffed" — so every study under it must be a study of
+     that suite. It was not.
+
+     My first version also matched `tag === "multi-platform"`, on the reasoning
+     that those studies span suites by definition. That reasoning defends SHOWING
+     them; it does not license the HEADING. On Blue Yonder it produced
+     "Blue Yonder programmes we have staffed." above three engagements naming
+     Majid Al Futtaim and Alshaya Group, while `grep -rli "blue yonder"` across
+     content/case-studies returns ZERO — no study is tagged Blue Yonder and none
+     mentions it. That is canon §9's one rule above all: never invent a client or
+     a case study, and where something is missing render nothing and name the gap.
+
+     It was worst on the suite with no corpus, which is exactly the suite R13
+     built under a hard rule to avoid guessing about. The page omits six real
+     Blue Yonder products for want of a role, then claimed three client
+     programmes on strictly less evidence.
+
+     So: the tag must NAME the suite. Blue Yonder now renders no evidence section
+     at all, which is the honest state; SAP keeps its one genuinely
+     "SAP S/4HANA"-tagged study. */
   const suite = hit.platform.name.toLowerCase();
   const studies = getAllCaseStudies()
-    .filter((c) => {
-      const tag = (c.frontmatter.platform ?? "").toLowerCase();
-      return tag.includes(suite) || tag === "multi-platform";
-    })
+    .filter((c) => (c.frontmatter.platform ?? "").toLowerCase().includes(suite))
     .slice(0, 3)
     .map((c) => ({
       slug: c.frontmatter.slug,
       title: c.frontmatter.title,
       /* clientPublic gates the NAME, not the study. The schema says outright
          "False where the published page does not name the client. Never
-         guessed." — so a study with a private client still shows as evidence,
-         with its platform and title, and simply does not name who it was for. */
+         guessed." */
       client: c.frontmatter.clientPublic ? c.frontmatter.client : null,
       platform: c.frontmatter.platform ?? null,
     }));

@@ -224,10 +224,21 @@ export function PlatformModuleShell({
           then the page renders the joins and nothing else.
           data-depth-slot marks it for the next author rather than for the DOM. */}
 
+            {/* nav + h2, not a styled div. This shipped as a bare `<div>` eyebrow
+          above up to 13 links: no heading, no accessible name, no landmark, so
+          the whole block was unreachable by heading or landmark navigation and
+          a screen-reader user met an unlabelled list of platform names with no
+          statement of what they had in common. WCAG 1.3.1, Level A, on every
+          platform L2. The L1 shell had already solved it one level up with
+          `<nav aria-label="SAP modules">`; the L2 simply never inherited it.
+          The eyebrow class carries the same look, so this is semantics only. */}
       {siblings.length > 0 ? (
-        <section className={`${styles.section} amb-4`}>
+        <nav
+          className={`${styles.section} amb-4`}
+          aria-label={`Other ${platform.name} modules`}
+        >
           <div className={styles.wrap}>
-            <div className={styles.eyebrow}>Also in {platform.name}</div>
+            <h2 className={styles.eyebrow}>Also in {platform.name}</h2>
             {/* A balanced grid, not a ragged one: the adjacent-links rows used
                 to break 2-4-2 because the track count was fixed and the item
                 count was not. auto-fill with a min track makes every row full
@@ -248,7 +259,7 @@ export function PlatformModuleShell({
               ))}
             </ul>
           </div>
-        </section>
+        </nav>
       ) : null}
     </div>
   );
