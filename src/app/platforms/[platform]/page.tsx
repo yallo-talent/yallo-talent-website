@@ -6,7 +6,6 @@ import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
-import { platforms as platformAxis } from "@/data/home/place";
 import {
   getPlatformCoverage,
   publishedPlatformSlugs,
