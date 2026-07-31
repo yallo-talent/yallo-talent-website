@@ -315,3 +315,39 @@ too and **prints a warning every run** rather than passing it in silence.
 **Your call:** either Radwell ships as its name like Wickes, or a monochrome
 letterform-only SVG replaces the box artwork. It cannot stay a slab on the dark
 rail and also satisfy §8.
+
+## Q14 — Canon §5 bans blurred orbs; four pseudo-element rule sites survive
+
+**Measured and flagged. Not changed, because it is a reading of §5 rather than a defect.**
+
+The named orb divs were all correctly killed — `.wwdGlow`, `.hwwGlow`,
+`.expCardGlow`, `.scarceGlow`, `.introOrb` are each `display: none` with a
+comment citing the DESIGN.md anti-reference. **Their pseudo-element twins were
+not**, and they render:
+
+| Selector | Filter | Size | Radius | Opacity | Instances |
+|---|---|---|---|---|---|
+| `.wwdCard::before` | `blur(40px)` | 200×200 | 50% | 0.5 | 3 |
+| `.expCard::before` | `blur(30px)` | 160×160 | 50% | 0.5 | 6 |
+| `.segPanel::after` | `blur(60px)` | 260×260 | 50% | 0.6 | 1 |
+| `.segImgWrap::after` | `blur(50px)` | 220×220 | 50% | 0.55 | 1 |
+
+That is ~11 rendered blurred circles per L1 page, visible as a warm wash at the
+bottom-left of every card.
+
+**Why this is your call and not mine.** Either §5's ban means
+`filter: blur()` + `border-radius: 50%` on a decorative layer — in which case
+four rule sites go and every card on every L1 changes appearance — or it means
+only free-floating orbs behind copy, and the clause wants narrowing to say so.
+These are masked into card corners rather than sitting behind body text, which
+is the specific harm the killed divs were cited for.
+
+I removed `.scarceGridBg` on exactly this reasoning-by-precedent argument, so
+consistency points at removing these too. I have not, because that one was a
+texture nobody would miss and this is a visible change to every card surface on
+the site. **One line either way and I will apply it across all four sites in one
+pass.**
+
+Worth weighing alongside it: A3's glass permission carries a performance
+condition, and eleven `filter: blur()` compositing layers per page is a cost
+that clause did not anticipate.
