@@ -730,34 +730,6 @@ function L1Expertise({ data }: Props) {
   );
 }
 
-/* ============ ARCHITECTS SCREENING ============ */
-const architects: {
-  name: string;
-  role: string;
-  bio: string;
-}[] = [
-  {
-    name: "Sumeet Goenka",
-    role: "Founder & CEO",
-    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them. Reviews every specialist-tier shortlist personally.",
-  },
-  {
-    name: "SAP practice lead",
-    role: "Architect · SAP",
-    bio: "20+ years of SAP delivery across retail and financial services. Screens every SAP CX, Commerce, S/4HANA and IBP candidate before they land on your shortlist.",
-  },
-  {
-    name: "Oracle practice lead",
-    role: "Architect · Oracle",
-    bio: "Ex-Oracle Fusion delivery leader. Depth-tests every Oracle Retail, FLEXCUBE, OTM and Xstore candidate for functional and technical fit.",
-  },
-  {
-    name: "Cloud & Data practice lead",
-    role: "Architect · Cloud & Data",
-    bio: "Azure and AWS platform builder. Runs screening for cloud landing zones, data engineering, DevOps and platform-eng roles across all six sectors.",
-  },
-];
-
 /* ============ SEGMENTS ============ */
 function L1Segments({ data }: Props) {
   const [active, setActive] = useState(data.segments[0]?.id ?? "");
@@ -916,70 +888,6 @@ function L1Insights({ data }: Props) {
     </section>
   );
 }
-
-/* ============ SERVICE PILLARS ============ */
-const servicePillars: {
-  slug: string;
-  href: string;
-  icon: L1IconKey;
-  eyebrow: string;
-  title: string;
-  copy: string;
-  bullets: string[];
-}[] = [
-  {
-    slug: "contract",
-    href: "/contract",
-    icon: "pillarContract",
-    eyebrow: "01 · Contract",
-    title: "Contract & interim",
-    copy: "Specialist-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
-    bullets: [
-      "72h brief to shortlist",
-      "IR35, day-rate or fixed-term",
-      "Bench refreshed weekly",
-    ],
-  },
-  {
-    slug: "permanent",
-    href: "/permanent",
-    icon: "pillarPermanent",
-    eyebrow: "02 · Permanent",
-    title: "Permanent placement",
-    copy: "Long-horizon hires when the role is core to the operating model. Retained and contingent search.",
-    bullets: [
-      "Retained or contingent",
-      "Executive to senior IC",
-      "Cross-market talent pool",
-    ],
-  },
-  {
-    slug: "eor",
-    href: "/eor",
-    icon: "pillarEor",
-    eyebrow: "03 · EOR",
-    title: "Employer of Record",
-    copy: "Compliant employment in 15+ markets. Onboard talent in days without setting up an entity.",
-    bullets: [
-      "15+ markets covered",
-      "Payroll, tax and compliance",
-      "Talent onboarded in days",
-    ],
-  },
-  {
-    slug: "managed",
-    href: "/managed-delivery",
-    icon: "pillarManaged",
-    eyebrow: "04 · Managed delivery",
-    title: "Managed delivery",
-    copy: "Outcome-based pods stood up end-to-end. Specialist-led delivery with fixed-price milestones.",
-    bullets: [
-      "Fixed-price milestones",
-      "Specialist-led pods",
-      "SLA on delivery outcomes",
-    ],
-  },
-];
 
 /* Canon §3, verbatim and in order: "Six specialist desks carry the screening
    proof: Architecture, Software Development, Cloud & Infrastructure, Packaged

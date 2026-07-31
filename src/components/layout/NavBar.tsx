@@ -27,21 +27,19 @@ import {
    hue plumbing that step 9 missed because of the different prefix. */
 function NavItemBody({ item }: { item: NavItem }) {
   return (
-    <>
-      <span className={styles.itemBody}>
-        <span className={styles.itemLabel}>
-          {item.label}
-          {item.external && (
-            <span className={styles.externalMark} aria-hidden="true">
-              ↗
-            </span>
-          )}
-        </span>
-        {item.description && (
-          <span className={styles.itemDescription}>{item.description}</span>
+    <span className={styles.itemBody}>
+      <span className={styles.itemLabel}>
+        {item.label}
+        {item.external && (
+          <span className={styles.externalMark} aria-hidden="true">
+            ↗
+          </span>
         )}
       </span>
-    </>
+      {item.description && (
+        <span className={styles.itemDescription}>{item.description}</span>
+      )}
+    </span>
   );
 }
 
@@ -138,7 +136,6 @@ export function NavBar() {
             }}
           >
             {primaryNav.map((group) => (
-              // biome-ignore lint/a11y/noStaticElementInteractions: hover opens mega-menu; keyboard uses button focus handler
               <div
                 key={group.label}
                 className={styles.groupWrap}
