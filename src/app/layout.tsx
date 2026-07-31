@@ -49,7 +49,15 @@ export default function RootLayout({
       lang="en-GB"
       data-theme={DEFAULT_THEME}
       data-ambient={AMBIENT_SCHEME}
-      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
+      /* No `h-full` on <html>, and this is the sticky-header fix rather than
+          tidying. `h-full` sets html to height:100% — measured at 800px against
+          7740px of content — so the header's sticky containing block was one
+          viewport tall and it unstuck after the first screen, leaving the L1
+          sub-nav pinned at 68px with nothing above it. That is the "floats
+          mid-way on scroll-up" bug: the sub-nav was correct all along and the
+          header was not. body keeps min-h-full, which is what the full-height
+          layout actually needed. */
+      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>

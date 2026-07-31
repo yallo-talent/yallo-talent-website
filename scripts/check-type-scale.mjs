@@ -174,8 +174,22 @@ const GLASS_ALLOWED = [
   "src/components/blocks/home/Home.module.css", // hero instrument, four-ways media
 ];
 
+/**
+ * Blank out comment bodies while preserving line numbering.
+ *
+ * The glass check below matches source patterns like `composes: glass`, and a
+ * comment explaining WHY a rule exists naturally quotes those patterns — this
+ * guard flagged globals.css for a comment describing the very collision it was
+ * added to prevent. A guard that reports its own documentation trains people to
+ * ignore it.
+ */
+const stripComments = (src) =>
+  src
+    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "))
+    .replace(/(^|[^:])\/\/.*$/gm, (m) => m.replace(/[^\n]/g, " "));
+
 for (const file of walk("src")) {
-  const lines = readFileSync(file, "utf8").split("\n");
+  const lines = stripComments(readFileSync(file, "utf8")).split("\n");
   for (const [i, line] of lines.entries()) {
     if (/^\s*[-\w]*backdrop-filter\s*:/.test(line) && file !== GLASS_OWNER) {
       errors.push(

@@ -44,7 +44,13 @@
   justify-content: space-between;
   gap: 40px;
   width: 100%;
-  padding: 18px clamp(20px, 3vw, 40px);
+  /* EXACT height, not a minimum. Every offset taken from the header uses this
+     same token, and a minimum lets the real height exceed it — measured at 81px
+     against a 68px minimum, which put the sub-nav 13px underneath the bar.
+     Vertical padding goes to 0 and the row centres itself instead. */
+  height: var(--header-h);
+  box-sizing: border-box;
+  padding: 0 clamp(20px, 3vw, 40px);
 }
 
 .brand {
@@ -129,7 +135,10 @@
 /* ============ MEGA PANEL (full viewport-width) ============ */
 .megaPanel {
   position: fixed;
-  top: 72px;
+  /* Same token as the header's height — the panel hangs off the bar's bottom
+     edge, and a hardcoded 72px against a 66.7px header left a 5.3px sliver of
+     page showing between them. */
+  top: var(--header-h);
   left: 0;
   right: 0;
   width: 100%;
@@ -152,8 +161,10 @@
   z-index: 55;
 }
 
+/* Same token again. This was a stale 64px — a third hardcoded header offset,
+   disagreeing with both the 72px elsewhere and the header's real height. */
 .headerScrolled .megaPanel {
-  top: 64px;
+  top: var(--header-h);
 }
 
 .megaPanelInner {
@@ -562,7 +573,7 @@
      untouched, because shrinking the ask is the wrong saving. */
   .bar {
     gap: 10px;
-    padding: 14px 12px;
+    padding: 0 12px;
   }
 
   /* The lockup steps itself down at this width — see Lockup.module.css. It

@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { gapCopy, personas } from "@/data/home/personas";
 import styles from "./Home.module.css";
 import { SectionHead } from "./SectionHead";
@@ -8,14 +8,53 @@ import { SectionHead } from "./SectionHead";
 /**
  * The five-persona index. Content is verbatim from the previous build.
  *
- * Hover and focus both switch the panel, matching the interaction the previous
- * TheProblem.tsx established; arrow keys move between tabs per the ARIA tabs
- * pattern, and the panel is polite-live so a screen reader hears the swap.
+ * Hover switches the panel on pointer devices, WITH INTENT. Raw hover was
+ * removed in an earlier round for a good reason — a cursor merely crossing the
+ * index changed the panel unasked — so it returns behind two conditions rather
+ * than as it was:
+ *
+ *   · a 130ms dwell before committing, so passing through costs nothing and
+ *     pausing on a row reads as a choice;
+ *   · `(hover: hover) and (pointer: fine)` only, so a touch device never
+ *     commits on the synthetic hover a tap emits.
+ *
+ * Click, focus and arrow keys are untouched and commit immediately. Focus commit
+ * is the WAI-ARIA automatic-activation pattern for a tablist with a roving
+ * tabindex; the panel is polite-live so a screen reader hears the swap.
  */
 export function TheGap() {
   const [active, setActive] = useState(0);
   const persona = personas[active];
   const baseId = useId();
+
+  /* Pointer capability, resolved after mount. Read at event time rather than
+     stored in state so a mouse arriving at a hybrid device works without a
+     re-render, and so SSR never has to guess. */
+  const finePointer = useRef(false);
+  const dwell = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    finePointer.current = mq.matches;
+    const onChange = (e: MediaQueryListEvent) => {
+      finePointer.current = e.matches;
+    };
+    mq.addEventListener("change", onChange);
+    return () => {
+      mq.removeEventListener("change", onChange);
+      if (dwell.current) clearTimeout(dwell.current);
+    };
+  }, []);
+
+  const hoverIn = (i: number) => {
+    if (!finePointer.current) return;
+    if (dwell.current) clearTimeout(dwell.current);
+    dwell.current = setTimeout(() => setActive(i), 130);
+  };
+  const hoverOut = () => {
+    if (dwell.current) clearTimeout(dwell.current);
+  };
+
   if (!persona) return null;
 
   const move = (delta: number) => {
@@ -51,11 +90,14 @@ export function TheGap() {
                 aria-controls={`${baseId}-panel`}
                 tabIndex={i === active ? 0 : -1}
                 className={styles.personaTab}
-                onClick={() => setActive(i)}
-                /* onFocus commits deliberately: this is a real tablist with a
-                   roving tabindex, so focus-follows-selection is the WAI-ARIA
-                   automatic-activation pattern. Hover-commit is NOT — a cursor
-                   crossing the index used to change the panel unasked. */
+                onClick={() => {
+                  hoverOut();
+                  setActive(i);
+                }}
+                /* Hover commits after a dwell, and only on a fine pointer — see
+                   the component note. Click, focus and keys commit at once. */
+                onMouseEnter={() => hoverIn(i)}
+                onMouseLeave={hoverOut}
                 onFocus={() => setActive(i)}
                 onKeyDown={(e) => {
                   if (e.key === "ArrowDown" || e.key === "ArrowRight") {

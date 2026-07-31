@@ -176,6 +176,17 @@
   --fs-ghost: var(--fs-display); /* was 82px — decorative bleed numerals */
   --fs-entity: var(--fs-title); /* was 22-30px */
 
+  /* The sticky header's height, and the ONLY place it is expressed.
+     The L1 sub-nav pins beneath the header, and its offset used to be a
+     hardcoded 72px while the header's real height was content-driven — measured
+     at 66.7px after the lockup work, so the sub-nav pinned 5.3px low and a sliver
+     of page content showed through the gap. That is the "floats mid-way" bug.
+     One token now drives the header's own height AND every offset taken from it,
+     so the two cannot drift apart again — and it is set as `height`, not
+     `min-height`, because a minimum is not a promise: at 68px minimum the bar's
+     real height was 81px at 1280 and the sub-nav then overlapped it by 13px. */
+  --header-h: 80px; /* narrow override in globals Layer 3, keyed to the bar */
+
   --pad: clamp(20px, 5vw, 72px);
   --measure-head: 23ch;
   --measure-body: 66ch;
@@ -1059,15 +1070,15 @@ button.role-pill:focus-visible {
   background: var(--positive-mark);
 }
 
-/* Retained as a no-op: the glass register is anti-reference. Consumers still
-   apply .glass; it now resolves to a flat, ruled surface. */
-.glass {
-  background: var(--ground-2);
-  border: 1px solid var(--hairline);
-  border-radius: 0 0 0 var(--r);
-  position: relative;
-  isolation: isolate;
-}
+/* The legacy `.glass` no-op is DELETED, and it was not harmless.
+   It was kept to neutralise old consumers of the retired glass register, and it
+   set `position: relative`. When A3 reinstated glass under the same class name,
+   `composes: glass from global` on the header picked up BOTH rules — and this one
+   sits later in the file, so its `position: relative` beat the header's
+   `position: sticky`. The header therefore stopped sticking the moment it gained
+   the scrolled state, which left the L1 sub-nav pinned at 68px with nothing above
+   it: the reported "floats mid-way on scroll-up".
+   Zero consumers remained, so the name is free. The A3 utility keeps it. */
 
 .container-narrow {
   width: 100%;
@@ -1186,6 +1197,15 @@ button.role-pill:focus-visible {
    jump anyway — so the element moved under reduced motion even though the
    JS animation had been suppressed. scripts/check-motion.mjs measures both
    halves. */
+/* A shorter header on phones. Declared here rather than in NavBar.module.css
+   because --header-h is consumed by the L1 sub-nav and the mega panel too, and
+   all three must step together. */
+@media (max-width: 480px) {
+  :root {
+    --header-h: 64px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
