@@ -1710,6 +1710,24 @@
    These marks are aria-hidden and .axisName renders the platform's name right
    beside them, so nothing is lost by removing the colour — the mark is
    recognition, not information. */
+/* The NAME treatment, per R9. Same 40px cell and hairline as .axisMark so the
+   column stays even, but typeset rather than boxed — canon §8's rule is that an
+   unkeyable mark becomes text, never a padded plate. */
+.axisMarkName {
+  display: grid;
+  place-items: center;
+  height: 40px;
+  padding: 0 8px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-xs);
+  font-family: var(--font-display);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.01em;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+
 .axisMark {
   display: grid;
   place-items: center;

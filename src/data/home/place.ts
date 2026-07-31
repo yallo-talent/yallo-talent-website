@@ -17,7 +17,13 @@ export interface PlatformAxis {
    * from the slug because the pack mixes vector and raster: five are SVG, Blue
    * Yonder only exists as a bitmap.
    */
-  mark: string;
+  /**
+   * Vendor mark, or `null` where the artwork cannot key to one clean ink.
+   *
+   * R9: canon §8 allows exactly two treatments — a keyed silhouette or the
+   * vendor's NAME as text. There is no third option and no padded box.
+   */
+  mark: string | null;
   /**
    * Whether /platforms/{slug} exists. Derived at build time from module data
    * presence in src/data/platforms/derive.ts — a platform with fewer than three
@@ -31,7 +37,15 @@ export const platforms: PlatformAxis[] = [
     name: "SAP",
     slug: "sap",
     modules: "S/4HANA · ECC · SuccessFactors",
-    mark: "/logos/platforms/sap.svg",
+    /* R9: NAME, not a mark — and measured on the ARTWORK, not on its cell.
+       Rasterised at 300 DPI on a transparent ground, sap.svg is 129x64 with
+       opaque 0.748 and PERIMETER ink 0.668. A letterform's ink does not run
+       along its outer frame; the four marks that survive here measure 0.000 to
+       0.040 on that axis. What silhouettes here is the box.
+       My first attempt measured the rendered cell and read 91.4% dark — but the
+       #place band is near-black, so every cell reads ~95% and the test was
+       measuring the band. Same conclusion, different evidence. */
+    mark: null,
     published: true,
   },
   {
@@ -59,7 +73,11 @@ export const platforms: PlatformAxis[] = [
     name: "Blue Yonder",
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    mark: "/logos/platforms/blue-yonder.png",
+    /* R9: NAME, not a mark. blue-yonder.png measures 448x64 at
+       opaqueFraction 1.000 — every pixel fully opaque, so it is a baked ground
+       with no transparency to recover. Keying it would mean guessing which colour
+       is the ground, and canon §8 forbids shipping a mark it cannot vouch for. */
+    mark: null,
     published: true,
   },
   {

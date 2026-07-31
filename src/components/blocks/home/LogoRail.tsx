@@ -1,8 +1,8 @@
 import { logoRail } from "@/data/home/hero";
 import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
 import styles from "./Home.module.css";
-import { RailViewport } from "./RailViewport";
 import { LogoImage } from "./LogoImage";
+import { RailViewport } from "./RailViewport";
 
 /**
  * One continuous monochrome moving rail — canon §8 as amended 30 Jul.

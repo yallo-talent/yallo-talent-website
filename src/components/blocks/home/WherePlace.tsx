@@ -36,9 +36,17 @@ export function WherePlace() {
               {platforms.map((p) => {
                 const body = (
                   <div className={styles.axisItem}>
-                    <span className={styles.axisMark} aria-hidden="true">
-                      <LogoImage src={p.mark} width={44} height={22} />
-                    </span>
+                    {/* R9: a keyed silhouette or the vendor's NAME — never a
+                        padded box. The name variant is NOT aria-hidden, because
+                        unlike a decorative mark beside a visible label it is the
+                        only rendering of that vendor in this cell. */}
+                    {p.mark ? (
+                      <span className={styles.axisMark} aria-hidden="true">
+                        <LogoImage src={p.mark} width={44} height={22} />
+                      </span>
+                    ) : (
+                      <span className={styles.axisMarkName}>{p.name}</span>
+                    )}
                     <span>
                       <span className={styles.axisName}>{p.name}</span>
                       <span className={styles.axisModules}>{p.modules}</span>
