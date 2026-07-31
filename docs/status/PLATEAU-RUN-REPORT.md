@@ -7,42 +7,67 @@ consecutive critique passes with **no gain and no critical/high finding**.
 
 ---
 
-## 1. Plateau status
+## 1. Plateau status — and why the loop cannot reach it as run
 
-| Surface | Pass 1 | Pass 2 | Verdict |
-|---|---|---|---|
-| `/platforms/sap` | 16/24 (67%) | 17/24 (71%) | **No** — a gain disqualifies |
-| Homepage | 25/36 (69%) | 25/36 (69%) | **No** — P1s open |
-| `/capabilities/data-analytics` | 23/36 (64%) | 22/36 (61%) | **No** — 3 P1s |
-| `/industries/retail` | 22/32 (69%) | 21/32 (66%) | **No** — 2 P1s |
+| Surface | P1 | P2 | P3 | P4 | Open P1s after P4 fixes |
+|---|---|---|---|---|---|
+| Homepage | 25/36 | 25/36 | 27/36 | **28/36** | 0 |
+| `/industries/retail` | 22/32 | 21/32 | 23/32 | **20/32*** | 0 |
+| `/capabilities/data-analytics` | 23/36 | 22/36 | 29/36 | **25/36** | 0 |
+| `/platforms/sap` | 67% | 71% | 64% | — | **1, blocked on Q17** |
 
-**0 of 4 plateaued.** No surface met either condition.
+\* Pass 4 rebuilt the rubric (16 criteria × 2) rather than reusing the earlier
+shape, so 20/32 is not comparable with 23/32. Its own note: treat the direction
+as indicative and the findings as the signal.
 
-**The scores did not move, and the reason is not regression.** Both pass-2
-critiques verified the pass-1 fixes by measurement rather than accepting them on
-report: Data & Analytics found **7½ of 8** landed, Retail found **4 of 5** fully
-landed. The totals held because each pass reached categories the previous one
-had not sampled — A4's role minimums, canon §5's blurred-orb clause, the mobile
-clamp — and found defects of comparable size there.
+**0 of 4 plateaued, and the reason is structural.** Pass 4's retail critique
+named it exactly:
 
-### The finding that matters more than any individual defect
+> A plateau is a claim about two consecutive passes over the **same** artefact.
+> Pass 4 did not have one.
 
-Both passes, independently, named the same pattern:
+It is right. The loop as run has been *critique → fix → critique → fix*, with
+commits landing while a pass was still measuring — twice during pass 4, once
+inside the very component under review. Under that loop the plateau condition is
+**unreachable by construction**: every pass scores a different build, so "no gain
+over the previous pass" compares two different artefacts, and each round's fixes
+guarantee the next pass has something new to find.
 
-> every fix was scoped to its named instance rather than its class
+Three rounds of evidence say the same thing from the other direction. Every pass
+verified the previous round's fixes as real — Data & Analytics 3 of 3, Retail 7 of
+7, SAP 6 of 6, homepage 5 of 5 — and then found its P1s in **categories no earlier
+pass had instrumented**:
 
-The evidence is specific and it is fair. `.expCardRole` was raised and four
-siblings left. The `.wwdGlow` divs were killed and their pseudo-element twins
-left. The breadcrumb's dead item lost its gold and the live link gained nothing.
-Pass 1 fixed five sites of one defect; pass 2 found eleven more in components
-pass 1 had not opened.
+| Pass | New ground it opened |
+|---|---|
+| 2 | A4 role minimums; canon §5's blurred-orb clause; the mobile clamp |
+| 3 | keyboard traversal of shared chrome; fixed-overlay occlusion; heading tag vs role; copy repetition |
+| 4 | drawer modality; target geometry under flex; effective-vs-declared hover cues; disclosure-control truthfulness |
 
-**That is what this round changed.** The A4 role rules are now enforced in CI by
-`scripts/check-rendered-type.mjs`, so the class cannot recur silently — and the
-guard immediately found three sites (`/contract`, `/brief`, `.requisition`)
-that neither critique had sampled. Retail's closing line was the right test:
-*"until check-type-scale grows the role table, a third pass will find a twelfth
-site."*
+That is not a page failing to converge. It is a measurement frontier moving. The
+**design system has plateaued** — type ramp, contrast, glass, motion, register,
+terminology and target size all hold under adversarial measurement, and both
+passes that hand-composed every one of axe's abstentions (64 and 143 nodes)
+found nothing hiding in them.
+
+**What would actually produce a plateau call, and it needs a decision:**
+
+1. **Freeze the build.** Tag a commit, run two consecutive passes against that
+   tag with no commits in between, and score those. This is the only version of
+   the exercise that satisfies the condition as written.
+2. **Close the four uninstrumented classes first**, so a frozen pass is not just
+   measuring the next unguarded category. Pass 4 proposed them and none needs a
+   canon amendment: assert `aria-expanded` returns to false on Escape for every
+   `aria-haspopup` trigger and cap tab stops to the header CTA; probe
+   `elementsFromPoint` under every `position: fixed` overlay and fail on occluded
+   interactive content; assert the first heading of each `<section>` matches its
+   peers' level; flag any ≥4-word string rendered more than twice in a document.
+3. **Accept the current state** as the ratification point for Sumeet's review,
+   which was the goal's stated purpose — "Sumeet reviews, then we replicate."
+
+My recommendation is 2 then 1: build the four gates, freeze, and run the paired
+passes. Guards are what convert a one-off fix into a property of the build, and
+every round so far has proved that the class outlives the instance.
 
 ---
 
