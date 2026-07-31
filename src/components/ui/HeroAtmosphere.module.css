@@ -68,6 +68,30 @@
   }
 }
 
+/* Slow drift in the field (order item 7). 90 seconds for a 3% scale and a few
+   pixels of travel — far below the threshold where it competes for attention,
+   which is the whole constraint on a hero background: canon requires the TEXT to
+   stay the LCP element and movement behind a headline is the fastest way to lose
+   that. transform only, so it composites on the GPU and cannot cause layout or
+   CLS; the scrim and the text never move.
+   Under reduced motion the global reset clamps the duration to 0.01ms and the
+   field is simply static — there is no separate code path to keep in step. */
+@media (prefers-reduced-motion: no-preference) {
+  .field {
+    animation: hero-drift 90s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.03) translate3d(-1.2%, -0.8%, 0);
+  }
+}
+
 /* Forced-colours mode: drop the whole field. The system supplies its own
    background and a generated one only fights it. */
 @media (forced-colors: active) {

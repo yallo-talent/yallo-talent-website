@@ -548,7 +548,10 @@
   list-style: none;
   padding: 6px 0;
   margin: 0;
-  animation: rail-drift 48s linear infinite;
+  /* 64s, not 48s. The cells went from 156px to 208px, so at the old duration
+     the row travels 33% further per second and reads as hurried — the resize
+     silently changed the pace. Scaled with the width to hold it. */
+  animation: rail-drift 64s linear infinite;
 }
 
 .railViewport:hover .railTrack {
@@ -601,11 +604,15 @@
    rail reads as one row of equals rather than fifteen differently-scaled marks.
    The pack ranges from square to 14:1, and letting each mark size itself made
    the widest wordmark dominate and read as a hierarchy that does not exist. */
+/* Bigger and bolder cells (order item 5). Cap height 26px -> 37px, a 42% lift,
+   with the cell widened and deepened to hold it. These are the proof that the
+   claim is real, and at 26px in a 156px cell they read as a footer strip rather
+   than as clients. The rail is one row on one page; it can afford the space. */
 .logo {
   display: grid;
   place-items: center;
-  width: 156px;
-  height: 56px;
+  width: 208px;
+  height: 76px;
   flex: none;
 }
 
@@ -621,12 +628,14 @@
    blobs". No blend mode can give one tone across a pack like that; only real
    alpha can. */
 .logo img {
-  height: 26px;
+  height: 37px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
   filter: var(--mark-filter);
-  opacity: 0.82;
+  /* Weightier ink. The silhouettes are solid black with true alpha, so opacity
+     IS the ink weight here — no colour shift, just more of it. */
+  opacity: 0.95;
   transition: opacity 0.28s var(--ease);
 }
 
@@ -644,13 +653,15 @@
    light ink was invisible on the dark one. */
 .wordmark {
   font-family: var(--font-display);
-  font-size: var(--fs-body);
+  /* Grows with the marks: at 17.5px beside a 37px silhouette the names would
+     read as a second, lesser rank instead of a peer. */
+  font-size: var(--fs-title);
   font-weight: 550;
   color: var(--text-2);
   letter-spacing: -0.01em;
   text-align: center;
   line-height: 1.15;
-  opacity: 0.86;
+  opacity: 0.95;
 }
 
 /* ==========================================================================
