@@ -213,7 +213,7 @@
   background: var(--accent);
   color: var(--black-950);
   font-family: inherit;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
   border: 0;

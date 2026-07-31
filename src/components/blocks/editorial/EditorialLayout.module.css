@@ -135,7 +135,7 @@
   padding: 14px 24px;
   background: var(--accent-mark);
   color: var(--ink);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   border-radius: 999px;
   transition:
@@ -157,7 +157,7 @@
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   font-weight: var(--fw-medium);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   background: var(--ground-2);
   transition:
     border-color 0.15s ease,

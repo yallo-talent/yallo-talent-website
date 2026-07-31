@@ -260,7 +260,7 @@
 .requisition {
   margin-left: auto;
   color: var(--dk-txt-3);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
 }
 
 .phases {
@@ -444,7 +444,7 @@
 
 .footLabel {
   display: block;
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--dk-txt-2);
   margin-top: 7px;
   font-weight: var(--fw-medium);

@@ -172,7 +172,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: var(--fs-label);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.55;
 }

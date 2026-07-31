@@ -181,7 +181,7 @@
   padding: 14px 24px;
   background: var(--accent-mark);
   color: var(--ink-950);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -204,7 +204,7 @@
   border: 1px solid var(--wa25);
   border-radius: 0 0 0 var(--r-md);
   font-weight: var(--fw-medium);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   background: color-mix(in oklab, var(--ground) 40%, transparent);
   transition:
     border-color 0.15s ease,
@@ -626,7 +626,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: var(--fs-label);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.55;
   transition: color 0.22s ease;
@@ -975,6 +975,8 @@
   max-width: 46ch;
 }
 
+/* A4: buttons 15px. This was 13px on a MONO role — the smallest text on the
+   page, carrying the section's only exit. */
 .scarceCta {
   display: inline-flex;
   align-items: center;
@@ -982,7 +984,7 @@
   padding: 11px 20px;
   background: var(--accent-mark);
   color: var(--ink);
-  font-size: var(--fs-label);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
@@ -1023,8 +1025,13 @@
   border-color: var(--sector-accent-35);
 }
 
+/* --fs-body-sm, and this is the sharpest case A4 exists for. These are JOB
+   TITLES — the product Yallo sells — and they were rendering at 13px on the
+   mono measured-value step while an all-identical scarcity chip beside them
+   was the loudest thing in the row. The salience order inverted the
+   information order. 15.5px is the same role .role-pill uses for a job title. */
 .scarceRowName {
-  font-size: var(--fs-data);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
   color: var(--fg);
 }
@@ -1228,7 +1235,7 @@
   border-radius: 0 0 0 var(--r-md);
   background: var(--accent-mark);
   color: var(--ink);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
 .expCardWrap {
@@ -1423,6 +1430,27 @@
     color 0.22s ease,
     transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
     box-shadow 0.22s ease;
+}
+
+/* The whole card is the target, and the corner circle is only the CUE.
+   Measured before this: the anchor was 30x30 inside a 285x246 card — 1.28% of
+   the surface a reader aims at. The card carries an icon, a 17.5px Newsreader
+   title, a blurb and three role names and reads as a link in its entirety;
+   clicking the title did nothing. Two passes reported it and it was the one P1
+   that survived a whole round untouched.
+
+   A stretched pseudo-element rather than wrapping the card in an anchor,
+   because there is still exactly ONE anchor per card: wrapping would either
+   nest the existing link or duplicate the destination, and a second link with
+   the same href is a second stop for a screen-reader user. The visible circle
+   keeps its own hover and focus treatment, so the affordance does not move.
+   .expCard is already position: relative, and nothing inside the card is
+   interactive, so there is no target for the overlay to steal. */
+.expCardOpenLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
 .expCardOpenLink svg {
@@ -2039,7 +2067,7 @@
   padding: 12px 20px;
   background: var(--accent-mark);
   color: var(--ink-950);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
   border-radius: 0 0 0 var(--r-md);
@@ -2581,7 +2609,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: var(--fs-label);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.5;
   transition: color 0.24s ease;
@@ -2768,7 +2796,11 @@
   transform: translateX(3px);
 }
 
+/* A4: nav 15px. This is the label inside a navigation chip; it inherited 13px
+   from .readNextChip, which resolved --fs-data — a MONO role — for sans text
+   in eight live links. */
 .readNextChipLabel {
+  font-size: var(--fs-body-sm);
   color: var(--fg);
 }
 

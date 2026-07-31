@@ -65,6 +65,19 @@ jobs:
       - name: Accessibility (axe, both themes, 1280 and 360)
         run: CAPTURE_BASE=http://localhost:3100 pnpm check:a11y --base http://localhost:3100
 
+      # A4's type roles and canon §5's weights, judged on what the browser
+      # PAINTS. check:type reads source and cannot see resolution: which real
+      # face a declared weight lands on, whether 13px text is mono when the
+      # family is inherited, or whether uppercase applies when text-transform
+      # is inherited. That last one is why this exists as a gate rather than a
+      # one-off fix — .expertiseHiddenCount rendered uppercase mono at 0.100em
+      # against A4's 0.12em floor and check:type reported CLEAN, because the
+      # uppercase came from a parent. Two critique passes each fixed the sites
+      # they happened to sample and the next found the same defect in eleven
+      # components they had not.
+      - name: Rendered type (weights, A4 roles, tracking)
+        run: node scripts/check-rendered-type.mjs http://localhost:3100
+
       # Canon §5 requires prefers-reduced-motion honoured for EVERY animation.
       # Neither of the other gates can see this: the token gate reads CSS, and
       # axe does not evaluate motion. Two things had to be true and neither was

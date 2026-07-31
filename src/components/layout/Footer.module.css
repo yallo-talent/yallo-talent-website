@@ -144,9 +144,10 @@
   letter-spacing: -0.005em;
 }
 
+/* A4 puts footer links at 14px. --fs-data is the 13px MONO step. */
 .locationCountry {
   color: var(--dk-txt-2);
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   font-weight: var(--fw-body);
 }
 
