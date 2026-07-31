@@ -47,3 +47,8 @@ next-env.d.ts
 # reference during the port-and-convert, never in git — it was committed by
 # accident once and the pack went to 4.8GB, which failed the push outright.
 old_wordpress/
+
+# Audit scratch. Subagents write probe scripts and result dumps here; a
+# git add -A swept six of them (including a 13,565-line results.json) into
+# 72b1e4d. Working files, never artefacts.
+.scratch-impeccable/
