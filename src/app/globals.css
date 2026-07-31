@@ -576,6 +576,16 @@
 .band-dark {
   color-scheme: dark;
 
+  /* The ambient tuning has to be restated here for exactly the reason the
+     Layer 2c note below gives. This surface is permanently dark in BOTH themes,
+     but --amb-alpha and the hue variants are declared on :root, so in light
+     theme a band-dark section inherited the LIGHT tuning: 20% alpha of a hue
+     picked to read against a 233 ground, laid over a 15 ground. Measured on
+     /platforms/sap, whose hero is the site's one band-dark L1 hero: the field
+     came back rgb(15,15,15), i.e. no hue at all, so SAP had nothing to be
+     "visibly distinct from Retail" WITH. 30% is the dark-theme value. */
+  --amb-alpha: 30%;
+
   --ground: var(--dk);
   --ground-2: var(--dk-2);
   --ground-3: var(--dk-3);
@@ -1032,6 +1042,98 @@ button {
 .amb-1 {
   --amb: var(--amb-1);
 }
+
+/* --------------------------------------------------------------------------
+   Identity on a PERMANENTLY dark surface (R11).
+
+   .band-dark restates --amb-alpha, but it cannot restate the HUE, because the
+   hue is per-domain and the band does not know its domain — `data-identity` is
+   on an ancestor, so --id arrives already resolved to the light variant.
+
+   In light theme that meant the light hue, chosen to read against a 233 ground,
+   was laid over a 15 ground: measured on /platforms/sap, whose hero is the one
+   band-dark L1 hero on the site, the field read rgb(28,29,30) after the alpha
+   fix — a grey, not an indigo. SAP was then "distinct from Retail" only because
+   one hero is dark and the other light, which is register, not identity.
+
+   These pair each domain with .band-dark and hand it the DARK variant, the same
+   token dark theme would use. SAP's hero carries band-dark AND amb-1, so these
+   have to outrank `[data-identity].amb-1`; they do, on specificity (0,4,0 against
+   0,2,0), not on source order, so they are safe to move. Verified resolving:
+   --amb #5677b3 at 30% on /platforms/sap in LIGHT theme. */
+:root[data-theme] [data-identity="sap"] .band-dark,
+:root[data-theme] [data-identity="sap"].band-dark {
+  --amb: var(--id-sap-d);
+}
+:root[data-theme] [data-identity="oracle"] .band-dark,
+:root[data-theme] [data-identity="oracle"].band-dark {
+  --amb: var(--id-oracle-d);
+}
+:root[data-theme] [data-identity="microsoft"] .band-dark,
+:root[data-theme] [data-identity="microsoft"].band-dark {
+  --amb: var(--id-microsoft-d);
+}
+:root[data-theme] [data-identity="salesforce"] .band-dark,
+:root[data-theme] [data-identity="salesforce"].band-dark {
+  --amb: var(--id-salesforce-d);
+}
+:root[data-theme] [data-identity="blue-yonder"] .band-dark,
+:root[data-theme] [data-identity="blue-yonder"].band-dark {
+  --amb: var(--id-blue-yonder-d);
+}
+:root[data-theme] [data-identity="workday"] .band-dark,
+:root[data-theme] [data-identity="workday"].band-dark {
+  --amb: var(--id-workday-d);
+}
+:root[data-theme] [data-identity="data-analytics"] .band-dark,
+:root[data-theme] [data-identity="data-analytics"].band-dark {
+  --amb: var(--id-data-analytics-d);
+}
+:root[data-theme] [data-identity="cloud-infrastructure"] .band-dark,
+:root[data-theme] [data-identity="cloud-infrastructure"].band-dark {
+  --amb: var(--id-cloud-infrastructure-d);
+}
+:root[data-theme] [data-identity="cybersecurity"] .band-dark,
+:root[data-theme] [data-identity="cybersecurity"].band-dark {
+  --amb: var(--id-cybersecurity-d);
+}
+:root[data-theme] [data-identity="integration-middleware"] .band-dark,
+:root[data-theme] [data-identity="integration-middleware"].band-dark {
+  --amb: var(--id-integration-middleware-d);
+}
+:root[data-theme] [data-identity="devops-platform-engineering"] .band-dark,
+:root[data-theme] [data-identity="devops-platform-engineering"].band-dark {
+  --amb: var(--id-devops-platform-engineering-d);
+}
+:root[data-theme] [data-identity="testing-quality-engineering"] .band-dark,
+:root[data-theme] [data-identity="testing-quality-engineering"].band-dark {
+  --amb: var(--id-testing-quality-engineering-d);
+}
+:root[data-theme] [data-identity="retail"] .band-dark,
+:root[data-theme] [data-identity="retail"].band-dark {
+  --amb: var(--id-retail-d);
+}
+:root[data-theme] [data-identity="finance"] .band-dark,
+:root[data-theme] [data-identity="finance"].band-dark {
+  --amb: var(--id-finance-d);
+}
+:root[data-theme] [data-identity="manufacturing"] .band-dark,
+:root[data-theme] [data-identity="manufacturing"].band-dark {
+  --amb: var(--id-manufacturing-d);
+}
+:root[data-theme] [data-identity="government"] .band-dark,
+:root[data-theme] [data-identity="government"].band-dark {
+  --amb: var(--id-government-d);
+}
+:root[data-theme] [data-identity="healthcare"] .band-dark,
+:root[data-theme] [data-identity="healthcare"].band-dark {
+  --amb: var(--id-healthcare-d);
+}
+:root[data-theme] [data-identity="telco"] .band-dark,
+:root[data-theme] [data-identity="telco"].band-dark {
+  --amb: var(--id-telco-d);
+}
+
 .amb-2 {
   --amb: var(--amb-2);
 }

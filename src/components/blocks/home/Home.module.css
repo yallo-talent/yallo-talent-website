@@ -14,6 +14,8 @@
 }
 
 .section {
+  /* Positioned host for .amb-wash::before (R11). */
+  position: relative;
   padding: clamp(52px, 6.5vw, 94px) 0;
   background: var(--ground);
 }

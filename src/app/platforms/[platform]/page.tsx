@@ -88,7 +88,7 @@ export default async function PlatformPage({
           data-identity on the root, position one resolves to the suite's hue
           instead of the generic first ambient. */}
       <section
-        className={`${styles.section} ${styles.platformHero} band-dark amb-1`}
+        className={`${styles.section} ${styles.platformHero} band-dark amb-wash amb-1`}
       >
         <HeroAtmosphere seed={cov.slug} />
         <div className={`${styles.wrap} ${styles.platformHeroInner}`}>
@@ -131,7 +131,7 @@ export default async function PlatformPage({
           Inventing cross-links would be worse than having none, so the promise
           goes rather than the data being stretched to meet it. The module pages
           carry sector links wherever they do exist. */}
-      <section className={`${styles.section} ${styles.g1}`} id="modules">
+      <section className={`${styles.section} ${styles.g1} amb-wash amb-2`} id="modules">
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="Module coverage"
@@ -243,7 +243,7 @@ export default async function PlatformPage({
       </section>
 
       {/* Where we place it. */}
-      <section className={`${styles.section} ${styles.g2}`}>
+      <section className={`${styles.section} ${styles.g2} amb-wash amb-4`}>
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="Where we place"

@@ -59,6 +59,12 @@ export function L1PageShell({ data, metrics }: ShellProps) {
        stays the only interactive colour, which is the whole distinction R4
        draws. A sector with no identity token falls back to the positional
        rhythm, so nothing breaks for the sectors not yet mapped. */
+    /* .page keeps amb-1 so the PetalPlates inherit --amb, but it is NOT a wash
+       host: it is the whole document (measured 7,235px on retail), and the wash
+       gradient sizes in percentages of its host, so on a box that tall the
+       radial is scaled to the document and reads as nothing at viewport scale.
+       The wash goes on individual bands below — which is what canon §5 already
+       said it was for ("this lives on bands and panel edges"). */
     <div className={`${styles.page} amb-1`} data-identity={data.slug}>
       <L1Hero data={data} />
       <L1StatsStrip metrics={metrics} />
@@ -161,7 +167,7 @@ function L1SubNav({ items }: { items: { id: string; label: string }[] }) {
 /* ============ HERO ============ */
 function L1Hero({ data }: Props) {
   return (
-    <section className={styles.hero}>
+    <section className={`${styles.hero} amb-wash amb-1`}>
       {/* B3: one full-bleed atmospheric field replaces four stacked layers — a
           bounded PetalPlate pinned into a corner, plus a tint, an overlay and a
           grid, each fighting the others for the same pixels. The plate was card
@@ -266,7 +272,7 @@ function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
 /* ============ INTRO ============ */
 function L1Intro({ data }: Props) {
   return (
-    <section className={styles.intro}>
+    <section className={`${styles.intro} amb-wash amb-2`}>
       <div className={styles.introOrb} aria-hidden="true" />
       <div className={styles.wrap}>
         <div className={styles.introGrid}>
@@ -423,7 +429,7 @@ const howWeWorkSteps: {
 
 function L1HowWeWork({ data }: Props) {
   return (
-    <section className={styles.hww}>
+    <section className={`${styles.hww} amb-wash amb-3`}>
       <div className={styles.wrap}>
         <div className={styles.hwwHead}>
           <div className={styles.eyebrow}>How we work</div>
@@ -982,7 +988,7 @@ function L1Segments({ data }: Props) {
 function L1Insights({ data }: Props) {
   if (!data.insights || data.insights.length === 0) return null;
   return (
-    <section className={styles.insights}>
+    <section className={`${styles.insights} amb-wash amb-5`}>
       <div className={styles.wrap}>
         <div className={styles.eyebrow}>
           {data.insightsEyebrow ?? "Insights"}
