@@ -268,14 +268,22 @@ function L1Intro({ data }: Props) {
               </p>
             ))}
           </div>
-          <div className={styles.introRight}>
-            {data.introStatCards.map((c) => (
-              <div key={c.l} className={styles.introStatCard}>
-                <div className={styles.introStatN}>{c.n}</div>
-                <div className={styles.introStatL}>{c.l}</div>
-              </div>
-            ))}
-          </div>
+          {/* No sourced figure renders no rail. An empty flex column still
+              claims its grid track, which is how a removed stat leaves a hole
+              instead of leaving nothing. */}
+          {data.introStatCards.length > 0 ? (
+            <div className={styles.introRight}>
+              {data.introStatCards.map((c) => (
+                <div key={c.l} className={styles.introStatCard}>
+                  <div className={styles.introStatN}>{c.n}</div>
+                  <div className={styles.introStatL}>{c.l}</div>
+                  {c.source ? (
+                    <cite className={styles.introStatSource}>{c.source}</cite>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

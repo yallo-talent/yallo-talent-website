@@ -29,16 +29,18 @@ export const cloudInfrastructureData: L1PageData = {
     "Every AWS landing-zone, every Azure migration, every GCP data platform rollout shares the same failure mode — the outcome depends on the depth of the engineer running the build. Recruiters place tool names. We place production track records.",
     "Our contractor bench is assessed by cloud architects who have shipped landing-zones, hardened Kubernetes clusters and run FinOps at enterprise scale. We screen for the specific operating context — regulated workloads, multi-region resilience, cost governance, zero-trust networking — not just certification badges.",
   ],
-  introStatCards: [
-    {
-      n: "68%",
-      l: "of enterprises report a shortage of cloud and platform engineers — the second-hardest talent gap after AI. (ManpowerGroup, 2026)",
-    },
-    {
-      n: "4–6 wks",
-      l: "Average time lost when a cloud architect is placed without production landing-zone experience. Yallo's shortlist is in your inbox in 72h.",
-    },
-  ],
+  /**
+   * Both cards deleted, and this is the more serious of the two capability
+   * pages. "68%" appears exactly ONCE in the entire repository — here — with no
+   * source, no corpus attestation and a real organisation's name attached to
+   * it. A figure that cannot be traced is not a figure, and attributing an
+   * untraceable one to ManpowerGroup is worse than publishing it bare. The
+   * "4–6 wks" card had the same problem as its Data & Analytics twin.
+   *
+   * Nothing is invented to fill the gap: the section renders without the rail
+   * until a sourced figure exists. QUESTIONS.md Q12.
+   */
+  introStatCards: [],
 
   scarceEyebrow: "Scarce talent · high demand",
   scarceTitle:

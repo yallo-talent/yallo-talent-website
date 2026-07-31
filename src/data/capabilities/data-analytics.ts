@@ -29,14 +29,26 @@ export const dataAnalyticsData: L1PageData = {
     "Every Snowflake migration, every dbt-driven analytics platform, every GenAI production rollout shares the same failure mode — the outcome depends on the depth of the specialist in the room. Recruiters place tool names. We place implementation track records.",
     "Our contractor bench is assessed by specialists who have built data platforms and shipped ML at enterprise scale. We screen for the specific operating context — high-throughput pipelines, regulated data domains, real-time inference, LLM safety — not just certification badges.",
   ],
+  /**
+   * One card, and the second is deleted rather than replaced.
+   *
+   * The 72% claim was a MISCITATION. ManpowerGroup's figure is that 72% of
+   * employers cannot find the skilled talent they need in general, with AI, IT
+   * and data among the hardest categories to fill; this page had narrowed it to
+   * "72% of enterprises can't find the AI, ML and data specialists they need",
+   * which is a different and stronger claim than the source makes. The wording
+   * below is the one already ratified for the same figure in
+   * src/data/home/personas.ts, so the two surfaces can no longer drift.
+   *
+   * The "4–6 wks average time lost" card is removed outright. No source exists
+   * for it anywhere in the repo or the legacy corpus — it was a figure with the
+   * authority of data and nothing behind it. QUESTIONS.md Q12.
+   */
   introStatCards: [
     {
       n: "72%",
-      l: "of enterprises can't find the AI, ML and data specialists they need — the hardest talent gap on the market. (ManpowerGroup, 2026)",
-    },
-    {
-      n: "4–6 wks",
-      l: "Average time lost when a data engineer is placed without production-scale experience. Yallo's shortlist is in your inbox in 72h.",
+      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
 

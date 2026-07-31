@@ -453,12 +453,29 @@
   line-height: 1;
 }
 
+/* --fs-caption, not --fs-data. This is sans card copy, and A4 sets the card
+   and list body floor at 14px; --fs-data is the 13px MONO step for measured
+   values, which this is not. */
 .introStatL {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   font-weight: var(--fw-body);
   margin-top: 6px;
   line-height: 1.55;
+}
+
+/* The attribution, canon §6. Set apart from the claim rather than trailing it
+   in brackets: a citation that reads as prose is not doing a citation's job,
+   and inlining it is how a MISCITED claim went unnoticed — the source name
+   lent authority to wording the source does not support. */
+.introStatSource {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
 }
 
 /* ============ WHAT WE DELIVER ============ */

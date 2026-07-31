@@ -234,3 +234,46 @@ Migration *files* export, not a full site export.
 rebuilt from `wp_posts` rather than from fetched HTML, which would settle
 publish/modify dates, drafts and revisions that the fetch cannot see.
 
+
+
+## Q11 — "Active bench across 3 markets" against the "3 delivery regions" ban
+
+**Your call. Flagged rather than changed.**
+
+Canon §2 bans *"3 delivery regions"* in any phrasing, and gives the reason: it
+conflates supply with demand. `/industries/retail` says **"Active bench across 3
+markets"**. That is not the banned phrase, and A6 has since established that
+India is a demand market as well as a supply hub — so on the surface it is
+clean, and `check-terminology` passes it.
+
+The reason it is still logged: **bench is a supply claim**. "Active bench across
+3 markets" asserts a bench in all three, which is the same supply/demand
+conflation the clause names as its rationale, arriving by a different sentence.
+Either the phrase is fine because A6 changed the underlying fact, or the ban
+should be widened to the claim rather than the wording. I cannot settle which
+without knowing whether there is a genuine bench in all three markets.
+
+## Q12 — Three published figures with nothing behind them
+
+**Acted on, and logged because reversing it needs a source, not a decision.**
+
+Canon §6 and the standing "invent nothing" rule. Found during the Data &
+Analytics and Retail passes:
+
+| Figure | Where | What was wrong | Action |
+|---|---|---|---|
+| **72%** | `capabilities/data-analytics` | **Miscited.** ManpowerGroup's figure is that 72% of employers cannot find the skilled talent they need *in general*, with AI, IT and data among the hardest categories. The page narrowed it to "72% of enterprises can't find the AI, ML and data specialists they need" — a stronger claim than the source makes. | Restated to the wording already ratified for the same figure in `home/personas.ts`, with the full survey named in a new `source` field |
+| **68%** | `capabilities/cloud-infrastructure` | **Untraceable.** The string appears exactly once in the whole repository — in that data file. No source, no corpus attestation, and ManpowerGroup's name attached to it. | Deleted |
+| **"4–6 wks"** | both capability pages | **Unsourced.** "Average time lost when a data engineer / cloud architect is placed without production-scale experience." No source anywhere in the repo or the legacy corpus. A figure with the authority of data and nothing behind it. | Deleted |
+
+`L1IntroStatCard` had **no `source` field at all**, which is why the only way to
+cite one was to append "(ManpowerGroup, 2026)" to the claim text. A citation
+that reads as prose is not doing a citation's job — and inlining it is precisely
+how the miscitation survived, because the source name lent authority to wording
+the source does not support. The field now exists and renders as a citation, so
+an uncited figure is a visible omission.
+
+**What I need from you.** If the 68% and the 4–6 wks figures are real, they need
+a source and they can come straight back. If they were placeholders, the
+cloud-infrastructure intro now has no stat rail and that composition gap wants a
+decision — a sourced figure, or a different right-hand element.

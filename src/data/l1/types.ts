@@ -6,6 +6,14 @@ export type L1Category = "industries" | "platforms" | "capabilities";
 export interface L1IntroStatCard {
   n: string;
   l: string;
+  /**
+   * Canon §6: a published figure carries its attribution. This field was
+   * missing, so the only way to cite one was to append "(ManpowerGroup, 2026)"
+   * to the claim text — which reads as prose, not as a citation, and left
+   * nothing to check an uncited figure against. A card WITHOUT a source is now
+   * a visible omission rather than an invisible one.
+   */
+  source?: string;
 }
 
 /**
