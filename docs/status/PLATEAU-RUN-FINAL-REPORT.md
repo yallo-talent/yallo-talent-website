@@ -57,7 +57,7 @@ Full table: **[docs/design/ia-change-log.md](../design/ia-change-log.md)**. Summ
 | Microsoft | ratified | unchanged | Fabric flagged for you, not changed |
 | Workday | ratified | unchanged | no flags |
 | Blue Yonder | mixed levels | unchanged | **Blocked — Q9, no corpus file exists** |
-| Data & Analytics | 6 disciplines | unchanged | **Outstanding — the one R5 gap in this run** |
+| Data & Analytics | 6 disciplines | **7** | Done — 1 added, 1 flagged, 3 parked (14%) |
 
 **Added to SAP**, each corpus-attested: SAP Datasphere (two independent mentions;
 supersedes Data Warehouse Cloud), SAP Fieldglass (external workforce management —
@@ -238,9 +238,11 @@ and found **nothing hiding in them**.
    between. This is the only version that satisfies the condition as written.
 3. **Rule on Q14–Q17.** Q17 is the only one blocking a surface.
 
-**Still outstanding on the order**, stated plainly: R5's Data & Analytics table
-(§2 above); SAP de-densification, partial; the site-wide sweep of remaining mono
-phrases, partial. Everything else in items 1–8 is in the build and verified — the
+**Still outstanding on the order**, stated plainly: SAP de-densification,
+partial; the site-wide sweep of remaining mono phrases, partial. R5's Data &
+Analytics table is now done — smaller than SAP's 21% because the page was already
+ahead of the corpus, and R5's "20–30%" describes expected drift rather than a
+quota to manufacture. Everything else in items 1–8 is in the build and verified — the
 sticky-header root cause, the Gap's 130ms pointer-gated dwell, the SAP module set
 and L2 routes, the identity hues, the balanced grids, the rail geometry, role
 chips out of mono, the hero drift, and A2 on all four lead surfaces.

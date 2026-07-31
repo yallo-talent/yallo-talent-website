@@ -108,6 +108,44 @@ call, not a critique's.
 
 ---
 
+## Data & Analytics — 6 → 7 disciplines (14% amendment)
+
+**Verified against the market on 31 July 2026, not from memory.** This is the
+second lead domain's R5 pass and it is deliberately smaller than SAP's 21%,
+because the starting point was different: SAP's page was a corpus port, while
+this one was **already ahead of the corpus**. The legacy source
+(`capability-expertise/data-expertise.md`, 438 lines) carries four categories —
+Data Engineering & Integration, Data Management & Governance, Analytics & BI, and
+AI/ML — with Azure Synapse Analytics filed under *governance*. The live page
+already carries six modern desks including Analytics Engineering, Lakehouse and
+Streaming as separate practices, which is the current shape.
+
+**R5's "20–30%" describes expected drift, not a quota.** Manufacturing changes to
+hit a percentage would be the opposite of what the ruling asks for, so this pass
+amends what moved and logs the rest.
+
+### Added
+
+| Discipline | Attested where | Why now |
+|---|---|---|
+| **Enterprise Platform Analytics** — SAP Analytics Cloud, SAP Datasphere, BW/4HANA, Oracle Analytics Cloud | Every product named is **already an authored module in this repo's own platform sets** (`data/platforms/authored.ts`), and Datasphere is corpus-attested twice | The clearest gap on the page. Every other desk is modern-stack — Snowflake, dbt, Collibra, Kafka — while Yallo's wedge is enterprise platform programmes. A buyer with a BW/4HANA estate or an Oracle Analytics footprint found nothing here, even though the SAP page sells those exact desks. Nothing is invented: the site already publishes all four as things it staffs |
+
+### Flagged, not changed
+
+| What | Market status (verified) | Why not changed |
+|---|---|---|
+| **Azure Synapse Analytics** (corpus) → **Microsoft Fabric** | Synapse is supported with **no EOL date**, in maintenance mode — security and maintenance updates but no major new capability, with all new investment on Fabric. From 20 July 2026 Microsoft is retiring the "Azure Synapse Link for Dataverse" name in favour of a unified "Link data" hub | The Microsoft module set is **Sumeet-ratified** (Relay v2.1 rev 2 §5), so amending it is his call. Also worth stating precisely: Synapse is *stale*, not *dead* — a Synapse desk is still a real desk, which is a weaker claim than my earlier note implied |
+
+### Considered and parked
+
+| Candidate | Why parked |
+|---|---|
+| Folding **Real-time & Streaming** into Data Engineering | Proposed by a critique. It is a composition opinion, not a market movement — Kafka and Flink desks are as distinct now as they were. R5 authorises amending what the market moved, not restructuring on taste. Sumeet's call |
+| **AI / ML Engineering** | Not a gap. The page's own hero says "AI roles have their own practice", which is a canon scoping decision, not an omission |
+| **Databricks** as its own desk | Real and significant, but it sits inside Data Platform & Lakehouse where the page already places it. Promoting it would be a judgement about demand mix, which no market source settles |
+
+---
+
 ## What still needs a market pass
 
 | Domain | Status |
@@ -118,4 +156,4 @@ call, not a critique's.
 | Microsoft | ratified; Fabric flagged for Sumeet |
 | Workday | ratified; no flags |
 | Blue Yonder | blocked on Q9 |
-| Data & Analytics | discipline pass outstanding |
+| Data & Analytics | **Done** — 1 added, 1 flagged, 3 parked (14%) |

@@ -452,11 +452,16 @@ BW/4HANA, BusinessObjects, Crystal Reports, Lumira and the BI Suite. That is rea
 attested, module-specific depth the L1 card does not carry — and it is exactly the
 kind of list an L2 should hold.
 
-**Why I have not built it.** Each name needs an R5 market pass before it ships:
-SAP Lumira is discontinued, BusinessObjects and Crystal Reports are legacy but
-still sold, and R5 requires real market products with a logged was/now/why table
-per change. That is a scoped piece of work with a ratification step, not something
-to slip in. Doing it fast would mean publishing retired products as staffed desks.
+**Why I have not built it.** Each name needs an R5 market pass before it ships,
+and I ran that pass on two of them to check the argument holds. It does, though
+one of my own figures was wrong: I first wrote that **SAP Lumira is
+discontinued**, which is too strong. Verified — Lumira *Designer* is supported
+to **2031** with no new features, and it is Lumira *Discovery* that drops out of
+BI 2025. Either way it is not a desk to staff, but the accurate reason is
+"maintenance-mode, no new features", not "retired". BusinessObjects and Crystal
+Reports are in the same category. R5 requires real market products with a logged
+was/now/why table per change, so this is a scoped piece of work with a
+ratification step rather than something to slip in.
 
 **Three ways forward, and it is your call which:**
 

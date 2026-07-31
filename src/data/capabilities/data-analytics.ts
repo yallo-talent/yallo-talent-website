@@ -169,6 +169,30 @@ export const dataAnalyticsData: L1PageData = {
         "Event Architect",
       ],
     },
+    /**
+     * R5 addition, and the clearest gap on this page.
+     *
+     * Every other desk here is modern-stack — Snowflake, dbt, Collibra, Kafka —
+     * while Yallo's whole wedge is enterprise platform programmes. A buyer with
+     * a BW/4HANA estate or an Oracle Analytics footprint found nothing on the
+     * page that spoke to it, even though SAP Analytics Cloud, SAP Datasphere and
+     * Oracle Analytics Cloud are all already authored modules in this repo's own
+     * platform sets. Nothing here is invented: every product named is one the
+     * site already publishes as a desk it staffs.
+     */
+    {
+      slug: "enterprise-platform-analytics",
+      num: "07",
+      title: "Enterprise Platform Analytics",
+      icon: "analytics",
+      blurb:
+        "SAP Analytics Cloud, SAP Datasphere, BW/4HANA, Oracle Analytics Cloud.",
+      roles: [
+        "SAP Analytics Cloud Consultant",
+        "SAP Datasphere Engineer",
+        "BW/4HANA Modeller",
+      ],
+    },
   ],
 
   segmentsEyebrow: "Where we deploy",
