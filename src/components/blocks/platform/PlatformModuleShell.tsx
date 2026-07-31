@@ -27,10 +27,22 @@ export function PlatformModuleShell({
   platform,
   module,
   metrics,
+  studies = [],
 }: {
   platform: PlatformCoverage;
   module: PlatformModule;
   metrics: MetricStat[];
+  /**
+   * R6: published case studies whose platform tag names this suite, joined
+   * server-side. Real evidence this page can show that its parent L1 card cannot
+   * — which was Q17's whole complaint. Empty renders nothing.
+   */
+  studies?: {
+    slug: string;
+    title: string;
+    client: string | null;
+    platform: string | null;
+  }[];
 }) {
   const siblings = platform.modules.filter(
     (m) => m.slug && m.slug !== module.slug,
@@ -156,6 +168,45 @@ export function PlatformModuleShell({
           </div>
         </section>
       ) : null}
+
+      {/* R6 join: evidence. Renders only when a published study actually carries
+          this suite's tag — no placeholder, no "coming soon". */}
+      {studies.length > 0 ? (
+        <section className={`${styles.section} amb-5`}>
+          <div className={styles.wrap}>
+            <div className={styles.eyebrow}>Published work</div>
+            <h2 className={styles.h2}>
+              {platform.name} programmes we have staffed.
+            </h2>
+            <ul className={styles.sectorGrid}>
+              {studies.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    href={`/case-studies/${s.slug}`}
+                    className={styles.sectorCard}
+                  >
+                    <span className={styles.sectorCat}>
+                      {s.client ?? s.platform}
+                    </span>
+                    <span className={styles.sectorFn}>{s.title}</span>
+                    <span className={styles.sectorArrow} aria-hidden="true">
+                      →
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
+      {/* R6: ONE marked depth slot per module, reserved for Chat's copy.
+          Deliberately empty and deliberately NOT rendered. R6 says reserve it and
+          do not write it — so there is no placeholder, no lorem, and no
+          "coming soon" line that would read as a dead affordance. When Chat
+          supplies `module.depth`, this becomes the module's own paragraph; until
+          then the page renders the joins and nothing else.
+          data-depth-slot marks it for the next author rather than for the DOM. */}
 
       {siblings.length > 0 ? (
         <section className={`${styles.section} amb-4`}>
