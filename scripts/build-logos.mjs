@@ -39,12 +39,12 @@ const OUT_INTEGRATORS = join(process.cwd(), "public", "logos", "integrators");
    clients ship as a keyed silhouette and which fall back to a typeset name, so
    the pack was being chosen by geometry the page no longer uses. Marks that
    were correctly rejected as illegible at a 26px cap can be legible at 37px. */
-const RENDER_HEIGHT = 96; // ORDER 6 cell height // the cell's height; SCALE covers retina
+const RENDER_HEIGHT = 112; // ORDER 6 round 2 cell height; SCALE covers retina
 const SCALE = 2;
 
 /** The rail's uniform cell, so the legibility gate below matches what ships. */
-const RAIL_CELL = 268;
-const RAIL_CAP = 48;
+const RAIL_CELL = 300;
+const RAIL_CAP = 68;
 const RAIL_CAP_FLOOR = 15;
 /** Above this share of perimeter ink the mark is a box, not a letterform. */
 const SLAB_PERIMETER_PCT = 15;

@@ -70,7 +70,14 @@ function FeaturedCard({ featured }: { featured: NavFeatured }) {
   );
 }
 
-function MegaItem({ item }: { item: NavItem }) {
+/* onSelect closes the panel the moment a link is chosen, which the pathname
+   effect cannot do on its own: clicking a link to the route you are ALREADY on
+   changes no pathname, so the effect never fires and the panel sits over the page
+   the reader just asked for. Verified before the fix — from /platforms/sap,
+   choosing SAP from the menu left the panel open. It also removes the wait for
+   navigation to commit on a normal click, which is the "close IMMEDIATELY on
+   selection" half of ORDER 5. */
+function MegaItem({ item, onSelect }: { item: NavItem; onSelect: () => void }) {
   if (item.published === false) {
     return (
       <span className={styles.megaLink} aria-disabled="true">
@@ -87,13 +94,14 @@ function MegaItem({ item }: { item: NavItem }) {
         className={styles.megaLink}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={onSelect}
       >
         <NavItemBody item={item} />
       </a>
     );
   }
   return (
-    <Link href={item.href} className={styles.megaLink}>
+    <Link href={item.href} className={styles.megaLink} onClick={onSelect}>
       <NavItemBody item={item} />
     </Link>
   );
@@ -127,6 +135,9 @@ export function NavBar() {
      covering the page the reader just asked for. pathname is the only reliable
      signal here — a click handler on each link misses keyboard activation and
      browser back. */
+  /* The open group as DATA, so one panel can render any group's content. */
+  const activeGroup = primaryNav.find((g) => g.label === openGroup) ?? null;
+
   const pathname = usePathname();
   useEffect(() => {
     /* pathname is READ here, not merely listed as a trigger — biome was right
@@ -319,69 +330,82 @@ export function NavBar() {
                     />
                   </svg>
                 </button>
-                <AnimatePresence>
-                  {openGroup === group.label && (
-                    <motion.div
-                      /* band-dark, not just a dark background: the panel ground
-                         is permanently dark in both themes, but its links read
-                         --fg, which resolves to INK in the light theme — so the
-                         labels rendered dark-on-dark and were effectively
-                         invisible. band-dark restates the Layer 2c aliases so
-                         every descendant resolves against the dark ground. */
-                      className={`${styles.megaPanel} band-dark`}
-                      /* The id aria-controls points at. Without it the attribute
-                         references nothing and the association is a claim rather
-                         than a fact. */
-                      id={`megapanel-${group.label.replace(/\s+/g, "-").toLowerCase()}`}
-                      initial={{ opacity: 0, y: -8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
-                    >
-                      {/* B7: hero-grade ambient field on the panel, seeded per
-                          group so each menu draws its own. Deterministic, static,
-                          and needs no backdrop-filter — which is why the panel can
-                          have this where it cannot have A3 glass (Q8). */}
-                      <HeroAtmosphere
-                        seed={group.label}
-                        className={styles.megaAtmosphere}
-                      />
-                      <div className={styles.megaPanelInner}>
-                        {group.description && (
-                          <div className={styles.megaDescription}>
-                            {group.description}
-                          </div>
-                        )}
-                        <div
-                          className={styles.megaGrid}
-                          data-cols={
-                            group.columns.length + (group.featured ? 1 : 0)
-                          }
-                        >
-                          {group.columns.map((col) => (
-                            <div key={col.heading} className={styles.megaCol}>
-                              <div className={styles.megaColHeading}>
-                                {col.heading}
-                              </div>
-                              <ul className={styles.megaList}>
-                                {col.items.map((item) => (
-                                  <li key={item.href}>
-                                    <MegaItem item={item} />
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                          {group.featured && (
-                            <FeaturedCard featured={group.featured} />
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             ))}
+            {/* ONE panel, hoisted out of the group loop, with its CONTENT swapped
+                rather than the element replaced. Each group used to own an
+                AnimatePresence, so switching triggers unmounted one panel and
+                mounted another: measured 60ms into a switch there were TWO panels
+                on screen at opacity 0.32 and 0.67, cross-fading at two different
+                x positions. That is the flicker. .megaPanel is
+                `position: fixed; left: 0; right: 0`, never positioned by its
+                group wrapper, so hoisting it costs nothing in geometry and makes
+                a second panel structurally impossible. Switching groups now swaps
+                children with no remount and no enter/exit at all. */}
+            <AnimatePresence>
+              {activeGroup && (
+                <motion.div
+                  /* band-dark, not just a dark background: the panel ground
+                     is permanently dark in both themes, but its links read
+                     --fg, which resolves to INK in the light theme — so the
+                     labels rendered dark-on-dark and were effectively
+                     invisible. band-dark restates the Layer 2c aliases so
+                     every descendant resolves against the dark ground. */
+                  className={`${styles.megaPanel} band-dark`}
+                  /* The id aria-controls points at. Without it the attribute
+                     references nothing and the association is a claim rather
+                     than a fact. */
+                  id={`megapanel-${activeGroup.label.replace(/\s+/g, "-").toLowerCase()}`}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  {/* B7: hero-grade ambient field on the panel, seeded per
+                      group so each menu draws its own. Deterministic, static,
+                      and needs no backdrop-filter — which is why the panel can
+                      have this where it cannot have A3 glass (Q8). */}
+                  <HeroAtmosphere
+                    seed={activeGroup.label}
+                    className={styles.megaAtmosphere}
+                  />
+                  <div className={styles.megaPanelInner}>
+                    {activeGroup.description && (
+                      <div className={styles.megaDescription}>
+                        {activeGroup.description}
+                      </div>
+                    )}
+                    <div
+                      className={styles.megaGrid}
+                      data-cols={
+                        activeGroup.columns.length + (activeGroup.featured ? 1 : 0)
+                      }
+                    >
+                      {activeGroup.columns.map((col) => (
+                        <div key={col.heading} className={styles.megaCol}>
+                          <div className={styles.megaColHeading}>
+                            {col.heading}
+                          </div>
+                          <ul className={styles.megaList}>
+                            {col.items.map((item) => (
+                              <li key={item.href}>
+                                <MegaItem
+                              item={item}
+                              onSelect={() => setOpenGroup(null)}
+                            />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      {activeGroup.featured && (
+                        <FeaturedCard featured={activeGroup.featured} />
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <Link href={jobSeekersHref} className={styles.jobsLink}>
               Jobs
             </Link>

@@ -736,11 +736,19 @@
    further 29% on the cell and 30% on the cap height rather than a nudge. The ink
    also goes to full strength: opacity was carrying a deliberate lightness that
    reads as timid at this scale. */
+/* ORDER 6 round 2 — "still too tiny", and the measurement says why. The cap was
+   the binding constraint, not the cell: at a 48px cap a WIDE mark reached 267px
+   of the 268px cell while a square one rendered 48x48, i.e. 18% of the cell
+   width. So the rail read as a row of mostly-empty cells with a few full ones,
+   and the squares — which are several of the enterprise marks — looked tiny
+   whatever the cell did. Raising the cap is what makes those bigger.
+   68px against source art emitted 112px tall still DOWNSCALES (0.61x), so
+   nothing is resampled up. The cell grows to keep the gutter proportional. */
 .logo {
   display: grid;
   place-items: center;
-  width: 268px;
-  height: 96px;
+  width: 300px;
+  height: 112px;
   flex: none;
 }
 
@@ -756,14 +764,14 @@
    blobs". No blend mode can give one tone across a pack like that; only real
    alpha can. */
 .logo img {
-  height: 48px;
+  height: 68px;
   max-width: 100%;
   width: auto;
   object-fit: contain;
   filter: var(--mark-filter);
   /* Weightier ink. The silhouettes are solid black with true alpha, so opacity
      IS the ink weight here — no colour shift, just more of it. */
-  /* ORDER 6: full ink. At 48px a 5% veil reads as a printing fault rather
+  /* ORDER 6: full ink. At this size a 5% veil reads as a printing fault rather
      than as restraint. */
   opacity: 1;
   transition: opacity 0.28s var(--ease);
