@@ -1513,7 +1513,7 @@
   color: var(--fg);
   line-height: 1.3;
   margin: 0 0 3px;
-}/* No clamp. Removed as a CLASS this time, not an instance.
+} /* No clamp. Removed as a CLASS this time, not an instance.
    I removed .caseSummary's clamp for SC 1.4.12 and left three siblings live; a
    frozen pass then found this one hiding "Oracle Analytics Cloud" AT REST at
    1280 — and the expertise cards carry no interactive element, so a real product
@@ -2477,7 +2477,7 @@
   flex-direction: column;
   gap: 14px;
   padding: 24px 22px 22px;
-}/* No clamp. Removed as a CLASS this time, not an instance.
+} /* No clamp. Removed as a CLASS this time, not an instance.
    I removed .caseSummary's clamp for SC 1.4.12 and left three siblings live; a
    frozen pass then found this one hiding "Oracle Analytics Cloud" AT REST at
    1280 — and the expertise cards carry no interactive element, so a real product
