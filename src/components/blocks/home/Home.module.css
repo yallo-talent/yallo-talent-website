@@ -1799,7 +1799,6 @@
      reads as a considered substitute for a mark rather than a label that ran out
      of box. */
   padding: 0 6px;
-  border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-xs);
   font-family: var(--font-display);
   font-size: var(--fs-caption);
@@ -1823,13 +1822,10 @@
   place-items: center;
   height: 40px;
   padding: 0 6px;
-  /* A hairline frame, matching .axisMarkDrawn in the sectors column beside it.
-     A 1px boundary is not a "card" in canon §8's sense — the banned thing is an
-     opaque plate carrying the mark, and removing the --paper-2 fill is what
-     closed that. Keeping the frame is what stops the two columns of the same
-     comparison rendering under different rules, which was the other half of the
-     finding. */
-  border: 1px solid var(--hairline);
+  /* NO frame. The hairline was kept so this column matched .axisMarkDrawn
+     beside it, and that symmetry argument still holds — it just resolves the
+     other way now. Sumeet: the outline reads as a box around each logo, and a
+     mark should stand on its own. Both columns lose it together. */
   border-radius: 0 0 0 var(--r-xs);
 }
 
@@ -1838,15 +1834,19 @@
   max-width: 100%;
   width: auto;
   object-fit: contain;
+  /* One ink, full strength. Grayscale keeps canon §5's One Marker Rule intact —
+     gold stays the only decorative colour — while 0.9 opacity was making the
+     marks look faded rather than restrained. */
   filter: var(--mark-flatten);
-  opacity: 0.9;
+  opacity: 1;
 }
 
 .axisMarkDrawn {
   display: grid;
   place-items: center;
   height: 40px;
-  border: 1px solid var(--hairline);
+  /* Frame dropped with the platforms column, so the two halves of the same
+     comparison still render under one rule. */
   border-radius: 0 0 0 var(--r-xs);
   color: var(--accent-line);
 }

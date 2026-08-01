@@ -37,15 +37,12 @@ export const platforms: PlatformAxis[] = [
     name: "SAP",
     slug: "sap",
     modules: "S/4HANA · ECC · SuccessFactors",
-    /* R9: NAME, not a mark — and measured on the ARTWORK, not on its cell.
-       Rasterised at 300 DPI on a transparent ground, sap.svg is 129x64 with
-       opaque 0.748 and PERIMETER ink 0.668. A letterform's ink does not run
-       along its outer frame; the four marks that survive here measure 0.000 to
-       0.040 on that axis. What silhouettes here is the box.
-       My first attempt measured the rendered cell and read 91.4% dark — but the
-       #place band is near-black, so every cell reads ~95% and the test was
-       measuring the band. Same conclusion, different evidence. */
-    mark: null,
+    /* The real mark, restored. R9 made this NAME text and it was right about the
+       DARK RAIL: sap.svg is a box lockup (perimeter ink 0.668) and silhouetting
+       it to one ink gives a solid slab, which canon §8 forbids there. This band
+       is light and renders the artwork as-is at full colour — no keying, no
+       silhouette, so the box lockup is simply the logo, which is what it is. */
+    mark: "/logos/platforms/sap.svg",
     published: true,
   },
   {
@@ -73,11 +70,12 @@ export const platforms: PlatformAxis[] = [
     name: "Blue Yonder",
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    /* R9: NAME, not a mark. blue-yonder.png measures 448x64 at
-       opaqueFraction 1.000 — every pixel fully opaque, so it is a baked ground
-       with no transparency to recover. Keying it would mean guessing which colour
-       is the ground, and canon §8 forbids shipping a mark it cannot vouch for. */
-    mark: null,
+    /* The real mark, restored. R9 made this NAME text and it was right about the
+       DARK RAIL: sap.svg is a box lockup (perimeter ink 0.668) and silhouetting
+       it to one ink gives a solid slab, which canon §8 forbids there. This band
+       is light and renders the artwork as-is at full colour — no keying, no
+       silhouette, so the box lockup is simply the logo, which is what it is. */
+    mark: "/logos/platforms/sap.svg",
     published: true,
   },
   {
@@ -86,6 +84,16 @@ export const platforms: PlatformAxis[] = [
     modules: "HCM · Financials · Adaptive",
     mark: "/logos/platforms/workday.svg",
     published: true,
+  },
+  {
+    /* 7th platform — the MDM vendor Yallo is focusing on. No route yet, so it
+       renders as a row without a link rather than a promise that 404s, and no
+       mark ships because the pack has no Informatica artwork. */
+    name: "Informatica",
+    slug: "informatica",
+    modules: "MDM · data quality · integration",
+    mark: null,
+    published: false,
   },
 ];
 
@@ -141,6 +149,15 @@ export const sectors: SectorAxis[] = [
     scope: "OSS/BSS, network, data",
     icon: "cloud",
     published: true,
+  },
+  {
+    /* 7th sector, behind the Yallo AI Academy push into education. No route
+       yet. */
+    name: "Education & Universities",
+    slug: "education",
+    scope: "Student systems, research and campus platforms",
+    icon: "biz",
+    published: false,
   },
 ];
 
