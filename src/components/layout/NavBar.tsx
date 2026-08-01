@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { allL1 } from "@/data/l1/index";
 import { useEffect, useRef, useState } from "react";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { Lockup } from "./Lockup";
@@ -77,13 +78,41 @@ function FeaturedCard({ featured }: { featured: NavFeatured }) {
    choosing SAP from the menu left the panel open. It also removes the wait for
    navigation to commit on a normal click, which is the "close IMMEDIATELY on
    selection" half of ORDER 5. */
+/* D0 redesign: the panel read as a bare list of names, so every row now carries
+   a support line — what that desk actually covers. NOTHING is authored for it.
+   An item's own `description` wins where it has one (Engagement and Explore
+   already do); otherwise the row takes the L1 index `tagline` for its slug, which
+   is the same sentence the L1 page itself publishes. 18 of the 19 Specialisms
+   rows resolve this way. Anything unmatched renders the label alone rather than a
+   placeholder — a missing support line is per-row and asserts nothing, so R16 is
+   satisfied either way. */
+const TAGLINE_BY_SLUG = new Map(
+  Object.values(allL1)
+    .flat()
+    .map((e) => [e.slug, e.tagline] as const),
+);
+
+function supportLine(item: NavItem): string | null {
+  if (item.description) return item.description;
+  const slug = item.href.split("/").filter(Boolean).pop();
+  return (slug && TAGLINE_BY_SLUG.get(slug)) || null;
+}
+
+function MegaSupport({ item }: { item: NavItem }) {
+  const line = supportLine(item);
+  return line ? <span className={styles.megaSupport}>{line}</span> : null;
+}
+
 function MegaItem({ item, onSelect }: { item: NavItem; onSelect: () => void }) {
   if (item.published === false) {
     return (
       <span className={styles.megaLink} aria-disabled="true">
-        <NavItemBody item={item} />
-        {/* B7: says what it is, at full strength, instead of being dimmed. */}
-        <span className={styles.megaPlannedMark}>Desk in build</span>
+        <span className={styles.megaLinkHead}>
+          <NavItemBody item={item} />
+          {/* B7: says what it is, at full strength, instead of being dimmed. */}
+          <span className={styles.megaPlannedMark}>Desk in build</span>
+        </span>
+        <MegaSupport item={item} />
       </span>
     );
   }
@@ -96,13 +125,19 @@ function MegaItem({ item, onSelect }: { item: NavItem; onSelect: () => void }) {
         rel="noopener noreferrer"
         onClick={onSelect}
       >
-        <NavItemBody item={item} />
+        <span className={styles.megaLinkHead}>
+          <NavItemBody item={item} />
+        </span>
+        <MegaSupport item={item} />
       </a>
     );
   }
   return (
     <Link href={item.href} className={styles.megaLink} onClick={onSelect}>
-      <NavItemBody item={item} />
+      <span className={styles.megaLinkHead}>
+        <NavItemBody item={item} />
+      </span>
+      <MegaSupport item={item} />
     </Link>
   );
 }
@@ -120,6 +155,28 @@ export function NavBar() {
   const clearIntent = () => {
     if (intent.current) clearTimeout(intent.current);
     intent.current = null;
+  };
+
+  /* A FORGIVING close, and this is the fix for the reported "cannot grab the
+     panel". Diagnosed with a pointer trace at 1440px: the group wrapper ends at
+     y=62 and the panel is `position: fixed` at `top: var(--header-h)` = y=80, so
+     there is an 18px strip belonging to neither. Moving straight down from the
+     trigger, `onMouseLeave` on the nav fired at y=70 — ten pixels BEFORE the
+     panel began — and the panel was gone before the pointer could reach it.
+     The links were never the problem: measured, each is a real 303x46 target and
+     elementFromPoint at its centre returns the anchor. They were unclickable only
+     because a straight-line move to one closed the panel on the way.
+     A short grace period means crossing the strip cannot close anything, and any
+     re-entry cancels it. 180ms is long enough for the 18px hop and short enough
+     that a deliberate exit still feels immediate. */
+  const leave = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelClose = () => {
+    if (leave.current) clearTimeout(leave.current);
+    leave.current = null;
+  };
+  const closeSoon = () => {
+    cancelClose();
+    leave.current = setTimeout(() => setOpenGroup(null), 180);
   };
   const openWithIntent = (label: string) => {
     clearIntent();
@@ -148,6 +205,8 @@ export function NavBar() {
     if (pathname !== null) {
       if (intent.current) clearTimeout(intent.current);
       intent.current = null;
+      if (leave.current) clearTimeout(leave.current);
+      leave.current = null;
       setOpenGroup(null);
     }
   }, [pathname]);
@@ -277,9 +336,10 @@ export function NavBar() {
           <nav
             className={styles.primary}
             aria-label="Primary"
+            onMouseEnter={cancelClose}
             onMouseLeave={() => {
               clearIntent();
-              setOpenGroup(null);
+              closeSoon();
             }}
             onBlur={(e) => {
               if (!e.currentTarget.contains(e.relatedTarget as Node)) {

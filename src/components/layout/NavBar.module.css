@@ -136,6 +136,19 @@
 
 /* ============ MEGA PANEL (full viewport-width) ============ */
 .megaPanel {
+  /* Never taller than what is left of the viewport. With support lines the panel
+     measured 870px against an 820px gap below the header, so the final row was
+     clipped mid-sentence. Content shrinks to fit first; the scroll is the floor,
+     not the plan. */
+  max-height: calc(100dvh - var(--header-h));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  /* A HOVER CORRIDOR. The panel hangs at --header-h while the nav row ends
+     ~18px above it, and that strip belongs to neither, so a pointer travelling
+     from trigger to panel passes through dead space. This invisible bridge is
+     part of the panel, so entering it counts as entering the panel and the
+     grace-period timer is cancelled. Zero visual effect: no paint, no hit-test
+     beyond hover, and it sits above the header's own background. */
   position: fixed;
   /* Same token as the header's height — the panel hangs off the bar's bottom
      edge, and a hardcoded 72px against a 66.7px header left a 5.3px sliver of
@@ -183,6 +196,15 @@
   top: var(--header-h);
 }
 
+.megaPanel::before {
+  content: "";
+  position: absolute;
+  top: -22px;
+  left: 0;
+  right: 0;
+  height: 22px;
+}
+
 .megaPanelInner {
   max-width: 1400px;
   margin: 0 auto;
@@ -220,11 +242,16 @@
 }
 
 /* 3 items cols + 1 featured — What we do / How we serve level */
+/* Content-sized. Equal thirds gave Platforms (6 short names) the same width as
+   Disciplines (7 long ones), so one column ran half-empty while its neighbour
+   wrapped. */
 .megaGrid[data-cols="4"] {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
-      0,
-      1.1fr
-    );
+  /* Disciplines carries the longest labels AND the status pills, so equal
+     quarters forced "DevOps & / Platform / Engineering" onto three lines while
+     Platforms ran half-empty beside it. Width follows content. */
+  grid-template-columns:
+    minmax(0, 0.92fr) minmax(0, 1.3fr) minmax(0, 1fr)
+    minmax(0, 0.95fr);
 }
 
 .megaCol {
@@ -234,13 +261,24 @@
   min-width: 180px;
 }
 
+/* A register head, not a dimmer label. It was --fs-label at weight 400 in
+   --fg-subtle above 16px links, so it read as the quietest thing in its own
+   column instead of the thing that names it. The rule beneath is what makes the
+   column scan as a register rather than three lists that happen to be adjacent. */
 .megaColHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--fg-subtle);
-  padding: 4px 10px 6px;
+  color: var(--accent-label);
+  padding: 0 10px 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--boundary);
 }
 
 .megaList {
@@ -253,19 +291,42 @@
 }
 
 /* Mega menu link — with icon + description */
+/* A dossier row: name on top, what the desk covers beneath. Column, not row —
+   the old rule was `display: flex` across label and pill, which is what let
+   "Desk in build" wrap to two lines on five of the seven discipline rows and
+   left that column visibly ragged. */
 .megaLink {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px;
-  margin: 0;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 10px;
   border-radius: 0 0 0 var(--r-sm);
   border: 1px solid transparent;
   color: var(--fg);
   transition:
     background 0.15s ease,
-    border-color 0.15s ease,
-    transform 0.15s ease;
+    border-color 0.15s ease;
+}
+
+/* The name line. The pill sits beside the label here, never below it. */
+.megaLinkHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: var(--fw-medium);
+}
+
+.megaSupport {
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  color: var(--fg-subtle);
+  /* Two lines is the budget. A support line is a hint, not a paragraph. */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .megaLink:hover,
@@ -284,14 +345,26 @@
   cursor: default;
 }
 
+/* Compact and unbreakable. At --fs-label with 0.12em tracking this string is
+   wider than the space beside a two-word label, so it wrapped — "DESK IN /
+   BUILD" — doubling the row height on most of the Disciplines column. */
 .megaPlannedMark {
-  display: block;
-  margin-top: 3px;
+  flex: none;
+  white-space: nowrap;
   font-family: var(--font-mono);
+  /* --fs-label (13px) and 0.12em, NOT smaller. 11px at 0.08em would have fitted
+     more easily and broken both the A4 mono floor and the mono tracking rule —
+     shrinking type below the floor to solve a layout fault is the mistake the
+     Blue Yonder name slot already taught me. `white-space: nowrap` plus
+     `flex: none` is what actually stops the wrap. */
   font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--fg-subtle);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 2px 8px;
+  line-height: 1.4;
 }
 
 .megaLink[aria-disabled="true"]:hover,
@@ -673,5 +746,40 @@
     width: 32px;
     height: 32px;
     padding: 7px;
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Mega panel, responsive. The panel only renders on pointer-capable desktop
+   widths — below that the hamburger drawer owns navigation — but the range
+   between "desktop" and "wide" is real and the four-column grid does not hold
+   across it.
+   -------------------------------------------------------------------------- */
+/* 1360, not 1200. Measured at 1280: four columns still applied, the support
+   lines clipped and the panel had to scroll. The featured card is the widest
+   thing that can leave without cost, so it drops below the register first. */
+@media (max-width: 1360px) {
+  .megaGrid[data-cols="4"] {
+    /* Featured drops under the register rather than squeezing every column. */
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+  .megaGrid[data-cols="4"] > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 980px) {
+  .megaGrid,
+  .megaGrid[data-cols="2"],
+  .megaGrid[data-cols="3"],
+  .megaGrid[data-cols="4"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  /* The support line is the first thing to go when width is scarce: the label
+     is the navigation, the line is the hint. */
+  .megaSupport {
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
 }
