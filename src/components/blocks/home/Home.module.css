@@ -2431,3 +2431,60 @@
     display: none;
   }
 }
+
+
+/* ---------------------------------------------------------------------------
+   Platform L1 — application families (SAP IA round 3).
+   Grouping furniture only. The module cards below are untouched.
+   -------------------------------------------------------------------------- */
+.familyBlock {
+  margin-bottom: 40px;
+}
+
+.familyBlock:last-child {
+  margin-bottom: 0;
+}
+
+/* Scroll target for the sticky bar, offset so a family heading does not land
+   underneath it. --header-h plus the bar's own height. */
+.familyHeading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  scroll-margin-top: calc(var(--header-h) + 64px);
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--boundary);
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.familyCount,
+.familyPlanned {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.familyPlanned {
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+
+.familyPlannedCopy {
+  max-width: 62ch;
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--fg-muted);
+}

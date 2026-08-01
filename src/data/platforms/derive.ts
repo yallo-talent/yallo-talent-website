@@ -28,6 +28,8 @@ function authoredOrder(platformSlug: string, moduleSlug?: string): number {
  */
 
 export interface PlatformModule {
+  /** Vendor application family (SAP IA round 3). Grouping key only. */
+  family?: string;
   /**
    * Route segment for the module's own page, where one exists.
    *
@@ -169,6 +171,7 @@ function collect(): Map<string, PlatformCoverage> {
         name: am.name,
         scope: am.scope,
         variants: am.variants,
+        family: am.family,
         roles: [...new Set([...am.roles, ...(match?.roles ?? [])])],
         appearsIn: match?.appearsIn ?? [],
       };

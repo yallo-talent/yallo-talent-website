@@ -23,6 +23,15 @@ export interface AuthoredModule {
   /** Contractor roles Yallo places on this module. */
   roles: string[];
   /**
+   * The vendor's CURRENT application family (SAP IA round 3).
+   *
+   * Grouping key only — it changes how the L1 presents the suite, never what we
+   * claim. A buyer arriving from sap.com sees five autonomous families over a
+   * platform layer and an AI layer; we were showing fourteen product names in one
+   * flat column. See docs/design/sap-ia-round-3.md.
+   */
+  family?: string;
+  /**
    * Deployment variants INSIDE one module, per ORDER 1.
    *
    * A deployment is not a product. S/4HANA shipped as four sibling modules —
@@ -378,6 +387,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
     modules: [
       {
         slug: "sap-s4hana",
+        family: "Core ERP",
         name: "SAP S/4HANA",
         scope:
           "Core finance and logistics consultants across every deployment — brownfield conversion crews on-premise, standard-first consultants on public cloud, and mixed benches on private edition.",
@@ -409,6 +419,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-s4hana-finance",
+        family: "Autonomous Finance",
         name: "SAP S/4HANA Finance",
         scope:
           "Finance transformation consultants — record to report, treasury and group close.",
@@ -421,6 +432,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-analytics-cloud",
+        family: "Data & platform",
         name: "SAP Analytics Cloud",
         scope:
           "Planning and reporting specialists, including the ones who rebuild legacy BPC models.",
@@ -433,6 +445,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-btp",
+        family: "Data & platform",
         name: "SAP BTP (Business Technology Platform)",
         scope:
           "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
@@ -445,6 +458,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-integrated-business-planning",
+        family: "Autonomous Supply Chain",
         name: "SAP Integrated Business Planning",
         scope:
           "Demand, supply and response planners, and the APO consultants migrating off it.",
@@ -457,6 +471,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-customer-experience",
+        family: "Autonomous CX",
         name: "SAP Customer Experience",
         scope:
           "Commerce, marketing and sales-cloud consultants across the CX estate.",
@@ -469,6 +484,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-service-cloud",
+        family: "Autonomous CX",
         name: "SAP Service Cloud",
         scope:
           "Service and case-management consultants for contact-centre estates.",
@@ -480,6 +496,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-ariba",
+        family: "Autonomous Spend",
         name: "SAP Ariba (Procurement & Sourcing)",
         scope:
           "Source-to-pay consultants, supplier-enablement leads and the integration side of Ariba.",
@@ -492,6 +509,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-successfactors",
+        family: "Autonomous HCM",
         name: "SAP SuccessFactors",
         scope:
           "Employee Central, payroll and talent-module consultants, plus the reporting side.",
@@ -504,6 +522,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-extended-warehouse-management",
+        family: "Autonomous Supply Chain",
         name: "SAP Extended Warehouse Management (SAP EWM)",
         scope:
           "Warehouse consultants for embedded and decentralised EWM, including go-live floor support.",
@@ -521,6 +540,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
            already listed, and is named on the legacy SAP expertise page and the
            data-expertise page — attested, not guessed. */
         slug: "sap-datasphere",
+        family: "Data & platform",
         name: "SAP Datasphere",
         scope:
           "Data engineers and modellers on the semantic layer, and the crews migrating off BW.",
@@ -536,6 +556,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
            is the system a client uses to engage contractors. Named on the legacy
            SAP expertise page. */
         slug: "sap-fieldglass",
+        family: "Autonomous Spend",
         name: "SAP Fieldglass",
         scope:
           "Consultants for external-workforce and services-procurement rollouts, including supplier onboarding.",
@@ -550,6 +571,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         /* R5. SAP's customer-engagement product, named on the legacy SAP
            expertise page as both Customer Engagement and Account Engagement. */
         slug: "sap-emarsys",
+        family: "Autonomous CX",
         name: "SAP Emarsys",
         scope:
           "Campaign and customer-data consultants on the Emarsys engagement platform.",
@@ -561,6 +583,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-transportation-management",
+        family: "Autonomous Supply Chain",
         name: "SAP Transportation Management (SAP TM)",
         scope:
           "Transport and freight-settlement consultants, and the carrier integrations.",

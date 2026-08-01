@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
+import l1 from "@/components/blocks/l1/L1PageShell.module.css";
+import { L1SubNav } from "@/components/blocks/l1/L1SubNav";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import {
@@ -70,6 +72,66 @@ export default async function PlatformPage({
   const cov = getPlatformCoverage(platform);
   if (!cov) notFound();
 
+  /* Modules grouped by the vendor's current application family.
+
+     The ORDER is declared, not discovered. Bucketing in first-encountered order
+     put Data & platform third and Autonomous HCM last, because that is where
+     Analytics Cloud and SuccessFactors happen to sit in the authored list — an
+     accident of our file, presented as SAP's structure. This is the order
+     docs/design/sap-ia-round-3.md records: the core, the five autonomous
+     families, then the layers underneath them.
+
+     A platform whose modules carry no family — every vendor but SAP today —
+     collapses to a single unnamed group and renders exactly as before. */
+  const FAMILY_ORDER = [
+    "Core ERP",
+    "Autonomous Finance",
+    "Autonomous Spend",
+    "Autonomous Supply Chain",
+    "Autonomous HCM",
+    "Autonomous CX",
+    "Data & platform",
+  ];
+  const moduleFamilies: Array<{ name?: string; modules: typeof cov.modules }> =
+    [];
+  for (const mod of cov.modules) {
+    const name = mod.family;
+    const bucket = moduleFamilies.find((f) => f.name === name);
+    if (bucket) bucket.modules.push(mod);
+    else moduleFamilies.push({ name, modules: [mod] });
+  }
+  moduleFamilies.sort((a, b) => {
+    const ai = a.name ? FAMILY_ORDER.indexOf(a.name) : -1;
+    const bi = b.name ? FAMILY_ORDER.indexOf(b.name) : -1;
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  /* Families SAP publishes that we do not staff. Named because they are part of
+     the suite a buyer is looking at; empty because we have no roles for them and
+     R16 forbids a heading asserting what no row satisfies. */
+  const plannedFamilies =
+    cov.slug === "sap"
+      ? [
+          {
+            name: "SAP Business AI",
+            note: "SAP ships Joule and the SAP Business AI Platform across the suite. We do not staff a SAP AI desk yet, so there is nothing here to claim.",
+          },
+        ]
+      : [];
+
+  /* The sticky section bar retail has had all along, from the SAME component.
+     Families become sections, so the bar indexes the suite rather than the page
+     furniture. */
+  const subNavItems = [
+    ...moduleFamilies
+      .filter((f) => f.name)
+      .map((f) => ({ id: `family-${slugify(f.name as string)}`, label: f.name as string })),
+    ...plannedFamilies.map((f) => ({
+      id: `family-${slugify(f.name)}`,
+      label: f.name,
+    })),
+  ];
+
   return (
     /* R4: the platform's identity hue, declared once at the root. Every .amb-N
        inside now resolves to it, so the hero field and section washes are
@@ -120,6 +182,17 @@ export default async function PlatformPage({
         </div>
       </section>
 
+      {/* Retail's sticky section bar, the SAME component rather than a copy of
+          it. The platform L1 never had one because L1SubNav was private to the
+          L1 shell and this template is bespoke on Home.module.css — so every
+          sector and capability page indexed itself and the suite pages, which
+          are the longest of the three, did not. */}
+      {subNavItems.length > 1 ? (
+        <div className={l1.subNavScope}>
+          <L1SubNav items={subNavItems} />
+        </div>
+      ) : null}
+
       {/* Module coverage — the substance of the page.
           The lede no longer promises function-page links. That clause was
           measured false 16 times out of 17: the suite-level rebuild moved the
@@ -131,6 +204,12 @@ export default async function PlatformPage({
           Inventing cross-links would be worse than having none, so the promise
           goes rather than the data being stretched to meet it. The module pages
           carry sector links wherever they do exist. */}
+      {/* SAP IA round 3: the suite is presented by the vendor's CURRENT
+          application family, not as a flat product list. Grouping only — the 14
+          modules and every role beneath them are unchanged. A platform whose
+          modules carry no family (every vendor but SAP today) falls through to
+          one unnamed group and renders exactly as before.
+          docs/design/sap-ia-round-3.md */}
       <section
         className={`${styles.section} ${styles.g1} amb-wash amb-2`}
         id="modules"
@@ -172,8 +251,22 @@ export default async function PlatformPage({
             </nav>
           ) : null}
 
-          <div className={styles.commitment}>
-            {cov.modules.map((mod) => (
+          {moduleFamilies.map((fam) => (
+            <div key={fam.name ?? "_"} className={styles.familyBlock}>
+              {fam.name ? (
+                <h3
+                  className={styles.familyHeading}
+                  id={`family-${slugify(fam.name)}`}
+                >
+                  {fam.name}
+                  <span className={styles.familyCount}>
+                    {fam.modules.length}{" "}
+                    {fam.modules.length === 1 ? "module" : "modules"}
+                  </span>
+                </h3>
+              ) : null}
+              <div className={styles.commitment}>
+                {fam.modules.map((mod) => (
               <article
                 key={mod.name}
                 id={`module-${slugify(mod.name)}`}
@@ -239,9 +332,34 @@ export default async function PlatformPage({
                     ))}
                   </p>
                 ) : null}
-              </article>
-            ))}
-          </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {/* SAP Business AI — represented, and honestly empty.
+              The brief requires the AI layer to appear, and it is a fact about
+              SAP's portfolio that it exists. It is NOT a fact that we staff it:
+              the data layer's 93 distinct SAP roles contain no Joule, SAP
+              Business AI, AI Core or AI Foundation role, and the AI-titled roles
+              we hold are Azure and Databricks. Putting those under a SAP AI
+              heading is exactly the false attribution R16 forbids, so the family
+              ships with no rows and says so, using the same Desk-in-build
+              convention the nav already uses. Parked for Sumeet in
+              docs/design/sap-ia-round-3.md. */}
+          {plannedFamilies.map((fam) => (
+            <div key={fam.name} className={styles.familyBlock}>
+              <h3
+                className={styles.familyHeading}
+                id={`family-${slugify(fam.name)}`}
+              >
+                {fam.name}
+                <span className={styles.familyPlanned}>Desk in build</span>
+              </h3>
+              <p className={styles.familyPlannedCopy}>{fam.note}</p>
+            </div>
+          ))}
         </div>
       </section>
 
