@@ -28,6 +28,13 @@ import { buildMetadata } from "@/lib/seo";
  * enough module data gets no route at all — see derive.ts.
  */
 
+/**
+ * A grid of one is not a grid, and a plural heading over it is a claim the page
+ * cannot meet. Three is the same floor `derive.ts` already applies to whether a
+ * platform earns a page at all, reused here for whether it earns this band.
+ */
+const MIN_SECTORS_FOR_BAND = 3;
+
 interface RouteParams {
   platform: string;
 }
@@ -144,7 +151,13 @@ export default async function PlatformPage({
      furniture. */
   const subNavItems = [
     ...(cov.roles.length > 0 ? [{ id: "roles", label: "The bench" }] : []),
-    { id: "sectors", label: "Where we place" },
+    /* Gated on the SAME condition as the band itself. The bar was entered
+       unconditionally, so gating only the section would have left a sticky link
+       to #sectors on all seven pages, scrolling to nothing. The roles entry
+       above already models this; the sectors entry never did. */
+    ...(cov.sectors.length >= MIN_SECTORS_FOR_BAND
+      ? [{ id: "sectors", label: "Where we place" }]
+      : []),
     ...moduleFamilies
       .filter((f) => f.name)
       .map((f) => ({
@@ -435,32 +448,47 @@ export default async function PlatformPage({
           </section>
         ) : null}
 
-        {/* Where we place it. */}
-        <section
-          className={`${styles.section} ${styles.g2} amb-wash amb-4`}
-          id="sectors"
-        >
-          <div className={styles.wrap}>
-            <SectionHead
-              eyebrow="Where we place"
-              heading={`Sectors running ${cov.name} programmes.`}
-              lede="Platform depth is only useful with the sector context to apply it."
-            />
-            <ul className={styles.logos}>
-              {cov.sectors.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    className={styles.btnSecondary}
-                    href={`/industries/${s.slug}`}
-                  >
-                    {s.label}
-                    <ArrowGlyph />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* Where we place it — and only when there is a "where" worth the band.
+            D12 and R16, and it took measuring all seven pages to see the size
+            of it: this band rendered on every platform L1 with exactly ONE
+            sector, Retail, because retail is the only sector file seeded with
+            platform tools. Workday rendered the heading over ZERO links, which
+            is R16 outright — a heading may only assert what every row beneath
+            it satisfies, and "sectors running Workday programmes" over nothing
+            asserts a plural that does not exist.
+
+            The fix is not to author four more sectors of tool data. That is the
+            D12 trap: it would manufacture the appearance of coverage the repo
+            cannot support, on five pages at once. The band is gated instead,
+            and it returns by itself the moment the sector files carry enough
+            real tools to fill it. A grid of one is worse than no grid. */}
+        {cov.sectors.length >= MIN_SECTORS_FOR_BAND ? (
+          <section
+            className={`${styles.section} ${styles.g2} amb-wash amb-4`}
+            id="sectors"
+          >
+            <div className={styles.wrap}>
+              <SectionHead
+                eyebrow="Where we place"
+                heading={`Sectors running ${cov.name} programmes.`}
+                lede="Platform depth is only useful with the sector context to apply it."
+              />
+              <ul className={styles.logos}>
+                {cov.sectors.map((s) => (
+                  <li key={s.slug}>
+                    <Link
+                      className={styles.btnSecondary}
+                      href={`/industries/${s.slug}`}
+                    >
+                      {s.label}
+                      <ArrowGlyph />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
       </div>
 
       {/* The operating rhythm. Generic by its own admission — "regardless of
