@@ -76,7 +76,8 @@ export interface PlatformNarrative {
 const sap: PlatformNarrative = {
   intro: {
     eyebrow: "The problem",
-    title: "An SAP programme is not short of consultants. It is short of the four or five who have done this exact thing.",
+    title:
+      "An SAP programme is not short of consultants. It is short of the four or five who have done this exact thing.",
     copy: [
       "Every integrator on the shortlist can field FI/CO and MM/SD consultants. What decides a delivery date is narrower than that: whether the person who has run a brownfield conversion is on the team before the conversion starts, whether the authorisations architect arrived early enough for testers to get into the system, and whether anybody on the programme has personally owned a cutover weekend.",
       "Those are not seniority questions and they are not certification questions. They are questions about what somebody has already lived through, and a CV answers none of them. It is the reason we screen SAP briefs with people who have run the programme rather than with a keyword match against a role title.",

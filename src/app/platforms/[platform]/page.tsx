@@ -534,7 +534,10 @@ export default async function PlatformPage({
               />
               <div className={styles.commitment}>
                 {nar.segments.items.map((it, i) => (
-                  <article key={it.name} className={`${styles.vow} amb-${i + 1}`}>
+                  <article
+                    key={it.name}
+                    className={`${styles.vow} amb-${i + 1}`}
+                  >
                     <span className={styles.panelPetal} aria-hidden="true" />
                     <h3>{it.name}</h3>
                     <p className={styles.vowScope}>{it.copy}</p>
