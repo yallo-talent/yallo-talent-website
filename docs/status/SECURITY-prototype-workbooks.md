@@ -1,4 +1,13 @@
-# Credential exposure — prototype reference workbooks
+# Prototype reference workbooks — untracked
+
+> **RESOLVED, 1 Aug: Sumeet confirms `sap@yallo.co` is not a real account and
+> nothing is leaked.** No rotation needed and no history rewrite. The untrack and
+> the `.gitignore` entry stay, on the narrower ground that three-year-old
+> reference workbooks are not build input and do not belong in the repo — and
+> because the `git add -A` habit that swept them in was the real defect. The
+> original write-up follows.
+
+## Original entry — credential exposure (superseded)
 
 **1 August 2026. Raised by me, caused by me.**
 

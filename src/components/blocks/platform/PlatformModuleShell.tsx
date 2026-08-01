@@ -235,7 +235,7 @@ export function PlatformModuleShell({
       {siblings.length > 0 ? (
         <nav
           className={`${styles.section} amb-4`}
-          aria-label={`Other ${platform.name} modules`}
+          aria-label={`Other ${platform.name} product families`}
         >
           <div className={styles.wrap}>
             <h2 className={styles.eyebrow}>Also in {platform.name}</h2>

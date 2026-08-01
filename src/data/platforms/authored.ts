@@ -432,7 +432,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
       {
         slug: "sap-analytics-cloud",
-        family: "Data & platform",
+        family: "Data & analytics",
         name: "SAP Analytics Cloud",
         scope:
           "Planning and reporting specialists, including the ones who rebuild legacy BPC models.",
@@ -444,8 +444,59 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         ],
       },
       {
+        /* Added on Sumeet's direction, 1 Aug. Signavio and LeanIX are current
+           SAP products and the suite reads incomplete without them — the
+           technology layer is not just BTP.
+
+           They ship with NO roles, because we have none: searched, the data
+           layer's SAP roles contain nothing for either. Under R16 a heading may
+           only assert what every row satisfies, so rather than invent role
+           titles these carry the scope line and the Desk-in-build marker, which
+           is what the site already does for an offering we name but do not yet
+           staff. Give me the roles and they fill. */
+        slug: "sap-signavio",
+        family: "Enterprise technology",
+        name: "SAP Signavio",
+        scope:
+          "Process mining, modelling and transformation analysis on SAP Signavio.",
+        roles: [],
+      },
+      {
+        slug: "sap-leanix",
+        family: "Enterprise technology",
+        name: "SAP LeanIX",
+        scope:
+          "Enterprise architecture management and application portfolio mapping on SAP LeanIX.",
+        roles: [],
+      },
+      {
+        /* BTP elaborated. It shipped as one entry covering everything from
+           integration to app development, which is the opposite of a lens — a
+           buyer browsing SAP for integration work found nothing named. Its real
+           children are separate products with separate benches. Integration
+           Suite carries the CPI roles we already hold; Build has none yet. */
+        slug: "sap-integration-suite",
+        family: "Enterprise technology",
+        name: "SAP Integration Suite",
+        scope:
+          "Cloud Integration, API management and event-driven integration across the SAP estate.",
+        roles: [
+          "SAP CPI Integration Developer",
+          "Integration Architect",
+          "Integration Developer",
+        ],
+      },
+      {
+        slug: "sap-build",
+        family: "Enterprise technology",
+        name: "SAP Build",
+        scope:
+          "Low-code application, process automation and work-zone delivery on SAP Build.",
+        roles: [],
+      },
+      {
         slug: "sap-btp",
-        family: "Data & platform",
+        family: "Enterprise technology",
         name: "SAP BTP (Business Technology Platform)",
         scope:
           "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
@@ -540,7 +591,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
            already listed, and is named on the legacy SAP expertise page and the
            data-expertise page — attested, not guessed. */
         slug: "sap-datasphere",
-        family: "Data & platform",
+        family: "Data & analytics",
         name: "SAP Datasphere",
         scope:
           "Data engineers and modellers on the semantic layer, and the crews migrating off BW.",

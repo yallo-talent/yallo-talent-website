@@ -4,10 +4,7 @@ import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
-import {
-  L1BottomCta,
-  L1HowWeWork,
-} from "@/components/blocks/l1/L1PageShell";
+import { L1BottomCta, L1HowWeWork } from "@/components/blocks/l1/L1PageShell";
 import l1 from "@/components/blocks/l1/L1PageShell.module.css";
 import { L1SubNav } from "@/components/blocks/l1/L1SubNav";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
@@ -94,7 +91,8 @@ export default async function PlatformPage({
     "Autonomous Supply Chain",
     "Autonomous HCM",
     "Autonomous CX",
-    "Data & platform",
+    "Enterprise technology",
+    "Data & analytics",
   ];
   const moduleFamilies: Array<{ name?: string; modules: typeof cov.modules }> =
     [];
@@ -118,7 +116,14 @@ export default async function PlatformPage({
       ? [
           {
             name: "SAP Business AI",
-            note: "SAP ships Joule and the SAP Business AI Platform across the suite. We do not staff a SAP AI desk yet, so there is nothing here to claim.",
+            /* Corrected 1 Aug on Sumeet's word: the SAP AI Talent Desk IS
+               open, and requests are coming in for AI talent across every
+               platform. My previous line said we did not staff it, which was
+               wrong and was the worst kind of wrong — understating a live
+               offering. It now names the desk without listing roles, because
+               the role titles are not in the data layer yet; add them and this
+               family fills like any other. */
+            note: "SAP ships Joule and the SAP Business AI Platform across the suite. Our SAP AI Talent Desk is open and taking briefs — the named roles are being added.",
           },
         ]
       : [];
@@ -196,11 +201,13 @@ export default async function PlatformPage({
           L1 shell and this template is bespoke on Home.module.css — so every
           sector and capability page indexed itself and the suite pages, which
           are the longest of the three, did not. */}
-      {subNavItems.length > 1 ? (
-        <div className={l1.subNavScope}>
-          <L1SubNav items={subNavItems} />
-        </div>
-      ) : null}
+      {/* The scope wraps the bar AND everything the bar indexes. `position:
+          sticky` travels inside its PARENT's box, so wrapping only the bar gave
+          it a 49px parent and zero travel — measured, it scrolled clean off at
+          top:-855 while retail's stayed pinned at 80. Retail's scope is 5,068px
+          tall for exactly this reason. Closed after the last indexed section. */}
+      <div className={l1.subNavScope}>
+        {subNavItems.length > 1 ? <L1SubNav items={subNavItems} /> : null}
 
       {/* Module coverage — the substance of the page.
           The lede no longer promises function-page links. That clause was
@@ -225,8 +232,8 @@ export default async function PlatformPage({
       >
         <div className={styles.wrap}>
           <SectionHead
-            eyebrow="Module coverage"
-            heading={`Every ${cov.name} module we staff, and who we put in it.`}
+            eyebrow="Product families"
+            heading={`Every ${cov.name} product family we staff, and who we put in it.`}
             lede="Send the brief and the specialist is in your inbox in 72 hours."
             id="modules-heading"
           />
@@ -246,7 +253,7 @@ export default async function PlatformPage({
           {cov.modules.length > 8 ? (
             <nav
               className={styles.moduleIndex}
-              aria-label={`${cov.name} modules`}
+              aria-label={`${cov.name} product families`}
             >
               {cov.modules.map((mod) => (
                 <a
@@ -365,7 +372,7 @@ export default async function PlatformPage({
                 id={`family-${slugify(fam.name)}`}
               >
                 {fam.name}
-                <span className={styles.familyPlanned}>Desk in build</span>
+                <span className={styles.familyPlanned}>Desk open</span>
               </h3>
               <p className={styles.familyPlannedCopy}>{fam.note}</p>
             </div>
@@ -394,7 +401,7 @@ export default async function PlatformPage({
             <SectionHead
               eyebrow="The bench"
               heading={`Every role we place across ${cov.name}.`}
-              lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} modules. Send the brief and the specialist is in your inbox in 72 hours.`}
+              lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} product families. Send the brief and the specialist is in your inbox in 72 hours.`}
               id="roles-heading"
             />
             <ul className={styles.roleIndex}>
@@ -434,12 +441,14 @@ export default async function PlatformPage({
           </ul>
         </div>
       </section>
-        {/* The operating rhythm. Generic by its own admission — "regardless of
+      </div>
+
+      {/* The operating rhythm. Generic by its own admission — "regardless of
           sector, platform or model" — so this authors nothing; it just stops
           being sector-only. */}
       <L1HowWeWork noun={cov.name} />
 
-    {/* The closing ask. Retail has had one all along; the platform L1 ended on
+      {/* The closing ask. Retail has had one all along; the platform L1 ended on
           a module list. Same component, no props, nothing authored. */}
       <L1BottomCta />
     </div>
