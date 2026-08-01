@@ -359,6 +359,12 @@
 
   /* Ambient layer, light tuning. Atmosphere only — never text or controls.
      8% is the hard ceiling on light (canon §5). */
+  /* Elevation. Cards that need to sit ON a band rather than in it — the
+     evidence cards were --ground-2 on --ground with a hairline, which at card
+     size reads as no card at all. Light theme casts a real shadow. */
+  --sh08: rgb(0 0 0 / 8%);
+  --sh12: rgb(0 0 0 / 12%);
+
   --amb-alpha: 20%;
   --amb-1: var(--amb-indigo-l);
   --amb-2: var(--amb-teal-l);
@@ -408,6 +414,11 @@
   /* Ambient layer, dark tuning — 30% since R11 (canon §5, amended).
      Gradients on the near-black ground are wanted — this is where the ambient
      layer earns its keep. */
+  /* On a near-black ground a black shadow is invisible, so elevation there is
+     carried by a deeper spread rather than a darker colour. */
+  --sh08: rgb(0 0 0 / 30%);
+  --sh12: rgb(0 0 0 / 45%);
+
   --amb-alpha: 30%;
   --amb-1: var(--amb-indigo-d);
   --amb-2: var(--amb-teal-d);

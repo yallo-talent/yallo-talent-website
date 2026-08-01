@@ -36,7 +36,14 @@ export function TheScreen() {
                 <span className={styles.stepIcon} aria-hidden="true">
                   <ScreenGlyph name={s.icon} />
                 </span>
-                <h3>{s.name}</h3>
+                <h3>
+                  {s.name}
+                  {/* Who acts. The pipeline said what happens at each step and
+                      never who does it, so a reader could not see where their
+                      own effort begins and ends — which is the selling point,
+                      because three of the four steps are ours. */}
+                  <span className={styles.stepActor}>{s.actor}</span>
+                </h3>
                 <p className={styles.stepCopy}>{s.copy}</p>
                 <span className={styles.stepBadge}>{s.badge}</span>
               </li>

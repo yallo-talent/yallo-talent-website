@@ -691,7 +691,9 @@
   border-radius: 0 0 0 var(--r-xs);
   background: transparent;
   color: var(--fg-subtle);
-  font-size: var(--fs-label);
+  /* --fs-caption, not --fs-label: this glyph renders in the sans stack, and
+     13px sans is below A4 floor. It is a control, not a mono label. */
+  font-size: var(--fs-caption);
   line-height: 1;
   opacity: 0;
   transition:
@@ -1966,17 +1968,27 @@
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
-  background: var(--ground-2);
+  /* The cards have to POP off the band, not sit flush in it. They were
+     --ground-2 on a --ground section with a hairline: a one-step tonal
+     difference and a 1px line, which at card size reads as no card at all.
+     --ground-3 lifts them a second step, the shadow gives them somewhere to sit,
+     and the hover raises both rather than only recolouring a border. */
+  background: var(--ground-3);
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r);
   padding: 24px;
+  box-shadow: 0 1px 2px var(--sh08), 0 8px 24px -12px var(--sh12);
   transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
     border-color 0.28s var(--ease),
     background 0.28s var(--ease);
 }
 
 .caseCard:hover {
-  border-color: var(--boundary);
+  border-color: var(--border-accent);
+  box-shadow: 0 2px 4px var(--sh08), 0 18px 40px -16px var(--sh12);
+  transform: translateY(-2px);
 }
 
 /* No tile. `--paper-2` was a hardcoded LIGHT ground regardless of theme, so on
@@ -2595,3 +2607,21 @@
    a `.familySheet` wrapper). The fix has to move the CARDS into one shared
    grid across families, not wrap each family in another one. Left as-is
    rather than shipped broken. */
+
+
+/* Who acts at each step of the screen. Sits with the step name rather than in
+   the body, so the sequence can be read as "you, then us, us, us" at a glance. */
+.stepActor {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 1px 8px;
+}
