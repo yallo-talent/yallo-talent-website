@@ -103,7 +103,7 @@ Detail and the round-3b additions: `docs/design/sap-ia-round-3.md`.
 | Working L2 detail pages | ✓ 21 links | ✓ 14 links | ✓ **8 links, 7 disciplines, all 200** |
 | Closing CTA | ✓ | ✓ | ✓ |
 | Identity hue on L1 | ✓ | ✓ | ✓ |
-| Identity hue on L2 | ✓ | **✓ — fixed, 3 wash hosts, ΔE 4.5 SAP vs Oracle** | ✗ |
+| Identity hue on L2 | **✓ — was broken too, see below** | ✓ ΔE 4.5 vs Oracle | **✓ ΔE 3.3 vs retail** |
 | Published evidence | case studies | ✓ 1 study + 4 named placements | — |
 | P0 / P1 open | 0 | 0 | 0 |
 
@@ -112,6 +112,15 @@ Detail and the round-3b additions: `docs/design/sap-ia-round-3.md`.
 written copy. Nothing derives them, and writing them means composing marketing
 claims about our own capability. Give SAP a data file shaped like `retail.ts`
 and the page fills through the existing shell with no code change.
+
+**My "retail L2 hue ✓" in an earlier draft of this table was unmeasured and
+wrong.** Measured, the shared `L2PageShell` carried no `data-identity` at all, so
+`--amb` resolved to the POSITIONAL teal on every sector and capability L2 — every
+one of them the same hue regardless of domain — and `.amb-wash` appeared zero
+times, so even that painted nothing. Identity plus four wash hosts added to the
+one shell: retail's L2 is now plum, Data & Analytics' teal, ΔE 3.3 apart. Third
+instance of the same fault this run, after R11 and the platform L2. Declaring
+identity is not painting it, and I keep reading the former as the latter.
 
 **D&A's gap was never data.** I parked it once, wrongly, without reading the
 shell's guards: `L2Tools` returns null when tools are empty and `L2Overview`

@@ -22,7 +22,17 @@ interface Props {
  */
 export function L2PageShell({ sector, fn }: Props) {
   return (
-    <div className={`${styles.page} amb-2`}>
+    /* data-identity, and it was never here. Measured on both consumers: the
+       root carried `amb-2` and no identity at all, so --amb resolved to the
+       POSITIONAL teal — every sector and capability L2 on the site
+       rendered the same hue regardless of its domain. And `.amb-wash` appeared
+       zero times, so even that positional hue painted nothing.
+
+       I reported retail's L2 hue as working in the parity table. I had not
+       measured it; it was as broken as the capability one. Same fault as R11 and
+       as the platform L2 — declaring identity is not painting it. One shell, so
+       this fixes every L2 that uses it. */
+    <div className={`${styles.page} amb-2`} data-identity={sector.slug}>
       <div className={styles.layout}>
         <L2Sidebar sector={sector} activeSlug={fn.slug} />
         <main className={styles.main}>
@@ -45,7 +55,7 @@ export function L2PageShell({ sector, fn }: Props) {
 /* ============ HERO ============ */
 function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
-    <section className={styles.hero}>
+    <section className={`${styles.hero} amb-wash`}>
       {/* B3, as on the L1. Seeded on the FUNCTION slug rather than the
           sector's, so sibling L2s under one sector each get their own field
           instead of twenty pages sharing one. */}
@@ -114,7 +124,7 @@ function L2Overview({
 }) {
   const copy = fn.overview ?? fn.blurb ?? "";
   return (
-    <section className={styles.overview}>
+    <section className={`${styles.overview} amb-wash`}>
       <div className={styles.overviewInner}>
         <div className={styles.overviewText}>
           <div className={styles.secLabel}>Function overview</div>
@@ -176,7 +186,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   if (!fn.tools || fn.tools.length === 0) return null;
   const briefHref = `/brief?sector=${sector.slug}&fn=${fn.slug}`;
   return (
-    <section className={styles.tools}>
+    <section className={`${styles.tools} amb-wash`}>
       <div className={styles.toolsInner}>
         <div className={styles.secLabel}>Tools we staff</div>
         <h2 className={styles.toolsH}>
@@ -229,7 +239,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
 /* ============ SCREENING CALLOUT ============ */
 function L2Screening() {
   return (
-    <section className={styles.screening}>
+    <section className={`${styles.screening} amb-wash`}>
       <div className={styles.screeningInner}>
         <div className={styles.screeningIcon} aria-hidden="true">
           <svg

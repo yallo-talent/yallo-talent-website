@@ -318,7 +318,11 @@
 }
 
 .megaSupport {
-  font-size: var(--fs-caption);
+  /* --fs-label (13px, the A4 mono/meta floor) rather than --fs-caption (14px).
+     At 14px beside a 16px label the two lines read as near-equal weight, which
+     is what made the panel feel dense; a clear step down lets the label lead and
+     the line support it. The floor is not crossed. */
+  font-size: var(--fs-label);
   line-height: 1.45;
   color: var(--fg-subtle);
   /* Two lines is the budget. A support line is a hint, not a paragraph. */

@@ -73,12 +73,10 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Data & Analytics",
             href: "/capabilities/data-analytics",
-            published: false,
           },
           {
             label: "Cloud & Infrastructure",
             href: "/capabilities/cloud-infrastructure",
-            published: false,
           },
           {
             label: "Cybersecurity",
