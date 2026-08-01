@@ -973,7 +973,9 @@
   left: 14px;
   top: 10px;
   font-family: var(--font-display);
-  font-size: 28px;
+  /* On the ramp, not a literal: the quote mark is display type at card-title
+     size, which is what the section head uses one step up. */
+  font-size: var(--fs-card-title);
   line-height: 1;
   color: var(--accent-mark);
   opacity: 0.55;
@@ -2679,7 +2681,6 @@
   border-radius: var(--r-pill);
   padding: 1px 8px;
 }
-
 
 /* ---------------------------------------------------------------------------
    POINT 11 — the AI-talent to evidence seam.
