@@ -287,18 +287,22 @@
    padding after it — never font-size, because the suffix already sits ON A4's
    13px mono floor.
 
-   Tracking carries most of it: 0.16em → 0.125em is 0.455px off each of six
-   characters, and the matching margin-right gives 0.455px of that back, so the
-   net is 2.3px. That alone leaves scrollWidth at 361 — inside the gate's ±1px
+   Tracking carries most of it: 0.16em → 0.12em is 0.52px off each of six
+   characters, and the matching margin-right gives 0.52px of that back, so the
+   net is 2.6px. That alone leaves scrollWidth at 361 — inside the gate's ±1px
    tolerance and therefore a pass, which is exactly the kind of pass that breaks
    on the next unrelated change. The gap and the padding come down by 2px each
    to buy real clearance: measured scrollWidth 360 with the farthest header
    element at 356.8, so ~3px of headroom rather than none.
 
-   0.125em, not the 0.12em floor itself. The rendered-type gate reads the
-   PAINTED ratio (computed letter-spacing ÷ computed font-size) against 0.1195,
-   so sitting exactly on the floor puts float noise in charge of the result.
-   0.125em costs 0.31px and takes the question off the table.
+   0.12em exactly, which is A4's floor. I shipped 0.125em first, reasoning that
+   the rendered-type gate reads the PAINTED ratio (computed letter-spacing ÷
+   computed font-size) against 0.1195, so sitting exactly on the floor puts
+   float noise in charge of the verdict. Sumeet's ruling names 0.12em, so 0.12em
+   it is, and the concern turned out to be unfounded when measured rather than
+   reasoned about: --fs-label is a fixed 13px, not a clamp, so the product is
+   exactly 1.56px and the ratio is exactly 0.12 at every width the gate visits.
+   The floor is only a hazard where the font-size is fractional.
 
    Scoped to 480px, which is where the lockup already steps down to --fs-lede,
    rather than to a fresh 420px breakpoint — one visual transition on this
@@ -312,8 +316,8 @@
 
   .lockup[data-lockup="g"] .suffix,
   .lockup:not([data-lockup]) .suffix {
-    letter-spacing: 0.125em;
-    margin-right: -0.125em;
+    letter-spacing: 0.12em;
+    margin-right: -0.12em;
     padding-left: 9px;
   }
 }
