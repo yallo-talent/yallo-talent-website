@@ -27,7 +27,13 @@ export function Intelligence() {
               className={`${styles.intelCard} ${a.invertCorner ? styles.intelCardInvert : ""}`}
             >
               <span className={styles.panelPetal} aria-hidden="true" />
-              <p className={styles.intelFlag}>{a.flag}</p>
+              {/* The GATED / OPEN chips are gone. They labelled the asset by
+                  its access model before saying what it was, which reads as
+                  process rather than substance — and "GATED" on a card asking
+                  for an email is a warning, not an invitation. Each card's own
+                  CTA already says which is which ("Request the blueprint" vs
+                  "Read the atlas"). The flag stays in the data for the request
+                  form to key off. */}
               <h3>{a.title}</h3>
               <p className={styles.intelCopy}>{a.copy}</p>
               <ul className={styles.intelPoints}>

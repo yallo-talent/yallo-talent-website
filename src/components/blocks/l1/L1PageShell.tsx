@@ -1049,11 +1049,15 @@ function L1Insights({ data }: Props) {
    proof: Architecture, Software Development, Cloud & Infrastructure, Packaged
    Software, Data & Analytics, Agile & DevOps." */
 const SPECIALIST_DESKS = [
+  /* Packaged Software FIRST, per Sumeet: SAP and Oracle are the bulk of what we
+     staff, so the desk that carries them leads. "Data & Analytics" is now
+     "Data & AI" — the combined platform-and-capability view, and the term the
+     market uses. Same order on every surface that lists the desks. */
+  "Packaged Software",
   "Architecture",
   "Software Development",
+  "Data & AI",
   "Cloud & Infrastructure",
-  "Packaged Software",
-  "Data & Analytics",
   "Agile & DevOps",
 ] as const;
 

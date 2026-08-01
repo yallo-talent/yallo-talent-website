@@ -74,7 +74,7 @@ export async function generateMetadata({
   return buildMetadata({
     seo: {
       title: `${fn.title} Contractors · ${taxonomyLabels(capability.slug).short} | Yallo Talent`,
-      description: `${roles} and more. Specialist-screened contractor shortlists in 72 hours. Middle East · Europe · India.`,
+      description: `${roles} and more. Specialist-screened contractor shortlists in 72 hours. Middle East · Europe.`,
     },
     path: `/capabilities/${p.cap}/${p.fn}`,
   });

@@ -36,7 +36,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Yallo Talent — Contract, Permanent, EOR, Managed Delivery",
   description:
-    "Specialist-screened shortlists in 72 hours. Middle East · Europe · India. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+    "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
 };
 
 export default function RootLayout({

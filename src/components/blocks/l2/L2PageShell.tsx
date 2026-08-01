@@ -102,7 +102,7 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
           </div>
           <div className={styles.heroDot}>
             <span className={styles.heroDotMark} aria-hidden="true" />
-            Active bench · Middle East · Europe · India
+            Active bench · Middle East · Europe
           </div>
           <div className={styles.heroDot}>
             <span className={styles.heroDotMark} aria-hidden="true" />
@@ -219,7 +219,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
                     <span className={styles.tcBenchDot} aria-hidden="true" />
                     <span className={styles.tcBenchTxt}>
                       {tool.benchNote ??
-                        "Active bench · Middle East · Europe · India"}
+                        "Active bench · Middle East · Europe"}
                     </span>
                   </div>
                   <Link href={briefHref} className={styles.tcCta}>

@@ -48,7 +48,7 @@ export async function generateMetadata({
   return buildMetadata({
     seo: {
       title: `${cov.name} Contractors · ${cov.moduleCount} modules | Yallo Talent`,
-      description: `${cov.roleCount} ${cov.name} contractor roles across ${cov.moduleCount} modules. Specialist-screened for implementation depth, shortlisted in 72 hours. Middle East · Europe · India.`,
+      description: `${cov.roleCount} ${cov.name} contractor roles across ${cov.moduleCount} modules. Specialist-screened for implementation depth, shortlisted in 72 hours. Middle East · Europe.`,
     },
     path: `/platforms/${platform}`,
   });

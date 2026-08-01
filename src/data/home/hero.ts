@@ -15,7 +15,13 @@ export const hero = {
     lead: "Programmes rarely fail on budget. They fail on the",
     emphasis: "six people you couldn't find.",
   },
-  lede: "We staff and deliver enterprise platform programmes across the Middle East, Europe and India. SAP, Oracle, Microsoft, Salesforce. Screened by specialists, shortlisted in 72 hours.",
+  /* Middle East and Europe lead; India is not in the headline corridor.
+     Sumeet's positioning: those two are the customer corridor, and India appears
+     only where it is materially true — capability centres, and the delivery
+     bench behind them. Permanent hiring is global because the invoicing can run
+     from the UAE entity, and that is stated where permanent is discussed rather
+     than diluting the corridor here. */
+  lede: "We staff and deliver enterprise platform programmes across the Middle East and Europe. SAP, Oracle, Microsoft, Salesforce. Screened by specialists, shortlisted in 72 hours.",
   pillars: ["Contract", "Permanent", "Employer of Record", "Managed Delivery"],
   primaryCta: { label: "Start a brief", href: "/brief" },
   secondaryCta: { label: "See how the screen works", href: "#screen" },

@@ -8,7 +8,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Platforms · Yallo Talent",
     description:
-      "SAP, Oracle, Microsoft, Salesforce, Blue Yonder and Workday specialists. Active benches across the Middle East, Europe and India.",
+      "SAP, Oracle, Microsoft, Salesforce, Blue Yonder and Workday specialists. Specialists across the Middle East and Europe.",
   },
   path: "/platforms",
 });

@@ -40,9 +40,18 @@
      doing the glare. Warmed and taken down one step. All 32 pairs still pass,
      with more margin than before on gold and on the strong boundary.
      Never navy, and now never cold. */
-  --dk: #0f0f0f;
-  --dk-2: #171717;
-  --dk-3: #1f1f1f;
+  /* A HAIR COOL, not neutral, and this is the fix for "it reads coffee".
+     Measured, the ground was already neutral — R-B of 0 to 2 at every scroll
+     position — so the warm impression was never the background. It is gold
+     COVERAGE: the accent, the display numerals, the umber ambient at 30%. On a
+     dead-neutral ground a warm accent that widespread drags the whole surface
+     with it and the page reads brown.
+     Two points of blue over red is below the threshold for seeing the ground as
+     tinted, but it is enough for gold to sit ON the surface rather than in it.
+     Classic warm-accent-on-cool-ground; nothing else moves. */
+  --dk: #0e0f11;
+  --dk-2: #16171a;
+  --dk-3: #1e2023;
 
   --dk-txt: #e5e5e5; /* 12.94:1 on dk-3 — was #f0efec at 13.62:1 */
   --dk-txt-2: #afafaf; /* 7.44:1  */

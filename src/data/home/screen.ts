@@ -52,11 +52,15 @@ export const screenSteps: ScreenStep[] = [
 
 /** From the team-structure slide. One account manager sits in front of them. */
 export const desks: string[] = [
+  /* Packaged Software FIRST, per Sumeet: SAP and Oracle are the bulk of what we
+     staff, so the desk that carries them leads. "Data & Analytics" is now
+     "Data & AI" — the combined platform-and-capability view, and the term the
+     market uses. Same order on every surface that lists the desks. */
+  "Packaged Software",
   "Architecture",
   "Software Development",
+  "Data & AI",
   "Cloud & Infrastructure",
-  "Packaged Software",
-  "Data & Analytics",
   "Agile & DevOps",
 ];
 
