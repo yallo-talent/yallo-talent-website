@@ -175,7 +175,6 @@
   transform: translateY(0.035em);
 }
 
-
 /* ==========================================================================
    R15 round 2 — Sumeet has called the lockup weird five times, so this is a
    DIAGNOSIS first rather than a sixth guess.
@@ -242,8 +241,14 @@
   font-size: var(--fs-label);
   letter-spacing: 0.28em;
   margin-right: -0.28em;
-  color: var(--accent-mark);
-  opacity: 0.7;
+  /* --accent-label at FULL strength, not --accent-mark at 0.7.
+     I shipped the faded version and axe caught it on three pages as a serious
+     colour-contrast failure — 13px text is small text, it needs 4.5:1, and
+     dimming the decorative gold to 70% put it well under. --accent-label is the
+     grade derived for exactly this: small gold text that clears AA on the
+     field. Restraint has to come from size and tracking here, never from
+     opacity, because opacity is the one lever that also removes contrast. */
+  color: var(--accent-label);
   transform: none;
 }
 
