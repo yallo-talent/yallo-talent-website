@@ -206,7 +206,11 @@ Also outstanding and smaller: the platform-side back-links for §4.2's "link bot
 
 ## 10. Commits
 
-Branch `feat/capabilities-parity`, cut from `main`, rebased before push. Nothing staged with `git add -A`; session 1's ten uncommitted files were never staged.
+Branch `feat/capabilities-parity`, cut from `main`. Nothing staged with `git add -A`; every commit staged an explicit path list, and session 1's uncommitted files were never staged by me.
+
+**One thing you should know about the branch, because it affects how you review it.** Session 1 committed its platform work onto `feat/capabilities-parity` rather than keeping to its own branch. Four commits on this branch are theirs, interleaved with mine: `45a9032` (chips, connector, band padding, SAP Business AI, hue family), `b18095e` (platform benches), `92b1060` (their relay section 10), `730667b` (chip radius token). Their token rename landed too, so `--amb-mulberry-*` is present and my files reference only the domain-level `--id-*` tokens as instructed.
+
+Nothing is broken by this and I have not touched their commits, but the consequence is that **this branch is not a clean capabilities-only diff** — reviewing it as one will show platform changes I did not make and cannot speak for. If you want them separated, that is a rebase decision for you rather than something I should do unilaterally to another session's commits.
 
 1. `fix(capabilities): stop the desk taxonomy resolving into the discipline` — S1, D1, the derived hub count, AI Talent in the taxonomy, redirects.
 2. `data(capabilities): seed the four planned disciplines to full depth` — the four desks, S3 on the benchmark, `PLANNED_CAPABILITIES` emptied.
