@@ -216,10 +216,27 @@ async function convert(slug, file, outDir) {
   const bg = groundIsBright ? m1 : m0;
   const range = Math.abs(m1 - m0) || 1;
 
+  // A DEAD ZONE around the ground, because a class MEAN is not a class EDGE.
+  //
+  // This was the whole reason six marks "would not key". Oracle is red on white:
+  // Otsu split it perfectly, ground class mean 247, ink mean 24. But true white
+  // is 255, so every ground pixel came out |255-247|/223 = 0.036 -> alpha 9,
+  // and the clarity test counts transparent as alpha < 8. Nine. The ground was
+  // being keyed to within one point of invisible and then failed for it, and the
+  // gate reported "only 2.0% transparent" on an image that is 73% clean white.
+  // Al Othaim, Landmark, Chalhoub and Sephora all failed the same way.
+  //
+  // The ground occupies a spread, not a value — scans, JPEG ringing and
+  // antialiasing put it a few points either side of its mean. So the bottom
+  // slice of the distance ramp collapses to fully transparent, and the rest is
+  // rescaled across what remains. Ink is untouched: at 12% of the class
+  // separation the zone is far below any real letterform stroke.
+  const DEAD = 0.12;
   const alpha = Buffer.allocUnsafe(g.length);
   for (let k = 0; k < g.length; k++) {
     const d = Math.abs(g[k] - bg) / range;
-    alpha[k] = Math.round(Math.max(0, Math.min(1, d)) * 255);
+    const keyed = d <= DEAD ? 0 : (d - DEAD) / (1 - DEAD);
+    alpha[k] = Math.round(Math.max(0, Math.min(1, keyed)) * 255);
   }
 
   // LEGIBILITY GATE, measured, not judged by eye.
