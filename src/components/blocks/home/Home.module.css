@@ -957,8 +957,12 @@
   position: relative;
   margin: 0;
   padding: 14px 16px 14px 40px;
+  /* NO coloured side tab. I added a 2px gold left border here and the design
+     hook caught it as the AI-slop tell that it is — and it was doing nothing the
+     quote mark beside it was not already doing, so it was decoration standing in
+     for a signal that already existed. The surface lift and the mark carry it;
+     the petal radius does the rest. */
   border: 1px solid var(--hairline);
-  border-left: 2px solid var(--accent-mark);
   border-radius: 0 0 0 var(--r-sm);
   background: var(--ground-3);
   font-size: var(--fs-body-sm);
