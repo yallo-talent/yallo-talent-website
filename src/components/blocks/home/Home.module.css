@@ -2761,3 +2761,222 @@
     opacity: 1;
   }
 }
+
+/* ==========================================================================
+   /ai-talent — the stack matrix band and the screening list.
+
+   The matrix is the signature device of the page: six groups, each a heading
+   over a chip set. Chips are `.role-pill`, which resolves its own tokens, so it
+   re-grades correctly inside `.band-invert` rather than needing a dark variant
+   of its own. That is why the group heading below also uses tokens and not a
+   literal — the band flips relative to the active theme, and anything hard-coded
+   here would be right in exactly one of the four combinations.
+   ========================================================================== */
+.stackGroup {
+  margin-top: 34px;
+}
+
+.stackGroup:first-of-type {
+  margin-top: 28px;
+}
+
+/* Mono, uppercase, on A4's 13px label step. Tracking is 0.14em rather than the
+   0.12em floor: this sits directly above a dense chip set, and the extra space
+   is what stops the group name reading as another chip. */
+.stackGroupName {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+/* The chips already carry their own top margin, so the group's list resets it —
+   otherwise the gap under the heading is the heading's margin plus the list's
+   and the group reads as detached from its own name. */
+.stackGroup .roleChips {
+  margin-top: 0;
+}
+
+/* Four screening points, numbered. An ordered list because the numbering is
+   meaning here and not decoration: they are read in order and the last one is
+   the depth proof. */
+.screenList {
+  display: grid;
+  gap: 18px;
+  max-width: 74ch;
+  margin: 28px 0 0;
+  padding: 0 0 0 22px;
+  color: var(--text-2);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.screenList li {
+  padding-left: 6px;
+}
+
+.screenList li::marker {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--accent-label);
+}
+
+/* ==========================================================================
+   Programme Staffing Blueprint — the phase rail, the phase matrix and the
+   under-scoped list.
+
+   Three devices, and the middle one is the signature of the asset. All of them
+   are structure: no device here has a slot for a quantity, because v1 publishes
+   the team shape and the sequence and holds the numbers back. There is nowhere
+   to put a dash.
+   ========================================================================== */
+
+/* The phases, read left to right. An ordered list because the order IS the
+   content — this is a sequence, not a set. */
+.bpPhaseRail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: phase;
+}
+
+.bpPhaseStep {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--ground-2);
+  border: 1px solid var(--rule);
+  border-radius: 0 0 0 var(--r-sm);
+  counter-increment: phase;
+}
+
+/* The number is drawn rather than written, so the phase names stay the content
+   and the sequence stays legible without a second column of digits. */
+.bpPhaseStep::before {
+  content: counter(phase, decimal-leading-zero);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--accent-label);
+}
+
+/* bpPhaseName, not phaseName. The homepage instrument has owned `.phaseName`
+   since it was built — dark-band text at --dk-txt-2 on --dk-2 — and this file is
+   ONE module shared by every home block. Appending a second `.phaseName` here
+   put an equal-specificity rule later in the cascade, so the homepage pipeline
+   silently repainted to --text on --dk-2: 1.00:1, two serious axe violations,
+   and it also killed the .phaseActive and .phaseDone states that key off it.
+   Caught by reading the gate summary before pushing rather than after.
+   scripts/check-type-scale.mjs now refuses a redeclared class name so the next
+   one is a build failure and not a contrast failure. */
+.bpPhaseName {
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+/* Who is on when. A description list, because that is what it is: each phase
+   names the people on it. A table would imply a grid of cells that can be read
+   down as well as across, and this one cannot. */
+.phaseMatrix {
+  margin: 28px 0 0;
+}
+
+.phaseRow {
+  display: grid;
+  grid-template-columns: minmax(0, 210px) minmax(0, 1fr);
+  gap: 8px clamp(20px, 3vw, 40px);
+  padding: 20px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.phaseRow:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.phaseRowName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lede);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.015em;
+  color: var(--accent-label);
+}
+
+.phaseRowOn {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* The band a programme director screenshots. Same two-column rhythm as the
+   matrix above it, so the page has one structural idea rather than two. */
+.underScoped {
+  margin: 28px 0 0;
+}
+
+.underScopedRow {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 8px clamp(20px, 3vw, 40px);
+  padding: 22px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.underScopedRow:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.underScopedItem {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lede);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+.underScopedWhy {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.methodNote {
+  max-width: 74ch;
+  margin: 26px 0 0;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* Below 760 both two-column lists become stacked pairs. The name keeps its
+   weight, so the pairing survives the loss of the column. */
+@media (max-width: 760px) {
+  .phaseRow,
+  .underScopedRow {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* The mis-hire paragraph. One sentence pattern the buyer recognises, set larger
+   than body because it is the point of the page and it sits alone on a dark
+   band with nothing to compete with. */
+.misHire {
+  max-width: 68ch;
+  margin: 28px 0 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-lede);
+  font-weight: var(--fw-body);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}

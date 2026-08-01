@@ -52,7 +52,8 @@ import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "AI Talent · Agentic, LLM, MLOps and Governance Specialists | Yallo Talent",
+    title:
+      "AI Talent · Agentic, LLM, MLOps and Governance Specialists | Yallo Talent",
     description:
       "AI talent as a named specialism: nine role families, the stacks we screen against, and the mis-hire pattern for each. Specialist-screened, shortlisted in 72 hours. Middle East · Europe · India.",
   },
@@ -142,7 +143,10 @@ export default function AiTalentPage() {
           />
           <div className={styles.commitment}>
             {aiRoleFamilies.map((f, i) => (
-              <article key={f.slug} className={`${styles.vow} amb-${(i % 6) + 1}`}>
+              <article
+                key={f.slug}
+                className={`${styles.vow} amb-${(i % 6) + 1}`}
+              >
                 <span className={styles.panelPetal} aria-hidden="true" />
                 <h3>
                   <Link href={`/ai-talent/${f.slug}`}>{f.name}</Link>

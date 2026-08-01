@@ -240,16 +240,22 @@ export const primaryNav: NavGroup[] = [
             description: "Articles, research and analysis",
           },
           {
+            /* Now built, and pointed at the asset rather than at the hub. The
+               href was /intelligence, which is the column's own destination and
+               not this item's. */
             label: "Programme Staffing Blueprint",
-            href: "/intelligence",
-            description: "How we scope and staff a programme",
-            published: false,
+            href: "/intelligence/programme-staffing-blueprint",
+            description: "Streams, phases and the roles scoped too late",
           },
           {
-            label: "AI Talent Atlas",
+            /* Relabelled, and the description was the reason. "AI Talent Atlas
+               — AI roles, scarcity and comp windows" promised two things the
+               page is forbidden to publish: R-AI3 bans a scarcity figure and a
+               rate outright. A nav description is a claim like any other, and
+               this one could never have been met by the page behind it. */
+            label: "AI talent",
             href: "/ai-talent",
-            description: "AI roles, scarcity and comp windows",
-            published: false,
+            description: "Nine role families, and the stacks we screen against",
           },
         ],
       },

@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { publishedTaxonomySlugs } from "@/app/insights/_taxonomy";
+import { aiRoleFamilySlugs } from "@/data/ai-talent";
+import { BLUEPRINT_BASE, blueprintSlugs } from "@/data/blueprint";
 import { capabilityRegistry } from "@/data/capabilities";
 import { industriesIndex } from "@/data/l1";
 import { retailData } from "@/data/l1/retail";
@@ -36,6 +38,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/why-yallo",
     "/leadership",
     "/insights",
+    "/intelligence",
+    "/ai-talent",
     "/case-studies",
     "/jobs",
     "/privacy",
@@ -100,6 +104,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }),
   );
 
+  /**
+   * The two new page families, added with their routes rather than after them.
+   * The platform module L2s were missing from this file for as long as the
+   * template existed precisely because listing a route was a separate step
+   * someone had to remember; these go in with the pages.
+   */
+  const aiTalentRoutes = aiRoleFamilySlugs().map((slug) => ({
+    url: `${SITE.url}/ai-talent/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
+  const blueprintRoutes = [
+    {
+      url: `${SITE.url}${BLUEPRINT_BASE}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    ...blueprintSlugs().map((slug) => ({
+      url: `${SITE.url}${BLUEPRINT_BASE}/${slug}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
+
   const capabilityRoutes = Object.keys(capabilityRegistry).map((slug) => ({
     url: `${SITE.url}/capabilities/${slug}`,
     lastModified: now,
@@ -146,6 +178,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...industryL2Routes,
     ...platformRoutes,
     ...platformModuleRoutes,
+    ...aiTalentRoutes,
+    ...blueprintRoutes,
     ...capabilityRoutes,
     ...insightRoutes,
     ...caseStudyRoutes,
