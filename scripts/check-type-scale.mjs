@@ -43,6 +43,8 @@ function walk(dir, out = []) {
 }
 
 const errors = [];
+/** Same class opened twice at top level in one module. Reported, not failed. */
+const duplicateClasses = [];
 const warnings = [];
 
 // ── 1. The ramp itself may not declare a step below the floor ──────────────
@@ -396,6 +398,68 @@ const TRANSLUCENT =
   }
 }
 
+/* ── One class, one declaration, per CSS module ────────────────────────────
+ *
+ * Home.module.css is ~3,000 lines shared by every home block, plus the pages
+ * that borrow its section furniture. Nothing stopped a new component from
+ * appending a class name an existing one already owned, and because a CSS
+ * module scopes by FILE and not by component, the later rule simply won on
+ * equal specificity from further down the cascade.
+ *
+ * That is not hypothetical. The Blueprint's phase rail declared `.phaseName`,
+ * which the homepage instrument had owned since it was built. The homepage
+ * pipeline repainted to --text on --dk-2 — 1.00:1, two serious axe violations
+ * on the busiest page on the site — and it also silently killed the
+ * .phaseActive and .phaseDone states that key off the same class. Nothing in
+ * the authoring of either component was wrong; the collision was invisible in
+ * both files.
+ *
+ * Reported, NOT failed. Ten pre-existing duplicates already exist across seven
+ * modules and some of them are deliberate second blocks by the same component,
+ * which this cannot distinguish from a genuine cross-component collision. Making
+ * the build red on all ten at once would teach everyone to skip the gate, which
+ * is worse than the bug. The list is printed on every run so a new one is
+ * visible immediately, and the ten are logged for triage.
+ *
+ * A duplicate top-level class in one module is therefore reported here. State
+ * and variant selectors (.a:hover, .a .b, .a.b, .a::before) are not duplicates
+ * and are not flagged — only the same bare class opening a second block.
+ *
+ * Legitimate re-declaration inside a media query is also untouched, because
+ * this only reads selectors at brace depth zero.
+ * ------------------------------------------------------------------------ */
+for (const file of walk("src").filter((f) => f.endsWith(".module.css"))) {
+  const src = readFileSync(file, "utf8");
+  const lines = src.split("\n");
+  const seen = new Map();
+  let depth = 0;
+  let lineNo = 0;
+  for (const raw of lines) {
+    lineNo += 1;
+    const line = raw.trim();
+    if (depth === 0) {
+      /* SOLO declarations only: `.name {` on its own line. A class that
+         appears in a grouped base rule (".a,\n.b {") and again in its own
+         block is the normal shared-base-plus-override pattern and is not a
+         collision, so grouped selectors are skipped entirely. */
+      const m = /^\.([A-Za-z][A-Za-z0-9_-]*)\s*\{\s*$/.exec(line);
+      if (m) {
+        const name = m[1];
+        if (seen.has(name)) {
+          duplicateClasses.push(
+            `${file}  .${name} declared at line ${seen.get(name)} and again at ${lineNo}`,
+          );
+        } else {
+          seen.set(name, lineNo);
+        }
+      }
+    }
+    depth += (line.match(/\{/g) ?? []).length;
+    depth -= (line.match(/\}/g) ?? []).length;
+    if (depth < 0) depth = 0;
+  }
+}
+
 if (errors.length) {
   console.error(`\n${errors.length} type-scale violation(s):\n`);
   for (const e of errors) console.error(`  ${e}`);
@@ -408,6 +472,13 @@ if (errors.length) {
 if (strict && warnings.length) {
   console.error(`\n--strict: ${warnings.length} literal font-size(s) must be tokenised.`);
   process.exit(1);
+}
+
+if (duplicateClasses.length) {
+  console.log(
+    `\n${duplicateClasses.length} duplicate top-level class declaration(s) — a CSS module scopes by FILE, so the later rule wins on equal specificity and the earlier component can repaint silently:`,
+  );
+  for (const d of duplicateClasses) console.log(`  ${d}`);
 }
 
 console.log(
