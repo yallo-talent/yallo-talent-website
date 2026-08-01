@@ -87,24 +87,45 @@ export function WherePlace() {
           <div>
             <p className={styles.axisLabel}>{placeCopy.sectorsLabel}</p>
             <ul className={styles.axisList}>
-              {sectors.map((s) => (
-                <li key={s.slug}>
-                  <Link
-                    className={styles.axisLink}
-                    href={`/industries/${s.slug}`}
-                  >
-                    <div className={styles.axisItem}>
-                      <span className={styles.axisMarkDrawn} aria-hidden="true">
-                        <RoleGlyph name={s.icon} />
-                      </span>
-                      <span>
-                        <span className={styles.axisName}>{s.name}</span>
-                        <span className={styles.axisModules}>{s.scope}</span>
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
+              {sectors.map((s) => {
+                /* Same body either way, so the two branches cannot drift. */
+                const body = (
+                  <div className={styles.axisItem}>
+                    <span className={styles.axisMarkDrawn} aria-hidden="true">
+                      <RoleGlyph name={s.icon} />
+                    </span>
+                    <span>
+                      <span className={styles.axisName}>{s.name}</span>
+                      <span className={styles.axisModules}>{s.scope}</span>
+                    </span>
+                  </div>
+                );
+                /* The platforms column above has honoured `published` all
+                   along; this one linked every sector unconditionally. Education
+                   is marked published: false in place.ts AND in nav-config, and
+                   both of those were respected — so the flag looked like it was
+                   working, while the homepage shipped a live link to
+                   /industries/education that 404s. Found by crawling every
+                   internal link on all 152 routes; it was the only dead one.
+
+                   Not a data fix. The data was right in both files. */
+                return (
+                  <li key={s.slug}>
+                    {s.published ? (
+                      <Link
+                        className={styles.axisLink}
+                        href={`/industries/${s.slug}`}
+                      >
+                        {body}
+                      </Link>
+                    ) : (
+                      <div className={styles.unbuilt} aria-disabled="true">
+                        {body}
+                      </div>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
