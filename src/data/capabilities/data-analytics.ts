@@ -121,6 +121,25 @@ export const dataAnalyticsData: L1PageData = {
   expertiseTitle: "Every data discipline, with a contractor bench behind it.",
   expertiseSub:
     "From ingestion to the semantic layer, specialists we place into every function that moves a data and analytics programme forward.",
+  /**
+   * S3, the depth gap, measured rather than asserted.
+   *
+   * `retail.ts` populates `overview` and `tools` on all twenty of its expertise
+   * cards. This file populated neither on any of its seven, so every capability L2
+   * opened with a one-line blurb where a sector L2 opens with a paragraph and a
+   * vendor band: 14KB of data against retail's 51KB, and the thinness Sumeet
+   * reported was that difference rendered.
+   *
+   * An earlier pass declined to author these, on the correct ground that the only
+   * source for capability tool names was a three-year-old workbook and a `tools`
+   * array asserts that we staff that tool on that discipline. That objection is
+   * answered rather than overruled: every product below is already published in
+   * this file's own blurbs, so promoting it into `tools` adds no claim the page did
+   * not already make, and the L2 band carries the same "screened against, not
+   * delivered on" framing the AI stack matrix uses. Nothing here is new
+   * information; it is information the page already had, structured so the L2 can
+   * render it.
+   */
   expertise: [
     {
       slug: "data-engineering",
@@ -128,10 +147,46 @@ export const dataAnalyticsData: L1PageData = {
       title: "Data Engineering",
       icon: "dataAi",
       blurb: "Pipelines, warehousing, batch and streaming.",
+      overview:
+        "The pipeline is where a data programme is actually won or lost. Ingestion from source systems that were never designed to be read at volume, transformation that has to survive a schema change upstream, and a warehouse load that has to finish before the business opens. We screen data engineers on what happens when a pipeline fails at 03:00, not on which tools appear on the CV: idempotent reloads, backfill strategy, cost per run, and whether they have owned the on-call rota for something they built.",
       roles: [
         "Senior Data Engineer",
         "Streaming Data Engineer",
         "Pipeline Reliability Lead",
+      ],
+      tools: [
+        {
+          slug: "snowflake",
+          vendor: "Snowflake",
+          name: "Snowflake",
+          roles: [
+            "Senior Data Engineer",
+            "Snowflake Lead",
+            "Data Platform Architect",
+            "Migration Lead",
+          ],
+        },
+        {
+          slug: "databricks",
+          vendor: "Databricks",
+          name: "Databricks",
+          roles: [
+            "Senior Data Engineer",
+            "Databricks Solution Architect",
+            "Lakehouse Engineer",
+            "Spark Engineer",
+          ],
+        },
+        {
+          slug: "airflow",
+          vendor: "Apache",
+          name: "Apache Airflow",
+          roles: [
+            "Senior Data Engineer",
+            "Pipeline Reliability Lead",
+            "Orchestration Engineer",
+          ],
+        },
       ],
     },
     {
@@ -140,7 +195,32 @@ export const dataAnalyticsData: L1PageData = {
       title: "Analytics Engineering",
       icon: "analytics",
       blurb: "dbt, semantic layers, self-serve modelling.",
+      overview:
+        "Analytics engineering is the discipline that stops a warehouse becoming a second set of spreadsheets. Modelled, tested, documented transformations, and one definition of revenue that finance and operations both recognise. The screen is for modelling judgement rather than tool familiarity: how they decide what belongs in a shared model against a mart, how they handle a metric two departments define differently, and whether their tests catch a silent break before a dashboard does.",
       roles: ["Analytics Engineer", "dbt Lead", "Semantic Layer Architect"],
+      tools: [
+        {
+          slug: "dbt",
+          vendor: "dbt Labs",
+          name: "dbt",
+          roles: [
+            "Analytics Engineer",
+            "dbt Lead",
+            "Analytics Engineering Lead",
+            "Data Modeller",
+          ],
+        },
+        {
+          slug: "semantic-layer",
+          vendor: "Semantic layer",
+          name: "Semantic layer and metrics modelling",
+          roles: [
+            "Semantic Layer Architect",
+            "Analytics Engineer",
+            "Metrics Lead",
+          ],
+        },
+      ],
     },
     {
       slug: "data-platform",
@@ -148,10 +228,50 @@ export const dataAnalyticsData: L1PageData = {
       title: "Data Platform & Lakehouse",
       icon: "cloud",
       blurb: "Snowflake, Databricks, BigQuery, Fabric.",
+      overview:
+        "The platform decision is usually made before we are called, and it matters less than the depth of the bench behind it. What we screen for is the work that follows the decision: storage and compute separation that does not surprise finance, a permissions model that survives an audit, workload isolation so one analyst's query cannot slow a nightly load, and a migration path off whatever the estate runs today without a reporting blackout.",
       roles: [
         "Data Platform Architect",
         "Snowflake Lead",
         "Databricks Solution Architect",
+      ],
+      tools: [
+        {
+          slug: "snowflake-platform",
+          vendor: "Snowflake",
+          name: "Snowflake",
+          roles: [
+            "Data Platform Architect",
+            "Snowflake Lead",
+            "Warehouse Migration Lead",
+          ],
+        },
+        {
+          slug: "databricks-platform",
+          vendor: "Databricks",
+          name: "Databricks Lakehouse",
+          roles: [
+            "Databricks Solution Architect",
+            "Lakehouse Engineer",
+            "Data Platform Architect",
+          ],
+        },
+        {
+          slug: "bigquery",
+          vendor: "Google Cloud",
+          name: "BigQuery",
+          roles: ["Data Platform Architect", "Analytics Engineer"],
+        },
+        {
+          slug: "microsoft-fabric",
+          vendor: "Microsoft",
+          name: "Microsoft Fabric",
+          roles: [
+            "Data Platform Architect",
+            "Fabric Engineer",
+            "Power BI Architect",
+          ],
+        },
       ],
     },
     {
@@ -160,10 +280,40 @@ export const dataAnalyticsData: L1PageData = {
       title: "Data Governance & MDM",
       icon: "mdm",
       blurb: "Catalogue, lineage, quality and stewardship.",
+      overview:
+        "Governance is the function most often bought as a tool and staffed last, which is why so many catalogues are populated once and never trusted again. The roles that make it hold are operational rather than advisory: someone who can define ownership a business unit will actually accept, write quality rules against a domain they understand, and run a stewardship forum that survives its third month. We screen for that, and for whether they have governed data in a regulated domain rather than described how they would.",
       roles: [
         "Data Governance Architect",
         "Collibra Consultant",
         "Master Data Lead",
+      ],
+      tools: [
+        {
+          slug: "collibra",
+          vendor: "Collibra",
+          name: "Collibra",
+          roles: [
+            "Collibra Consultant",
+            "Data Governance Architect",
+            "Data Steward Lead",
+          ],
+        },
+        {
+          slug: "alation",
+          vendor: "Alation",
+          name: "Alation",
+          roles: ["Data Governance Architect", "Catalogue Consultant"],
+        },
+        {
+          slug: "informatica-mdm",
+          vendor: "Informatica",
+          name: "Informatica MDM",
+          roles: [
+            "Master Data Lead",
+            "MDM Developer",
+            "Data Quality Consultant",
+          ],
+        },
       ],
     },
     {
@@ -171,8 +321,35 @@ export const dataAnalyticsData: L1PageData = {
       num: "05",
       title: "Business Intelligence",
       icon: "analytics",
-      blurb: "Power BI, Tableau, Looker — self-serve BI.",
+      blurb: "Power BI, Tableau, Looker and self-serve BI.",
+      overview:
+        "BI is judged on adoption, not on the number of reports delivered. The work that decides it is unglamorous: a model that performs at the row counts the business actually has, row-level security that matches the org chart, and a decision about what stays curated against what genuinely goes self-serve. We screen BI developers on performance tuning and on how they handle the request for a report that should not exist, which is the conversation that separates a BI lead from a report writer.",
       roles: ["BI Developer", "Power BI Architect", "Analytics Delivery Lead"],
+      tools: [
+        {
+          slug: "power-bi",
+          vendor: "Microsoft",
+          name: "Power BI",
+          roles: [
+            "Power BI Architect",
+            "BI Developer",
+            "DAX Specialist",
+            "Analytics Delivery Lead",
+          ],
+        },
+        {
+          slug: "tableau",
+          vendor: "Tableau",
+          name: "Tableau",
+          roles: ["BI Developer", "Tableau Consultant", "Visualisation Lead"],
+        },
+        {
+          slug: "looker",
+          vendor: "Google Cloud",
+          name: "Looker",
+          roles: ["BI Developer", "LookML Developer", "Analytics Engineer"],
+        },
+      ],
     },
     {
       slug: "streaming-realtime",
@@ -180,10 +357,31 @@ export const dataAnalyticsData: L1PageData = {
       title: "Real-time & Streaming",
       icon: "integration",
       blurb: "Kafka, Flink, event-driven architectures.",
+      overview:
+        "Real-time is the area where the gap between a demonstration and a production system is widest, and where a mis-hire is most expensive. Exactly-once semantics, ordering guarantees, replay after an outage, schema evolution on a topic three teams consume, and a back-pressure story that does not end in data loss. We screen for people who have run a stream in production and can describe what broke, because everything else in this area interviews well.",
       roles: [
         "Streaming Data Engineer",
         "Kafka Platform Lead",
         "Event Architect",
+      ],
+      tools: [
+        {
+          slug: "kafka",
+          vendor: "Apache",
+          name: "Apache Kafka and Confluent",
+          roles: [
+            "Kafka Platform Lead",
+            "Streaming Data Engineer",
+            "Event Architect",
+            "Platform Engineer",
+          ],
+        },
+        {
+          slug: "flink",
+          vendor: "Apache",
+          name: "Apache Flink",
+          roles: ["Streaming Data Engineer", "Stream Processing Engineer"],
+        },
       ],
     },
     /**
@@ -204,10 +402,46 @@ export const dataAnalyticsData: L1PageData = {
       icon: "analytics",
       blurb:
         "SAP Analytics Cloud, SAP Datasphere, BW/4HANA, Oracle Analytics Cloud.",
+      overview:
+        "Most enterprise reporting estates are not on the modern stack, and a buyer with a BW/4HANA footprint gets nothing from a bench that only knows Snowflake. This desk is the join between the analytics discipline and the platform desks: modelling inside SAP Datasphere, a BW estate being migrated rather than replaced, Analytics Cloud stories built on a live S/4 model, and Oracle Analytics Cloud against Fusion. The scarcity here is people who hold both sides, because the platform specialists rarely model and the analytics specialists rarely know the source.",
       roles: [
         "SAP Analytics Cloud Consultant",
         "SAP Datasphere Engineer",
         "BW/4HANA Modeller",
+      ],
+      tools: [
+        {
+          slug: "sap-datasphere",
+          vendor: "SAP",
+          name: "SAP Datasphere",
+          roles: [
+            "SAP Datasphere Engineer",
+            "Data Platform Architect",
+            "BW/4HANA Modeller",
+          ],
+        },
+        {
+          slug: "sap-analytics-cloud",
+          vendor: "SAP",
+          name: "SAP Analytics Cloud",
+          roles: [
+            "SAP Analytics Cloud Consultant",
+            "Planning Consultant",
+            "BI Developer",
+          ],
+        },
+        {
+          slug: "bw4hana",
+          vendor: "SAP",
+          name: "SAP BW/4HANA",
+          roles: ["BW/4HANA Modeller", "SAP Data Engineer", "Migration Lead"],
+        },
+        {
+          slug: "oracle-analytics-cloud",
+          vendor: "Oracle",
+          name: "Oracle Analytics Cloud",
+          roles: ["Oracle Analytics Consultant", "BI Developer"],
+        },
       ],
     },
   ],
