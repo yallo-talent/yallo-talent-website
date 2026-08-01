@@ -68,6 +68,19 @@ export const eorData: ServicePageData = {
   faqHeading: "EOR — common questions",
   faqs: [
     {
+      /* TALENT HOSTING, added 1 Aug on Sumeet's brief. This is the half of the
+         service the page never described: the client has already found the
+         person and simply does not want them on their own payroll. Chalhoub and
+         MAF run a lot of it, it is a major line in Saudi Arabia and the UAE, and
+         it competes with TASC and UHRS rather than with the global EOR players. */
+      q: "We have already found the person. Can you employ them and deploy them back to us?",
+      a: "Yes — that is talent hosting, and it is a large part of what we do. You identify the consultant, we employ them and deploy them back to you, and you direct the work exactly as you would your own team. Two flavours. If the consultant already holds their own freelance visa we issue the work permit, onboard them, run payroll and manage them for the tenure. If they hold no visa we sponsor the visa and the permit in the country of deployment as well. Visa sponsorship is charged on actuals; onboarding, offboarding, payroll and management carry a flat fee.",
+    },
+    {
+      q: "What is the difference between talent hosting and Employer of Record?",
+      a: "The sourcing. Classic EOR is for hiring where you have no entity — we find or place the person and employ them for you. Talent hosting starts with a person you have already chosen. Everything downstream is the same: employment, visa where needed, payroll, compliance and end of service sit with us.",
+    },
+    {
       q: "What's the difference between EOR and contracting through Yallo?",
       a: "Contract through Yallo Contract if the engagement is short-term and specialist. Use EOR when you've made a hiring decision (contract or permanent-track) but don't have a local entity to employ the person yourself. EOR gives you the ongoing employment relationship without the entity overhead.",
     },

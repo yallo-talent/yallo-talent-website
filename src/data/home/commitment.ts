@@ -49,5 +49,7 @@ export const commitmentCopy = {
   eyebrow: "The commitment",
   heading: "What sits in the contract, not just on the website.",
   lede: "Permanent and contract carry different terms. Both are in writing before you brief us.",
-  note: "Onboarding includes visa and Employer of Record where you have no entity.",
+  /* Hosting added: the old line implied EOR only applies when the client has no
+     entity, which is the smaller half of what we actually do. */
+  note: "Onboarding includes visa and Employer of Record where you have no entity, or talent hosting where you have found the person yourself.",
 } as const;
