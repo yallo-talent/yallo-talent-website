@@ -416,6 +416,12 @@ export function L1HowWeWork({ noun }: { noun: string }) {
           </p>
         </div>
         <div className={styles.hwwGrid}>
+          {/* The section's ONE purposeful travelling element under the ratified
+              motion budget. Same component as the homepage screen band. */}
+          <span
+            className={`flow-connector ${styles.hwwConnector}`}
+            aria-hidden="true"
+          />
           {howWeWorkSteps.map((s) => (
             <div key={s.n} className={styles.hwwStep}>
               <div className={styles.hwwGlow} aria-hidden="true" />

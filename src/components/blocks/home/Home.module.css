@@ -1107,43 +1107,14 @@
   position: relative;
 }
 
+/* Position only. The line and the travelling highlight now come from
+   `.flow-connector` in globals.css, because the L1 "How we work" band needed
+   the same device and a second copy of it would have drifted. Geometry stays
+   here: these offsets are the homepage steps grid and nothing else's. */
 .connector {
-  position: absolute;
   top: 52px;
   left: 11%;
   right: 11%;
-  height: 1px;
-  background: var(--hairline);
-  z-index: 0;
-  overflow: hidden;
-}
-
-/* A pulse that travels the line, so four steps read as one pipeline rather than
-   four cards in a row. Deliberately a single travelling highlight and not a
-   marquee: the eye should catch the DIRECTION of the process once and then read
-   the words. transform only, so it composites and never reflows. */
-.connector::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--accent-mark) 45%,
-    var(--accent-mark) 55%,
-    transparent 100%
-  );
-  width: 26%;
-  animation: pipeline-pulse 5.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-@keyframes pipeline-pulse {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(400%);
-  }
 }
 
 .steps {
@@ -1386,28 +1357,90 @@
    carried none of it. The label and boundary now take the gold grades that the
    three-tier system exists for: --accent-label is the small-text grade at
    4.69:1, so a 15.5px label clears AA on its own. */
+/* Product-family chips, redesigned. Round two, after Sumeet saw round one.
+
+   ROUND ONE'S FAULT WAS MINE AND IT WAS A TOKEN ERROR, not a taste one. I took
+   the spec's table literally: surface --paper-2, hairline --rule, hover label
+   --fg. Those are RAW LIGHT-REGISTER tokens. --ground-2 is the theme-aware
+   alias that resolves to --paper-2 on light and --dk-2 on dark, while --paper-2
+   resolves to the same light value in every register. So on the dark register the chips rendered
+   near-white, which is the "way too sharp" that was reported, and the hover
+   label went to --fg, which is white on dark, ON a white chip. White on white.
+
+   The spec's own table said dark surface --dk-3 and dark label --dk-txt-2, and
+   I only overrode the shadow and the border for dark. Reading a two-column
+   table and implementing one column is the whole bug.
+
+   ROUND TWO. Theme-aware tokens throughout, so there is one declaration and
+   the register resolves it. And the chip now has dimension: a very slight
+   top-to-bottom gradient for shine, a real shadow at rest, a deeper one on
+   hover. Sumeet asked for something that reads as a clickable button rather
+   than a flat rectangle, and §2's "no gradient" line is overridden on his
+   direct instruction — noted rather than quietly ignored, because it is a
+   written spec being reversed.
+
+   Gold still appears only on hover and focus. That part of §2 is untouched and
+   is the whole point of the redesign.
+
+   NO PETAL AT CHIP SCALE. The quarter-round is the structural signature and it
+   belongs on cards and bands; at chip scale repeated twenty-five times it stops
+   reading as a signature and becomes noise. Uniform 6px instead. */
 .moduleIndexLink {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
-  padding: 7px 13px;
+  padding: 6px 12px;
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
-  color: var(--accent-label);
-  background: var(--ground-2);
-  border: 1px solid var(--border-accent);
-  border-radius: 0 0 0 var(--r-sm);
+  color: var(--text-2);
+  /* The shine: two stops, three per cent apart. Enough to catch a top light,
+     not enough to read as a gradient. */
+  background: linear-gradient(180deg, var(--ground-2) 0%, var(--ground) 100%);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 8%),
+    inset 0 1px 0 rgb(255 255 255 / 4%);
   transition:
     color 0.15s ease,
     border-color 0.15s ease,
-    background 0.15s ease;
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
+/* --text, not --fg. Both resolve to the same ink on light; on dark --fg is the
+   near-white that caused the collision. The chip ground also LIFTS on hover
+   rather than going flat, so the label always has a step to sit on. */
 .moduleIndexLink:hover,
 .moduleIndexLink:focus-visible {
-  color: var(--fg);
-  border-color: var(--rule-strong);
-  background: var(--ground-3);
+  color: var(--text);
+  background: linear-gradient(180deg, var(--ground-3) 0%, var(--ground-2) 100%);
+  border-color: var(--accent-mark);
+  box-shadow:
+    0 2px 5px rgb(0 0 0 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 6%);
+  transform: translateY(-1px);
+}
+
+.moduleIndexLink:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/* A 8% black shadow disappears on a near-black ground, so the dark register
+   restates the depth rather than inheriting a shadow it cannot show. */
+:root[data-theme="dark"] .moduleIndexLink {
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 40%),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+}
+
+:root[data-theme="dark"] .moduleIndexLink:hover,
+:root[data-theme="dark"] .moduleIndexLink:focus-visible {
+  box-shadow:
+    0 2px 6px rgb(0 0 0 / 55%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
 }
 
 .vow {

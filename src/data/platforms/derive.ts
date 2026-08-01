@@ -41,6 +41,8 @@ export interface PlatformModule {
   slug?: string;
   /** The product as published — "SAP Customer Experience", not "SAP CX". */
   name: string;
+  /** Chip label where the published name is too long for an index. */
+  shortName?: string;
   /** What Yallo places on it — authored scope line, Talent-speak. */
   scope?: string;
   /** Contractor roles Yallo places on this product. */
@@ -177,6 +179,7 @@ function collect(): Map<string, PlatformCoverage> {
       return {
         slug: am.slug,
         name: am.name,
+        shortName: am.shortName,
         scope: am.scope,
         variants: am.variants,
         family: am.family,

@@ -37,8 +37,22 @@ export interface PlatformClient {
 export interface AuthoredModule {
   /** URL-safe, stable — this is the module page's route segment. */
   slug: string;
-  /** The product as published. */
+  /** The product as published. Used as the card heading. */
   name: string;
+  /**
+   * Chip label, where the published name is too long for an index.
+   *
+   * Sumeet, 2 Aug: the chip block read as crowded and busy, and the bracketed
+   * expansions were the reason. "SAP BTP (Business Technology Platform)" is
+   * three quarters parenthesis, and anyone shopping for a BTP contractor knows
+   * what BTP is.
+   *
+   * Chip ONLY. The card heading keeps the published name, because the card has
+   * the room and the full product name is what a search engine and a buyer new
+   * to the suite are both looking for. Shortening the data itself would have
+   * traded one problem for a worse one.
+   */
+  shortName?: string;
   /** What Yallo places on it — one line, Talent-speak. */
   scope: string;
   /** Contractor roles Yallo places on this module. */
@@ -540,6 +554,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         slug: "sap-btp",
         family: "Enterprise technology",
         name: "SAP BTP (Business Technology Platform)",
+        shortName: "SAP BTP",
         scope:
           "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
         roles: [
@@ -591,6 +606,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         slug: "sap-ariba",
         family: "Autonomous Spend",
         name: "SAP Ariba (Procurement & Sourcing)",
+        shortName: "SAP Ariba",
         scope:
           "Source-to-pay consultants, supplier-enablement leads and the integration side of Ariba.",
         roles: [
@@ -617,6 +633,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         slug: "sap-extended-warehouse-management",
         family: "Autonomous Supply Chain",
         name: "SAP Extended Warehouse Management (SAP EWM)",
+        shortName: "SAP EWM",
         scope:
           "Warehouse consultants for embedded and decentralised EWM, including go-live floor support.",
         roles: [
@@ -674,10 +691,126 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "SAP CX Functional Consultant",
         ],
       },
+      /* ── SAP Business AI, seven desks ────────────────────────────────────
+         Researched 1 Aug 2026 and ratified; the section rendered EMPTY before
+         this, named on the page with a note and no roles behind it.
+
+         The consolidation is the thing to get right. At Sapphire 2026 SAP
+         announced the SAP Business AI Platform, folding its AI foundation layer
+         together with Business Data Cloud and BTP into one offering. The old
+         habit of listing AI Core, AI Launchpad and Generative AI Hub as three
+         separate desks is out of date, and publishing them would date the page
+         to a buyer who follows SAP.
+
+         Every SAP performance figure is FORBIDDEN here and none appears: not the
+         80 per cent of business tasks claim, not the 35 per cent migration
+         effort reduction, not the 40 to 60 per cent HR cycle time, not the 400
+         use cases. They are SAP's marketing and would become Yallo's claim the
+         moment they were printed under our name. No customer names, and no GA
+         date for anything.
+
+         Scope lines say what Yallo places, never what Joule does for a business.
+
+         Boundary with /ai-talent: this desk is SAP-specific roles on SAP's own
+         AI stack. /ai-talent is the vendor-neutral role-family set. They
+         cross-link once each way and the stack matrix is NOT duplicated here. */
+      {
+        slug: "sap-joule",
+        family: "SAP Business AI",
+        name: "Joule and Joule Assistants",
+        scope:
+          "The assistant layer across S/4HANA Cloud, SuccessFactors, Ariba, Concur and Service Cloud. RISE activates three assistants in year one and GROW carries the full portfolio, so the bench differs by commercial programme.",
+        roles: [
+          "SAP BTP AI Developer",
+          "Prompt and Context Engineer, SAP-grounded",
+          "Clean Core Extension Architect",
+        ],
+      },
+      {
+        slug: "sap-joule-studio",
+        family: "SAP Business AI",
+        name: "Joule Studio and Joule Agents",
+        scope:
+          "Building, managing and governing agents, including third-party agents. Joule Work is the newer natural-language interface layer and is in early adopter status, so we screen for build experience rather than for exposure to it.",
+        roles: [
+          "Joule Studio Agent Developer",
+          "SAP BTP AI Developer",
+          "Prompt and Context Engineer, SAP-grounded",
+          "Integration Architect, MCP and agent-to-agent",
+        ],
+      },
+      {
+        slug: "sap-business-ai-platform",
+        family: "SAP Business AI",
+        name: "SAP Business AI Platform and BTP",
+        scope:
+          "The foundation layer and runtime, and the clean-core extension work that decides whether an agent survives the next upgrade.",
+        roles: [
+          "SAP AI Platform Engineer",
+          "ABAP Cloud Developer",
+          "Clean Core Extension Architect",
+          "MLOps Engineer, SAP AI",
+        ],
+      },
+      {
+        slug: "sap-business-data-cloud",
+        family: "SAP Business AI",
+        name: "SAP Business Data Cloud",
+        scope:
+          "The data foundation agents are grounded on. Master Data Governance is now a core component of Business Data Cloud, and entity resolution came in with the Reltio acquisition. Datasphere has its own desk under Data and analytics and is not repeated here.",
+        roles: [
+          "Business Data Cloud Engineer",
+          "SAP Datasphere Engineer",
+          "Master Data Governance Consultant",
+        ],
+      },
+      {
+        slug: "sap-domain-models",
+        family: "SAP Business AI",
+        name: "SAP Domain Models and grounding",
+        scope:
+          "Models trained on SAP code, data, metadata, process and documentation, which ground Joule rather than generic web knowledge. Context graphs sit here, and so does the person who can tell a grounding failure from a prompt failure.",
+        roles: [
+          "Prompt and Context Engineer, SAP-grounded",
+          "SAP Datasphere Engineer",
+          "Process Mining Analyst feeding agent design",
+        ],
+      },
+      {
+        slug: "sap-autonomous-finance-assistants",
+        family: "SAP Business AI",
+        /* "Autonomous Finance assistants", not "Autonomous Finance". The latter
+           is already a FAMILY name on this platform, carried by
+           sap-s4hana-finance, and a module sharing its parent's name reads as a
+           data error rather than as a distinction. The suffix is descriptive,
+           not a coined SAP product. */
+        name: "Autonomous Finance assistants",
+        scope:
+          "The finance assistant suite: financial closing, financial planning, billing, governance, tax and compliance, accounts receivable, and cash and treasury.",
+        roles: [
+          "Autonomous Finance Functional Lead",
+          "Process Mining Analyst feeding agent design",
+          "SAP BTP AI Developer",
+        ],
+      },
+      {
+        slug: "sap-agent-governance",
+        family: "SAP Business AI",
+        name: "Agent governance and interoperability",
+        scope:
+          "Guardrails, and interoperability through Model Context Protocol and agent-to-agent, including bidirectional interoperability with the Google Cloud and Microsoft agent frameworks.",
+        roles: [
+          "AI Governance Lead, SAP agents",
+          "Integration Architect, MCP and agent-to-agent",
+          "MLOps Engineer, SAP AI",
+        ],
+      },
+
       {
         slug: "sap-transportation-management",
         family: "Autonomous Supply Chain",
         name: "SAP Transportation Management (SAP TM)",
+        shortName: "SAP TM",
         scope:
           "Transport and freight-settlement consultants, and the carrier integrations.",
         roles: [

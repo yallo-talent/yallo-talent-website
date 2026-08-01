@@ -26,7 +26,10 @@ export function TheScreen() {
         />
 
         <div className={styles.flow}>
-          <span className={styles.connector} aria-hidden="true" />
+          <span
+            className={`flow-connector ${styles.connector}`}
+            aria-hidden="true"
+          />
           <ol className={styles.steps}>
             {screenSteps.map((s) => (
               <li key={s.num} className={styles.step}>

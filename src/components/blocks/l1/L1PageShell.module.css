@@ -361,6 +361,30 @@
   display: none;
 }
 
+/* A scroll affordance, and only where the bar can actually overflow.
+
+   The list has had overflow-x: auto with the scrollbar hidden since it was
+   built, so it always scrolled. With nothing marking the edge that is
+   indistinguishable from a label cut in half, which is exactly how it was
+   reported. Desktop no longer overflows at all now the bar indexes five page
+   sections rather than thirteen mixed items; below 720px the widest set is
+   656px against a 320px viewport, so it still must scroll and the edge is
+   faded to say so.
+
+   A mask rather than a gradient overlay: the bar sits on three different
+   grounds across the L1 templates, and an overlay would need the right one of
+   the three. A mask needs none of them. */
+@media (max-width: 720px) {
+  .subNavList {
+    mask-image: linear-gradient(
+      to right,
+      rgb(0 0 0) 0,
+      rgb(0 0 0) calc(100% - 28px),
+      transparent 100%
+    );
+  }
+}
+
 .subNavItem {
   flex-shrink: 0;
 }
@@ -754,9 +778,17 @@
 }
 
 /* ============ HOW WE WORK ============ */
+/* Measured before assuming a missing token: the computed padding-top was 0px
+   and there was no collapsed margin at the boundary. The band genuinely
+   declared `padding: 0 0 ...`, so it opened flush against whatever section
+   preceded it, on every page carrying it and not only on SAP.
+
+   The top now matches `.section` in Home.module.css, which is the rhythm every
+   other band on these pages is set to. Fixed on the class, so the seven
+   platform L1s and every other consumer get it at once. */
 .hww {
   position: relative;
-  padding: 0 0 clamp(48px, 6vw, 72px);
+  padding: clamp(52px, 6.5vw, 94px) 0 clamp(48px, 6vw, 72px);
   isolation: isolate;
 }
 
@@ -766,9 +798,33 @@
 }
 
 .hwwGrid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
+}
+
+/* Position only; the hairline and the travelling highlight come from
+   `.flow-connector` in globals.css, shared with the homepage screen band.
+
+   It sits ABOVE the cards rather than through them: the step cards carry their
+   own ground and a line crossing them would read as a strikethrough. -19px puts
+   it in the gap between the head and the grid, centred on nothing but the
+   sequence itself. */
+.hwwConnector {
+  top: -19px;
+  left: 12.5%;
+  right: 12.5%;
+}
+
+/* Below 900 the grid drops to two columns and then one, so a horizontal line
+   spanning four equal columns is describing a layout that no longer exists.
+   Dropped rather than rotated: a vertical rule down a two-column grid joins the
+   wrong pairs, and the spec's own instruction is whichever reads cleaner. */
+@media (max-width: 900px) {
+  .hwwConnector {
+    display: none;
+  }
 }
 
 .hwwStep {

@@ -97,17 +97,6 @@ export default async function PlatformPage({
 
      A platform whose modules carry no family — every vendor but SAP today —
      collapses to a single unnamed group and renders exactly as before. */
-  /* The bar abbreviates; the page headings never do. Dropping "Autonomous"
-     alone still overflowed at 1440 and the last entries cut mid-word, so the
-     long ones contract to the term the industry already uses. */
-  const shortFamily = (name: string) =>
-    ({
-      "Autonomous Supply Chain": "SCM",
-      "Enterprise technology": "Technology",
-      "Data & analytics": "Data",
-      "SAP Business AI": "AI",
-    })[name] ?? name.replace(/^Autonomous /, "");
-
   const FAMILY_ORDER = [
     "Core ERP",
     "Autonomous Finance",
@@ -117,6 +106,9 @@ export default async function PlatformPage({
     "Autonomous CX",
     "Enterprise technology",
     "Data & analytics",
+    /* Last, and last deliberately. It is the newest layer and the one a buyer
+       arrives at after the suite, not before it. */
+    "SAP Business AI",
   ];
   const moduleFamilies: Array<{ name?: string; modules: typeof cov.modules }> =
     [];
@@ -132,57 +124,54 @@ export default async function PlatformPage({
     return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
   });
 
-  /* Families SAP publishes that we do not staff. Named because they are part of
-     the suite a buyer is looking at; empty because we have no roles for them and
-     R16 forbids a heading asserting what no row satisfies. */
-  const plannedFamilies =
-    cov.slug === "sap"
-      ? [
-          {
-            name: "SAP Business AI",
-            /* Corrected 1 Aug on Sumeet's word: the SAP AI Talent Desk IS
-               open, and requests are coming in for AI talent across every
-               platform. My previous line said we did not staff it, which was
-               wrong and was the worst kind of wrong — understating a live
-               offering. It now names the desk without listing roles, because
-               the role titles are not in the data layer yet; add them and this
-               family fills like any other. */
-            note: "SAP ships Joule and the SAP Business AI Platform across the suite. Our SAP AI Talent Desk is open and taking briefs — the named roles are being added.",
-          },
-        ]
-      : [];
+  /* Families a platform publishes that we do not staff. Named because they are
+     part of the suite a buyer is looking at; empty because we have no roles and
+     R16 forbids a heading asserting what no row satisfies.
 
-  /* The sticky section bar retail has had all along, from the SAME component.
-     Families become sections, so the bar indexes the suite rather than the page
-     furniture. */
+     EMPTY NOW, and that is the point. SAP Business AI was the only entry, and
+     it said the desk was open while the roles were "being added". Seven real
+     desks and fourteen real bench roles landed on 2 Aug, so it renders as a
+     family like any other and the placeholder retires. The mechanism stays,
+     because the next platform to publish a layer ahead of our bench will need
+     exactly this rather than a heading over nothing. */
+  const plannedFamilies: Array<{ name: string; note: string }> = [];
+
+  /* The sticky section bar, indexing the PAGE and in the page's own order.
+
+     Two faults, both reported by Sumeet on the SAP page and both real.
+
+     ORDER. The bar read problem, bench, hard to fill, your estate, then the
+     families. The page renders problem, families, bench, hard to fill, your
+     estate. Mine: I appended the authored entries at the top of this array
+     instead of at their position in the document, so the bar described a page
+     that does not exist. Now built in DOM order, and a test asserts it stays
+     that way rather than trusting the next author to notice.
+
+     TRUNCATION. Thirteen entries at 1440 with the last one cut mid-word. The
+     list has always had overflow-x: auto with the scrollbar hidden, so it
+     scrolled — with no affordance whatsoever, which is indistinguishable from
+     being broken.
+
+     The fix is not a scroll cue. It is that the bar was flattening two levels
+     into one row: five page sections and eight product families as if they were
+     peers. When the bar was written the page had no real sections and indexing
+     the suite was the only useful thing it could do; that comment is now out of
+     date, because the page has four authored bands. The families are still
+     reachable, and better: the chip index at the top of the modules band links
+     every module by name, which is finer-grained than a family jump.
+
+     Six entries maximum, so it fits at every width this bar is shown at. */
   const subNavItems = [
-    /* Authored bands index too, gated on the same `nar` the sections are, so
-       the bar can never point at a band that did not render. */
     ...(nar ? [{ id: "problem", label: "The problem" }] : []),
+    { id: "modules", label: "The suite" },
     ...(cov.roles.length > 0 ? [{ id: "roles", label: "The bench" }] : []),
     ...(nar ? [{ id: "scarce", label: "Hard to fill" }] : []),
     ...(nar ? [{ id: "segments", label: "Your estate" }] : []),
-    /* Gated on the SAME condition as the band itself. The bar was entered
-       unconditionally, so gating only the section would have left a sticky link
-       to #sectors on all seven pages, scrolling to nothing. The roles entry
-       above already models this; the sectors entry never did. */
+    /* Gated on the SAME condition as the band itself, so the bar can never
+       point at a band that did not render. */
     ...(cov.sectors.length >= MIN_SECTORS_FOR_BAND
       ? [{ id: "sectors", label: "Where we place" }]
       : []),
-    ...moduleFamilies
-      .filter((f) => f.name)
-      .map((f) => ({
-        id: `family-${slugify(f.name as string)}`,
-        /* "Autonomous" on five of nine labels pushed the bar past the viewport
-           and the last entries truncated mid-word. The prefix is SAP's, it is
-           identical on every one of them, and in a list it distinguishes
-           nothing — the headings on the page keep it in full. */
-        label: shortFamily(f.name as string),
-      })),
-    ...plannedFamilies.map((f) => ({
-      id: `family-${slugify(f.name)}`,
-      label: shortFamily(f.name),
-    })),
   ];
 
   return (
@@ -324,7 +313,10 @@ export default async function PlatformPage({
                     href={`#module-${slugify(mod.name)}`}
                     className={styles.moduleIndexLink}
                   >
-                    {mod.name}
+                    {/* shortName where the published name is mostly
+                        parenthesis. The CARD below keeps the full name; only
+                        the index shortens, so nothing is lost from the page. */}
+                    {mod.shortName ?? mod.name}
                   </a>
                 ))}
               </nav>
