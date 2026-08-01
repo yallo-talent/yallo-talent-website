@@ -186,6 +186,13 @@ const CAPABILITY_MOVES: Record<string, string> = {
   // AI is a named specialism, not a discipline route.
   "emerging-technologies": "/ai-talent",
   innovation: "/ai-talent",
+  /* AI Talent is the seventh discipline (canon §3 amendment, 1 Aug 2026) but its
+     canonical URL stays /ai-talent: it is the campaign landing path and was
+     already the redirect target above. Both capability-shaped forms 301 to it, so
+     a link written either way lands on the page rather than a 404, and the
+     discipline has exactly one indexable URL. */
+  "ai-talent": "/ai-talent",
+  "artificial-intelligence": "/ai-talent",
 };
 
 /**

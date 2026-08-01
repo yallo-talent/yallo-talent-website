@@ -57,7 +57,9 @@ export function L1HubShell({
             {entries.map((e) => (
               <Link
                 key={e.slug}
-                href={`/${e.category}/${e.slug}`}
+                /* `e.href` where the canonical route is not /{category}/{slug}.
+                   AI Talent is the only such entry; see L1IndexEntry.href. */
+                href={e.href ?? `/${e.category}/${e.slug}`}
                 className={styles.card}
               >
                 <div className={styles.cardImage}>

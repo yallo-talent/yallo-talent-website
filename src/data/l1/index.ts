@@ -24,6 +24,17 @@ export interface L1IndexEntry {
   short: TaxonomyLabel;
   category: "industries" | "platforms" | "capabilities";
   tagline: string;
+  /**
+   * Canonical route, where it is NOT `/{category}/{slug}`.
+   *
+   * One entry needs this: AI Talent is a capability discipline whose canonical
+   * URL is `/ai-talent`, because it is the campaign landing path and was already
+   * canon §3's redirect target for `emerging-technologies`.
+   * `/capabilities/ai-talent` 301s to it. Without this field the hub would link
+   * to the redirect rather than to the page, putting a 301 hop on the primary
+   * nav link of the one discipline carrying paid marketing spend.
+   */
+  href?: string;
 }
 
 export const industriesIndex: L1IndexEntry[] = [
@@ -116,20 +127,47 @@ export const platformsIndex: L1IndexEntry[] = [
   },
 ];
 
+/**
+ * The seven disciplines, in canon §3 order with the six-to-seven amendment of
+ * 1 Aug 2026 applied: AI Talent is the seventh discipline and the first in the
+ * order.
+ *
+ * `short` is a SHORT FORM OF THE DISCIPLINE LABEL and nothing else. Three of
+ * these carried a specialist-desk name instead, which is the fault S1 reported:
+ * canon §3 runs two taxonomies that share labels, so when Relay v6.0 renamed the
+ * DESK "Data & Analytics" to "Data & AI", the discipline's `short` was renamed
+ * with it by string match. The discipline then rendered as "Data & AI" in every
+ * slot that takes a short label, thirteen times on its own L1.
+ *
+ * The other two were orphans of the `emerging-technologies` retirement: DevOps &
+ * Platform Engineering wore the retired "Digital & DevOps" desk name, and
+ * Testing & Quality Engineering wore "Emerging" plus the retired discipline's
+ * whole tagline about blockchain and quantum — a description of a discipline that
+ * no longer exists, attached to one that does.
+ *
+ * scripts/check-taxonomy.mjs now fails the build if a desk name resolves into
+ * this array, so the rename cannot cross the taxonomies again.
+ */
 export const capabilitiesIndex: L1IndexEntry[] = [
+  {
+    slug: "ai-talent",
+    label: "AI Talent" as TaxonomyLabel,
+    short: "AI Talent" as TaxonomyLabel,
+    category: "capabilities",
+    tagline:
+      "Agentic AI, LLM, MLOps, evaluation and AI governance specialists.",
+    href: "/ai-talent",
+  },
   {
     slug: "data-analytics",
     label: "Data & Analytics" as TaxonomyLabel,
-    short: "Data & AI" as TaxonomyLabel,
+    short: "Data & Analytics" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "Data engineering, ML, GenAI and analytics platform specialists.",
-  },
-  {
-    slug: "devops-platform-engineering",
-    label: "DevOps & Platform Engineering" as TaxonomyLabel,
-    short: "Digital & DevOps" as TaxonomyLabel,
-    category: "capabilities",
-    tagline: "SRE, platform engineering and continuous delivery talent.",
+    /* "GenAI" and "ML" leave this line: with AI Talent as its own discipline
+       they describe the neighbouring domain, and two rows competing for the same
+       word tells a buyer nothing about which desk to brief. */
+    tagline:
+      "Data engineering, analytics engineering, BI and data platform specialists.",
   },
   {
     slug: "cloud-infrastructure",
@@ -141,9 +179,9 @@ export const capabilitiesIndex: L1IndexEntry[] = [
   {
     slug: "cybersecurity",
     label: "Cybersecurity" as TaxonomyLabel,
-    short: "Security" as TaxonomyLabel,
+    short: "Cybersecurity" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "Security architects, GRC and identity specialists.",
+    tagline: "Security architecture, identity, GRC and security operations.",
   },
   {
     slug: "integration-middleware",
@@ -153,11 +191,19 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     tagline: "MuleSoft, Boomi, Kafka, API and iPaaS specialists.",
   },
   {
+    slug: "devops-platform-engineering",
+    label: "DevOps & Platform Engineering" as TaxonomyLabel,
+    short: "DevOps" as TaxonomyLabel,
+    category: "capabilities",
+    tagline: "SRE, platform engineering and continuous delivery talent.",
+  },
+  {
     slug: "testing-quality-engineering",
     label: "Testing & Quality Engineering" as TaxonomyLabel,
-    short: "Emerging" as TaxonomyLabel,
+    short: "Testing & QE" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "Blockchain, IoT, digital twin and quantum-adjacent talent.",
+    tagline:
+      "Test strategy, automation, performance and accessibility specialists.",
   },
 ];
 

@@ -317,23 +317,16 @@ const fnToCapabilitySlugs: Record<string, string[]> = {
   "master-data-pim": ["data-analytics", "integration-middleware"],
 };
 
-const platformLabels: Record<string, string> = {
-  sap: "SAP",
-  oracle: "Oracle",
-  salesforce: "Salesforce",
-  microsoft: "Microsoft",
-  "blue-yonder": "Blue Yonder",
-  workday: "Workday",
-};
+/* Two hand-maintained label maps used to live here, and they were the second
+   half of the S1 fault rather than a tidiness problem.
 
-const capabilityLabels: Record<string, string> = {
-  "data-analytics": "Data & AI",
-  "devops-platform-engineering": "Digital & DevOps",
-  "cloud-infrastructure": "Cloud & Infrastructure",
-  cybersecurity: "Cybersecurity",
-  "integration-middleware": "Integration & Middleware",
-  "testing-quality-engineering": "Emerging Technologies",
-};
+   `capabilityLabels` held "Data & AI" for the data-analytics DISCIPLINE and
+   "Emerging Technologies" for testing-quality-engineering — a desk name and a
+   retired discipline name, both resolved into the capability taxonomy. A map that
+   duplicates taxonomy labels will always drift from the taxonomy, because
+   renaming the source of truth does not rename a copy of it.
+   `taxonomyLabels` is that source of truth and covers all three families, so the
+   copies are deleted rather than corrected. See src/data/l1/index.ts. */
 
 function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
   const platformSlugs = new Set<string>();
@@ -367,7 +360,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                     className={styles.crossChip}
                   >
                     <span className={styles.crossChipName}>
-                      {platformLabels[slug] ?? slug}
+                      {taxonomyLabels(slug).label}
                     </span>
                     <span className={styles.crossChipArrow} aria-hidden="true">
                       →
@@ -390,7 +383,7 @@ function L2CrossLinks({ fn }: { fn: L1ExpertiseCard }) {
                     className={styles.crossChip}
                   >
                     <span className={styles.crossChipName}>
-                      {capabilityLabels[slug] ?? slug}
+                      {taxonomyLabels(slug).label}
                     </span>
                     <span className={styles.crossChipArrow} aria-hidden="true">
                       →

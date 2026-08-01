@@ -12,7 +12,7 @@ export const dataAnalyticsData: L1PageData = {
   title: "Data and analytics contractors,",
   sectorNoun: "data and analytics",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Data engineers, analytics engineers, BI developers and migration leads for enterprise programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just certification badges. AI roles have their own practice.",
+  sub: "Data engineers, analytics engineers, BI developers and migration leads for enterprise programmes across the Middle East, Europe and India. Specialist-screened for implementation depth, not for certification badges. Agentic AI, LLM and MLOps roles are a separate discipline: see AI Talent.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -22,12 +22,17 @@ export const dataAnalyticsData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for Data & AI",
+  /* "Data & AI" is the specialist DESK, renamed by Relay v6.0 and correct on the
+     platform side. This is the DISCIPLINE, and it is Data & Analytics. The desk
+     name had leaked into six strings on this file and into the taxonomy index,
+     which put it on the rendered page thirteen times. See src/data/l1/index.ts
+     for the class-level fix and scripts/check-taxonomy.mjs for the guard. */
+  introEyebrow: "Why Yallo for Data & Analytics",
   introTitle:
-    "Data & AI programmes stall when the platform depth isn't in the room.",
+    "Data and analytics programmes stall when the platform depth isn't in the room.",
   introCopy: [
-    "Every Snowflake migration, every dbt-driven analytics platform, every GenAI production rollout shares the same failure mode — the outcome depends on the depth of the specialist in the room. Recruiters place tool names. We place implementation track records.",
-    "Our contractor bench is assessed by specialists who have built data platforms and shipped ML at enterprise scale. We screen for the specific operating context — high-throughput pipelines, regulated data domains, real-time inference, LLM safety.",
+    "Every Snowflake migration, every dbt-driven analytics platform, every warehouse consolidation shares the same failure mode: the outcome depends on the depth of the specialist in the room. Recruiters place tool names. We place implementation track records.",
+    "Our contractor bench is assessed by specialists who have built data platforms at enterprise scale. We screen for the specific operating context, whether that is high-throughput pipelines, regulated data domains, a semantic layer several hundred models deep, or a migration running against a live reporting estate.",
   ],
   /**
    * One card, and the second is deleted rather than replaced.
@@ -53,30 +58,27 @@ export const dataAnalyticsData: L1PageData = {
   ],
 
   scarceEyebrow: "Scarce talent · high demand",
-  scarceTitle: "The Data & AI roles every enterprise programme fights over.",
+  scarceTitle:
+    "The data and analytics roles every enterprise programme fights over.",
   scarceCopy:
-    "These are the specialists that appear on every AI, ML and data platform brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
+    "These are the specialists that appear on every data platform and analytics brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
+  /**
+   * Four AI roles moved out of this list, to AI Talent.
+   *
+   * LLM Application Engineer, MLOps Platform Lead, GenAI Solution Architect and
+   * AI Safety / Responsible AI Lead were half of this desk's scarce list while AI
+   * was folded into it. AI Talent is now the seventh discipline and holds them, so
+   * leaving them here would have the two rows competing for the same brief.
+   *
+   * Nothing is invented to backfill: every replacement is a role this page already
+   * publishes in its own expertise grid below.
+   */
   scarceRoles: [
-    {
-      name: "LLM Application Engineer",
-      scarcity: "high",
-      engagement: "contract",
-    },
-    {
-      name: "MLOps Platform Lead",
-      scarcity: "high",
-      engagement: "contract",
-    },
     {
       name: "Data Platform Architect (Snowflake / Databricks)",
       scarcity: "high",
       engagement: "contract-perm",
-    },
-    {
-      name: "GenAI Solution Architect",
-      scarcity: "high",
-      engagement: "contract",
     },
     {
       name: "Real-time / Streaming Data Engineer (Kafka / Flink)",
@@ -89,7 +91,17 @@ export const dataAnalyticsData: L1PageData = {
       engagement: "contract-perm",
     },
     {
-      name: "AI Safety / Responsible AI Lead",
+      name: "Semantic Layer Architect",
+      scarcity: "high",
+      engagement: "contract",
+    },
+    {
+      name: "SAP Datasphere Engineer",
+      scarcity: "high",
+      engagement: "contract",
+    },
+    {
+      name: "BW/4HANA Modeller",
       scarcity: "high",
       engagement: "contract",
     },
@@ -98,12 +110,17 @@ export const dataAnalyticsData: L1PageData = {
       scarcity: "med",
       engagement: "contract",
     },
+    {
+      name: "Master Data Lead",
+      scarcity: "med",
+      engagement: "contract",
+    },
   ],
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle: "Every data discipline, with a contractor bench behind it.",
   expertiseSub:
-    "From ingestion to inference — specialists we place into every function that moves a Data & AI programme forward.",
+    "From ingestion to the semantic layer, specialists we place into every function that moves a data and analytics programme forward.",
   expertise: [
     {
       slug: "data-engineering",
@@ -320,6 +337,10 @@ export const dataAnalyticsData: L1PageData = {
 
   relatedTitle: "Related pages",
   related: [
+    /* The neighbouring discipline, and the reason the AI roles left the scarce
+       list above. A buyer who arrived here looking for an LLM engineer needs one
+       link, not a second reading of this page. */
+    { href: "/ai-talent", label: "AI Talent", category: "Capability" },
     {
       href: "/capabilities/devops-platform-engineering",
       label: "DevOps & Platform Engineering",
@@ -355,8 +376,8 @@ export const dataAnalyticsData: L1PageData = {
   ],
 
   seo: {
-    title: "Data & AI Contractors · Yallo Talent",
+    title: "Data & Analytics Contractors · Yallo Talent",
     description:
-      "Specialist-screened Data & AI contractors — data engineering, ML/MLOps, GenAI, analytics platforms. 72h shortlist across the Middle East, Europe and India.",
+      "Specialist-screened data and analytics contractors: data engineering, analytics engineering, BI, lakehouse and governance. 72h shortlist across the Middle East, Europe and India.",
   },
 };
