@@ -41,7 +41,9 @@ import { SectionHead } from "./SectionHead";
  *
  * Each model keeps its drawn media pane — a PetalPlate seeded on the model's
  * route, hued by POSITION (.amb-N) per the ambient rhythm rule — and one metric
- * callout drawn only from canon §6/§7 terms.
+ * callout drawn only from canon §6/§7 terms. The plate closes the panel rather
+ * than opening it: see the point 9 note in Home.module.css for why the panel is
+ * one column and the drawing comes last.
  */
 export function Engage() {
   const leadIndex = Math.max(
@@ -132,13 +134,6 @@ export function Engage() {
                   hidden={!selected}
                   className={`${styles.engagePanel} amb-${i + 1}`}
                 >
-                  <div className={styles.modelMedia}>
-                    <PetalPlate
-                      seed={m.href}
-                      ratio={0.72}
-                      className={styles.modelPlate}
-                    />
-                  </div>
                   <div className={styles.modelContent}>
                     <p className={styles.modelMetric}>
                       <span className={styles.modelMetricValue}>
@@ -162,6 +157,17 @@ export function Engage() {
                         <ArrowGlyph />
                       </Link>
                     </p>
+                  </div>
+
+                  {/* Wide and short, not square: at the panel's full width a
+                      0.72 plate would be 521px of drawing under 300px of
+                      content. */}
+                  <div className={styles.modelMedia}>
+                    <PetalPlate
+                      seed={m.href}
+                      ratio={0.26}
+                      className={styles.modelPlate}
+                    />
                   </div>
                 </section>
               </div>

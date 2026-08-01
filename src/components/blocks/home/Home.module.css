@@ -1644,9 +1644,22 @@
   flex: none;
 }
 
-/* The detail panel: media above content on a narrow panel, side by side once
-   there is room. Row 1 to -1 so it sits against the whole rail rather than only
-   its own tab's row. */
+/* The detail panel is ONE column, and that is point 9.
+
+   The section grid was already `360px 1fr`, so "make the engagement section
+   two-column" looked done and was reported NOT DONE for a round. Measured, the
+   panel split itself again at `0.95fr 1.05fr`, so the band actually painted
+   THREE columns at 1440: rail 152-512, plate 564-890, content 925-1288. The
+   middle third was a decorative plate and the buyer's actual answer — the
+   metric, what the model is right for, the route on — was squeezed into a
+   363px strip where four short chips wrapped to four lines.
+
+   Collapsing the panel to one column gives the content the full 724px and
+   makes the band read as the two columns it was always specified as: choose on
+   the left, read on the right.
+
+   Row 1 to -1 so it sits against the whole rail rather than only its own tab's
+   row. */
 .engagePanel {
   grid-column: 2;
   /* `1 / span 4`, not `1 / -1`. The -1 line refers to the last line of the
@@ -1657,11 +1670,15 @@
   grid-row: 1 / span 4;
   padding: 4px 0 26px;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(18px, 3vw, 34px);
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(20px, 2.4vw, 30px);
   align-items: start;
 }
 
+/* The plate closes the panel rather than opening it. It is decoration, and the
+   panel's job is to answer "what is this model right for" — leading with the
+   drawing spent the top of the column on the one element carrying no
+   information, for sighted readers and for anyone reading the DOM in order. */
 .modelMedia {
   position: relative;
 }
@@ -1729,8 +1746,9 @@
     grid-row: auto;
   }
 
+  /* The panel is single-column at every width now (see point 9 above), so only
+     the inset changes here. */
   .engagePanel {
-    grid-template-columns: minmax(0, 1fr);
     padding: 0 0 24px 12px;
   }
 }
