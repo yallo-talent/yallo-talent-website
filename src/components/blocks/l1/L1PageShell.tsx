@@ -1053,7 +1053,11 @@ const SPECIALIST_DESKS = [
 ] as const;
 
 /* ============ BOTTOM CTA ============ */
-function L1BottomCta() {
+/* Exported: this section takes no props and reads no page data — it is the same
+   closing ask on every L1. The platform template is bespoke and never had one,
+   so SAP ended on a module list with no call to action. Generic by construction,
+   so reusing it authors nothing. */
+export function L1BottomCta() {
   return (
     <section className={styles.bottomCta}>
       <div className={styles.wrap}>
