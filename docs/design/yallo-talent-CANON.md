@@ -191,7 +191,7 @@ Never idle waiting for an answer.
 | **R12** | Q3: **light is the site-wide register.** **SHIPPED.** | §5 register clause records light as adopted, not under test. **Closes Q3.** |
 | **R13** | Q9 unparked: Blue Yonder ships at suite level from evidence already in the repo. **SHIPPED — 8 modules, every one anchored to a role string already in the repo; 6 real BY products omitted for lack of one. Moss wired.** | §3: the ratified homepage line (Luminate, WMS, planning) plus the Blue Yonder roles the retail data names. **HARD RULE — a module ships only if it maps to an existing role in the data layer or to the homepage line. Omit the rest; never guess.** Moss hue. Evidence table logged. **Closes Q9.** |
 | **R14** | Q2: delete what is demonstrably wrong in the case studies. **SHIPPED — 4 removals, logged in docs/design/case-study-removals.md; 2 of Q2's 6 items are curation/content decisions and stay with Sumeet.** | Lines belonging to another study, and the empty heading, are removed. Where text repeats across two unrelated studies it is kept where it belongs and removed from the other. **No rewriting.** Removals logged. **Closes Q2.** |
-| **R15** | The logo drops the pipe divider. **SHIPPED — variant B, cap-height aligned. Four alternates measured and captured in docs/status/shots/r15-logo/.** | §5: TALENT as tracked small caps aligned to the wordmark's cap height. Four alternates built and self-critiqued; the strongest ships; all four shown for override. |
+| **R15** | The logo drops the pipe divider. **SUPERSEDED IN PART BY R22 (1 Aug) — the divider is reinstated.** The alignment limb stands. Shipped as variant B on 31 Jul, then as F on 1 Aug, then as G under R22; this row's original "SHIPPED — variant B" claim was left stale through both changes. Four round-1 alternates captured in docs/status/shots/r15-logo/, round 2 in docs/status/shots/r15b/. | §5: TALENT as tracked small caps aligned to the wordmark's cap height. Four alternates built and self-critiqued; the strongest ships; all four shown for override. |
 
 ### R16–R20 — 1 August 2026, ratified by Sumeet
 
@@ -206,3 +206,22 @@ Never idle waiting for an answer.
 **Descoped permanently:** insight articles and blogs. Raphy revamps them fresh.
 Code does not port, rewrite, template or touch them, and porting is struck from
 the backlog.
+
+---
+
+### R22 — 1 August 2026, ratified by Sumeet
+
+| # | Ruling | Canon effect |
+|---|---|---|
+| **R22** | **R15's divider clause is reversed: the lockup carries a short gold rule again.** Variant G ships. **The reversal is evidence-led, and the reason R15 was wrong is that it fixed the wrong element.** R15 removed the hairline on the argument that spacing and contrast should do the separating. Round 2 measured what that produced at 1440: TALENT rendered 70.2px wide against the wordmark's 58.3 — the qualifier outweighing the thing it qualifies — with a 13.5px gap after the wordmark against 7.5px before it, and in a second, washier colour. Empty space cannot both separate and bind, so the eye read a logo with a stray word beside it. A rule does both jobs at once. **R15's alignment limb is untouched and still stands.** | §5 lockup clause: the divider ban is struck. The rule is 1px `--accent-mark`, set on the suffix, with the gap before it and the padding after it near-symmetric so it leans very slightly toward the wordmark. |
+| **R22a** | **Variant F, live on main from 1 Aug until this ruling, was breaching §5.** F stacked TALENT beneath the wordmark; §5 (ratified 30 Jul) says **"to the right of the wordmark, never beneath it"**. It shipped in a round that was solving the width problem and never re-read the clause it was standing on. G restores compliance. **Recorded because the failure mode is the point: a variant can be chosen on a contact sheet, gate 9/9 and still breach ratified canon, because no gate reads canon.** | §5 lockup clause holds unchanged and is now satisfied again. A/B/C/D/E/F stay in `Lockup.module.css` as named variants for reproducibility; **F must not be re-defaulted without amending §5 first.** |
+| **R22b** | **The suffix's narrow register is bounded by A4, not by the layout.** G is the widest of the four treatments and overflowed the 360px header by 3px. Below 480 it pays with tracking (0.16em → 0.125em), the gap before the rule (10px → 8px) and the padding after it (11px → 9px) — **never font-size, which already sits on A4's 13px mono floor.** 0.125em rather than the 0.12em floor itself, because `check-rendered-type` judges the painted ratio against 0.1195 and sitting exactly on a floor puts float noise in charge of the verdict. | §5 / A4: **type is never shrunk to solve a layout fault.** Third recorded instance of this attempt; the two prior ones broke the mono floor on eight routes and were reverted. |
+
+**G as shipped is captured in `docs/status/shots/r15g/`** — lockup and full
+header, both registers, at 1440 and 360.
+
+**Measured after the change:** header scrollWidth 360 at a 360px viewport with
+the farthest header element at 356.8 — headroom, not a tolerance pass. Tracking
+alone would have left it at 361, green only on `check-reflow`'s ±1px allowance.
+Header and footer verified at 320/360/390/480/600/1440 in both registers, nine
+gates 9/9.
