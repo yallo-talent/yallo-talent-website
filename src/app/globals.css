@@ -185,6 +185,12 @@
   --r-sm: 12px; /* chips, inner tiles, hero pillars */
   --r-xs: 8px; /* logo tiles, flags, entity marks */
   --r-micro: 3px; /* progress bars and other hairline-scale fills */
+  /* Fully rounded. Status pills only — the "Desk in build" marker in the mega
+     panel and on the platform L1's planned families. Added because the shape was
+     already in use twice as a bare 999px, outside the scale entirely; a token is
+     the reviewable version of that decision. Not for buttons or cards, which
+     keep the quarter-round petal signature. */
+  --r-pill: 999px;
 
   /* ---- weight, and why there are only three ----------------------------
      Two independent critique passes converged on the same defect: 92 of 181

@@ -643,12 +643,24 @@ function L1Expertise({ data }: Props) {
   // detail" hint links here, and the L2 sidebar shows every function.
   //
   // routeExists is the second half of the test and not belt-and-braces. Having
-  // `tools` only means the DATA could support an L2; it does not mean the route
-  // is built. L2 functions exist under /industries/[sector]/[fn] and
-  // /platforms/[platform]/[module], and there is no /capabilities/[cap]/[fn] at
-  // all — so on a capability page this template composed a URL that would 404
-  // if anyone ever populated the field.
-  const firstL2 = data.expertise.find((e) => (e.tools?.length ?? 0) > 0);
+  // the gating field only means the DATA could support an L2; it does not mean
+  // the route is built.
+  //
+  // The gate differs by family because the EVIDENCE differs. A sector L2 earns
+  // its page from `tools` — that is what the sector route builds on. A
+  // capability L2 earns it from `roles`: capability cards carry no `tools` and
+  // never have, so a tools gate meant no capability could ever drill down, which
+  // is why /capabilities/data-analytics shipped zero L2 links against retail's
+  // twenty-one. Roles are the honest test — a discipline earns a page when we can
+  // say who we place on it.
+  //
+  // (This comment previously said there was no /capabilities/[cap]/[fn] route at
+  // all. There is now; D3 built it on the same L2PageShell.)
+  const firstL2 = data.expertise.find((e) =>
+    data.category === "capabilities"
+      ? (e.roles?.length ?? 0) > 0
+      : (e.tools?.length ?? 0) > 0,
+  );
   const candidateHref = firstL2
     ? `/${data.category}/${data.slug}/${firstL2.slug}`
     : null;
@@ -693,10 +705,19 @@ function L1Expertise({ data }: Props) {
           tabIndex={0}
         >
           {visible.map((card, i) => {
-            // Auto-derive L2 href when this function has tools configured
+            /* Auto-derive the L2 href from whatever gates that family's L2
+               route: `tools` for sectors, `roles` for capabilities. Same reason
+               as firstL2 above — capability cards carry no tools, so a tools-only
+               test left every discipline card unlinked even once the route
+               existed. Kept as one expression so the card link and the section
+               hint can never disagree about which functions have pages. */
+            const hasL2Evidence =
+              data.category === "capabilities"
+                ? (card.roles?.length ?? 0) > 0
+                : (card.tools?.length ?? 0) > 0;
             const l2Href =
               card.href ??
-              (card.tools && card.tools.length > 0
+              (hasL2Evidence
                 ? `/${data.category}/${data.slug}/${card.slug}`
                 : undefined);
             return (

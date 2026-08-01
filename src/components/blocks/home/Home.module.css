@@ -2476,7 +2476,7 @@
 
 .familyPlanned {
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   padding: 2px 10px;
 }
 

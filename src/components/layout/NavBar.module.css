@@ -362,7 +362,7 @@
   text-transform: uppercase;
   color: var(--fg-subtle);
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   padding: 2px 8px;
   line-height: 1.4;
 }
