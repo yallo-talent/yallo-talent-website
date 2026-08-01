@@ -374,3 +374,62 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   The case-study body.
+
+   Ported studies arrive as MDX with their own H2 structure — Client Context,
+   Business Objectives & Challenges, Approach, Outcome — and had never been
+   rendered, so nothing here was styled. Measure is capped in ch rather than px
+   so the column tracks the type size, and the headings pick up the same
+   register as the rest of the editorial layout.
+   -------------------------------------------------------------------------- */
+.prose {
+  max-width: 72ch;
+}
+
+.prose h2 {
+  margin: 40px 0 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-section-h);
+  font-weight: var(--fw-strong);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.prose h2:first-child {
+  margin-top: 0;
+}
+
+.prose h3 {
+  margin: 28px 0 10px;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.prose p {
+  margin: 0 0 16px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 18px;
+  padding-left: 20px;
+}
+
+.prose li {
+  margin-bottom: 8px;
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+.prose strong {
+  color: var(--text);
+  font-weight: var(--fw-strong);
+}

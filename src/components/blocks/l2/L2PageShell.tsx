@@ -218,8 +218,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
                   <div className={styles.tcBench}>
                     <span className={styles.tcBenchDot} aria-hidden="true" />
                     <span className={styles.tcBenchTxt}>
-                      {tool.benchNote ??
-                        "Active bench · Middle East · Europe"}
+                      {tool.benchNote ?? "Active bench · Middle East · Europe"}
                     </span>
                   </div>
                   <Link href={briefHref} className={styles.tcCta}>

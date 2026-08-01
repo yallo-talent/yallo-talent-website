@@ -103,13 +103,32 @@ export default async function CaseStudyPage({ params }: PageProps) {
       {/* Same rule as the metrics band: rendered only where the published
           study states an outcome of its own. The ported studies carry their
           outcome inside the body instead. */}
+      {/* THE STUDY ITSELF, and it was invisible.
+
+          `<MDXRemote source={body} />` sat inside `{frontmatter.outcome ? …}`,
+          and not one ported study carries an `outcome` field — so every case
+          study rendered its summary and stopped. Measured on the Al Tayer page:
+          one paragraph, 64 words, zero headings, against an MDX body carrying
+          Client Context, Business Objectives, Approach and Outcome. The whole
+          corpus was written and none of it reached the page.
+
+          The body is content, not an optional flourish, so it renders on its own
+          terms. The outcome band below stays conditional, which is what that
+          check was actually for. */}
+      <section className={styles.section}>
+        <div className={styles.wrap}>
+          <div className={`${styles.sectionInner} ${styles.prose}`}>
+            <MDXRemote source={body} />
+          </div>
+        </div>
+      </section>
+
       {frontmatter.outcome ? (
         <section className={`${styles.section} ${styles.sectionAlt}`}>
           <div className={styles.wrap}>
             <div className={styles.sectionInner}>
               <span className={styles.sectionEyebrow}>The outcome</span>
               <h2 className={styles.sectionH}>{frontmatter.outcome}</h2>
-              <MDXRemote source={body} />
               {frontmatter.sources && frontmatter.sources.length > 0 && (
                 <aside>
                   <h3 className={styles.sectionEyebrow}>Sources</h3>
