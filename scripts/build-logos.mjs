@@ -21,7 +21,7 @@
  *   node scripts/build-logos.mjs
  */
 import {
-  existsSync,
+  existsSync, rmSync,
   mkdirSync,
   readdirSync,
   writeFileSync,
@@ -276,10 +276,13 @@ async function convert(slug, file, outDir) {
   //              the spread it has to resolve.
   let tp = 0;
   let mid = 0;
+  let solid = 0;
   for (const a of alpha) {
     if (a < 8) tp++;
     else if (a <= 247) mid++;
+    if (a > 191) solid++;
   }
+  const inkDensityPct = (100 * solid) / alpha.length;
   const transparentPct = (100 * tp) / alpha.length;
   const partialPct = (100 * mid) / alpha.length;
   const capAtCell = Math.min(RAIL_CAP, (RAIL_CELL * ai.height) / ai.width);
@@ -302,6 +305,19 @@ async function convert(slug, file, outDir) {
   const perimeterPct = (100 * edgeInk) / edgeTotal;
 
   const reasons = [];
+  // FILLED PLATE, which the perimeter test cannot see.
+  //
+  // Sephora is white letters inside a solid black square. It keys "cleanly" —
+  // 0.0% perimeter ink, because the square's corners are rounded and the trim
+  // takes the outer ring — but 48.5% of the mark is ink, and the letterforms are
+  // HOLES in a plate rather than strokes on a ground. On the rail it renders as
+  // a black slab, which is the exact thing canon §8 forbids.
+  //
+  // Density separates it. Every genuine wordmark in this pack sits at or under
+  // 37% ink (Infosys 33.9, Oracle 36.8); a plate with knockout text is half the
+  // box or more. 42% sits in the gap.
+  if (inkDensityPct > 42)
+    reasons.push(`${inkDensityPct.toFixed(1)}% ink — reads as a filled plate with knockout text`);
   if (transparentPct < 25) reasons.push(`only ${transparentPct.toFixed(1)}% transparent`);
   if (partialPct > 45) reasons.push(`${partialPct.toFixed(1)}% partial alpha`);
   if (capAtCell < RAIL_CAP_FLOOR) reasons.push(`cap height ${capAtCell.toFixed(1)}px at the rail cell`);
@@ -310,6 +326,17 @@ async function convert(slug, file, outDir) {
 
   if (reasons.length) {
     nameOnly.push(`${slug}: ${reasons.join(", ")}`);
+    // Delete any asset a previous run emitted for this slug. Without this a
+    // mark that USED to pass keeps rendering from the stale file for ever:
+    // Sephora was declined as a filled plate and still shipped as a black slab,
+    // because the decision only ever added to a list and never cleaned up.
+    for (const dir of [OUT_CLIENTS, OUT_INTEGRATORS]) {
+      const stale = join(dir, `${slug}.png`);
+      if (existsSync(stale)) {
+        rmSync(stale, { force: true });
+        console.log(`  ${slug}: removed stale ${stale}`);
+      }
+    }
     console.log(`  ${slug}: NAME ONLY — ${reasons.join(", ")}`);
     return;
   }
@@ -330,7 +357,46 @@ async function convert(slug, file, outDir) {
     .png({ compressionLevel: 9 })
     .toFile(out);
 
-  manifest[slug] = { w: info.width, h: info.height, bg: Math.round(bg) };
+  // OPTICAL SCALE — the fix for "Wipro is tiny next to Infosys".
+  //
+  // Every mark is capped to one cap HEIGHT, which is the wrong invariant for a
+  // rail. Height-capping gives a wide wordmark like TCS several times the ink
+  // area of a square mark like Wipro at the same nominal size, so the rail reads
+  // as a row of mismatched weights rather than a set.
+  //
+  // What the eye actually compares is INK AREA. So each mark reports the area
+  // its ink occupies, and the rail scales it toward a common area. sqrt because
+  // area grows with the square of the linear scale. Clamped hard: normalising
+  // area exactly would blow a small square mark up past its neighbours' cap
+  // height and shrink a long wordmark to nothing, so this only pulls the
+  // outliers in rather than making every mark identical.
+  let inkPixels = 0;
+  for (const a of alpha) if (a > 96) inkPixels++;
+  const inkFrac = inkPixels / alpha.length;
+  // Solve for the DISPLAY HEIGHT that gives every mark the same ink area.
+  //
+  // Ink fraction alone was not enough, and the rail showed why: Richemont is
+  // 14.45:1, so at a shared 40px cap it ran 578px wide and swamped the row,
+  // while square marks like Wipro and Chalhoub sat at 40px and read as tiny.
+  // Aspect ratio, not ink density, was doing most of the damage.
+  //
+  // At display height H a mark of aspect A covers H*H*A of box, of which inkFrac
+  // is ink. Setting H*H*A*inkFrac = TARGET_AREA and solving gives the height at
+  // which every mark carries the same weight. Clamped 20-46px: past that a very
+  // wide mark shrinks to a hairline and a very dense one overruns the band.
+  const aspect = info.width / info.height;
+  const TARGET_AREA = 1150; // px^2 of ink, tuned against the shipped pack
+  const ideal = Math.sqrt(TARGET_AREA / Math.max(aspect * inkFrac, 0.01));
+  const displayH = Math.max(20, Math.min(46, ideal));
+
+  manifest[slug] = {
+    w: info.width,
+    h: info.height,
+    bg: Math.round(bg),
+    ink: +inkFrac.toFixed(4),
+    /* Display height in CSS px that equalises ink area across the pack. */
+    dh: +displayH.toFixed(1),
+  };
   console.log(
     `  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB (alpha silhouette)`,
   );
@@ -398,8 +464,16 @@ for (const [slug, file] of [
   }
   const perimeterPct = (100 * ink) / total;
   if (perimeterPct > SLAB_PERIMETER_PCT) {
+    // A refusal, not a warning. It warned for weeks and shipped anyway, and
+    // Radwell has been rendering as a black slab on the rail the whole time —
+    // precisely what canon §8 forbids. A committed vector earns no exemption
+    // from the test; being hand-supplied says nothing about whether it reads.
+    rmSync(file, { force: true });
+    nameOnly.push(
+      `${slug}: box lockup — ${perimeterPct.toFixed(1)}% perimeter ink (committed vector, declined)`,
+    );
     console.log(
-      `  ${slug}: committed vector present — WARNING, ${perimeterPct.toFixed(1)}% perimeter ink reads as a box lockup on the dark rail (canon §8)`,
+      `  ${slug}: NAME ONLY — committed vector is a box lockup at ${perimeterPct.toFixed(1)}% perimeter ink`,
     );
   } else {
     console.log(

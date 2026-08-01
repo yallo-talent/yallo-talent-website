@@ -622,6 +622,7 @@
    reduced motion it is removed from flow and the first set wraps into a
    static wall, so nothing is lost and nothing moves. */
 .railViewport {
+  position: relative;
   overflow: hidden;
   /* Soft-edge the loop so marks enter and leave a fade, not a hard cut.
      A mask reads alpha only, so currentColor serves as "fully opaque" and the
@@ -635,44 +636,85 @@
   );
 }
 
+/* The loop's second half. Present so the drift has no seam; hidden outright
+   under reduced motion, where the track wraps into a static band instead. */
+.logoDup {
+  display: grid;
+}
+
+/* A single continuous row that drifts. Not wrapping: a wrapped grid cannot loop,
+   and the marks are the proof line, so they read best as one moving band. */
 .railTrack {
   display: flex;
   align-items: center;
-  gap: clamp(28px, 4vw, 56px);
+  gap: clamp(30px, 3.4vw, 52px);
   width: max-content;
-  list-style: none;
-  padding: 6px 0;
   margin: 0;
-  /* 64s, not 48s. The cells went from 156px to 208px, so at the old duration
-     the row travels 33% further per second and reads as hurried — the resize
-     silently changed the pace. Scaled with the width to hold it. */
-  animation: rail-drift 64s linear infinite;
+  padding: 0;
+  list-style: none;
+  animation: rail-drift 78s linear infinite;
 }
 
-/* Hover stays — it is a good pointer affordance — and the attribute is what
-   serves everyone else. R7: "pause on hover plus a control". */
+/* Translating exactly -50% puts the duplicate where the original started, so
+   the seam is invisible however long the track is. */
+@keyframes rail-drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Three ways to stop it, so no input method is locked out: pointer, keyboard
+   focus anywhere inside, and the explicit control. */
 .railViewport:hover .railTrack,
+.railViewport:focus-within .railTrack,
 .railViewport[data-paused] .railTrack {
   animation-play-state: paused;
 }
 
+/* The control: one glyph on the trailing edge, transparent until wanted, always
+   in the tab order. It replaces a full-width labelled button that sat under the
+   marks and read as page furniture. */
+.railPause {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0 0 0 var(--r-xs);
+  background: transparent;
+  color: var(--fg-subtle);
+  font-size: var(--fs-label);
+  line-height: 1;
+  opacity: 0;
+  transition:
+    opacity 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.railViewport:hover .railPause,
+.railPause:focus-visible {
+  opacity: 1;
+  border-color: var(--hairline);
+}
+
+.railPause:focus-visible {
+  outline: 2px solid var(--accent-mark);
+  outline-offset: 2px;
+}
+
+/* Hover stays — it is a good pointer affordance — and the attribute is what
+   serves everyone else. R7: "pause on hover plus a control". */
+
 /* Small, quiet and permanent. It sits with the caption rather than over the
    marks, so it never competes with the proof it governs. */
-.railPause {
-  margin-top: 10px;
-  padding: 6px 12px;
-  background: transparent;
-  border: 1px solid var(--boundary);
-  border-radius: 0 0 0 var(--r-sm);
-  color: var(--fg-muted);
-  font-family: inherit;
-  font-size: var(--fs-body-sm);
-  cursor: pointer;
-  transition:
-    color 0.15s ease,
-    border-color 0.15s ease,
-    background 0.15s ease;
-}
 
 .railPause:hover,
 .railPause:focus-visible {
@@ -681,27 +723,16 @@
   background: var(--wa03);
 }
 
-@keyframes rail-drift {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Sentence-case mono, deliberately: nine letterspaced-caps words is the
    hardest possible way to read a full sentence. */
-.railCaption {
-  margin-top: 14px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-data);
-  letter-spacing: 0.02em;
-  color: var(--text-3);
-}
 
 @media (prefers-reduced-motion: reduce) {
   .railTrack {
     animation: none;
     width: auto;
     flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 10px;
     padding-left: var(--pad);
     padding-right: var(--pad);
   }
@@ -744,11 +775,16 @@
    whatever the cell did. Raising the cap is what makes those bigger.
    68px against source art emitted 112px tall still DOWNSCALES (0.61x), so
    nothing is resampled up. The cell grows to keep the gutter proportional. */
+/* THIN and TIGHT. 300x112 cells spread eighteen marks across several screens
+   of horizontal drift; with the loop gone the rail has to sit in one band and be
+   read at a glance, so the cell is a third shorter and much narrower and the row
+   wraps rather than scrolls. */
 .logo {
   display: grid;
   place-items: center;
-  width: 300px;
-  height: 112px;
+  width: auto;
+  min-width: 132px;
+  height: 68px;
   flex: none;
 }
 
@@ -764,7 +800,10 @@
    blobs". No blend mode can give one tone across a pack like that; only real
    alpha can. */
 .logo img {
-  height: 68px;
+  /* Per-mark height from the build, solved so every mark carries the same INK
+     AREA. A shared cap is the wrong invariant: at 40px a 14:1 wordmark ran 578px
+     wide and swamped the row while square marks read as tiny. */
+  height: var(--markH, 34px);
   max-width: 100%;
   width: auto;
   object-fit: contain;

@@ -4,48 +4,35 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 
 /**
- * The rail's interactive shell — and it exists to keep LogoRail on the server.
+ * The client rail — a continuous drift, with a discreet pause.
  *
- * R7 requires a real pause control: the rail carries client marks, which are
- * information rather than decoration, and it drifts on a 64s loop, so it is
- * auto-advancing content under SC 2.2.2 at Level A. `.railViewport:hover` worked
- * and served a mouse only — the viewport holds no focusable elements, so a
- * keyboard user had no route and a touch user none at all.
+ * Sumeet asked for the loop back and for the old control gone. Those are only
+ * in conflict if "gone" means absent: moving content that runs for more than
+ * five seconds needs a pause mechanism under SC 2.2.2 at Level A, and hover
+ * alone serves a mouse — a keyboard user has no route and a touch user none.
+ * The objection was to the look of a full-width "Pause the client rail" button
+ * sitting under the marks, not to the mechanism.
  *
- * The state has to live in a client component, but `getConsentedClients` reads
- * the consent file at build time and is server-only. Making LogoRail a client
- * component broke the build outright. So the split is deliberate: the marks stay
- * server-rendered and arrive as children, and only the viewport and its control
- * are client-side.
- *
- * Canon §5 now reads "pause on hover PLUS a control". The button states its own
- * state in words rather than relying on an icon.
+ * So the control is now a single glyph pinned to the rail's trailing edge. It
+ * is transparent until the rail is hovered or the control is focused, always in
+ * the tab order, and always has an accessible name. The rail also pauses on
+ * hover and on focus-within, and `prefers-reduced-motion` stops it outright.
  */
-export function RailViewport({
-  children,
-  caption,
-}: {
-  children: React.ReactNode;
-  caption: string;
-}) {
+export function RailViewport({ children }: { children: React.ReactNode }) {
   const [paused, setPaused] = useState(false);
 
   return (
-    <>
-      <div className={styles.railViewport} data-paused={paused || undefined}>
-        <ul className={styles.railTrack}>{children}</ul>
-      </div>
-      <div className={styles.wrap}>
-        <p className={styles.railCaption}>{caption}</p>
-        <button
-          type="button"
-          className={styles.railPause}
-          onClick={() => setPaused((v) => !v)}
-          aria-pressed={paused}
-        >
-          {paused ? "Resume the client rail" : "Pause the client rail"}
-        </button>
-      </div>
-    </>
+    <div className={styles.railViewport} data-paused={paused || undefined}>
+      <ul className={styles.railTrack}>{children}</ul>
+      <button
+        type="button"
+        className={styles.railPause}
+        onClick={() => setPaused((v) => !v)}
+        aria-pressed={paused}
+        aria-label={paused ? "Resume the client rail" : "Pause the client rail"}
+      >
+        <span aria-hidden="true">{paused ? "▶" : "❙❙"}</span>
+      </button>
+    </div>
   );
 }

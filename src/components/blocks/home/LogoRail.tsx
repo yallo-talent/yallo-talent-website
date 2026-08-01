@@ -1,5 +1,6 @@
 import { logoRail } from "@/data/home/hero";
 import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
+import logoManifest from "../../../../public/logos/manifest.json";
 import styles from "./Home.module.css";
 import { LogoImage } from "./LogoImage";
 import { RailViewport } from "./RailViewport";
@@ -25,9 +26,9 @@ import { RailViewport } from "./RailViewport";
  * §8: never a padded box, never a redrawn mark. `hasLogoAsset` is the check,
  * because clients.yaml still names them; only the asset is absent.
  *
- * Motion: one slow translateX loop over a duplicated track. Pauses on hover.
- * Under `prefers-reduced-motion` the duplicate is hidden and the track wraps
- * into a static wall — no motion, nothing lost.
+ * Motion: one slow translateX loop over a duplicated track, paused on hover, on
+ * focus-within, by a discreet control, and by prefers-reduced-motion. Marks are
+ * area-matched rather than height-matched, so no mark dominates the row.
  */
 export function LogoRail() {
   const clients: Client[] = [
@@ -40,13 +41,27 @@ export function LogoRail() {
       <div className={styles.wrap}>
         <p className={styles.railLabel}>{logoRail.mergedLabel}</p>
       </div>
-      <RailViewport caption={logoRail.integratorCaption}>
+      {/* Two identical tracks: the loop translates by exactly half its width, so
+          the seam never shows. The second is aria-hidden decoration. */}
+      <RailViewport>
         <LogoItems clients={clients} />
-        {/* The loop's second half. Hidden from AT and from reduced motion. */}
         <LogoItems clients={clients} ariaHidden />
       </RailViewport>
     </section>
   );
+}
+
+/** The build's per-mark display height, solved so ink area is even across the
+    pack. 34px for anything not in the manifest. */
+function markHeight(logo?: string | null): number {
+  if (!logo) return 34;
+  const slug =
+    logo
+      .split("/")
+      .pop()
+      ?.replace(/\.[a-z]+$/i, "") ?? "";
+  const entry = (logoManifest as Record<string, { dh?: number }>)[slug];
+  return entry?.dh ?? 34;
 }
 
 function LogoItems({
@@ -63,6 +78,17 @@ function LogoItems({
           key={`${c.name}${ariaHidden ? "-dup" : ""}`}
           className={`${styles.logo}${ariaHidden ? ` ${styles.logoDup}` : ""}`}
           aria-hidden={ariaHidden || undefined}
+          /* Optical scale from the build manifest. Height-capping alone gives a
+             wide wordmark several times the ink area of a square mark, which is
+             why Wipro read as tiny beside Infosys and TCS. The build measures
+             each mark's ink fraction and reports the factor that pulls it toward
+             a common area; this applies it. Clamped in the build, so no mark can
+             overrun its cell. */
+          style={
+            {
+              "--markH": `${markHeight(c.logo)}px`,
+            } as React.CSSProperties
+          }
         >
           {hasLogoAsset(c.logo) && c.logo ? (
             /* The FIRST track is eager and the duplicate is not, which is the
@@ -85,8 +111,6 @@ function LogoItems({
                the intrinsic aspect still governs what is painted. */
             <LogoImage
               src={c.logo}
-              /* The name, not an empty string — and empty on the duplicate half
-                 only, which is aria-hidden decoration sharing the same URLs. */
               alt={ariaHidden ? "" : c.name}
               width={300}
               height={68}
