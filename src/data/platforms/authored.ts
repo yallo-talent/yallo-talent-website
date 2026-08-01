@@ -409,8 +409,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       { name: "Al Tayer Group", market: "UAE", study: true },
       { name: "Majid Al Futtaim", market: "UAE" },
       { name: "Chalhoub Group", market: "UAE" },
-      { name: "Ministry of Finance", market: "KSA" },
-      { name: "ZATCA", market: "KSA" },
+      { name: "Ministry of Finance", market: "Saudi Arabia" },
+      { name: "ZATCA", market: "Saudi Arabia" },
     ],
     ratified:
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",

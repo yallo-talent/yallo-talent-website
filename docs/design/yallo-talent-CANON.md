@@ -106,6 +106,11 @@ Within a page, section rhythm still varies by position (`.amb-1…6`), now withi
 - **Workstream split (ratified 30 Jul):** case studies are Sumeet-and-Chat scope, first-class in the build. Insight articles are descoped from this build entirely — all legacy-ported insights `published: false` — and transfer to Raphy's pod post-handover with a Chat-authored brief.
 - **IA modernisation (authorised 31 Jul — R5).** The legacy corpus IA is two to three years old, so it is the source for what Yallo *published*, not for what the market *is*. Per lead domain the module taxonomy is critiqued against the current market and the portion that has moved is amended — expected to be 20–30%. Every change lands in a logged was/now/why table for Sumeet's ratification. Module names must be **real market products**; an uncertain desk parks in `QUESTIONS.md` rather than shipping. This narrows, and does not repeal, the corpus-only rule: names still may not be invented, but a name may now come from the current market rather than only from the corpus.
 - **The one rule above all:** never invent a person, quotation, client, metric, source, case study or date. Where something is missing, render nothing and name the gap. Enforced structurally by CI guards that are never weakened.
+- **R21 — a lede never states a count the page already displays.** "50 distinct
+  roles across 18 product families" reads as generated text: a tally is what a
+  machine notices about a list, not what a reader needs from it, and it dates the
+  moment the data moves. A lede says what the reader can do next. Applies to every
+  L1 — platform, sector and capability.
 - **R16 — a heading may only assert what EVERY row beneath it satisfies.** The rule above was honoured at the data layer and broken at the label layer: an evidence join matched `multi-platform` case studies as well as suite-tagged ones, which is defensible for *showing* them and not for a heading reading "Blue Yonder programmes we have staffed" — a suite with zero tagged studies, over two real named clients. A join can be individually correct and still make the page assert something false once a label sits over it. So the test is not "is each row defensible" but "does the heading's claim hold for the weakest row". Enforced by `scripts/check-headings.mjs`.
 
 ## 10. Amendment log

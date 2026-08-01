@@ -84,6 +84,17 @@ export default async function PlatformPage({
 
      A platform whose modules carry no family — every vendor but SAP today —
      collapses to a single unnamed group and renders exactly as before. */
+  /* The bar abbreviates; the page headings never do. Dropping "Autonomous"
+     alone still overflowed at 1440 and the last entries cut mid-word, so the
+     long ones contract to the term the industry already uses. */
+  const shortFamily = (name: string) =>
+    ({
+      "Autonomous Supply Chain": "SCM",
+      "Enterprise technology": "Technology",
+      "Data & analytics": "Data",
+      "SAP Business AI": "AI",
+    })[name] ?? name.replace(/^Autonomous /, "");
+
   const FAMILY_ORDER = [
     "Core ERP",
     "Autonomous Finance",
@@ -142,11 +153,11 @@ export default async function PlatformPage({
            and the last entries truncated mid-word. The prefix is SAP's, it is
            identical on every one of them, and in a list it distinguishes
            nothing — the headings on the page keep it in full. */
-        label: (f.name as string).replace(/^Autonomous /, ""),
+        label: shortFamily(f.name as string),
       })),
     ...plannedFamilies.map((f) => ({
       id: `family-${slugify(f.name)}`,
-      label: f.name,
+      label: shortFamily(f.name),
     })),
   ];
 
@@ -405,7 +416,12 @@ export default async function PlatformPage({
               <SectionHead
                 eyebrow="The bench"
                 heading={`Every role we place across ${cov.name}.`}
-                lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} product families. Send the brief and the specialist is in your inbox in 72 hours.`}
+                /* NO COUNTS. A tally like "50 distinct roles across 18 product
+                 families" is what a machine notices, not what a buyer needs,
+                 and it dates the moment the data moves. Codified in canon §9:
+                 a lede states what the reader can do next, never a count the
+                 page already displays. */
+              lede="Every name below is a role we have placed. Send the brief and the specialist is in your inbox in 72 hours."
                 id="roles-heading"
               />
               <ul className={styles.roleIndex}>
