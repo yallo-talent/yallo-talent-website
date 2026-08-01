@@ -2,9 +2,12 @@
 
 **2 August 2026 · yallo-talent-website · `main` · HEAD `a610f18` · nine gates 9/9**
 
-The goal named `docs/relay/code-to-chat-v7.0.md`. Every previous relay lives in
-`docs/relays/`, so this is filed there rather than starting a second folder one
-character apart. Flagging rather than silently renaming.
+Filed at the path the goal named. I first put it in `docs/relays/` alongside
+v1.0 to v6.0 and flagged the difference; the instruction was explicit, so this
+is the canonical copy and `docs/relays/README.md` points here. **Relays v1.0 to
+v6.0 remain in `docs/relays/`.** Worth settling which folder is canonical before
+v8.0, because two folders one character apart is a trap for whoever reads this
+next.
 
 ---
 
