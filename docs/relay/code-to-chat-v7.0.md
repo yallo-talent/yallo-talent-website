@@ -1,6 +1,9 @@
 # Code → Chat relay v7.0
 
-**2 August 2026 · yallo-talent-website · `main` · HEAD `a719eba` · nine gates 9/9**
+**2 August 2026 · yallo-talent-website · HEAD `b18095e` on `feat/platform-parity-round` · nine gates 9/9**
+
+**Two rounds are recorded here.** §§1-9 are the original v7.0 goal. §10 is the
+platform parity bolt-on that followed it.
 
 Filed at the path the goal named. I first put it in `docs/relays/` alongside
 v1.0 to v6.0 and flagged the difference; the instruction was explicit, so this
@@ -214,3 +217,148 @@ CSS confirmed served before the results were trusted.
 
 Plus `tsc --noEmit` clean, and a full-site link crawl: **152 pages, 278 unique
 internal links, none dead.**
+
+
+---
+
+# 10. Platform parity bolt-on
+
+## 10.1 Where the commits are, and why not on main
+
+**`feat/platform-parity-round`, at `b18095e`.** Not main, and not by choice.
+
+Partway through this round a parallel session switched the shared working tree
+to its own branch, `feat/capabilities-parity`, and began committing. Its work
+includes `next.config.ts`, which was also modified in flight, so reaching main
+would have meant overwriting another agent's live edits. Preserving their work
+outranked tidy history. My commits sit on top of theirs and are pushed to a
+branch of my own name so nothing of theirs is disturbed.
+
+**Whoever merges should expect platform commits interleaved with capabilities
+commits.** `main` is still at `e4b3d59`.
+
+## 10.2 SAP, the reference
+
+| # | Item | Outcome |
+|---|---|---|
+| 1 | Product-family chips | Shipped, and then reshipped after Sumeet's eye. See 10.3 |
+| 2 | How We Work padding | Shipped. Measured `padding-top: 0px` with no collapsed margin; the class genuinely declared it. 0px to 93.6px, fixed on `.hww` so every page carrying the band gets it |
+| 3 | How We Work connector | Shipped, reusing the homepage mechanism rather than authoring a second |
+| 4 | SAP Business AI | Shipped. Seven desks, fourteen bench roles, seven new L2 routes |
+
+**The connector was not a copy-paste.** The mechanism moved to
+`.flow-connector` in `globals.css` and both consumers keep their own geometry,
+because the homepage steps and the L1 grid are different shapes. The keyframes
+had to move with it: **a CSS module hashes an `@keyframes` name**, so leaving
+`pipeline-pulse` in `Home.module.css` would have resolved the global animation
+to nothing, silently, with no gate able to see it. Reduced motion drops the
+travelling dot and draws four static markers, so the line still reads as a
+sequence rather than a divider.
+
+**SAP Business AI** respects the Sapphire 2026 consolidation: one Business AI
+Platform, not three separate AI Core, AI Launchpad and Generative AI Hub desks,
+which is the out-of-date shape a buyer who follows SAP would notice. No SAP
+performance figure appears anywhere on it, no customer name, no GA date.
+
+## 10.3 The two faults Sumeet reported mid-round, both mine
+
+**The sticky bar.** Two faults. The **order** was wrong because I appended the
+authored entries at the top of the array rather than at their position in the
+document, so the bar described a page that does not exist. The **truncation**
+was thirteen entries cut mid-word at 1440 — the list has always had
+`overflow-x: auto` with the scrollbar hidden, so it scrolled with no affordance
+whatsoever, which is indistinguishable from broken.
+
+The fix was not a scroll cue. The bar was flattening two levels into one row:
+five page sections and eight product families as peers. It now indexes the page
+in the page's own order, five entries, and the families remain reachable
+through the chip index, which is finer-grained. Verified in DOM order with no
+truncation on all seven platforms. Below 720px a mask marks the scroll.
+
+**The chips.** Round one was a token error, not a taste one. The spec's table
+has a light column and a dark column; **I implemented one.** `--paper-2`,
+`--rule` and `--fg` are raw light-register tokens, so the dark register rendered
+near-white chips, which is the "way too sharp" reported, and hover set the label
+to `--fg` — white, on a white chip. Round two is theme-aware throughout, with
+the shine and shadow asked for, and the four bracketed names shortened through a
+new chip-only `shortName` so the card headings keep the full product name.
+
+## 10.4 Parity across the other five, and Informatica
+
+| Platform | Bench before | After | Modules |
+|---|---|---|---|
+| SAP | 64 | 64 | 25 (reference) |
+| Microsoft | 38 | **62** | 10 |
+| Oracle | 21 | **59** | 10 |
+| Blue Yonder | 31 | **48** | 8 |
+| Workday | 24 | **41** | 10 |
+| Salesforce | 10 | **38** | 11 |
+| Informatica | 17 | **34** | 9 |
+
+Absolute counts are the wrong measure: SAP has 25 modules and Informatica has
+9. On **roles per module** every platform now sits at or above SAP's 2.6.
+
+**Depth was the smaller half of the Oracle problem.** Three of its 21 roles were
+in the wrong desk: "Oracle Fusion Financials Consultant" was listed under HCM,
+under E-Business Suite *and* under EPM; "Oracle SCM Consultant" was under CX;
+and "Power BI Developer", a Microsoft product, sat inside Oracle BI Apps.
+Padding without fixing that would have multiplied the exact fault this round
+exists to stop. Salesforce was the most generic on the site: half its ten roles
+were titles that would read identically on any platform.
+
+Six modules were added, every one a real product already named in the repo.
+Blue Yonder's modules are untouched, because R13 binds those to repo evidence
+and that rule is about modules rather than benches.
+
+## 10.5 The hues, and a separation cost you should see
+
+Renamed, not aliased: no `--amb-moss-*` or `--amb-umber-*` survives anywhere.
+The `globals.css` comment citing umber is corrected.
+`identity-palette-proposal.md` is amended. **Informatica needed a
+`[data-identity]` rule as well as a token** — the token alone resolves in
+devtools and paints nothing, and the page would have worn a positional hue.
+
+**Proof, on painted washes at real alpha, both registers.** Contact sheets in
+`docs/status/shots/hues-v7/`. `check-contrast.mjs` green at 32 pairs, and zero
+identity-hue leaks onto any text, control, border or state across all seven
+platforms, so R4 holds.
+
+**The separation fails against the approved floor, and per the round's own
+instruction that is reported rather than fixed.** The six approved pairs
+separate at ΔE 2.55 to 4.87. Six pairs involving the new hues fall below 2.55:
+
+| Pair | ΔE |
+|---|---|
+| claret vs plum | **0.75** |
+| harbour vs indigo | **1.13** |
+| mulberry vs plum | **1.60** |
+| mulberry vs violet | **1.73** |
+| harbour vs teal | **1.77** |
+| claret vs mulberry | **2.33** |
+
+On declared values the swap costs roughly two thirds of the previous gap: umber
+against plum was ΔE 49.5 and claret against plum is 17.0; moss against indigo
+was 56.4 and harbour against indigo is 19.0. That is the arithmetic consequence
+of replacing the family's only green and only brown with a blue and a wine,
+which sit inside the band the other five already occupy. **No variant was
+authored and no approved hue was moved.**
+
+Worth knowing rather than acting on immediately: a visitor is on one platform
+page at a time and never sees two ambients side by side, which is the standing
+canon rationale for hue reuse. The numbers are the numbers; whether they matter
+is your call.
+
+## 10.6 Gate state, and a caveat about the shared tree
+
+**Nine gates green at `b18095e`**, verified in a clean worktree at that commit
+rather than in the shared working tree.
+
+That distinction matters tonight. The live tree currently fails
+`check-type-scale --strict` on **18 literal font-sizes in
+`src/components/blocks/ai/AiEstateDiagram.module.css`**, an untracked file
+belonging to the parallel session. It is not in my commit and the gate passes
+at my commit. Flagged for whoever owns that component, not fixed by me.
+
+The parallel session is also mid-write across `.husky/pre-commit`,
+`package.json`, `next.config.ts` and several pages. **Measurements taken in this
+tree from here on are unreliable**, which is the reason this round stops here.
