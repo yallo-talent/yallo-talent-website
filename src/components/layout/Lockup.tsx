@@ -28,10 +28,11 @@ export function Lockup({
 }: {
   className?: string;
   /**
-   * R15 alternate. Omit for the shipped treatment, which is B. a/c/d exist so
-   * the comparison stays reproducible and can be overridden with one attribute.
+   * R15 alternate. Omit for the shipped treatment, which is F (stacked). a/c/d are the
+   * round-1 alignment studies; e/f/g are round 2 and address the real fault —
+   * TALENT out-measuring the brand it qualifies. See the CSS for the numbers.
    */
-  variant?: "a" | "b" | "c" | "d";
+  variant?: "a" | "b" | "c" | "d" | "e" | "f" | "g";
 }) {
   return (
     <span

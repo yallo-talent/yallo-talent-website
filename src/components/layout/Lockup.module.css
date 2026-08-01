@@ -132,7 +132,7 @@
    BASELINE, and R15 asks for it aligned to the wordmark's CAP HEIGHT. Those are
    different, and on a serif wordmark against mono caps they look different.
 
-   Selected by `data-lockup` on the lockup root. B ships; A, C and D stay so the
+   Selected by `data-lockup` on the lockup root. F ships (round 2); B, and A, C and D stay so the
    comparison is reproducible and Sumeet can override with one attribute.
    ========================================================================== */
 
@@ -148,12 +148,10 @@
    the only two that actually cap-align. B ships because it is the simpler rule
    and it measures marginally closer; the 0.26px between it and D is below
    perceptibility, so the choice is legibility of the CSS rather than of the mark. */
-.lockup[data-lockup="b"] .text,
-.lockup:not([data-lockup]) .text {
+.lockup[data-lockup="b"] .text {
   align-items: flex-start;
 }
-.lockup[data-lockup="b"] .suffix,
-.lockup:not([data-lockup]) .suffix {
+.lockup[data-lockup="b"] .suffix {
   /* Newsreader's cap height is ~0.70em; Plex Mono's ~0.68em at this size step. */
   transform: translateY(0.055em);
 }
@@ -175,4 +173,91 @@
 }
 .lockup[data-lockup="d"] .suffix {
   transform: translateY(0.035em);
+}
+
+
+/* ==========================================================================
+   R15 round 2 — Sumeet has called the lockup weird five times, so this is a
+   DIAGNOSIS first rather than a sixth guess.
+
+   Measured at 1440, dark theme:
+     mark        37.3 x 37.3
+     "Yallo"     58.3 wide, Newsreader 600, 27px, gold
+     "TALENT"    70.2 wide, Plex Mono 500, 13px, 0.3em, grey
+     gaps        7.5px mark→word, 13.5px word→TALENT
+
+   Three faults, and they compound:
+     1. TALENT is WIDER THAN THE BRAND (70.2 vs 58.3). The qualifier outweighs
+        the thing it qualifies, which is why the eye lands on the wrong word.
+     2. It is DETACHED — the gap after the wordmark is nearly double the gap
+        before it, so TALENT reads as a separate word beside a logo rather than
+        part of one mark.
+     3. It is a SECOND COLOUR, and a washy one: grey against gold.
+
+   The 13px mono floor (canon A4) means shrinking it is not available. The levers
+   are tracking, gap, colour and arrangement — which is what E, F and G test.
+   ========================================================================== */
+
+/* E — SUBORDINATE. Tracking halved so TALENT is narrower than the wordmark,
+   gap tightened below the mark gap so it binds to "Yallo", and it takes the gold
+   at reduced strength instead of a second hue. One colour family, clear
+   hierarchy, still one line. */
+.lockup[data-lockup="e"] .suffix {
+  letter-spacing: 0.14em;
+  margin-right: -0.14em;
+  color: var(--accent-mark);
+  opacity: 0.62;
+}
+
+.lockup[data-lockup="e"] .text {
+  gap: 7px;
+}
+
+/* F SHIPS — the default now maps to it (see :not([data-lockup]) below).
+
+   Judged on the contact sheet at docs/status/shots/r15b/logo-round2.png:
+     B  the shipped one-liner. TALENT is 70px against Yallo's 50 and sits in
+        grey — the qualifier reads louder than the brand. This is the fault.
+     E  tracking halved and gold at 62%. Better, and still 58 vs 50 wide: on one
+        line a 6-letter mono word cannot lose to a 5-letter serif one.
+     G  the rule binds them but reinstates a divider R15 deliberately removed,
+        and it is the widest of the four at 167px.
+     F  stacking is the only move that takes the contest away entirely — the two
+        words no longer compete for the same axis. It is also by far the most
+        compact: 103px against 166-167, which matters in a header that has to
+        hold five nav groups and a CTA.
+
+   F — STACKED. TALENT sits under the wordmark rather than beside it, so it can
+   never out-measure it and the lockup becomes a compact block instead of a long
+   strip. Tracking is set so the word spans the wordmark's own width. */
+.lockup[data-lockup="f"] .text,
+.lockup:not([data-lockup]) .text {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.lockup[data-lockup="f"] .suffix,
+.lockup:not([data-lockup]) .suffix {
+  font-size: var(--fs-label);
+  letter-spacing: 0.28em;
+  margin-right: -0.28em;
+  color: var(--accent-mark);
+  opacity: 0.7;
+  transform: none;
+}
+
+/* G — RULED. Keeps the horizontal line but binds the two with a short gold rule
+   instead of empty space, which is what actually reads as "one mark" — the
+   divider R15 removed was doing this job badly rather than doing the wrong job. */
+.lockup[data-lockup="g"] .text {
+  gap: 10px;
+}
+
+.lockup[data-lockup="g"] .suffix {
+  letter-spacing: 0.16em;
+  margin-right: -0.16em;
+  color: var(--text-2);
+  padding-left: 11px;
+  border-left: 1px solid var(--accent-mark);
 }
