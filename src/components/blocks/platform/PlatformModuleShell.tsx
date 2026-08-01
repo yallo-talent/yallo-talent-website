@@ -20,6 +20,13 @@ import styles from "./PlatformModuleShell.module.css";
  * page renders less rather than filling a gap: no cross-links section when the
  * module has none, no sector row when it appears in no sector.
  *
+ * Identity hue per R4 — and it was inert until 1 Aug for the SAME reason the L1
+ * was: `data-identity` resolved `--id` correctly and the sections carried their
+ * `.amb-N` position classes, so `--amb` computed fine. Nothing painted it.
+ * `.amb-wash` — the class holding the gradient that consumes `--amb` — appeared
+ * ZERO times on this shell, so every platform L2 rendered neutral grey whatever
+ * its suite. Measured before the fix: washHosts 0.
+ *
  * Identity hue per R4: the page inherits its platform's `data-identity`, so the
  * hero field and washes are the family's hue and gold stays interactive-only.
  */
@@ -53,7 +60,7 @@ export function PlatformModuleShell({
 
   return (
     <div className={styles.page} data-identity={platform.slug}>
-      <section className={`${styles.hero} amb-1`}>
+      <section className={`${styles.hero} amb-wash amb-1`}>
         <HeroAtmosphere seed={`${platform.slug}-${module.slug}`} />
         <div className={styles.heroInner}>
           <nav className={styles.crumb} aria-label="Breadcrumb">
@@ -143,7 +150,7 @@ export function PlatformModuleShell({
         </dl>
       </section>
 
-      <section className={`${styles.section} amb-2`}>
+      <section className={`${styles.section} amb-wash amb-2`}>
         <div className={styles.wrap}>
           <div className={styles.eyebrow}>The bench</div>
           <h2 className={styles.h2}>Who we place on {module.name}.</h2>
@@ -164,7 +171,7 @@ export function PlatformModuleShell({
       {/* Renders nothing when the module appears in no sector — an empty
           "where this shows up" heading is worse than its absence. */}
       {module.appearsIn.length > 0 ? (
-        <section className={`${styles.section} amb-3`}>
+        <section className={`${styles.section} amb-wash amb-3`}>
           <div className={styles.wrap}>
             <div className={styles.eyebrow}>In programme</div>
             <h2 className={styles.h2}>Where {module.name} work comes from.</h2>
@@ -193,7 +200,7 @@ export function PlatformModuleShell({
       {/* Clients WITHOUT a published study. The ones that have a study already
           appear as cards above, so listing them again would double-count. */}
       {studies.length > 0 || clients.length > 0 ? (
-        <section className={`${styles.section} amb-5`}>
+        <section className={`${styles.section} amb-wash amb-5`}>
           <div className={styles.wrap}>
             <div className={styles.eyebrow}>Published work</div>
             <h2 className={styles.h2}>

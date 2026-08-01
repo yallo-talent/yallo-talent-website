@@ -103,7 +103,7 @@ Detail and the round-3b additions: `docs/design/sap-ia-round-3.md`.
 | Working L2 detail pages | ✓ 21 links | ✓ 14 links | ✓ **8 links, 7 disciplines, all 200** |
 | Closing CTA | ✓ | ✓ | ✓ |
 | Identity hue on L1 | ✓ | ✓ | ✓ |
-| Identity hue on L2 | ✓ | **✗ — see §4** | ✗ |
+| Identity hue on L2 | ✓ | **✓ — fixed, 3 wash hosts, ΔE 4.5 SAP vs Oracle** | ✗ |
 | Published evidence | case studies | ✓ 1 study + 4 named placements | — |
 | P0 / P1 open | 0 | 0 | 0 |
 
@@ -126,7 +126,7 @@ assumption baked in, which is why every capability card stayed unlinked.
 | Item | Why it is parked |
 |---|---|
 | SAP's four narrative sections | Authored copy; nothing derives it |
-| **SAP L2 identity hue** | Confirmed missing — the L2 shell never receives `data-identity`. Small fix, not yet made |
+| ~~SAP L2 identity hue~~ | **DONE.** And my diagnosis in this report was wrong: the L2 *does* set `data-identity` and its sections *do* carry `.amb-N`, so `--amb` resolved fine. `.amb-wash` appeared zero times, so nothing painted it — the identical failure to R11 one level down. 3 wash hosts added; SAP vs Oracle now separates by ΔE 4.5 |
 | Mega-menu pillar icons, engagement layout, **the logo** | Flagged twice by Sumeet; not addressed |
 | Informatica as 7th platform · "Disciplines" → "Capabilities" · "AI talent" → "Artificial Intelligence" · "Education & Universities" · design docs to 7×3 | Mechanical, not started |
 | Replicating the family/lens pattern to Oracle, Microsoft, Salesforce, Workday, Blue Yonder | Out of this run's scope lock; Sumeet has since approved replication |
