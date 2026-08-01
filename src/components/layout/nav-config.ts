@@ -38,7 +38,7 @@ export interface NavGroup {
 export const primaryNav: NavGroup[] = [
   {
     label: "Specialisms",
-    description: "Platforms, disciplines and industries",
+    description: "Platforms, capabilities and industries",
     columns: [
       {
         heading: "Platforms",
@@ -61,13 +61,23 @@ export const primaryNav: NavGroup[] = [
             label: "Workday",
             href: "/platforms/workday",
           },
+          {
+            /* 7th platform. Informatica is the MDM vendor Yallo is focusing on
+               deeply, per Sumeet. No /platforms/informatica route exists yet, so
+               it carries published: false and renders as text — the same honest
+               treatment the unbuilt capability desks get, rather than a link
+               that 404s. */
+            label: "Informatica",
+            href: "/platforms/informatica",
+            published: false,
+          },
         ],
       },
       {
-        heading: "Disciplines",
+        heading: "Capabilities",
         items: [
           {
-            label: "AI talent",
+            label: "Artificial Intelligence",
             href: "/ai-talent",
           },
           {
@@ -132,6 +142,13 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Telco & Media",
             href: "/industries/telco",
+          },
+          {
+            /* 7th industry, behind the Yallo AI Academy push into education.
+               No route yet. */
+            label: "Education & Universities",
+            href: "/industries/education",
+            published: false,
           },
         ],
       },
