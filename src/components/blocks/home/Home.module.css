@@ -2548,7 +2548,6 @@
   }
 }
 
-
 /* NOTE for the next attempt at pairing a lone product family with its
    neighbour: the cards live inside `.commitment`, which is itself the grid. A
    wrapper grid on `.familyBlock` therefore lays out [heading, commitment] and

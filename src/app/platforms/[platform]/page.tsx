@@ -421,7 +421,7 @@ export default async function PlatformPage({
                  and it dates the moment the data moves. Codified in canon §9:
                  a lede states what the reader can do next, never a count the
                  page already displays. */
-              lede="Every name below is a role we have placed. Send the brief and the specialist is in your inbox in 72 hours."
+                lede="Every name below is a role we place. Send the brief and the specialist is in your inbox in 72 hours."
                 id="roles-heading"
               />
               <ul className={styles.roleIndex}>
