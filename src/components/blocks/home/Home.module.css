@@ -1397,7 +1397,7 @@
      not enough to read as a gradient. */
   background: linear-gradient(180deg, var(--ground-2) 0%, var(--ground) 100%);
   border: 1px solid var(--hairline);
-  border-radius: 6px;
+  border-radius: var(--r-chip);
   box-shadow:
     0 1px 2px rgb(0 0 0 / 8%),
     inset 0 1px 0 rgb(255 255 255 / 4%);

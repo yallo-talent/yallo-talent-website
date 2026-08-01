@@ -207,6 +207,19 @@
      keep the quarter-round petal signature. */
   --r-pill: 999px;
 
+  /* Product-family chips, and only those. Ratified in
+     docs/design/context-platform-parity-round.md §2: "uniform soft radius,
+     6px, no petal at chip scale". The petal is the structural signature and it
+     belongs on cards and bands; repeated across twenty-five chips in one block
+     it stops reading as a signature.
+
+     A token rather than a literal, following the --r-pill precedent directly
+     above: a shape outside the scale becomes reviewable the moment it has a
+     name. Worth Sumeet knowing that this lands 2px from --r-xs, so if he would
+     rather not grow the scale the two can collapse onto 8px with no visible
+     change at chip size — flagged rather than decided. */
+  --r-chip: 6px;
+
   /* ---- weight, and why there are only three ----------------------------
      Two independent critique passes converged on the same defect: 92 of 181
      font-weight declarations named a face that is never loaded. layout.tsx
