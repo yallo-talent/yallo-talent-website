@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
-import { L1BottomCta } from "@/components/blocks/l1/L1PageShell";
+import {
+  L1BottomCta,
+  L1HowWeWork,
+} from "@/components/blocks/l1/L1PageShell";
 import l1 from "@/components/blocks/l1/L1PageShell.module.css";
 import { L1SubNav } from "@/components/blocks/l1/L1SubNav";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
@@ -264,11 +267,12 @@ export default async function PlatformPage({
                   className={styles.familyHeading}
                   id={`family-${slugify(fam.name)}`}
                 >
+                  {/* No count. "1 MODULE" beside a heading reads as a
+                      defect report, not a category, and it made single-module
+                      families look like mistakes. The list below says how many
+                      there are. */}
+                  <span className={styles.familyRule} aria-hidden="true" />
                   {fam.name}
-                  <span className={styles.familyCount}>
-                    {fam.modules.length}{" "}
-                    {fam.modules.length === 1 ? "module" : "modules"}
-                  </span>
                 </h3>
               ) : null}
               <div className={styles.commitment}>
@@ -430,7 +434,12 @@ export default async function PlatformPage({
           </ul>
         </div>
       </section>
-      {/* The closing ask. Retail has had one all along; the platform L1 ended on
+        {/* The operating rhythm. Generic by its own admission — "regardless of
+          sector, platform or model" — so this authors nothing; it just stops
+          being sector-only. */}
+      <L1HowWeWork noun={cov.name} />
+
+    {/* The closing ask. Retail has had one all along; the platform L1 ended on
           a module list. Same component, no props, nothing authored. */}
       <L1BottomCta />
     </div>

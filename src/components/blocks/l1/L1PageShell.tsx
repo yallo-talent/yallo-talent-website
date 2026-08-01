@@ -87,7 +87,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
           <L1WhatWeDeliver data={data} />
         </div>
         <div id="how">
-          <L1HowWeWork data={data} />
+          <L1HowWeWork noun={data.sectorNoun ?? data.slug} />
         </div>
         {hasScarce && (
           <div id="scarce">
@@ -391,7 +391,13 @@ const howWeWorkSteps: {
   },
 ];
 
-function L1HowWeWork({ data }: Props) {
+/* Exported, and takes a NOUN rather than the whole page object.
+   Its four cards are a module-level constant — the engagement models, identical
+   on every surface — and its own sub-copy says so outright: "regardless of
+   sector, platform or model". The only thing it ever needed from L1PageData was
+   one word for the heading. Taking `data` made a generic section look
+   sector-only, which is why the platform L1 never had it. */
+export function L1HowWeWork({ noun }: { noun: string }) {
   return (
     <section className={`${styles.hww} amb-wash amb-3`}>
       <div className={styles.wrap}>
@@ -400,8 +406,7 @@ function L1HowWeWork({ data }: Props) {
           <h2 className={styles.h2}>
             From brief to bench —{" "}
             <span className={styles.heroEmphasis}>
-              every {data.slug === "retail" ? "retail" : data.slug} programme,
-              same rhythm.
+              every {noun} programme, same rhythm.
             </span>
           </h2>
           <p className={styles.sub}>

@@ -2432,61 +2432,6 @@
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Platform L1 — application families (SAP IA round 3).
-   Grouping furniture only. The module cards below are untouched.
-   -------------------------------------------------------------------------- */
-.familyBlock {
-  margin-bottom: 40px;
-}
-
-.familyBlock:last-child {
-  margin-bottom: 0;
-}
-
-/* Scroll target for the sticky bar, offset so a family heading does not land
-   underneath it. --header-h plus the bar's own height. */
-.familyHeading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-  scroll-margin-top: calc(var(--header-h) + 64px);
-  margin: 0 0 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--boundary);
-  font-family: var(--font-display);
-  font-size: var(--fs-card-title);
-  font-weight: var(--fw-strong);
-  color: var(--text);
-}
-
-.familyCount,
-.familyPlanned {
-  flex: none;
-  white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-medium);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-subtle);
-}
-
-.familyPlanned {
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-pill);
-  padding: 2px 10px;
-}
-
-.familyPlannedCopy {
-  max-width: 62ch;
-  margin: 0;
-  font-size: var(--fs-caption);
-  line-height: 1.6;
-  color: var(--fg-muted);
-}
 
 /* The SAP bench index — every distinct role, from the derive join. A register,
    not cards: 93 cards would be another wall, and the value here is scanning the
@@ -2506,4 +2451,73 @@
   line-height: 1.5;
   color: var(--text-2);
   border-bottom: 1px solid var(--hairline);
+}
+
+
+/* ---------------------------------------------------------------------------
+   Platform L1 — application families as ONE RUNNING SHEET.
+
+   First attempt boxed each family with its own heading and a "3 MODULES" chip.
+   Two things were wrong. The suite fragmented into eight separate mini-pages
+   when it is one offering, and a chip reading "1 MODULE" beside a heading reads
+   as a defect report rather than a category — single-module families looked like
+   mistakes. The category still has to exist; it just has to be a MARKER in a
+   continuous list, not a container around a fragment.
+   -------------------------------------------------------------------------- */
+.familyBlock {
+  /* No border, no card, no background. The sheet runs straight through. */
+  margin: 0;
+}
+
+.familyHeading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  scroll-margin-top: calc(var(--header-h) + 64px);
+  /* Tight to the rows it labels, generous above, so the eye reads "new section
+     of the same list" rather than "new page". */
+  margin: 40px 0 14px;
+  padding: 0;
+  border: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+/* The first category needs no leading gap — it follows the section head. */
+.familyBlock:first-of-type .familyHeading {
+  margin-top: 0;
+}
+
+/* A short gold tick, not a full-width divider: a divider cuts the sheet in two,
+   which is the fragmentation this is fixing. */
+.familyRule {
+  flex: none;
+  width: 22px;
+  height: 2px;
+  background: var(--accent-mark);
+}
+
+.familyPlanned {
+  flex: none;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  padding: 2px 10px;
+}
+
+.familyPlannedCopy {
+  max-width: 62ch;
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--fg-muted);
 }

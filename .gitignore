@@ -52,3 +52,9 @@ old_wordpress/
 # git add -A swept six of them (including a 13,565-line results.json) into
 # 72b1e4d. Working files, never artefacts.
 .scratch-impeccable/
+
+# Reference workbooks — kept on disk, never committed.
+# One of these (the SAP L1/L2 sheet) carries plaintext credentials, and they are
+# a 3-year-old reference rather than build input, so they have no business in the
+# repo at all. See docs/status/SECURITY-prototype-workbooks.md.
+prototype/L1, L2 Details/
