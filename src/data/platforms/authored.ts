@@ -145,14 +145,26 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Blue Yonder WMS",
         scope:
           "Warehouse management consultants on Blue Yonder, including the DC cutover crews.",
-        roles: ["Blue Yonder WMS Consultant", "Blue Yonder WMS Specialist"],
+        roles: [
+          "Blue Yonder WMS Consultant",
+          "Blue Yonder WMS Specialist",
+          "Blue Yonder WMS Technical Consultant, MOCA",
+          "Blue Yonder WMS Solution Architect",
+          "Blue Yonder Labour Management Consultant",
+          "Warehouse Cutover Lead",
+        ],
       },
       {
         slug: "blue-yonder-tms",
         name: "Blue Yonder TMS",
         scope:
           "Transport management architects on Blue Yonder across DC-to-store and last-mile networks.",
-        roles: ["Blue Yonder TMS Architect"],
+        roles: [
+          "Blue Yonder TMS Architect",
+          "Blue Yonder TMS Functional Consultant",
+          "Transportation Modelling Analyst",
+          "Carrier Integration Developer",
+        ],
       },
       {
         slug: "blue-yonder-merchandise-management",
@@ -162,6 +174,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         roles: [
           "Blue Yonder Merchandise Consultant",
           "Blue Yonder MFP Specialist",
+          "Merchandise Financial Planning Analyst",
+          "Open to Buy Analyst",
         ],
       },
       {
@@ -169,20 +183,32 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Blue Yonder Assortment Optimization",
         scope:
           "Assortment planners running seasonal cycles across apparel, grocery and mass merchandise.",
-        roles: ["Blue Yonder Assortment Specialist"],
+        roles: [
+          "Blue Yonder Assortment Specialist",
+          "Category Planning Consultant",
+          "Cluster and Localisation Analyst",
+        ],
       },
       {
         slug: "blue-yonder-space-planning",
         name: "Blue Yonder Space Planning",
         scope: "Space and floor-plan planners on Blue Yonder.",
-        roles: ["Blue Yonder Space Planner"],
+        roles: [
+          "Blue Yonder Space Planner",
+          "Floor Planning Consultant",
+          "Planogram Analyst",
+        ],
       },
       {
         slug: "blue-yonder-price-promotion",
         name: "Blue Yonder Price & Promotion",
         scope:
           "Pricing and promotion leads on Blue Yonder across markdown and campaign cycles.",
-        roles: ["Blue Yonder Price / Promotion Lead"],
+        roles: [
+          "Blue Yonder Price / Promotion Lead",
+          "Markdown Optimisation Analyst",
+          "Promotion Planning Consultant",
+        ],
       },
       {
         slug: "blue-yonder-fulfillment",
@@ -195,7 +221,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
            spellings of the word in one card. The product name is a proper noun
            and keeps the vendor's own "Fulfillment"; UK spelling still governs
            our own prose, which is why the scope line reads "fulfilment". */
-        roles: ["Blue Yonder Fulfillment Lead"],
+        roles: [
+          "Blue Yonder Fulfillment Lead",
+          "Order Orchestration Consultant",
+          "Blue Yonder Integration Developer",
+          "Blue Yonder Technical Architect",
+        ],
       },
     ],
   },
@@ -204,7 +235,17 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
     slug: "oracle",
     name: "Oracle",
     ratified:
-      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Oracle expertise page.",
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Oracle expertise page. Bench rebuilt to SAP depth 2 Aug 2026 (platform parity round §5).",
+    /* BENCH REBUILT, and the depth was the smaller half of the problem.
+       Measured against SAP's 64, Oracle published 21 — but three of those were
+       also in the wrong desk. "Oracle Fusion Financials Consultant" was listed
+       under HCM, under E-Business Suite and under EPM; "Oracle SCM Consultant"
+       was listed under CX; and "Power BI Developer", a Microsoft product, sat
+       in Oracle BI Apps. That is the carried-across-by-analogy fault this round
+       exists to stop, and padding the list without fixing it would have
+       multiplied it.
+       Every title below is a real Oracle market title. None is a SAP title with
+       the vendor name swapped. */
     modules: [
       {
         slug: "oracle-fusion-erp",
@@ -213,9 +254,13 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Financials and procurement consultants across Fusion Cloud ERP, including the EBS-to-Fusion crews.",
         roles: [
           "Oracle Fusion Financials Consultant",
-          "Oracle Integration Cloud Developer",
+          "Oracle Fusion Procurement Consultant",
+          "Oracle Fusion Projects Consultant",
+          "Oracle Fusion Tax Consultant",
+          "Oracle Cloud ERP Solution Architect",
+          "Oracle Cloud Security and Roles Architect",
+          "Data Conversion Specialist, FBDI",
           "Finance Transformation Lead",
-          "Data Migration Lead",
         ],
       },
       {
@@ -223,9 +268,14 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Oracle Fusion HCM",
         scope: "Core HR, payroll and absence consultants on Fusion HCM.",
         roles: [
-          "Oracle Fusion Financials Consultant",
-          "Functional Architect",
-          "Data Migration Test Analyst",
+          "Oracle Fusion Core HR Consultant",
+          "Oracle Fusion Payroll Consultant",
+          "Oracle Fusion Absence and Time Consultant",
+          "Oracle Fusion Talent Management Consultant",
+          "Oracle Recruiting Cloud Consultant",
+          "Oracle Fusion HCM Solution Architect",
+          "Oracle Fast Formula Developer",
+          "Data Conversion Specialist, HDL",
         ],
       },
       {
@@ -234,9 +284,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "Supply chain, inventory and order-management consultants on Fusion SCM.",
         roles: [
-          "Oracle SCM Consultant",
-          "Supply Chain Lead",
-          "Functional Test Analyst",
+          "Oracle Fusion Inventory Consultant",
+          "Oracle Fusion Order Management Consultant",
+          "Oracle Fusion Manufacturing Consultant",
+          "Oracle Fusion Supply Planning Consultant",
+          "Oracle Fusion Cost Management Consultant",
+          "Oracle SCM Solution Architect",
         ],
       },
       {
@@ -245,9 +298,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "Sales, service and marketing consultants across the Fusion CX applications.",
         roles: [
-          "Oracle SCM Consultant",
-          "Business Analyst",
-          "Integration Architect",
+          "Oracle Sales Cloud Consultant",
+          "Oracle Service Cloud Consultant",
+          "Oracle Eloqua Marketing Consultant",
+          "Oracle CPQ Developer",
+          "Oracle Field Service Consultant",
+          "Oracle CX Solution Architect",
         ],
       },
       {
@@ -256,32 +312,42 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "EBS consultants and PL/SQL developers — the estates still running it, and the ones leaving it.",
         roles: [
+          "Oracle EBS Financials Consultant",
           "Oracle PL/SQL Developer",
-          "Oracle Fusion Financials Consultant",
-          "Integration Test Analyst",
+          "Oracle Apps DBA",
+          "Oracle Forms and Reports Developer",
+          "Oracle Workflow Developer",
+          "EBS to Fusion Migration Lead",
         ],
       },
       {
         slug: "oracle-enterprise-performance-management",
         name: "Oracle Enterprise Performance Management (EPM)",
+        shortName: "Oracle EPM",
         scope:
           "Planning, close and consolidation consultants, including Hyperion migrations.",
         roles: [
-          "Finance Transformation Lead",
-          "Oracle Fusion Financials Consultant",
-          "Data Architect",
+          "Oracle EPM Planning Consultant",
+          "Financial Consolidation and Close Consultant",
+          "Account Reconciliation Consultant",
+          "Hyperion Planning Consultant",
+          "Enterprise Data Management Consultant",
+          "Oracle EPM Data Integration Specialist",
         ],
       },
       {
         slug: "oracle-cloud-infrastructure",
         name: "Oracle Cloud Infrastructure",
+        shortName: "Oracle OCI",
         scope:
           "OCI engineers and architects for landing zones, migration and run.",
         roles: [
-          "Cloud Architect",
-          "Platform Engineer",
-          "Network Engineer",
-          "Site Reliability Engineer",
+          "OCI Cloud Architect",
+          "OCI Landing Zone Engineer",
+          "OCI Network Engineer",
+          "Oracle Database Administrator, OCI",
+          "Site Reliability Engineer, OCI",
+          "Terraform Automation Engineer, OCI",
         ],
       },
       {
@@ -290,9 +356,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "NetSuite consultants and integration developers for mid-market estates.",
         roles: [
-          "Oracle Integration Cloud Developer",
-          "Business Analyst",
-          "Delivery Lead",
+          "NetSuite Functional Consultant",
+          "NetSuite SuiteScript Developer",
+          "NetSuite Administrator",
+          "NetSuite Integration Developer, SuiteTalk",
+          "NetSuite SuiteAnalytics Consultant",
         ],
       },
       {
@@ -300,7 +368,30 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Oracle BI Apps",
         scope:
           "Reporting and analytics consultants across the Oracle BI estate.",
-        roles: ["Data Architect", "ETL Developer", "Power BI Developer"],
+        roles: [
+          "Oracle Analytics Cloud Developer",
+          "OTBI Reports Developer",
+          "BI Publisher Developer",
+          "Oracle Data Integrator Developer",
+          "Autonomous Data Warehouse Engineer",
+        ],
+      },
+      {
+        /* Integration is its own desk on Oracle, not a line inside ERP. The
+           Blueprint's Oracle archetype names the Integration Cloud developer and
+           the security and roles architect as two of the three hardest roles to
+           fill on a Fusion programme, and neither had a desk to sit in. */
+        slug: "oracle-integration-cloud",
+        name: "Oracle Integration Cloud",
+        shortName: "Oracle OIC",
+        scope:
+          "Integration developers and architects on OIC, and the Visual Builder extension crews.",
+        roles: [
+          "Oracle Integration Cloud Developer",
+          "Integration Architect, Oracle Integration Cloud",
+          "Visual Builder Extension Developer",
+          "Oracle Cloud Security and Roles Architect",
+        ],
       },
     ],
   },
@@ -322,17 +413,29 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
     slug: "salesforce",
     name: "Salesforce",
     ratified:
-      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Salesforce expertise page.",
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Salesforce expertise page. Bench rebuilt to SAP depth 2 Aug 2026 (platform parity round §5).",
+    /* THE THINNEST BENCH ON THE SITE and the most generic: 10 roles against
+       SAP's 64, and half of them were "Business Analyst", "Frontend Engineer",
+       "Data Engineer", "Functional Architect" — titles that say nothing about
+       Salesforce and would read identically on any platform. A Salesforce buyer
+       scanning that list learns nothing.
+
+       Four clouds added, all real Salesforce products and all already named in
+       the repo: the Programme Staffing Blueprint's Salesforce archetype lists
+       Data Cloud, Revenue and CPQ, Field Service and Agentforce among the
+       functional streams. Nothing here is a product invented to pad the suite. */
     modules: [
       {
         slug: "sales-cloud",
         name: "Sales Cloud",
         scope:
-          "Sales-process consultants and Apex developers across the Sales Cloud estate.",
+          "Sales-process consultants, declarative specialists and Apex developers across the Sales Cloud estate.",
         roles: [
+          "Salesforce Sales Cloud Consultant",
+          "Salesforce Administrator",
           "Salesforce Apex Developer",
-          "Functional Architect",
-          "Business Analyst",
+          "Declarative and Flow Specialist",
+          "Salesforce Solution Architect",
         ],
       },
       {
@@ -342,25 +445,33 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Case management and contact-centre consultants on Service Cloud.",
         roles: [
           "Salesforce Service Cloud Consultant",
+          "Salesforce Omni-Channel Specialist",
           "Salesforce Apex Developer",
-          "Functional Test Analyst",
+          "Salesforce Technical Architect",
         ],
       },
       {
         slug: "marketing-cloud",
         name: "Marketing Cloud",
         scope:
-          "Campaign build and audience consultants, and the data feeds behind them.",
-        roles: ["Business Analyst", "Data Engineer", "Integration Architect"],
+          "Campaign build and audience consultants, and the data feeds behind them. A separate skill and a separate market from the core platform bench.",
+        roles: [
+          "Marketing Cloud Consultant",
+          "Journey Builder Specialist",
+          "Marketing Cloud AMPscript Developer",
+          "Account Engagement Consultant",
+          "Marketing Cloud Data Architect",
+        ],
       },
       {
         slug: "commerce-cloud",
         name: "Commerce Cloud",
         scope: "B2C and B2B commerce developers and architects.",
         roles: [
-          "Salesforce Apex Developer",
-          "Frontend Engineer",
-          "Integration Architect",
+          "Salesforce B2C Commerce Developer",
+          "Salesforce B2B Commerce Consultant",
+          "Lightning Web Components Developer",
+          "Commerce Cloud Solution Architect",
         ],
       },
       {
@@ -368,19 +479,76 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Experience Cloud",
         scope: "Portal and community builds for customers and partners.",
         roles: [
-          "Salesforce Apex Developer",
-          "Frontend Engineer",
-          "Business Analyst",
+          "Experience Cloud Consultant",
+          "Lightning Web Components Developer",
+          "Salesforce Identity and Access Architect",
+        ],
+      },
+      {
+        slug: "salesforce-data-cloud",
+        name: "Salesforce Data Cloud",
+        scope:
+          "Unification, identity resolution and activation. New enough that the market is thin, and routinely assumed to be part of a standard build team.",
+        roles: [
+          "Salesforce Data Cloud Consultant",
+          "Data Cloud Solution Architect",
+          "Salesforce Data Migration Specialist",
+        ],
+      },
+      {
+        slug: "salesforce-revenue-cloud",
+        name: "Salesforce Revenue Cloud",
+        scope:
+          "Quote-to-cash consultants across configure, price, quote and billing.",
+        roles: [
+          "Salesforce CPQ Consultant",
+          "Salesforce Billing Consultant",
+          "Revenue Cloud Solution Architect",
+        ],
+      },
+      {
+        slug: "salesforce-field-service",
+        name: "Salesforce Field Service",
+        scope:
+          "Scheduling, dispatch and mobile workforce consultants on Field Service.",
+        roles: [
+          "Salesforce Field Service Consultant",
+          "Field Service Scheduling Specialist",
+        ],
+      },
+      {
+        slug: "salesforce-agentforce",
+        name: "Salesforce Agentforce",
+        scope:
+          "Agent build and governance on Agentforce. Cross-links to the vendor-neutral AI role families rather than repeating them.",
+        roles: [
+          "Agentforce Developer",
+          "Salesforce AI Specialist",
+          "Prompt Builder Specialist",
+        ],
+      },
+      {
+        slug: "salesforce-platform",
+        name: "Salesforce Platform",
+        scope:
+          "Release engineering, environment strategy and permissions across every cloud above. Stood up late on most programmes, which is when metadata deployments become manual.",
+        roles: [
+          "Salesforce DevOps and Release Engineer",
+          "Salesforce Release Manager",
+          "Salesforce QA Automation Engineer",
+          "Salesforce Platform Administrator",
         ],
       },
       {
         slug: "mulesoft-anypoint-platform",
         name: "MuleSoft Anypoint Platform",
+        shortName: "MuleSoft",
         scope: "API and integration engineers across the Anypoint estate.",
         roles: [
-          "Integration Architect",
-          "Platform Engineer",
-          "DevOps Engineer",
+          "MuleSoft Integration Developer",
+          "MuleSoft Solution Architect",
+          "Anypoint Platform Engineer",
+          "API Product Manager",
         ],
       },
     ],
@@ -834,11 +1002,14 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Data platforms on Fabric, Synapse, Databricks and Power BI, from migration to reporting",
         roles: [
           "Azure Data Engineer",
+          "Microsoft Fabric Data Engineer",
+          "Azure Synapse Analytics Developer",
+          "Azure Data Factory Developer",
           "Databricks Engineer",
-          "Data Architect",
           "Power BI Developer",
-          "Data Migration Lead",
           "Azure AI Engineer",
+          "Purview Data Governance Specialist",
+          "Data Migration Lead",
         ],
       },
       {
@@ -847,9 +1018,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope: "Landing zones, migrations and hybrid estates, built and run",
         roles: [
           "Azure Solution Architect",
+          "Azure Landing Zone Architect",
           "Azure Cloud Engineer",
-          "Platform Engineer",
-          "Network Engineer",
+          "Azure Virtual Desktop Engineer",
+          "Bicep and Terraform Automation Engineer",
+          "Azure Migrate Specialist",
+          "Azure Network Engineer",
           "Cloud Migration Lead",
         ],
       },
@@ -858,9 +1032,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Azure Security",
         scope: "Identity, access and compliance across the Azure estate",
         roles: [
-          "Security Architect",
-          "Cloud Security Engineer",
-          "IAM Engineer",
+          "Microsoft Entra ID Engineer",
+          "Microsoft Defender Engineer",
+          "Microsoft Sentinel Engineer",
+          "Cloud Security Architect, Azure",
+          "Microsoft Purview Compliance Specialist",
           "GRC and Compliance Specialist",
         ],
       },
@@ -869,11 +1045,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Azure DevOps",
         scope: "Pipelines, containers and reliability after go-live",
         roles: [
-          "DevOps Engineer",
-          "Site Reliability Engineer",
-          "Kubernetes Engineer",
+          "Azure DevOps Engineer",
+          "GitHub Actions Engineer",
+          "Azure Kubernetes Service Platform Engineer",
+          "Site Reliability Engineer, Azure",
           "Release Manager",
-          "Automation Engineer",
+          "Infrastructure Automation Engineer",
         ],
       },
       {
@@ -882,11 +1059,13 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "Finance and supply chain implementations, rollouts and localisations",
         roles: [
+          "D365 F&O Finance Consultant",
+          "D365 F&O Supply Chain Consultant",
           "D365 F&O Functional Consultant",
           "X++ Developer",
           "D365 Technical Architect",
-          "Data Migration Lead",
-          "Integration Developer",
+          "Data Migration Specialist, DMF",
+          "Dual-write Integration Developer",
         ],
       },
       {
@@ -895,7 +1074,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope:
           "Sales and Service implementations and the integrations around them",
         roles: [
-          "D365 CE Functional Consultant",
+          "D365 Sales Consultant",
+          "D365 Customer Service Consultant",
+          "D365 Field Service Consultant",
+          "Customer Insights Consultant",
+          "Dataverse Developer",
           "CRM Solution Architect",
           "Power Platform Developer",
         ],
@@ -905,9 +1088,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "D365 Business Central",
         scope: "Mid-market ERP implementations and NAV-to-BC migrations",
         roles: [
-          "BC Functional Consultant",
+          "Business Central Functional Consultant",
           "AL Developer",
-          "Upgrade and Migration Consultant",
+          "Business Central Solution Architect",
+          "Business Central Integration Developer",
+          "NAV to Business Central Upgrade Consultant",
         ],
       },
       {
@@ -915,9 +1100,9 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "D365 Human Resources",
         scope: "HR implementations and payroll integrations",
         roles: [
-          "D365 HR Functional Consultant",
+          "D365 Human Resources Functional Consultant",
           "HR Transformation Lead",
-          "Integration Developer",
+          "Dynamics 365 HR Integration Developer",
         ],
       },
       {
@@ -928,7 +1113,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         roles: [
           "Power Platform Solution Architect",
           "Power Apps Developer",
-          "Power Automate / RPA Developer",
+          "Power Automate and RPA Developer",
+          "Power Pages Developer",
+          "Dataverse Solution Architect",
+          "Power Platform Administrator",
+          "Copilot Studio Developer",
           "Power BI Developer",
         ],
       },
@@ -937,9 +1126,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Microsoft 365 Copilot",
         scope: "Readiness, data governance and adoption for Copilot rollouts",
         roles: [
-          "Information Governance (Purview) Specialist",
+          "Microsoft 365 Copilot Consultant",
+          "Copilot Studio Developer",
+          "Microsoft Purview Information Governance Specialist",
+          "SharePoint and Teams Engineer",
           "Adoption and Change Lead",
-          "M365 Consultant",
         ],
       },
     ],
@@ -958,8 +1149,12 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Core HR implementations, employee lifecycle and the integrations around them",
         roles: [
           "Workday HCM Functional Consultant",
-          "Workday HCM Architect",
+          "Workday HCM Solution Architect",
+          "Workday Core HR Consultant",
+          "Workday Business Process Configuration Specialist",
           "Workday Integration Developer",
+          "Workday Studio Developer",
+          "Workday Security Consultant",
           "Data Migration Lead",
         ],
       },
@@ -970,8 +1165,10 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Payroll builds, absence and time tracking, multi-country compliance",
         roles: [
           "Workday Payroll Consultant",
-          "Absence & Time Consultant",
-          "Payroll Integration Specialist",
+          "Workday Absence and Time Tracking Consultant",
+          "Workday Payroll Integration Specialist",
+          "Workday PICOF and PECI Integration Developer",
+          "Multi-country Payroll Lead",
         ],
       },
       {
@@ -980,7 +1177,9 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope: "Record-to-report implementations and ERP coexistence",
         roles: [
           "Workday Financials Consultant",
-          "Record-to-Report Lead",
+          "Workday Record to Report Lead",
+          "Workday Accounting Centre Consultant",
+          "Workday Financials Integration Developer",
           "Financial Data Migration Lead",
         ],
       },
@@ -989,9 +1188,10 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "Workday Adaptive Planning",
         scope: "Budgeting, forecasting and workforce cost models",
         roles: [
-          "Adaptive Planning Consultant",
+          "Workday Adaptive Planning Consultant",
+          "Adaptive Planning Model Builder",
+          "Workforce Cost Modelling Analyst",
           "FP&A Systems Analyst",
-          "Model Builder",
         ],
       },
       {
@@ -1000,38 +1200,60 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         scope: "Recruiting and onboarding configuration",
         roles: [
           "Workday Recruiting Consultant",
-          "Onboarding Configuration Specialist",
+          "Workday Onboarding Configuration Specialist",
+          "Candidate Experience Consultant",
         ],
       },
       {
         slug: "workday-talent-management",
         name: "Workday Talent Management",
         scope: "Performance, career and succession configuration",
-        roles: ["Workday Talent & Performance Consultant"],
+        roles: [
+          "Workday Talent and Performance Consultant",
+          "Workday Succession Planning Consultant",
+          "Workday Compensation Consultant",
+        ],
       },
       {
         slug: "workday-learning",
         name: "Workday Learning",
         scope: "Learning rollouts and adoption",
-        roles: ["Workday Learning Consultant", "Adoption and Change Lead"],
+        roles: [
+          "Workday Learning Consultant",
+          "Learning Content Migration Specialist",
+          "Adoption and Change Lead",
+        ],
       },
       {
         slug: "workday-workforce-planning",
         name: "Workday Workforce Planning",
         scope: "Headcount planning, scenario modelling and forecasting",
-        roles: ["Workforce Planning Consultant", "HR Data Analyst"],
+        roles: [
+          "Workday Workforce Planning Consultant",
+          "Headcount Scenario Modelling Analyst",
+          "Workday People Analytics Consultant",
+        ],
       },
       {
         slug: "workday-prism-analytics",
         name: "Workday Prism Analytics",
         scope: "Reporting and data hub work across HR and finance",
-        roles: ["Prism Analytics Consultant", "Workday Reporting Developer"],
+        roles: [
+          "Workday Prism Analytics Consultant",
+          "Workday Reporting Developer",
+          "Workday Discovery Boards Specialist",
+          "Workday Extend Developer",
+        ],
       },
       {
         slug: "workday-psa",
         name: "Workday PSA",
         scope: "Resource scheduling, time tracking and project billing",
-        roles: ["Workday PSA Consultant", "Resource Management Analyst"],
+        roles: [
+          "Workday PSA Consultant",
+          "Workday Project Billing Consultant",
+          "Resource Management Analyst",
+        ],
       },
     ],
   },
@@ -1072,6 +1294,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Informatica Administrator",
           "IDMC Solution Architect",
           "Data Platform Solution Architect",
+          "Secure Agent Engineer",
+          "IDMC Capacity and Cost Analyst",
         ],
       },
       {
@@ -1084,6 +1308,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "IDMC Solution Architect",
           "Data Migration Lead",
           "Data Platform Solution Architect",
+          "Mass Ingestion Specialist",
+          "Taskflow Developer",
         ],
       },
       {
@@ -1095,6 +1321,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Integration Architect, CAI and API",
           "IDMC Solution Architect",
           "Informatica Administrator",
+          "API Manager Specialist",
+          "Event Integration Developer",
         ],
       },
       {
@@ -1106,6 +1334,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Data Quality Developer",
           "Data Quality Analyst",
           "Data Governance Lead",
+          "Data Profiling Specialist",
+          "Match and Merge Rules Developer",
         ],
       },
       {
@@ -1119,6 +1349,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Informatica MDM Specialist",
           "Data Steward",
           "Data Migration Lead",
+          "Customer 360 Consultant",
+          "Product 360 Consultant",
         ],
       },
       {
@@ -1131,6 +1363,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Metadata and Catalogue Analyst",
           "Data Steward",
           "Data Quality Analyst",
+          "Business Glossary Owner",
+          "Lineage Analyst",
         ],
       },
       {
@@ -1143,6 +1377,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Cloud Migration Specialist, PowerCenter to IDMC",
           "Informatica Developer, CDI",
           "IDMC Solution Architect",
+          "PowerCenter Administrator",
         ],
       },
       {
@@ -1154,6 +1389,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Test Data Management Specialist",
           "Data Governance Lead",
           "Informatica Administrator",
+          "Data Masking Engineer",
+          "Data Privacy Management Consultant",
         ],
       },
       {
@@ -1165,6 +1402,8 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Integration Architect, CAI and API",
           "Informatica Developer, CDI",
           "Informatica Administrator",
+          "B2B Gateway Specialist",
+          "EDI and Partner Onboarding Consultant",
         ],
       },
     ],
