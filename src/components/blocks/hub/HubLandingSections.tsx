@@ -55,7 +55,8 @@ const whatWeDeliverCards: {
     title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
-      "Active bench across 3 markets",
+      /* R17 — same unevidenced claim as the L1 shell. See that comment. */
+      "Four entities: London · Dubai · Riyadh · Bengaluru",
       "Contract · EOR · Perm · Managed",
       "IR35, VAT and compliance built in",
     ],

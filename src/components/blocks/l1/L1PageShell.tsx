@@ -344,7 +344,13 @@ const whatWeDeliverCards: {
     title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
-      "Active bench across 3 markets",
+      /* R17. "Active bench across 3 markets" was unevidenced — nothing in the
+         repo sizes a bench in any market, let alone three — and it collided with
+         §2's supply/demand ban by implying three symmetric supply markets. The
+         four entities are a PUBLISHED fact (src/data/platforms/why.ts, and the
+         homepage's own city list), and they say more: an entity is what lets a
+         specialist start on our paper. Closes Q11. */
+      "Four entities: London · Dubai · Riyadh · Bengaluru",
       "Contract · EOR · Perm · Managed",
       "IR35, VAT and compliance built in",
     ],
