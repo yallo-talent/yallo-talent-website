@@ -4,8 +4,8 @@ import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
-import l1 from "@/components/blocks/l1/L1PageShell.module.css";
 import { L1BottomCta } from "@/components/blocks/l1/L1PageShell";
+import l1 from "@/components/blocks/l1/L1PageShell.module.css";
 import { L1SubNav } from "@/components/blocks/l1/L1SubNav";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
@@ -430,7 +430,7 @@ export default async function PlatformPage({
           </ul>
         </div>
       </section>
-    {/* The closing ask. Retail has had one all along; the platform L1 ended on
+      {/* The closing ask. Retail has had one all along; the platform L1 ended on
           a module list. Same component, no props, nothing authored. */}
       <L1BottomCta />
     </div>
