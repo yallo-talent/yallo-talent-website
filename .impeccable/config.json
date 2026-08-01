@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "layout-transition",
+        "value": "*",
+        "files": [
+          "src/components/blocks/home/Home.module.css"
+        ],
+        "createdAt": "2026-08-01T13:59:33.514Z",
+        "reason": "User confirmed: the 62x5px hero score bar animates width so the quarter-round corner (canon 5 structural signature) stays crisp; scaleX distorts it and there is no measurable perf gain at that size"
+      }
+    ]
+  }
+}
