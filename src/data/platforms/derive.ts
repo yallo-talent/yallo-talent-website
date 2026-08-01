@@ -68,7 +68,14 @@ export interface PlatformCoverage {
   roleCount: number;
 }
 
-/** Vendor name -> platform slug. Only the six in the canon platform set. */
+/**
+ * Vendor name -> platform slug. The canon platform set, in canon order.
+ *
+ * Informatica is the seventh and last (R-INF1/R-INF2, 1 Aug 2026). Adding it
+ * here is what lets the sector data reach the platform axis: retail already
+ * carries an "Informatica MDM" tool with real roles, so the desk inherits a
+ * genuine sector without anything being authored twice.
+ */
 const VENDOR_SLUGS: Record<string, string> = {
   SAP: "sap",
   Oracle: "oracle",
@@ -76,6 +83,7 @@ const VENDOR_SLUGS: Record<string, string> = {
   Salesforce: "salesforce",
   "Blue Yonder": "blue-yonder",
   Workday: "workday",
+  Informatica: "informatica",
 };
 
 /**

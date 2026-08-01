@@ -62,14 +62,12 @@ export const primaryNav: NavGroup[] = [
             href: "/platforms/workday",
           },
           {
-            /* 7th platform. Informatica is the MDM vendor Yallo is focusing on
-               deeply, per Sumeet. No /platforms/informatica route exists yet, so
-               it carries published: false and renders as text — the same honest
-               treatment the unbuilt capability desks get, rather than a link
-               that 404s. */
+            /* 7th platform, and LAST in the order everywhere the order is
+               expressed (R-INF2): a real desk, not a co-equal of the ERP
+               suites. The route now exists with nine authored desks, so the
+               published flag is gone and this is a link again. */
             label: "Informatica",
             href: "/platforms/informatica",
-            published: false,
           },
         ],
       },

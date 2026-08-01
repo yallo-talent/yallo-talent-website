@@ -902,4 +902,138 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       },
     ],
   },
+
+  /**
+   * Informatica — R-INF1, the SEVENTH platform, ratified 1 Aug 2026.
+   *
+   * Last in the platform order everywhere it is expressed (R-INF2). It is a
+   * real desk, not a co-equal of the ERP suites, and the order says so.
+   *
+   * Nine desks, real products only, from docs/design/context-informatica.md §3.
+   * CLAIRE is deliberately absent: it is Informatica's AI engine, referenced
+   * inside the desks that use it, and a CLAIRE desk would repeat the error canon
+   * §3 already ruled on for SAP Special Applications. There is no tenth desk
+   * invented to round the number up.
+   *
+   * Roles are the §4 market titles, mapped to the desks they actually belong to
+   * rather than sprayed evenly. "Informatica MDM Specialist" is carried through
+   * from src/data/l1/retail.ts, which already places it — an authored set
+   * REPLACES the derived module list, so a role the repo already holds would
+   * otherwise have disappeared from the platform axis.
+   *
+   * No scarce-role flags and no scarcity data on any of them: R-INF5, and there
+   * is no such field on this interface to set.
+   */
+  informatica: {
+    slug: "informatica",
+    name: "Informatica",
+    ratified:
+      "R-INF1, docs/design/context-informatica.md v1.0, ratified by Sumeet Goenka 1 Aug 2026 (canon §3 amendment log)",
+    modules: [
+      {
+        slug: "idmc-platform",
+        name: "IDMC platform administration",
+        scope:
+          "Tenancy, runtime environments, Secure Agents, upgrades, capacity and cost on Intelligent Data Management Cloud",
+        roles: [
+          "Informatica Administrator",
+          "IDMC Solution Architect",
+          "Data Platform Solution Architect",
+        ],
+      },
+      {
+        slug: "cloud-data-integration",
+        name: "Cloud Data Integration",
+        scope:
+          "The core ETL and ELT desk: CDI and CDI-Elastic, mass ingestion, mappings and taskflows",
+        roles: [
+          "Informatica Developer, CDI",
+          "IDMC Solution Architect",
+          "Data Migration Lead",
+          "Data Platform Solution Architect",
+        ],
+      },
+      {
+        slug: "cloud-application-integration",
+        name: "Cloud Application Integration",
+        scope:
+          "Process orchestration, API Manager, real-time and event integration on CAI",
+        roles: [
+          "Integration Architect, CAI and API",
+          "IDMC Solution Architect",
+          "Informatica Administrator",
+        ],
+      },
+      {
+        slug: "data-quality",
+        name: "Cloud Data Quality",
+        scope:
+          "Profiling, rule specifications, cleansing, standardisation, match and merge logic",
+        roles: [
+          "Data Quality Developer",
+          "Data Quality Analyst",
+          "Data Governance Lead",
+        ],
+      },
+      {
+        slug: "master-data-management",
+        name: "Master Data Management",
+        scope:
+          "MDM SaaS and MDM Hub, and the domain builds on them: Customer 360, Supplier 360, Product 360, Reference 360",
+        roles: [
+          "MDM Solution Architect",
+          "MDM Developer",
+          "Informatica MDM Specialist",
+          "Data Steward",
+          "Data Migration Lead",
+        ],
+      },
+      {
+        slug: "data-governance-catalog",
+        name: "Data Governance and Catalog",
+        scope:
+          "CDGC and Metadata Command Center: lineage, stewardship and business glossary, absorbing the former EDC and Axon estates",
+        roles: [
+          "Data Governance Lead",
+          "Metadata and Catalogue Analyst",
+          "Data Steward",
+          "Data Quality Analyst",
+        ],
+      },
+      {
+        slug: "powercenter-modernisation",
+        name: "PowerCenter modernisation",
+        scope:
+          "PowerCenter run and support, plus assessment and migration to IDMC. The scarcest skill pairing on this desk list",
+        roles: [
+          "PowerCenter Developer",
+          "Cloud Migration Specialist, PowerCenter to IDMC",
+          "Informatica Developer, CDI",
+          "IDMC Solution Architect",
+        ],
+      },
+      {
+        slug: "data-privacy-masking",
+        name: "Data privacy and masking",
+        scope:
+          "Data Privacy Management, dynamic and persistent masking, and test data management",
+        roles: [
+          "Test Data Management Specialist",
+          "Data Governance Lead",
+          "Informatica Administrator",
+        ],
+      },
+      {
+        slug: "b2b-data-exchange",
+        name: "B2B data exchange",
+        scope:
+          "B2B Gateway, Data Transformation and Cloud Integration Hub: EDI and partner onboarding",
+        roles: [
+          "Integration Architect, CAI and API",
+          "Informatica Developer, CDI",
+          "Informatica Administrator",
+        ],
+      },
+    ],
+  },
 };

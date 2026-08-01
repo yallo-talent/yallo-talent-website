@@ -63,6 +63,10 @@ const CLIENTS = {
   "marks-and-spencer": "M&S.jpeg",
   "panda-retail": "Panda.png",
   wickes: "Wickes.png",
+  informatica: "informatica.png", // R-INF3, 1 Aug. Consent is NOT on file — the
+  // mark is built so it is ready, and content/clients.yaml keeps the entry
+  // filtered out until Sumeet flips consentOnFile. Building it now is what makes
+  // the flip a one-line data change rather than a task.
   // radwell: committed directly as public/logos/clients/radwell.svg — see header.
 };
 
