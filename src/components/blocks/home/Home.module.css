@@ -948,13 +948,35 @@
   position: relative;
 }
 
+/* CALLOUTS, not three flat lines. These are the things the persona actually
+   says, and as unadorned sentences behind a shared hairline they read as filler
+   — nothing invites you in. Each now sits on its own raised surface with an
+   opening quote mark, so the block scans as testimony. Sumeet's point, and he
+   was right that it was the weakest part of a strong section. */
 .quotes blockquote {
+  position: relative;
   margin: 0;
-  padding: 12px 0 12px 18px;
-  border-left: 2px solid var(--hairline);
+  padding: 14px 16px 14px 40px;
+  border: 1px solid var(--hairline);
+  border-left: 2px solid var(--accent-mark);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--ground-3);
   font-size: var(--fs-body-sm);
   line-height: 1.55;
-  color: var(--text-2);
+  color: var(--text);
+}
+
+/* The quote mark is display type, sized to sit as a mark rather than a glyph. */
+.quotes blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: 14px;
+  top: 10px;
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--accent-mark);
+  opacity: 0.55;
 }
 
 .quotes blockquote + blockquote {
@@ -1087,6 +1109,35 @@
   height: 1px;
   background: var(--hairline);
   z-index: 0;
+  overflow: hidden;
+}
+
+/* A pulse that travels the line, so four steps read as one pipeline rather than
+   four cards in a row. Deliberately a single travelling highlight and not a
+   marquee: the eye should catch the DIRECTION of the process once and then read
+   the words. transform only, so it composites and never reflows. */
+.connector::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-mark) 45%,
+    var(--accent-mark) 55%,
+    transparent 100%
+  );
+  width: 26%;
+  animation: pipeline-pulse 5.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes pipeline-pulse {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
 }
 
 .steps {
@@ -2627,4 +2678,63 @@
   border: 1px solid var(--hairline);
   border-radius: var(--r-pill);
   padding: 1px 8px;
+}
+
+
+/* ---------------------------------------------------------------------------
+   POINT 11 — the AI-talent to evidence seam.
+
+   Both sections are `.g2`, so they render the same ground and butt together with
+   no boundary: two long dark blocks reading as one undifferentiated run, which
+   is why the page loses its rhythm exactly where the proof begins. Every other
+   adjacency on this page changes tone.
+
+   A tonal step plus a hairline, not a hard band — the evidence section is the
+   payoff and should feel like arriving somewhere, without adding a third dark
+   band against canon §5's ceiling.
+   -------------------------------------------------------------------------- */
+#evidence {
+  position: relative;
+  background: linear-gradient(180deg, var(--ground-2) 0%, var(--ground) 22%);
+}
+
+#evidence::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--hairline) 18%,
+    var(--hairline) 82%,
+    transparent 100%
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   AMBIENT DRIFT — the "sprinkle of movement" Sumeet asked for.
+
+   Not sparkles: on an enterprise page glitter reads as a template. This is the
+   ambient field itself breathing — a very slow scale-and-opacity cycle on the
+   wash that already exists, so the surface is never quite static without
+   anything visibly moving. 34s, transform and opacity only, and it inherits the
+   global reduced-motion kill.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .amb-wash::before {
+    animation: ambient-breathe 34s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+}
+
+@keyframes ambient-breathe {
+  from {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.85;
+  }
+  to {
+    transform: scale(1.06) translate3d(1.5%, -1%, 0);
+    opacity: 1;
+  }
 }

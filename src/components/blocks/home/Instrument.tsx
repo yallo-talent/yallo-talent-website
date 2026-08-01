@@ -201,14 +201,21 @@ export function Instrument() {
         </div>
       </div>
 
-      <div className={styles.instrumentFoot}>
-        {instrument.footer.map((f) => (
-          <div key={f.label}>
-            <div className={styles.footValue}>{f.value}</div>
-            <div className={styles.footLabel}>{f.label}</div>
-          </div>
-        ))}
-      </div>
+      {/* THE METRICS ROW IS GONE, and it is the single biggest thing crowding
+          the hero. Measured at 1440: 40 discrete text nodes in an 817px hero,
+          and this row carried three of the densest.
+
+          It was also the most redundant. "72h to shortlist" restates the promise
+          the headline and the lede have both already made — the panel's own
+          tracker is literally counting to it. "2:1 CVs per interview" and "80%
+          renewed" are corporate proof, and proof belongs in the proof section
+          where a reader has earned it, not competing with the first thing they
+          see. Nothing is lost from the page; the numbers live on in Commitment
+          and the evidence band.
+
+          Sumeet's brief said the hero is striking but crowded. This takes a whole
+          band out of the instrument rather than shaving padding, which is the
+          difference between the panel breathing and the panel being squeezed. */}
     </figure>
   );
 }
