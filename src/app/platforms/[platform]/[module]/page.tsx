@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PlatformModuleShell } from "@/components/blocks/platform/PlatformModuleShell";
 import { homeMetrics } from "@/data/metrics";
+import { authoredPlatforms } from "@/data/platforms/authored";
 import {
   getPlatformModule,
   publishedModuleParams,
@@ -87,6 +88,9 @@ export default async function PlatformModulePage({
 
   return (
     <PlatformModuleShell
+      clients={(authoredPlatforms[hit.platform.slug]?.clients ?? []).filter(
+        (c) => !c.study,
+      )}
       platform={hit.platform}
       module={hit.module}
       metrics={homeMetrics}

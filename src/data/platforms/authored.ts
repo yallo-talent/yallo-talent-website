@@ -13,6 +13,27 @@
  * attached fail the sourced-figures rule.
  */
 
+/**
+ * Named clients we have placed on this platform.
+ *
+ * Separate from case studies on purpose. Most placements never become a
+ * published study, and the page previously showed only the one client that had
+ * one — so "SAP programmes we have staffed" sat over a single card and read as
+ * though that were the whole of it.
+ *
+ * `study` marks the ones with a published page behind them. R16 governs the
+ * split: a heading may only assert what every row satisfies, so the studies keep
+ * the studies heading and the rest are named as placements, which is exactly
+ * what they are. Supplied by Sumeet, 1 Aug — not derived, not guessed.
+ */
+export interface PlatformClient {
+  name: string;
+  /** Country, not city — the market is the useful unit here. */
+  market: string;
+  /** True where a published case study exists for this client. */
+  study?: boolean;
+}
+
 export interface AuthoredModule {
   /** URL-safe, stable — this is the module page's route segment. */
   slug: string;
@@ -46,6 +67,8 @@ export interface AuthoredModule {
 }
 
 export interface AuthoredPlatform {
+  /** Named clients placed on this platform. Optional; only SAP has them today. */
+  clients?: PlatformClient[];
   slug: string;
   name: string;
   /** Ratification provenance, kept with the data. */
@@ -382,6 +405,13 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
   sap: {
     slug: "sap",
     name: "SAP",
+    clients: [
+      { name: "Al Tayer Group", market: "UAE", study: true },
+      { name: "Majid Al Futtaim", market: "UAE" },
+      { name: "Chalhoub Group", market: "UAE" },
+      { name: "Ministry of Finance", market: "KSA" },
+      { name: "ZATCA", market: "KSA" },
+    ],
     ratified:
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",
     modules: [
@@ -459,7 +489,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "SAP Signavio",
         scope:
           "Process mining, modelling and transformation analysis on SAP Signavio.",
-        roles: [],
+        roles: [
+          "SAP Signavio Consultant",
+          "Process Mining Analyst",
+          "Business Process Architect",
+        ],
       },
       {
         slug: "sap-leanix",
@@ -467,7 +501,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "SAP LeanIX",
         scope:
           "Enterprise architecture management and application portfolio mapping on SAP LeanIX.",
-        roles: [],
+        roles: [
+          "SAP LeanIX Consultant",
+          "Enterprise Architect",
+          "Application Portfolio Analyst",
+        ],
       },
       {
         /* BTP elaborated. It shipped as one entry covering everything from
@@ -492,7 +530,11 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "SAP Build",
         scope:
           "Low-code application, process automation and work-zone delivery on SAP Build.",
-        roles: [],
+        roles: [
+          "SAP Build Developer",
+          "Process Automation Consultant",
+          "SAP Fiori Developer",
+        ],
       },
       {
         slug: "sap-btp",

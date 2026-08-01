@@ -363,3 +363,54 @@
     border-bottom: 1px solid var(--hairline);
   }
 }
+
+
+/* Named placements beneath the published studies. A register, not cards: these
+   have no page behind them, so a card would promise a click that does not
+   exist. */
+.clientBlock {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+}
+
+.clientHeading {
+  margin: 0 0 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.clientList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clientItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.clientName {
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+.clientMarket {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--fg-subtle);
+}

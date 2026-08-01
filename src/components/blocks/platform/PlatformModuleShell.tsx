@@ -28,10 +28,13 @@ export function PlatformModuleShell({
   module,
   metrics,
   studies = [],
+  clients = [],
 }: {
   platform: PlatformCoverage;
   module: PlatformModule;
   metrics: MetricStat[];
+  /** Named placements without a published study. Supplied, never derived. */
+  clients?: Array<{ name: string; market: string }>;
   /**
    * R6: published case studies whose platform tag names this suite, joined
    * server-side. Real evidence this page can show that its parent L1 card cannot
@@ -187,7 +190,9 @@ export function PlatformModuleShell({
 
       {/* R6 join: evidence. Renders only when a published study actually carries
           this suite's tag — no placeholder, no "coming soon". */}
-      {studies.length > 0 ? (
+      {/* Clients WITHOUT a published study. The ones that have a study already
+          appear as cards above, so listing them again would double-count. */}
+      {studies.length > 0 || clients.length > 0 ? (
         <section className={`${styles.section} amb-5`}>
           <div className={styles.wrap}>
             <div className={styles.eyebrow}>Published work</div>
@@ -212,6 +217,33 @@ export function PlatformModuleShell({
                 </li>
               ))}
             </ul>
+            {/* Named placements, separated from the studies on purpose.
+
+                The section previously showed only the client that had a
+                published study, so "SAP programmes we have staffed" sat over a
+                single card and read as though that were the whole of it — an
+                understatement that made the bench look thinner than it is.
+
+                R16 still governs, and it cuts both ways: the studies keep the
+                studies heading, and these get a heading that asserts exactly
+                what is true of every row — we placed consultants there. No
+                study is implied for any of them, and none links anywhere,
+                because there is nothing behind them to link to yet. */}
+            {clients.length > 0 ? (
+              <div className={styles.clientBlock}>
+                <h3 className={styles.clientHeading}>
+                  Also placed on {platform.name}
+                </h3>
+                <ul className={styles.clientList}>
+                  {clients.map((c) => (
+                    <li key={c.name} className={styles.clientItem}>
+                      <span className={styles.clientName}>{c.name}</span>
+                      <span className={styles.clientMarket}>{c.market}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
         </section>
       ) : null}
