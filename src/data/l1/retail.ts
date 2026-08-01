@@ -22,7 +22,7 @@ export const retailData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for retail",
+  introEyebrow: "Why us for retail",
   introTitle:
     "Retail programmes stall when the right contractor isn't in the seat.",
   introCopy: [

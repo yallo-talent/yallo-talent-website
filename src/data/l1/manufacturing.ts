@@ -22,7 +22,7 @@ export const manufacturingData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for manufacturing",
+  introEyebrow: "Why us for manufacturing",
   introTitle:
     "Manufacturing programmes stall when shop-floor depth isn't in the room.",
   introCopy: [

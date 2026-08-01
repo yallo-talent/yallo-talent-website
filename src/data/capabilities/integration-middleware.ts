@@ -35,7 +35,7 @@ export const integrationMiddlewareData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for Integration & Middleware",
+  introEyebrow: "Why us for Integration & Middleware",
   introTitle:
     "Integration is where the other six workstreams find out whether they agreed on anything.",
   introCopy: [

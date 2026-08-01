@@ -80,7 +80,7 @@ export function Footer() {
             <FooterColumn heading="Industries" links={industryLinks} />
             <FooterColumn heading="Company" links={quickLinks} />
             <div className={styles.linkCol}>
-              <div className="eyebrow">Yallo family</div>
+              <div className="eyebrow">Group companies</div>
               <ul className={styles.linkList}>
                 {yalloFamily.map((item) =>
                   item.live ? (

@@ -2,3 +2,4 @@
 pnpm biome check --write .
 node .claude/hooks/check-colours.js
 node scripts/check-type-scale.mjs
+node scripts/check-taxonomy.mjs

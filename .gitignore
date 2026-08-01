@@ -58,3 +58,6 @@ old_wordpress/
 # a 3-year-old reference rather than build input, so they have no business in the
 # repo at all. See docs/status/SECURITY-prototype-workbooks.md.
 prototype/L1, L2 Details/
+
+# Parallel-session build dirs (see next.config.ts distDir)
+/.next-*/

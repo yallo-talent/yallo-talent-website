@@ -42,7 +42,7 @@ export const cybersecurityData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for Cybersecurity",
+  introEyebrow: "Why us for Cybersecurity",
   introTitle:
     "Security roles are the ones a programme cannot fake its way through.",
   introCopy: [

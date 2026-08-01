@@ -22,7 +22,7 @@ export const financeData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for banking & financial services",
+  introEyebrow: "Why us for banking & financial services",
   introTitle:
     "Finance programmes stall when regulated-industry depth isn't in the room.",
   introCopy: [

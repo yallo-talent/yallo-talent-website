@@ -22,7 +22,7 @@ export const healthcareData: L1PageData = {
     "GxP / HIPAA aware",
   ],
 
-  introEyebrow: "Why Yallo for healthcare & life sciences",
+  introEyebrow: "Why us for healthcare & life sciences",
   introTitle:
     "Care programmes stall when regulated-industry depth isn't in the room.",
   introCopy: [

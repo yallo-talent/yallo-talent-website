@@ -18,7 +18,9 @@
     "check:reflow": "node scripts/check-reflow.mjs",
     "check:visual": "node scripts/capture-home.mjs",
     "test": "playwright test",
-    "prepare": "husky || true"
+    "prepare": "husky || true",
+    "check:taxonomy": "node scripts/check-taxonomy.mjs",
+    "check:yallo-case": "node scripts/check-yallo-case.mjs"
   },
   "engines": {
     "node": "22.x",

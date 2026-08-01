@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AiEstateDiagram } from "@/components/blocks/ai/AiEstateDiagram";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
@@ -204,15 +205,22 @@ export default function AiTalentPage() {
 
       {/* 6 — Where AI sits in a programme. The bridge to the platform desks,
           which is the join a competitor cannot copy without the platform depth
-          underneath it. */}
+          underneath it.
+
+          The estate diagram (§7.1) carries this band now. The row of platform
+          buttons underneath it stays: the diagram names the platforms at its
+          bottom layer but does not link them, and those links are the actual
+          route from this page to the six platform desks. Diagram first, because
+          the overlay is the argument; links after, because that is the exit. */}
       <section className={`${styles.section} ${styles.g2}`} id="ai-estate">
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="In the estate"
             heading="AI work lands on the platforms you already run."
-            lede="Almost none of this is greenfield. The model layer meets an ERP, a CRM or a data estate, and the people who can hold both are the constraint."
+            lede="Almost none of this is greenfield. The model layer meets an ERP, a CRM or a data estate, and the people who can hold both are the constraint. Five layers, two concerns that cross all of them, and the role families we place at each."
             id="ai-estate-heading"
           />
+          <AiEstateDiagram />
           <ul className={styles.logos}>
             {estateBridge.map((p) => (
               <li key={p.slug}>

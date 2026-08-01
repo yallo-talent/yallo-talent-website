@@ -22,7 +22,7 @@ export const governmentData: L1PageData = {
     "SC / BPSS aware",
   ],
 
-  introEyebrow: "Why Yallo for government",
+  introEyebrow: "Why us for government",
   introTitle:
     "Public sector programmes stall when the specialist can't clear the room.",
   introCopy: [

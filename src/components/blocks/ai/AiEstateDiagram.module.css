@@ -1,0 +1,275 @@
+/* ==========================================================================
+   AI estate diagram — §7.1.
+   Zero hardcoded colour: every value below resolves through a Layer 1 token,
+   so the diagram inherits both themes without a second definition. Gold
+   (--accent-*) is reserved for the Yallo overlay and appears nowhere else in
+   this file; the ambient wash comes from --amb, which the page's
+   `data-identity` resolves to the discipline hue.
+   ========================================================================== */
+
+.figure {
+  margin: 0;
+  container-type: inline-size;
+}
+
+/* Three columns: evaluation rail, the five layers, governance rail.
+   At narrow widths this becomes one column and the rails move BENEATH the
+   stack rather than compressing sideways — a 120px-wide rail with six framework
+   names in it is unreadable, and the stack is the part that carries meaning. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(140px, 0.8fr) minmax(0, 3fr) minmax(
+      140px,
+      0.8fr
+    );
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* The layer stack. Bottom-to-top in meaning, so the DOM order is
+   top-to-bottom and the reading order matches the visual one: models sit above
+   data, which sits above the systems of record. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.layer {
+  position: relative;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 16px 18px;
+  border: 1px solid var(--boundary);
+  /* The petal, bottom-left only: three square corners and one radius. Never a
+     uniform radius, which DESIGN.md bans outright as "softness". */
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface-raised);
+  overflow: hidden;
+}
+
+/* The ambient wash. One hue, varying only in alpha by position in the stack,
+   which is the same rule the L1 bands follow. */
+.layer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 140% at 0% 0%,
+    var(--amb) 0%,
+    transparent 70%
+  );
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.layerIndex {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 0 0 0 var(--r-sm);
+  border: 1px solid var(--boundary);
+  background: var(--wa05);
+  color: var(--text-2);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.layerBody {
+  position: relative;
+  min-width: 0;
+}
+
+.layerName {
+  margin: 0 0 4px;
+  font-size: 16px;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.layerContents {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+/* ---- The overlay. The whole point of the diagram, and the only gold. ---- */
+.overlay {
+  margin: 12px 0 0;
+  padding: 10px 12px 11px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-wash);
+}
+
+.overlayLabel {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.overlayList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overlayItem {
+  margin: 0;
+}
+
+/* A role family that staffs this layer AND has a page: a link, and it looks
+   like one. */
+.overlayLink,
+.overlayFlat {
+  display: inline-block;
+  padding: 4px 9px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0 0 0 var(--r-sm);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--accent-label);
+}
+
+.overlayLink:hover,
+.overlayLink:focus-visible {
+  background: var(--accent-mark);
+  border-color: var(--accent-mark);
+  color: var(--ink-950);
+}
+
+/* ---- The two cross-cutting rails ---- */
+.rail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 16px 18px;
+  border: 1px dashed var(--boundary);
+  /* The petal, bottom-left only: three square corners and one radius. Never a
+     uniform radius, which DESIGN.md bans outright as "softness". */
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--wa03);
+}
+
+.railName {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.railNote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.railList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.railItem {
+  padding: 5px 9px;
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-xs);
+  background: var(--surface);
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* The rail's span marker: a hairline running the height of the rail, saying
+   "this applies to every layer" without a word. Decorative, so it is drawn with
+   the boundary token and never with gold. */
+.railSpan {
+  position: absolute;
+  inset: 16px auto 18px 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--boundary) 12%,
+    var(--boundary) 88%,
+    transparent
+  );
+}
+
+.railRight .railSpan {
+  inset: 16px 0 18px auto;
+}
+
+/* ---- Caption. R-AI3's assertion, once, and it travels with the diagram. ---- */
+.caption {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-3);
+}
+
+/* ==========================================================================
+   Narrow widths. The rails move BENEATH the stack (§7.1) rather than being
+   squeezed. Container query, not a viewport query: the diagram is placed inside
+   page wrappers of different widths, and what matters is the space it is given.
+   ========================================================================== */
+@container (max-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .stack {
+    order: -1;
+  }
+  .railSpan,
+  .railRight .railSpan {
+    inset: auto 16px 0 16px;
+    width: auto;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--boundary) 12%,
+      var(--boundary) 88%,
+      transparent
+    );
+  }
+  .railList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@container (max-width: 420px) {
+  .layer {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding: 14px;
+  }
+}
+
+/* Reduced motion: the diagram is static by construction, with no transform or
+   animation anywhere above. The only motion is the hover colour change on an
+   overlay link, which is an interaction cue rather than decoration, so it is
+   reduced to an instant swap rather than removed. */
+@media (prefers-reduced-motion: reduce) {
+  .overlayLink {
+    transition: none;
+  }
+}

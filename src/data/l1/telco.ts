@@ -22,7 +22,7 @@ export const telcoData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for telco & media",
+  introEyebrow: "Why us for telco & media",
   introTitle: "Carrier programmes stall when OSS/BSS depth isn't in the room.",
   introCopy: [
     "Every Amdocs or Netcracker BSS transformation, every 5G core rollout, every OSS inventory migration shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place carrier-grade implementation track records.",

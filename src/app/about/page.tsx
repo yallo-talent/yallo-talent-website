@@ -72,7 +72,7 @@ export default function AboutPage() {
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            About Yallo Talent
+            About us
           </div>
           <h1 className={styles.heroTitle}>
             Enterprise talent, run by{" "}
@@ -199,7 +199,7 @@ export default function AboutPage() {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The Yallo family</span>
+            <span className={styles.sectionEyebrow}>The group</span>
             <h2 className={styles.sectionH}>
               Beyond talent — advisory, build and enablement.
             </h2>

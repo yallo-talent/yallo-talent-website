@@ -27,7 +27,7 @@ export const dataAnalyticsData: L1PageData = {
      name had leaked into six strings on this file and into the taxonomy index,
      which put it on the rendered page thirteen times. See src/data/l1/index.ts
      for the class-level fix and scripts/check-taxonomy.mjs for the guard. */
-  introEyebrow: "Why Yallo for Data & Analytics",
+  introEyebrow: "Why us for Data & Analytics",
   introTitle:
     "Data and analytics programmes stall when the platform depth isn't in the room.",
   introCopy: [

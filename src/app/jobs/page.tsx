@@ -88,7 +88,7 @@ export default function JobsPage() {
         </div>
       </section>
 
-      {/* WHY WORK VIA YALLO */}
+      {/* Why work via Yallo */}
       <section className={`${styles.section} ${styles.sectionAlt}`}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>

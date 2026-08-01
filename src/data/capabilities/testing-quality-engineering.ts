@@ -47,7 +47,7 @@ export const testingQualityEngineeringData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for Testing & Quality Engineering",
+  introEyebrow: "Why us for Testing & Quality Engineering",
   introTitle:
     "Testing is the first stream cut and the one every delayed programme wishes it had kept.",
   introCopy: [
@@ -416,7 +416,7 @@ export const testingQualityEngineeringData: L1PageData = {
       id: "telco",
       name: "Telco & Media",
       intro:
-        "High-volume performance testing, provisioning journeys and OSS/BSS regression for telco and media programmes.",
+        "High-volume performance testing, order-to-activation regression and OSS/BSS test cycles for telco and media programmes.",
       roles: [
         "Performance Test Engineer",
         "Test Architect",

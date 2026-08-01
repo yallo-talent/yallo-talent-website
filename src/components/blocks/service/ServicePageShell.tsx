@@ -126,9 +126,7 @@ function ServiceProcess({ data }: Props) {
       <div className={styles.processOrbB} aria-hidden="true" />
       <div className={styles.wrap}>
         <div className={styles.processHead}>
-          <div className={styles.processEyebrow}>
-            The Yallo operating rhythm
-          </div>
+          <div className={styles.processEyebrow}>The operating rhythm</div>
           <h2 className={styles.sectionH}>{data.processHeading}</h2>
           <p className={styles.processLede}>{data.processLede}</p>
         </div>

@@ -227,6 +227,17 @@ function taxonomyRedirects() {
 }
 
 const nextConfig: NextConfig = {
+  /**
+   * Build directory, overridable by environment.
+   *
+   * Two sessions worked this repository in parallel on 1 Aug 2026 and both needed
+   * a server. `next dev` and `next start` share `.next`, so the second one to
+   * start corrupts what the first is serving — which is how a measurement pass
+   * came to be run against a stale production build and read the previous
+   * commit's markup as the current one. Setting NEXT_DIST_DIR gives a session its
+   * own build directory. Unset, behaviour is exactly as before.
+   */
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   async redirects() {
     const specific: Array<{
       source: string;

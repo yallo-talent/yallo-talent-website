@@ -42,7 +42,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for DevOps & Platform Engineering",
+  introEyebrow: "Why us for DevOps & Platform Engineering",
   introTitle:
     "A platform team either removes work from delivery teams or becomes a new queue for them.",
   introCopy: [

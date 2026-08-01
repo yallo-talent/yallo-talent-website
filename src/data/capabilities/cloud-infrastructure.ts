@@ -22,7 +22,7 @@ export const cloudInfrastructureData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why Yallo for Cloud & Infrastructure",
+  introEyebrow: "Why us for Cloud & Infrastructure",
   introTitle:
     "Cloud programmes stall when the platform depth isn't in the room.",
   introCopy: [
