@@ -125,3 +125,25 @@ Two further constraints Sumeet should know before commissioning them:
 
 **Ready when the assets are:** supply an SVG/PNG per product and the family
 grid renders them through the existing pipeline. Nothing else blocks it.
+
+---
+
+## Parked: the rest of SAP's L1 section grammar
+
+SAP's L1 now runs hero → **the bench** → module families (8, each anchored) →
+where we place, with a 10-item sticky bar. Retail runs ten sections.
+
+The bench section closed the gap I could close honestly: `cov.roles` is every
+distinct role across every SAP module, already de-duplicated by the derive layer,
+so it is R6's principle again — depth by joining data already held.
+
+**The remaining seven retail sections cannot be built this way.** `intro`,
+`scarce`, `wwd`, `hww`, `xsec`, `insights` and `bottomCta` are authored narrative:
+retail's file is 1,529 lines of written copy — an intro argument, a scarce-talent
+story, segment descriptions. None of it exists for SAP, and none of it can be
+derived from modules or roles. Writing it is authoring marketing copy about our
+own capability, which is exactly what the standing rule forbids.
+
+**Needs Sumeet, or Chat:** the SAP L1 narrative copy. Give it the same shape as
+`src/data/l1/retail.ts` and the page fills using the existing shell — no code
+change. Until then the page is short and true rather than long and invented.

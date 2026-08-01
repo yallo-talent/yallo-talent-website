@@ -2487,3 +2487,24 @@
   line-height: 1.6;
   color: var(--fg-muted);
 }
+
+
+/* The SAP bench index — every distinct role, from the derive join. A register,
+   not cards: 93 cards would be another wall, and the value here is scanning the
+   whole set at once. */
+.roleIndex {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.roleIndexItem {
+  padding: 7px 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--text-2);
+  border-bottom: 1px solid var(--hairline);
+}

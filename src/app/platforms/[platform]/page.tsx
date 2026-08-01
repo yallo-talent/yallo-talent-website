@@ -123,6 +123,8 @@ export default async function PlatformPage({
      Families become sections, so the bar indexes the suite rather than the page
      furniture. */
   const subNavItems = [
+    ...(cov.roles.length > 0 ? [{ id: "roles", label: "The bench" }] : []),
+    { id: "sectors", label: "Where we place" },
     ...moduleFamilies
       .filter((f) => f.name)
       .map((f) => ({
@@ -366,8 +368,46 @@ export default async function PlatformPage({
         </div>
       </section>
 
+      {/* THE BENCH, from the join and nothing else.
+
+          The L1 was three sections against retail's ten, and the middle one was
+          a 4,671px wall of module cards. What it never showed is the thing a
+          buyer actually asks for: the roles. They already exist — cov.roles is
+          every distinct role across every module, de-duplicated by the derive
+          layer — so this is R6's principle again, depth by joining data already
+          held rather than by authoring a new page.
+
+          R16 governs the heading. It says "every role we place across SAP", and
+          that is exactly what the list is: no filtering, no selection, no claim
+          about seniority, volume or availability that the data cannot carry. */}
+      {cov.roles.length > 0 ? (
+        <section
+          className={`${styles.section} ${styles.g1} amb-wash amb-3`}
+          id="roles"
+        >
+          <div className={styles.wrap}>
+            <SectionHead
+              eyebrow="The bench"
+              heading={`Every role we place across ${cov.name}.`}
+              lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} modules. Send the brief and the specialist is in your inbox in 72 hours.`}
+              id="roles-heading"
+            />
+            <ul className={styles.roleIndex}>
+              {cov.roles.map((role) => (
+                <li key={role} className={styles.roleIndexItem}>
+                  {role}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
+
       {/* Where we place it. */}
-      <section className={`${styles.section} ${styles.g2} amb-wash amb-4`}>
+      <section
+        className={`${styles.section} ${styles.g2} amb-wash amb-4`}
+        id="sectors"
+      >
         <div className={styles.wrap}>
           <SectionHead
             eyebrow="Where we place"
