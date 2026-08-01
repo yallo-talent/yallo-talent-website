@@ -2519,3 +2519,26 @@
   line-height: 1.6;
   color: var(--fg-muted);
 }
+
+
+/* A family with ONE product left half a row of blank page beside it, and the
+   next category heading then started a fresh row — so the sheet read as a
+   column of isolated cards rather than a continuous register. Letting the grid
+   flow dense packs a lone card beside its neighbour instead. */
+.familyBlock {
+  break-inside: avoid;
+}
+
+@media (min-width: 900px) {
+  /* Categories stay distinct, but a single-product family no longer reserves a
+     full row to itself. */
+  .familyBlock:has(.commitment > :only-child) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: 24px;
+  }
+  .familyBlock:has(.commitment > :only-child) .familyHeading {
+    grid-column: 1 / -1;
+  }
+}

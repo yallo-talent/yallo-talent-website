@@ -93,7 +93,13 @@ const TAGLINE_BY_SLUG = new Map(
 );
 
 function supportLine(item: NavItem): string | null {
-  if (item.description) return item.description;
+  /* NOT item.description — NavItemBody already renders that, and returning it
+     here printed every Engagement and Explore subtitle TWICE, once in each
+     element. My regression from the register redesign: I added the support line
+     without checking whether the row already had one. The support line exists to
+     give a row context it does NOT already have, so where a description exists
+     this must stay silent. */
+  if (item.description) return null;
   const slug = item.href.split("/").filter(Boolean).pop();
   return (slug && TAGLINE_BY_SLUG.get(slug)) || null;
 }

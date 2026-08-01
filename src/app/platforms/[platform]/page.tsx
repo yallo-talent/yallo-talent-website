@@ -138,7 +138,11 @@ export default async function PlatformPage({
       .filter((f) => f.name)
       .map((f) => ({
         id: `family-${slugify(f.name as string)}`,
-        label: f.name as string,
+        /* "Autonomous" on five of nine labels pushed the bar past the viewport
+           and the last entries truncated mid-word. The prefix is SAP's, it is
+           identical on every one of them, and in a list it distinguishes
+           nothing — the headings on the page keep it in full. */
+        label: (f.name as string).replace(/^Autonomous /, ""),
       })),
     ...plannedFamilies.map((f) => ({
       id: `family-${slugify(f.name)}`,
@@ -209,7 +213,7 @@ export default async function PlatformPage({
       <div className={l1.subNavScope}>
         {subNavItems.length > 1 ? <L1SubNav items={subNavItems} /> : null}
 
-      {/* Module coverage — the substance of the page.
+        {/* Module coverage — the substance of the page.
           The lede no longer promises function-page links. That clause was
           measured false 16 times out of 17: the suite-level rebuild moved the
           module names away from the sector tool names the appearsIn join matches
@@ -220,25 +224,25 @@ export default async function PlatformPage({
           Inventing cross-links would be worse than having none, so the promise
           goes rather than the data being stretched to meet it. The module pages
           carry sector links wherever they do exist. */}
-      {/* SAP IA round 3: the suite is presented by the vendor's CURRENT
+        {/* SAP IA round 3: the suite is presented by the vendor's CURRENT
           application family, not as a flat product list. Grouping only — the 14
           modules and every role beneath them are unchanged. A platform whose
           modules carry no family (every vendor but SAP today) falls through to
           one unnamed group and renders exactly as before.
           docs/design/sap-ia-round-3.md */}
-      <section
-        className={`${styles.section} ${styles.g1} amb-wash amb-2`}
-        id="modules"
-      >
-        <div className={styles.wrap}>
-          <SectionHead
-            eyebrow="Product families"
-            heading={`Every ${cov.name} product family we staff, and who we put in it.`}
-            lede="Send the brief and the specialist is in your inbox in 72 hours."
-            id="modules-heading"
-          />
+        <section
+          className={`${styles.section} ${styles.g1} amb-wash amb-2`}
+          id="modules"
+        >
+          <div className={styles.wrap}>
+            <SectionHead
+              eyebrow="Product families"
+              heading={`Every ${cov.name} product family we staff, and who we put in it.`}
+              lede="Send the brief and the specialist is in your inbox in 72 hours."
+              id="modules-heading"
+            />
 
-          {/* A compact index of the set, and on mobile it is the difference
+            {/* A compact index of the set, and on mobile it is the difference
               between a list and a wall. Measured: 17 stacked cards run 6,862px
               at 390 — 85% of the page, about 4.6 viewports of near-identical
               composition — with no index, no filter and no jump list. The page
@@ -250,46 +254,46 @@ export default async function PlatformPage({
               id, so this needs no new state, works with JS off, and costs one
               tab stop per module instead of the eighteen a control would add.
               It renders only when the set is big enough to need it. */}
-          {cov.modules.length > 8 ? (
-            <nav
-              className={styles.moduleIndex}
-              aria-label={`${cov.name} product families`}
-            >
-              {cov.modules.map((mod) => (
-                <a
-                  key={mod.name}
-                  href={`#module-${slugify(mod.name)}`}
-                  className={styles.moduleIndexLink}
-                >
-                  {mod.name}
-                </a>
-              ))}
-            </nav>
-          ) : null}
+            {cov.modules.length > 8 ? (
+              <nav
+                className={styles.moduleIndex}
+                aria-label={`${cov.name} product families`}
+              >
+                {cov.modules.map((mod) => (
+                  <a
+                    key={mod.name}
+                    href={`#module-${slugify(mod.name)}`}
+                    className={styles.moduleIndexLink}
+                  >
+                    {mod.name}
+                  </a>
+                ))}
+              </nav>
+            ) : null}
 
-          {moduleFamilies.map((fam) => (
-            <div key={fam.name ?? "_"} className={styles.familyBlock}>
-              {fam.name ? (
-                <h3
-                  className={styles.familyHeading}
-                  id={`family-${slugify(fam.name)}`}
-                >
-                  {/* No count. "1 MODULE" beside a heading reads as a
+            {moduleFamilies.map((fam) => (
+              <div key={fam.name ?? "_"} className={styles.familyBlock}>
+                {fam.name ? (
+                  <h3
+                    className={styles.familyHeading}
+                    id={`family-${slugify(fam.name)}`}
+                  >
+                    {/* No count. "1 MODULE" beside a heading reads as a
                       defect report, not a category, and it made single-module
                       families look like mistakes. The list below says how many
                       there are. */}
-                  <span className={styles.familyRule} aria-hidden="true" />
-                  {fam.name}
-                </h3>
-              ) : null}
-              <div className={styles.commitment}>
-                {fam.modules.map((mod) => (
-                  <article
-                    key={mod.name}
-                    id={`module-${slugify(mod.name)}`}
-                    className={styles.vow}
-                  >
-                    {/* No vendor mark and no petal fill on these cards.
+                    <span className={styles.familyRule} aria-hidden="true" />
+                    {fam.name}
+                  </h3>
+                ) : null}
+                <div className={styles.commitment}>
+                  {fam.modules.map((mod) => (
+                    <article
+                      key={mod.name}
+                      id={`module-${slugify(mod.name)}`}
+                      className={styles.vow}
+                    >
+                      {/* No vendor mark and no petal fill on these cards.
                     The mark was 17 identical full-colour logos, aria-hidden and
                     carrying no information on a page that IS that vendor — and
                     canon §5's One Marker Rule says gold is the only colour used
@@ -298,64 +302,64 @@ export default async function PlatformPage({
                     bottom-left, two competing corner signals per card; DESIGN.md
                     already retired that fill from a SIX-tile grid for working
                     against the same rule. */}
-                    {/* The drill-down. `slug` is present only on AUTHORED modules,
+                      {/* The drill-down. `slug` is present only on AUTHORED modules,
                     which is exactly the set generateStaticParams builds — so a
                     title links when there is a page behind it and stays plain
                     text when there is not, rather than every card promising
                     depth and two thirds 404ing. */}
-                    <h3>
-                      {mod.slug ? (
-                        <Link
-                          href={`/platforms/${cov.slug}/${mod.slug}`}
-                          className={styles.moduleLink}
-                        >
-                          {mod.name}
-                          <ArrowGlyph />
-                        </Link>
-                      ) : (
-                        mod.name
-                      )}
-                    </h3>
-                    {/* The scope line: what Yallo places on this module, never what
+                      <h3>
+                        {mod.slug ? (
+                          <Link
+                            href={`/platforms/${cov.slug}/${mod.slug}`}
+                            className={styles.moduleLink}
+                          >
+                            {mod.name}
+                            <ArrowGlyph />
+                          </Link>
+                        ) : (
+                          mod.name
+                        )}
+                      </h3>
+                      {/* The scope line: what Yallo places on this module, never what
                     the module does. Only authored modules carry one; derived
                     modules render the roles alone rather than a written-for-them
                     sentence. */}
-                    {mod.scope ? (
-                      <p className={styles.vowScope}>{mod.scope}</p>
-                    ) : null}
-                    <ul className={styles.roleChips}>
-                      {mod.roles.map((r) => (
-                        <li key={r} className="role-pill">
-                          {r}
-                        </li>
-                      ))}
-                    </ul>
-                    {/* Rendered only when there ARE sector links. Removing the
+                      {mod.scope ? (
+                        <p className={styles.vowScope}>{mod.scope}</p>
+                      ) : null}
+                      <ul className={styles.roleChips}>
+                        {mod.roles.map((r) => (
+                          <li key={r} className="role-pill">
+                            {r}
+                          </li>
+                        ))}
+                      </ul>
+                      {/* Rendered only when there ARE sector links. Removing the
                     vendor mark left this slot bottom-anchored and EMPTY on 16 of
                     17 cards — measured 607px of dead space across the grid, 150px
                     on one card, and the single card that did carry a link read as
                     an unexplained inconsistency rather than as honest data. */}
-                    {mod.appearsIn.length > 0 ? (
-                      <p className={styles.vowFoot}>
-                        {mod.appearsIn.slice(0, 3).map((a) => (
-                          <Link
-                            key={`${a.sectorSlug}-${a.fnSlug}`}
-                            className={styles.btnSecondary}
-                            href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
-                          >
-                            {a.fnTitle}
-                            <ArrowGlyph />
-                          </Link>
-                        ))}
-                      </p>
-                    ) : null}
-                  </article>
-                ))}
+                      {mod.appearsIn.length > 0 ? (
+                        <p className={styles.vowFoot}>
+                          {mod.appearsIn.slice(0, 3).map((a) => (
+                            <Link
+                              key={`${a.sectorSlug}-${a.fnSlug}`}
+                              className={styles.btnSecondary}
+                              href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
+                            >
+                              {a.fnTitle}
+                              <ArrowGlyph />
+                            </Link>
+                          ))}
+                        </p>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          {/* SAP Business AI — represented, and honestly empty.
+            {/* SAP Business AI — represented, and honestly empty.
               The brief requires the AI layer to appear, and it is a fact about
               SAP's portfolio that it exists. It is NOT a fact that we staff it:
               the data layer's 93 distinct SAP roles contain no Joule, SAP
@@ -365,22 +369,22 @@ export default async function PlatformPage({
               ships with no rows and says so, using the same Desk-in-build
               convention the nav already uses. Parked for Sumeet in
               docs/design/sap-ia-round-3.md. */}
-          {plannedFamilies.map((fam) => (
-            <div key={fam.name} className={styles.familyBlock}>
-              <h3
-                className={styles.familyHeading}
-                id={`family-${slugify(fam.name)}`}
-              >
-                {fam.name}
-                <span className={styles.familyPlanned}>Desk open</span>
-              </h3>
-              <p className={styles.familyPlannedCopy}>{fam.note}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            {plannedFamilies.map((fam) => (
+              <div key={fam.name} className={styles.familyBlock}>
+                <h3
+                  className={styles.familyHeading}
+                  id={`family-${slugify(fam.name)}`}
+                >
+                  {fam.name}
+                  <span className={styles.familyPlanned}>Desk open</span>
+                </h3>
+                <p className={styles.familyPlannedCopy}>{fam.note}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-      {/* THE BENCH, from the join and nothing else.
+        {/* THE BENCH, from the join and nothing else.
 
           The L1 was three sections against retail's ten, and the middle one was
           a 4,671px wall of module cards. What it never showed is the thing a
@@ -392,55 +396,55 @@ export default async function PlatformPage({
           R16 governs the heading. It says "every role we place across SAP", and
           that is exactly what the list is: no filtering, no selection, no claim
           about seniority, volume or availability that the data cannot carry. */}
-      {cov.roles.length > 0 ? (
+        {cov.roles.length > 0 ? (
+          <section
+            className={`${styles.section} ${styles.g1} amb-wash amb-3`}
+            id="roles"
+          >
+            <div className={styles.wrap}>
+              <SectionHead
+                eyebrow="The bench"
+                heading={`Every role we place across ${cov.name}.`}
+                lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} product families. Send the brief and the specialist is in your inbox in 72 hours.`}
+                id="roles-heading"
+              />
+              <ul className={styles.roleIndex}>
+                {cov.roles.map((role) => (
+                  <li key={role} className={styles.roleIndexItem}>
+                    {role}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
+
+        {/* Where we place it. */}
         <section
-          className={`${styles.section} ${styles.g1} amb-wash amb-3`}
-          id="roles"
+          className={`${styles.section} ${styles.g2} amb-wash amb-4`}
+          id="sectors"
         >
           <div className={styles.wrap}>
             <SectionHead
-              eyebrow="The bench"
-              heading={`Every role we place across ${cov.name}.`}
-              lede={`${cov.roleCount} distinct roles across ${cov.moduleCount} product families. Send the brief and the specialist is in your inbox in 72 hours.`}
-              id="roles-heading"
+              eyebrow="Where we place"
+              heading={`Sectors running ${cov.name} programmes.`}
+              lede="Platform depth is only useful with the sector context to apply it."
             />
-            <ul className={styles.roleIndex}>
-              {cov.roles.map((role) => (
-                <li key={role} className={styles.roleIndexItem}>
-                  {role}
+            <ul className={styles.logos}>
+              {cov.sectors.map((s) => (
+                <li key={s.slug}>
+                  <Link
+                    className={styles.btnSecondary}
+                    href={`/industries/${s.slug}`}
+                  >
+                    {s.label}
+                    <ArrowGlyph />
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
         </section>
-      ) : null}
-
-      {/* Where we place it. */}
-      <section
-        className={`${styles.section} ${styles.g2} amb-wash amb-4`}
-        id="sectors"
-      >
-        <div className={styles.wrap}>
-          <SectionHead
-            eyebrow="Where we place"
-            heading={`Sectors running ${cov.name} programmes.`}
-            lede="Platform depth is only useful with the sector context to apply it."
-          />
-          <ul className={styles.logos}>
-            {cov.sectors.map((s) => (
-              <li key={s.slug}>
-                <Link
-                  className={styles.btnSecondary}
-                  href={`/industries/${s.slug}`}
-                >
-                  {s.label}
-                  <ArrowGlyph />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
       </div>
 
       {/* The operating rhythm. Generic by its own admission — "regardless of
