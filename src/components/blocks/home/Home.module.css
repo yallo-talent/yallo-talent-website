@@ -1977,7 +1977,9 @@
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r);
   padding: 24px;
-  box-shadow: 0 1px 2px var(--sh08), 0 8px 24px -12px var(--sh12);
+  box-shadow:
+    0 1px 2px var(--sh08),
+    0 8px 24px -12px var(--sh12);
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
@@ -1987,7 +1989,9 @@
 
 .caseCard:hover {
   border-color: var(--border-accent);
-  box-shadow: 0 2px 4px var(--sh08), 0 18px 40px -16px var(--sh12);
+  box-shadow:
+    0 2px 4px var(--sh08),
+    0 18px 40px -16px var(--sh12);
   transform: translateY(-2px);
 }
 
@@ -2607,7 +2611,6 @@
    a `.familySheet` wrapper). The fix has to move the CARDS into one shared
    grid across families, not wrap each family in another one. Left as-is
    rather than shipped broken. */
-
 
 /* Who acts at each step of the screen. Sits with the step name rather than in
    the body, so the sequence can be read as "you, then us, us, us" at a glance. */
