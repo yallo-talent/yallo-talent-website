@@ -37,8 +37,9 @@
   /* Baseline, not centre: the serif wordmark and the mono caps have different
      cap heights, and centring them leaves TALENT floating high. */
   align-items: baseline;
-  /* The gap BEFORE TALENT — wider than the mark's, and this plus the tracking
-     below is what replaced the hairline divider. */
+  /* The gap BEFORE TALENT — wider than the mark's. This was R15's replacement
+     for the hairline divider; the shipped variant G overrides it and puts the
+     rule back, so what remains here is the base the A-E studies are read from. */
   gap: 0.5em;
   line-height: 1;
   white-space: nowrap;
@@ -54,9 +55,9 @@
 }
 
 /* TALENT: a step down in size and weight, in muted ink rather than the accent,
-   so the eye reads mark → name → qualifier without a rule telling it to. The
-   0.3em tracking is load-bearing, not decoration — it opens the word's own
-   space, which is what makes the divider unnecessary. */
+   so the eye reads mark → name → qualifier. The 0.3em tracking opens the word's
+   own space. This is the R15 base; G tightens the tracking and adds the rule
+   back, having measured that space alone did not do the job. */
 .suffix {
   font-family: var(--font-mono);
   /* A4: mono labels 13px. This is the smallest text in the lockup and it is a
@@ -127,8 +128,9 @@
    R15 — four alternates on the alignment axis, so the choice is made by
    measurement rather than by assertion.
 
-   The pipe divider is already gone (the gap plus TALENT's tracking replaced it).
-   What R15 changes is the ALIGNMENT: the current build sits TALENT on the shared
+   At the time of round 1 the pipe divider was gone (the gap plus TALENT's
+   tracking replaced it); round 2's variant G puts a rule back deliberately.
+   What R15 changes is the ALIGNMENT: the round-1 build sits TALENT on the shared
    BASELINE, and R15 asks for it aligned to the wordmark's CAP HEIGHT. Those are
    different, and on a serif wordmark against mono caps they look different.
 
@@ -142,7 +144,7 @@
   align-items: baseline;
 }
 
-/* B — cap height. SHIPPED.
+/* B — cap height. Shipped after round 1; superseded by F, then by G.
    TALENT's cap top matched to the wordmark's. Measured cap-top delta -1.25px
    against +6.25 for baseline and +4.25 for optical centring, so this and D are
    the only two that actually cap-align. B ships because it is the simpler rule
@@ -212,7 +214,9 @@
   gap: 7px;
 }
 
-/* F SHIPS — the default now maps to it (see :not([data-lockup]) below).
+/* F — STACKED. Shipped in round 2; SUPERSEDED by G, which Sumeet selected on
+   the contact sheet. Kept as a named variant so the comparison stays
+   reproducible and one attribute reverts the decision.
 
    Judged on the contact sheet at docs/status/shots/r15b/logo-round2.png:
      B  the shipped one-liner. TALENT is 70px against Yallo's 50 and sits in
@@ -229,15 +233,13 @@
    F — STACKED. TALENT sits under the wordmark rather than beside it, so it can
    never out-measure it and the lockup becomes a compact block instead of a long
    strip. Tracking is set so the word spans the wordmark's own width. */
-.lockup[data-lockup="f"] .text,
-.lockup:not([data-lockup]) .text {
+.lockup[data-lockup="f"] .text {
   flex-direction: column;
   align-items: flex-start;
   gap: 1px;
 }
 
-.lockup[data-lockup="f"] .suffix,
-.lockup:not([data-lockup]) .suffix {
+.lockup[data-lockup="f"] .suffix {
   font-size: var(--fs-label);
   letter-spacing: 0.28em;
   margin-right: -0.28em;
@@ -252,17 +254,66 @@
   transform: none;
 }
 
-/* G — RULED. Keeps the horizontal line but binds the two with a short gold rule
-   instead of empty space, which is what actually reads as "one mark" — the
-   divider R15 removed was doing this job badly rather than doing the wrong job. */
-.lockup[data-lockup="g"] .text {
+/* G SHIPS — the default now maps to it (see :not([data-lockup]) below).
+   Selected by Sumeet off the round-2 contact sheet, over F.
+
+   G REINSTATES A DIVIDER, and that is a deliberate reversal of R15, not an
+   oversight. R15 removed a hairline rule on the argument that spacing and
+   contrast should do the separating. Round 2's diagnosis found the opposite
+   fault: with nothing between them the two words read as a logo with a stray
+   word beside it, because the gap after the wordmark was doing double duty as
+   both separator and binder. A short gold rule is the element that reads as
+   "one mark" — it separates and binds at once, which empty space cannot. The
+   R15 rule was doing this job badly, not doing the wrong job.
+
+   G — RULED. Horizontal, one line, bound by the rule rather than by space. */
+.lockup[data-lockup="g"] .text,
+.lockup:not([data-lockup]) .text {
   gap: 10px;
 }
 
-.lockup[data-lockup="g"] .suffix {
+.lockup[data-lockup="g"] .suffix,
+.lockup:not([data-lockup]) .suffix {
   letter-spacing: 0.16em;
   margin-right: -0.16em;
   color: var(--text-2);
   padding-left: 11px;
   border-left: 1px solid var(--accent-mark);
+}
+
+/* G is the widest of the four treatments, and at 360 that is 3px too wide: the
+   header's action cluster runs to right=363 and the reflow gate correctly
+   refuses it. The three levers are tracking, the gap before the rule and the
+   padding after it — never font-size, because the suffix already sits ON A4's
+   13px mono floor.
+
+   Tracking carries most of it: 0.16em → 0.125em is 0.455px off each of six
+   characters, and the matching margin-right gives 0.455px of that back, so the
+   net is 2.3px. That alone leaves scrollWidth at 361 — inside the gate's ±1px
+   tolerance and therefore a pass, which is exactly the kind of pass that breaks
+   on the next unrelated change. The gap and the padding come down by 2px each
+   to buy real clearance: measured scrollWidth 360 with the farthest header
+   element at 356.8, so ~3px of headroom rather than none.
+
+   0.125em, not the 0.12em floor itself. The rendered-type gate reads the
+   PAINTED ratio (computed letter-spacing ÷ computed font-size) against 0.1195,
+   so sitting exactly on the floor puts float noise in charge of the result.
+   0.125em costs 0.31px and takes the question off the table.
+
+   Scoped to 480px, which is where the lockup already steps down to --fs-lede,
+   rather than to a fresh 420px breakpoint — one visual transition on this
+   object, not two. The gap and padding stay near-symmetric (8/9, from 10/11) so
+   the rule keeps its slight lean toward the wordmark. */
+@media (max-width: 480px) {
+  .lockup[data-lockup="g"] .text,
+  .lockup:not([data-lockup]) .text {
+    gap: 8px;
+  }
+
+  .lockup[data-lockup="g"] .suffix,
+  .lockup:not([data-lockup]) .suffix {
+    letter-spacing: 0.125em;
+    margin-right: -0.125em;
+    padding-left: 9px;
+  }
 }

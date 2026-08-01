@@ -9,14 +9,16 @@ import { YalloFlower } from "./YalloFlower";
  * by coincidence rather than by construction, and canon §5 asks for one lockup
  * across header, footer and the favicon derivations.
  *
- * No divider. There was a hairline rule between the wordmark and TALENT, doing
- * the separating that spacing and contrast should do — and a rule at this scale
- * is a fifth element competing with four petals, a serif and a mono caps run.
- * The separation is now optical and comes from three things at once: the gap
- * before TALENT is wider than the gap after the mark, TALENT's 0.3em tracking
- * opens its own space, and it sits a step down in size and weight against
- * `--fg-muted` while the wordmark holds the accent. Read left to right the
- * emphasis falls mark, name, qualifier — which is the hierarchy the words have.
+ * A divider, deliberately. R15 removed the original hairline on the argument
+ * that spacing and contrast should do the separating; round 2 measured what
+ * that actually produced and found the opposite fault — TALENT rendered wider
+ * than the brand it qualifies, detached from it, and in a second colour. Empty
+ * space cannot both separate and bind, so the eye read a logo with a stray word
+ * beside it. Variant G restores a short gold rule, which does both jobs at
+ * once. Read left to right the emphasis still falls mark, name, qualifier.
+ *
+ * This is a reversal of an R15 decision, not a regression: see the G block in
+ * Lockup.module.css for the diagnosis it answers.
  *
  * Identical in both places, with no size prop. An earlier version let the footer
  * run larger, but "identical header, footer and favicon derivations" is the
@@ -28,9 +30,10 @@ export function Lockup({
 }: {
   className?: string;
   /**
-   * R15 alternate. Omit for the shipped treatment, which is F (stacked). a/c/d are the
-   * round-1 alignment studies; e/f/g are round 2 and address the real fault —
-   * TALENT out-measuring the brand it qualifies. See the CSS for the numbers.
+   * R15 alternate. Omit for the shipped treatment, which is G (ruled). a/b/c/d
+   * are the round-1 alignment studies; e/f/g are round 2 and address the real
+   * fault — TALENT out-measuring the brand it qualifies. See the CSS for the
+   * numbers.
    */
   variant?: "a" | "b" | "c" | "d" | "e" | "f" | "g";
 }) {
