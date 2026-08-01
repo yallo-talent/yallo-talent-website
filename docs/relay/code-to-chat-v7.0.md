@@ -1,6 +1,6 @@
 # Code → Chat relay v7.0
 
-**2 August 2026 · yallo-talent-website · `main` · HEAD `a610f18` · nine gates 9/9**
+**2 August 2026 · yallo-talent-website · `main` · HEAD `a719eba` · nine gates 9/9**
 
 Filed at the path the goal named. I first put it in `docs/relays/` alongside
 v1.0 to v6.0 and flagged the difference; the instruction was explicit, so this
@@ -13,8 +13,9 @@ next.
 
 ## 1. TL;DR
 
-Five of the nine work items shipped complete, two were already done and needed
-verifying rather than building, and two are not done. Twenty-seven new routes
+Seven of the nine work items shipped complete, one was already done and needed
+verifying rather than building, and one is partially done and blocked on
+content that cannot be invented. Twenty-seven new routes
 went live: Informatica as the seventh platform with nine desks, the AI talent
 family with nine role families and the stack matrix, and the Programme Staffing
 Blueprint with three archetypes under a new `/intelligence` hub.
@@ -40,10 +41,10 @@ to gloss over. It is written up in §5.
 | 3 | **Informatica** | L1 plus nine module L2s, canon §3 amended and dated, client rail at `consentOnFile: false`, mark built and keyed |
 | 4 | **AI talent** | L1 rebuilt to the ratified band order, nine role-family L2s, 44-entry stack matrix as one source for both levels |
 | 5 | **Blueprint** | Index plus three archetypes, and `/intelligence` now exists to link them from |
-| 6 | **SAP L1 narrative** | **NOT DONE** — see §4 |
+| 6 | **SAP L1 narrative** | Shipped. Four sections, SAP now paints eight against retail's eight, 1,291 words to 2,010 |
 | 7 | **Signavio and LeanIX** | **Already shipped.** Both are live modules with real roles and no scarcity fields. Verified, not rebuilt |
 | 8 | **Sectors running SAP** | Shipped as a class fix across all seven platforms, not just SAP |
-| 9 | **L1/L2 impeccable pass** | **NOT DONE** — see §4 |
+| 9 | **L1/L2 impeccable pass** | Five surfaces audited, zero P1 on the measurable classes. One P1 found that Code cannot fix — see §4 |
 
 **Route count: 27 new.** 10 Informatica, 10 AI talent, 4 Blueprint and
 `/intelligence`, 2 hub pages. Sitemap 67 → 152 URLs.
@@ -80,18 +81,32 @@ scrolling to nothing on all seven pages.
 
 ---
 
-## 4. What I did not do, and why
+## 4. Item 9, and the one thing I did not do
 
-**Item 6, the SAP L1 narrative to `retail.ts` depth.** Not started. `retail.ts`
-is 1,529 lines of authored copy and SAP needs an equivalent; this is a writing
-job of several hours on its own, and starting it at the point I had already
-shipped one regression into the tree was the wrong call. The shell fills it with
-no code change, so it is purely content. **This is the largest single remaining
-item in the backlog.**
+**Item 9 reached zero P1 on everything measurable, and found one P1 it cannot
+fix.** Five surfaces audited: `/industries/retail`, `/capabilities/data-analytics`,
+`/industries/retail/merchandising`, `/industries/retail/point-of-sale`,
+`/platforms/sap`. Clean on every named sweep class — sticky elements all have
+real travel in their own parent (the smallest is 3,207px), no dead in-page
+anchors, no skipped heading levels, exactly one H1 each, no empty or
+dash-filled states, no tap target under 24px, no duplicated H2.
 
-**Item 9, the impeccable L1/L2 pass to zero P1.** Not started, same reason. It
-was explicitly conditional on time remaining and there was none left that I
-trusted.
+**The P1 it did find: two retail L2 pages are 79% identical in their prose
+bands.** Measured properly rather than eyeballed, and measured three times
+because the first two numbers were wrong in the interesting way. Whole page:
+12% distinct, which is meaningless because it counts site chrome. `<main>` only:
+16%, still meaningless because the sidebar carries all eight function names on
+every page and that is navigation, not duplication. Prose and role bands with
+the sidebar excluded: **39 lines, of which 8 are page-specific.** The screening
+promise, the four engagement models and the ask are correctly identical; the
+differentiating content per function page is the title, one overview paragraph
+and the tool cards.
+
+That is "boilerplate around a swapped noun", which the AI talent context names
+as the thing to avoid, and **fixing it means authoring per-function content that
+does not exist in the repo.** I am not permitted to invent it and did not.
+**This is a Chat or Sumeet authoring job across the eight retail L2s**, and the
+same template serves every other sector, so the decision is worth making once.
 
 **The tenth AI role family.** "AI Data Engineer, retrieval and RAG pipelines" is
 proposed and not ratified, so it is absent rather than waved through. It is a
@@ -145,8 +160,7 @@ went out. Recording it as a win for the process rather than burying it.
 | Item | State | Needs |
 |---|---|---|
 | **Informatica client rail** | Entry live at `consentOnFile: false`, renders nowhere. Mark built and keyed at 912x224 | **One word from Sumeet.** Flip to `true` and it appears. Code does not flip it |
-| **SAP L1 narrative** | Not started | Authored copy to `retail.ts` depth. No code change |
-| **Impeccable L1/L2 pass** | Not started | A clear run at `/industries/retail`, one non-retail L1, two retail L2s, `/platforms/sap` |
+| **Retail L2 differentiation** | **Open P1.** Prose bands 79% identical between two L2s, 8 distinct lines of 39 | Authored per-function content across the eight retail L2s. Cannot be invented; needs Chat or Sumeet |
 | **Tenth AI role family** | Proposed, not ratified | Sumeet's yes or no on "AI Data Engineer, retrieval and RAG pipelines" |
 | **`placementHistory` flags** | `false` on all 44 stack entries | Sumeet flips per vendor where there is a placement he will stand behind |
 | **Blueprint v2 quantities** | Held back, no field exists for them | Time-to-hire, scarcity, team size, rates. **LinkedIn Talent Insights licence check still outstanding** before any scarcity figure is published |
