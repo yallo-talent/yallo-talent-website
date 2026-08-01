@@ -132,6 +132,10 @@ Seventh discipline, **first in the order**, labelled AI Talent, subtitle as rati
 
 Canon §3 has the dated six-to-seven amendment, appended in the same style as the Informatica amendment rather than rewriting the original line. Canon §2 has the Yallo clarification.
 
+**One deviation from the letter of §7, and it is the repo's existing convention.** The brief says both forms "301" to `/ai-talent`. They emit **308**, because Next's `permanent: true` produces 308 and every taxonomy redirect already in `next.config.ts` uses that flag. 308 is a permanent redirect that preserves the request method and search engines treat it as equivalent to 301. Changing it for these two entries alone would have made them inconsistent with the twenty-odd redirects around them. Say the word if you want literal 301s and I will raise it for the whole redirect table rather than for two rows.
+
+Verified end to end: all seven disciplines 200, all three capability-shaped AI forms (`ai-talent`, `artificial-intelligence`, `emerging-technologies`) redirect to `/ai-talent`, and **48 capability L2 routes serve 200** — 17 that existed plus the 31 new ones.
+
 ### 5.1 The estate diagram
 
 Five layers bottom to top, two cross-cutting rails, and the overlay.
