@@ -8,9 +8,9 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { allL1 } from "@/data/l1/index";
 import { useEffect, useRef, useState } from "react";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
+import { allL1 } from "@/data/l1/index";
 import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
 import {
