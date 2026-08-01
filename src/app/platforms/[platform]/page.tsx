@@ -13,6 +13,7 @@ import {
   getPlatformCoverage,
   publishedPlatformSlugs,
 } from "@/data/platforms/derive";
+import { platformNarrative } from "@/data/platforms/narrative";
 import { whyPoints } from "@/data/platforms/why";
 import { buildMetadata } from "@/lib/seo";
 
@@ -79,6 +80,11 @@ export default async function PlatformPage({
   const { platform } = await params;
   const cov = getPlatformCoverage(platform);
   if (!cov) notFound();
+
+  /* Authored narrative. Only SAP has one today; every other platform resolves
+     null and each band is gated on it, so the six others render exactly as
+     they did before. */
+  const nar = platformNarrative(platform);
 
   /* Modules grouped by the vendor's current application family.
 
@@ -150,7 +156,12 @@ export default async function PlatformPage({
      Families become sections, so the bar indexes the suite rather than the page
      furniture. */
   const subNavItems = [
+    /* Authored bands index too, gated on the same `nar` the sections are, so
+       the bar can never point at a band that did not render. */
+    ...(nar ? [{ id: "problem", label: "The problem" }] : []),
     ...(cov.roles.length > 0 ? [{ id: "roles", label: "The bench" }] : []),
+    ...(nar ? [{ id: "scarce", label: "Hard to fill" }] : []),
+    ...(nar ? [{ id: "segments", label: "Your estate" }] : []),
     /* Gated on the SAME condition as the band itself. The bar was entered
        unconditionally, so gating only the section would have left a sticky link
        to #sectors on all seven pages, scrolling to nothing. The roles entry
@@ -254,6 +265,30 @@ export default async function PlatformPage({
           modules carry no family (every vendor but SAP today) falls through to
           one unnamed group and renders exactly as before.
           docs/design/sap-ia-round-3.md */}
+        {/* THE PROBLEM. Measured, SAP painted four H2 sections against retail's
+            eight, and three of its four were inventory: modules, roles, rhythm.
+            It was not short of words, it had more than retail. It was short of
+            an argument, and this is the band that makes one. */}
+        {nar ? (
+          <section
+            className={`${styles.section} ${styles.g2} amb-wash amb-6`}
+            id="problem"
+          >
+            <div className={styles.wrap}>
+              <SectionHead
+                eyebrow={nar.intro.eyebrow}
+                heading={nar.intro.title}
+                id="problem-heading"
+              />
+              <div className={styles.narrative}>
+                {nar.intro.copy.map((para) => (
+                  <p key={para.slice(0, 40)}>{para}</p>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         <section
           className={`${styles.section} ${styles.g1} amb-wash amb-2`}
           id="modules"
@@ -448,6 +483,68 @@ export default async function PlatformPage({
           </section>
         ) : null}
 
+        {/* HARD TO FILL. Retail names the roles it struggles to fill; SAP
+            listed every role it places and never said which ones are scarce,
+            which is the difference between an inventory and a point of view.
+
+            No scarcity figure, and no field for one. WHY a role is thin is desk
+            knowledge and publishable; HOW thin, in numbers, is Sumeet's data and
+            does not exist. Every role named here already appears in the SAP
+            module set in authored.ts — none is coined for this band. */}
+        {nar ? (
+          <section
+            className={`${styles.section} ${styles.g2} amb-wash amb-5`}
+            id="scarce"
+          >
+            <div className={styles.wrap}>
+              <SectionHead
+                eyebrow={nar.scarce.eyebrow}
+                heading={nar.scarce.title}
+                lede={nar.scarce.copy}
+                id="scarce-heading"
+              />
+              <dl className={styles.underScoped}>
+                {nar.scarce.roles.map((r) => (
+                  <div key={r.name} className={styles.underScopedRow}>
+                    <dt className={styles.underScopedItem}>{r.name}</dt>
+                    <dd className={styles.underScopedWhy}>{r.why}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </section>
+        ) : null}
+
+        {/* WHICH PROGRAMME. Retail segments by sector; a platform segments by
+            estate, and on SAP the deployment decides which consultants can do
+            the work at all. The four below are the deployment variants already
+            declared on the S/4HANA module in authored.ts, so this band names
+            nothing the data does not already carry. */}
+        {nar ? (
+          <section
+            className={`${styles.section} ${styles.g1} amb-wash amb-6`}
+            id="segments"
+          >
+            <div className={styles.wrap}>
+              <SectionHead
+                eyebrow={nar.segments.eyebrow}
+                heading={nar.segments.title}
+                lede={nar.segments.sub}
+                id="segments-heading"
+              />
+              <div className={styles.commitment}>
+                {nar.segments.items.map((it, i) => (
+                  <article key={it.name} className={`${styles.vow} amb-${i + 1}`}>
+                    <span className={styles.panelPetal} aria-hidden="true" />
+                    <h3>{it.name}</h3>
+                    <p className={styles.vowScope}>{it.copy}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         {/* Where we place it — and only when there is a "where" worth the band.
             D12 and R16, and it took measuring all seven pages to see the size
             of it: this band rendered on every platform L1 with exactly ONE
@@ -490,6 +587,31 @@ export default async function PlatformPage({
           </section>
         ) : null}
       </div>
+
+      {/* READ NEXT. Retail routes onward and SAP ended on its own ask, which
+          makes the deepest page on the site a cul-de-sac. Every href is checked
+          by the full-site link crawl. */}
+      {nar ? (
+        <section className={`${styles.section} ${styles.g2}`} id="read-next">
+          <div className={styles.wrap}>
+            <SectionHead
+              eyebrow="Read next"
+              heading={nar.related.title}
+              id="read-next-heading"
+            />
+            <ul className={styles.logos}>
+              {nar.related.links.map((l) => (
+                <li key={l.href}>
+                  <Link className={styles.btnSecondary} href={l.href}>
+                    {l.label}
+                    <ArrowGlyph />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ) : null}
 
       {/* The operating rhythm. Generic by its own admission — "regardless of
           sector, platform or model" — so this authors nothing; it just stops
