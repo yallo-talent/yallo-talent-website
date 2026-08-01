@@ -66,3 +66,62 @@ fills. Nothing else in this re-cut is blocked on it.
   families, and round 2 already put RISE inside the S/4HANA entry.
 - **"Autonomous" as our own adjective.** We use it only where naming SAP's family.
   Calling our desks autonomous would be borrowing the vendor's claim.
+
+---
+
+## Round 3b — Sumeet's mid-run direction, 1 Aug
+
+> *"ensure that you are not picking only the application families, but you are
+> picking the technology, data, and cloud families as well… We also have this
+> Signavio and LeanIX as well… I would love to get you to use logos like this."*
+
+### Role evidence, checked before adding anything
+
+The hard rule from R13 stands: **a module ships only if it maps to an existing
+role in the data layer or the homepage line.** Searched the whole of `src/data`:
+
+| Product | Data-layer hits | Ships? |
+|---|---|---|
+| SAP Signavio | **0** | **Parked** — no role, anywhere |
+| SAP LeanIX | **0** | **Parked** — no role, anywhere |
+| SAP Concur | **0** | **Parked** |
+| SAP Business One / ByDesign | **0** | **Parked** |
+| SAP Digital Manufacturing | 2 | **Parked** — hits are sector prose, not SAP roles |
+| SAP PLM · IoT · Portfolio & Project Mgmt | 12 / 19 / 5 | **Parked** — hits belong to the manufacturing sector data, not to SAP roles |
+| Leonardo · Data Intelligence · Process Automation | **0** | Correctly absent — **retired or superseded** by SAP; the reference image predates that |
+| Joule | **0** | Named as a family, no rows (above) |
+
+Signavio and LeanIX are real, current SAP products and the frame is poorer
+without them — but adding either means asserting we staff it, and we have no
+evidence that we do. **This needs Sumeet, not a guess:** confirm the roles and
+they ship the same day.
+
+### The technology / data / cloud layer
+
+Already present as **Data & platform** (SAP BTP · Datasphere · Analytics Cloud) —
+the three we have roles for. The wider technology layer SAP publishes (Build,
+Integration Suite, Process Automation, LeanIX, Signavio) is parked on the same
+rule. The layer is represented; it is not yet complete, and it cannot be
+completed by inventing desks.
+
+### Logos
+
+**Blocked on assets, not on a decision.** `public/logos/` contains no SAP product
+marks — the pack has vendor-level marks only. Fabricating twenty SAP product
+lockups is not something I will do.
+
+Two further constraints Sumeet should know before commissioning them:
+
+1. Canon §8 ships marks as **keyed single-ink silhouettes**, and
+   `scripts/build-logos.mjs` declines any source that will not key — six marks
+   already render as their name for that reason. A colour lockup pack would need
+   to survive that gate.
+2. The module cards previously **carried** vendor marks and they were removed on
+   a recorded reason: seventeen *identical* full-colour SAP logos, aria-hidden,
+   on a page that already is that vendor. Sumeet's ask is different — the image
+   shows **distinct product lockups** (S/4HANA, BTP, Ariba, EWM…), which do carry
+   information the repeated corporate mark did not. That is a genuine change of
+   input, not a reversal, so it does not conflict with the recorded decision.
+
+**Ready when the assets are:** supply an SVG/PNG per product and the family
+grid renders them through the existing pipeline. Nothing else blocks it.

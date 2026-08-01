@@ -8,8 +8,8 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
-import { L1SubNav } from "./L1SubNav";
 import styles from "./L1PageShell.module.css";
+import { L1SubNav } from "./L1SubNav";
 import { l1Icons } from "./l1-icons";
 
 function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {

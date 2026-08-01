@@ -125,7 +125,10 @@ export default async function PlatformPage({
   const subNavItems = [
     ...moduleFamilies
       .filter((f) => f.name)
-      .map((f) => ({ id: `family-${slugify(f.name as string)}`, label: f.name as string })),
+      .map((f) => ({
+        id: `family-${slugify(f.name as string)}`,
+        label: f.name as string,
+      })),
     ...plannedFamilies.map((f) => ({
       id: `family-${slugify(f.name)}`,
       label: f.name,
@@ -267,12 +270,12 @@ export default async function PlatformPage({
               ) : null}
               <div className={styles.commitment}>
                 {fam.modules.map((mod) => (
-              <article
-                key={mod.name}
-                id={`module-${slugify(mod.name)}`}
-                className={styles.vow}
-              >
-                {/* No vendor mark and no petal fill on these cards.
+                  <article
+                    key={mod.name}
+                    id={`module-${slugify(mod.name)}`}
+                    className={styles.vow}
+                  >
+                    {/* No vendor mark and no petal fill on these cards.
                     The mark was 17 identical full-colour logos, aria-hidden and
                     carrying no information on a page that IS that vendor — and
                     canon §5's One Marker Rule says gold is the only colour used
@@ -281,57 +284,57 @@ export default async function PlatformPage({
                     bottom-left, two competing corner signals per card; DESIGN.md
                     already retired that fill from a SIX-tile grid for working
                     against the same rule. */}
-                {/* The drill-down. `slug` is present only on AUTHORED modules,
+                    {/* The drill-down. `slug` is present only on AUTHORED modules,
                     which is exactly the set generateStaticParams builds — so a
                     title links when there is a page behind it and stays plain
                     text when there is not, rather than every card promising
                     depth and two thirds 404ing. */}
-                <h3>
-                  {mod.slug ? (
-                    <Link
-                      href={`/platforms/${cov.slug}/${mod.slug}`}
-                      className={styles.moduleLink}
-                    >
-                      {mod.name}
-                      <ArrowGlyph />
-                    </Link>
-                  ) : (
-                    mod.name
-                  )}
-                </h3>
-                {/* The scope line: what Yallo places on this module, never what
+                    <h3>
+                      {mod.slug ? (
+                        <Link
+                          href={`/platforms/${cov.slug}/${mod.slug}`}
+                          className={styles.moduleLink}
+                        >
+                          {mod.name}
+                          <ArrowGlyph />
+                        </Link>
+                      ) : (
+                        mod.name
+                      )}
+                    </h3>
+                    {/* The scope line: what Yallo places on this module, never what
                     the module does. Only authored modules carry one; derived
                     modules render the roles alone rather than a written-for-them
                     sentence. */}
-                {mod.scope ? (
-                  <p className={styles.vowScope}>{mod.scope}</p>
-                ) : null}
-                <ul className={styles.roleChips}>
-                  {mod.roles.map((r) => (
-                    <li key={r} className="role-pill">
-                      {r}
-                    </li>
-                  ))}
-                </ul>
-                {/* Rendered only when there ARE sector links. Removing the
+                    {mod.scope ? (
+                      <p className={styles.vowScope}>{mod.scope}</p>
+                    ) : null}
+                    <ul className={styles.roleChips}>
+                      {mod.roles.map((r) => (
+                        <li key={r} className="role-pill">
+                          {r}
+                        </li>
+                      ))}
+                    </ul>
+                    {/* Rendered only when there ARE sector links. Removing the
                     vendor mark left this slot bottom-anchored and EMPTY on 16 of
                     17 cards — measured 607px of dead space across the grid, 150px
                     on one card, and the single card that did carry a link read as
                     an unexplained inconsistency rather than as honest data. */}
-                {mod.appearsIn.length > 0 ? (
-                  <p className={styles.vowFoot}>
-                    {mod.appearsIn.slice(0, 3).map((a) => (
-                      <Link
-                        key={`${a.sectorSlug}-${a.fnSlug}`}
-                        className={styles.btnSecondary}
-                        href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
-                      >
-                        {a.fnTitle}
-                        <ArrowGlyph />
-                      </Link>
-                    ))}
-                  </p>
-                ) : null}
+                    {mod.appearsIn.length > 0 ? (
+                      <p className={styles.vowFoot}>
+                        {mod.appearsIn.slice(0, 3).map((a) => (
+                          <Link
+                            key={`${a.sectorSlug}-${a.fnSlug}`}
+                            className={styles.btnSecondary}
+                            href={`/industries/${a.sectorSlug}/${a.fnSlug}`}
+                          >
+                            {a.fnTitle}
+                            <ArrowGlyph />
+                          </Link>
+                        ))}
+                      </p>
+                    ) : null}
                   </article>
                 ))}
               </div>

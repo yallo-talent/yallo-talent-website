@@ -14,7 +14,11 @@ import styles from "./L1PageShell.module.css";
  * Styles stay in L1PageShell.module.css: the bar is part of that shell's
  * grammar, and splitting the CSS would let the two drift.
  */
-export function L1SubNav({ items }: { items: { id: string; label: string }[] }) {
+export function L1SubNav({
+  items,
+}: {
+  items: { id: string; label: string }[];
+}) {
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
   useEffect(() => {
     if (typeof window === "undefined") return;
