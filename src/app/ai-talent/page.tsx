@@ -3,31 +3,58 @@ import Link from "next/link";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
+import { L1BottomCta } from "@/components/blocks/l1/L1PageShell";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
-import { aiCopy, aiRoles } from "@/data/home/intelligence";
-import { aiTalentExpertiseSource } from "@/data/pending/ai-talent-source";
+import {
+  aiRoleFamilies,
+  estateBridge,
+  governanceFrameworks,
+  screeningPoints,
+} from "@/data/ai-talent";
+import { stackMatrixAssertion, stacksByGroup } from "@/data/ai-talent/stacks";
+import { aiCopy } from "@/data/home/intelligence";
 import { buildMetadata } from "@/lib/seo";
 
 /**
- * /ai-talent — the named specialism, canon §1 and §3.
+ * /ai-talent — the flagship category page, rebuilt to the ratified band order
+ * in docs/design/context-ai-talent.md §2.
  *
- * Built entirely from content that already existed and was already ratified:
- * the homepage AI band's copy, sourced statistic and six role tiles
- * (src/data/home/intelligence.ts), plus the four capability areas lifted
- * verbatim from the former data-ai capability page and parked in
- * src/data/pending/ai-talent-source.ts. Nothing on this page is written for it.
+ * What changed from the first version, and why. That page was assembled
+ * entirely from content that already existed: the homepage AI band's six role
+ * tiles and four capability areas parked from the retired data-ai page. It was
+ * the honest thing to ship at the time, because the alternative was inventing a
+ * category page. It is superseded now that the nine role families and the stack
+ * matrix exist as real, ratified content with nine L2 pages behind them.
  *
- * It exists because the nav has listed "AI talent" first in the disciplines
- * column all along while the route 404'd — a canon violation shipping on every
- * page. The AI Talent Atlas remains unbuilt and is stated as such rather than
- * linked or implied.
+ * Band order is §2 exactly: hero, the gap, nine role families, the stack matrix
+ * as the dark signature band, how we screen, where AI sits in a programme,
+ * governance, ask. One dark band, against the site ceiling of two.
+ *
+ * Three things this page deliberately does not do:
+ *
+ *   R-AI3 — no placement count, client, logo, quotation, date, case study,
+ *   scarcity figure or rate. Yallo has real AI placements and the engagements
+ *   are confidential proofs of concept, so the claim is made once, at category
+ *   level, and says exactly that.
+ *
+ *   R-AI4 — Anthropic sits inside the matrix at equal weight with the other
+ *   providers, plus one depth-proof line in the screening band. "Claude talent"
+ *   never leads a heading, a hero or a nav label.
+ *
+ *   R-AI6 — no sentence claims Yallo is at the frontier, leading, pioneering or
+ *   first. The forward-looking read is supposed to come from the breadth and
+ *   currency of the matrix and from naming roles that did not exist two years
+ *   ago, which is a thing the page shows rather than asserts.
+ *
+ * Also removed: the "AI Talent Atlas is in preparation" note. A promise of an
+ * unpublished asset is a coming-soon state, and those are banned outright.
  */
 
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "AI Talent · Agentic, LLM and MLOps Specialists | Yallo Talent",
+    title: "AI Talent · Agentic, LLM, MLOps and Governance Specialists | Yallo Talent",
     description:
-      "AI talent as a named specialism: agentic developers, LLM engineers, evaluation specialists, MLOps and AI governance. Specialist-screened, shortlisted in 72 hours. Middle East · Europe · India.",
+      "AI talent as a named specialism: nine role families, the stacks we screen against, and the mis-hire pattern for each. Specialist-screened, shortlisted in 72 hours. Middle East · Europe · India.",
   },
   path: "/ai-talent",
 });
@@ -59,31 +86,16 @@ const whyAi = [
 ];
 
 export default function AiTalentPage() {
+  const matrix = stacksByGroup();
+
   return (
     <>
+      {/* 1 — Hero. */}
       <section className={`${styles.section} ${styles.g1}`}>
         <div className={styles.wrap}>
           <p className="eyebrow">{aiCopy.eyebrow}</p>
           <h1 className={styles.heroHeadline}>{aiCopy.heading}</h1>
           <p className={styles.heroLede}>{aiCopy.lede}</p>
-
-          {/* The one statistic, with its source visible — canon §6 requires a
-              source on every figure. */}
-          {/* No .panelPetal here. It marks a PANEL, and .personaStat is a bare
-              flex row with a top rule and no ground — so the petal had nothing to
-              bleed off, and because it is positioned at right:-34px on an element
-              flush to the content wrap it pushed the document to 374px at a 360px
-              viewport, the only horizontal overflow left on the site. The same
-              marker is used correctly on the .vow cards below. */}
-          <figure className={styles.personaStat}>
-            <p className={styles.personaStatValue}>{aiCopy.stat.value}</p>
-            <p className={styles.personaStatClaim}>{aiCopy.stat.claim}</p>
-            <figcaption className={styles.personaStatSource}>
-              {aiCopy.stat.source}
-            </figcaption>
-          </figure>
-
-          <WhyRail points={whyAi} />
 
           <div className={styles.ctaRow}>
             <Link className={styles.btnPrimary} href="/brief">
@@ -94,62 +106,148 @@ export default function AiTalentPage() {
         </div>
       </section>
 
-      {/* The six roles, verbatim from the homepage band. */}
+      {/* 2 — The gap. One figure, and it keeps its source visible: canon §6
+          requires a source on every figure, and this is the only sourced one in
+          the repo for this claim. */}
+      <section className={`${styles.section} ${styles.g2}`} id="ai-gap">
+        <div className={styles.wrap}>
+          <SectionHead
+            eyebrow="The gap"
+            heading="These seats stay open because the screen is the hard part."
+            lede="The market is short of people, and the shortlist is short of evidence. Both have to be solved, and only one of them is a sourcing problem."
+            id="ai-gap-heading"
+          />
+
+          <figure className={styles.personaStat}>
+            <p className={styles.personaStatValue}>{aiCopy.stat.value}</p>
+            <p className={styles.personaStatClaim}>{aiCopy.stat.claim}</p>
+            <figcaption className={styles.personaStatSource}>
+              {aiCopy.stat.source}
+            </figcaption>
+          </figure>
+
+          <WhyRail points={whyAi} />
+        </div>
+      </section>
+
+      {/* 3 — The nine role families. Each routes to its own page; the mis-hire
+          line is on the card because it is the part a buyer recognises. */}
+      <section className={`${styles.section} ${styles.g2}`} id="ai-families">
+        <div className={styles.wrap}>
+          <SectionHead
+            eyebrow="Role families"
+            heading="The AI roles we screen, and the mis-hire behind each one."
+            lede="Every family carries its own screening tests and its own failure mode. They are not variations on one job."
+            id="ai-families-heading"
+          />
+          <div className={styles.commitment}>
+            {aiRoleFamilies.map((f, i) => (
+              <article key={f.slug} className={`${styles.vow} amb-${(i % 6) + 1}`}>
+                <span className={styles.panelPetal} aria-hidden="true" />
+                <h3>
+                  <Link href={`/ai-talent/${f.slug}`}>{f.name}</Link>
+                </h3>
+                <p className={styles.vowScope}>{f.hero}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 4 — The stack matrix. The signature band, and the only dark one. */}
       <section
-        className={`${styles.section} ${styles.invert} band-invert amb-1 amb-wash`}
-        id="ai-roles"
+        className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
+        id="ai-stacks"
       >
         <div className={styles.wrap}>
           <SectionHead
-            eyebrow="Roles"
-            heading="The six seats clients cannot fill from their own bench."
-            id="ai-roles-heading"
+            eyebrow="The stack matrix"
+            heading="What we screen against, named."
+            lede={stackMatrixAssertion}
+            id="ai-stacks-heading"
           />
-          <ul className={styles.aiRoles}>
-            {aiRoles.map((r) => (
-              <li key={r.name} className={styles.aiRole}>
-                <h3 className={styles.aiRoleName}>{r.name}</h3>
-                <p className={styles.aiRoleScope}>{r.scope}</p>
+          {matrix.map((g) => (
+            <div key={g.group} className={styles.stackGroup}>
+              <h3 className={styles.stackGroupName}>{g.group}</h3>
+              <ul className={styles.roleChips}>
+                {g.entries.map((e) => (
+                  <li key={e.name} className="role-pill">
+                    {e.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5 — How we screen. Point four is the Claude depth proof, R-AI4: once,
+          here, and never in a heading. */}
+      <section className={`${styles.section} ${styles.g2}`} id="ai-screen">
+        <div className={styles.wrap}>
+          <SectionHead
+            eyebrow="How we screen"
+            heading="The screen is designed against the failure, not the job title."
+            id="ai-screen-heading"
+          />
+          <ol className={styles.screenList}>
+            {screeningPoints.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* 6 — Where AI sits in a programme. The bridge to the platform desks,
+          which is the join a competitor cannot copy without the platform depth
+          underneath it. */}
+      <section className={`${styles.section} ${styles.g2}`} id="ai-estate">
+        <div className={styles.wrap}>
+          <SectionHead
+            eyebrow="In the estate"
+            heading="AI work lands on the platforms you already run."
+            lede="Almost none of this is greenfield. The model layer meets an ERP, a CRM or a data estate, and the people who can hold both are the constraint."
+            id="ai-estate-heading"
+          />
+          <ul className={styles.logos}>
+            {estateBridge.map((p) => (
+              <li key={p.slug}>
+                <Link
+                  className={styles.btnSecondary}
+                  href={`/platforms/${p.slug}`}
+                >
+                  {p.name}
+                  <ArrowGlyph />
+                </Link>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* The four capability areas, ported verbatim from the retired data-ai
-          page. Each carries its own roles; nothing is paraphrased. */}
-      <section className={`${styles.section} ${styles.g2}`} id="ai-capability">
+      {/* 7 — Governance and assurance. Frameworks are NAMED and never
+          interpreted: what any of them obliges is legal advice, and stating a
+          compliance date would be worse. */}
+      <section className={`${styles.section} ${styles.g2}`} id="ai-governance">
         <div className={styles.wrap}>
           <SectionHead
-            eyebrow="Capability"
-            heading="Where the work actually sits."
-            lede="Four areas, each with the contractor roles we place into it."
-            id="ai-capability-heading"
+            eyebrow="Governance and assurance"
+            heading="Governance roles are screened, not assumed."
+            lede="These are the frameworks governance candidates are screened against. Which of them applies to you, and what it obliges, is your counsel's call and not ours."
+            id="ai-governance-heading"
           />
-          <div className={styles.commitment}>
-            {aiTalentExpertiseSource.map((c, i) => (
-              <article key={c.slug} className={`${styles.vow} amb-${i + 1}`}>
-                <span className={styles.panelPetal} aria-hidden="true" />
-                <h3>{c.title}</h3>
-                <p className={styles.vowScope}>{c.blurb}</p>
-                <ul className={styles.roleChips}>
-                  {c.roles.map((r) => (
-                    <li key={r} className="role-pill">
-                      {r}
-                    </li>
-                  ))}
-                </ul>
-              </article>
+          <ul className={styles.roleChips}>
+            {governanceFrameworks.map((f) => (
+              <li key={f} className="role-pill">
+                {f}
+              </li>
             ))}
-          </div>
-
-          {/* The Atlas is unbuilt. Stated, never linked or implied. */}
-          <p className={styles.commitmentNote}>
-            The AI Talent Atlas — role definitions, scarcity and comparable
-            rates — is in preparation and is not published yet.
-          </p>
+          </ul>
         </div>
       </section>
+
+      {/* 8 — The close. */}
+      <L1BottomCta />
     </>
   );
 }
