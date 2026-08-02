@@ -88,14 +88,26 @@ export const platforms: PlatformAxis[] = [
     published: true,
   },
   {
-    /* 7th platform — the MDM vendor Yallo is focusing on. No route yet, so it
-       renders as a row without a link rather than a promise that 404s, and no
-       mark ships because the pack has no Informatica artwork. */
+    /* 7th platform, the MDM vendor Yallo is focusing on.
+
+       PUBLISHED FLIPPED 2 Aug 2026, per context-round5-rulings.md decision 9.
+       The "no route yet" this comment used to carry stopped being true when the
+       desk shipped: /platforms/informatica was measured at 200 on a production
+       build before the flag moved. The homepage was rendering a real page as
+       unbuilt and hiding the seventh platform while the mega menu linked it
+       correctly. A hand-declared publication state is the same class of defect
+       as a hand-copied label, so session A makes this derive from the registry
+       the way sectorNavEntries already does; this flag is the data half.
+
+       `mark` stays null and that half of the old comment still holds: the pack
+       has no Informatica platform artwork. The informatica.png under
+       public/logos/clients is the CLIENT mark, a different thing, and it ships
+       at consentOnFile false per canon section 3. */
     name: "Informatica",
     slug: "informatica",
     modules: "MDM · data quality · integration",
     mark: null,
-    published: false,
+    published: true,
   },
 ];
 

@@ -693,35 +693,39 @@ export const financeData: L1PageData = {
     "Every financial-services segment. Specialists who know the context.",
   segmentsSub:
     "Retail banking runs different programmes from insurance or capital markets. Our contractors understand the specific operating context — not just the platform.",
-  /* SIX SEGMENTS REMOVED, 2 Aug 2026, per context-round4-rulings.md §6.5, and
-     the rule that removed them is the same one that rebuilt the grid.
+  /* ELEVEN SEGMENTS REMOVED ACROSS TWO ROUNDS, and the second round removed the
+     test that had kept five of them.
 
-     A SEGMENT IS CUSTOMER-SHAPED. Procurement, IT Infrastructure, Financial
-     Planning & Analytics, Data & AI and Cybersecurity for Banking are functions
-     wearing a segment's clothes: none of them names a kind of bank. They were
-     also, exactly, the segments that mirrored functions this desk REMOVED from
-     its grid on 2 Aug (procurement, it-infra-fs, fpna, data-ai-fs,
-     cybersecurity-fs), which is why a rail claiming to cover them argued a bench
-     the grid does not show. Wealth & Asset Management goes with them on the same
-     test and nothing else: `wealth` is on that removed list, and the hero copy
-     had already been rewritten because it promised wealth the grid no longer
-     carries.
+     A SEGMENT IS CUSTOMER-SHAPED, and that is the definition rather than one
+     filter among several (context-round5-rulings.md §6). Round 4 removed six on
+     that principle: Procurement, IT Infrastructure, Financial Planning &
+     Analytics, Data & AI, Cybersecurity for Banking and Wealth & Asset
+     Management. None of them names a kind of bank, and each mirrored a function
+     this desk had just removed from its grid, so a rail claiming to cover them
+     argued a bench the grid does not show.
 
-     WHAT SURVIVES, and why the four function-shaped names below are NOT the same
-     fault: each maps onto a function this desk publishes and staffs. Digital
-     Payments is function 04, Risk & Compliance and Regulatory Compliance &
-     Governance are the two halves of function 06, Treasury & Cash Management is
-     05 and Lending & Loan Management is 07. The test the ruling sets is whether
-     a segment maps to one of the nine published functions, and these do.
+     Round 4 then kept five more on a SECOND test, that a segment must map to a
+     published function. That test is WITHDRAWN, because it disagreed with the
+     principle and the principle is the definition. So Digital Payments, Risk &
+     Compliance, Treasury & Cash Management, Lending & Loan Management and
+     Regulatory Compliance & Governance go as well. Mapping to functions 04, 06,
+     05, 07 and 06 is what kept them and it is no longer a reason: every
+     institution on the list below runs a treasury, a lending book and a
+     compliance function, so those five names partition the WORK rather than the
+     customer. A segment that cuts across every customer is not a segment.
 
-     EVERY ROLE PILL WAS SWEPT IN THE SAME PASS, which is the half that is easy
-     to miss. This rail named roughly thirty vendors that appear nowhere in the
+     WHAT SURVIVES PARTITIONS THE CUSTOMER BASE. Retail, corporate and investment
+     banks and insurance carriers are four kinds of institution that buy
+     differently from one another, and Islamic Banking is the fifth.
+
+     EVERY ROLE PILL WAS SWEPT IN ROUND 4, which is the half that is easy to
+     miss. This rail named roughly thirty vendors that appear nowhere in the
      grid: Finastra Loan IQ, nCino, Kyriba, Duck Creek, Fiserv, ACI, Marqeta,
      SAS, Wolters Kluwer, AxiomSL, MetricStream, ION, Calypso, Salesforce FSC,
-     SAP TRM and more. A hero that names six platforms and a rail a screen down
-     that names thirty-six is the defect, not the pill. Every title below is
-     published verbatim on one of the nine functions above, so nothing here is
-     invented and nothing claims a platform the desk does not staff. */
+     SAP TRM and more. A hero that names six platforms over a rail that names
+     thirty-six is the defect, not the pill. Every title below is published
+     verbatim on one of the nine functions above, so nothing here is invented
+     and nothing claims a platform the desk does not staff. */
   segments: [
     {
       id: "retail-banking",
@@ -752,6 +756,27 @@ export const financeData: L1PageData = {
       ],
     },
     {
+      /* Added 2 Aug 2026 per context-round5-rulings.md decision 3. Customer
+         shaped on the same test as the four beside it: a fully Islamic bank
+         buys differently from a conventional one, and a conventional bank
+         running an Islamic window buys a different seat for it. Third in the
+         list because it belongs with the banks rather than after the insurers.
+         Every pill is published verbatim on function 02 and no variant of a
+         real title was minted; the intro says only what that function's own
+         overview already says. */
+      id: "islamic-banking",
+      name: "Islamic Banking",
+      intro:
+        "Fully Islamic banks and conventional banks running Islamic windows, in every major Middle East market. Configuring those products on Temenos, FLEXCUBE and Finacle is a different seat from a conventional core consultant, and that difference is what the brief turns on.",
+      roles: [
+        "Islamic Banking Functional Consultant",
+        "Sharia-compliant Product Configuration Specialist",
+        "Islamic Treasury Consultant",
+        "Islamic Banking Business Analyst",
+        "Islamic Finance Product Owner",
+      ],
+    },
+    {
       id: "insurance",
       name: "Insurance Services",
       intro:
@@ -777,69 +802,6 @@ export const financeData: L1PageData = {
         "Collateral and XVA Consultant",
         "Murex MxML Developer",
         "Murex Datamart Developer",
-      ],
-    },
-    {
-      id: "digital-payments-seg",
-      name: "Digital Payments",
-      intro:
-        "Payment hubs, the message layer around them and the regional instant-payment schemes. The message layer is the half that briefs routinely under-scope.",
-      roles: [
-        "Payments Solution Architect",
-        "ISO 20022 Migration Consultant",
-        "SWIFT Consultant",
-        "Open Banking and API Consultant",
-        "Digital Banking Consultant",
-      ],
-    },
-    {
-      id: "risk-compliance-seg",
-      name: "Risk & Compliance",
-      intro:
-        "Credit, market, operational and financial-crime risk. Regulator-driven timelines and end-of-cycle audit demands. Frameworks are what a candidate is screened against and nothing here interprets one.",
-      roles: [
-        "OFSAA Consultant",
-        "AML and Sanctions Screening Consultant",
-        "Financial Crime Analyst",
-        "Model Validation Specialist",
-      ],
-    },
-    {
-      id: "treasury-cash",
-      name: "Treasury & Cash Management",
-      intro:
-        "Liquidity, collateral and bank treasury. Both the trading side and the bank side live or die on integration quality.",
-      roles: [
-        "Treasury Business Analyst",
-        "Collateral and XVA Consultant",
-        "Murex Back Office Consultant",
-        "Islamic Treasury Consultant",
-        "SWIFT Consultant",
-      ],
-    },
-    {
-      id: "lending-loans",
-      name: "Lending & Loan Management",
-      intro:
-        "Origination, servicing and collections across retail, small business and corporate. Origination gets the business case and collections gets the contractor shortage.",
-      roles: [
-        "Lending Functional Consultant",
-        "Loan Origination Consultant",
-        "Collections Consultant",
-        "Lending Solution Architect",
-        "Credit Risk Business Analyst",
-      ],
-    },
-    {
-      id: "reg-compliance-seg",
-      name: "Regulatory Compliance & Governance",
-      intro:
-        "Reporting to the region's central banks, Basel and IFRS 9, and the governance around the models behind it. Regulators are named and never interpreted.",
-      roles: [
-        "Regulatory Reporting Business Analyst",
-        "Basel Reporting Consultant",
-        "IFRS 9 Consultant",
-        "OFSAA Consultant",
       ],
     },
   ],
@@ -870,28 +832,6 @@ export const financeData: L1PageData = {
         "The insurers that delivered on time last year confirmed the ClaimCenter tech lead before the vendor was even signed. The fix isn't faster hiring — it's earlier briefing.",
       author: "Yallo Talent",
       minutes: 5,
-    },
-    {
-      href: "/insights/psd3-open-banking-2025",
-      published: false,
-      category: "Digital Payments",
-      title:
-        "PSD3 and open banking: the API and integration talent that European banks now need on the bench.",
-      excerpt:
-        "The rules are moving from consent to true portability. Where the integration and API architects that can actually deliver this are, and what they cost.",
-      author: "Yallo Talent",
-      minutes: 7,
-    },
-    {
-      href: "/insights/aml-actimize-scarcity-2025",
-      published: false,
-      category: "Fin Crime",
-      title:
-        "AML analytics: why NICE Actimize modellers are the hardest hire in FS this year.",
-      excerpt:
-        "Every large bank now runs its financial-crime programme through Actimize or a Snowflake-native equivalent. What we're seeing in placement demand across the Middle East, Europe and India.",
-      author: "Yallo Talent",
-      minutes: 6,
     },
   ],
 

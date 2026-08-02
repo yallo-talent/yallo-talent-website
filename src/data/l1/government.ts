@@ -348,24 +348,31 @@ export const governmentData: L1PageData = {
     "Every public-sector segment. Specialists who know the context.",
   segmentsSub:
     "Central government runs different programmes from a local authority or a police force. Our contractors understand the specific operating context — not just the platform.",
+  /* TEN SEGMENTS REMOVED, 2 Aug 2026, per context-round5-rulings.md §6.
+
+     A SEGMENT IS CUSTOMER-SHAPED, and the test that separates the four below
+     from the ten that went is whether the name partitions the customer base or
+     the work. A police force, a planning authority, a health body and an
+     education authority buy differently from one another. Citizen Services,
+     Smart City Solutions, Disaster & Emergency Management, Cybersecurity for
+     Public Services, Data & AI for Public Services, Regulatory Compliance &
+     Governance, IT Infrastructure & Operations, Procurement & Vendor
+     Management, Accounting & Financial Operations and Human Capital Management
+     do not: every public body on the list runs all ten, so they cut across the
+     customers rather than dividing them. A segment present in every customer
+     is a function.
+
+     THE LAST FIVE OF THOSE ARE THE SAME FIVE removed from the finance desk in
+     round 4, under the same names, and they are still live on healthcare and
+     telco. One list was copied onto four sector pages.
+
+     THE THREE BORDERLINE KEEPS ARE NAMED FOR A DOMAIN and kept anyway, on the
+     same reading that kept Insurance Services on the finance desk: each intro
+     opens by naming the institutions that buy. Urban Planning opens on local
+     authorities, Healthcare Administration on NHS trusts and ICBs, Education
+     Administration on higher education, further education and school
+     authorities. Where an intro names no institution, the segment went. */
   segments: [
-    {
-      id: "citizen-services-seg",
-      name: "Citizen Services",
-      intro:
-        "Digital-by-default channels, single-view of the citizen and case-driven services. GDS service standard and accessibility depth are the differentiators.",
-      roles: [
-        "Salesforce Public Sector Consultant",
-        "Pega Case Management Specialist",
-        "GDS Service Designer",
-        "Content Designer",
-        "Frontend Architect",
-        "Accessibility Consultant",
-        "Digital Identity Specialist",
-        "MS Dynamics 365 Public Sector Lead",
-        "Programme Architect",
-      ],
-    },
     {
       id: "public-safety-seg",
       name: "Public Safety & Security",
@@ -432,159 +439,6 @@ export const governmentData: L1PageData = {
         "Financial Aid Systems Consultant",
         "Alumni CRM Specialist",
         "Data Warehouse Consultant",
-      ],
-    },
-    {
-      id: "smart-city-seg",
-      name: "Smart City Solutions",
-      intro:
-        "Connected infrastructure, city ops and mobility. Sensor networks, IoT and unified command are the operating backbone.",
-      roles: [
-        "Siemens Smart City Consultant",
-        "Cisco Smart City Systems Specialist",
-        "IBM Intelligent Operations Lead",
-        "IoT Platform Architect",
-        "Mobility Systems Consultant",
-        "Urban Data Platform Specialist",
-        "Command Centre Systems Lead",
-        "Digital Twin for Cities Consultant",
-        "Public Realm Analytics Analyst",
-      ],
-    },
-    {
-      id: "disaster-management-seg",
-      name: "Disaster & Emergency Management",
-      intro:
-        "Mass alerting, incident response and business continuity. Public-safety-grade uptime with cross-agency dependencies.",
-      roles: [
-        "Everbridge Critical Event Consultant",
-        "Oracle Disaster Recovery Specialist",
-        "SAP Emergency Management Lead",
-        "Business Continuity Consultant",
-        "Alerting Platform Specialist",
-        "Incident Command Systems Architect",
-        "Resilience Planning Analyst",
-        "Crisis Response Systems Consultant",
-        "Recovery Programme Manager",
-      ],
-    },
-    {
-      id: "cybersecurity-seg",
-      name: "Cybersecurity for Public Services",
-      intro:
-        "Threat detection, IAM and zero-trust for government estates. NCSC / CAF alignment and OFFICIAL-SENSITIVE workloads set the operating context.",
-      roles: [
-        "Palo Alto Networks for Public Sector Consultant",
-        "IBM Security for Government Specialist",
-        "Fortinet Public Sector Lead",
-        "SIEM / Splunk Consultant",
-        "IAM / SailPoint Architect",
-        "Zero Trust Programme Consultant",
-        "NCSC CAF Assessor",
-        "Cloud Security Consultant",
-        "DLP Systems Specialist",
-      ],
-    },
-    {
-      id: "data-ai-seg",
-      name: "Data & AI for Public Services",
-      intro:
-        "Data platform, machine learning and evidence-led policy. GenAI pilots are moving into production faster than the specialist bench can keep up.",
-      roles: [
-        "Google Cloud AI for Public Sector Consultant",
-        "Azure AI for Government Specialist",
-        "Snowflake for Gov Lead",
-        "Databricks Consultant",
-        "Palantir Foundry Consultant",
-        "MLOps Architect",
-        "Data Governance Consultant",
-        "GenAI for Gov Consultant",
-        "Data Ethics Analyst",
-      ],
-    },
-    {
-      id: "reg-compliance-seg",
-      name: "Regulatory Compliance & Governance",
-      intro:
-        "GRC, audit and controls in a public-money environment. NAO / SO / IIA assurance frameworks drive the platform selection.",
-      roles: [
-        "Wolters Kluwer Reg Reporting Consultant",
-        "Thomson Reuters ONESOURCE Specialist",
-        "MetricStream GRC Lead",
-        "Audit Systems Consultant",
-        "Controls Testing Specialist",
-        "Assurance Programme Manager",
-        "Policy Systems Analyst",
-        "GRC Architect",
-        "Reg Change Programme Manager",
-      ],
-    },
-    {
-      id: "it-infra-seg",
-      name: "IT Infrastructure & Operations",
-      intro:
-        "Cloud landing zones, ITSM and platform ops for regulated public-sector environments. Legacy midrange decommissioning stays busy across the year.",
-      roles: [
-        "ServiceNow ITSM Consultant",
-        "BMC Helix Specialist",
-        "MS Endpoint Manager Lead",
-        "AWS / Azure Landing Zone Architect",
-        "Mainframe Modernisation Consultant",
-        "DR / BCM Consultant",
-        "Kubernetes Platform Engineer",
-        "Observability / Splunk Specialist",
-        "Network Modernisation Lead",
-      ],
-    },
-    {
-      id: "procurement-seg",
-      name: "Procurement & Vendor Management",
-      intro:
-        "Frameworks, tenders and third-party risk. Crown Commercial, G-Cloud, DOS and DFT frameworks anchor the sourcing pipeline.",
-      roles: [
-        "SAP Ariba Consultant",
-        "Coupa Procurement Specialist",
-        "Oracle Procurement Cloud Lead",
-        "Framework Bid Consultant",
-        "Contracts Systems Specialist",
-        "Vendor Master Data Consultant",
-        "S2P Programme Manager",
-        "Category Management Analyst",
-        "Sourcing Optimisation Lead",
-      ],
-    },
-    {
-      id: "finance-ops-seg",
-      name: "Accounting & Financial Operations",
-      intro:
-        "Public accounting, appropriations, and consolidated whole-of-government reporting. IFRS + FReM combinations demand experienced consultants.",
-      roles: [
-        "SAP S/4HANA Finance Public Sector Consultant",
-        "Oracle Financials Cloud for Gov Specialist",
-        "MS Dynamics 365 Finance Lead",
-        "Group Consolidation Consultant",
-        "Appropriations Systems Specialist",
-        "Grants Management Systems Consultant",
-        "Public Sector Reporting Analyst",
-        "Financial Systems Architect",
-        "Whole-of-Government Reporting Lead",
-      ],
-    },
-    {
-      id: "hcm-seg",
-      name: "Human Capital Management",
-      intro:
-        "Payroll, workforce planning and pensions across huge headcounts. ESR, SuccessFactors and Workday migrations run continuously.",
-      roles: [
-        "SAP SuccessFactors Consultant",
-        "Oracle HCM Cloud Specialist",
-        "Workday HCM Lead",
-        "ESR / NHS HR Consultant",
-        "Payroll Systems Specialist",
-        "Pensions Systems Consultant",
-        "Workforce Planning Analyst",
-        "HR Data Warehouse Consultant",
-        "Time & Attendance Systems Specialist",
       ],
     },
   ],
