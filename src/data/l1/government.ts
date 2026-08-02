@@ -30,15 +30,23 @@ export const governmentData: L1PageData = {
     "Every citizen-services digital rollout, every ArcGIS-led planning programme, every ServiceNow platform build shares the same failure mode — the implementation depends on the depth of the contractor in the room, and often on their clearance. Generic recruiters place platform names. We place implementation track records inside regulated public-sector environments.",
     "Our bench is assessed by specialists who have delivered inside central government, local authority, defence and public healthcare programmes. We screen for the operating context — procurement frameworks, DDaT roles, GDS service standards, mission-critical uptime — not just certification badges.",
   ],
+  /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
+
+     Canon section 6 requires a source on any published figure, and
+     `L1IntroStatCard.source` exists so that a card without one is a visible
+     omission rather than an invisible one. Neither card carried the field, and
+     no source was ever recorded for either, so they cannot be re-cited. They
+     return only with attribution.
+
+     THIS IS THE CLASS, NOT A FIFTH INSTANCE. R18 deleted a figure of exactly
+     this shape on 1 Aug and the sweep stopped at the page it was reported on.
+     Four sector pages kept theirs: 64%/4-7 wks, 69%/6-8 wks, 63%/5-7 wks and
+     66%/6-9 wks, one per page, on the same sentence template with the number
+     changed. Five capability pages carry a 72% card that STAYS, because it
+     names ManpowerGroup in a source field. The rule is the source, not the
+     figure. The card left below is the one retail, finance and education
+     already carry, word for word. */
   introStatCards: [
-    {
-      n: "64%",
-      l: "of public-sector programme leads report contractor availability — not budget — is the biggest single cause of major-programme slippage.",
-    },
-    {
-      n: "4–7 wks",
-      l: "Average time lost when a cleared specialist is placed without public-sector screening. Yallo's shortlist is in your inbox in 72h.",
-    },
     {
       n: "Contract-first",
       l: "Primary focus is interim and contract deployment. Also available in Permanent, EOR and Managed Delivery models.",
