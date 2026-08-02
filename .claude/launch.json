@@ -18,6 +18,12 @@
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b pnpm dev -p 3002"],
       "port": 3002
+    },
+    {
+      "name": "session-c",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-c pnpm dev -p 3307"],
+      "port": 3307
     }
   ]
 }

@@ -1,0 +1,64 @@
+/* Same register discipline as CaseStudyDetail.module.css: light, left-aligned,
+   no orb, no centred H1. The landing hub carries none of the detail template's
+   dark band — it has no metrics strip, so it has none of canon §5's two-band
+   allowance to spend. */
+
+.page {
+  color: var(--fg);
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 48px);
+}
+
+.hero {
+  padding: clamp(96px, 12vw, 152px) 0 clamp(48px, 6vw, 72px);
+}
+
+.heroInner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 48px);
+  text-align: left;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  background: var(--ground-2);
+  border: 1px solid var(--boundary);
+  border-radius: 999px;
+  margin: 0 0 24px;
+}
+
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  color: var(--fg);
+  margin: 0 0 20px;
+  max-width: 20ch;
+}
+
+.lede {
+  font-size: var(--fs-lede);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 62ch;
+  margin: 0;
+}
+
+.section {
+  padding: clamp(24px, 4vw, 48px) 0 clamp(72px, 9vw, 112px);
+}
