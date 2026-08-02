@@ -1,138 +1,113 @@
-import Link from "next/link";
 import { aiRoleFamily } from "@/data/ai-talent";
-import type { EstateLayer, EstateRail } from "@/data/ai-talent/estate";
 import {
+  type EstateZone,
   estateAssertion,
   estateLayers,
+  estatePlatformDesks,
   estateRails,
   familiesFor,
+  governanceFrameworks,
+  zoneLitFor,
 } from "@/data/ai-talent/estate";
-import styles from "./AiEstateDiagram.module.css";
+import type { EstateZoneId, RoleFamilySlug } from "@/data/ai-talent/stacks";
+import { toolsForZone } from "@/data/ai-talent/stacks";
+import { routeExists } from "@/lib/routes";
+import { AiEstateBand, type EstateModel, type ZoneView } from "./AiEstateBand";
 
 /**
- * The AI estate diagram — context §7.1.
+ * The AI estate band — the desk's single signature, and after round 6 the only
+ * element unique to it besides the role-family structure and the
+ * `adjacentDiscipline` join.
  *
- * Five layers, two cross-cutting rails, and the role-family overlay that is the
- * reason the asset exists. §7.1: "Without it this is a technology poster anybody
- * could draw; with it, it is the only diagram in the category that says who you
- * need where."
+ * It absorbed the stack matrix (decision 2) and the governance band. Those were
+ * three bands over two datasets with two disagreeing groupings and one list
+ * written twice; they are one band over one dataset now.
  *
- * WHY THIS IS NOT ONE <svg>, which is worth stating because §7.1 says "SVG, not
- * raster" and this is neither. The binding constraint in the same paragraph is
- * that at 360px it "stacks vertically with the rails beneath rather than
- * compressing sideways". A single SVG cannot restack: its contents scale with the
- * viewBox, so honouring the reflow inside one SVG means shipping two complete
- * copies of the content in two <g> groups and toggling them, which doubles every
- * string, puts both in the accessibility tree and guarantees they drift.
+ * This file is the server half: it does every derivation and hands
+ * `AiEstateBand` plain data. Nothing about the taxonomy reaches the client
+ * bundle.
  *
- * The instruction's intent is that the diagram be vector and resolution-free
- * rather than an exported image, and that is satisfied: there is no raster asset
- * here, no image element of any kind, every rule is drawn by the browser, and the
- * only geometry that needs to be a shape (the rail span markers) is a CSS gradient
- * hairline. What replaces the SVG canvas is a semantic structure, and that is a
- * gain rather than a compromise: the layers are an ordered list, each layer's
- * staffing overlay is a list of links to the family L2 pages, and a screen reader
- * reads the estate bottom to top in the same order a sighted reader sees it. An
- * SVG would have needed all of that bolted on with aria.
+ * WHY IT IS NOT ONE <svg>, still worth stating. The binding constraint is that
+ * at 360px the band stacks vertically with the rails beneath rather than
+ * compressing sideways. A single SVG cannot restack — its contents scale with
+ * the viewBox — so honouring the reflow inside one SVG means two complete
+ * copies of the content in two <g> groups, which doubles every string, puts
+ * both in the accessibility tree and guarantees they drift. There is no raster
+ * asset here and no image element of any kind; every rule is drawn by the
+ * browser. What replaces the SVG canvas is a semantic structure, and that is a
+ * gain: a screen reader reads the estate in the same order a sighted reader
+ * sees it, which an SVG would have needed bolted on with aria.
  *
- * CONSTRAINTS, all in the stylesheet rather than here:
- *   · Both themes, from tokens only. No hex value appears in either file.
- *   · Gold carries the overlay and nothing else. The rails and layer plates are
- *     drawn with --boundary; the ambient wash is --amb, resolved to the
- *     discipline hue by the page's data-identity.
- *   · Type floor. §7.1 allows 12px; the repo's own check-type-scale gate enforces
- *     13px, which is stricter, so 13px is the floor used.
- *   · Reduced motion. Nothing animates or transforms, so there is nothing to
- *     disable; the one hover colour swap is an interaction cue and is made
- *     instant.
- *   · 360px. A container query, not a viewport query, because the diagram is
- *     placed inside page wrappers of differing widths and what matters is the
- *     space it is actually given.
+ * FORBIDDEN HERE, per §7.2 and R-AI3: no placement count, client, logo,
+ * quotation or date; no claim that Yallo is leading, pioneering or first; no
+ * vendor performance figure; no technology that is not a real, current product.
+ * There are no vendor logos at all, in colour or otherwise.
  *
- * FORBIDDEN HERE, per §7.2: no placement count, client, logo, quotation or date;
- * no claim that Yallo is leading, pioneering or first; no vendor performance
- * figure; and no technology that is not a real, current product. There are no
- * vendor logos at all, in full colour or otherwise.
+ * THE L2 VARIANT is this same component with `family` set (§3.3). It is one
+ * prop and one data path, not a second component and not a separate filtered
+ * list: `toolsForZone` takes the family and `zoneLitFor` answers whether the
+ * zone stays lit. Layers the family does not work at are present and dimmed,
+ * because absence would lose the estate context that is the point of the band.
  */
 
-function StaffingOverlay({ entry }: { entry: EstateLayer | EstateRail }) {
-  const families = familiesFor(entry);
-  /* No families means no overlay, not an empty gold box. A layer nobody staffs
-     would be a real finding and should look like an absence. */
-  if (families.length === 0) return null;
-
-  return (
-    <div className={styles.overlay}>
-      <span className={styles.overlayLabel}>Role families we place here</span>
-      <ul className={styles.overlayList}>
-        {families.map((slug) => {
-          const family = aiRoleFamily(slug);
-          /* A family with no data would be a broken link, so it renders as text.
-             Same rule the insight cards follow: an unbuilt destination renders
-             nothing that looks clickable. */
-          if (!family) return null;
-          return (
-            <li key={slug} className={styles.overlayItem}>
-              <Link href={`/ai-talent/${slug}`} className={styles.overlayLink}>
-                {family.shortName}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+function toZone(
+  zone: EstateZone,
+  family: RoleFamilySlug | null,
+  opts: { desks?: boolean; items?: string[] } = {},
+): ZoneView {
+  const tiers = toolsForZone(zone.id as EstateZoneId, family ?? undefined).map(
+    (t) => ({
+      tier: t.tier,
+      entries: t.entries.map((e) => ({
+        name: e.name,
+        families: e.roleFamilies,
+      })),
+    }),
   );
+
+  const chips = familiesFor(zone)
+    .map((slug) => {
+      const f = aiRoleFamily(slug);
+      /* A family with no data would be a broken link, so it renders nothing.
+         Same rule the insight cards follow: an unbuilt destination never
+         renders something that looks clickable. */
+      return f
+        ? { slug, label: f.shortName, href: `/ai-talent/${slug}` }
+        : null;
+    })
+    .filter((c): c is NonNullable<typeof c> => c !== null);
+
+  return {
+    id: zone.id,
+    name: zone.name,
+    note: zone.note,
+    tiers,
+    chips,
+    items: opts.items,
+    desks: opts.desks ? estatePlatformDesks(routeExists) : undefined,
+    lit: family === null ? true : zoneLitFor(zone, family),
+  };
 }
 
-function Rail({ rail, side }: { rail: EstateRail; side: "left" | "right" }) {
-  return (
-    <div
-      className={`${styles.rail} ${side === "right" ? styles.railRight : ""}`}
-    >
-      <span className={styles.railSpan} aria-hidden="true" />
-      <h4 className={styles.railName}>{rail.name}</h4>
-      <p className={styles.railNote}>{rail.note}</p>
-      <ul className={styles.railList}>
-        {rail.items.map((item) => (
-          <li key={item} className={styles.railItem}>
-            {item}
-          </li>
-        ))}
-      </ul>
-      <StaffingOverlay entry={rail} />
-    </div>
-  );
-}
+export function AiEstateDiagram({ family }: { family?: RoleFamilySlug }) {
+  const f = family ?? null;
 
-export function AiEstateDiagram() {
-  return (
-    <figure className={styles.figure}>
-      <div className={styles.grid}>
-        <Rail rail={estateRails.left} side="left" />
+  const model: EstateModel = {
+    layers: estateLayers.map((zone) =>
+      /* Layer 01 carries the platform desks, derived. Every other layer
+         carries tools. */
+      toZone(zone, f, { desks: zone.id === "systems" }),
+    ),
+    railLeft: toZone(estateRails.left, f),
+    railRight: toZone(estateRails.right, f, {
+      /* Frameworks, not tools: they are neither procured nor engineered, so the
+         §5 tier test does not reach them and they are not `stacks.ts` entries.
+         One list, after round 6 found two copies that disagreed. */
+      items: governanceFrameworks,
+    }),
+    assertion: estateAssertion,
+    family: f,
+  };
 
-        {/* An ordered list, because the layers are an order: the numeral is the
-            layer's position from the bottom, so "01" is the systems of record the
-            whole estate rests on. `reversed` lets the DOM read top-to-bottom
-            while the numbering counts up from the bottom, which is how the
-            diagram is described in prose. */}
-        <ol className={styles.stack} reversed>
-          {estateLayers.map((layer, i) => (
-            <li key={layer.id} className={styles.layer}>
-              <span className={styles.layerIndex} aria-hidden="true">
-                {String(estateLayers.length - i).padStart(2, "0")}
-              </span>
-              <div className={styles.layerBody}>
-                <h4 className={styles.layerName}>{layer.name}</h4>
-                <p className={styles.layerContents}>{layer.contents}</p>
-                <StaffingOverlay entry={layer} />
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        <Rail rail={estateRails.right} side="right" />
-      </div>
-      <figcaption className={styles.caption}>{estateAssertion}</figcaption>
-    </figure>
-  );
+  return <AiEstateBand model={model} />;
 }

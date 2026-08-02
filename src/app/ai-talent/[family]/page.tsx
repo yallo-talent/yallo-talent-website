@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AiEstateDiagram } from "@/components/blocks/ai/AiEstateDiagram";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
@@ -9,7 +10,7 @@ import {
   aiRoleFamilyName,
   aiRoleFamilySlugs,
 } from "@/data/ai-talent";
-import { stacksForFamily } from "@/data/ai-talent/stacks";
+import { stackMatrixAssertion } from "@/data/ai-talent/stacks";
 import { BLUEPRINT_BASE, blueprintArchetype } from "@/data/blueprint";
 import { disciplineLink } from "@/lib/capabilities";
 import { buildMetadata } from "@/lib/seo";
@@ -24,8 +25,10 @@ import { buildMetadata } from "@/lib/seo";
  * and the common mis-hire. They are the reason this page is worth reading, so
  * they sit above the stacks rather than below them.
  *
- * The stacks band reads from the SAME source as the L1 matrix, filtered by this
- * family. A per-page stack list would be the same data written ten times.
+ * The estate band is the SAME COMPONENT as the L1's, with `family` set. Round 6
+ * made that literal: it was previously the same data source rendered by a second
+ * piece of markup, which is one copy short of a per-page stack list and drifts
+ * the same way. One component, one prop.
  *
  * Blueprint cross-links are resolved through `blueprintArchetype`, so a link
  * only renders when the archetype actually exists. That is not defensive
@@ -65,7 +68,6 @@ export default async function AiRoleFamilyPage({
   const f = aiRoleFamily(family);
   if (!f) notFound();
 
-  const stacks = stacksForFamily(f.slug);
   /* Undefined when the family declares no discipline, and also when it declares
      one that does not resolve — an unbuilt sub-desk renders nothing rather than
      a dead link. */
@@ -137,37 +139,34 @@ export default async function AiRoleFamilyPage({
         </div>
       </section>
 
-      {/* 5 — Stacks, filtered from the L1's matrix. */}
-      {stacks.length > 0 ? (
-        <section className={`${styles.section} ${styles.g2}`} id="stacks">
-          <div className={styles.wrap}>
-            <SectionHead
-              eyebrow="Stacks"
-              heading="What we screen this role against."
-              lede="A subset of the full matrix. Naming a stack says we can test for it, not that we have delivered on it."
-              id="stacks-heading"
-            />
-            {stacks.map((g) => (
-              <div key={g.group} className={styles.stackGroup}>
-                <h3 className={styles.stackGroupName}>{g.group}</h3>
-                <ul className={styles.roleChips}>
-                  {g.entries.map((e) => (
-                    <li key={e.name} className="role-pill">
-                      {e.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-            <div className={styles.ctaRow}>
-              <Link className={styles.btnSecondary} href="/ai-talent#ai-stacks">
-                The full matrix
-                <ArrowGlyph />
-              </Link>
-            </div>
-          </div>
-        </section>
-      ) : null}
+      {/* 5 — The estate, filtered to this family (§3.3).
+
+        THE SAME COMPONENT AS THE L1, WITH ONE PROP. Not a second data path and
+        not a separate filtered list: `AiEstateDiagram` takes `family` and passes
+        it through `toolsForZone`, so a tool added on the L1 reaches this page by
+        existing rather than by being copied here.
+
+        Layers this family works at are lit; the rest stay present and dimmed.
+        Absence would be the cheaper rendering and the wrong one — the estate
+        context is the point of the band, and a filtered list of five tools with
+        no estate around them says nothing about where the role sits.
+
+        What this replaces: a "Stacks" band that re-rendered the L1's groups for
+        this family and closed with a link back to the full matrix. The matrix
+        band no longer exists, so that link pointed at a dead anchor the moment
+        decision 2 landed. The estate is the full view now, and it is on the
+        page rather than one navigation away. */}
+      <section className={`${styles.section} ${styles.g2}`} id="stacks">
+        <div className={styles.wrap}>
+          <SectionHead
+            eyebrow="In the estate"
+            heading="Where this role works, and what we screen it against."
+            lede={`The layers this family works at, lit. ${stackMatrixAssertion}`}
+            id="stacks-heading"
+          />
+          <AiEstateDiagram family={f.slug} />
+        </div>
+      </section>
 
       {/* 6 — Seniority. Grades, never rates. */}
       <section className={`${styles.section} ${styles.g2}`} id="seniority">

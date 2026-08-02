@@ -2584,7 +2584,15 @@
   overflow: hidden;
 }
 
-.platformHeroInner {
+/* Content that sits ABOVE a HeroAtmosphere field.
+   `HeroAtmosphere` is `position: absolute; z-index: 0`, which makes a stacking
+   context that paints over any sibling with `z-index: auto` — so a plain
+   `.wrap` beside it disappears under the wash. Every host that mounts the field
+   needs this on its content, and the shells all carry their own version.
+   Renamed from `.platformHeroInner` in round 6: /ai-talent became the second
+   caller and the name said the fix belonged to one page when it belongs to the
+   utility. */
+.aboveAtmosphere {
   position: relative;
   z-index: 2;
 }

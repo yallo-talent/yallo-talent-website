@@ -4,18 +4,14 @@ import { AiEstateDiagram } from "@/components/blocks/ai/AiEstateDiagram";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
-import { L1BottomCta } from "@/components/blocks/l1/L1PageShell";
+import { L1BottomCta, L1StatsStrip } from "@/components/blocks/l1/L1PageShell";
 import { L1SubNav, L1SubNavScope } from "@/components/blocks/l1/L1SubNav";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
-import {
-  aiRoleFamilies,
-  estateBridge,
-  governanceFrameworks,
-  screeningPoints,
-} from "@/data/ai-talent";
-import { stackMatrixAssertion, stacksByGroup } from "@/data/ai-talent/stacks";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
+import { aiRoleFamilies, screeningPoints } from "@/data/ai-talent";
+import { stackMatrixAssertion } from "@/data/ai-talent/stacks";
 import { aiCopy } from "@/data/home/intelligence";
-import { derivePlatformList } from "@/lib/platforms";
+import { homeMetrics } from "@/data/metrics";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -29,9 +25,33 @@ import { buildMetadata } from "@/lib/seo";
  * category page. It is superseded now that the role families and the stack
  * matrix exist as real, ratified content with an L2 page behind each family.
  *
- * Band order is §2 exactly: hero, the gap, the role families, the stack matrix
- * as the dark signature band, how we screen, where AI sits in a programme,
- * governance, ask. One dark band, against the site ceiling of two.
+ * ROUND 6 — three bands became one, and the desk conformed everywhere else.
+ *
+ * The §3.1 inventory rendered this page beside /capabilities/data-analytics and
+ * found the delta nobody had written down: the discipline page renders entirely
+ * from `L1PageShell`, and this one hand-composed seven of its eight bands from
+ * `Home.module.css`, sharing only the sub-nav and the closing CTA. It was not a
+ * variant of the discipline template; it was a separate page wearing the
+ * homepage's stylesheet.
+ *
+ * What changed, in order:
+ *   · The stack matrix band is DELETED (decision 2) and its tools moved onto the
+ *     estate band, which already held the roles they are screened against.
+ *   · The governance band is DELETED and folded into the estate's right rail. It
+ *     was a second copy of the same list, and the two disagreed by one entry
+ *     while both rendered on this page.
+ *   · The hero gained `HeroAtmosphere` and `amb-1`, which every other L1 hero
+ *     has had since B3 and this one never did.
+ *   · The four published metrics arrived, via the same `L1StatsStrip` every
+ *     other L1 uses, so the quarterly refresh reaches this page now.
+ *
+ * Band order: hero, the metrics, the gap, the role families, how we screen, the
+ * estate, ask. Decision 3 leaves the desk exactly three unique elements — the
+ * role-family structure, the `adjacentDiscipline` join on the L2s, and the
+ * estate band — so it is simpler than it was rather than more special.
+ *
+ * No sector rail, per decision 4, and none until per-sector AI evidence exists.
+ * Zero dark bands now that the matrix has gone, against the site ceiling of two.
  *
  * The count is not written down anywhere on this page or in its metadata, and
  * that is R21 rather than vagueness: a tally is what a machine notices about a
@@ -111,15 +131,11 @@ const whyAi = [
 const subNavItems = [
   { id: "ai-gap", label: "The gap" },
   { id: "ai-families", label: "Role families" },
-  { id: "ai-stacks", label: "The stack matrix" },
   { id: "ai-screen", label: "How we screen" },
   { id: "ai-estate", label: "In the estate" },
-  { id: "ai-governance", label: "Governance" },
 ];
 
 export default function AiTalentPage() {
-  const matrix = stacksByGroup();
-
   return (
     /* R4: the discipline's identity hue, declared once. Until this landed, the
        page carrying the paid marketing had no `data-identity` at all, so every
@@ -130,9 +146,22 @@ export default function AiTalentPage() {
        attribute needs an element to sit on. Layout-neutral: these were already
        block children in this order. */
     <div data-identity="ai-talent">
-      {/* 1 — Hero. */}
-      <section className={`${styles.section} ${styles.g1}`}>
-        <div className={styles.wrap}>
+      {/* 1 — Hero. CONFORMED in round 6: `HeroAtmosphere` and `amb-1`, which
+          every other L1 hero has carried since B3 and this one never did. The
+          §3.1 inventory measured the delta on the rendered page — the desk's
+          hero was a bare `.section` with no atmospheric field at all, so the one
+          page carrying the paid marketing opened flatter than the discipline
+          pages it sits beside. The field is deterministic from the slug and
+          takes its tint from --amb, which `data-identity` resolves to mulberry. */}
+      {/* `.section` is already a positioned host for .amb-wash::before, so the
+          field needs nothing added to contain it. */}
+      <section className={`${styles.section} ${styles.g1} amb-wash amb-1`}>
+        <HeroAtmosphere seed="ai-talent" />
+        {/* `.aboveAtmosphere` is not optional decoration: the field is
+            `z-index: 0`, so a bare `.wrap` beside it paints UNDERNEATH the wash.
+            Measured on the first pass — the H1 rendered at roughly the ground's
+            own value and the hero read as empty. */}
+        <div className={`${styles.wrap} ${styles.aboveAtmosphere}`}>
           <p className="eyebrow">{aiCopy.eyebrow}</p>
           <h1 className={styles.heroHeadline}>{aiCopy.heading}</h1>
           <p className={styles.heroLede}>{aiCopy.lede}</p>
@@ -145,6 +174,12 @@ export default function AiTalentPage() {
           </div>
         </div>
       </section>
+
+      {/* 2 — The four published metrics. CONFORMED: a standard L1 band the desk
+          was missing outright. Canon §6's four, from content/metrics.yaml via the
+          same component every other L1 uses, so the quarterly refresh reaches
+          this page too. It did not before. */}
+      <L1StatsStrip metrics={homeMetrics} />
 
       {/* The scope wraps the bar AND everything the bar indexes, which is the
           lesson the platform L1 paid for: `position: sticky` travels inside its
@@ -207,34 +242,20 @@ export default function AiTalentPage() {
           </div>
         </section>
 
-        {/* 4 — The stack matrix. The signature band, and the only dark one. */}
-        <section
-          className={`${styles.section} ${styles.invert} band-invert amb-2 amb-wash`}
-          id="ai-stacks"
-        >
-          <div className={styles.wrap}>
-            <SectionHead
-              eyebrow="The stack matrix"
-              heading="What we screen against, named."
-              lede={stackMatrixAssertion}
-              id="ai-stacks-heading"
-            />
-            {matrix.map((g) => (
-              <div key={g.group} className={styles.stackGroup}>
-                <h3 className={styles.stackGroupName}>{g.group}</h3>
-                <ul className={styles.roleChips}>
-                  {g.entries.map((e) => (
-                    <li key={e.name} className="role-pill">
-                      {e.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* THE STACK MATRIX BAND IS DELETED (decision 2), and the deletion is
+          the round's structural fix rather than a trim.
 
-        {/* 5 — How we screen. Point four is the Claude depth proof, R-AI4: once,
+          It was a second band over the same 44 tools under a second grouping,
+          and the two groupings disagreed: the matrix said "Cloud AI platforms"
+          while the estate band's layer prose named the same products as model
+          hosting. One set of tools under two taxonomies cannot both be true.
+          The tools carry a `layer` and a `tier` now and arrive on the estate
+          band, which is where the roles they are screened against already were.
+
+          `stackMatrixAssertion` did not go with it. R-AI3's line travels with
+          the data it governs, so it leads the merged band below. */}
+
+        {/* 4 — How we screen. Point four is the Claude depth proof, R-AI4: once,
           here, and never in a heading. */}
         <section className={`${styles.section} ${styles.g2}`} id="ai-screen">
           <div className={styles.wrap}>
@@ -251,66 +272,28 @@ export default function AiTalentPage() {
           </div>
         </section>
 
-        {/* 6 — Where AI sits in a programme. The bridge to the platform desks,
-          which is the join a competitor cannot copy without the platform depth
-          underneath it.
+        {/* 5 — The estate. The desk's ONE unique band after round 6, and it now
+          holds everything three bands used to hold between them.
 
-          The estate diagram (§7.1) carries this band now. The row of platform
-          buttons underneath it stays: the diagram names the platforms at its
-          bottom layer but does not link them, and those links are the actual
-          route from this page to the six platform desks. Diagram first, because
-          the overlay is the argument; links after, because that is the exit. */}
+          It absorbed the stack matrix (decision 2) and the governance band. The
+          governance band was the same defect found twice: `governanceFrameworks`
+          held five frameworks, the estate's right rail held four, ISO/IEC 23894
+          was in one copy and not the other, and BOTH rendered on this page. One
+          list now, on the rail it belongs to.
+
+          The row of platform buttons is gone too. It existed because the diagram
+          named the platforms at its bottom layer without linking them; layer 01
+          derives the desks from `platformsIndex` and the names are the links, so
+          the row was a second copy of the same exit. */}
         <section className={`${styles.section} ${styles.g2}`} id="ai-estate">
           <div className={styles.wrap}>
             <SectionHead
               eyebrow="In the estate"
               heading="AI work lands on the platforms you already run."
-              lede="Almost none of this is greenfield. The model layer meets an ERP, a CRM or a data estate, and the people who can hold both are the constraint. Five layers, two concerns that cross all of them, and the role families we place at each."
+              lede={`Almost none of this is greenfield. The model layer meets an ERP, a CRM or a data estate, and the people who can hold both are the constraint. Five layers, two concerns that cross all of them, the tools at each and the role families we place there. ${stackMatrixAssertion}`}
               id="ai-estate-heading"
             />
             <AiEstateDiagram />
-            <ul className={styles.logos}>
-              {/* Name and order from `platformsIndex`. WHICH platforms appear
-                  here stays authored — the estate bridge is a curated set, and
-                  Blue Yonder and Workday are left out on purpose because the AI
-                  data layer does not meet those desks. Only the names of the
-                  ones chosen derive. */}
-              {derivePlatformList(estateBridge, (p) => p.slug).map((p) => (
-                <li key={p.slug}>
-                  <Link
-                    className={styles.btnSecondary}
-                    href={`/platforms/${p.slug}`}
-                  >
-                    {p.name}
-                    <ArrowGlyph />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        {/* 7 — Governance and assurance. Frameworks are NAMED and never
-          interpreted: what any of them obliges is legal advice, and stating a
-          compliance date would be worse. */}
-        <section
-          className={`${styles.section} ${styles.g2}`}
-          id="ai-governance"
-        >
-          <div className={styles.wrap}>
-            <SectionHead
-              eyebrow="Governance and assurance"
-              heading="Governance roles are screened, not assumed."
-              lede="These are the frameworks governance candidates are screened against. Which of them applies to you, and what it obliges, is your counsel's call and not ours."
-              id="ai-governance-heading"
-            />
-            <ul className={styles.roleChips}>
-              {governanceFrameworks.map((f) => (
-                <li key={f} className="role-pill">
-                  {f}
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
       </L1SubNavScope>

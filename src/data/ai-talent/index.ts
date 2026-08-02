@@ -70,34 +70,20 @@ export const screeningPoints = [
 ];
 
 /**
- * Governance frameworks, named accurately and not interpreted.
+ * `governanceFrameworks` MOVED to ./estate.ts in round 6, and the move is the
+ * fix rather than a tidy-up.
  *
- * Context §7 is explicit: present these as what governance roles are screened
- * against. Do NOT summarise what any of them obliges and do NOT state
- * compliance dates. Naming a framework is a fact; explaining its obligations in
- * a marketing band is legal interpretation, which is not ours to publish.
- */
-export const governanceFrameworks = [
-  "EU AI Act",
-  "ISO/IEC 42001",
-  "ISO/IEC 23894",
-  "NIST AI Risk Management Framework",
-  "OWASP Top 10 for LLM Applications",
-];
-
-/**
- * Where AI work lands in the estate — the bridge band to the platform desks.
+ * This file held five frameworks and ./estate.ts's right rail held four —
+ * ISO/IEC 23894 was in one copy and not the other, and both rendered on the
+ * same page, in a governance band and in the estate diagram beside it. One
+ * list now, on the rail it belongs to, and the band carrying the second copy
+ * is deleted.
  *
- * Slugs, not authored names, so a platform rename cannot leave this band
- * pointing at a page that has moved. Informatica is included because the AI
- * data layer is where that desk meets this one.
+ * `estateBridge` is retired in the same pass. It was a curated five-slug subset
+ * with hand-typed platform names, rendered as a row of buttons under the
+ * diagram because the diagram named the platforms without linking them. Layer
+ * 01 derives the desks from `platformsIndex` and the names are the links, so
+ * neither the row nor the list behind it has anything left to do.
  */
-export const estateBridge: Array<{ slug: string; name: string }> = [
-  { slug: "sap", name: "SAP" },
-  { slug: "oracle", name: "Oracle" },
-  { slug: "microsoft", name: "Microsoft" },
-  { slug: "salesforce", name: "Salesforce" },
-  { slug: "informatica", name: "Informatica" },
-];
 
 export type { AiRoleFamily } from "./types";
