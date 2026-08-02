@@ -1124,11 +1124,29 @@ export function L1BottomCta() {
 
 /* ============ READ NEXT ============ */
 function L1ReadNext({ data }: Props) {
-  // Split cross-links into three compact rails: industries | platforms | capabilities
+  /* Four rails: industries | platforms | capabilities | intelligence.
+     The fourth was added by session B on 2 Aug 2026, and it is a silent-drop fix
+     rather than a feature. Three buckets meant any `related` entry whose
+     category was not one of exactly "Industry", "Platform" or "Capability" fell
+     through the if/else chain and rendered nothing at all, while still reading
+     as a shipped cross-link in the data file.
+
+     Measured across every L1 and capability `related` array, it was four links
+     in two files: three "Blueprint" entries on Testing & Quality Engineering,
+     authored and inert since they were written, and one "Intelligence" entry I
+     added to finance an hour earlier for context-finance-depth.md §3, which is
+     how the defect surfaced. Deleting four deliberately authored links would
+     have been the cheaper fix and the wrong one.
+
+     Both labels are accepted into one rail because they name the same
+     destination tree, /intelligence/**, from two authors' vocabularies.
+     Normalising the data to one string instead would leave the next unmatched
+     category silently dropped, which is the actual fault here. */
   const buckets = {
     Industry: [] as typeof data.related,
     Platform: [] as typeof data.related,
     Capability: [] as typeof data.related,
+    Intelligence: [] as typeof data.related,
   };
   // Only rail links whose target exists — the related arrays are authored data
   // and several entries point at pages that were never built.
@@ -1136,11 +1154,14 @@ function L1ReadNext({ data }: Props) {
     if (r.category === "Industry") buckets.Industry.push(r);
     else if (r.category === "Platform") buckets.Platform.push(r);
     else if (r.category === "Capability") buckets.Capability.push(r);
+    else if (r.category === "Blueprint" || r.category === "Intelligence")
+      buckets.Intelligence.push(r);
   }
   const rails: { label: string; items: typeof data.related }[] = [
     { label: "Adjacent industries", items: buckets.Industry },
     { label: "Platforms we staff", items: buckets.Platform },
     { label: "Capabilities we deliver", items: buckets.Capability },
+    { label: "Programme intelligence", items: buckets.Intelligence },
   ].filter((r) => r.items.length > 0);
 
   return (

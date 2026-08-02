@@ -164,6 +164,28 @@ const sap: PlatformNarrative = {
         label: "Data and analytics",
         category: "Capability",
       },
+      /* RETURN LINKS, added 2 Aug 2026 per context-round3-rulings.md §5.5.2.
+         Cloud & Infrastructure, Integration & Middleware and Testing & Quality
+         Engineering each write a link out to SAP; none of the three had a link
+         back. A one-way cross-link is a dead end for the reader coming the other
+         way and it is worth nothing to search. One each, no more: these
+         reciprocate relationships the capability side already asserted rather
+         than inventing new ones. */
+      {
+        href: "/capabilities/cloud-infrastructure",
+        label: "Cloud and infrastructure",
+        category: "Capability",
+      },
+      {
+        href: "/capabilities/integration-middleware",
+        label: "Integration and middleware",
+        category: "Capability",
+      },
+      {
+        href: "/capabilities/testing-quality-engineering",
+        label: "Testing and quality engineering",
+        category: "Capability",
+      },
       {
         href: "/ai-talent",
         label: "AI talent",
@@ -260,6 +282,13 @@ const oracle: PlatformNarrative = {
       {
         href: "/capabilities/data-analytics",
         label: "Data and analytics",
+        category: "Capability",
+      },
+      /* Return link per §5.5.2: Cloud & Infrastructure links out to Oracle and
+         had nothing back. */
+      {
+        href: "/capabilities/cloud-infrastructure",
+        label: "Cloud and infrastructure",
         category: "Capability",
       },
       { href: "/ai-talent", label: "AI talent", category: "Specialism" },
@@ -439,6 +468,24 @@ const salesforce: PlatformNarrative = {
       {
         href: "/capabilities/integration-middleware",
         label: "Integration and middleware",
+        category: "Capability",
+      },
+      /* Return links per §5.5.2. Salesforce was the most one-sided of the seven:
+         Cloud & Infrastructure, Data & Analytics and DevOps & Platform
+         Engineering all link out to it and none had a link back. */
+      {
+        href: "/capabilities/cloud-infrastructure",
+        label: "Cloud and infrastructure",
+        category: "Capability",
+      },
+      {
+        href: "/capabilities/data-analytics",
+        label: "Data and analytics",
+        category: "Capability",
+      },
+      {
+        href: "/capabilities/devops-platform-engineering",
+        label: "DevOps and platform engineering",
         category: "Capability",
       },
       { href: "/ai-talent", label: "AI talent", category: "Specialism" },
