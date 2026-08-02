@@ -801,27 +801,11 @@
    wherever that background was off-white or genuinely dark — the "illegible dark
    blobs". No blend mode can give one tone across a pack like that; only real
    alpha can. */
-.logo img {
-  /* Per-mark height from the build, solved so every mark carries the same INK
-     AREA. A shared cap is the wrong invariant: at 40px a 14:1 wordmark ran 578px
-     wide and swamped the row while square marks read as tiny. */
-  height: var(--markH, 34px);
-  max-width: 100%;
-  width: auto;
-  object-fit: contain;
-  filter: var(--mark-filter);
-  /* Weightier ink. The silhouettes are solid black with true alpha, so opacity
-     IS the ink weight here — no colour shift, just more of it. */
-  /* ORDER 6: full ink. At this size a 5% veil reads as a printing fault rather
-     than as restraint. */
-  opacity: 1;
-  transition: opacity 0.28s var(--ease);
-}
-
-.logo:hover img,
-.logo:focus-within img {
-  opacity: 1;
-}
+/* Sizing and ink now belong to ClientMark.module.css, which is the only place a
+   mark renders. What was here — `height: var(--markH)` plus `filter` plus a
+   `max-width: 100%` — was one of three per-surface copies of the same idea that
+   disagreed with each other, and `.logo img` at (0,1,1) would have quietly
+   outranked the component's own class. The cell below is all this file owns. */
 
 /* Consented client, no logo file supplied. Set, never substituted. */
 /* The NAME, for a mark whose source will not key to one clean ink or cannot
@@ -1938,17 +1922,10 @@
   border-radius: 0 0 0 var(--r-xs);
 }
 
-.axisMark img {
-  max-height: 26px;
-  max-width: 100%;
-  width: auto;
-  object-fit: contain;
-  /* One ink, full strength. Grayscale keeps canon §5's One Marker Rule intact —
-     gold stays the only decorative colour — while 0.9 opacity was making the
-     marks look faded rather than restrained. */
-  filter: var(--mark-flatten);
-  opacity: 1;
-}
+/* The 26px flat cap that used to be here is now the axis surface's ink ceiling
+   in src/lib/mark-scale.ts, where the median can be taken into account. The
+   grayscale ink treatment moved with it, into ClientMark.module.css, so the
+   One Marker Rule is enforced in one place for all three surfaces. */
 
 .axisMarkDrawn {
   display: grid;
@@ -2107,20 +2084,17 @@
 /* No tile. `--paper-2` was a hardcoded LIGHT ground regardless of theme, so on
    dark surfaces every mark sat in a bright rectangle — the white-card problem
    canon §8 names. The mark now sits on the card's own ground. */
+/* The card's mark cell. Height is min-height rather than height: the mark box
+   is solved per card set by src/lib/mark-scale.ts, and a fixed 32px box with a
+   24px max-height inside it was the flat cap that kept the cards out of the
+   normalisation entirely. Ink treatment lives in ClientMark.module.css — the
+   omission here is why these marks rendered as black on a near-black card. */
 .caseLogo {
-  display: grid;
-  place-items: center;
-  height: 32px;
+  min-height: 32px;
   width: fit-content;
   min-width: 72px;
   border-radius: 0 0 0 var(--r-xs);
   margin-bottom: 18px;
-}
-
-.caseLogo img {
-  max-height: 24px;
-  width: auto;
-  object-fit: contain;
 }
 
 .caseMeta {

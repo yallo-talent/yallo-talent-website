@@ -1,0 +1,49 @@
+{
+  "_": [
+    "Mark surface geometry and gate tolerances. Read by src/lib/mark-scale.ts,",
+    "which derives display heights, and by scripts/check-marks.mjs, which gates",
+    "the rendered result. One file because two copies of a threshold drift, and",
+    "a gate whose threshold disagrees with the code it guards passes defects.",
+    "",
+    "inkCap / inkFloor / maxInkWidth are CSS px, and they constrain the INK box,",
+    "not the image box: several assets carry 20-56% of their file as transparent",
+    "padding, which costs nothing to render and must not be charged against the",
+    "mark's legibility.",
+    "",
+    "tolerance is NOT chosen. Each is the tightest band the current assets",
+    "actually satisfy, measured by `pnpm check:marks --sweep` and rounded up one",
+    "0.01 step for sub-pixel headroom. Improve an asset and it can tighten."
+  ],
+  "rail": {
+    "inkCap": 68,
+    "inkFloor": 15,
+    "maxInkWidth": 300,
+    "tolerance": 0.13,
+    "measured": 0.128,
+    "note": "Forced by two marks. Richemont at 14.45:1 sits on the 15px ink floor and still carries 12.6% more ink than the median; Chalhoub and Alshaya are near-square and hit the 68px cell ceiling 12.8% under it. The set needs a 5.16x ink-height range and the cell offers 4.53x. The floor stays at 15 because it is a legibility floor and lowering one to make a gate greener is the gate lying. Dropping it to 12px takes this surface to 0.0%, which is Sumeet's call."
+  },
+  "card": {
+    "inkCap": 32,
+    "inkFloor": 10,
+    "maxInkWidth": 96,
+    "tolerance": 0.02,
+    "measured": 0.004,
+    "note": "The mark box grows from 24px to 32px, which is measured rather than aesthetic: at a 24px cap the five marks now on cards cannot come closer than 27.4% of their median, because the set needs a 3.18x range and 24 over a 10px floor gives 2.4x."
+  },
+  "axis": {
+    "inkCap": 26,
+    "inkFloor": 9,
+    "maxInkWidth": 120,
+    "tolerance": 0.02,
+    "measured": 0.008,
+    "note": "The seven platform vectors reach the band inside the existing 26px box, so the box is unchanged."
+  },
+  "entity": {
+    "inkCap": 40,
+    "inkFloor": 12,
+    "maxInkWidth": 200,
+    "tolerance": 0.02,
+    "measured": 0,
+    "note": "A single mark on a case-study page. A set of one is its own median, so there is nothing to normalise against and the cap governs."
+  }
+}

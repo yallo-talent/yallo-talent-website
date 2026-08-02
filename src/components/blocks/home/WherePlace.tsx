@@ -4,9 +4,9 @@ import { sectorRegistry } from "@/data/l1/registry";
 import { publishedPlatformSlugs } from "@/data/platforms/derive";
 import { derivePlatformList } from "@/lib/platforms";
 import { deriveSectorList } from "@/lib/sectors";
+import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
 import { RoleGlyph } from "./icons";
-import { LogoImage } from "./LogoImage";
 import { SectionHead } from "./SectionHead";
 
 /**
@@ -49,11 +49,19 @@ export function WherePlace() {
                   The flag left in the data is now inert, the same way the
                   authored sector names beneath it are. The scope line, the mark
                   and the module list stay authored. */}
-              {derivePlatformList(platforms, (p) => p.slug).map((p) => {
-                const published = publishedPlatformSlugs().includes(p.slug);
-                const body = (
-                  <div className={styles.axisItem}>
-                    {/* R9: a keyed silhouette or the vendor's NAME — never a
+              {derivePlatformList(platforms, (p) => p.slug).map(
+                (p, _i, all) => {
+                  const published = publishedPlatformSlugs().includes(p.slug);
+                  /* The axis's own mark set. These are full-colour vendor vectors
+                   rather than keyed silhouettes, and several carry 20-46% of
+                   their viewBox as padding, so they need normalising against
+                   each other and not against the client rail. */
+                  const markSet = all
+                    .map((q) => q.mark)
+                    .filter((mark): mark is string => Boolean(mark));
+                  const body = (
+                    <div className={styles.axisItem}>
+                      {/* R9: a keyed silhouette or the vendor's NAME — never a
                         padded box.
 
                         BOTH variants are aria-hidden. My previous comment here
@@ -66,38 +74,47 @@ export function WherePlace() {
                         key. The visual substitute is a substitute for the MARK,
                         which was already decorative; the label beside it is what
                         carries the name to AT. */}
-                    {p.mark ? (
-                      <span className={styles.axisMark} aria-hidden="true">
-                        <LogoImage src={p.mark} width={44} height={22} />
+                      {p.mark ? (
+                        <ClientMark
+                          src={p.mark}
+                          name={p.name}
+                          surface="axis"
+                          set={markSet}
+                          decorative
+                          className={styles.axisMark}
+                        />
+                      ) : (
+                        <span
+                          className={styles.axisMarkName}
+                          aria-hidden="true"
+                        >
+                          {p.name}
+                        </span>
+                      )}
+                      <span>
+                        <span className={styles.axisName}>{p.name}</span>
+                        <span className={styles.axisModules}>{p.modules}</span>
                       </span>
-                    ) : (
-                      <span className={styles.axisMarkName} aria-hidden="true">
-                        {p.name}
-                      </span>
-                    )}
-                    <span>
-                      <span className={styles.axisName}>{p.name}</span>
-                      <span className={styles.axisModules}>{p.modules}</span>
-                    </span>
-                  </div>
-                );
-                return (
-                  <li key={p.slug}>
-                    {published ? (
-                      <Link
-                        className={styles.axisLink}
-                        href={`/platforms/${p.slug}`}
-                      >
-                        {body}
-                      </Link>
-                    ) : (
-                      <div className={styles.unbuilt} aria-disabled="true">
-                        {body}
-                      </div>
-                    )}
-                  </li>
-                );
-              })}
+                    </div>
+                  );
+                  return (
+                    <li key={p.slug}>
+                      {published ? (
+                        <Link
+                          className={styles.axisLink}
+                          href={`/platforms/${p.slug}`}
+                        >
+                          {body}
+                        </Link>
+                      ) : (
+                        <div className={styles.unbuilt} aria-disabled="true">
+                          {body}
+                        </div>
+                      )}
+                    </li>
+                  );
+                },
+              )}
             </ul>
           </div>
 

@@ -1,0 +1,74 @@
+/* The one mark treatment. Every client, integrator and vendor mark on the site
+   renders through ClientMark.tsx and therefore through this file.
+
+   There is exactly one visual decision in here and it is theme-driven, not
+   surface-driven: a keyed silhouette takes --mark-filter, a full-colour vendor
+   vector takes --mark-flatten. Both resolve to one monochrome ink per register,
+   declared once in globals.css Layer 1. Surfaces vary the BOX, never the ink —
+   which is what stops a second mark treatment appearing the next time a surface
+   needs a mark. */
+
+.mark {
+  display: grid;
+  place-items: center;
+  /* Transparent padding inside a mark file must not push its neighbours around:
+     Wipro's asset is 56.4% padding and Workday's 46.0%, so the image box is
+     routinely larger than the ink it carries. The ink box is what is normalised
+     and what the eye measures, so the image box is allowed past the cell edge
+     where the difference is empty pixels. */
+  overflow: visible;
+}
+
+.img {
+  /* Solved per surface by src/lib/mark-scale.ts from the mark's measured ink
+     area against the set median. Never a hand-written per-logo value: two
+     earlier rounds fixed this by tuning individual widths and it came back
+     both times.
+
+     BOTH axes are pinned, and `width: auto` is the bug it replaces. next/image
+     needs integer width and height attributes, and with width:auto the browser
+     derives the painted width from THOSE rounded integers rather than from the
+     file. On the platform axis that rounded 1035x512 to 19x9, an aspect of
+     2.111 against the true 2.021, and inflated SAP's rendered ink by 5.2% —
+     a mark failing its own normalisation by way of a rounding error in the
+     attribute the optimiser reads. Pinning width removes the dependency. */
+  height: var(--mark-h);
+  width: var(--mark-w);
+  max-width: none;
+  object-fit: contain;
+}
+
+/* A keyed silhouette: solid black ink with true alpha, so one filter per
+   register is the entire treatment. None on light leaves black ink; invert on
+   dark makes it white and preserves the alpha. */
+.silhouette {
+  filter: var(--mark-filter);
+}
+
+/* A full-colour vendor vector. Grayscale keeps canon §5's One Marker Rule
+   intact, so gold stays the only decorative colour on the page. */
+.vector {
+  filter: var(--mark-flatten);
+}
+
+/* Consented client, no mark asset. Canon §8: the NAME, set in the display face
+   at the same optical rank as the silhouettes — never a padded box, never a
+   redrawn mark, never a substituted one. */
+.wordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-medium);
+  color: var(--text-2);
+  letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.15;
+  opacity: 0.95;
+}
+
+/* On a card the name sits in the card's own label rank rather than the rail's
+   display rank, because it shares the box with a title two lines below it. */
+.card .wordmark,
+.axis .wordmark,
+.entity .wordmark {
+  font-size: var(--fs-body);
+}
