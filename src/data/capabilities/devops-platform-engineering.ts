@@ -441,6 +441,24 @@ export const devopsPlatformEngineeringData: L1PageData = {
     "A bank's change control, a retailer's peak trading freeze or a telco's scale changes which platform specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [
     {
+      id: "retail",
+      name: "Retail & Consumer",
+      intro:
+        "Peak trading readiness, store estate release management and e-commerce scale for retail programmes.",
+      roles: [
+        "Site Reliability Engineer",
+        "Kubernetes Engineer",
+        "Observability Engineer",
+      ],
+    },
+    {
+      id: "manufacturing",
+      name: "Manufacturing & Logistics",
+      intro:
+        "Plant-adjacent systems, ERP release trains and operational automation for manufacturing programmes.",
+      roles: ["Release Manager", "DevOps Engineer", "Automation Engineer"],
+    },
+    {
       id: "finance",
       name: "Banking & Financial Services",
       intro:
@@ -452,14 +470,25 @@ export const devopsPlatformEngineeringData: L1PageData = {
       ],
     },
     {
-      id: "retail",
-      name: "Retail & Consumer",
+      id: "government",
+      name: "Government & Public Sector",
       intro:
-        "Peak trading readiness, store estate release management and e-commerce scale for retail programmes.",
+        "Cloud landing zones, service reliability and change governance for central and local government programmes.",
+      roles: [
+        "Cloud Platform Engineer",
+        "Infrastructure as Code Engineer",
+        "ServiceNow Developer",
+      ],
+    },
+    {
+      id: "healthcare",
+      name: "Healthcare & Life Sciences",
+      intro:
+        "Clinical system availability, validated environments and controlled release for healthcare programmes.",
       roles: [
         "Site Reliability Engineer",
-        "Kubernetes Engineer",
-        "Observability Engineer",
+        "Release Manager",
+        "Platform Engineer",
       ],
     },
     {
@@ -474,32 +503,14 @@ export const devopsPlatformEngineeringData: L1PageData = {
       ],
     },
     {
-      id: "government",
-      name: "Public Sector",
+      id: "education",
+      name: "Education & Universities",
       intro:
-        "Cloud landing zones, service reliability and change governance for central and local government programmes.",
+        "Release trains that have to clear a fixed academic calendar, shared platform teams across campuses and environment management for institutional systems.",
       roles: [
-        "Cloud Platform Engineer",
-        "Infrastructure as Code Engineer",
-        "ServiceNow Developer",
-      ],
-    },
-    {
-      id: "manufacturing",
-      name: "Manufacturing & Logistics",
-      intro:
-        "Plant-adjacent systems, ERP release trains and operational automation for manufacturing programmes.",
-      roles: ["Release Manager", "DevOps Engineer", "Automation Engineer"],
-    },
-    {
-      id: "healthcare",
-      name: "Healthcare & Life Sciences",
-      intro:
-        "Clinical system availability, validated environments and controlled release for healthcare programmes.",
-      roles: [
+        "Platform Engineer",
         "Site Reliability Engineer",
         "Release Manager",
-        "Platform Engineer",
       ],
     },
   ],

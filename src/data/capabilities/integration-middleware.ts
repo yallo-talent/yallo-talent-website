@@ -360,13 +360,6 @@ export const integrationMiddlewareData: L1PageData = {
       roles: ["Integration Architect", "EDI and B2B Analyst", "Kafka Engineer"],
     },
     {
-      id: "finance",
-      name: "Banking & Financial Services",
-      intro:
-        "Payment interfaces, open banking APIs and core banking integration for financial services programmes.",
-      roles: ["API Architect", "Integration Architect", "APIM Engineer"],
-    },
-    {
       id: "manufacturing",
       name: "Manufacturing & Logistics",
       intro:
@@ -376,6 +369,20 @@ export const integrationMiddlewareData: L1PageData = {
         "EDI and B2B Analyst",
         "Middleware Administrator",
       ],
+    },
+    {
+      id: "finance",
+      name: "Banking & Financial Services",
+      intro:
+        "Payment interfaces, open banking APIs and core banking integration for financial services programmes.",
+      roles: ["API Architect", "Integration Architect", "APIM Engineer"],
+    },
+    {
+      id: "government",
+      name: "Government & Public Sector",
+      intro:
+        "Cross-department data exchange, citizen service APIs and legacy system integration for government programmes.",
+      roles: ["Integration Architect", "APIM Engineer", "API Architect"],
     },
     {
       id: "healthcare",
@@ -389,13 +396,6 @@ export const integrationMiddlewareData: L1PageData = {
       ],
     },
     {
-      id: "government",
-      name: "Public Sector",
-      intro:
-        "Cross-department data exchange, citizen service APIs and legacy system integration for government programmes.",
-      roles: ["Integration Architect", "APIM Engineer", "API Architect"],
-    },
-    {
       id: "telco",
       name: "Telco & Media",
       intro:
@@ -404,6 +404,17 @@ export const integrationMiddlewareData: L1PageData = {
         "Event Streaming Architect",
         "Kafka Engineer",
         "Integration Architect",
+      ],
+    },
+    {
+      id: "education",
+      name: "Education & Universities",
+      intro:
+        "Student record to learning platform interfaces, admissions handover into enrolment and statutory reporting feeds for institutional programmes.",
+      roles: [
+        "Integration Architect",
+        "Integration Developer",
+        "API Architect",
       ],
     },
   ],
