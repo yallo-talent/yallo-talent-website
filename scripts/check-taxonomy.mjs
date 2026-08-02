@@ -318,6 +318,101 @@ for (const slug of indexSlugs) {
 }
 notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
 
+/* ---------------------------------------------------------------------------
+   Rule 5. Nothing writes a sector label. The SECTOR taxonomy derives.
+
+   The sixth hand-copied taxonomy of the round was the "where we deploy" rail,
+   and it managed to be wrong three ways at once: a different order from the mega
+   menu, "Public Sector" where the menu says "Government & Public Sector", and
+   the singular "Life Science" where the menu says the plural. One cause. Rule 2
+   above already does this for disciplines; sectors needed the same.
+
+   What is asserted: outside the index, no file writes a sector's display label
+   as a literal. Order is not checked because it can no longer be expressed —
+   every surface renders `sectorNavEntries()` or `deriveSectorRail()`, and
+   neither takes an order.
+
+   The `short` forms ("Retail", "Banking") are NOT sector labels and are not
+   checked: they are the breadcrumb and sidebar register, minted by
+   `taxonomyLabels` from the same index.
+   --------------------------------------------------------------------------- */
+{
+  const idxSrc = readFileSync(join("src", "data", "l1", "index.ts"), "utf8");
+  const indBlock = idxSrc.slice(
+    idxSrc.indexOf("export const industriesIndex"),
+    idxSrc.indexOf("export const platformsIndex"),
+  );
+  const sectorLabels = [
+    ...indBlock.matchAll(/label:\s*"([^"]+)"\s*as TaxonomyLabel/g),
+  ].map((m) => m[1]);
+
+  /* Files allowed to name a sector, each with its reason. Data files that
+     AUTHOR per-sector prose are not on this list and do not need to be: the
+     rule matches a label in a `label:`/`name:` position, which is the
+     taxonomy-copy shape, not prose that happens to mention retail. */
+  const SECTOR_LABEL_ALLOWED = [
+    ["src/data/l1/index.ts", "the index itself, the single source"],
+    ["src/lib/sectors.ts", "the derivation, which names none of them"],
+    ["scripts/", "the rules that document the rule"],
+  ];
+
+  /* RENDERING code fails. DATA files are reported by name and do not fail yet,
+     and that split is deliberate rather than a softened rule.
+
+     Every rendering surface now derives, so a label sitting in a data file is
+     already inert — `deriveSectorRail` overwrites `name` from the index before
+     it paints, and the rail cannot disagree with the menu whatever the data
+     says. What is left in src/data is dead copy to be swept, and the sweep
+     belongs to the session that owns those files and is mid-way through adding
+     the seventh sector to them. Failing on it here would hand that session a
+     red gate for work this one is not allowed to do.
+
+     Promote to a failure once the sweep lands. The list below is the handover. */
+  const dataCopies = [];
+  for (const file of allFiles) {
+    if (SECTOR_LABEL_ALLOWED.some(([p]) => file.startsWith(p))) continue;
+    const lines = readFileSync(file, "utf8").split("\n");
+    lines.forEach((line, i) => {
+      if (isComment(line)) return;
+      for (const label of sectorLabels) {
+        /* A label in a label:/name:/title: position is a copy of the taxonomy.
+           The same words inside a sentence are prose and are left alone. */
+        if (
+          new RegExp(
+            `\\b(label|name|title|short)\\s*:\\s*"${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`,
+          ).test(line)
+        ) {
+          const hit =
+            `${file}:${i + 1}  writes the sector label "${label}".\n` +
+            `      Sector labels and order derive from industriesIndex, via sectorNavEntries()\n` +
+            `      or deriveSectorRail(). A label typed here does not move when the index does,\n` +
+            `      which is how the rail came to disagree with the mega menu three ways at once.\n` +
+            `      ${line.trim().slice(0, 90)}`;
+          if (file.startsWith("src/data/")) dataCopies.push(`${file}:${i + 1}`);
+          else failures.push(hit);
+        }
+      }
+    });
+  }
+  notes.push(`${sectorLabels.length} sector labels, none written in rendering code.`);
+  if (dataCopies.length) {
+    const byFile = new Map();
+    for (const c of dataCopies) {
+      const f = c.slice(0, c.lastIndexOf(":"));
+      byFile.set(f, (byFile.get(f) ?? 0) + 1);
+    }
+    console.log(
+      `\n${dataCopies.length} inert sector label(s) still written into src/data, across ${byFile.size} file(s).\n` +
+        "Not a failure: every rendering surface derives, so these no longer reach a page.\n" +
+        "They are dead copy for the data session to sweep, after which this becomes a failure.\n" +
+        [...byFile]
+          .sort((a, b) => b[1] - a[1])
+          .map(([f, n]) => `  ${n.toString().padStart(2)}  ${f}`)
+          .join("\n"),
+    );
+  }
+}
+
 /* --------------------------------------------------------------------------- */
 if (failures.length > 0) {
   console.error(`\ncheck-taxonomy FAILED with ${failures.length} problem(s):\n`);

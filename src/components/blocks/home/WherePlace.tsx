@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { placeCopy, platforms, sectors } from "@/data/home/place";
+import { deriveSectorList } from "@/lib/sectors";
 import styles from "./Home.module.css";
 import { RoleGlyph } from "./icons";
 import { LogoImage } from "./LogoImage";
@@ -87,7 +88,13 @@ export function WherePlace() {
           <div>
             <p className={styles.axisLabel}>{placeCopy.sectorsLabel}</p>
             <ul className={styles.axisList}>
-              {sectors.map((s) => {
+              {/* Order and label from the sector index, not from place.ts.
+                  This rail carried its own copy of the taxonomy and its own
+                  order, which put Manufacturing third where the mega menu puts
+                  it second. The scope line, the icon and the published flag
+                  stay authored — they are real per-card content and exist
+                  nowhere else. §4.3. */}
+              {deriveSectorList(sectors, (s) => s.slug).map((s) => {
                 /* Same body either way, so the two branches cannot drift. */
                 const body = (
                   <div className={styles.axisItem}>

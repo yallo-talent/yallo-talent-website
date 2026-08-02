@@ -8,6 +8,7 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
+import { deriveSectorRail } from "@/lib/sectors";
 import styles from "./L1PageShell.module.css";
 import { L1SubNav, L1SubNavScope } from "./L1SubNav";
 import { l1Icons } from "./l1-icons";
@@ -447,89 +448,15 @@ export function L1HowWeWork({ noun }: { noun: string }) {
   );
 }
 
-/* ============ CROSS-SECTOR ADVANTAGE ============ */
-const crossSectorLinks: {
-  slug: string;
-  label: string;
-  copy: string;
-}[] = [
-  {
-    slug: "retail",
-    label: "Retail & Consumer",
-    copy: "Omnichannel fulfilment, CX and unit-economics discipline",
-  },
-  {
-    slug: "manufacturing",
-    label: "Manufacturing & Logistics",
-    copy: "Shop-floor execution, PLM and network planning",
-  },
-  {
-    slug: "finance",
-    label: "Banking & FS",
-    copy: "Regulated delivery, risk models and controls",
-  },
-  {
-    slug: "government",
-    label: "Government & Public Sector",
-    copy: "GDS service design, cleared delivery and case management",
-  },
-  {
-    slug: "healthcare",
-    label: "Healthcare & Life Sciences",
-    copy: "HIPAA / GxP delivery, EHR and clinical trials",
-  },
-  {
-    slug: "telco",
-    label: "Telco & Media",
-    copy: "OSS/BSS, 5G rollout and carrier-grade uptime",
-  },
-];
+/* CROSS-SECTOR ADVANTAGE, removed 2 Aug 2026.
 
-function _L1CrossSector({ data }: Props) {
-  const others = crossSectorLinks.filter((s) => s.slug !== data.slug);
-  const sector = data.sectorNoun;
-  return (
-    <section className={styles.xsec}>
-      <div className={styles.wrap}>
-        <div className={styles.xsecHead}>
-          <div className={styles.eyebrow}>Cross-sector advantage</div>
-          <h2 className={styles.h2}>
-            Why a multi-industry bench matters for{" "}
-            <span className={styles.heroEmphasis}>
-              your {sector} programme.
-            </span>
-          </h2>
-          <p className={styles.sub}>
-            Yallo Talent runs a single bench across six industries. The
-            operating patterns from one sector routinely transfer to another —
-            regulated-industry rigour into retail, manufacturing supply-chain
-            discipline into F&B, banking risk models into public healthcare.
-            When you brief us, you get the pattern library, not just the
-            platform match.
-          </p>
-        </div>
-        <div className={styles.xsecGrid}>
-          {others.map((s) => (
-            <Link
-              key={s.slug}
-              href={`/industries/${s.slug}`}
-              className={styles.xsecCard}
-            >
-              <div className={styles.xsecCardGlow} aria-hidden="true" />
-              <div className={styles.xsecCardInner}>
-                <span className={styles.xsecCardLabel}>{s.label}</span>
-                <span className={styles.xsecCardCopy}>{s.copy}</span>
-                <span className={styles.xsecCardArrow} aria-hidden="true">
-                  →
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+   `_L1CrossSector` was unreferenced — underscore-prefixed, no caller — and it
+   carried its own hand-typed array of the six sectors, with its own labels
+   ("Banking & FS") and its own order. A seventh hand-copied taxonomy, invisible
+   because it never rendered, and it would have shipped a stale sector list the
+   moment anyone re-enabled it. Deleted rather than derived: dead code that
+   derives is still dead code. If the section returns it takes its order and
+   labels from `sectorNavEntries` like every other surface. */
 
 /* ============ SCARCE TALENT ============ */
 function L1ScarceTalent({ data }: Props) {
@@ -840,9 +767,25 @@ function L1Expertise({ data }: Props) {
 
 /* ============ SEGMENTS ============ */
 function L1Segments({ data }: Props) {
-  const [active, setActive] = useState(data.segments[0]?.id ?? "");
-  const activeIdx = data.segments.findIndex((s) => s.id === active);
-  const activeSeg = data.segments[activeIdx >= 0 ? activeIdx : 0];
+  /* Order and label derive from the sector index, and this is the fix for
+     three defects at once rather than for the one that was reported. The rail
+     shipped in a different order from the mega menu, with "Public Sector" where
+     the menu says "Government & Public Sector" and the singular "Life Science"
+     where the menu says the plural. One cause: the list was hand-copied into
+     each capability's data file, six times, so it could disagree three ways.
+
+     Only the name and the order derive. The intro and the roles on each segment
+     stay authored, because they are genuinely per-page and are the reason the
+     rail exists at all. A page whose segments are its own sub-markets rather
+     than sectors — retail's fnb, electronics, textile — passes through
+     untouched, so this is applied unconditionally.
+
+     A seventh sector renders here the moment it is added to the index. Nothing
+     in this component knows how many there are. */
+  const segments = deriveSectorRail(data.segments);
+  const [active, setActive] = useState(segments[0]?.id ?? "");
+  const activeIdx = segments.findIndex((s) => s.id === active);
+  const activeSeg = segments[activeIdx >= 0 ? activeIdx : 0];
   if (!activeSeg) return null;
 
   return (
@@ -891,14 +834,14 @@ function L1Segments({ data }: Props) {
                       : e.key === "Home"
                         ? -activeIdx
                         : e.key === "End"
-                          ? data.segments.length - 1 - activeIdx
+                          ? segments.length - 1 - activeIdx
                           : 0;
                 if (delta === 0) return;
                 e.preventDefault();
                 const next =
-                  (activeIdx + delta + data.segments.length) %
-                  data.segments.length;
-                const target = data.segments[next];
+                  (activeIdx + delta + segments.length) %
+                  segments.length;
+                const target = segments[next];
                 if (!target) return;
                 setActive(target.id);
                 document
@@ -906,7 +849,7 @@ function L1Segments({ data }: Props) {
                   ?.focus();
               }}
             >
-              {data.segments.map((s) => {
+              {segments.map((s) => {
                 const isActive = s.id === activeSeg.id;
                 return (
                   <div

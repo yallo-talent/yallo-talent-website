@@ -37,6 +37,19 @@ export interface L1IndexEntry {
   href?: string;
 }
 
+/**
+ * ORDER IS CANONICAL, and this is the only place the order exists.
+ *
+ * §4.3, 2 Aug 2026: the mega menu's order is canonical, and it is now read from
+ * here rather than typed there. Retail & Consumer · Manufacturing & Logistics ·
+ * Banking & Financial Services · Government & Public Sector · Healthcare & Life
+ * Sciences · Telco & Media, then Education & Universities when it lands.
+ *
+ * Reordering this array reorders the mega menu, the footer and every "where we
+ * deploy" rail. No surface expresses a sector order of its own — see
+ * src/lib/sectors.ts — which is what stops the rail disagreeing with the menu
+ * for a seventh time.
+ */
 export const industriesIndex: L1IndexEntry[] = [
   {
     slug: "retail",
@@ -44,6 +57,13 @@ export const industriesIndex: L1IndexEntry[] = [
     short: "Retail" as TaxonomyLabel,
     category: "industries",
     tagline: "Commerce, POS and supply-chain talent for retail programmes.",
+  },
+  {
+    slug: "manufacturing",
+    label: "Manufacturing & Logistics" as TaxonomyLabel,
+    short: "Manufacturing" as TaxonomyLabel,
+    category: "industries",
+    tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
   },
   {
     slug: "finance",
@@ -58,13 +78,6 @@ export const industriesIndex: L1IndexEntry[] = [
     short: "Government" as TaxonomyLabel,
     category: "industries",
     tagline: "Digital government, smart-services and citizen-facing platforms.",
-  },
-  {
-    slug: "manufacturing",
-    label: "Manufacturing & Logistics" as TaxonomyLabel,
-    short: "Manufacturing" as TaxonomyLabel,
-    category: "industries",
-    tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
   },
   {
     slug: "healthcare",

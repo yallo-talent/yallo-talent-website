@@ -1,5 +1,6 @@
 import { capabilityNavEntries } from "@/data/capabilities";
 import { capabilitiesIndex } from "@/data/l1/index";
+import { sectorNavEntries } from "@/lib/sectors";
 
 export interface NavItem {
   label: string;
@@ -60,6 +61,30 @@ const capabilityNavItems: NavItem[] = capabilityNavEntries(
   ...(published ? {} : { published: false }),
 }));
 
+/**
+ * The Industries column, derived the same way, and for a sharper reason.
+ *
+ * This column WAS the canonical order — the "where we deploy" rail was ruled
+ * wrong for disagreeing with it — and it still carried a hand-typed list, which
+ * made it authoritative and unenforceable at the same time. It also carried
+ * "Healthcare & Life Science", the singular, against the plural everywhere else.
+ * Now the order and every label come from `industriesIndex`, so the canonical
+ * order is a fact about the index rather than about this file, and the two
+ * cannot say different things.
+ *
+ * Education & Universities was the hand-written `published: false` entry here.
+ * It is no longer written down: `sectorNavEntries` reads the registry, so the
+ * sector renders as non-interactive text until its page exists and becomes a
+ * link on the commit that adds it.
+ */
+const sectorNavItems: NavItem[] = sectorNavEntries().map(
+  ({ label, href, published }) => ({
+    label,
+    href,
+    ...(published ? {} : { published: false }),
+  }),
+);
+
 export const primaryNav: NavGroup[] = [
   {
     label: "Specialisms",
@@ -118,39 +143,7 @@ export const primaryNav: NavGroup[] = [
          is now unpublished, so the merge also removes a would-be dead link. */
       {
         heading: "Industries",
-        items: [
-          {
-            label: "Retail & Consumer",
-            href: "/industries/retail",
-          },
-          {
-            label: "Manufacturing & Logistics",
-            href: "/industries/manufacturing",
-          },
-          {
-            label: "Banking & Financial Services",
-            href: "/industries/finance",
-          },
-          {
-            label: "Government & Public Sector",
-            href: "/industries/government",
-          },
-          {
-            label: "Healthcare & Life Science",
-            href: "/industries/healthcare",
-          },
-          {
-            label: "Telco & Media",
-            href: "/industries/telco",
-          },
-          {
-            /* 7th industry, behind the Yallo AI Academy push into education.
-               No route yet. */
-            label: "Education & Universities",
-            href: "/industries/education",
-            published: false,
-          },
-        ],
+        items: sectorNavItems,
       },
     ],
     featured: {

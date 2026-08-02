@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { sectorNavEntries } from "@/lib/sectors";
 import styles from "./Footer.module.css";
 import { Lockup } from "./Lockup";
 
@@ -9,14 +10,19 @@ const serviceLinks = [
   { label: "Managed Delivery", href: "/managed-delivery" },
 ];
 
-const industryLinks = [
-  { label: "Retail & Consumer", href: "/industries/retail" },
-  { label: "Financial Services", href: "/industries/finance" },
-  { label: "Manufacturing", href: "/industries/manufacturing" },
-  { label: "Healthcare", href: "/industries/healthcare" },
-  { label: "Government", href: "/industries/government" },
-  { label: "Telco", href: "/industries/telco" },
-];
+/**
+ * Derived, like the mega menu and the sector rail. This list was a fourth copy
+ * of the sector taxonomy and it had drifted into its own register — "Retail &
+ * Consumer" in full beside "Financial Services", "Telco" and "Government" — so
+ * the footer named three sectors differently from every other surface.
+ *
+ * Unpublished sectors are filtered rather than rendered as inert text: a footer
+ * is a link list, and canon bans a coming-soon state. A sector appears here on
+ * the commit that gives it a page.
+ */
+const industryLinks = sectorNavEntries()
+  .filter((s) => s.published)
+  .map(({ label, href }) => ({ label, href }));
 
 const quickLinks = [
   { label: "About Yallo", href: "/about" },
