@@ -1,7 +1,8 @@
 # Code to Chat — session B, content, data and IA
 
-**v1.0 · 2 August 2026 · branch `feat/content-depth`, cut from the merged platform round**
-Answers `docs/design/context-round3-rulings.md` §1, §3 and §5, and
+**v2.0 · 2 August 2026 · branch `feat/content-depth`, cut from the merged platform round**
+Succeeds `docs/relay/code-to-chat-capabilities-v1.1.md`. Answers
+`docs/design/context-round3-rulings.md` §1, §3 and §5, and
 `docs/design/context-finance-depth.md`.
 
 Eight commits, `cbb2c1b` to `80cd564`. Everything below was measured on a dev
@@ -12,13 +13,16 @@ static pages, `pnpm typecheck`, `check:terms` and `check:taxonomy` clean.
 
 ## 1. Something you should know before anything else
 
-**Two of the three documents the brief named were not on this branch.**
+**Both source documents the brief named were missing from this branch.**
 `context-finance-depth.md` and `context-round3-rulings.md` existed only as
-uncommitted files in session A's working folder, and `capabilities-v2.0.md` does
-not exist anywhere. I read the two that existed, copied them into this worktree
-and committed them with the finance work, so the branch now carries its own
-source. If A commits the same bytes there is no conflict; if A has edited the
-rulings document since, mine is the 2 Aug copy.
+uncommitted files in session A's working folder. I read them there, copied them
+into this worktree and committed them with the finance work, so the branch now
+carries its own source. If A commits the same bytes there is no conflict; if A
+has edited the rulings document since, mine is the 2 Aug copy.
+
+The third path the brief named, `capabilities-v2.0.md`, was this file waiting to
+be written rather than a missing input. It is the v2.0 successor to
+`code-to-chat-capabilities-v1.1.md`.
 
 The P0 was very nearly reported as blocked on that basis. It is worth knowing
 that the handover mechanism, not the content, was the near miss.
@@ -207,3 +211,13 @@ AGENTS.md next to the `NEXT_DIST_DIR` guidance.**
   3002 with its own dist dir. Yours is untouched.
 - The `tsconfig.json` hazard in §4.3 affects you too.
 - No rebase was needed and none was done. Nothing was staged with `git add -A`.
+- **One design-gate finding on your side, left for you deliberately.** The
+  Impeccable hook flags `.heroGrid` in `L2PageShell.module.css:89` as a
+  decorative grid-line background, the generated-UI tell. I did not touch that
+  stylesheet on this branch and I have not suppressed the rule. Reading it, it
+  looks like a false positive against a decision already taken and documented in
+  place: canon §5's North Star is the site as the screening artefact, which makes
+  a measurement grid the one texture that is load-bearing here, and it runs at 3%
+  alpha behind a radial mask. The comment also records that an earlier opaque
+  version was a real defect and was fixed. Your file, your call, and it needs
+  Sumeet's word before anyone adds an ignore.
