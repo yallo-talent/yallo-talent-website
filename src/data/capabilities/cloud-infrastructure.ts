@@ -96,6 +96,25 @@ export const cloudInfrastructureData: L1PageData = {
     "Every enterprise Cloud & Infrastructure programme, covered function by function.",
   expertiseSub:
     "From landing-zone to production resilience — specialists we place into every function that moves a cloud programme forward.",
+  /**
+   * S3 parity, applied to the last discipline that lacked it.
+   *
+   * This file was the only remaining page with `overview` and `tools` empty on
+   * every card, which after the other six were done made it the thin one by
+   * default. Same rule as Data & Analytics: every product below is one this file's
+   * own blurbs already name, or one of the three hyperscalers named in the page's
+   * hero and tagline. The structure changed; the claims did not.
+   *
+   * ON THE OVERLAP WITH DEVOPS & PLATFORM ENGINEERING, which is real and is
+   * flagged in the relay rather than resolved here. Platform engineering, SRE,
+   * Kubernetes, IaC, observability and FinOps appear as sub-desks on both
+   * disciplines. Canon §3 ratifies both, so this is not a defect to fix by
+   * deleting one side. The distinction held below is by SUBJECT: here the work is
+   * the cloud estate itself (landing zones, networking, migration), there it is
+   * the software delivery system that runs on it (pipelines, release trains,
+   * developer platforms). Where a role genuinely sits on both, it is written to
+   * the estate here and to delivery there rather than duplicated verbatim.
+   */
   expertise: [
     {
       slug: "cloud-architecture",
@@ -103,10 +122,36 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Cloud Architecture",
       icon: "cloud",
       blurb: "Landing-zones, multi-account, well-architected reviews.",
+      overview:
+        "The landing zone is the decision everything else inherits, and it is usually made once, quickly, by whoever is available. Account and subscription topology, network segmentation, identity boundaries and guardrails that hold when a delivery team is under pressure. We screen cloud architects on estates they have had to live with rather than diagrams they have drawn: what they would change about the last landing zone they built, and what it cost to change something structural after workloads had landed on it.",
       roles: [
         "Cloud Architect",
         "Landing-Zone Lead",
         "Well-Architected Reviewer",
+      ],
+      tools: [
+        {
+          slug: "aws",
+          vendor: "AWS",
+          name: "AWS",
+          roles: [
+            "Cloud Architect",
+            "Landing-Zone Lead",
+            "Well-Architected Reviewer",
+          ],
+        },
+        {
+          slug: "azure",
+          vendor: "Microsoft",
+          name: "Microsoft Azure",
+          roles: ["Cloud Architect", "Landing-Zone Lead", "Cloud Engineer"],
+        },
+        {
+          slug: "gcp",
+          vendor: "Google Cloud",
+          name: "Google Cloud",
+          roles: ["Cloud Architect", "Cloud Engineer"],
+        },
       ],
     },
     {
@@ -115,7 +160,23 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Platform Engineering",
       icon: "integration",
       blurb: "Internal developer platforms, golden paths, Backstage.",
+      overview:
+        "Here the platform is the cloud estate presented as something a delivery team can safely self-serve: an account vended with guardrails already on, a paved path to a compliant workload, and a catalogue that reflects what actually exists. The failure is a platform that adds a request queue where there used to be a ticket. We screen for what a team could do without asking permission, and for how the platform handled the case it did not anticipate.",
       roles: ["Platform Engineer", "IDP Architect", "Backstage Lead"],
+      tools: [
+        {
+          slug: "backstage",
+          vendor: "Backstage",
+          name: "Backstage",
+          roles: ["Backstage Lead", "IDP Architect", "Platform Engineer"],
+        },
+        {
+          slug: "crossplane",
+          vendor: "Crossplane",
+          name: "Crossplane",
+          roles: ["Platform Engineer", "IDP Architect"],
+        },
+      ],
     },
     {
       slug: "sre-reliability",
@@ -123,7 +184,21 @@ export const cloudInfrastructureData: L1PageData = {
       title: "SRE & Reliability",
       icon: "spark",
       blurb: "SLOs, error budgets, incident response and chaos.",
+      overview:
+        "Reliability engineering is mostly an organisational discipline wearing a technical title. Anyone can define a service level objective; the question is whether it was ever allowed to stop a release, and whether an incident review changed a system rather than producing an action log. We screen on incidents actually commanded, on an error budget policy someone honoured under pressure, and on failure testing run against something that mattered.",
       roles: ["Principal SRE", "Reliability Engineer", "Incident Commander"],
+      tools: [
+        {
+          slug: "sre-practice",
+          vendor: "Reliability",
+          name: "SLOs, error budgets and incident command",
+          roles: [
+            "Principal SRE",
+            "Incident Commander",
+            "Reliability Engineer",
+          ],
+        },
+      ],
     },
     {
       slug: "kubernetes-containers",
@@ -131,10 +206,32 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Kubernetes & Containers",
       icon: "cloud",
       blurb: "EKS, AKS, GKE, service mesh and workload security.",
+      overview:
+        "The interview question that separates claimed Kubernetes experience from held Kubernetes experience is about upgrades, not deployments. Cluster lifecycle under change control, resource limits set from measurement, network policy someone will have to debug at speed, and a service mesh whose failure modes the team understands. We screen for operators of managed clusters in production, not for engineers who have shipped a workload onto one somebody else runs.",
       roles: [
         "Kubernetes Platform Engineer",
         "Service Mesh Architect",
         "Container Security Lead",
+      ],
+      tools: [
+        {
+          slug: "eks",
+          vendor: "AWS",
+          name: "Amazon EKS",
+          roles: ["Kubernetes Platform Engineer", "Cloud Engineer"],
+        },
+        {
+          slug: "aks",
+          vendor: "Microsoft",
+          name: "Azure Kubernetes Service",
+          roles: ["Kubernetes Platform Engineer", "Platform Engineer"],
+        },
+        {
+          slug: "gke",
+          vendor: "Google Cloud",
+          name: "Google Kubernetes Engine",
+          roles: ["Kubernetes Platform Engineer"],
+        },
       ],
     },
     {
@@ -143,7 +240,29 @@ export const cloudInfrastructureData: L1PageData = {
       title: "IaC & Automation",
       icon: "integration",
       blurb: "Terraform, Pulumi, Crossplane, policy-as-code.",
+      overview:
+        "Infrastructure as code is where an estate's discipline becomes legible. State management that survives more than one team, modules other people can consume without reading the source, drift between what is committed and what is running, and a plan output a reviewer can reason about at four in the afternoon. We screen for people who have inherited an estate and refactored it without an outage, because greenfield modules are the easy half.",
       roles: ["Terraform Lead", "Pulumi Engineer", "Policy-as-Code Architect"],
+      tools: [
+        {
+          slug: "terraform",
+          vendor: "HashiCorp",
+          name: "Terraform",
+          roles: ["Terraform Lead", "Cloud Engineer", "Platform Engineer"],
+        },
+        {
+          slug: "pulumi",
+          vendor: "Pulumi",
+          name: "Pulumi",
+          roles: ["Pulumi Engineer", "Platform Engineer"],
+        },
+        {
+          slug: "policy-as-code",
+          vendor: "Policy as code",
+          name: "Policy-as-code guardrails",
+          roles: ["Policy-as-Code Architect", "Cloud Security Architect"],
+        },
+      ],
     },
     {
       slug: "cloud-security",
@@ -151,7 +270,23 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Cloud Security",
       icon: "security",
       blurb: "CSPM, CNAPP, IAM hardening and workload identity.",
+      overview:
+        "Cloud security is a configuration and identity problem wearing a network security costume, which is why hires from a traditional infrastructure security background often struggle with it. Posture management that produces a fixable backlog rather than a dashboard, workload identity that removes long-lived keys, and permissions narrowed without breaking a deployment. We screen for people who have reduced a real posture backlog and can say what they chose not to fix.",
       roles: ["Cloud Security Architect", "IAM Engineer", "CSPM Consultant"],
+      tools: [
+        {
+          slug: "cspm-cnapp",
+          vendor: "Cloud posture",
+          name: "CSPM and CNAPP tooling",
+          roles: ["CSPM Consultant", "Cloud Security Architect"],
+        },
+        {
+          slug: "workload-identity",
+          vendor: "Identity",
+          name: "Workload identity and IAM hardening",
+          roles: ["IAM Engineer", "Cloud Security Architect"],
+        },
+      ],
     },
     {
       slug: "networking",
@@ -159,10 +294,26 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Cloud Networking",
       icon: "integration",
       blurb: "Transit gateways, zero-trust, private connectivity.",
+      overview:
+        "Cloud networking is the scarcest skill on this desk and the least visible until it fails. Hub-and-spoke topology that will still make sense at three times the account count, private connectivity back to a data centre nobody has decommissioned, DNS that resolves consistently across both, and a zero-trust position that is enforced rather than described. We screen for people who have debugged asymmetric routing across a hybrid estate, because that is the day the role is worth its rate.",
       roles: [
         "Cloud Network Architect",
         "Zero-Trust Engineer",
         "Connectivity Lead",
+      ],
+      tools: [
+        {
+          slug: "hybrid-connectivity",
+          vendor: "Connectivity",
+          name: "Transit gateways and private connectivity",
+          roles: ["Cloud Network Architect", "Connectivity Lead"],
+        },
+        {
+          slug: "zero-trust",
+          vendor: "Zero trust",
+          name: "Zero-trust network access",
+          roles: ["Zero-Trust Engineer", "Cloud Network Architect"],
+        },
       ],
     },
     {
@@ -171,7 +322,21 @@ export const cloudInfrastructureData: L1PageData = {
       title: "FinOps & Cost",
       icon: "finance",
       blurb: "Unit economics, tagging, showback and rate optimisation.",
+      overview:
+        "Cloud cost is an engineering problem routinely handed to finance, which produces a report nobody can act on. The role that works sits between the two: someone who can read a bill down to the workload, tell an engineering team which architectural decision generates the spend, and model a commitment without stranding the organisation on it. We screen on reductions actually delivered and how, not on dashboards produced.",
       roles: ["FinOps Practitioner", "Cloud Economist", "Cost Governance Lead"],
+      tools: [
+        {
+          slug: "cost-management",
+          vendor: "FinOps",
+          name: "Tagging, showback and rate optimisation",
+          roles: [
+            "FinOps Practitioner",
+            "Cloud Economist",
+            "Cost Governance Lead",
+          ],
+        },
+      ],
     },
     {
       slug: "observability",
@@ -179,10 +344,32 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Observability",
       icon: "analytics",
       blurb: "OpenTelemetry, Datadog, Grafana, log/metric/trace pipelines.",
+      overview:
+        "Most estates are monitored and few are observable: the dashboards exist, and when something unfamiliar breaks nobody can ask a new question of the data. The work is instrumentation that outlives the team that wrote it, cardinality controlled before the bill notices, and traces that actually cross a service boundary. We screen for engineers who have cut an observability bill without losing the signal, which is the test of whether they understood what they were collecting.",
       roles: [
         "Observability Platform Lead",
         "OpenTelemetry Engineer",
         "Monitoring Architect",
+      ],
+      tools: [
+        {
+          slug: "opentelemetry",
+          vendor: "OpenTelemetry",
+          name: "OpenTelemetry",
+          roles: ["OpenTelemetry Engineer", "Observability Platform Lead"],
+        },
+        {
+          slug: "datadog",
+          vendor: "Datadog",
+          name: "Datadog",
+          roles: ["Observability Platform Lead", "Monitoring Architect"],
+        },
+        {
+          slug: "grafana",
+          vendor: "Grafana",
+          name: "Grafana",
+          roles: ["Monitoring Architect", "Observability Platform Lead"],
+        },
       ],
     },
     {
@@ -191,10 +378,24 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Migration & Modernisation",
       icon: "cloud",
       blurb: "6R strategy, cutover planning, legacy modernisation.",
+      overview:
+        "Migration is where an estate's undocumented dependencies present themselves, usually during the cutover rehearsal. The valuable people are the ones who treat discovery as the deliverable and the move as the consequence: an application that nobody owns, a batch window nothing may cross, a database whose licensing changes the target, and a rollback plan that has been executed rather than written. We screen on cutovers run and reversed, not on wave plans produced.",
       roles: [
         "Migration Architect",
         "Modernisation Lead",
         "Cutover Programme Engineer",
+      ],
+      tools: [
+        {
+          slug: "migration-strategy",
+          vendor: "Migration",
+          name: "6R assessment and cutover planning",
+          roles: [
+            "Migration Architect",
+            "Cutover Programme Engineer",
+            "Modernisation Lead",
+          ],
+        },
       ],
     },
   ],

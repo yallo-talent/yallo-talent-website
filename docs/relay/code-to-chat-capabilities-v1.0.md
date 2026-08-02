@@ -10,7 +10,7 @@ Parallel with the platform round on `main`.
 
 The capabilities pillar went from two live disciplines to seven, all at the same depth. The three named Data & Analytics defects are fixed at the class rather than the instance, and two of the three turned out to have a different cause than the hypothesis in the brief. The four planned desks are seeded and serving with 31 L2 routes, so `PLANNED_CAPABILITIES` is now empty. The AI estate diagram ships with its role-family overlay derived from the existing stack matrix rather than retyped. The site-wide "YALLO" fault was real, was on every page, and was **not a string** — it was `text-transform: uppercase` applied to copy containing the word, which is why grep found nothing; it is fixed in eight places and guarded by a new browser-based gate.
 
-Two items are **not** done and are listed in "What I stopped short of". Nothing is claimed as verified that I did not observe.
+One item is **not** done and is listed in "What I stopped short of". Nothing is claimed as verified that I did not observe.
 
 ---
 
@@ -201,10 +201,21 @@ Twelve of thirteen green. The one failure is on a platform L2 route I do not own
 
 ## 9. What I stopped short of, and why
 
-1. **AI Talent has no sticky sub-navigation.** §7 asks for parity with Data & Analytics on this. The page keeps its ratified §2 band order (hero, gap, nine families, stack matrix, screening, estate, governance, close) which is *deeper* in substance than the L1 template, but it does not use `L1PageShell`, so it has no sub-nav, no stats strip and no read-next. `L1SubNav` is not exported from `L1PageShell`, and exporting it is a shared-component change I would not make on this branch. **Two options, your call:** export `L1SubNav` (one line, session 1's file), or rebuild `/ai-talent` on `L1PageShell` and lose the stack matrix and governance bands unless the shell gains a slot. I recommend the first.
-2. **Cloud & Infrastructure parity gaps not closed.** It is live and was item 5 in the order; it has 10 expertise cards and, like the old Data & Analytics, **zero `overview` and zero `tools`**. It is now the only discipline without them. The pattern is proven on the other six, so this is mechanical rather than uncertain.
-
+**AI Talent has no sticky sub-navigation.** §7 asks for parity with Data & Analytics on this. The page keeps its ratified §2 band order (hero, gap, nine families, stack matrix, screening, estate, governance, close) which is *deeper* in substance than the L1 template, but it does not use `L1PageShell`, so it has no sub-nav, no stats strip and no read-next. `L1SubNav` is not exported from `L1PageShell`, and exporting it is a shared-component change I would not make on this branch. **Two options, your call:** export `L1SubNav` (one line, session 1's file), or rebuild `/ai-talent` on `L1PageShell` and lose the stack matrix and governance bands unless the shell gains a slot. I recommend the first.
 Also outstanding and smaller: the platform-side back-links for §4.2's "link both ways, once each" are written from the capability side only; the platform files are session 1's.
+
+**Closed after the first draft of this relay: Cloud & Infrastructure parity.** All 10 of its expertise cards now carry `overview` and `tools`, verified per-page in a browser rather than in the data. Every discipline is now equal on the measure that carried S3:
+
+| Discipline | cards | `overview` | `tools` | size |
+|---|---|---|---|---|
+| Data & Analytics | 7 | 7 | 7 | 24 KB |
+| Cloud & Infrastructure | 10 | 10 | 10 | 23 KB |
+| Cybersecurity | 8 | 8 | 8 | 20 KB |
+| Testing & Quality Engineering | 8 | 8 | 8 | 20 KB |
+| DevOps & Platform Engineering | 8 | 8 | 8 | 19 KB |
+| Integration & Middleware | 7 | 7 | 7 | 18 KB |
+
+**One editorial finding from doing it, flagged rather than resolved.** Cloud & Infrastructure and DevOps & Platform Engineering share six sub-desks by name: platform engineering, SRE, Kubernetes, IaC, observability and FinOps. Canon §3 ratifies both disciplines, so this is not something to fix by deleting one side, and I did not. The distinction I held while writing is **by subject**: on Cloud the work is the estate itself (landing zones, networking, migration, hybrid connectivity), on DevOps it is the software delivery system running on it (pipelines, release trains, developer platforms, ITSM). Where a role genuinely sits on both, it is written to the estate on one and to delivery on the other rather than duplicated. It reads cleanly now, but two disciplines with six shared sub-desk names is a taxonomy question worth your view, because a buyer choosing which desk to brief has to make that distinction unaided.
 
 ---
 
