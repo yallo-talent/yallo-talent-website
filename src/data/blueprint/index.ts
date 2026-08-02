@@ -25,6 +25,15 @@
  * staffed. A fourth is not added.
  */
 
+/* Taxonomy names come from the index, never from this file. The label is the
+   half that drifts: a `href` either routes or it does not, but a hand-typed
+   "Salesforce" beside it does not move when `platformsIndex` does, which is how
+   five copies of the platform set never heard that Informatica had been
+   ratified. `src/data/l1/index.ts` is a leaf module with no imports of its own,
+   so reaching for it here cannot close an initialisation cycle the way
+   `@/lib/*` would. */
+import { taxonomyLabels } from "@/data/l1/index";
+
 export interface BlueprintStream {
   /** Architecture, functional, technical, quality, programme. */
   name: string;
@@ -198,8 +207,8 @@ const sapS4hana: BlueprintArchetype = {
       "For each, evidence of a live cutover rather than a project they joined after go-live.",
   },
   desks: [
-    { slug: "sap", name: "SAP" },
-    { slug: "informatica", name: "Informatica" },
+    { slug: "sap", name: taxonomyLabels("sap").label },
+    { slug: "informatica", name: taxonomyLabels("informatica").label },
   ],
   seo: {
     title: "SAP S/4HANA Programme Staffing Blueprint | Yallo Talent",
@@ -338,7 +347,7 @@ const oracleFusion: BlueprintArchetype = {
     ],
     evidence: "Ask for the parallel run they got wrong and what they changed.",
   },
-  desks: [{ slug: "oracle", name: "Oracle" }],
+  desks: [{ slug: "oracle", name: taxonomyLabels("oracle").label }],
   seo: {
     title: "Oracle Fusion Programme Staffing Blueprint | Yallo Talent",
     description:
@@ -466,7 +475,7 @@ const salesforceMultiCloud: BlueprintArchetype = {
     ],
     evidence: "Evidence of a live release train, not a sandbox.",
   },
-  desks: [{ slug: "salesforce", name: "Salesforce" }],
+  desks: [{ slug: "salesforce", name: taxonomyLabels("salesforce").label }],
   seo: {
     title: "Salesforce Multi-Cloud Programme Staffing Blueprint | Yallo Talent",
     description:

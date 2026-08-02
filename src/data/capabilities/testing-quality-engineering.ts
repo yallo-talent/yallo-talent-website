@@ -31,7 +31,7 @@ export const testingQualityEngineeringData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "Testing & Quality Engineering" },
+    { label: taxonomyLabels("testing-quality-engineering").label },
   ],
 
   eyebrow: "Testing & Quality Engineering · Contract-first",
@@ -459,15 +459,19 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       href: "/capabilities/devops-platform-engineering",
-      label: "DevOps & Platform Engineering",
+      label: taxonomyLabels("devops-platform-engineering").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
+    {
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
+      category: "Platform",
+    },
   ],
 
   seo: {

@@ -690,7 +690,7 @@ export const financeData: L1PageData = {
 
   segmentsEyebrow: "Segments we support",
   segmentsTitle:
-    "Every financial-services segment. Specialists who know the context.",
+    "Financial-services segments. Specialists who know the context.",
   segmentsSub:
     "Retail banking runs different programmes from insurance or capital markets. Our contractors understand the specific operating context — not just the platform.",
   /* ELEVEN SEGMENTS REMOVED ACROSS TWO ROUNDS, and the second round removed the
@@ -808,8 +808,7 @@ export const financeData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in banking & FS talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/temenos-transact-migration-talent",
@@ -848,14 +847,26 @@ export const financeData: L1PageData = {
       label: taxonomyLabels("manufacturing").label,
       category: "Industry",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
     {
-      href: "/platforms/salesforce",
-      label: "Salesforce",
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
       category: "Platform",
     },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/salesforce",
+      label: taxonomyLabels("salesforce").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     /* Added per context-finance-depth.md §3, which asks for these two links once
        each and in both directions. Informatica carries the migration and data
        quality work behind function 09; the blueprint carries the phase-by-phase
@@ -864,7 +875,7 @@ export const financeData: L1PageData = {
        from tool vendors and this function's tools are categories by design. */
     {
       href: "/platforms/informatica",
-      label: "Informatica",
+      label: taxonomyLabels("informatica").label,
       category: "Platform",
     },
     {
@@ -874,12 +885,12 @@ export const financeData: L1PageData = {
     },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity & Risk",
+      label: taxonomyLabels("cybersecurity").label,
       category: "Capability",
     },
   ],

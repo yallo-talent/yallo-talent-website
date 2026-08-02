@@ -6,7 +6,7 @@ export const dataAnalyticsData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "Data & Analytics" },
+    { label: taxonomyLabels("data-analytics").label },
   ],
 
   eyebrow: "Data & Analytics · Contract-first",
@@ -475,7 +475,7 @@ export const dataAnalyticsData: L1PageData = {
       twin: [
         {
           href: "/ai-talent",
-          label: "AI Talent",
+          label: taxonomyLabels("ai-talent").label,
           note: "Data science models a company's own data. AI Talent builds on foundation models. The AI Data Engineer is the role that serves both, and it is briefed from there.",
         },
       ],
@@ -724,27 +724,39 @@ export const dataAnalyticsData: L1PageData = {
     /* The neighbouring discipline, and the reason the AI roles left the scarce
        list above. A buyer who arrived here looking for an LLM engineer needs one
        link, not a second reading of this page. */
-    { href: "/ai-talent", label: "AI Talent", category: "Capability" },
+    {
+      href: "/ai-talent",
+      label: taxonomyLabels("ai-talent").label,
+      category: "Capability",
+    },
     {
       href: "/capabilities/devops-platform-engineering",
-      label: "DevOps & Platform Engineering",
+      label: taxonomyLabels("devops-platform-engineering").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
+    {
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
     {

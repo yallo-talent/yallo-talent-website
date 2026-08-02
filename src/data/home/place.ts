@@ -36,7 +36,7 @@ export interface PlatformAxis {
 
 export const platforms: PlatformAxis[] = [
   {
-    name: "SAP",
+    name: taxonomyLabels("sap").label,
     slug: "sap",
     modules: "S/4HANA · ECC · SuccessFactors",
     /* The real mark, restored. R9 made this NAME text and it was right about the
@@ -48,28 +48,28 @@ export const platforms: PlatformAxis[] = [
     published: true,
   },
   {
-    name: "Oracle",
+    name: taxonomyLabels("oracle").label,
     slug: "oracle",
     modules: "Fusion · EBS · Hyperion · Retail",
     mark: "/logos/platforms/oracle.svg",
     published: true,
   },
   {
-    name: "Microsoft",
+    name: taxonomyLabels("microsoft").label,
     slug: "microsoft",
     modules: "Azure · Dynamics 365 · Power Platform",
     mark: "/logos/platforms/microsoft.svg",
     published: true,
   },
   {
-    name: "Salesforce",
+    name: taxonomyLabels("salesforce").label,
     slug: "salesforce",
     modules: "Service · Marketing · Commerce",
     mark: "/logos/platforms/salesforce.svg",
     published: true,
   },
   {
-    name: "Blue Yonder",
+    name: taxonomyLabels("blue-yonder").label,
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
     /* The real mark, restored. R9 made this NAME text and it was right about the
@@ -81,7 +81,7 @@ export const platforms: PlatformAxis[] = [
     published: true,
   },
   {
-    name: "Workday",
+    name: taxonomyLabels("workday").label,
     slug: "workday",
     modules: "HCM · Financials · Adaptive",
     mark: "/logos/platforms/workday.svg",
@@ -103,7 +103,7 @@ export const platforms: PlatformAxis[] = [
        has no Informatica platform artwork. The informatica.png under
        public/logos/clients is the CLIENT mark, a different thing, and it ships
        at consentOnFile false per canon section 3. */
-    name: "Informatica",
+    name: taxonomyLabels("informatica").label,
     slug: "informatica",
     modules: "MDM · data quality · integration",
     mark: null,

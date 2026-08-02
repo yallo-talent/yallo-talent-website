@@ -352,8 +352,7 @@ export const governmentData: L1PageData = {
   ],
 
   segmentsEyebrow: "Segments we support",
-  segmentsTitle:
-    "Every public-sector segment. Specialists who know the context.",
+  segmentsTitle: "Public-sector segments. Specialists who know the context.",
   segmentsSub:
     "Central government runs different programmes from a local authority or a police force. Our contractors understand the specific operating context — not just the platform.",
   /* TEN SEGMENTS REMOVED, 2 Aug 2026, per context-round5-rulings.md §6.
@@ -453,8 +452,7 @@ export const governmentData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in public-sector tech talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/gds-service-standard-talent-2025",
@@ -517,28 +515,32 @@ export const governmentData: L1PageData = {
     },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity & Risk",
+      label: taxonomyLabels("cybersecurity").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
   ],
