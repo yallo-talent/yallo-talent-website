@@ -1,5 +1,9 @@
 import { clientLogoFor } from "@/data/home/client-logos";
 import { evidenceCopy, testimonial } from "@/data/home/intelligence";
+import {
+  HOMEPAGE_CASE_STUDY_COUNT,
+  orderedCaseStudies,
+} from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import { CaseRail } from "./CaseRail";
 import styles from "./Home.module.css";
@@ -14,14 +18,12 @@ import { SectionHead } from "./SectionHead";
  * scripts/extract-case-studies.mjs. Nothing here is written or paraphrased.
  */
 export function Evidence() {
-  // Canon §8 names the eight studies that seed the rail, and their order is a
-  // deliberate argument rather than a consequence of publication dates. Anything
-  // unfeatured still lives on the hub.
-  const studies = getAllCaseStudies()
-    .filter((s) => s.frontmatter.published !== false && s.frontmatter.featured)
-    .sort(
-      (a, b) => (a.frontmatter.featured ?? 99) - (b.frontmatter.featured ?? 99),
-    )
+  // Order is a deliberate editorial argument rather than a consequence of
+  // publication dates, and it now lives in content/case-studies/order.yaml
+  // rather than in a `featured` integer on each of fourteen files. The rail
+  // takes the head of that list; everything else still lives on the hub.
+  const studies = orderedCaseStudies(getAllCaseStudies())
+    .slice(0, HOMEPAGE_CASE_STUDY_COUNT)
     .map((s) => ({
       slug: `/case-studies/${s.frontmatter.slug}`,
       // Cards take the budgeted display line and the devendored excerpt where
