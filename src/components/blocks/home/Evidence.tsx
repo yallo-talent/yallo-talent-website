@@ -1,12 +1,11 @@
+import Link from "next/link";
 import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
 import { evidenceCopy, testimonial } from "@/data/home/intelligence";
-import {
-  HOMEPAGE_CASE_STUDY_COUNT,
-  orderedCaseStudies,
-} from "@/lib/case-study-order";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import { CaseRail } from "./CaseRail";
 import styles from "./Home.module.css";
+import { ArrowGlyph } from "./icons";
 import { SectionHead } from "./SectionHead";
 
 /**
@@ -21,35 +20,33 @@ export function Evidence() {
   // Order is a deliberate editorial argument rather than a consequence of
   // publication dates, and it now lives in content/case-studies/order.yaml
   // rather than in a `featured` integer on each of fourteen files. The rail
-  // takes the head of that list; everything else still lives on the hub.
-  const studies = orderedCaseStudies(getAllCaseStudies())
-    .slice(0, HOMEPAGE_CASE_STUDY_COUNT)
-    .map((s) => ({
-      slug: `/case-studies/${s.frontmatter.slug}`,
-      // Cards take the budgeted display line and the devendored excerpt where
-      // they exist; the verbatim title and summary still own the detail page
-      // and metadata. Excerpts are compression of the body only.
-      title: s.frontmatter.cardTitle ?? s.frontmatter.title,
-      summary: s.frontmatter.excerpt ?? s.frontmatter.summary,
-      // The register's display name, never the frontmatter string: the card
-      // read "Sephora Middle East" where the register says "Sephora", which is
-      // a second source of truth for a name the register already states.
-      client: s.frontmatter.clientPublic
-        ? clientDisplayNameFor(s.frontmatter.client)
-        : "Undisclosed enterprise",
-      // Only a named client gets a mark; an undisclosed one must not be
-      // identifiable by its logo.
-      logo: s.frontmatter.clientPublic
-        ? clientLogoFor(s.frontmatter.client)
-        : undefined,
-      meta: [
-        s.frontmatter.engagement,
-        s.frontmatter.platform,
-        s.frontmatter.region,
-      ]
-        .filter(Boolean)
-        .join(" · "),
-    }));
+  // carries every published study, in that order.
+  const studies = orderedCaseStudies(getAllCaseStudies()).map((s) => ({
+    slug: `/case-studies/${s.frontmatter.slug}`,
+    // Cards take the budgeted display line and the devendored excerpt where
+    // they exist; the verbatim title and summary still own the detail page
+    // and metadata. Excerpts are compression of the body only.
+    title: s.frontmatter.cardTitle ?? s.frontmatter.title,
+    summary: s.frontmatter.excerpt ?? s.frontmatter.summary,
+    // The register's display name, never the frontmatter string: the card
+    // read "Sephora Middle East" where the register says "Sephora", which is
+    // a second source of truth for a name the register already states.
+    client: s.frontmatter.clientPublic
+      ? clientDisplayNameFor(s.frontmatter.client)
+      : "Undisclosed enterprise",
+    // Only a named client gets a mark; an undisclosed one must not be
+    // identifiable by its logo.
+    logo: s.frontmatter.clientPublic
+      ? clientLogoFor(s.frontmatter.client)
+      : undefined,
+    meta: [
+      s.frontmatter.engagement,
+      s.frontmatter.platform,
+      s.frontmatter.region,
+    ]
+      .filter(Boolean)
+      .join(" · "),
+  }));
 
   return (
     // NOT an inverted band any more, and this is canon arithmetic rather than a
@@ -75,6 +72,15 @@ export function Evidence() {
           eyebrow={evidenceCopy.eyebrow}
           heading={evidenceCopy.heading}
           id="evidence-heading"
+          action={
+            <Link
+              className={`${styles.btnSecondary} ${styles.headAction}`}
+              href="/case-studies"
+            >
+              See all case studies
+              <ArrowGlyph />
+            </Link>
+          }
         />
         <CaseRail studies={studies} testimonial={testimonial} />
       </div>

@@ -26,9 +26,6 @@ import type { CaseStudyFrontmatter } from "./content-schema";
 
 export type CaseStudy = LoadedEntry<CaseStudyFrontmatter>;
 
-/** How many studies the homepage rail carries. Fixed by round 7 §1.2. */
-export const HOMEPAGE_CASE_STUDY_COUNT = 4;
-
 const ORDER_PATH = join(process.cwd(), "content", "case-studies", "order.yaml");
 
 const orderFileSchema = z.object({

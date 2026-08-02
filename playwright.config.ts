@@ -1,11 +1,13 @@
 import { defineConfig } from "@playwright/test";
 
+const PORT = process.env.PORT ?? "3000";
+
 export default defineConfig({
   testDir: "./e2e",
   webServer: {
     command: "pnpm dev",
-    port: 3000,
+    port: Number(PORT),
     reuseExistingServer: true,
   },
-  use: { baseURL: "http://localhost:3000" },
+  use: { baseURL: `http://localhost:${PORT}` },
 });

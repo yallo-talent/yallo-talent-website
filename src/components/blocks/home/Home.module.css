@@ -66,6 +66,10 @@
   padding-bottom: 5px;
 }
 
+.headAction {
+  justify-self: end;
+}
+
 /* --- Buttons ------------------------------------------------------------- */
 .btnPrimary {
   display: inline-flex;

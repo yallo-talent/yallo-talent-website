@@ -1,7 +1,7 @@
 # The published order of the case studies. One editorial decision, one file.
 #
-# The homepage rail takes the first HOMEPAGE_CASE_STUDY_COUNT of these and
-# /case-studies lists all of them in this order. Reranking is moving a line.
+# The homepage rail and /case-studies both list every entry below, in this
+# order. Reranking is moving a line.
 #
 # This ships carrying the order the `featured` integers already encoded, so the
 # merge changes no positions. Sumeet reranks after.
