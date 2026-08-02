@@ -199,7 +199,7 @@ export default async function PlatformPage({
         className={`${styles.section} ${styles.platformHero} band-dark amb-wash amb-1`}
       >
         <HeroAtmosphere seed={cov.slug} />
-        <div className={`${styles.wrap} ${styles.platformHeroInner}`}>
+        <div className={`${styles.wrap} ${styles.aboveAtmosphere}`}>
           <p className="eyebrow">Platform depth · {cov.name}</p>
           <h1 className={styles.heroHeadline}>
             {cov.name} specialists, <em>by module.</em>

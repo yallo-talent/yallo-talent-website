@@ -8,18 +8,22 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
-import { deriveLinkLabels } from "@/lib/taxonomy-links";
 import { deriveSectorRail } from "@/lib/sectors";
+import { deriveLinkLabels } from "@/lib/taxonomy-links";
 import styles from "./L1PageShell.module.css";
 import { L1SubNav, L1SubNavScope } from "./L1SubNav";
 import { l1Icons } from "./l1-icons";
 
 /**
  * Re-exported so a bespoke page can take the sticky bar off the shell without
- * rebuilding itself on the shell. /ai-talent is the case: it carries the stack
- * matrix and the estate diagram, which the shell has no slot for, and it was
- * the only L1 with no section bar. Import both from here — the scope is not
- * optional, see its own comment.
+ * rebuilding itself on the shell. /ai-talent is the case: it carries the estate
+ * band, which the shell has no slot for, and it was the only L1 with no section
+ * bar. Import both from here — the scope is not optional, see its own comment.
+ *
+ * The list of what /ai-talent could not give up used to read "the stack matrix
+ * and the estate diagram". Round 6 merged the first into the second, and
+ * `L1StatsStrip` is exported below for the same reason this is: the desk should
+ * borrow the standard bands rather than hand-build near-copies of them.
  */
 export { L1SubNav, L1SubNavScope } from "./L1SubNav";
 
@@ -219,7 +223,7 @@ function L1Hero({ data }: Props) {
  * import because this is a client component and the loader reads the file
  * system; a server parent passes them, so they are still in the markup.
  */
-function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
+export function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
   return (
     <section className={styles.statsStrip}>
       <dl className={styles.statsInner}>
@@ -840,8 +844,7 @@ function L1Segments({ data }: Props) {
                 if (delta === 0) return;
                 e.preventDefault();
                 const next =
-                  (activeIdx + delta + segments.length) %
-                  segments.length;
+                  (activeIdx + delta + segments.length) % segments.length;
                 const target = segments[next];
                 if (!target) return;
                 setActive(target.id);

@@ -1,5 +1,28 @@
 #!/usr/bin/env sh
-pnpm biome check --write .
+
+# biome is scoped to the staged set, never the repository.
+#
+# `biome check --write .` formatted all 194 files on every commit. Anything it
+# touched outside the staged set stayed in the working tree, so the other
+# session picked it up and carried it into an unrelated commit — that is how
+# this session's own file was reformatted inside three of session B's round 5
+# commits. Two worktrees on one repository make that a routine collision.
+#
+# --staged restricts the pass to files already prepared for this commit. Biome
+# writes to disk, so anything it rewrites has to be re-staged or the commit
+# records the unformatted version; the re-add is scoped to the same list and
+# never widens to `git add -A`.
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ -n "$STAGED" ]; then
+  pnpm biome check --write --staged --no-errors-on-unmatched || exit 1
+  # Re-stage only what was already staged. Nothing outside the list can enter
+  # the commit, and a file biome left alone is unaffected by the re-add.
+  echo "$STAGED" | while IFS= read -r f; do
+    [ -f "$f" ] && git add -- "$f"
+  done
+fi
+
 node .claude/hooks/check-colours.js
 node scripts/check-type-scale.mjs
 node scripts/check-taxonomy.mjs
