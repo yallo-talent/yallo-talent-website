@@ -296,15 +296,37 @@ it was written. Two gates never got it.
    either the gate is short of the rule or the rule means sans. Reported rather
    than changed, because adding a floor is a new rule and it could fail on real
    content.
-3. **`check-colours` matches hex and misses `rgba()`.** Two
-   `rgba(110, 231, 183, …)` greens live in
-   `src/components/blocks/BriefForm.module.css`, outside the Layer 1 palette,
-   and the gate cannot see them. Not changed: a colour change is a design
-   ratification, not a code fix.
-4. **Pill radii of 999px** in `BriefForm.module.css` and
-   `HubLandingSections.module.css` sit outside the documented radius scale
-   against canon §5's quarter-round petal signature. Same reason: unratified
-   visual change, so reported.
+3. **`src/components/blocks/BriefForm.module.css` looks like it missed the
+   light-register rebuild, and it is one story rather than four findings.**
+   Surfaced because this session touched `CvUploadForm.tsx`, which imports it;
+   nothing in the file was edited.
+
+   | What | Detail |
+   |---|---|
+   | Ground | `.section` paints from `--black-950`, a legacy alias for `--dk` |
+   | Measured | `rgb(14, 15, 17)` on `/brief`, **identical in both registers** |
+   | Grid | Two hairline `linear-gradient` layers on a 44px cell |
+   | Colour | Two `rgba(110, 231, 183, …)` greens, outside the Layer 1 palette |
+   | Radius | 999px pills, against canon §5's quarter-round petal signature |
+
+   The common cause is that this stylesheet consumes the **alias** layer rather
+   than the semantic one, which is precisely what canon §5 records as the reason
+   L1, L2 and service had to be rebuilt onto the semantic ground layer. This file
+   was not in that rebuild. A dark band on `/brief` may well be what you want;
+   the point is that it is dark by inheritance from an alias rather than by
+   declaring itself one, so it cannot respond to the register at all.
+
+   Nothing changed and nothing suppressed. A ground, a colour and a radius are
+   all design ratifications, and suppressing the grid rule here would be wrong
+   for a reason worth stating: round 4 legitimately scoped that rule off the
+   ratified **hero** grid, and this is a different surface with no such ruling
+   behind it. Reusing that precedent would turn one sanctioned exception into a
+   habit.
+
+4. **`check-colours` matches hex and misses `rgba()`**, which is how the two
+   greens above sit outside the palette with every gate green. A real gap in the
+   guard, reported rather than closed: tightening it would fail the build on
+   pre-existing colour this session has no authority to change.
 5. **Still open and untouched here**, per §7 of the rulings: Informatica's
    `consentOnFile` flag, LinkedIn Talent Insights (a
    `docs/lti-reports/sap-talent-pool-2026-08-02.xlsx` has appeared untracked in
