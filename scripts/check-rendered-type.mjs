@@ -86,6 +86,13 @@ const PAGES = [
      and its index was not, and they are different components. */
   "/intelligence",
   "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  /* Added at the round 7 close, for the same reason the two above were: the
+     detail template was listed and its LANDING HUB was not, and they are
+     different components with their own CSS module. The detail page failed this
+     gate on three classes the moment it was looked at, so the hub is not
+     assumed clean by family resemblance. AGENTS.md: a new template joins every
+     enumerating guard in the commit that introduces it. */
+  "/case-studies",
 ];
 
 // Two viewports, because one was the gate's second blind axis. Reporting CLEAN

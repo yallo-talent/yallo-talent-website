@@ -93,13 +93,20 @@
   gap: 10px;
 }
 
+/* 0.12em, not 0.04em, and the reason is a value rather than a style. A4's
+   uppercase-mono tracking floor is about how caps LOOK, not how they were
+   produced, so it applies to a string that arrives already capitalised. The
+   region chip renders "UAE": three letters, natively caps, cramped in mono at
+   0.04em. check-rendered-type caught it at all four widths. The mixed-case
+   chips beside it ("Managed Delivery", "Oracle") take the same tracking, which
+   is what the rest of this file already does with mono. */
 .chip {
   display: inline-flex;
   align-items: center;
   padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.12em;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
@@ -142,9 +149,13 @@ a.chip:hover {
   color: var(--fg-subtle);
 }
 
+/* Tracked to A4's floor for the same reason as .chip: the Region item's value
+   is "UAE". The pair still reads as label and value, because the label above is
+   smaller, medium weight and --fg-subtle where this is --fg. */
 .engagementValue {
   font-family: var(--font-mono);
   font-size: var(--fs-body-sm);
+  letter-spacing: 0.12em;
   font-variant-numeric: tabular-nums;
   color: var(--fg);
 }
@@ -336,10 +347,11 @@ a.chip:hover {
   margin: 0 0 4px;
 }
 
+/* Renders frontmatter.region, so "UAE" again. A4's floor, per .chip above. */
 .clientRegion {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.12em;
   color: var(--fg-subtle);
 }
 

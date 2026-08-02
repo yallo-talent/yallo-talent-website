@@ -28,11 +28,14 @@
   gap: 8px;
 }
 
+/* A4's uppercase-mono floor, and the motivating pill is "SAP": natively caps,
+   so the tracking rule applies however the caps arrived. The platform facet
+   renders vendor names, several of which are acronyms. */
 .facetPill {
   padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: var(--fs-label);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.12em;
   color: var(--text-2);
   background: var(--ground-2);
   border: 1px solid var(--hairline);
