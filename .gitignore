@@ -61,3 +61,9 @@ prototype/L1, L2 Details/
 
 # Parallel-session build dirs (see next.config.ts distDir)
 /.next-*/
+
+# Candidate personal data. Talent-pool exports, never build input and never
+# committed (git log --all --diff-filter=A -- 'docs/lti-reports/*' is empty),
+# but explicit rather than relying on it staying an accident nobody made. A
+# careless git add -A is the one irreversible action this repo can still take.
+docs/lti-reports/
