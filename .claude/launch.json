@@ -10,8 +10,8 @@
     {
       "name": "session-a",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a pnpm dev -p 3001"],
-      "port": 3001
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r4 pnpm dev -p 3101"],
+      "port": 3101
     },
     {
       "name": "session-b",

@@ -196,6 +196,174 @@ for (const [theme, fg, req, note] of PAIRS) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Composites. The pairs above are token-on-token, and that is the narrower
+// half of the problem: a token can clear 4.5:1 against every ground it is
+// listed against and still fail the reader, because what is actually behind it
+// is the ground WITH the ambient wash over it.
+//
+// That is not hypothetical. --ink-3 measured 4.94:1 on bare paper and 4.02:1
+// with claret over it; --dk-txt-3 measured 5.29:1 on bare --dk and 3.70:1 with
+// teal over --dk-2. Body copy, under the AA gate, on most long pages, and this
+// gate reported all-green throughout because it was reading the token table.
+// A gate blind to the likeliest failure is the defect behind the defect.
+//
+// The model: `.amb-wash::before` paints color-mix(in oklab, HUE var(--amb-alpha),
+// transparent) over the host's background, so the worst case a reader meets is
+// the hue at FULL --amb-alpha composited on the ground. Both values are read
+// from Layer 1 rather than restated here, for the same reason the token tables
+// are.
+// ---------------------------------------------------------------------------
+
+/** Composite `hue` at `alpha` (0..1) over `ground`, both #rrggbb. */
+function composite(hueHex, alpha, groundHex) {
+  const px = (h) => {
+    const s = h.replace("#", "");
+    return [0, 2, 4].map((i) => Number.parseInt(s.slice(i, i + 2), 16));
+  };
+  const [h, g] = [px(hueHex), px(groundHex)];
+  return `#${h
+    .map((c, i) => Math.round(c * alpha + g[i] * (1 - alpha)))
+    .map((v) => v.toString(16).padStart(2, "0"))
+    .join("")}`;
+}
+
+/** Read `--amb-alpha` from a named Layer 1 block, as a 0..1 fraction. */
+function ambAlpha(selector) {
+  const block = layer1.match(
+    new RegExp(`${selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\{([^}]*)\\}`),
+  );
+  if (!block) {
+    throw new Error(`check-contrast: no block for ${selector} in ${TOKENS}.`);
+  }
+  const m = block[1].match(/--amb-alpha:\s*([0-9.]+)%/);
+  if (!m) {
+    throw new Error(
+      `check-contrast: --amb-alpha not found in ${selector}. The composite check reads it from Layer 1; do not restate it here.`,
+    );
+  }
+  return Number(m[1]) / 100;
+}
+
+/**
+ * The seven identity hues, per theme. Named rather than derived from the
+ * --id-* map on purpose: --id-* aliases these, so an eighth hue has to be added
+ * here to be measured, and a hue nothing measures is the round 3 failure.
+ */
+const HUE_NAMES = [
+  "plum",
+  "violet",
+  "teal",
+  "harbour",
+  "indigo",
+  "claret",
+  "mulberry",
+];
+
+/**
+ * Grounds a wash can sit on, per theme.
+ *
+ * MEASURED, not assumed: every `.amb-wash` element across nine pages in both
+ * themes resolves to --paper, --paper-2, --dk or --dk-2. `--ground-3` hosts no
+ * wash today, so it is reported rather than gated — pessimising the token for a
+ * ground nothing uses would cost real hierarchy on dark, where every step of
+ * --dk-txt-3-wash closes the gap to --dk-txt-2. The `.g3` assertion below is
+ * what stops that staying true by luck.
+ */
+const WASH_GROUNDS = {
+  light: { gated: ["paper", "paper-2"], reported: ["paper-3"] },
+  dark: { gated: ["dk", "dk-2"], reported: ["dk-3"] },
+};
+
+/** [theme, foreground token, requirement, note] over the composite. */
+const COMPOSITE_PAIRS = [
+  ["light", "ink", "text-sm", "body copy over the wash"],
+  ["light", "ink-2", "text-sm", "secondary copy over the wash"],
+  ["light", "ink-3-wash", "text-sm", "subtle copy over the wash"],
+  ["dark", "dk-txt", "text-sm", "body copy over the wash"],
+  ["dark", "dk-txt-2", "text-sm", "secondary copy over the wash"],
+  ["dark", "dk-txt-3-wash", "text-sm", "subtle copy over the wash"],
+];
+
+const ALPHA = {
+  light: ambAlpha(':root[data-theme="light"]'),
+  dark: ambAlpha(':root[data-theme="dark"]'),
+};
+const HUES = {
+  light: Object.fromEntries(
+    HUE_NAMES.map((n) => [n, token(`amb-${n}-l`)]),
+  ),
+  dark: Object.fromEntries(HUE_NAMES.map((n) => [n, token(`amb-${n}-d`)])),
+};
+
+const compositeRows = [];
+let compositeFailures = 0;
+
+for (const [theme, fg, req, note] of COMPOSITE_PAIRS) {
+  const fgHex = token(fg);
+  const need = MIN[req];
+  for (const scope of ["gated", "reported"]) {
+    let worst = Number.POSITIVE_INFINITY;
+    let where = "";
+    let bg = "";
+    for (const groundName of WASH_GROUNDS[theme][scope]) {
+      const groundHex = token(groundName);
+      for (const [hueName, hueHex] of Object.entries(HUES[theme])) {
+        const over = composite(hueHex, ALPHA[theme], groundHex);
+        const r = ratio(fgHex, over);
+        if (r < worst) {
+          worst = r;
+          where = `${hueName} on --${groundName}`;
+          bg = over;
+        }
+      }
+    }
+    const pass = worst >= need;
+    if (scope === "gated" && !pass) compositeFailures++;
+    compositeRows.push({
+      theme,
+      token: fg,
+      hex: fgHex,
+      where,
+      bg,
+      ratio: worst,
+      need,
+      pass,
+      scope,
+      note,
+    });
+  }
+}
+
+/**
+ * The wash must not reach --ground-3, because the gated grounds above stop
+ * short of it. An enumerating list that nobody rechecks is how `/ai-talent`
+ * shipped six classes under the type floor, so this asserts the enumeration
+ * instead of trusting it.
+ */
+const g3Violations = [];
+{
+  const { readdirSync, statSync } = await import("node:fs");
+  const walkSrc = (dir, out = []) => {
+    for (const name of readdirSync(dir)) {
+      if (name === "node_modules" || name.startsWith(".")) continue;
+      const p = `${dir}/${name}`;
+      if (statSync(p).isDirectory()) walkSrc(p, out);
+      else if (/\.(tsx|css)$/.test(p)) out.push(p);
+    }
+    return out;
+  };
+  for (const file of walkSrc("src")) {
+    readFileSync(file, "utf8")
+      .split("\n")
+      .forEach((line, i) => {
+        if (!line.includes("amb-wash")) return;
+        if (!/\bg3\b|ground-3|surface-raised/.test(line)) return;
+        g3Violations.push({ file, line: i + 1, text: line.trim().slice(0, 90) });
+      });
+  }
+}
+
 const md = process.argv.includes("--md");
 
 if (md) {
@@ -215,10 +383,44 @@ if (md) {
   }
 }
 
+// --- composites -------------------------------------------------------------
+if (md) {
+  console.log(
+    "\n| Theme | Token | Hex | Worst composite | Ratio | Required | Pass | Scope |",
+  );
+  console.log("|---|---|---|---|---|---|---|---|");
+  for (const r of compositeRows) {
+    console.log(
+      `| ${r.theme} | \`--${r.token}\` | \`${r.hex}\` | ${r.where} → \`${r.bg}\` | ${r.ratio.toFixed(2)}:1 | ${r.need}:1 | ${r.pass ? "✅" : "❌"} | ${r.scope} |`,
+    );
+  }
+} else {
+  console.log(
+    `\nComposites — text over the ambient wash at full --amb-alpha (light ${(ALPHA.light * 100).toFixed(0)}%, dark ${(ALPHA.dark * 100).toFixed(0)}%), ${HUE_NAMES.length} hues:`,
+  );
+  for (const r of compositeRows) {
+    const mark = r.scope === "reported" ? "note" : r.pass ? "PASS" : "FAIL";
+    console.log(
+      `${mark}  ${r.theme.padEnd(5)} --${r.token.padEnd(15)} ${r.hex}  on ${r.where.padEnd(22)} ${r.bg}  ${r.ratio.toFixed(2)}:1 (need ${r.need}:1)`,
+    );
+  }
+}
+
+if (g3Violations.length) {
+  console.error(
+    `\n${g3Violations.length} .amb-wash on a --ground-3 surface. The composite gate above only covers the two grounds a wash was measured on; extend WASH_GROUNDS and re-tune --ink-3-wash / --dk-txt-3-wash before shipping this:`,
+  );
+  for (const v of g3Violations) {
+    console.error(`  ${v.file}:${v.line}  ${v.text}`);
+  }
+}
+
+const total = failures + compositeFailures + g3Violations.length;
+
 console.error(
-  failures === 0
-    ? `\n${rows.length} pairs checked, all pass WCAG 2.2 AA.`
-    : `\n${failures} of ${rows.length} pairs FAIL WCAG 2.2 AA.`,
+  total === 0
+    ? `\n${rows.length} token pairs and ${compositeRows.filter((r) => r.scope === "gated").length} composites checked, all pass WCAG 2.2 AA.`
+    : `\n${failures} token pair(s) and ${compositeFailures} composite(s) FAIL WCAG 2.2 AA${g3Violations.length ? `, and ${g3Violations.length} wash(es) sit on an unmeasured ground` : ""}.`,
 );
 
-process.exit(failures === 0 ? 0 : 1);
+process.exit(total === 0 ? 0 : 1);
