@@ -11,6 +11,7 @@ export const retailData: L1PageData = {
   eyebrow: "Retail & Consumer · Contract-first",
   title: "Retail tech contractors,",
   sectorNoun: "retail",
+  screeningContext: "high transaction volumes, multi-market rollouts",
   emphasis: "shortlisted in 72 hours.",
   sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },

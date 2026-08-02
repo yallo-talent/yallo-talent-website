@@ -183,6 +183,20 @@ export interface L1PageData {
    * field; the H1 keeps its own wording.
    */
   sectorNoun: string;
+  /**
+   * The operating conditions this sector's screening actually tests for.
+   *
+   * Rendered in the L2 overview bullet. That bullet used to hardcode
+   * "Retail-context screening — high transaction volumes, multi-market
+   * rollouts" on EVERY L2 on the site, which was invisible while every built L2
+   * was retail and would have told a banking buyer we screen for retail the
+   * moment a finance L2 shipped.
+   *
+   * Optional, and the fallback is deliberately plain: a sector that has not
+   * said what it screens for gets a true generic line rather than another
+   * sector's specifics.
+   */
+  screeningContext?: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
   statusDots: string[];

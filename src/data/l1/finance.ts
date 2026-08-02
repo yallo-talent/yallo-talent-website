@@ -11,6 +11,7 @@ export const financeData: L1PageData = {
   eyebrow: "Banking & Financial Services · Contract-first",
   title: "Banking & FS contractors,",
   sectorNoun: "financial services",
+  screeningContext: "regulated delivery, audit trails and change control",
   emphasis: "shortlisted in 72 hours.",
   sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
@@ -29,15 +30,18 @@ export const financeData: L1PageData = {
     "Every Temenos core migration, every Guidewire policy admin rollout, every Murex trading platform build shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside regulated environments.",
     "Our bench is assessed by specialists who have run banking, insurance and capital markets delivery. We screen for the specific operating context — KYC/AML, PCI, PRA/FCA, DFSA, RBI — not just certification badges.",
   ],
+  /* TWO FIGURES REMOVED, 2 Aug 2026, and the precedent decided it rather than
+     my judgement. "71% of banking CIOs..." and "5-8 wks average time lost" both
+     shipped with no `source`, which PRODUCT.md bans outright: only the four
+     metrics in content/metrics.yaml are publishable, and neither of these is
+     among them. L1IntroStatCard.source exists precisely so an omission is
+     visible, and it was omitted here.
+
+     Retail carried the identical pattern, had it caught, and was fixed by
+     REMOVAL rather than substitution — its rail is one card for that reason.
+     Finance was not swept at the same time. Same fault, same fix; a plausible
+     replacement figure would have been the worse outcome. */
   introStatCards: [
-    {
-      n: "71%",
-      l: "of banking CIOs report contractor quality — not budget — is the primary reason core and payments programmes slip past go-live.",
-    },
-    {
-      n: "5–8 wks",
-      l: "Average time lost when a specialist is placed without regulated-industry screening. Yallo's shortlist is in your inbox in 72h.",
-    },
     {
       n: "Contract-first",
       l: "Primary focus is interim and contract deployment. Also available in Permanent, EOR and Managed Delivery models.",
@@ -684,7 +688,7 @@ export const financeData: L1PageData = {
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity",
+      label: "Cybersecurity & Risk",
       category: "Capability",
     },
   ],

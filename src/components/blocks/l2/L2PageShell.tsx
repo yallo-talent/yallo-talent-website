@@ -61,15 +61,26 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
           instead of twenty pages sharing one. */}
       <HeroAtmosphere seed={`${sector.slug}-${fn.slug}`} />
       <div className={styles.heroInner}>
+        {/* The breadcrumb reads the L1's OWN category rather than assuming
+            "Industries", and that was a 404 on every capability L2 on the site.
+            This shell is shared by sector and capability L2s — that reuse is the
+            point of it — but both crumbs were hardcoded to the sector tree, so
+            /capabilities/cybersecurity/identity-access-management announced
+            itself as "Industries / Cybersecurity" and its second crumb pointed at
+            /industries/cybersecurity, which does not exist. Forty-eight pages,
+            each with a dead link in the one control a reader uses to go back up.
+            Found while checking the Cybersecurity & Risk rename, not by a gate:
+            routeExists guards data-driven cross-links, and this href was built
+            from a literal. */}
         <nav className={styles.crumb} aria-label="Breadcrumb">
-          <Link href="/industries" className={styles.crumbLink}>
-            Industries
+          <Link href={`/${sector.category}`} className={styles.crumbLink}>
+            {sector.category === "capabilities" ? "Capabilities" : "Industries"}
           </Link>
           <span className={styles.crumbSep} aria-hidden="true">
             /
           </span>
           <Link
-            href={`/industries/${sector.slug}`}
+            href={`/${sector.category}/${sector.slug}`}
             className={styles.crumbLink}
           >
             {taxonomyLabels(sector.slug).short}
@@ -140,9 +151,17 @@ function L2Overview({
             <li className={styles.overviewBullet}>
               Specialist-screened for platform depth, not certificates
             </li>
+            {/* Was the literal "Retail-context screening", hardcoded, on every
+                L2 on the site. Harmless while every built L2 happens to be
+                retail, and a landmine the moment one is not: the first finance
+                or manufacturing L2 to ship would have told a banking buyer we
+                screen for retail context. Reads from sectorNoun, which the
+                component already receives. */}
             <li className={styles.overviewBullet}>
-              Retail-context screening — high transaction volumes, multi-market
-              rollouts
+              {sector.sectorNoun.charAt(0).toUpperCase() +
+                sector.sectorNoun.slice(1)}
+              -context screening
+              {sector.screeningContext ? ` — ${sector.screeningContext}` : ""}
             </li>
             <li className={styles.overviewBullet}>
               72h from brief to shortlist — every time
