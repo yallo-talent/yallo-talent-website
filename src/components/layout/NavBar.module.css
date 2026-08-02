@@ -331,6 +331,23 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  /* Two lines is also the FLOOR, and that is what makes the three columns line
+     up. The clamp above was only a maximum, so a row's height depended on how
+     long its tagline happened to be: rows ran 61px on one line and 80px on two,
+     and because the columns hold different numbers of each, no row in
+     Capabilities sat level with its neighbours in Platforms or Industries.
+
+     Reserving the second line is the right fix rather than padding the copy to
+     length. Measured across four widths, the wrap point is not monotonic with
+     viewport — a 61-character line wrapped at 1440 and did not at 1280, 1728 or
+     1920, because the panel's column width does not increase uniformly — so any
+     tagline tuned to wrap at one width comes apart at another. It is also the
+     only fix available for AI Talent, whose subtitle is ratified copy that must
+     not be padded to suit a layout.
+
+     2.9em is exactly two lines: 2 x the 1.45 line-height, in em so it tracks the
+     font-size above rather than restating 13px. */
+  min-height: 2.9em;
 }
 
 .megaLink:hover,
@@ -784,5 +801,9 @@
   .megaSupport {
     -webkit-line-clamp: 1;
     line-clamp: 1;
+    /* The floor follows the clamp down. Holding 2.9em here would reserve a blank
+       second line under every row in the two-column layout, which is the opposite
+       of what the clamp is for. */
+    min-height: 1.45em;
   }
 }

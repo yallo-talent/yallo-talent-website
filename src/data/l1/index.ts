@@ -174,28 +174,32 @@ export const capabilitiesIndex: L1IndexEntry[] = [
     label: "Cloud & Infrastructure" as TaxonomyLabel,
     short: "Cloud" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "AWS, Azure, GCP architects and platform engineers.",
+    tagline:
+      "AWS, Azure and Google Cloud architects, platform and network engineers.",
   },
   {
     slug: "cybersecurity",
     label: "Cybersecurity" as TaxonomyLabel,
     short: "Cybersecurity" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "Security architecture, identity, GRC and security operations.",
+    tagline:
+      "Security architecture, identity and access, GRC and security operations.",
   },
   {
     slug: "integration-middleware",
     label: "Integration & Middleware" as TaxonomyLabel,
     short: "Integration" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "MuleSoft, Boomi, Kafka, API and iPaaS specialists.",
+    tagline:
+      "MuleSoft, Boomi, Kafka, API management and iPaaS integration specialists.",
   },
   {
     slug: "devops-platform-engineering",
     label: "DevOps & Platform Engineering" as TaxonomyLabel,
     short: "DevOps" as TaxonomyLabel,
     category: "capabilities",
-    tagline: "SRE, platform engineering and continuous delivery talent.",
+    tagline:
+      "SRE, platform engineering, observability and continuous delivery talent.",
   },
   {
     slug: "testing-quality-engineering",

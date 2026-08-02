@@ -1,3 +1,6 @@
+import { capabilityNavEntries } from "@/data/capabilities";
+import { capabilitiesIndex } from "@/data/l1/index";
+
 export interface NavItem {
   label: string;
   href: string;
@@ -34,6 +37,28 @@ export interface NavGroup {
   columns: NavColumn[];
   featured?: NavFeatured;
 }
+
+/**
+ * The Capabilities column, derived from the discipline taxonomy.
+ *
+ * `capabilityNavEntries` is the single predicate for "does this discipline have a
+ * page, and where". The hub page answers the same question through the same
+ * source, so the two surfaces cannot drift. See src/data/capabilities/index.ts.
+ *
+ * The Platforms column above is still hand-written. It has the same latent fault
+ * and is deliberately left alone here: the platform set is the parallel session's
+ * to change, and converting it is their call, not a side effect of this one.
+ */
+const capabilityNavItems: NavItem[] = capabilityNavEntries(
+  capabilitiesIndex,
+).map(({ label, href, published }) => ({
+  label,
+  href,
+  /* Only set the flag when it is false. `published: true` is not a state the
+     renderer has — it tests `=== false` — and writing it would imply the absence
+     of the field means something else. */
+  ...(published ? {} : { published: false }),
+}));
 
 export const primaryNav: NavGroup[] = [
   {
@@ -73,40 +98,17 @@ export const primaryNav: NavGroup[] = [
       },
       {
         heading: "Capabilities",
-        items: [
-          {
-            label: "Artificial Intelligence",
-            href: "/ai-talent",
-          },
-          {
-            label: "Data & Analytics",
-            href: "/capabilities/data-analytics",
-          },
-          {
-            label: "Cloud & Infrastructure",
-            href: "/capabilities/cloud-infrastructure",
-          },
-          {
-            label: "Cybersecurity",
-            href: "/capabilities/cybersecurity",
-            published: false,
-          },
-          {
-            label: "Integration & Middleware",
-            href: "/capabilities/integration-middleware",
-            published: false,
-          },
-          {
-            label: "DevOps & Platform Engineering",
-            href: "/capabilities/devops-platform-engineering",
-            published: false,
-          },
-          {
-            label: "Testing & Quality Engineering",
-            href: "/capabilities/testing-quality-engineering",
-            published: false,
-          },
-        ],
+        /* DERIVED, and it is the fix for a real defect rather than a tidy-up.
+           This column used to be seven hand-written entries with their own labels
+           and their own `published: false` flags — a third copy of the discipline
+           taxonomy, after `capabilitiesIndex` and the hub page. When the four
+           planned desks were seeded it did not move: the menu went on marking four
+           live pages "Desk in build" and kept the retired label "Artificial
+           Intelligence" on a row whose subtitle had already changed, because the
+           subtitle is read from the index and the label was not.
+           Deriving it means the menu cannot disagree with the taxonomy again, and
+           the next discipline appears here by being added in one place. */
+        items: capabilityNavItems,
       },
       /* Industries merged in as the third column, canon §4 (ratified 30 Jul):
          Specialisms and Industries are ONE item. Two top-level entries made the

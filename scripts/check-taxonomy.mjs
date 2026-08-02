@@ -163,6 +163,37 @@ for (const file of allFiles) {
 }
 
 /* ---------------------------------------------------------------------------
+   Rule 2b. Navigation and menu files must not hardcode capability routes.
+
+   The third copy, and the one that actually reached Sumeet. The nav mega panel
+   held the whole discipline taxonomy by hand — seven labels and seven
+   `published` flags — so seeding the four planned desks updated the hub and left
+   the menu marking four live pages "Desk in build", under the retired label
+   "Artificial Intelligence". Rule 2 did not catch it because a nav column is an
+   inline array, not a `const xLabels =` map, which is exactly the kind of gap
+   that lets the same fault return in a new shape.
+
+   The Capabilities column is now derived from `capabilityNavEntries`. This keeps
+   it that way.
+   --------------------------------------------------------------------------- */
+const NAV_FILES = allFiles.filter((f) => /nav|menu|header/i.test(f));
+for (const file of NAV_FILES) {
+  const lines = readFileSync(file, "utf8").split("\n");
+  lines.forEach((line, i) => {
+    if (isComment(line)) return;
+    if (/["'`]\/capabilities\/[a-z-]+["'`]/.test(line)) {
+      failures.push(
+        `${file}:${i + 1}  hardcodes a capability route in a navigation file.\n` +
+          `      Derive the column from capabilityNavEntries(capabilitiesIndex) instead — a hand-written\n` +
+          `      copy of the taxonomy is what left the menu advertising "Desk in build" on live pages.\n` +
+          `      ${line.trim().slice(0, 90)}`,
+      );
+    }
+  });
+}
+notes.push(`${NAV_FILES.length} nav file(s) free of hardcoded capability routes.`);
+
+/* ---------------------------------------------------------------------------
    Rule 3. "Yallo" is never set in capitals (canon §2).
 
    Static half: the literal string, which is how it reaches alt text, aria-labels,

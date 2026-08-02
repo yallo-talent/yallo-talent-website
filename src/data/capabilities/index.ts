@@ -58,3 +58,36 @@ export const CAPABILITY_ORDER = [
   "devops-platform-engineering",
   "testing-quality-engineering",
 ] as const;
+
+/**
+ * Does this discipline have a page, and what is its route?
+ *
+ * ONE predicate, because there were three answers to this question and two of
+ * them were wrong. The capabilities hub derived it correctly; the nav mega panel
+ * carried a hand-written copy of the whole taxonomy — its own labels and its own
+ * `published: false` flags — so when the four planned desks were seeded, the hub
+ * updated and the nav did not. It went on showing "Desk in build" on four live
+ * pages and the retired label "Artificial Intelligence" on a row whose subtitle
+ * had already updated, because the subtitle came from the index and the label did
+ * not. That is what Sumeet reported as "L2 links not clickable", and the copy in
+ * the nav is why fixing the data did not fix it.
+ *
+ * Anything that needs to know whether a discipline is live asks this. A fourth
+ * copy of the answer is the failure mode; `scripts/check-taxonomy.mjs` now fails
+ * the build if a nav or menu file hardcodes a capability route.
+ */
+export function capabilityNavEntries(
+  index: Array<{ slug: string; label: string; href?: string }>,
+): Array<{ label: string; href: string; published: boolean }> {
+  return index.map((e) => ({
+    label: e.label,
+    /* `href` where the canonical route is not /capabilities/{slug}. AI Talent is
+       the only one: it lives at /ai-talent and the capability-shaped forms 301. */
+    href: e.href ?? `/capabilities/${e.slug}`,
+    /* Live when it has a page in the registry, or an explicit canonical route of
+       its own. Not "when it is absent from PLANNED_CAPABILITIES": that array is
+       now empty, and reading a negative from an empty list is how a future
+       discipline would silently render as a link to a 404. */
+    published: e.slug in capabilityRegistry || e.href !== undefined,
+  }));
+}
