@@ -577,7 +577,7 @@ export const manufacturingData: L1PageData = {
       roles: [
         "OMS Architect",
         "Manhattan Active Omni Consultant",
-        "Blue Yonder Fulfilment Lead",
+        "Blue Yonder Fulfillment Lead",
         "SAP EWM Consultant",
         "Fluent Commerce Specialist",
         "Last-Mile Systems Architect",

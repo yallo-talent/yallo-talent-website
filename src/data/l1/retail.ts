@@ -714,7 +714,7 @@ export const retailData: L1PageData = {
           vendorSlug: "blue-yonder",
           name: "Blue Yonder Fulfillment",
           roles: [
-            "Blue Yonder Fulfilment Lead",
+            "Blue Yonder Fulfillment Lead",
             "Store Fulfilment Consultant",
             "Solution Architect",
             "Integration Specialist",

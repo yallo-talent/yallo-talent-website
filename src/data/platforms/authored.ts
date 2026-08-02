@@ -220,7 +220,16 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
            indistinguishable from a duplicate-render bug, and it put three
            spellings of the word in one card. The product name is a proper noun
            and keeps the vendor's own "Fulfillment"; UK spelling still governs
-           our own prose, which is why the scope line reads "fulfilment". */
+           our own prose, which is why the scope line reads "fulfilment".
+
+           2 Aug: it came BACK, and fixing it here was never going to be enough.
+           The authored set is unioned with the derived sector roles, and
+           retail.ts and manufacturing.ts still held the UK spelling, so the
+           duplicate reappeared on the platform bench through derivation. Both
+           sector files now use the product's spelling. The lesson is the
+           general one for this file: an authored fix does not stick while a
+           sector file disagrees, because the two are merged rather than
+           overridden. */
         roles: [
           "Blue Yonder Fulfillment Lead",
           "Order Orchestration Consultant",
