@@ -20,7 +20,8 @@
     "test": "playwright test",
     "prepare": "husky || true",
     "check:taxonomy": "node scripts/check-taxonomy.mjs",
-    "check:yallo-case": "node scripts/check-yallo-case.mjs"
+    "check:yallo-case": "node scripts/check-yallo-case.mjs",
+    "check:estate": "node scripts/check-estate-interaction.mjs"
   },
   "engines": {
     "node": "22.x",
