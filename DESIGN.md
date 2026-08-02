@@ -41,15 +41,17 @@ colors:
   amb-plum: "#8e4a72"
   amb-violet: "#5f5694"
   amb-teal: "#3d7d7d"
-  amb-moss: "#4a7d55"
+  amb-harbour: "#3e6e85"
   amb-indigo: "#3a5a8a"
-  amb-umber: "#9a6e3e"
+  amb-claret: "#8b3e4e"
+  amb-mulberry: "#7b4988"
   amb-plum-dark: "#b45c8e"
   amb-violet-dark: "#7a6fb8"
   amb-teal-dark: "#4e9a9a"
-  amb-moss-dark: "#5e9a6b"
+  amb-harbour-dark: "#5289a5"
   amb-indigo-dark: "#5677b3"
-  amb-umber-dark: "#c08a4e"
+  amb-claret-dark: "#af5f70"
+  amb-mulberry-dark: "#9d63ab"
 typography:
   display:
     fontFamily: "Newsreader, Georgia, serif"
@@ -258,16 +260,29 @@ a clone.
 
 ### Ambient — atmosphere only
 
-Six desaturated hues that live exclusively in the ambient layer: radial washes on
+Seven desaturated hues that live exclusively in the ambient layer: radial washes on
 bands, PetalPlate gradients, glow at section boundaries. Tonally sibling to the
 saasinator family, tuned per theme. **Never on text, controls, borders, or as a fill
 behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha` —
 8% maximum on light, 14% on dark.
 
 - **Plum** `#8e4a72` / dark `#b45c8e` · **Violet** `#5f5694` / `#7a6fb8` ·
-  **Teal** `#3d7d7d` / `#4e9a9a` · **Moss** `#4a7d55` / `#5e9a6b` ·
-  **Indigo** `#3a5a8a` / `#5677b3` · **Umber** `#9a6e3e` / `#c08a4e` (browner than
-  the brand gold, so the marker stays unmistakable).
+  **Teal** `#3d7d7d` / `#4e9a9a` · **Harbour** `#3e6e85` / `#5289a5` ·
+  **Indigo** `#3a5a8a` / `#5677b3` · **Mulberry** `#7b4988` / `#9d63ab` ·
+  **Claret** `#8b3e4e` / `#af5f70`.
+
+  *Amended 2 Aug 2026.* Sumeet rejected moss and umber; moss became harbour, umber
+  became claret, and mulberry was added as the seventh for Informatica. Tokens were
+  renamed rather than aliased, so no `--amb-moss-*` or `--amb-umber-*` exists. The
+  measured separation cost is recorded in `docs/design/identity-palette-proposal.md`.
+
+  **Two statements in this section are known to be out of date and are NOT corrected
+  here, because resolving either changes a ratified rule rather than recording a
+  change already made.** The paragraph above gives the ambient alpha as 8% and 14%;
+  R11 raised those to 20% and 30%, and `--amb-alpha` in `globals.css` is the live
+  value. The Rhythm Rule below says per-taxonomy assignment is banned; it predates
+  R4, which introduced exactly that as the `--id-*` identity layer. Both need
+  Sumeet, not an edit.
 
 **The Rhythm Rule.** A section takes its ambient hue from its *position* in the page
 (`.amb-1`…`.amb-6`), never from what its content is about. Per-taxonomy assignment is
