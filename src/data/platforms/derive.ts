@@ -253,7 +253,7 @@ function collect(): Map<string, PlatformCoverage> {
     const flatLower = flat.map((r) => r.toLowerCase());
     cov.roles = flat
       .filter(
-        (r, i) =>
+        (_role, i) =>
           !flatLower.some(
             (other, j) => j !== i && other.endsWith(` ${flatLower[i]}`),
           ),

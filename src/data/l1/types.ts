@@ -68,6 +68,31 @@ export interface L1ExpertiseCard {
    * `note` carries why the reader might want the other one.
    */
   twin?: Array<{ href: string; label: string; note: string }>;
+  /**
+   * What the screening band says for THIS function, per
+   * context-round3-rulings.md §5.5.4.
+   *
+   * The band used to be a hardcoded paragraph in `L2PageShell` taking no props,
+   * so it was word-for-word identical on every L2 on the site. Twenty retail
+   * functions each claimed to be "assessed for implementation depth by
+   * specialists who have run delivery in this function" in exactly the same
+   * sentence, which is the kind of sameness a buyer reads as generated.
+   *
+   * A screening claim is the page's most load-bearing one, so it is the worst
+   * place for boilerplate: it is the only band that says what Yallo actually
+   * does that a job board does not.
+   *
+   * Optional, and the fallback is the original generic paragraph rather than
+   * nothing. A function that has not said what it screens for makes the honest
+   * general claim; it does not borrow another function's specifics. That is the
+   * same rule `screeningContext` already follows on L1PageData.
+   *
+   * Note what is deliberately NOT here: an engagement equivalent. The engagement
+   * band is the four commercial models in canon §7, and those do not vary by
+   * function. Making them differ per function would mean inventing distinctions
+   * that do not exist, so that half of the band's sameness is correct.
+   */
+  screening?: string;
 }
 
 /**

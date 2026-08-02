@@ -99,6 +99,8 @@ export const retailData: L1PageData = {
       title: "Customer Experience",
       icon: "cx",
       blurb: "Brand-to-basket journeys across channels",
+      screening:
+        "We screen on the join rather than the platform. A CX consultant who has only built campaigns has not met the problem: the failure is a personalisation rule that fires against stale segment data, or a basket that behaves differently in the app and at the till. We ask which channel broke first on their last programme, and what they changed in the data behind it rather than in the template.",
       roles: [
         "SAP CX Functional Consultant",
         "SFMC Developer",
@@ -154,6 +156,8 @@ export const retailData: L1PageData = {
       title: "Clienteling & Styling",
       icon: "clienteling",
       blurb: "Luxury one-to-one selling and appointment flows",
+      screening:
+        "Clienteling stands or falls on whether store associates actually use it, so we screen for adoption evidence over configuration depth. What proportion of associates logged in after month three, what the app asked them to type that they refused to type, and what was cut to fix it. A consultant who cannot answer that has delivered a tool rather than a change.",
       roles: [
         "Salesforce Clienteling Lead",
         "Endear / Tulip Specialist",
@@ -207,6 +211,8 @@ export const retailData: L1PageData = {
       title: "Store Operations",
       icon: "store",
       blurb: "Task management, back-office and store systems",
+      screening:
+        "Store systems are judged on the worst day, not the average one, so we screen for what a candidate has run through a peak and a network outage. Task management that survives a truck arriving late, offline behaviour that store staff trust, and a rollout across estates where no two stores have the same back office. We ask about the store that refused the rollout and why.",
       roles: [
         "Oracle Retail Consultant",
         "SAP S/4HANA Retail Functional",
@@ -262,6 +268,8 @@ export const retailData: L1PageData = {
       title: "Point of Sale",
       icon: "pos",
       blurb: "In-store checkout, mobile POS and payments",
+      screening:
+        "POS is the one system where a defect is visible to a queue of customers, so we screen for cutover and resilience above configuration. Offline mode actually tested rather than documented, payment and tender edge cases, and a till rollout sequenced across a live estate. We ask what they got wrong on the first wave and what changed for the second.",
       roles: [
         "Oracle Xstore Specialist",
         "SAP Customer Checkout Consultant",
@@ -316,6 +324,8 @@ export const retailData: L1PageData = {
       title: "Merchandising & Buying",
       icon: "merch",
       blurb: "Buying, range management and product lifecycle",
+      screening:
+        "Merchandising hires fail on process rather than screens, so we screen for a candidate who can hold a buying team to a calendar. Range reviews, open-to-buy discipline and the seasonal cycle that decides when a system change can safely land. We ask what they refused to configure, because the useful consultant has told a merchandiser no at least once.",
       roles: [
         "Blue Yonder MFP Specialist",
         "Oracle Retail MOM Consultant",
@@ -371,6 +381,8 @@ export const retailData: L1PageData = {
       title: "Assortment Planning",
       icon: "assortment",
       blurb: "Store cluster, size scale and OTB planning",
+      screening:
+        "Assortment work is where system logic meets a merchant's judgement, and the mis-hire optimises against the merchant. We screen for planners who have run a cluster and localisation model that buyers accepted, and who can explain what the model got wrong in a market it did not understand. Adoption by the buying team is the test, not the elegance of the hierarchy.",
       roles: [
         "Anaplan Model Builder",
         "Blue Yonder Assortment Specialist",
@@ -426,6 +438,8 @@ export const retailData: L1PageData = {
       title: "Space & Floor Planning",
       icon: "space",
       blurb: "Planograms, cluster grids and store layouts",
+      screening:
+        "Space planning is a data problem disguised as a drawing tool, so we screen on what feeds the planogram rather than on the planogram. Fixture and product dimension data that was wrong until someone fixed it, store clustering that reflected real fixtures, and compliance measured after the reset rather than assumed. We ask how they found out a planogram was not being followed.",
       roles: [
         "JDA Space Planner",
         "Nielsen Spaceman Consultant",
@@ -481,6 +495,8 @@ export const retailData: L1PageData = {
       title: "Pricing & Promotions",
       icon: "promotions",
       blurb: "Price optimisation, markdown and offer engines",
+      screening:
+        "Pricing defects are expensive in both directions, so we screen for control as much as capability. Promotion stacking rules tested against the cases nobody briefed, price changes that reach every channel in the same hour, and an approval path that a trading team cannot route around under pressure. We ask about a promotion that priced something wrongly and what they changed afterwards.",
       roles: [
         "Blue Yonder Price / Promotion Lead",
         "Revionics Specialist",
@@ -536,6 +552,8 @@ export const retailData: L1PageData = {
       title: "Loyalty & Rewards",
       icon: "loyalty",
       blurb: "Points, tiers, gamification and lifecycle loyalty",
+      screening:
+        "Loyalty programmes accumulate liability and edge cases, so we screen for people who have run one after launch rather than to launch. Points expiry, tier movement, partner earn and burn, and the reconciliation that says whether the balance is right. A consultant who has only configured an earn rule has not met the part that gets escalated.",
       roles: [
         "Oracle Loyalty Cloud Consultant",
         "Salesforce Loyalty Specialist",
@@ -591,6 +609,8 @@ export const retailData: L1PageData = {
       title: "CRM & Marketing Ops",
       icon: "crm",
       blurb: "Segmentation, journeys and cross-channel activation",
+      screening:
+        "Marketing operations fails at deliverability and consent far more often than at campaign design, so that is where we screen. Consent captured in one channel and honoured in all of them, suppression that holds under a data migration, and a send that was stopped before it went out. We ask what their largest audience mistake was and how it was caught.",
       roles: [
         "Salesforce Marketing Cloud Consultant",
         "Braze Specialist",
@@ -646,6 +666,8 @@ export const retailData: L1PageData = {
       title: "E-commerce",
       icon: "ecommerce",
       blurb: "Storefront, checkout and headless commerce",
+      screening:
+        "Storefront work is judged under peak load, so we screen for engineers who have held a site up through one. Caching that survives a promotion going viral, a checkout that degrades rather than fails when a service is slow, and a release path that allows a fix on the busiest trading day. We ask what they turned off during peak and who signed it off.",
       roles: [
         "SAP Commerce Architect",
         "Salesforce Commerce Cloud Lead",
@@ -701,6 +723,8 @@ export const retailData: L1PageData = {
       title: "Omnichannel Fulfilment",
       icon: "omnichannel",
       blurb: "Ship-from-store, click-collect and dark stores",
+      screening:
+        "Omnichannel breaks on inventory accuracy rather than on routing logic, so we screen there first. What their real stock accuracy was, how the sourcing rules behaved when it was wrong, and what the store colleague saw when an order could not be picked. A consultant who describes the routing engine without mentioning accuracy has not run this in a live estate.",
       roles: [
         "OMS Architect",
         "Blue Yonder Fulfillment Lead",
@@ -756,6 +780,8 @@ export const retailData: L1PageData = {
       title: "Order Management (OMS)",
       icon: "oms",
       blurb: "Distributed order orchestration across channels",
+      screening:
+        "Order management is the system every other channel blames, so we screen for people who have owned it during an incident. Order state that survives a partial cancellation, a return against a split shipment, and a payment capture that has to be reversed. We ask them to describe the most complicated order they have had to unpick by hand.",
       roles: [
         "IBM Sterling OMS Architect",
         "Manhattan Active Omni Lead",
@@ -811,6 +837,8 @@ export const retailData: L1PageData = {
       title: "Warehouse Management (WMS)",
       icon: "wms",
       blurb: "DC operations, pick paths and slotting",
+      screening:
+        "WMS separates claimed from held experience at cutover, so we screen on go-lives rather than on modules. A wave that had to be replanned mid-shift, integration to automation that behaved differently in the live building, and a parallel run somebody insisted on shortening. We ask what happened in the first week after go-live, because that is the week the design is tested.",
       roles: [
         "Manhattan WMS Lead",
         "SAP EWM Consultant",
@@ -866,6 +894,8 @@ export const retailData: L1PageData = {
       title: "Transport Management (TMS)",
       icon: "tms",
       blurb: "Last-mile, routing and carrier orchestration",
+      screening:
+        "Transport work is carrier integration work, so we screen on what a candidate has connected rather than what they have configured. Rating and tendering against carriers who each interpret the standard differently, track and trace that survives a carrier changing its feed, and a cost model reconciled against invoices. We ask which carrier integration took longest and why.",
       roles: [
         "Oracle OTM Specialist",
         "Manhattan Active TMS Consultant",
@@ -921,6 +951,8 @@ export const retailData: L1PageData = {
       title: "Supply Chain & S&OP",
       icon: "supply",
       blurb: "Integrated supply-demand planning across the network",
+      screening:
+        "S&OP is a meeting discipline before it is a system, and the mis-hire builds a plan nobody uses. We screen for consultants who have run the cycle with commercial and supply people in the room, who can describe a consensus number that was overruled, and who know what the plan was measured against afterwards. Adoption is the deliverable.",
       roles: [
         "Kinaxis RapidResponse Lead",
         "SAP IBP Consultant",
@@ -976,6 +1008,8 @@ export const retailData: L1PageData = {
       title: "Demand Planning & Forecasting",
       icon: "demand",
       blurb: "Statistical forecasting and demand sensing",
+      screening:
+        "Forecasting hires are easy to over-screen on modelling and under-screen on judgement, so we do the reverse. What their forecast accuracy actually was, which promotions and new lines the model could never handle, and where a planner override was correct. We ask what they stopped forecasting statistically, because knowing the limit is the skill.",
       roles: [
         "Blue Yonder Demand Planner",
         "o9 Solutions Specialist",
@@ -1031,6 +1065,8 @@ export const retailData: L1PageData = {
       title: "Inventory & Replenishment",
       icon: "inventory",
       blurb: "Store, DC and network inventory optimisation",
+      screening:
+        "Replenishment is where a small parameter error becomes a warehouse full of the wrong stock, so we screen on parameter governance. Safety stock and review cycles set from measurement rather than from the default, exception workloads a planner can actually clear in a day, and the store that was overstocked until someone found out why. We ask what they tuned and what it cost before they did.",
       roles: [
         "Blue Yonder Replenishment Lead",
         "Oracle Retail Inventory Consultant",
@@ -1086,6 +1122,8 @@ export const retailData: L1PageData = {
       title: "Returns & Reverse Logistics",
       icon: "returns",
       blurb: "Returns portals, refurb flows and reverse WMS",
+      screening:
+        "Returns are the part of the estate that is designed last and escalated first, so we screen for people who have owned the whole path. Disposition rules that decide what is resold rather than written off, refund timing that stops a contact-centre queue forming, and stock that reappears as sellable at the right moment. We ask what proportion never made it back to sale and why.",
       roles: [
         "Returns Platform Specialist",
         "Reverse Logistics Consultant",
@@ -1141,6 +1179,8 @@ export const retailData: L1PageData = {
       title: "Master Data & PIM",
       icon: "mdm",
       blurb: "Product, customer and location data at scale",
+      screening:
+        "Master data work is judged on what happens after the load, so we screen on governance rather than on migration. Who owns an attribute, what stops an incomplete product being published, and how a duplicate was found after everyone agreed there were none. We ask about the data quality rule they had to remove because the business could not meet it yet.",
       roles: [
         "Stibo PIM Consultant",
         "Informatica MDM Specialist",
