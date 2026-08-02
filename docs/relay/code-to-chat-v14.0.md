@@ -1,7 +1,7 @@
 # Relay — Code to Chat, v14.0
 
 **Round 7 close-out, session E · 2 August 2026 · main repository, branch `fix/round7-integration`**
-Closes relay v13.0 (Session D). Three new changes landed, the full gate set was re-run, and `main` is merged and pushed. Branch deletion and worktree removal (§6, §7 of the dispatch) could not be carried out as specified: their named targets do not exist in this repository. Detail in §4.
+Closes relay v13.0 (Session D). Three new changes landed, the full gate set was re-run, and `main` is merged and pushed. Branches and worktrees are confirmed already gone rather than deleted by this session; the proof is in §4.
 
 ---
 
@@ -11,7 +11,7 @@ The three changes are done, gated and merged. Movement item groups under every c
 
 Typecheck and all sixteen gates ran serially on a production build at port 3107: every one green. LCP measured, not assumed: 188ms, the hero H1, unchanged by the rail's expansion because its marks are `loading="lazy"` and the rail sits below the fold regardless of card count. `main` fast-forwarded cleanly onto this branch's single commit and is pushed.
 
-**Not done: branch deletion and worktree removal.** The four branches and the two worktrees the dispatch names to remove are not present in this repository as described. See §4 before assuming this is a gap versus something already closed.
+**Branches and worktrees: already gone, confirmed rather than assumed.** All four round 7 branches and both named worktrees were removed before this session started. §4 gives the commit-hash proof, because "not present" needed evidence, not a shrug.
 
 ---
 
@@ -62,23 +62,38 @@ LCP: 188ms, `H1.heroHeadline`, measured directly via a `PerformanceObserver` aga
 
 ---
 
-## 4. Why §6 (branch deletion) and §7 (worktree removal) did not run
+## 4. Branches and worktrees: the proof, not the shrug
 
-The dispatch names four round 7 branches (unspecified by exact name in the text I received) and two worktrees, `../yallo-talent-website-B` and `../yallo-talent-website-C`, to remove. Checked before touching anything:
+First pass at this section wrongly reported the four branches as unidentifiable and stopped. They are identifiable, from the merge structure itself, and they are already deleted. Corrected below.
 
-- **The two worktree paths do not exist.** `git worktree list` shows only this checkout plus `.claude/worktrees/cranky-satoshi-0218bc` and `.claude/worktrees/heuristic-golick-919afe`, both detached at `11c0cb7` — a "relay v3.0" commit from 31 July, unrelated to round 7. Neither matches the named paths or looks like a round 7 artefact.
-- **No branch named `fix/round7-integration` exists on `origin`.** `git ls-remote --heads origin` lists 24 branches; that name is not among them. Session D's own branch of that name (per v13.0's header) was either never pushed or already deleted before this session started.
-- **`main` was already at the round 7 merge commit before this session began.** Grounding (§0) found `main` at `4b3829b`, `"chore(merge): round 7 into main, three sessions integrated and every gate green"` — matching what v13.0 describes as pending, not done. The merge, and apparently the branch/worktree cleanup the dispatch assumes is still outstanding, appear to have already happened between v13.0 being filed and this session starting, by a path I have no visibility into.
-- **The one branch still carrying round 7 content, `fix/round6-system`, is fully merged into `main`** (`git merge-base --is-ancestor` confirms it) but carries one commit not yet pushed to `origin/fix/round6-system` (a doc plus a client logo asset). Its content is safe either way since it already lives in `main`'s history, but it is not obviously "one of the four" and deleting it was not attempted without a clearer signal that it is in scope.
+**The merge commit names them.** `main`'s round 7 merge (`4b3829b`, second parent `2c373da`) is a normal two-parent merge, but its ancestry contains three further merge commits with their own names:
 
-Guessing at four branches to delete risked either doing nothing useful or destroying something outside this dispatch's authority to remove. Per the dispatch's own stop condition, a signal like this gets named rather than forced past. Nothing was deleted; no worktree was touched.
+```
+f6a320f chore(merge): round 7 case studies (C) into the integration branch   (tip 9f58c33a)
+1b644e7 chore(merge): round 7 content (B) into the integration branch        (tip 30295d84)
+0fd6e65 chore(merge): round 7 system (A) into the integration branch        (tip 97b23cca)
+```
 
-**What Chat can confirm or correct:** whether branch/worktree cleanup already happened in a session or manual step this relay has no visibility into, and if not, the actual four branch names so a session can target them precisely rather than by inference.
+That is A ("round 7 system"), B ("round 7 content"), C ("round 7 case studies"), and the integration branch itself that carried all three, `2c373da` — session D's `fix/round7-integration`. Four branches.
+
+**All four are already gone, locally and on origin.** `git fetch --all --prune` first, then for each of the four commit hashes above:
+
+```
+git for-each-ref --format='%(refname) -> %(objectname)' | grep -F <sha>
+```
+
+returned nothing, for all four. No local branch, no remote-tracking branch, no ref of any kind anywhere points at any of them. They remain reachable only as ancestors inside `main`'s merge history, which is exactly what a deleted-but-merged branch looks like. `fix/round6-system` was checked too, since it still carries one unpushed commit: its tip (`8703205`) is a **round 6** merge parent (`chore(merge): round 6 system into main`, second parent `8703205`), not one of round 7's four, and it is out of scope here.
+
+**The two named worktrees are also already gone.** `../yallo-talent-website-B` and `../yallo-talent-website-C` do not exist as paths. `git worktree prune -v` found nothing stale to clean, meaning even the administrative metadata was already removed, not just the directories. `git worktree list` shows this checkout plus two unrelated entries, `.claude/worktrees/cranky-satoshi-0218bc` and `.claude/worktrees/heuristic-golick-919afe`, both detached at `11c0cb7` (a 31 July "relay v3.0" commit, nothing to do with round 7) and at a path convention the dispatch never names. Given the hook context earlier in this session noting another chat's dev server active in this folder, these two most likely belong to that concurrent, unrelated session and were left untouched.
+
+Conclusion: steps 6 and 7 were already complete before this session began. Nothing was deleted by this session because there was nothing left to delete; `git worktree prune` is the only command this session ran that touches either.
 
 ---
 
 ## 5. Confirmed state
 
-- `main` at `1517150`, `origin/main` at the same commit, pushed.
-- One worktree (this one) plus the two unrelated `.claude/worktrees/*` entries, untouched.
+- `main` at `f44ecfb` (this relay's own commit, on top of `1517150`), `origin/main` at the same commit, pushed.
+- One worktree with round 7 content (this one) plus two unrelated, untouched `.claude/worktrees/*` entries belonging to a different, currently-active session.
+- All four round 7 branches (A, B, C, and D's integration branch) confirmed absent from every ref, local and origin, after a full `--prune` fetch.
+- `git worktree prune -v` run; nothing stale found.
 - `git status` clean but for `docs/lti-reports/`, an untracked directory of talent-pool spreadsheet exports unrelated to this build — left alone.
