@@ -37,6 +37,32 @@ export interface L1IndexEntry {
   href?: string;
 }
 
+/**
+ * THE SECTOR INDEX. Label AND order both derive from here, everywhere sectors
+ * are rendered.
+ *
+ * ORDER IS DATA, ratified in context-round4-rulings.md §4.3. It is the mega
+ * menu's, and it is canonical: Retail & Consumer · Manufacturing & Logistics ·
+ * Banking & Financial Services · Government & Public Sector · Healthcare & Life
+ * Sciences · Telco & Media · Education & Universities. The array order below IS
+ * that order, so a surface that maps over this array is correct by construction
+ * and a surface that keeps its own array is wrong by construction.
+ *
+ * WHY THIS NEEDED A RULING. The "where we deploy" rail on the capability desks
+ * was wrong three ways at once: a different order from the mega menu, "Public
+ * Sector" against the menu's "Government & Public Sector", and a singular where
+ * the menu said plural. Three faults, one cause, and it was the SIXTH
+ * hand-copied taxonomy of the round. A rail that retypes a label cannot stay in
+ * step with the label, because renaming a source does not rename a copy.
+ *
+ * ONE NAMING DECISION, taken under delegated authority and recorded here so it
+ * is not relitigated: the plural, HEALTHCARE & LIFE SCIENCES, is the
+ * conventional term and is ratified. The mega menu's singular "Healthcare & Life
+ * Science" was corrected to match it, not the other way round.
+ *
+ * Education & Universities is the seventh and last, and it is last because the
+ * mega menu puts it last, not because it is newest.
+ */
 export const industriesIndex: L1IndexEntry[] = [
   {
     slug: "retail",
@@ -44,6 +70,13 @@ export const industriesIndex: L1IndexEntry[] = [
     short: "Retail" as TaxonomyLabel,
     category: "industries",
     tagline: "Commerce, POS and supply-chain talent for retail programmes.",
+  },
+  {
+    slug: "manufacturing",
+    label: "Manufacturing & Logistics" as TaxonomyLabel,
+    short: "Manufacturing" as TaxonomyLabel,
+    category: "industries",
+    tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
   },
   {
     slug: "finance",
@@ -60,13 +93,6 @@ export const industriesIndex: L1IndexEntry[] = [
     tagline: "Digital government, smart-services and citizen-facing platforms.",
   },
   {
-    slug: "manufacturing",
-    label: "Manufacturing & Logistics" as TaxonomyLabel,
-    short: "Manufacturing" as TaxonomyLabel,
-    category: "industries",
-    tagline: "ERP, Industry 4.0 and warehouse/transport specialists.",
-  },
-  {
     slug: "healthcare",
     label: "Healthcare & Life Sciences" as TaxonomyLabel,
     short: "Healthcare" as TaxonomyLabel,
@@ -79,6 +105,14 @@ export const industriesIndex: L1IndexEntry[] = [
     short: "Telco" as TaxonomyLabel,
     category: "industries",
     tagline: "OSS/BSS, network and data engineering for telco transformation.",
+  },
+  {
+    slug: "education",
+    label: "Education & Universities" as TaxonomyLabel,
+    short: "Education" as TaxonomyLabel,
+    category: "industries",
+    tagline:
+      "Student information systems, learning platforms and campus IT specialists.",
   },
 ];
 

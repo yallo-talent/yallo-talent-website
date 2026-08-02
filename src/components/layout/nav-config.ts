@@ -136,7 +136,13 @@ export const primaryNav: NavGroup[] = [
             href: "/industries/government",
           },
           {
-            label: "Healthcare & Life Science",
+            /* PLURAL, and it is the ratified form (context-round4-rulings.md
+               §4.3). The menu said "Healthcare & Life Science" while the sector
+               index, the L1 page, the homepage and six capability desks all said
+               "Sciences"; the plural is the conventional term, so the menu was
+               corrected to match the index rather than the index to match the
+               menu. */
+            label: "Healthcare & Life Sciences",
             href: "/industries/healthcare",
           },
           {
@@ -144,11 +150,11 @@ export const primaryNav: NavGroup[] = [
             href: "/industries/telco",
           },
           {
-            /* 7th industry, behind the Yallo AI Academy push into education.
-               No route yet. */
+            /* 7th industry, behind the Yallo AI Academy push into education. The
+               route now exists with eight populated functions, so the published
+               flag is gone and this is a link again. */
             label: "Education & Universities",
             href: "/industries/education",
-            published: false,
           },
         ],
       },
