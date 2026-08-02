@@ -27,6 +27,7 @@
 
 import { readFileSync } from "node:fs";
 import { globSync } from "node:fs";
+import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
 
 const BASE = process.argv[2] ?? "http://localhost:3001";
 
@@ -123,7 +124,19 @@ const listOf = (gate) => {
   const src = readFileSync(`scripts/${gate}.mjs`, "utf8");
   const m = src.match(/const (?:PAGES|ROUTES) = (\[[\s\S]*?\]);/);
   if (!m) return null;
-  return [...m[1].matchAll(/"(\/[^"]*)"/g)].map((x) => x[1].replace(/\/$/, "") || "/");
+  const quoted = [...m[1].matchAll(/"(\/[^"]*)"/g)].map(
+    (x) => x[1].replace(/\/$/, "") || "/",
+  );
+  // Round 8: a hand-copied case-study slug is drift risk (round 7's carry-over
+  // 1 one layer up), so three gates now derive their sample from order.yaml
+  // via `` `/case-studies/${sampleCaseStudySlug()}` `` rather than a quoted
+  // literal — which the regex above cannot see, being a template expression,
+  // not a string. Resolved here rather than reverted, so coverage still sees
+  // it without reintroducing the drift it was written to remove.
+  const derived = [...m[1].matchAll(/`\/case-studies\/\$\{sampleCaseStudySlug\(\)\}`/g)].map(
+    () => `/case-studies/${sampleCaseStudySlug()}`,
+  );
+  return [...quoted, ...derived];
 };
 
 /** shell -> { templates, reachable example, gates that visit it } */
