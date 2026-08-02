@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useRef } from "react";
+import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
 import { ArrowGlyph } from "./icons";
-import { LogoImage } from "./LogoImage";
 
 export interface CaseCard {
   slug: string;
@@ -35,6 +35,14 @@ export function CaseRail({
 }) {
   const rail = useRef<HTMLElement>(null);
 
+  /* Every mark on this surface, so the cards normalise against their own
+     median rather than the rail's. The two surfaces render different subsets at
+     different box sizes, and a median taken over the wrong set is how the cards
+     ended up at a flat 24px with no normalisation at all. */
+  const markSet = studies
+    .map((c) => c.logo)
+    .filter((logo): logo is string => Boolean(logo));
+
   const scroll = (dir: 1 | -1) => {
     const el = rail.current;
     if (!el) return;
@@ -57,13 +65,19 @@ export function CaseRail({
       >
         {studies.map((c) => (
           <article key={c.slug} className={styles.caseCard}>
-            <span className={styles.caseLogo} aria-hidden="true">
-              {c.logo ? (
-                <LogoImage src={c.logo} width={96} height={24} />
-              ) : (
-                <span className={styles.wordmark}>{c.client}</span>
-              )}
-            </span>
+            {/* The card mark takes the rail's monochrome light-ink treatment at
+                a normalised size, not a white plate. It had no ink treatment at
+                all, so a keyed black silhouette sat on a near-black card and was
+                invisible — canon §8 forbids the plate that would have hidden the
+                problem. */}
+            <ClientMark
+              src={c.logo}
+              name={c.client}
+              surface="card"
+              set={markSet}
+              decorative
+              className={styles.caseLogo}
+            />
             <p className={styles.caseMeta}>{c.meta}</p>
             <h3>{c.title}</h3>
             <p className={styles.caseSummary}>{c.summary}</p>

@@ -1,0 +1,75 @@
+.facets {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.facetGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.facetLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  min-width: 90px;
+}
+
+.facetPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A4's uppercase-mono floor, and the motivating pill is "SAP": natively caps,
+   so the tracking rule applies however the caps arrived. The platform facet
+   renders vendor names, several of which are acronyms. */
+.facetPill {
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.facetPill:hover {
+  border-color: var(--accent-line);
+}
+
+.facetPill[data-active="true"] {
+  color: var(--ink);
+  background: var(--accent-mark);
+  border-color: var(--accent-mark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.empty {
+  font-size: var(--fs-body-sm);
+  color: var(--fg-muted);
+  padding: 40px 0;
+}

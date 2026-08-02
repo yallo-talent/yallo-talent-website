@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { MDXRemote } from "next-mdx-remote/rsc";
-import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { BriefCTA } from "@/components/blocks/BriefCTA";
+import styles from "@/components/blocks/case-study/CaseStudyDetail.module.css";
+import { CaseStudyHero } from "@/components/blocks/case-study/CaseStudyHero";
+import { ClientCard } from "@/components/blocks/case-study/ClientCard";
+import { EngagementStrip } from "@/components/blocks/case-study/EngagementStrip";
+import { MetricsStrip } from "@/components/blocks/case-study/MetricsStrip";
+import { Movements } from "@/components/blocks/case-study/Movements";
+import { NextCaseStudy } from "@/components/blocks/case-study/NextCaseStudy";
+import { clientDisplayNameFor } from "@/data/home/client-logos";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import {
+  getAllCaseStudies,
   getAllCaseStudySlugs,
   getCaseStudy,
   type LoadedEntry,
@@ -54,123 +62,34 @@ export default async function CaseStudyPage({ params }: PageProps) {
   const entry = tryGetCaseStudy(slug);
   if (!entry) notFound();
   const { frontmatter, body } = entry;
+
   const clientLabel = frontmatter.clientPublic
-    ? frontmatter.client
+    ? clientDisplayNameFor(frontmatter.client)
     : `${frontmatter.region} · ${frontmatter.platform}`;
+
+  const ordered = orderedCaseStudies(getAllCaseStudies());
+  const currentIndex = ordered.findIndex(
+    (e) => e.frontmatter.slug === frontmatter.slug,
+  );
+  const next =
+    ordered.length > 1
+      ? ordered[(currentIndex + 1) % ordered.length]
+      : undefined;
 
   return (
     <article className={styles.page}>
-      <section className={styles.hero}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
-        <div className={styles.heroInner}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            Case Study · {clientLabel}
-          </div>
-          <h1 className={styles.heroTitle}>{frontmatter.title}</h1>
-          <p className={styles.heroLede}>{frontmatter.summary}</p>
-        </div>
-      </section>
-
-      {/* Only rendered where the published study carries real, attributable
-          figures. Most do not, and an empty band is correct — the alternative
-          is inventing numbers, which is exactly what the first pass of this
-          content did. */}
-      {frontmatter.metrics?.length ? (
-        <section className={styles.section}>
-          <div className={styles.wrap}>
-            <div className={styles.sectionInner}>
-              <div className={styles.cardGrid3}>
-                {frontmatter.metrics.map((m) => (
-                  <div key={`${m.label}-${m.value}`} className={styles.card}>
-                    <div className={styles.cardTitle}>{m.value}</div>
-                    <div className={styles.cardCopy}>{m.label}</div>
-                    <div className={styles.sectionEyebrow}>
-                      Source: {m.source}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      {/* Same rule as the metrics band: rendered only where the published
-          study states an outcome of its own. The ported studies carry their
-          outcome inside the body instead. */}
-      {/* THE STUDY ITSELF, and it was invisible.
-
-          `<MDXRemote source={body} />` sat inside `{frontmatter.outcome ? …}`,
-          and not one ported study carries an `outcome` field — so every case
-          study rendered its summary and stopped. Measured on the Al Tayer page:
-          one paragraph, 64 words, zero headings, against an MDX body carrying
-          Client Context, Business Objectives, Approach and Outcome. The whole
-          corpus was written and none of it reached the page.
-
-          The body is content, not an optional flourish, so it renders on its own
-          terms. The outcome band below stays conditional, which is what that
-          check was actually for. */}
-      <section className={styles.section}>
-        <div className={styles.wrap}>
-          <div className={`${styles.sectionInner} ${styles.prose}`}>
-            <MDXRemote source={body} />
-          </div>
-        </div>
-      </section>
-
-      {frontmatter.outcome ? (
-        <section className={`${styles.section} ${styles.sectionAlt}`}>
-          <div className={styles.wrap}>
-            <div className={styles.sectionInner}>
-              <span className={styles.sectionEyebrow}>The outcome</span>
-              <h2 className={styles.sectionH}>{frontmatter.outcome}</h2>
-              {frontmatter.sources && frontmatter.sources.length > 0 && (
-                <aside>
-                  <h3 className={styles.sectionEyebrow}>Sources</h3>
-                  <ul>
-                    {frontmatter.sources.map((s) => (
-                      <li key={`${s.claim}-${s.source}`}>
-                        <strong>{s.claim}</strong> — {s.source}
-                        {s.url && (
-                          <>
-                            {" "}
-                            <a href={s.url} rel="noopener noreferrer">
-                              (link)
-                            </a>
-                          </>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-              )}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className={styles.bottomCta}>
-        <div className={styles.wrap}>
-          <div className={styles.bottomCard}>
-            <div className={styles.bottomInner}>
-              <h2 className={styles.bottomH}>Ready to ship your programme?</h2>
-              <div className={styles.bottomActions}>
-                <Link href="/brief" className={styles.ctaPrimary}>
-                  Send a brief <span aria-hidden="true">→</span>
-                </Link>
-                <Link href="/case-studies" className={styles.ctaGhost}>
-                  All case studies
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <CaseStudyHero frontmatter={frontmatter} clientLabel={clientLabel} />
+      <EngagementStrip frontmatter={frontmatter} />
+      <Movements body={body} slug={frontmatter.slug} />
+      <MetricsStrip metrics={frontmatter.metrics} />
+      <ClientCard frontmatter={frontmatter} />
+      {next && (
+        <NextCaseStudy
+          slug={next.frontmatter.slug}
+          title={next.frontmatter.title}
+        />
+      )}
+      <BriefCTA />
     </article>
   );
 }

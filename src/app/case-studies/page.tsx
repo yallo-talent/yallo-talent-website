@@ -1,6 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { BriefCTA } from "@/components/blocks/BriefCTA";
+import type { FilterableCard } from "@/components/blocks/case-study/CaseStudyFilters";
+import { CaseStudyFilters } from "@/components/blocks/case-study/CaseStudyFilters";
+import styles from "@/components/blocks/case-study/CaseStudyLanding.module.css";
+import {
+  pillarChip,
+  pillarFilterOptions,
+  platformChip,
+  platformFilterOptions,
+  sectorChip,
+  sectorFilterOptions,
+} from "@/components/blocks/case-study/taxonomy";
+import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
@@ -8,88 +20,63 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Case Studies · Yallo Talent",
     description:
-      "How enterprise teams across banking, retail, manufacturing and tech have used Yallo to close their talent gaps and ship their programmes.",
+      "Named clients, named platforms, published work: how enterprise teams across the Middle East and Europe have closed their talent gaps with Yallo.",
   },
   path: "/case-studies",
 });
 
 export default function CaseStudiesHub() {
   const all = getAllCaseStudies();
+  const ordered = orderedCaseStudies(all);
+  const frontmatters = all.map((e) => e.frontmatter);
+
+  const cards: FilterableCard[] = ordered.map(({ frontmatter: fm }) => {
+    const clientLabel = fm.clientPublic
+      ? clientDisplayNameFor(fm.client)
+      : `${fm.region} · ${fm.platform}`;
+    const pillar = pillarChip(fm.engagement);
+    const platform = platformChip(fm.platform);
+    const sector = sectorChip(fm.industry);
+
+    return {
+      slug: fm.slug,
+      title: fm.cardTitle ?? fm.title,
+      summary: fm.excerpt ?? fm.summary,
+      clientLabel,
+      clientLogo: fm.clientPublic ? clientLogoFor(fm.client) : undefined,
+      meta: [pillar?.label, fm.region].filter(Boolean).join(" · "),
+      pillar: pillar?.label,
+      platformHref: platform?.href,
+      sectorHref: sector?.href,
+    };
+  });
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} band-dark`}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+      <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <div className={styles.eyebrow}>
-            <span className={styles.eyebrowDot} aria-hidden="true" />
-            Case Studies
-          </div>
-          <h1 className={styles.heroTitle}>
-            Programmes like yours,{" "}
-            <span className={styles.emphasis}>shipped on time.</span>
-          </h1>
-          <p className={styles.heroLede}>
-            Enterprise teams across banking, retail, manufacturing and tech have
-            closed their talent gaps with Yallo. Here's how.
+          <span className={styles.eyebrow}>Case studies</span>
+          <h1 className={styles.h1}>Programmes like yours, shipped on time.</h1>
+          <p className={styles.lede}>
+            Named clients, named platforms, published work: enterprise teams
+            across the Middle East and Europe who have closed their talent gaps
+            with Yallo.
           </p>
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.sectionAlt}`}>
+      <section className={styles.section}>
         <div className={styles.wrap}>
-          <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>All case studies</span>
-            <h2 className={styles.sectionH}>Every placement, every outcome.</h2>
-            <div className={styles.cardGrid3}>
-              {all.map(({ frontmatter }) => {
-                const clientLabel = frontmatter.clientPublic
-                  ? frontmatter.client
-                  : `${frontmatter.category} · ${frontmatter.platform} · ${frontmatter.region}`;
-                return (
-                  <Link
-                    key={frontmatter.slug}
-                    href={`/case-studies/${frontmatter.slug}`}
-                    className={styles.card}
-                  >
-                    <span className={styles.sectionEyebrow}>{clientLabel}</span>
-                    <h3 className={styles.cardTitle}>{frontmatter.title}</h3>
-                    <p className={styles.cardCopy}>{frontmatter.summary}</p>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+          <CaseStudyFilters
+            cards={cards}
+            pillarOptions={pillarFilterOptions(frontmatters)}
+            platformOptions={platformFilterOptions(frontmatters)}
+            sectorOptions={sectorFilterOptions(frontmatters)}
+          />
         </div>
       </section>
 
-      <section className={styles.bottomCta}>
-        <div className={styles.wrap}>
-          <div className={styles.bottomCard}>
-            <div className={styles.bottomGlow} aria-hidden="true" />
-            <div className={styles.bottomInner}>
-              <h2 className={styles.bottomH}>Ready to ship your programme?</h2>
-              <p className={styles.bottomSub}>
-                Send a brief — you'll be reading your own case study on this
-                page next.
-              </p>
-              <div className={styles.bottomActions}>
-                <Link href="/brief" className={styles.ctaPrimary}>
-                  Send a brief
-                  <span aria-hidden="true">→</span>
-                </Link>
-                <Link href="/why-yallo" className={styles.ctaGhost}>
-                  Why Yallo
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <BriefCTA />
     </div>
   );
 }

@@ -1,0 +1,97 @@
+{
+  "_": [
+    "The documented crawlers and their Cloudflare behaviour category, in one",
+    "place. Read by src/app/robots.ts, which writes the policy, and by",
+    "scripts/check-crawler-access.mjs, which measures whether the zone honours",
+    "it. Two lists would drift, and a robots policy that names a crawler the",
+    "probe does not test is a policy nobody has checked.",
+    "",
+    "POSTURE, ratified round 7 §3.4 and the discoverability addendum §10.2: all",
+    "three families are allowed on the production host and every one of them is",
+    "disallowed everywhere else. Training is allowed on the decisive practical",
+    "ground that from 15 September 2026 Cloudflare evaluates multi-purpose",
+    "crawlers under all their behaviours, so blocking Training blocks Googlebot.",
+    "",
+    "`ua` is a plainly formed user-agent carrying the documented product token.",
+    "The token is what Cloudflare categories and WAF rules match on; it is not a",
+    "transcription of any vendor's current version string."
+  ],
+  "crawlers": [
+    {
+      "token": "Googlebot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+    },
+    {
+      "token": "Bingbot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)"
+    },
+    {
+      "token": "OAI-SearchBot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; OAI-SearchBot/1.0; +https://openai.com/searchbot)"
+    },
+    {
+      "token": "Claude-SearchBot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; Claude-SearchBot/1.0; +https://www.anthropic.com/claude-searchbot)"
+    },
+    {
+      "token": "PerplexityBot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)"
+    },
+    {
+      "token": "DuckAssistBot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; DuckAssistBot/1.0; +https://duckduckgo.com/duckassistbot)"
+    },
+    {
+      "token": "Amazonbot",
+      "category": "search",
+      "ua": "Mozilla/5.0 (compatible; Amazonbot/0.1; +https://developer.amazon.com/support/amazonbot)"
+    },
+    {
+      "token": "ChatGPT-User",
+      "category": "agent",
+      "ua": "Mozilla/5.0 (compatible; ChatGPT-User/1.0; +https://openai.com/bot)"
+    },
+    {
+      "token": "Claude-User",
+      "category": "agent",
+      "ua": "Mozilla/5.0 (compatible; Claude-User/1.0; +https://www.anthropic.com/claude-user)"
+    },
+    {
+      "token": "Perplexity-User",
+      "category": "agent",
+      "ua": "Mozilla/5.0 (compatible; Perplexity-User/1.0; +https://perplexity.ai/perplexity-user)"
+    },
+    {
+      "token": "MistralAI-User",
+      "category": "agent",
+      "ua": "Mozilla/5.0 (compatible; MistralAI-User/1.0; +https://mistral.ai/bot)"
+    },
+    {
+      "token": "GPTBot",
+      "category": "training",
+      "ua": "Mozilla/5.0 (compatible; GPTBot/1.1; +https://openai.com/gptbot)"
+    },
+    {
+      "token": "ClaudeBot",
+      "category": "training",
+      "ua": "Mozilla/5.0 (compatible; ClaudeBot/1.0; +claudebot@anthropic.com)"
+    },
+    {
+      "token": "meta-externalagent",
+      "category": "training",
+      "ua": "meta-externalagent/1.1 (+https://developers.facebook.com/docs/sharing/webmasters/crawler)"
+    }
+  ],
+  "control": {
+    "token": "yallo-probe",
+    "category": "control",
+    "ua": "Mozilla/5.0 (compatible; YalloCrawlerProbe/1.0; +https://yallo.co)",
+    "_": "Identifies the probe honestly and separates 'this host blocks crawlers' from 'this host is not serving'. Never written into robots.txt."
+  }
+}

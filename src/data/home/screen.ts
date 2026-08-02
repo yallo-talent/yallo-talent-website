@@ -16,12 +16,6 @@ export interface ScreenStep {
   copy: string;
   /** Rendered as an inline badge on the card. */
   badge: string;
-  /**
-   * WHO DOES THIS STEP. Sumeet's point: the pipeline said what happens and never
-   * who acts, so a reader could not tell where their own effort begins and ends
-   * — which is the actual selling point, since three of the four steps are ours.
-   */
-  actor: "You" | "We" | "You and we";
   icon: ScreenIcon;
 }
 
@@ -29,7 +23,6 @@ export const screenSteps: ScreenStep[] = [
   {
     num: "01",
     name: "Brief",
-    actor: "You and we",
     copy: "Role, platform, programme phase, next gate.",
     badge: "Hour 0",
     icon: "brief",
@@ -37,7 +30,6 @@ export const screenSteps: ScreenStep[] = [
   {
     num: "02",
     name: "Calibrate",
-    actor: "We",
     copy: "The bar is set and the failure modes are named.",
     badge: "Hour 0–8",
     icon: "calibrate",
@@ -45,7 +37,6 @@ export const screenSteps: ScreenStep[] = [
   {
     num: "03",
     name: "Screen",
-    actor: "We",
     copy: "Depth, fit and delivery risk. Never keyword match.",
     badge: "Hour 8–60",
     icon: "screen",
@@ -53,7 +44,6 @@ export const screenSteps: ScreenStep[] = [
   {
     num: "04",
     name: "Shortlist",
-    actor: "We",
     copy: "Three names, screening notes, rejection reasons.",
     badge: "Hour 72",
     icon: "shortlist",

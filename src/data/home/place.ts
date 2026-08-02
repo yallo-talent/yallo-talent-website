@@ -72,12 +72,17 @@ export const platforms: PlatformAxis[] = [
     name: taxonomyLabels("blue-yonder").label,
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    /* The real mark, restored. R9 made this NAME text and it was right about the
-       DARK RAIL: sap.svg is a box lockup (perimeter ink 0.668) and silhouetting
-       it to one ink gives a solid slab, which canon §8 forbids there. This band
-       is light and renders the artwork as-is at full colour — no keying, no
-       silhouette, so the box lockup is simply the logo, which is what it is. */
-    mark: "/logos/platforms/sap.svg",
+    /* NAME text, like Informatica below, and not blue-yonder.png.
+       Two separate findings meet here. The entry pointed at sap.svg, because the
+       two were adjacent in this array and the wrong literal got carried over,
+       publishing SAP's mark under Blue Yonder's name: a false vendor
+       association, round 7 §4.3. Correcting the path alone would have swapped
+       that for a different defect, because blue-yonder.png measures as an opaque
+       plate at 100% ink with no alpha, so the register's invert paints a solid
+       black bar. Canon §8 allows a keyed silhouette or the name, and this file
+       cannot be the first. One transparent monochrome asset reverses this line,
+       round 7 close-out §4.1. */
+    mark: null,
     published: true,
   },
   {

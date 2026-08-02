@@ -19,6 +19,12 @@
  * capitals in aria-label, title and alt, which is the other route to the same
  * outcome.
  *
+ * ROUND 7: it now also fails on the literal string in rendered text. Reading only
+ * computed text-transform left a hole exactly the width of the opposite defect —
+ * case study bodies carrying "YALLO partnered with" and "YALLO's Role" passed the
+ * gate, because nothing was transforming them. The rendered result is the same
+ * word in capitals either way, and the rule is about the rendered result.
+ *
  * Scope is the word Yallo only. The ratified logo lockup's "TALENT" is unaffected,
  * and every other uppercase eyebrow on the site is fine — the rule is about one
  * word, not about the treatment.
@@ -63,6 +69,13 @@ const PAGES = [
      capitalisation of Yallo, so the omission mattered most here. */
   "/intelligence",
   "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  /* The landing hub, added at the round 7 close. The detail template above was
+     already here; the hub is a separate rendering unit and it renders the card
+     TITLES and EXCERPTS, which is the surface §3.5's rule was written for. The
+     round's own notes logged this for round 8, and AGENTS.md's standing rule is
+     that a new template joins every enumerating guard in the commit that
+     introduces it. One line now beats a list that failed for the third time. */
+  "/case-studies",
   /* Added 2 Aug for the dead-link assertion. The template is the same as
      /industries/retail, so template coverage was already satisfied and
      check-gate-coverage was right not to complain — but the assertion below is
@@ -111,9 +124,19 @@ for (const path of PAGES) {
 
   const found = await page.evaluate(() => {
     const out = [];
+    /* Elements whose text nodes are not rendered text. <script> matters most:
+       Next's RSC payload is a text node inside one, it contains a data copy of
+       every string on the page, and matching it reports a defect that no reader
+       can see while saying nothing about what the page renders. */
+    const NOT_RENDERED = new Set([
+      "SCRIPT",
+      "STYLE",
+      "NOSCRIPT",
+      "TEMPLATE",
+      "TITLE",
+    ]);
     for (const el of document.querySelectorAll("*")) {
-      const tt = getComputedStyle(el).textTransform;
-      if (tt !== "uppercase" && tt !== "full-width") continue;
+      if (NOT_RENDERED.has(el.tagName)) continue;
       /* Own text nodes only. Reading textContent would report a container for its
          children's text and produce one failure per ancestor. */
       const own = [...el.childNodes]
@@ -122,14 +145,32 @@ for (const path of PAGES) {
         .join("")
         .trim();
       if (!own || !/yallo/i.test(own)) continue;
-      out.push({
-        where: `<${el.tagName.toLowerCase()}> .${String(el.className || "")
-          .split(/\s+/)
-          .map((c) => c.split("__").pop())
-          .join(".")}`,
-        text: own.slice(0, 80),
-        cause: `text-transform: ${tt}`,
-      });
+      const where = `<${el.tagName.toLowerCase()}> .${String(el.className || "")
+        .split(/\s+/)
+        .map((c) => c.split("__").pop())
+        .join(".")}`;
+
+      const tt = getComputedStyle(el).textTransform;
+      if (tt === "uppercase" || tt === "full-width") {
+        out.push({ where, text: own.slice(0, 80), cause: `text-transform: ${tt}` });
+        continue;
+      }
+
+      /* THE OTHER HALF OF THE RULE, and the half this gate was blind to.
+         It only ever read computed text-transform, because canon §2's incident
+         was capitals produced at paint time. Case study bodies now carry the
+         literal string — "YALLO partnered with", "YALLO's Role" — which no
+         paint-time check can see, because nothing is transforming them. The
+         rendered result is identical and the rule is about the rendered result,
+         so the gate reads the text as well as the style. Case-sensitive and
+         word-bounded: "Yallo" is correct and must not be reported. */
+      if (/\bYALLO\b/.test(own)) {
+        out.push({
+          where,
+          text: own.slice(0, 80),
+          cause: "literal capitals in the source text",
+        });
+      }
     }
     for (const el of document.querySelectorAll("[aria-label],[title],img[alt]")) {
       for (const attr of ["aria-label", "title", "alt"]) {
@@ -147,9 +188,15 @@ for (const path of PAGES) {
   });
 
   for (const f of found) {
+    /* Two defects, two fixes. A paint-time capital is correct copy in the wrong
+       slot; a literal capital is the copy itself and is corrected where it is
+       written. Telling an author to reword a heading that only needs its casing
+       fixed sends them to the stylesheet for a content problem. */
+    const remedy = f.cause.startsWith("literal")
+      ? `Canon §2: capital Y only. Correct the source text to "Yallo".`
+      : `Canon §2: capital Y only. Reword so "Yallo" does not sit in an uppercase slot.`;
     failures.push(
-      `${path}  ${f.where}\n      renders "${f.text}" in capitals (${f.cause})\n` +
-        `      Canon §2: capital Y only. Reword so "Yallo" does not sit in an uppercase slot.`,
+      `${path}  ${f.where}\n      renders "${f.text}" in capitals (${f.cause})\n      ${remedy}`,
     );
   }
 

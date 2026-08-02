@@ -10,14 +10,20 @@
     {
       "name": "session-a",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r4 pnpm dev -p 3101"],
-      "port": 3101
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r7 pnpm dev -p 3107"],
+      "port": 3107
     },
     {
       "name": "session-b",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b pnpm dev -p 3002"],
-      "port": 3002
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r7 pnpm dev -p 3207"],
+      "port": 3207
+    },
+    {
+      "name": "session-c",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-c-r7 pnpm dev -p 3307"],
+      "port": 3307
     }
   ]
 }

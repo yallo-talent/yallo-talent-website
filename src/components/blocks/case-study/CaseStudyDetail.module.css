@@ -1,0 +1,423 @@
+/*
+ * The case study detail template — rebuilt per context-round7-rulings.md §5.
+ *
+ * Light register throughout, ONE dark band (the metrics strip, .metricsSection
+ * composes band-dark). Single column, measure capped near 68ch, left-aligned
+ * throughout, no centred H1, no blurred orb anywhere in this file — canon §5
+ * bans the orb outright and R11's dark-hero was the register defect this round
+ * exists to close. See EditorialLayout.module.css for the two comments
+ * documenting why those two things were wrong on the template this replaces.
+ */
+
+.page {
+  color: var(--fg);
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 48px);
+}
+
+.measure {
+  max-width: 68ch;
+}
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(96px, 12vw, 152px) 0 clamp(56px, 7vw, 88px);
+}
+
+.heroGround {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 48px);
+  text-align: left;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  background: var(--ground);
+  border: 1px solid var(--boundary);
+  border-radius: var(--r-pill);
+  margin: 0 0 24px;
+}
+
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
+  color: var(--fg);
+  margin: 0 0 20px;
+  max-width: 24ch;
+  text-align: left;
+}
+
+.standfirst {
+  font-size: var(--fs-lede);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 60ch;
+  margin: 0 0 28px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 0.12em, not 0.04em, and the reason is a value rather than a style. A4's
+   uppercase-mono tracking floor is about how caps LOOK, not how they were
+   produced, so it applies to a string that arrives already capitalised. The
+   region chip renders "UAE": three letters, natively caps, cramped in mono at
+   0.04em. check-rendered-type caught it at all four widths. The mixed-case
+   chips beside it ("Managed Delivery", "Oracle") take the same tracking, which
+   is what the rest of this file already does with mono. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+a.chip:hover {
+  border-color: var(--accent-line);
+  color: var(--accent-label);
+}
+
+/* ============ ENGAGEMENT STRIP ============ */
+.engagement {
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: 28px 0;
+}
+
+.engagementRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(24px, 5vw, 56px);
+}
+
+.engagementItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.engagementLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+/* Tracked to A4's floor for the same reason as .chip: the Region item's value
+   is "UAE". The pair still reads as label and value, because the label above is
+   smaller, medium weight and --fg-subtle where this is --fg. */
+.engagementValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-sm);
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg);
+}
+
+/* ============ MOVEMENTS ============ */
+.movements {
+  padding: clamp(64px, 8vw, 100px) 0;
+}
+
+.movement {
+  padding: clamp(40px, 5vw, 64px) 0;
+}
+
+.movement:first-child {
+  padding-top: 0;
+}
+
+.movement + .movement {
+  border-top: 1px solid var(--hairline);
+}
+
+.movementLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  margin-bottom: 14px;
+}
+
+.movementSubhead {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--fg);
+  max-width: 22ch;
+  margin: 0 0 20px;
+}
+
+.movementBody {
+  max-width: 68ch;
+}
+
+.movementBody p {
+  margin: 0 0 16px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.movementBody h3 {
+  margin: 24px 0 10px;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.movementBody ul,
+.movementBody ol {
+  margin: 0 0 18px;
+  padding-left: 20px;
+}
+
+.movementBody li {
+  margin-bottom: 8px;
+  font-size: var(--fs-body);
+  line-height: 1.65;
+  color: var(--text-2);
+}
+
+.movementBody strong {
+  color: var(--text);
+  font-weight: var(--fw-strong);
+}
+
+/* A single, modest interstitial plate between the second and third movement —
+   the "imagery interleaved between sections" the reference pattern uses,
+   drawn rather than photographed, per canon §5. */
+.interlude {
+  height: 96px;
+  margin: 8px 0 40px;
+  border-radius: 0 0 0 var(--r-md);
+  overflow: hidden;
+}
+
+.interlude svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============ METRICS STRIP — the one dark band ============ */
+.metricsSection {
+  composes: band-dark from global;
+  position: relative;
+  isolation: isolate;
+  padding: clamp(56px, 7vw, 88px) 0;
+}
+
+.metricsEyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin: 0 0 28px;
+  display: block;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+}
+
+.metricValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-numeral);
+  font-weight: var(--fw-medium);
+  color: var(--accent-mark);
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.metricLabel {
+  font-size: var(--fs-body-sm);
+  color: var(--fg-muted);
+  margin-bottom: 8px;
+}
+
+.metricSource {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.04em;
+  color: var(--fg-subtle);
+}
+
+/* ============ CLIENT CARD ============ */
+.clientSection {
+  padding: clamp(56px, 7vw, 88px) 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.clientCard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px;
+  padding: 32px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.clientMark {
+  display: grid;
+  place-items: center;
+  height: 36px;
+  width: fit-content;
+  min-width: 96px;
+}
+
+.clientMark img {
+  max-height: 28px;
+  width: auto;
+  object-fit: contain;
+}
+
+.clientWordmark {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  color: var(--fg);
+}
+
+.clientText {
+  max-width: 52ch;
+}
+
+.clientDesc {
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--fg-muted);
+  margin: 0 0 4px;
+}
+
+/* Renders frontmatter.region, so "UAE" again. A4's floor, per .chip above. */
+.clientRegion {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  color: var(--fg-subtle);
+}
+
+/* ============ NEXT CASE STUDY ============ */
+.nextSection {
+  padding: clamp(56px, 7vw, 88px) 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.nextEyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+  margin: 0 0 20px;
+  display: block;
+}
+
+.nextCard {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  padding: 36px;
+  background: var(--ground-2);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+  transition:
+    border-color 0.28s var(--ease),
+    transform 0.18s ease;
+}
+
+.nextCard:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+
+.nextTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  color: var(--fg);
+  max-width: 40ch;
+  margin: 0;
+}
+
+.nextLink {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-body-sm);
+  color: var(--accent-label);
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .clientCard,
+  .nextCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

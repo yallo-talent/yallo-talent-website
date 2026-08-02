@@ -4,9 +4,9 @@ import { sectorRegistry } from "@/data/l1/registry";
 import { publishedPlatformSlugs } from "@/data/platforms/derive";
 import { derivePlatformList } from "@/lib/platforms";
 import { deriveSectorList } from "@/lib/sectors";
+import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
 import { RoleGlyph } from "./icons";
-import { LogoImage } from "./LogoImage";
 import { SectionHead } from "./SectionHead";
 
 /**
@@ -20,6 +20,15 @@ import { SectionHead } from "./SectionHead";
  * rather than linking to a 404.
  */
 export function WherePlace() {
+  const axisPlatforms = derivePlatformList(platforms, (p) => p.slug);
+  /* The axis's own mark set, taken once rather than per row. These are
+     full-colour vendor vectors rather than keyed silhouettes, and several carry
+     20-46% of their viewBox as padding, so they normalise against each other
+     and not against the client rail. */
+  const axisMarkSet = axisPlatforms
+    .map((p) => p.mark)
+    .filter((mark): mark is string => Boolean(mark));
+
   return (
     <section
       className={`${styles.section} ${styles.invert} band-invert amb-1 amb-wash`}
@@ -49,7 +58,7 @@ export function WherePlace() {
                   The flag left in the data is now inert, the same way the
                   authored sector names beneath it are. The scope line, the mark
                   and the module list stay authored. */}
-              {derivePlatformList(platforms, (p) => p.slug).map((p) => {
+              {axisPlatforms.map((p) => {
                 const published = publishedPlatformSlugs().includes(p.slug);
                 const body = (
                   <div className={styles.axisItem}>
@@ -67,9 +76,14 @@ export function WherePlace() {
                         which was already decorative; the label beside it is what
                         carries the name to AT. */}
                     {p.mark ? (
-                      <span className={styles.axisMark} aria-hidden="true">
-                        <LogoImage src={p.mark} width={44} height={22} />
-                      </span>
+                      <ClientMark
+                        src={p.mark}
+                        name={p.name}
+                        surface="axis"
+                        set={axisMarkSet}
+                        decorative
+                        className={styles.axisMark}
+                      />
                     ) : (
                       <span className={styles.axisMarkName} aria-hidden="true">
                         {p.name}
