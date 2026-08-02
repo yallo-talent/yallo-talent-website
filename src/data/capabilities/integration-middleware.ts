@@ -19,7 +19,7 @@ export const integrationMiddlewareData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "Integration & Middleware" },
+    { label: taxonomyLabels("integration-middleware").label },
   ],
 
   eyebrow: "Integration & Middleware · Contract-first",
@@ -425,27 +425,39 @@ export const integrationMiddlewareData: L1PageData = {
      Salesforce and Informatica. Linked once each, and the platform side links
      back. */
   related: [
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
+    {
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
     {
       href: "/platforms/informatica",
-      label: "Informatica",
+      label: taxonomyLabels("informatica").label,
       category: "Platform",
     },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
-    { href: "/ai-talent", label: "AI Talent", category: "Capability" },
+    {
+      href: "/ai-talent",
+      label: taxonomyLabels("ai-talent").label,
+      category: "Capability",
+    },
     {
       href: "/capabilities/testing-quality-engineering",
-      label: "Testing & Quality Engineering",
+      label: taxonomyLabels("testing-quality-engineering").label,
       category: "Capability",
     },
   ],

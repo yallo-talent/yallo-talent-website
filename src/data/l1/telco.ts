@@ -614,8 +614,7 @@ export const telcoData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in telco & media tech talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/amdocs-charging-scarcity-2025",
@@ -678,28 +677,32 @@ export const telcoData: L1PageData = {
     },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity & Risk",
+      label: taxonomyLabels("cybersecurity").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
   ],

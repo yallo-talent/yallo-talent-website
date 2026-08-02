@@ -26,7 +26,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "DevOps & Platform Engineering" },
+    { label: taxonomyLabels("devops-platform-engineering").label },
   ],
 
   eyebrow: "DevOps & Platform Engineering · Contract-first",
@@ -520,24 +520,32 @@ export const devopsPlatformEngineeringData: L1PageData = {
   related: [
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity & Risk",
+      label: taxonomyLabels("cybersecurity").label,
       category: "Capability",
     },
     {
       href: "/capabilities/testing-quality-engineering",
-      label: "Testing & Quality Engineering",
+      label: taxonomyLabels("testing-quality-engineering").label,
       category: "Capability",
     },
-    { href: "/ai-talent", label: "AI Talent", category: "Capability" },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/ai-talent",
+      label: taxonomyLabels("ai-talent").label,
+      category: "Capability",
+    },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
   ],

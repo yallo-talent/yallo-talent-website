@@ -1378,7 +1378,7 @@ export const retailData: L1PageData = {
     },
     {
       id: "fmcg",
-      name: "FMCG — Fast-Moving Consumer Goods",
+      name: "FMCG (Fast-Moving Consumer Goods)",
       intro:
         "Trade promotions management, demand planning and supply chain optimisation at volume. SAP IBP and Blue Yonder specialists are consistently the hardest roles to place in this segment.",
       roles: [
@@ -1465,8 +1465,7 @@ export const retailData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in retail tech talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/blue-yonder-luminate-scarcity-2025",
@@ -1538,26 +1537,34 @@ export const retailData: L1PageData = {
       label: taxonomyLabels("manufacturing").label,
       category: "Industry",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
+    {
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/blue-yonder",
-      label: "Blue Yonder",
+      label: taxonomyLabels("blue-yonder").label,
       category: "Platform",
     },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
   ],

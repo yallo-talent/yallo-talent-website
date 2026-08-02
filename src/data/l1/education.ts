@@ -459,6 +459,15 @@ export const educationData: L1PageData = {
         {
           slug: "informatica-education-estate",
           vendor: "Informatica",
+          /* NOT derived, and check:taxonomy rule 6 flags it wrongly. This is a
+             TOOL CARD name, on the tool axis, and its siblings in this array are
+             authored product names ("Institutional data warehouses"). The rule
+             matches any `name:` holding a platform label and cannot see which
+             axis the position belongs to — the same blind spot that makes it
+             flag the six specialist desks in src/data/home/screen.ts. Deriving
+             it would leave `vendor` hand-typed one line above a `name` bound to
+             platformsIndex, and canon section 2 allow-lists product names from
+             every rewrite. */
           vendorSlug: "informatica",
           name: "Informatica",
           roles: [
@@ -644,17 +653,29 @@ export const educationData: L1PageData = {
       label: taxonomyLabels("healthcare").label,
       category: "Industry",
     },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
-    { href: "/platforms/workday", label: "Workday", category: "Platform" },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/workday",
+      label: taxonomyLabels("workday").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
     {
       href: "/platforms/informatica",
-      label: "Informatica",
+      label: taxonomyLabels("informatica").label,
       category: "Platform",
     },
     /* The under-scoped-roles argument function 08 makes in one paragraph is the
@@ -667,17 +688,17 @@ export const educationData: L1PageData = {
     },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity & Risk",
+      label: taxonomyLabels("cybersecurity").label,
       category: "Capability",
     },
   ],

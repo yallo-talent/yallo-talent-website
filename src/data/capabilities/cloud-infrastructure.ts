@@ -6,7 +6,7 @@ export const cloudInfrastructureData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "Cloud & Infrastructure" },
+    { label: taxonomyLabels("cloud-infrastructure").label },
   ],
 
   eyebrow: "Cloud & Infrastructure · Contract-first",
@@ -532,8 +532,7 @@ export const cloudInfrastructureData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in Cloud & Infrastructure talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/landing-zone-first-hire",
@@ -581,24 +580,32 @@ export const cloudInfrastructureData: L1PageData = {
   related: [
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/devops-platform-engineering",
-      label: "DevOps & Platform Engineering",
+      label: taxonomyLabels("devops-platform-engineering").label,
       category: "Capability",
     },
     {
       href: "/capabilities/integration-middleware",
-      label: "Integration & Middleware",
+      label: taxonomyLabels("integration-middleware").label,
       category: "Capability",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
+    {
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
     {
       href: "/platforms/salesforce",
-      label: "Salesforce",
+      label: taxonomyLabels("salesforce").label,
       category: "Platform",
     },
     {

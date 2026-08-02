@@ -13,6 +13,15 @@
  * attached fail the sourced-figures rule.
  */
 
+/* Taxonomy names come from the index, never from this file. The label is the
+   half that drifts: a `href` either routes or it does not, but a hand-typed
+   "Salesforce" beside it does not move when `platformsIndex` does, which is how
+   five copies of the platform set never heard that Informatica had been
+   ratified. `src/data/l1/index.ts` is a leaf module with no imports of its own,
+   so reaching for it here cannot close an initialisation cycle the way
+   `@/lib/*` would. */
+import { taxonomyLabels } from "@/data/l1/index";
+
 /**
  * Named clients we have placed on this platform.
  *
@@ -124,7 +133,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
    */
   "blue-yonder": {
     slug: "blue-yonder",
-    name: "Blue Yonder",
+    name: taxonomyLabels("blue-yonder").label,
     ratified:
       "Suite level, R13, 1 Aug 2026. Every module maps to a role already named in the data layer or to the ratified homepage line. No module is inferred.",
     modules: [
@@ -242,7 +251,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
 
   oracle: {
     slug: "oracle",
-    name: "Oracle",
+    name: taxonomyLabels("oracle").label,
     ratified:
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Oracle expertise page. Bench rebuilt to SAP depth 2 Aug 2026 (platform parity round §5).",
     /* BENCH REBUILT, and the depth was the smaller half of the problem.
@@ -420,7 +429,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
    */
   salesforce: {
     slug: "salesforce",
-    name: "Salesforce",
+    name: taxonomyLabels("salesforce").label,
     ratified:
       "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus Salesforce expertise page. Bench rebuilt to SAP depth 2 Aug 2026 (platform parity round §5).",
     /* THE THINNEST BENCH ON THE SITE and the most generic: 10 roles against
@@ -595,7 +604,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
    */
   sap: {
     slug: "sap",
-    name: "SAP",
+    name: taxonomyLabels("sap").label,
     clients: [
       { name: "Al Tayer Group", market: "UAE", study: true },
       { name: "Majid Al Futtaim", market: "UAE" },
@@ -1001,7 +1010,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
   },
   microsoft: {
     slug: "microsoft",
-    name: "Microsoft",
+    name: taxonomyLabels("microsoft").label,
     ratified: "Relay v2.1 rev 2 §5, ratified by Sumeet Goenka 30 Jul 2026",
     modules: [
       {
@@ -1147,7 +1156,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
 
   workday: {
     slug: "workday",
-    name: "Workday",
+    name: taxonomyLabels("workday").label,
     ratified:
       "Relay v2.1 rev 2 §5b, ratified by Sumeet Goenka 30 Jul 2026 (canon §3 amendment log)",
     modules: [
@@ -1290,7 +1299,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
    */
   informatica: {
     slug: "informatica",
-    name: "Informatica",
+    name: taxonomyLabels("informatica").label,
     ratified:
       "R-INF1, docs/design/context-informatica.md v1.0, ratified by Sumeet Goenka 1 Aug 2026 (canon §3 amendment log)",
     modules: [

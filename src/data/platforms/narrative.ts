@@ -46,6 +46,15 @@
  * without a narrative still renders nothing empty.
  */
 
+/* Taxonomy names come from the index, never from this file. The label is the
+   half that drifts: a `href` either routes or it does not, but a hand-typed
+   "Salesforce" beside it does not move when `platformsIndex` does, which is how
+   five copies of the platform set never heard that Informatica had been
+   ratified. `src/data/l1/index.ts` is a leaf module with no imports of its own,
+   so reaching for it here cannot close an initialisation cycle the way
+   `@/lib/*` would. */
+import { taxonomyLabels } from "@/data/l1/index";
+
 export interface PlatformNarrative {
   /** Band 1, the problem the page is answering. */
   intro: {
@@ -156,7 +165,7 @@ const sap: PlatformNarrative = {
       },
       {
         href: "/platforms/informatica",
-        label: "Informatica",
+        label: taxonomyLabels("informatica").label,
         category: "Platform",
       },
       {
@@ -273,7 +282,11 @@ const oracle: PlatformNarrative = {
         label: "Oracle Fusion staffing blueprint",
         category: "Blueprint",
       },
-      { href: "/platforms/sap", label: "SAP", category: "Platform" },
+      {
+        href: "/platforms/sap",
+        label: taxonomyLabels("sap").label,
+        category: "Platform",
+      },
       {
         href: "/capabilities/integration-middleware",
         label: "Integration and middleware",
@@ -367,7 +380,7 @@ const microsoft: PlatformNarrative = {
     links: [
       {
         href: "/platforms/salesforce",
-        label: "Salesforce",
+        label: taxonomyLabels("salesforce").label,
         category: "Platform",
       },
       {
@@ -462,7 +475,7 @@ const salesforce: PlatformNarrative = {
       },
       {
         href: "/platforms/informatica",
-        label: "Informatica",
+        label: taxonomyLabels("informatica").label,
         category: "Platform",
       },
       {
@@ -573,7 +586,11 @@ const blueYonder: PlatformNarrative = {
         label: "Manufacturing and logistics",
         category: "Industry",
       },
-      { href: "/platforms/sap", label: "SAP", category: "Platform" },
+      {
+        href: "/platforms/sap",
+        label: taxonomyLabels("sap").label,
+        category: "Platform",
+      },
       {
         href: "/capabilities/integration-middleware",
         label: "Integration and middleware",
@@ -648,8 +665,16 @@ const workday: PlatformNarrative = {
   related: {
     title: "Adjacent desks and where Workday work lands",
     links: [
-      { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
-      { href: "/platforms/sap", label: "SAP", category: "Platform" },
+      {
+        href: "/platforms/oracle",
+        label: taxonomyLabels("oracle").label,
+        category: "Platform",
+      },
+      {
+        href: "/platforms/sap",
+        label: taxonomyLabels("sap").label,
+        category: "Platform",
+      },
       {
         href: "/capabilities/integration-middleware",
         label: "Integration and middleware",
@@ -731,7 +756,7 @@ const informatica: PlatformNarrative = {
     links: [
       {
         href: "/platforms/salesforce",
-        label: "Salesforce",
+        label: taxonomyLabels("salesforce").label,
         category: "Platform",
       },
       {

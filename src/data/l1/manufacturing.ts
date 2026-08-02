@@ -616,8 +616,7 @@ export const manufacturingData: L1PageData = {
 
   insightsEyebrow: "Insights",
   insightsTitle: "What's happening in manufacturing tech talent right now.",
-  insightsSub:
-    "Written by Sumeet Goenka and the Yallo team. Opinionated, specific, useful.",
+  insightsSub: "Opinionated, specific, useful.",
   insights: [
     {
       href: "/insights/smart-manufacturing-iot-2025",
@@ -677,22 +676,34 @@ export const manufacturingData: L1PageData = {
       label: taxonomyLabels("finance").label,
       category: "Industry",
     },
-    { href: "/platforms/sap", label: "SAP", category: "Platform" },
-    { href: "/platforms/oracle", label: "Oracle", category: "Platform" },
     {
-      href: "/platforms/blue-yonder",
-      label: "Blue Yonder",
+      href: "/platforms/sap",
+      label: taxonomyLabels("sap").label,
       category: "Platform",
     },
-    { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    {
+      href: "/platforms/oracle",
+      label: taxonomyLabels("oracle").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/blue-yonder",
+      label: taxonomyLabels("blue-yonder").label,
+      category: "Platform",
+    },
+    {
+      href: "/platforms/microsoft",
+      label: taxonomyLabels("microsoft").label,
+      category: "Platform",
+    },
     {
       href: "/capabilities/data-analytics",
-      label: "Data & Analytics",
+      label: taxonomyLabels("data-analytics").label,
       category: "Capability",
     },
     {
       href: "/capabilities/cloud-infrastructure",
-      label: "Cloud & Infrastructure",
+      label: taxonomyLabels("cloud-infrastructure").label,
       category: "Capability",
     },
   ],
