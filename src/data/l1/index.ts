@@ -140,7 +140,8 @@ export const platformsIndex: L1IndexEntry[] = [
     label: "Informatica" as TaxonomyLabel,
     short: "Informatica" as TaxonomyLabel,
     category: "platforms",
-    tagline: "IDMC, data integration, MDM, data quality and governance specialists.",
+    tagline:
+      "IDMC, data integration, MDM, data quality and governance specialists.",
   },
 ];
 

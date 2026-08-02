@@ -212,10 +212,7 @@ export const stacks: StackEntry[] = [
     /* Ragas measures retrieval quality specifically, so the family that owns the
        retrieval layer is screened against it. The rest of this group is model and
        prompt evaluation and stays as it was. */
-    [
-      "Ragas",
-      ["ai-evaluation-specialist", "llm-engineer", "ai-data-engineer"],
-    ],
+    ["Ragas", ["ai-evaluation-specialist", "llm-engineer", "ai-data-engineer"]],
     ["MLflow", ["mlops-engineer", "ai-evaluation-specialist"]],
     ["Weights and Biases", ["mlops-engineer", "ai-evaluation-specialist"]],
     ["DeepEval", ["ai-evaluation-specialist", "llm-engineer"]],
@@ -254,7 +251,10 @@ export const stacks: StackEntry[] = [
       "Azure AI Search",
       ["llm-engineer", "ai-solution-architect", "ai-data-engineer"],
     ],
-    ["LlamaIndex", ["agentic-ai-developer", "llm-engineer", "ai-data-engineer"]],
+    [
+      "LlamaIndex",
+      ["agentic-ai-developer", "llm-engineer", "ai-data-engineer"],
+    ],
   ]),
 
   ...build("Automation and integration", [
