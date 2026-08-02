@@ -72,12 +72,13 @@ export const platforms: PlatformAxis[] = [
     name: taxonomyLabels("blue-yonder").label,
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    /* The real mark, restored. R9 made this NAME text and it was right about the
-       DARK RAIL: sap.svg is a box lockup (perimeter ink 0.668) and silhouetting
-       it to one ink gives a solid slab, which canon §8 forbids there. This band
-       is light and renders the artwork as-is at full colour — no keying, no
-       silhouette, so the box lockup is simply the logo, which is what it is. */
-    mark: "/logos/platforms/sap.svg",
+    /* blue-yonder.png, not sap.svg. The two entries were adjacent in this array
+       and the wrong literal got carried over, publishing SAP's mark under Blue
+       Yonder's name on the homepage platform axis — a false vendor association,
+       round 7 §4.3. This is a raster, unlike the other five platform marks, so
+       it does not get the SAP entry's full-colour box-lockup treatment above;
+       it renders through whatever raster path the rail already supports. */
+    mark: "/logos/platforms/blue-yonder.png",
     published: true,
   },
   {
