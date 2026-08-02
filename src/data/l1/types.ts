@@ -48,6 +48,26 @@ export interface L1ExpertiseCard {
    * with the contractor roles Yallo places into it.
    */
   tools?: L2Tool[];
+  /**
+   * Sub-desks on ANOTHER discipline that cover this same subject from the other
+   * side, per context-round3-rulings.md §5.3.
+   *
+   * Cloud & Infrastructure and DevOps & Platform Engineering share six sub-desk
+   * subjects: platform engineering, infrastructure as code, Kubernetes and
+   * containers, observability, SRE and FinOps. The split between them is by
+   * subject and canon ratifies both, but six matching names cannot themselves
+   * tell a buyer which side they are on. Each L1 now states the distinction in
+   * one line, and this field puts the other side one click away rather than
+   * leaving the reader to navigate back up and across.
+   *
+   * An array because the mapping is not one to one: DevOps runs observability
+   * and SRE as a single desk where Cloud runs them as two.
+   *
+   * NOT the same thing as `L2CrossLinks`, which links a function to a whole
+   * platform or discipline. This is peer to peer, sub-desk to sub-desk, and
+   * `note` carries why the reader might want the other one.
+   */
+  twin?: Array<{ href: string; label: string; note: string }>;
 }
 
 /**

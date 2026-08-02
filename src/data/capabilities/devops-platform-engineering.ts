@@ -93,8 +93,12 @@ export const devopsPlatformEngineeringData: L1PageData = {
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
     "Every platform discipline, with a contractor bench behind it.",
+  /* The mirror of the line on Cloud & Infrastructure, per
+     context-round3-rulings.md §5.3. Six sub-desk subjects are shared between the
+     two desks; the split is by subject, and the buyer should not have to work it
+     out from names that match. */
   expertiseSub:
-    "From the commit to the pager, specialists we place into every function that gets software into production and keeps it there.",
+    "This desk staffs the delivery system, from the commit to the pager. The cloud estate it runs on is the Cloud & Infrastructure desk, and the two are usually briefed together.",
   expertise: [
     {
       slug: "ci-cd-engineering",
@@ -150,6 +154,13 @@ export const devopsPlatformEngineeringData: L1PageData = {
       title: "Platform Engineering & Internal Developer Platforms",
       icon: "cloud",
       blurb: "Backstage, Crossplane, self-service platforms.",
+      twin: [
+        {
+          href: "/capabilities/cloud-infrastructure/platform-engineering",
+          label: "Platform Engineering",
+          note: "The same subject from the estate side: account vending, guardrails and the paved path to a compliant workload.",
+        },
+      ],
       overview:
         "An internal developer platform is a product with internal customers, and the reason so many are abandoned is that they were built as infrastructure projects with no product discipline. The specialists worth placing think in terms of adoption, golden paths and the paved road a team takes because it is genuinely easier. We screen for evidence of that: what the platform's users could do without raising a ticket, and what proportion actually did.",
       roles: [
@@ -182,6 +193,13 @@ export const devopsPlatformEngineeringData: L1PageData = {
       title: "Infrastructure as Code",
       icon: "mdm",
       blurb: "Terraform, Pulumi, Ansible, policy as code.",
+      twin: [
+        {
+          href: "/capabilities/cloud-infrastructure/iac-automation",
+          label: "IaC & Automation",
+          note: "The same tools pointed at the cloud estate, including Crossplane. Brief there when the work is refactoring an inherited estate rather than wiring the delivery system.",
+        },
+      ],
       overview:
         "Infrastructure as code is where a programme's discipline becomes visible. State management, module design that other teams can consume, drift between what is committed and what is running, and a plan output a reviewer can actually reason about. We screen for people who have inherited someone else's estate and refactored it without an outage, because writing greenfield modules is the easy half of this role.",
       roles: [
@@ -226,6 +244,13 @@ export const devopsPlatformEngineeringData: L1PageData = {
       title: "Container Platforms & Kubernetes",
       icon: "supply",
       blurb: "Kubernetes, OpenShift, Helm, Argo CD, Flux.",
+      twin: [
+        {
+          href: "/capabilities/cloud-infrastructure/kubernetes-containers",
+          label: "Kubernetes & Containers",
+          note: "The managed clusters underneath, on EKS, AKS and GKE, with cluster lifecycle and workload security as the subject.",
+        },
+      ],
       overview:
         "Kubernetes experience is claimed far more often than it is held, and the interview question that separates the two is about upgrades rather than deployments. Cluster lifecycle under change control, resource limits set from measurement rather than habit, network policy that someone will have to debug, and a GitOps workflow that survives an urgent fix. We screen for operators, not for people who have deployed a workload onto a managed cluster someone else runs.",
       roles: [
@@ -274,6 +299,23 @@ export const devopsPlatformEngineeringData: L1PageData = {
       title: "Observability & Site Reliability",
       icon: "analytics",
       blurb: "Prometheus, Grafana, Datadog, OpenTelemetry, SLOs.",
+      /* Two twins rather than one, and that asymmetry is the point of the field
+         being an array: this desk holds observability and reliability together,
+         where Cloud & Infrastructure separates them. A reader who arrived here
+         wanting one of the two should see which side of the estate boundary
+         their brief actually sits on. */
+      twin: [
+        {
+          href: "/capabilities/cloud-infrastructure/observability",
+          label: "Observability",
+          note: "Instrumentation of the cloud estate itself, where cardinality and the observability bill are the recurring problem.",
+        },
+        {
+          href: "/capabilities/cloud-infrastructure/sre-reliability",
+          label: "SRE & Reliability",
+          note: "Reliability as its own desk on the estate side: error budgets, incident command and failure testing.",
+        },
+      ],
       overview:
         "Most estates are monitored and few are observable: dashboards exist, and when something unusual breaks nobody can ask a new question of the data. Reliability engineering is the discipline that closes that, and it is as much about the service level objective conversation with a product owner as about instrumentation. We screen for people who have defined an SLO that was allowed to constrain a release, and who have run a blameless post-incident review that changed something.",
       roles: [
@@ -368,6 +410,13 @@ export const devopsPlatformEngineeringData: L1PageData = {
       title: "FinOps",
       icon: "finance",
       blurb: "Cloud cost engineering, showback, commitment planning.",
+      twin: [
+        {
+          href: "/capabilities/cloud-infrastructure/finops",
+          label: "FinOps & Cost",
+          note: "The estate's unit economics, tagging and rate optimisation, where here the subject is cost engineering inside the delivery system.",
+        },
+      ],
       overview:
         "Cloud cost is an engineering problem that is usually handed to finance, which produces a report nobody can act on. The useful role sits between the two: someone who can read a bill down to the workload, tell an engineering team which architectural decision is generating the spend, and model a commitment without stranding the organisation. We screen for cost reductions they actually delivered and how, not for dashboards they produced.",
       roles: [
