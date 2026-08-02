@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
+import { capabilitiesIndex } from "@/data/l1/index";
 import type { L1IconKey } from "@/data/l1/types";
 import { routeExists } from "@/lib/routes";
 import styles from "./HubLandingSections.module.css";
@@ -304,39 +305,27 @@ export function HubCrossConnected() {
           <div className={styles.crossRail}>
             <div className={styles.crossRailLabel}>Capabilities we deliver</div>
             <div className={styles.crossChips}>
-              {[
-                {
-                  slug: "data-analytics",
-                  label: "Data & Analytics",
-                },
-                {
-                  slug: "devops-platform-engineering",
-                  label: "DevOps & Platform Engineering",
-                },
-                {
-                  slug: "cloud-infrastructure",
-                  label: "Cloud & Infrastructure",
-                },
-                {
-                  slug: "cybersecurity",
-                  label: "Cybersecurity",
-                },
-                {
-                  slug: "integration-middleware",
-                  label: "Integration & Middleware",
-                },
-                {
-                  slug: "testing-quality-engineering",
-                  label: "Testing & Quality Engineering",
-                },
-              ]
+              {capabilitiesIndex
+                /* Derived from the taxonomy, not retyped. This was a
+                   hand-written array of six disciplines with their own labels —
+                   the fourth copy of the same list, after the taxonomy index,
+                   the hub page and the nav. It had already drifted twice: it
+                   still called this desk "Cybersecurity" after the rename to
+                   "Cybersecurity & Risk", and it never gained AI Talent at all,
+                   so the seventh discipline was missing from every rail this
+                   component renders. */
+                .map((c) => ({ slug: c.slug, label: c.label, href: c.href }))
                 // Only disciplines with a page. The others are real and the nav
                 // names them non-interactively.
-                .filter((c) => routeExists(`/capabilities/${c.slug}`))
+                .filter((c) => c.href || routeExists(`/capabilities/${c.slug}`))
                 .map((c) => (
                   <Link
                     key={c.slug}
-                    href={`/capabilities/${c.slug}`}
+                    /* `c.href` where the canonical route is not
+                       /capabilities/{slug}. AI Talent lives at /ai-talent, and
+                       linking it through the redirect would put a 301 hop on
+                       every one of these rails. */
+                    href={c.href ?? `/capabilities/${c.slug}`}
                     className={styles.crossChip}
                   >
                     <span className={styles.crossChipLabel}>{c.label}</span>

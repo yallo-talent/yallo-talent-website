@@ -178,12 +178,36 @@ export const capabilitiesIndex: L1IndexEntry[] = [
       "AWS, Azure and Google Cloud architects, platform and network engineers.",
   },
   {
+    /**
+     * Label is "Cybersecurity & Risk"; the SLUG stays `cybersecurity`.
+     *
+     * Renamed 2 Aug 2026 to match the `X & Y` shape the rest of the taxonomy
+     * uses, with cybersecurity first because that is where the weight is: seven
+     * of the eight sub-desks are security proper and GRC is the eighth. Every
+     * other pair in this file leads with the dominant term (Data & Analytics,
+     * Cloud & Infrastructure, Testing & Quality Engineering), so "Risk &
+     * Cybersecurity" would have inverted the convention and demoted the word
+     * buyers search for.
+     *
+     * "& Risk" is earned rather than decorative: the GRC consultants, ISO 27001
+     * lead implementers and the NCA and UAE regional-framework screening are a
+     * risk and compliance conversation, and that regional angle is this desk's
+     * stated differentiator.
+     *
+     * The slug does not move, and that is deliberate. A short slug under a fuller
+     * label is already the pattern here — `finance` renders "Banking & Financial
+     * Services", `telco` renders "Telco & Media" — and /capabilities/cybersecurity
+     * is the better search target. No redirect, and canon §3's slug list is
+     * untouched.
+     */
     slug: "cybersecurity",
-    label: "Cybersecurity" as TaxonomyLabel,
+    label: "Cybersecurity & Risk" as TaxonomyLabel,
     short: "Cybersecurity" as TaxonomyLabel,
     category: "capabilities",
+    /* Spells out risk rather than hiding it inside the GRC acronym, now that the
+       label promises it. */
     tagline:
-      "Security architecture, identity and access, GRC and security operations.",
+      "Security architecture, identity, governance, risk and security operations.",
   },
   {
     slug: "integration-middleware",

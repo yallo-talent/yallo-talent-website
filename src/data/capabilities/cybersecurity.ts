@@ -1,7 +1,12 @@
 import type { L1PageData } from "@/data/l1/types";
 
 /**
- * Cybersecurity, seeded 1 Aug 2026.
+ * Cybersecurity & Risk, seeded 1 Aug 2026, renamed 2 Aug 2026.
+ *
+ * The label gained "& Risk" to match the taxonomy's X & Y shape; the slug stays
+ * `cybersecurity` because that is the search term and a short slug under a fuller
+ * label is already the pattern (`finance` renders "Banking & Financial Services").
+ * See src/data/l1/index.ts for the full reasoning.
  *
  * One of four disciplines that carried the canon §3 `PLANNED_CAPABILITIES` state
  * and rendered as an inert "Desk in build" card. Sumeet's ruling is that all four
@@ -25,12 +30,12 @@ export const cybersecurityData: L1PageData = {
   category: "capabilities",
   breadcrumb: [
     { label: "Capabilities", href: "/capabilities" },
-    { label: "Cybersecurity" },
+    { label: "Cybersecurity & Risk" },
   ],
 
-  eyebrow: "Cybersecurity · Contract-first",
-  title: "Cybersecurity contractors,",
-  sectorNoun: "cybersecurity",
+  eyebrow: "Cybersecurity & Risk · Contract-first",
+  title: "Cybersecurity and risk contractors,",
+  sectorNoun: "cybersecurity and risk",
   emphasis: "shortlisted in 72 hours.",
   sub: "Security architects, identity engineers, GRC consultants and SOC specialists for enterprise programmes across the Middle East, Europe and India. Screened by people who have run the function, and against the regional frameworks your programme is actually governed by.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
@@ -42,7 +47,7 @@ export const cybersecurityData: L1PageData = {
     "Contract · EOR · Managed Delivery",
   ],
 
-  introEyebrow: "Why us for Cybersecurity",
+  introEyebrow: "Why us for Cybersecurity & Risk",
   introTitle:
     "Security roles are the ones a programme cannot fake its way through.",
   introCopy: [
@@ -63,9 +68,10 @@ export const cybersecurityData: L1PageData = {
   ],
 
   scarceEyebrow: "Scarce talent · high demand",
-  scarceTitle: "The security roles every enterprise programme fights over.",
+  scarceTitle:
+    "The security and risk roles every enterprise programme fights over.",
   scarceCopy:
-    "These are the specialists that appear on every security brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
+    "These are the specialists that appear on every security and risk brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
   scarceRoles: [
     {
@@ -104,9 +110,9 @@ export const cybersecurityData: L1PageData = {
 
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
-    "Every security discipline, with a contractor bench behind it.",
+    "Every security and risk discipline, with a contractor bench behind it.",
   expertiseSub:
-    "From board-level risk to the detection that fires at 03:00, specialists we place into every function a security programme depends on.",
+    "From board-level risk to the detection that fires at 03:00, specialists we place into every function a security and risk programme depends on.",
   expertise: [
     {
       slug: "security-architecture",
@@ -468,8 +474,8 @@ export const cybersecurityData: L1PageData = {
   ],
 
   seo: {
-    title: "Cybersecurity Contractors · Yallo Talent",
+    title: "Cybersecurity & Risk Contractors · Yallo Talent",
     description:
-      "Specialist-screened cybersecurity contractors: security architecture, IAM, GRC, SOC and cloud security. 72h shortlist across the Middle East, Europe and India.",
+      "Specialist-screened cybersecurity and risk contractors: security architecture, IAM, GRC, SOC and cloud security. 72h shortlist across the Middle East, Europe and India.",
   },
 };

@@ -665,7 +665,7 @@ export const healthcareData: L1PageData = {
     },
     {
       href: "/capabilities/cybersecurity",
-      label: "Cybersecurity",
+      label: "Cybersecurity & Risk",
       category: "Capability",
     },
     {

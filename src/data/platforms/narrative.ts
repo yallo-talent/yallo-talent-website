@@ -161,7 +161,7 @@ const sap: PlatformNarrative = {
       },
       {
         href: "/capabilities/data-analytics",
-        label: "Data and AI",
+        label: "Data and analytics",
         category: "Capability",
       },
       {
@@ -259,7 +259,7 @@ const oracle: PlatformNarrative = {
       },
       {
         href: "/capabilities/data-analytics",
-        label: "Data and AI",
+        label: "Data and analytics",
         category: "Capability",
       },
       { href: "/ai-talent", label: "AI talent", category: "Specialism" },
@@ -348,7 +348,7 @@ const microsoft: PlatformNarrative = {
       },
       {
         href: "/capabilities/cybersecurity",
-        label: "Cybersecurity",
+        label: "Cybersecurity and risk",
         category: "Capability",
       },
       {
@@ -689,7 +689,7 @@ const informatica: PlatformNarrative = {
       },
       {
         href: "/capabilities/data-analytics",
-        label: "Data and AI",
+        label: "Data and analytics",
         category: "Capability",
       },
       {

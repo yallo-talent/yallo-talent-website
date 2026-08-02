@@ -1032,8 +1032,22 @@
 }
 
 /* ============ SCARCE TALENT ============ */
+/* The top padding is not a rhythm fix, it is a SEAM fix, and measuring the two
+   separately is what makes the value small.
+
+   The vertical rhythm was already right: 115px from the How We Work band's last
+   line to the top of this card, against 117 and 118 on the expertise and segments
+   bands. What was wrong is that the band above is `amb-wash`, so its background
+   runs the full height of its box including its 72px of bottom padding, and this
+   section began at 0. The card's top edge landed exactly on the edge of that wash
+   — two filled surfaces meeting on a hard seam, which reads as the card having no
+   space above it even though the whitespace was there.
+
+   So this only has to lift the card clear of the wash, not restate the rhythm.
+   A full sibling-sized clamp(48px, 6vw, 76px) would have taken the content gap
+   past 190px and opened a hole in the page. */
 .scarce {
-  padding: 0 0 clamp(40px, 5vw, 60px);
+  padding: clamp(20px, 2.5vw, 32px) 0 clamp(40px, 5vw, 60px);
 }
 
 .scarceCard {

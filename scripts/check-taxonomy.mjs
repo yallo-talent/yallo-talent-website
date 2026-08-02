@@ -194,6 +194,68 @@ for (const file of NAV_FILES) {
 notes.push(`${NAV_FILES.length} nav file(s) free of hardcoded capability routes.`);
 
 /* ---------------------------------------------------------------------------
+   Rule 2c. A cross-link to a discipline must carry that discipline's label.
+
+   The fifth copy. Cross-link entries are written as an href beside a hand-typed
+   label, in `related` arrays and in chip rails, so renaming a discipline in the
+   index leaves every one of them saying the old name. Renaming Cybersecurity to
+   "Cybersecurity & Risk" found seven: four sector pages, one capability page, the
+   platform narrative bands and a hardcoded rail in HubLandingSections.
+
+   This checks the pairing rather than any particular name, so it holds for the
+   next rename too.
+
+   NORMALISED, and narrow on purpose for the second time in this file. The first
+   draft demanded an exact string match and immediately flagged ten chips in the
+   platform narrative bands, which are written in sentence case with "and" rather
+   than title case with an ampersand: "Integration and middleware", "AI talent".
+   That is a consistent house style in a rail of prose-adjacent chips, not drift,
+   and a lint that forces one session's copy style onto another's is overreach.
+
+   So the comparison ignores case, ampersands and spacing, and asserts only the
+   thing that is a defect under any style: that the label names the SAME
+   DISCIPLINE the href points at. It still catches the real fault it was written
+   for, a link to data-analytics labelled "Data and AI", which is the retired desk
+   name resolving into the discipline taxonomy all over again. */
+const normalise = (s) =>
+  s
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]/g, "");
+/* --------------------------------------------------------------------------- */
+const indexLabelBySlug = new Map();
+{
+  const block = readFileSync(join("src", "data", "l1", "index.ts"), "utf8");
+  const cap = block.slice(block.indexOf("export const capabilitiesIndex"));
+  const re = /slug:\s*"([a-z-]+)"[\s\S]{0,400}?label:\s*"([^"]+)"/g;
+  let m = re.exec(cap);
+  while (m) {
+    if (!indexLabelBySlug.has(m[1])) indexLabelBySlug.set(m[1], m[2]);
+    m = re.exec(cap);
+  }
+}
+
+for (const file of allFiles) {
+  if (file.startsWith("scripts")) continue;
+  const src = readFileSync(file, "utf8");
+  const re =
+    /href:\s*[`"]\/capabilities\/([a-z-]+)[`"],\s*\n\s*label:\s*"([^"]+)"/g;
+  let m = re.exec(src);
+  while (m) {
+    const expected = indexLabelBySlug.get(m[1]);
+    if (expected && normalise(m[2]) !== normalise(expected)) {
+      const line = src.slice(0, m.index).split("\n").length;
+      failures.push(
+        `${file}:${line}  cross-link to "${m[1]}" names "${m[2]}" but the href points at "${expected}".\n` +
+          `      A label typed beside an href does not move when the discipline is renamed.`,
+      );
+    }
+    m = re.exec(src);
+  }
+}
+notes.push(`${indexLabelBySlug.size} discipline labels cross-checked.`);
+
+/* ---------------------------------------------------------------------------
    Rule 3. "Yallo" is never set in capitals (canon §2).
 
    Static half: the literal string, which is how it reaches alt text, aria-labels,
