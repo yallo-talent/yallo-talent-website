@@ -209,6 +209,18 @@
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
+  /* ONE inset, referenced everywhere a panel needs to read as starting at the
+     same left edge. Before this token the description sat at 12px, the column
+     heading and its rule at 10px and the list items at 10px — three numbers
+     hand-typed in three places, close enough to look intentional and different
+     enough that the rule under the eyebrow measured 10px left of the eyebrow's
+     own text. Border-bottom is drawn at the box edge, outside the padding that
+     positions the text, so any element that pads itself for its own text and
+     then draws a rule on that same box shows the rule 10px further left than
+     the text above it reads. The fix is not a pixel value — it is one value,
+     read once, and every element that needs the panel's left edge references
+     it instead of restating it. */
+  --mega-inset: 10px;
 }
 
 /* B5: sentence case, sans, no tracking. This is a PHRASE, not a mono label —
@@ -218,7 +230,7 @@
    treatment was flattening every group description. --fs-caption is a sans role,
    so sentence case is what the ramp allows here. */
 .megaDescription {
-  padding: 4px 12px 12px;
+  padding: 4px 12px 12px var(--mega-inset);
   font-size: var(--fs-caption);
   color: var(--fg-subtle);
   border-bottom: 1px solid var(--wa05);
@@ -259,6 +271,13 @@
   flex-direction: column;
   gap: 8px;
   min-width: 180px;
+  /* The one inset lives here, at the container, not on the heading or the
+     link. A border-bottom on either of those draws at its own box edge
+     regardless of that element's own padding, so an inset applied per-element
+     moves the text but leaves the rule behind it. Applied once at the column,
+     heading, rule and list all inherit the same left edge because none of them
+     carries a competing padding of its own. */
+  padding-left: var(--mega-inset);
 }
 
 /* A register head, not a dimmer label. It was --fs-label at weight 400 in
@@ -276,7 +295,7 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent-label);
-  padding: 0 10px 10px;
+  padding: 0 10px 10px 0;
   margin-bottom: 8px;
   border-bottom: 1px solid var(--boundary);
 }
@@ -299,7 +318,7 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 7px 10px;
+  padding: 7px 10px 7px 0;
   border-radius: 0 0 0 var(--r-sm);
   border: 1px solid transparent;
   color: var(--fg);
