@@ -60,6 +60,20 @@ const PAGES = [
   "/industries/retail",
   "/contract",
   "/brief",
+  /* Added 2 Aug, and the reason is a live breach this gate could not see.
+     /ai-talent's estate diagram shipped SIX classes at 13px SANS — layerIndex,
+     layerContents, railNote, railItem, caption and an uppercase overlay label —
+     against A4's 14px sans floor. Every rule this gate enforces would have
+     caught it on sight. It never looked, because the page was not on this list.
+
+     "One page per template" is the right principle and it was applied to the
+     templates that existed when it was written. Three page FAMILIES have landed
+     since, each with its own components and none of them audited. A template
+     that is not listed here is not covered, and the list is the only thing
+     saying which templates exist. */
+  "/ai-talent",
+  "/ai-talent/agentic-ai-developer",
+  "/intelligence/programme-staffing-blueprint/sap-s4hana",
 ];
 
 // Two viewports, because one was the gate's second blind axis. Reporting CLEAN

@@ -76,7 +76,7 @@
   border: 1px solid var(--boundary);
   background: var(--wa05);
   color: var(--text-2);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   font-variant-numeric: tabular-nums;
 }
 
@@ -87,14 +87,16 @@
 
 .layerName {
   margin: 0 0 4px;
-  font-size: 16px;
+  /* 15.5px, not 16. 16 is not on the ramp; --fs-body-sm is the step beside it
+     and the half-pixel is invisible at this weight. */
+  font-size: var(--fs-body-sm);
   line-height: 1.3;
   color: var(--text);
 }
 
 .layerContents {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   line-height: 1.55;
   color: var(--text-2);
 }
@@ -111,7 +113,12 @@
 .overlayLabel {
   display: block;
   margin-bottom: 7px;
-  font-size: 13px;
+  /* An eyebrow in everything but name: uppercase and tracked. The site's
+     eyebrow grammar is MONO at 13px, which is also the only role A4 allows at
+     13px — the sans floor is 14. Setting the family is what makes the size
+     legal rather than an exception. */
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-label);
@@ -138,7 +145,7 @@
   padding: 4px 9px;
   border: 1px solid var(--accent-line);
   border-radius: 0 0 0 var(--r-sm);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   line-height: 1.35;
   color: var(--accent-label);
 }
@@ -166,14 +173,14 @@
 
 .railName {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--fs-caption);
   line-height: 1.35;
   color: var(--text);
 }
 
 .railNote {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   line-height: 1.5;
   color: var(--text-3);
 }
@@ -192,7 +199,7 @@
   border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-xs);
   background: var(--surface);
-  font-size: 13px;
+  font-size: var(--fs-caption);
   line-height: 1.4;
   color: var(--text-2);
 }
@@ -220,7 +227,7 @@
 /* ---- Caption. R-AI3's assertion, once, and it travels with the diagram. ---- */
 .caption {
   margin: 14px 0 0;
-  font-size: 13px;
+  font-size: var(--fs-caption);
   line-height: 1.6;
   color: var(--text-3);
 }
