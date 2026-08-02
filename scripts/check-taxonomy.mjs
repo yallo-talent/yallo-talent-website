@@ -416,6 +416,8 @@ notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
     {
       rule: 5,
       noun: "sector",
+      /* Promoted in round 6. See the note above the loop. */
+      hardInData: true,
       labels: labelsIn(
         bounds("export const industriesIndex", "export const platformsIndex"),
       ),
@@ -455,10 +457,24 @@ notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
     },
   ];
 
-  /* RENDERING code fails. DATA files are reported by name and do not fail yet,
-     and that split is deliberate rather than a softened rule: the sweep belongs
-     to the session that owns src/data, and failing here would hand that session
-     a red gate for work this one is not allowed to do.
+  /* RENDERING code fails everywhere. DATA files fail ONCE THEIR SWEEP HAS
+     LANDED, and until then they are reported by name. The split is deliberate
+     rather than a softened rule: the sweep belongs to the session that owns
+     src/data, and failing before it lands hands that session a red gate for
+     work this one is not allowed to do.
+
+     `hardInData` is that promotion, per taxonomy. Sectors carry it from round 6
+     (context-round6-rulings.md §3.5): session B swept all 76 in round 5 and the
+     count is zero, so the rule closes behind the sweep and a sector label typed
+     back into a data file now fails the build. Verified the way the standing
+     rule requires — by typing one back in and watching it go red, because a
+     gate is not trusted until it has failed on its own case. Rule 6's first
+     draft was green and could never have fired on either defect it was written
+     for, which is the reason that rule exists.
+
+     Platforms and disciplines stay reporting: 70 and 49 copies are still live
+     in src/data and their sweep is session B's round 6 work. Promote each the
+     round after its count reaches zero.
 
      WHAT THE REPORT DOES AND DOES NOT CLAIM. It lists labels written in a data
      file. It does not certify that each one is unreachable. Round 5 checked that
@@ -531,7 +547,7 @@ notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
               `      A label typed here does not move when the index does, which is how five\n` +
               `      copies of the platform set never heard that Informatica had been ratified.\n` +
               `      ${line.trim().slice(0, 90)}`;
-            if (file.startsWith("src/data/"))
+            if (file.startsWith("src/data/") && !tax.hardInData)
               dataCopies.push(`${file}:${i + 1}`);
             else failures.push(hit);
           }
@@ -539,7 +555,9 @@ notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
       });
     }
     notes.push(
-      `${tax.labels.length} ${tax.noun} labels, none written in rendering code.`,
+      `${tax.labels.length} ${tax.noun} labels, none written in ${
+        tax.hardInData ? "rendering code or data" : "rendering code"
+      }.`,
     );
     if (dataCopies.length) {
       const byFile = new Map();
