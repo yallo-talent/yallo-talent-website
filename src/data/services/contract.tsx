@@ -12,6 +12,12 @@ export const contractData: ServicePageData = {
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine:
     "Specialist-led · region-deep · same specialists we'd hire ourselves",
+  audienceLabel: "Who this is for",
+  audience: [
+    "Delivery Directors closing a named skills gap on a live programme",
+    "PMO Directors with an open seat showing red on the status pack",
+    "Practice Leads who need specialist depth their own bench doesn't have",
+  ],
   benefitsHeading: "What you get with Yallo Contract",
   benefits: [
     {
@@ -55,6 +61,26 @@ export const contractData: ServicePageData = {
       tag: "Week 1–2",
     },
   ],
+  boundaryHeading: "Where Contract ends",
+  boundary:
+    "Contract closes a defined gap for a defined term. When the person is meant to stay, that's Permanent. When you've made the hire but have no local entity to employ them, that's Employer of Record. When what you need is an outcome delivered rather than people supplied, that's Managed Delivery.",
+  proofHeading: "Proof, from Contract engagements",
+  proof: [
+    {
+      title: "Staffing Wipro's SAP S/4HANA programme for Al Tayer Group",
+      client: "Al Tayer Group",
+      href: "/case-studies/enabling-sap-s-4hana-transformation-for-al-tayer-group",
+      excerpt:
+        "Wipro needed niche SAP S/4HANA specialists onsite, fast, across CAR, GRC, SAC, SD, MM, FICO and Group Reporting for the Al Tayer programme. Yallo supplied high-quality consultants and managed delivery quality throughout.",
+    },
+    {
+      title: "Scaling Alshaya's Azure data platform delivery team",
+      client: "Alshaya Group",
+      href: "/case-studies/enabling-azure-data-platform-delivery-at-enterprise-scale",
+      excerpt:
+        "Alshaya needed Azure data engineers mobilised fast for a new platform, with architecture kept sound and team size flexible by phase. Yallo assembled the team, added architecture oversight and scaled with each milestone.",
+    },
+  ],
   rolesHeading: "Contract roles we place",
   roles: [
     "SAP FICO Functional Consultant",
@@ -81,7 +107,7 @@ export const contractData: ServicePageData = {
     },
     {
       q: "What screening do you do before I see a CV?",
-      a: "Each candidate is reviewed by our specialist team — the same operators who have shipped enterprise programmes at Richemont, Landmark and Alshaya EMEA. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
+      a: "Each candidate is reviewed by our specialist team — the same operators who have shipped enterprise programmes at Richemont, Landmark Group and Alshaya EMEA. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
     },
     {
       q: "Which regions do you cover?",
@@ -93,7 +119,7 @@ export const contractData: ServicePageData = {
     },
     {
       q: "What if the contractor doesn't work out?",
-      a: "We stand behind every placement. If a contractor isn't performing within the first four weeks, we run a replacement search on the same 72-hour SLA at no additional fee.",
+      a: "We stand behind every placement. If a contractor isn't performing, we run a replacement search on the same 72-hour SLA at no additional fee.",
     },
     {
       q: "Do you handle IR35 for UK placements?",
