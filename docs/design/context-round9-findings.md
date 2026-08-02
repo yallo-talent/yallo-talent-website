@@ -244,3 +244,70 @@ per §8's own expectation that some pillar content needs a fact only Sumeet
 holds.
 
 ---
+
+## 4. /eor (§4 applies)
+
+### Findings
+
+1. **[Honesty, closed — §4]** The whole page was written for a two-country
+   service (UAE + India): eyebrow "Employer of Record · UAE + India", hero
+   stat "2 · regions · UAE + India", lede "the UAE visa or the India
+   payroll" (an exhaustive-reading "or"), trust line "UAE visa · India
+   payroll", SEO title/description naming only the two. All corridor-level
+   summary lines rewritten to derive from `eor-countries.ts` (task 0's
+   index) and name all three countries, with **no per-country mechanism
+   assigned to Saudi Arabia** — the lede now says "we handle the employment
+   relationship in the UAE, Saudi Arabia and India" rather than pinning
+   "visa" to one country and "payroll" to another, which is exactly the
+   asymmetry §4b warns creates an implied lesser status for the third
+   country.
+2. **[Prose quality, closed]** A first pass joined the three country names
+   with plain commas in full sentences ("the UAE, Saudi Arabia, India so
+   you don't have to") — grammatically a fragment, not a list, in running
+   prose. Added `eorCorridorProse` to the index ("UAE, Saudi Arabia and
+   India") for sentence contexts, keeping the comma-joined `eorCorridorLabel`
+   for label-style contexts (eyebrow, trust line, hero stat), where the
+   mega menu also uses it.
+3. **[Completeness, closed — §3 Q1/Q6]** Added audience (Delivery Directors
+   and HR leads who've made the hire but have no local entity) and boundary
+   (EOR is an enabler inside Contract/Permanent, not a peer product — the
+   distinction §3 itself names for this pillar specifically).
+4. **[Completeness, open — §3 Q7]** Zero case studies tagged
+   `engagement: EOR`. No Proof section added, same reasoning as Permanent.
+5. **[Left unchanged, by design — §4b]** The "Contract & visa" process step
+   (UAE: entry visa, Emirates ID…; India: PF/ESI, appointment letter…) and
+   the visa/PF-specific FAQs are real, already-published, per-country
+   mechanism detail for the two countries that ARE ratified. Did not add a
+   parallel Saudi Arabia clause to this depth-level content — doing so
+   would require exactly the invented per-country descriptor §4b forbids.
+   The asymmetry the round warned about is at the corridor-summary level
+   (now fixed); mechanism-level detail existing for two of three countries
+   and not the third is not a false claim, it's incomplete depth, and
+   completing it needs a fact only Sumeet holds.
+6. **[Checked, not acted on]** A pre-existing code comment ("added 1 Aug on
+   Sumeet's brief") says talent hosting is "a major line in Saudi Arabia and
+   the UAE." This predates round 9 and isn't itself rendered copy. Did not
+   treat it as authorisation to add new Saudi-specific claims this round —
+   §4b's instruction from the current context doc governs, not an older
+   comment. The FAQ answer it annotates was already written generically
+   ("the country of deployment") and needed no change.
+
+### Gates run
+
+`tsc --noEmit` clean · `eslint` clean · `check:terms`, `check:taxonomy`,
+`check:prose` clean · `check:a11y --routes /eor` clean (axe, 2 themes x 2
+widths) · `check:reflow` clean · `check:motion` clean · `check:gate-coverage`
+clean.
+
+### Close-out
+
+`/eor` closed. The country-set defect (§4) is fixed at every corridor-level
+surface (mega menu, page hero, benefits, SEO) without inventing a Saudi
+Arabia mechanism anywhere. One open item, matching §8's prediction: the
+per-country EOR service descriptor for Saudi Arabia, and by extension any
+deeper mechanism content for it, needs a fact only Sumeet holds. **Exact
+question for Sumeet: does Yallo's EOR service in Saudi Arabia cover entity,
+payroll, visa sponsorship, or some subset — once answered, the "Contract &
+visa" process step and one FAQ can be extended to match.**
+
+---

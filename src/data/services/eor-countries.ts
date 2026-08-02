@@ -11,3 +11,7 @@
 export const eorCountries = ["UAE", "Saudi Arabia", "India"] as const;
 
 export const eorCorridorLabel = eorCountries.join(", ");
+
+/** "UAE, Saudi Arabia and India" — for prose, where a comma-only list before
+ * the final item reads as a fragment rather than a sentence. */
+export const eorCorridorProse = `${eorCountries.slice(0, -1).join(", ")} and ${eorCountries.at(-1)}`;

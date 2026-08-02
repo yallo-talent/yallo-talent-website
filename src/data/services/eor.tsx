@@ -1,21 +1,37 @@
+import { eorCorridorProse, eorCountries } from "@/data/services/eor-countries";
 import { globeIcon, handshakeIcon, shieldIcon } from "./icons";
 import type { ServicePageData } from "./types";
 
 export const eorData: ServicePageData = {
   slug: "eor",
-  eyebrow: "Employer of Record · UAE + India",
+  eyebrow: `Employer of Record · ${eorCountries.join(" · ")}`,
   title: "You choose the hire.",
   emphasis: "We carry the employment.",
-  lede: "Found the specialist yourself? We handle the UAE visa or the India payroll. You direct the work, we hold the compliance — no local entity setup, no legal exposure.",
-  heroStat: { n: "2", l: "regions · UAE + India" },
+  /* Corridor only, no per-country mechanism — §4b. What Yallo offers in
+     Saudi Arabia specifically (entity, payroll, visa sponsorship, or some
+     subset) is not ratified, so this names the employment relationship in
+     general rather than pinning "visa" to one country and "payroll" to
+     another the way the UAE/India-only version did. */
+  lede: `Found the specialist yourself? We handle the employment relationship in the ${eorCorridorProse} so you don't have to. You direct the work, we hold the compliance — no local entity setup, no legal exposure.`,
+  heroStat: {
+    n: String(eorCountries.length),
+    l: `countries · ${eorCountries.join(", ")}`,
+  },
   primaryCta: { label: "Set up an EOR arrangement", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
-  trustLine: "UAE visa · India payroll · full compliance · service-fee only",
+  trustLine: `${eorCountries.join(" · ")} · full compliance · service-fee only`,
+  audienceLabel: "Who this is for",
+  audience: [
+    "Delivery Directors and HR leads who've already made the hire but have no local entity to employ them",
+  ],
+  boundaryHeading: "Where EOR ends",
+  boundary:
+    "EOR is an enabler inside Contract and Permanent, not a peer product: it exists to let you employ someone you've already found. Where the need is finding that person, that's Contract or Permanent. Where the need is an outcome delivered rather than people supplied, that's Managed Delivery.",
   benefitsHeading: "What you get with Yallo EOR",
   benefits: [
     {
       title: "No entity setup required",
-      copy: "Deploy talent into the UAE or India without spinning up a legal entity, opening bank accounts, or navigating local labour law.",
+      copy: `Deploy talent into the ${eorCorridorProse} without spinning up a legal entity, opening bank accounts, or navigating local labour law.`,
       icon: globeIcon,
     },
     {
@@ -106,8 +122,7 @@ export const eorData: ServicePageData = {
     },
   ],
   seo: {
-    title: "Employer of Record · UAE + India EOR | Yallo Talent",
-    description:
-      "Deploy talent into UAE and India without a local entity. UAE visa sponsorship, India payroll, statutory compliance — you direct the work.",
+    title: `Employer of Record · ${eorCountries.join(", ")} | Yallo Talent`,
+    description: `Deploy talent into the ${eorCorridorProse} without a local entity. Employment, payroll and statutory compliance handled — you direct the work.`,
   },
 };
