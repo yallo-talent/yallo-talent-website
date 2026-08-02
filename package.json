@@ -26,7 +26,9 @@
     "marks:measure": "node scripts/measure-marks.mjs",
     "logos": "node scripts/build-logos.mjs && node scripts/measure-marks.mjs",
     "check:crawlers": "node scripts/check-crawler-access.mjs",
-    "check:cs-excerpts": "node scripts/check-case-study-excerpts.mjs"
+    "check:cs-excerpts": "node scripts/check-case-study-excerpts.mjs",
+    "check:prose": "node scripts/check-prose-rules.mjs",
+    "check:gate-coverage": "node scripts/check-gate-coverage.mjs"
   },
   "engines": {
     "node": "22.x",

@@ -33,6 +33,7 @@
  */
 
 import { chromium } from "@playwright/test";
+import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
 
 /**
  * Base URL: `BASE_URL` first, then `argv[2]`, then the default.
@@ -68,7 +69,7 @@ const PAGES = [
      unit. Case studies are the surface most likely to carry a client's own
      capitalisation of Yallo, so the omission mattered most here. */
   "/intelligence",
-  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  `/case-studies/${sampleCaseStudySlug()}`,
   /* The landing hub, added at the round 7 close. The detail template above was
      already here; the hub is a separate rendering unit and it renders the card
      TITLES and EXCERPTS, which is the surface §3.5's rule was written for. The

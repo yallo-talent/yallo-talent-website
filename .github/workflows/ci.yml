@@ -40,8 +40,29 @@ jobs:
 
       - run: pnpm exec playwright install --with-deps chromium
 
-      - name: Tests
+      # Round 7 found Tailwind preflight had killed <ul> markers on every
+      # case-study movement; e2e/case-study-movements.spec.ts asserts real
+      # <ul>/<li> markup and a rendered ::before marker across all ten
+      # published studies, and was proven to fail red before that fix landed.
+      # It ran under this step's name before (bare "pnpm test"), which is
+      # exactly how a gate keeps passing after the thing it protects regresses
+      # — nobody reads a generic label and connects it to a specific fix six
+      # months on. Named here so it stays a deliberate CI presence, not an
+      # incidental one. Also runs smoke.spec.ts and dead-hrefs.spec.ts.
+      - name: Playwright (case-study markers, smoke, dead hrefs)
         run: pnpm test
+
+      # Round 8. The same preflight class of defect on /insights/[slug]:
+      # `.prose` (headings, list markers, blockquote, hr, table borders) was
+      # written but never applied to the MDXRemote render, so every insight
+      # article's markdown body rendered with no visual hierarchy at all. No
+      # article is published right now (check:gate-coverage already reports
+      # /insights/[slug] as a unit with no live URL), so there is no route for
+      # a browser test to visit yet — this is the static floor until one
+      # exists: it fails if `.prose` stops being applied, or if its marker,
+      # heading, blockquote, hr or table rules are removed.
+      - name: Prose rules wired and complete (insights markdown)
+        run: pnpm check:prose
 
       # Asserts what silently regresses: real metric values in the
       # server-rendered HTML rather than zeros, no banned term on the page, no

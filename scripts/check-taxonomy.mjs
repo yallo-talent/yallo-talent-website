@@ -25,6 +25,7 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { parse as parseYaml } from "yaml";
 
 const failures = [];
 const notes = [];
@@ -357,6 +358,55 @@ for (const slug of indexSlugs) {
   }
 }
 notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
+
+/* ---------------------------------------------------------------------------
+   Rule 4b. A case-study slug in scripts/ must come from order.yaml, not a
+   hand-typed literal.
+
+   Round 7's carry-over 1 was order.yaml itself naming four retired studies.
+   Round 8 found the same fault one layer down: check-rendered-type.mjs and
+   check-yallo-case.mjs each hand-copied one live slug as their "one page per
+   template" sample. Retire that study and both gates 404 on the wrong thing
+   instead of checking what they exist to check. Fixed by deriving the sample
+   from order.yaml (scripts/lib/case-study-sample.mjs); this rule is what stops
+   the next one from being typed back in by hand.
+   --------------------------------------------------------------------------- */
+const orderYamlSlugs = parseYaml(
+  readFileSync(
+    join("content", "case-studies", "order.yaml"),
+    "utf8",
+  ),
+).order;
+
+const SCRIPTS_ALLOWED = [
+  "scripts/lib/case-study-sample.mjs", // the one place a slug is read, not typed
+  "scripts/check-case-study-excerpts.mjs", // walks content/case-studies itself, names none
+  // A one-time port register from the legacy WordPress export, source slug to
+  // canonical slug. It names every study because that IS its job, not a
+  // gate's "one representative sample" that could silently drift.
+  "scripts/extract-case-studies.mjs",
+];
+
+const scriptFiles = readdirSync("scripts").flatMap((entry) => {
+  const p = join("scripts", entry);
+  if (statSync(p).isDirectory()) return [];
+  return entry.endsWith(".mjs") ? [p] : [];
+});
+
+for (const file of scriptFiles) {
+  if (SCRIPTS_ALLOWED.includes(file)) continue;
+  const src = readFileSync(file, "utf8");
+  const lines = src.split("\n");
+  for (const slug of orderYamlSlugs) {
+    lines.forEach((line, i) => {
+      if (line.includes(slug)) {
+        failures.push(
+          `${file}:${i + 1}  hand-copies case-study slug "${slug}". Import sampleCaseStudySlug() from scripts/lib/case-study-sample.mjs instead — a slug typed here outlives the study it names.`,
+        );
+      }
+    });
+  }
+}
 
 /* ---------------------------------------------------------------------------
    Rules 5, 6 and 7. Nothing writes a taxonomy label. ALL THREE taxonomies derive.

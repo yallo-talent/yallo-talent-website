@@ -47,6 +47,7 @@
  * Usage: node scripts/check-rendered-type.mjs [baseUrl]
  */
 import { chromium } from "@playwright/test";
+import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
 
 const BASE = process.argv[2] ?? "http://localhost:3100";
 
@@ -85,7 +86,7 @@ const PAGES = [
      visited by no enumerating guard at all. The blueprint ARCHETYPE was listed
      and its index was not, and they are different components. */
   "/intelligence",
-  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  `/case-studies/${sampleCaseStudySlug()}`,
   /* Added at the round 7 close, for the same reason the two above were: the
      detail template was listed and its LANDING HUB was not, and they are
      different components with their own CSS module. The detail page failed this

@@ -26,6 +26,7 @@
  *   node scripts/check-reflow.mjs [--width 360]
  */
 import { chromium } from "@playwright/test";
+import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
 
 const arg = (n, d) => {
   const i = process.argv.indexOf(`--${n}`);
@@ -64,7 +65,7 @@ const ROUTES = [
      unit. A case study is the longest single prose column on the site and the
      blueprint index carries a card grid, so both are reflow-relevant. */
   "/intelligence",
-  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  `/case-studies/${sampleCaseStudySlug()}`,
 ];
 
 const browser = await chromium.launch();
