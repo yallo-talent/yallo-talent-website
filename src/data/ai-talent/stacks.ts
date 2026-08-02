@@ -32,10 +32,11 @@
  * having the platform depth.
  */
 
-/** The nine role-family slugs. Kept here as the type so a typo cannot compile. */
+/** The ten role-family slugs. Kept here as the type so a typo cannot compile. */
 export type RoleFamilySlug =
   | "agentic-ai-developer"
   | "llm-engineer"
+  | "ai-data-engineer"
   | "ai-solution-architect"
   | "mlops-engineer"
   | "ai-evaluation-specialist"
@@ -149,9 +150,22 @@ export const stacks: StackEntry[] = [
       "Google Vertex AI",
       ["ai-solution-architect", "mlops-engineer", "llm-engineer"],
     ],
-    ["Databricks Mosaic AI", ["mlops-engineer", "ai-solution-architect"]],
-    ["Snowflake Cortex", ["ai-solution-architect", "mlops-engineer"]],
-    ["Microsoft Fabric", ["ai-solution-architect", "mlops-engineer"]],
+    /* The three data platforms in this group take the tenth family; the model
+       hosting and vendor agent platforms around them do not. This group feeds no
+       estate layer, so these three change the matrix and the family's own L2
+       band without touching the overlay. */
+    [
+      "Databricks Mosaic AI",
+      ["mlops-engineer", "ai-solution-architect", "ai-data-engineer"],
+    ],
+    [
+      "Snowflake Cortex",
+      ["ai-solution-architect", "mlops-engineer", "ai-data-engineer"],
+    ],
+    [
+      "Microsoft Fabric",
+      ["ai-solution-architect", "mlops-engineer", "ai-data-engineer"],
+    ],
     [
       "SAP AI Core and Joule",
       ["ai-solution-architect", "ai-product-manager", "chief-ai-officer"],
@@ -174,7 +188,7 @@ export const stacks: StackEntry[] = [
       "LangGraph",
       ["agentic-ai-developer", "llm-engineer", "ai-solution-architect"],
     ],
-    ["LlamaIndex", ["agentic-ai-developer", "llm-engineer"]],
+    /* LlamaIndex moved to "Retrieval and vector stores" — see the note there. */
     ["CrewAI", ["agentic-ai-developer"]],
     ["AutoGen", ["agentic-ai-developer"]],
     ["Semantic Kernel", ["agentic-ai-developer", "ai-solution-architect"]],
@@ -195,19 +209,52 @@ export const stacks: StackEntry[] = [
       "Langfuse",
       ["ai-evaluation-specialist", "llm-engineer", "mlops-engineer"],
     ],
-    ["Ragas", ["ai-evaluation-specialist", "llm-engineer"]],
+    /* Ragas measures retrieval quality specifically, so the family that owns the
+       retrieval layer is screened against it. The rest of this group is model and
+       prompt evaluation and stays as it was. */
+    [
+      "Ragas",
+      ["ai-evaluation-specialist", "llm-engineer", "ai-data-engineer"],
+    ],
     ["MLflow", ["mlops-engineer", "ai-evaluation-specialist"]],
     ["Weights and Biases", ["mlops-engineer", "ai-evaluation-specialist"]],
     ["DeepEval", ["ai-evaluation-specialist", "llm-engineer"]],
   ]),
 
+  /* The tenth family owns this group, per context-round3-rulings.md §2 q3. It is
+     added to every entry because retrieval is the role's subject rather than one
+     of its tools. llm-engineer and agentic-ai-developer stay on the entries they
+     already had: they consume a retrieval layer and are screened on telling a
+     retrieval fault from a prompt fault. What moved out of llm-engineer is the
+     OWNERSHIP claim in its prose, not its screening against these stores.
+
+     LlamaIndex MOVED here from "Agent and orchestration frameworks". It is a
+     retrieval and indexing framework first, and it is the single most obvious
+     tool for this family, so its absence from the family's L2 band would read as
+     a gap. Two reasons to move rather than dual-list it: the group it sat in
+     feeds the orchestration layer of the estate diagram, and adding a tenth
+     family there would have taken that layer to six of ten — "most of the set",
+     which §5.2 asks the overlay to avoid; and removing it changes that group's
+     derived families not at all, because LangChain and Pydantic AI already carry
+     agentic-ai-developer and llm-engineer.
+
+     LlamaIndex does have agent features, so this is a judgement rather than a
+     fact, and it is flagged in the relay for reversal if Sumeet reads it the
+     other way. */
   ...build("Retrieval and vector stores", [
-    ["pgvector", ["llm-engineer", "agentic-ai-developer"]],
-    ["Pinecone", ["llm-engineer", "agentic-ai-developer"]],
-    ["Weaviate", ["llm-engineer", "ai-solution-architect"]],
-    ["Qdrant", ["llm-engineer", "ai-solution-architect"]],
-    ["Elasticsearch", ["llm-engineer", "ai-solution-architect"]],
-    ["Azure AI Search", ["llm-engineer", "ai-solution-architect"]],
+    ["pgvector", ["llm-engineer", "agentic-ai-developer", "ai-data-engineer"]],
+    ["Pinecone", ["llm-engineer", "agentic-ai-developer", "ai-data-engineer"]],
+    ["Weaviate", ["llm-engineer", "ai-solution-architect", "ai-data-engineer"]],
+    ["Qdrant", ["llm-engineer", "ai-solution-architect", "ai-data-engineer"]],
+    [
+      "Elasticsearch",
+      ["llm-engineer", "ai-solution-architect", "ai-data-engineer"],
+    ],
+    [
+      "Azure AI Search",
+      ["llm-engineer", "ai-solution-architect", "ai-data-engineer"],
+    ],
+    ["LlamaIndex", ["agentic-ai-developer", "llm-engineer", "ai-data-engineer"]],
   ]),
 
   ...build("Automation and integration", [

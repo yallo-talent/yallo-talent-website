@@ -24,12 +24,17 @@ import { buildMetadata } from "@/lib/seo";
  * entirely from content that already existed: the homepage AI band's six role
  * tiles and four capability areas parked from the retired data-ai page. It was
  * the honest thing to ship at the time, because the alternative was inventing a
- * category page. It is superseded now that the nine role families and the stack
- * matrix exist as real, ratified content with nine L2 pages behind them.
+ * category page. It is superseded now that the role families and the stack
+ * matrix exist as real, ratified content with an L2 page behind each family.
  *
- * Band order is §2 exactly: hero, the gap, nine role families, the stack matrix
+ * Band order is §2 exactly: hero, the gap, the role families, the stack matrix
  * as the dark signature band, how we screen, where AI sits in a programme,
  * governance, ask. One dark band, against the site ceiling of two.
+ *
+ * The count is not written down anywhere on this page or in its metadata, and
+ * that is R21 rather than vagueness: a tally is what a machine notices about a
+ * list, and it dates the moment the data moves. It dated on 2 Aug 2026, when the
+ * tenth family was ratified and "nine role families" was live in three places.
  *
  * Three things this page deliberately does not do:
  *
@@ -56,7 +61,7 @@ export const metadata: Metadata = buildMetadata({
     title:
       "AI Talent · Agentic, LLM, MLOps and Governance Specialists | Yallo Talent",
     description:
-      "AI talent as a named specialism: nine role families, the stacks we screen against, and the mis-hire pattern for each. Specialist-screened, shortlisted in 72 hours. Middle East · Europe · India.",
+      "AI talent as a named specialism: agentic, LLM, retrieval, MLOps and governance role families, the stacks we screen against, and the mis-hire pattern for each. Specialist-screened, shortlisted in 72 hours. Middle East · Europe · India.",
   },
   path: "/ai-talent",
 });

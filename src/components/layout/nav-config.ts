@@ -255,9 +255,14 @@ export const primaryNav: NavGroup[] = [
                page is forbidden to publish: R-AI3 bans a scarcity figure and a
                rate outright. A nav description is a claim like any other, and
                this one could never have been met by the page behind it. */
+            /* The count came out on 2 Aug 2026 with the tenth family. It was
+               correct when written and wrong the moment the data moved, which is
+               the R21 argument applied to a nav description: the slot does not
+               need a tally to be informative. */
             label: "AI talent",
             href: "/ai-talent",
-            description: "Nine role families, and the stacks we screen against",
+            description:
+              "Role families from agentic to governance, and the stacks we screen against",
           },
         ],
       },
