@@ -387,6 +387,28 @@ export const cybersecurityData: L1PageData = {
     "A bank's regulatory position, a hospital's clinical availability constraint or a plant's patch window changes which security specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [
     {
+      id: "retail",
+      name: "Retail & Consumer",
+      intro:
+        "Payment card environments, store estate exposure and e-commerce application security for retail programmes.",
+      roles: [
+        "Application Security Engineer",
+        "Penetration Tester",
+        "GRC Consultant",
+      ],
+    },
+    {
+      id: "manufacturing",
+      name: "Manufacturing & Logistics",
+      intro:
+        "Plant and industrial control security, IT and OT convergence and supply chain exposure for manufacturing programmes.",
+      roles: [
+        "OT Security Specialist",
+        "Security Architect",
+        "Incident Response Lead",
+      ],
+    },
+    {
       id: "finance",
       name: "Banking & Financial Services",
       intro:
@@ -395,7 +417,7 @@ export const cybersecurityData: L1PageData = {
     },
     {
       id: "government",
-      name: "Public Sector",
+      name: "Government & Public Sector",
       intro:
         "National framework alignment, citizen data protection and security operations for central and local government programmes.",
       roles: ["GRC Consultant", "SOC Analyst", "Enterprise Security Architect"],
@@ -412,33 +434,22 @@ export const cybersecurityData: L1PageData = {
       ],
     },
     {
-      id: "manufacturing",
-      name: "Manufacturing & Logistics",
-      intro:
-        "Plant and industrial control security, IT and OT convergence and supply chain exposure for manufacturing programmes.",
-      roles: [
-        "OT Security Specialist",
-        "Security Architect",
-        "Incident Response Lead",
-      ],
-    },
-    {
-      id: "retail",
-      name: "Retail & Consumer",
-      intro:
-        "Payment card environments, store estate exposure and e-commerce application security for retail programmes.",
-      roles: [
-        "Application Security Engineer",
-        "Penetration Tester",
-        "GRC Consultant",
-      ],
-    },
-    {
       id: "telco",
       name: "Telco & Media",
       intro:
         "Network and subscriber data protection, fraud and large-scale security operations for telco and media programmes.",
       roles: ["Detection Engineer", "SIEM Engineer", "Security Architect"],
+    },
+    {
+      id: "education",
+      name: "Education & Universities",
+      intro:
+        "Student and staff identity at cohort scale, research data protection and campus network segmentation for institutional programmes.",
+      roles: [
+        "Identity and Access Engineer, education",
+        "Security Architect",
+        "GRC Consultant",
+      ],
     },
   ],
 

@@ -362,17 +362,6 @@ export const testingQualityEngineeringData: L1PageData = {
     "A bank's regulatory evidence, a retailer's peak readiness or a hospital's clinical safety case changes which test specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [
     {
-      id: "finance",
-      name: "Banking & Financial Services",
-      intro:
-        "Regulatory test evidence, payment testing and resilience validation for banking and financial services programmes.",
-      roles: [
-        "Test Manager",
-        "Non-functional Test Lead",
-        "Performance Test Engineer",
-      ],
-    },
-    {
       id: "retail",
       name: "Retail & Consumer",
       intro:
@@ -384,8 +373,30 @@ export const testingQualityEngineeringData: L1PageData = {
       ],
     },
     {
+      id: "manufacturing",
+      name: "Manufacturing & Logistics",
+      intro:
+        "ERP regression, warehouse system testing and integration cycles for manufacturing programmes.",
+      roles: [
+        "Functional Test Analyst",
+        "Integration Test Analyst",
+        "QA Automation Engineer",
+      ],
+    },
+    {
+      id: "finance",
+      name: "Banking & Financial Services",
+      intro:
+        "Regulatory test evidence, payment testing and resilience validation for banking and financial services programmes.",
+      roles: [
+        "Test Manager",
+        "Non-functional Test Lead",
+        "Performance Test Engineer",
+      ],
+    },
+    {
       id: "government",
-      name: "Public Sector",
+      name: "Government & Public Sector",
       intro:
         "Accessibility conformance, citizen service testing and acceptance coordination for government programmes.",
       roles: [
@@ -402,17 +413,6 @@ export const testingQualityEngineeringData: L1PageData = {
       roles: ["Test Lead", "Environment Manager", "Functional Test Analyst"],
     },
     {
-      id: "manufacturing",
-      name: "Manufacturing & Logistics",
-      intro:
-        "ERP regression, warehouse system testing and integration cycles for manufacturing programmes.",
-      roles: [
-        "Functional Test Analyst",
-        "Integration Test Analyst",
-        "QA Automation Engineer",
-      ],
-    },
-    {
       id: "telco",
       name: "Telco & Media",
       intro:
@@ -421,6 +421,17 @@ export const testingQualityEngineeringData: L1PageData = {
         "Performance Test Engineer",
         "Test Architect",
         "Integration Test Analyst",
+      ],
+    },
+    {
+      id: "education",
+      name: "Education & Universities",
+      intro:
+        "Parallel run and reconciliation on student records, registration load testing and accessibility conformance for institutional systems.",
+      roles: [
+        "Test Manager, education systems",
+        "Performance Test Engineer",
+        "Accessibility Test Specialist",
       ],
     },
   ],

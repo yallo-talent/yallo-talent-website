@@ -444,6 +444,144 @@ export const dataAnalyticsData: L1PageData = {
         },
       ],
     },
+    {
+      /* THE EIGHTH CARD, authored in context-round4-rulings.md §7, and it closes
+         the last of the four orphaned areas.
+         Data science was homeless: the modelling roles left this desk when AI
+         Talent became the seventh discipline, and AI Talent is foundation-model
+         work rather than modelling a company's own data. A buyer briefing a
+         forecasting or experimentation hire had nowhere on the site to land.
+         THE BOUNDARY IS STATED ONCE, in `overview` below, and cross-linked
+         rather than restated: `twin` carries the route to AI Talent, and the
+         AI Data Engineer is named as the join because that family genuinely
+         serves both sides. Nothing about foundation models, retrieval or
+         evaluation is repeated here; that is AI Talent's content and it stays
+         there. */
+      slug: "data-science",
+      num: "08",
+      title: "Data Science",
+      icon: "spark",
+      blurb: "Modelling, forecasting, experimentation and optimisation.",
+      overview:
+        "Data science answers questions from a company's own data: what will demand be, which customers are about to leave, whether the change actually caused the lift, and what the best allocation is under a constraint. That is a different discipline from AI Talent, which builds systems on foundation models, and the two are briefed as one often enough to be worth separating. The sub-desks are applied machine learning, statistical modelling and experimentation, forecasting and demand science, optimisation and operations research, causal inference and measurement, and model deployment and monitoring, the last of which is staffed with the MLOps desk rather than restated here. We screen on whether a model reached production and what happened to it afterwards, because the failure mode is a notebook nobody could deploy and a result nobody could reproduce.",
+      screening:
+        "Screened on a model that reached production and was still running six months later, on how they validated it against a holdout somebody else chose, and on whether they can tell a correlation they exploited from a cause they established.",
+      roles: [
+        "Senior Data Scientist",
+        "Applied Machine Learning Engineer",
+        "Forecasting and Demand Planning Analyst",
+      ],
+      twin: [
+        {
+          href: "/ai-talent",
+          label: "AI Talent",
+          note: "Data science models a company's own data. AI Talent builds on foundation models. The AI Data Engineer is the role that serves both, and it is briefed from there.",
+        },
+      ],
+      tools: [
+        {
+          slug: "python-ml",
+          vendor: "Python",
+          name: "Python: scikit-learn, PyTorch and statsmodels",
+          roles: [
+            "Data Scientist",
+            "Senior Data Scientist",
+            "Applied Machine Learning Engineer",
+            "Statistician",
+          ],
+        },
+        {
+          slug: "r-statistical-computing",
+          vendor: "R",
+          name: "R",
+          roles: [
+            "Statistician",
+            "Experimentation and Causal Inference Analyst",
+            "Data Scientist",
+          ],
+        },
+        {
+          slug: "databricks-ml",
+          vendor: "Databricks",
+          name: "Databricks",
+          roles: [
+            "Applied Machine Learning Engineer",
+            "Senior Data Scientist",
+            "Data Science Lead",
+          ],
+        },
+        {
+          slug: "azure-machine-learning",
+          vendor: "Microsoft",
+          name: "Azure Machine Learning",
+          roles: [
+            "Applied Machine Learning Engineer",
+            "Data Scientist",
+            "Data Science Lead",
+          ],
+        },
+        {
+          slug: "amazon-sagemaker",
+          vendor: "Amazon Web Services",
+          name: "Amazon SageMaker",
+          roles: [
+            "Applied Machine Learning Engineer",
+            "Senior Data Scientist",
+            "Data Scientist",
+          ],
+        },
+        {
+          slug: "google-vertex-ai",
+          vendor: "Google Cloud",
+          name: "Google Vertex AI",
+          roles: [
+            "Applied Machine Learning Engineer",
+            "Data Scientist",
+            "Data Science Lead",
+          ],
+        },
+        {
+          slug: "snowflake-data-science",
+          vendor: "Snowflake",
+          name: "Snowflake",
+          roles: [
+            "Data Scientist",
+            "Decision Scientist",
+            "Forecasting and Demand Planning Analyst",
+          ],
+        },
+        {
+          slug: "mlflow",
+          vendor: "MLflow",
+          name: "MLflow",
+          roles: [
+            "Applied Machine Learning Engineer",
+            "Senior Data Scientist",
+            "Data Science Lead",
+          ],
+        },
+        {
+          slug: "dataiku",
+          vendor: "Dataiku",
+          name: "Dataiku",
+          roles: [
+            "Data Scientist",
+            "Decision Scientist",
+            "Optimisation Specialist",
+          ],
+        },
+        {
+          slug: "sas",
+          vendor: "SAS",
+          name: "SAS",
+          roles: [
+            "Statistician",
+            "Forecasting and Demand Planning Analyst",
+            "Optimisation Specialist",
+          ],
+        },
+      ],
+    },
   ],
 
   segmentsEyebrow: "Where we deploy",
@@ -463,6 +601,17 @@ export const dataAnalyticsData: L1PageData = {
       ],
     },
     {
+      id: "manufacturing",
+      name: "Manufacturing & Logistics",
+      intro:
+        "IIoT payloads, predictive maintenance, demand forecasting and factory-floor analytics for manufacturing programmes.",
+      roles: [
+        "IIoT Data Engineer",
+        "Predictive Maintenance Scientist",
+        "Supply Chain Analytics Lead",
+      ],
+    },
+    {
       id: "finance",
       name: "Banking & Financial Services",
       intro:
@@ -471,6 +620,17 @@ export const dataAnalyticsData: L1PageData = {
         "Risk Model Engineer",
         "Fraud Detection ML Lead",
         "Regulatory Analytics Architect",
+      ],
+    },
+    {
+      id: "government",
+      name: "Government & Public Sector",
+      intro:
+        "Government data platforms, service analytics, fraud and compliance modelling for central and local government.",
+      roles: [
+        "Government Data Platform Lead",
+        "Service Analytics Engineer",
+        "Compliance ML Analyst",
       ],
     },
     {
@@ -485,28 +645,6 @@ export const dataAnalyticsData: L1PageData = {
       ],
     },
     {
-      id: "government",
-      name: "Public Sector",
-      intro:
-        "Government data platforms, service analytics, fraud and compliance modelling for central and local government.",
-      roles: [
-        "Government Data Platform Lead",
-        "Service Analytics Engineer",
-        "Compliance ML Analyst",
-      ],
-    },
-    {
-      id: "manufacturing",
-      name: "Manufacturing & Logistics",
-      intro:
-        "IIoT payloads, predictive maintenance, demand forecasting and factory-floor analytics for manufacturing programmes.",
-      roles: [
-        "IIoT Data Engineer",
-        "Predictive Maintenance Scientist",
-        "Supply Chain Analytics Lead",
-      ],
-    },
-    {
       id: "telco",
       name: "Telco & Media",
       intro:
@@ -515,6 +653,17 @@ export const dataAnalyticsData: L1PageData = {
         "Network Analytics Engineer",
         "Churn Prediction ML Lead",
         "Recommendation Engine Architect",
+      ],
+    },
+    {
+      id: "education",
+      name: "Education & Universities",
+      intro:
+        "Institutional research, student data and reporting assembled across the student record, the finance ledger and the learning platform.",
+      roles: [
+        "Data Engineer, education",
+        "Institutional Research Analyst",
+        "Accreditation Reporting Analyst",
       ],
     },
   ],

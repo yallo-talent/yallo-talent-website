@@ -18,7 +18,15 @@ export const financeData: L1PageData = {
      no longer carries a wealth function, which is the same defect as promising
      twenty functions and shipping nine. What the five named platforms actually
      cover is core banking, Islamic banking, payments and insurance. */
-  sub: "Temenos, Oracle FLEXCUBE, Infosys Finacle, Guidewire and Murex specialists for core banking, Islamic banking, payments and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
+  /* SIX PLATFORMS, NOT FIVE, and the hero moved with the grid rather than after
+     it. Backbase was ratified on 2 Aug 2026 (context-round4-rulings.md §6.4) on
+     Sumeet's own criterion, what most Middle East banks actually run, and it is
+     one entry under digital channels. Leaving the hero at five while function 03
+     carried a sixth would have recreated the exact defect this round's sweep
+     exists to remove: a hero that argues one surface and a screen down that
+     argues a wider one. Digital channels joins the programme list for the same
+     reason. */
+  sub: "Temenos, Oracle FLEXCUBE, Infosys Finacle, Backbase, Guidewire and Murex specialists for core banking, Islamic banking, digital channels, payments and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -94,21 +102,33 @@ export const financeData: L1PageData = {
       scarcity: "high",
       engagement: "contract",
     },
-    {
-      name: "nCino Loan Origination Specialist",
-      scarcity: "high",
-      engagement: "contract",
-    },
-    {
-      name: "PSD2 / Open Banking Integration Architect",
-      scarcity: "high",
-      engagement: "contract",
-    },
-    {
-      name: "AML / Actimize Transaction Monitoring Lead",
-      scarcity: "high",
-      engagement: "contract",
-    },
+    /* THREE ROLES REMOVED, 2 Aug 2026, per context-round4-rulings.md §6.5.
+       The rule is not a platform list. It is that every entry on this rail must
+       map to one of the nine functions the grid publishes, and to a tool inside
+       one of them:
+
+         nCino Loan Origination Specialist       Lending is function 07, but its
+                                                 tools are Temenos Loan
+                                                 Origination, FLEXCUBE Lending
+                                                 and Finacle Lending and
+                                                 Collections. nCino is a seventh
+                                                 platform the desk does not staff.
+         PSD2 / Open Banking Integration         Open banking is inside function
+         Architect                               03, but PSD2 is a European
+                                                 regulation rather than a product,
+                                                 and the desk is weighted to the
+                                                 Middle East.
+         AML / Actimize Transaction              Financial crime is inside
+         Monitoring Lead                         function 06, but its card is a
+                                                 category on purpose and names no
+                                                 product. Actimize is not one of
+                                                 the platforms behind it.
+
+       Nothing is added to backfill the count. A scarce rail of five that is true
+       beats one of eight that argues a bench the grid does not show, and each of
+       the five below maps to a named tool on a published function. Onfido and
+       Jumio are named in the ruling and appear nowhere in this repository, so
+       there was nothing to remove. */
   ],
 
   expertiseEyebrow: "Our expertise",
@@ -296,6 +316,22 @@ export const financeData: L1PageData = {
             "Customer Onboarding and eKYC Consultant",
             "Mobile Banking Product Owner",
             "Front-end Engineer, banking channels",
+          ],
+        },
+        {
+          /* RATIFIED 2 Aug 2026, context-round4-rulings.md §6.4. One entry, on
+             this function only. Backbase is a channel layer rather than a core,
+             so it belongs here and nowhere else on the desk; the roles are the
+             four this function already publishes, so the card adds a platform
+             and invents no job title. */
+          slug: "backbase-engagement-banking",
+          vendor: "Backbase",
+          name: "Backbase Engagement Banking Platform",
+          roles: [
+            "Backbase Consultant",
+            "Digital Banking Consultant",
+            "Front-end Engineer, banking channels",
+            "Digital Channels Business Analyst",
           ],
         },
       ],
@@ -656,6 +692,35 @@ export const financeData: L1PageData = {
     "Every financial-services segment. Specialists who know the context.",
   segmentsSub:
     "Retail banking runs different programmes from insurance or capital markets. Our contractors understand the specific operating context — not just the platform.",
+  /* SIX SEGMENTS REMOVED, 2 Aug 2026, per context-round4-rulings.md §6.5, and
+     the rule that removed them is the same one that rebuilt the grid.
+
+     A SEGMENT IS CUSTOMER-SHAPED. Procurement, IT Infrastructure, Financial
+     Planning & Analytics, Data & AI and Cybersecurity for Banking are functions
+     wearing a segment's clothes: none of them names a kind of bank. They were
+     also, exactly, the segments that mirrored functions this desk REMOVED from
+     its grid on 2 Aug (procurement, it-infra-fs, fpna, data-ai-fs,
+     cybersecurity-fs), which is why a rail claiming to cover them argued a bench
+     the grid does not show. Wealth & Asset Management goes with them on the same
+     test and nothing else: `wealth` is on that removed list, and the hero copy
+     had already been rewritten because it promised wealth the grid no longer
+     carries.
+
+     WHAT SURVIVES, and why the four function-shaped names below are NOT the same
+     fault: each maps onto a function this desk publishes and staffs. Digital
+     Payments is function 04, Risk & Compliance and Regulatory Compliance &
+     Governance are the two halves of function 06, Treasury & Cash Management is
+     05 and Lending & Loan Management is 07. The test the ruling sets is whether
+     a segment maps to one of the nine published functions, and these do.
+
+     EVERY ROLE PILL WAS SWEPT IN THE SAME PASS, which is the half that is easy
+     to miss. This rail named roughly thirty vendors that appear nowhere in the
+     grid: Finastra Loan IQ, nCino, Kyriba, Duck Creek, Fiserv, ACI, Marqeta,
+     SAS, Wolters Kluwer, AxiomSL, MetricStream, ION, Calypso, Salesforce FSC,
+     SAP TRM and more. A hero that names six platforms and a rail a screen down
+     that names thirty-six is the defect, not the pill. Every title below is
+     published verbatim on one of the nine functions above, so nothing here is
+     invented and nothing claims a platform the desk does not staff. */
   segments: [
     {
       id: "retail-banking",
@@ -664,252 +729,116 @@ export const financeData: L1PageData = {
         "Deposits, cards, mortgages and digital channels at consumer scale. Core migrations, digital onboarding and channel modernisation dominate the brief pipeline.",
       roles: [
         "Temenos Transact Consultant",
-        "Oracle FLEXCUBE Specialist",
-        "Digital Onboarding Architect",
+        "FLEXCUBE Functional Consultant",
+        "Digital Banking Consultant",
+        "Customer Onboarding and eKYC Consultant",
         "Backbase Consultant",
-        "Salesforce FSC Lead",
-        "Payments Integration Specialist",
-        "Card Management Consultant",
-        "AML Systems Lead",
-        "PSD2 / Open Banking Architect",
+        "Loan Origination Consultant",
       ],
     },
     {
       id: "corporate-banking",
       name: "Corporate Banking",
       intro:
-        "Cash management, trade finance and lending for corporates. Client portals, KYC-refresh and lending workflows are constant pain points.",
+        "Cash management, trade finance and lending for corporates. Client portals, onboarding refresh and lending workflows are the constant pain points.",
       roles: [
-        "Finastra Loan IQ Consultant",
-        "nCino Corporate Banking Specialist",
-        "Corporate Onboarding Architect",
-        "SWIFT Integration Lead",
-        "Trade Finance Systems Consultant",
-        "Cash Management Systems Specialist",
-        "SAP Treasury Consultant",
-        "Kyriba Specialist",
-        "Corporate Client Portal Architect",
-      ],
-    },
-    {
-      id: "wealth-asset",
-      name: "Wealth & Asset Management",
-      intro:
-        "Portfolio management, advisor productivity and client reporting. Cross-border regulation and household-level views are the recurring differentiators.",
-      roles: [
-        "FIS Wealth Management Consultant",
-        "Temenos WealthSuite Specialist",
-        "Oracle Wealth Management Lead",
-        "Advisor Portal Architect",
-        "Portfolio Analytics Consultant",
-        "Cross-Border Compliance Specialist",
-        "Salesforce FSC Wealth Lead",
-        "Reporting & Reg Consultant",
-        "Alternative Assets Systems Lead",
+        "Core Banking Solution Architect",
+        "Lending Functional Consultant",
+        "Payments Solution Architect",
+        "Open Banking and API Consultant",
+        "Customer Onboarding and eKYC Consultant",
+        "Credit Risk Business Analyst",
       ],
     },
     {
       id: "insurance",
       name: "Insurance Services",
       intro:
-        "P&C, life and health carriers. Policy admin migrations, claims automation and IFRS 17 reporting drive the platform selection.",
+        "Property and casualty, life and health carriers. Policy administration, claims and billing on Guidewire, and the configuration depth those programmes turn on.",
       roles: [
-        "Guidewire ClaimCenter Consultant",
-        "Duck Creek Policy Specialist",
-        "SAP FS-PM Lead",
-        "IFRS 17 Reporting Consultant",
-        "Actuarial Modelling Specialist",
-        "Claims Automation Architect",
-        "Underwriting Systems Consultant",
-        "Insurance Analytics Lead",
-        "Salesforce for Insurance Specialist",
+        "Guidewire PolicyCenter Developer",
+        "ClaimCenter Developer",
+        "BillingCenter Developer",
+        "Guidewire Configuration Consultant",
+        "Guidewire Integration Developer",
+        "Guidewire Solution Architect",
       ],
     },
     {
       id: "investment-banking",
       name: "Investment Banking",
       intro:
-        "Front, middle and back-office trading. Murex/Calypso migrations, XVA and FRTB delivery need specialists with capital-markets muscle memory.",
+        "Front, middle and back office on MX.3. Market risk, collateral and XVA are three separate hires, and a brief that asks for a Murex resource gets whichever of them is nearest.",
       roles: [
-        "Murex Front-Office Consultant",
-        "ION Trading Specialist",
-        "Calypso Software Lead",
-        "FRTB / Market Risk Consultant",
-        "XVA / CVA Systems Specialist",
-        "Post-Trade Processing Architect",
-        "Reconciliation Systems Consultant",
-        "Reg Reporting for IB Lead",
-        "Fixed Income Systems Specialist",
+        "Murex Front Office Consultant",
+        "Murex Back Office Consultant",
+        "Murex Market Risk Consultant",
+        "Collateral and XVA Consultant",
+        "Murex MxML Developer",
+        "Murex Datamart Developer",
       ],
     },
     {
       id: "digital-payments-seg",
       name: "Digital Payments",
       intro:
-        "Card issuing, real-time rails and merchant acquiring. Regulatory rails (ISO 20022, SEPA Inst, FedNow) demand tight programme discipline.",
+        "Payment hubs, the message layer around them and the regional instant-payment schemes. The message layer is the half that briefs routinely under-scope.",
       roles: [
-        "Fiserv Payments Consultant",
-        "ACI Worldwide Specialist",
-        "Mastercard Payment Gateway Lead",
+        "Payments Solution Architect",
         "ISO 20022 Migration Consultant",
-        "Marqeta Platform Specialist",
-        "Card Management Architect",
-        "Real-Time Payments Consultant",
-        "PSD2 / Open Banking Specialist",
-        "Merchant Acquiring Systems Lead",
+        "SWIFT Consultant",
+        "Open Banking and API Consultant",
+        "Digital Banking Consultant",
       ],
     },
     {
       id: "risk-compliance-seg",
       name: "Risk & Compliance",
       intro:
-        "Credit, market, operational and financial-crime risk. Regulator-driven programme cadence and end-of-cycle audit demands.",
+        "Credit, market, operational and financial-crime risk. Regulator-driven timelines and end-of-cycle audit demands. Frameworks are what a candidate is screened against and nothing here interprets one.",
       roles: [
-        "SAS Risk Consultant",
-        "Oracle FSAA Specialist",
-        "Wolters Kluwer OneSumX Lead",
-        "Credit Risk Modelling Consultant",
-        "Market Risk Systems Specialist",
-        "Operational Risk Analyst",
-        "Basel III / IV Reporting Lead",
-        "NICE Actimize AML Consultant",
-        "GRC Programme Manager",
+        "OFSAA Consultant",
+        "AML and Sanctions Screening Consultant",
+        "Financial Crime Analyst",
+        "Model Validation Specialist",
       ],
     },
     {
       id: "treasury-cash",
       name: "Treasury & Cash Management",
       intro:
-        "Liquidity, FX and cash-flow forecasting. Corporate treasury and bank treasury programmes both live and die on integration quality.",
+        "Liquidity, collateral and bank treasury. Both the trading side and the bank side live or die on integration quality.",
       roles: [
-        "SAP TRM Consultant",
-        "Kyriba Specialist",
-        "Oracle Treasury Cloud Lead",
-        "FX Systems Consultant",
-        "Cash-Flow Forecasting Analyst",
-        "Payments Integration Architect",
-        "Bank Connectivity Specialist",
-        "SWIFT Integration Consultant",
-        "In-House Bank Systems Lead",
+        "Treasury Business Analyst",
+        "Collateral and XVA Consultant",
+        "Murex Back Office Consultant",
+        "Islamic Treasury Consultant",
+        "SWIFT Consultant",
       ],
     },
     {
       id: "lending-loans",
       name: "Lending & Loan Management",
       intro:
-        "Origination, servicing and collections across retail, SME and corporate. Digital onboarding and credit-decisioning are the two consistent hotspots.",
+        "Origination, servicing and collections across retail, small business and corporate. Origination gets the business case and collections gets the contractor shortage.",
       roles: [
-        "nCino Loan Origination Specialist",
-        "Finastra Loan IQ Consultant",
-        "Temenos Lending Lead",
-        "Credit Decisioning Architect",
-        "Collections Systems Specialist",
-        "Servicing Platform Consultant",
-        "Mortgage Origination Consultant",
-        "SME Lending Systems Lead",
-        "Open Banking Data Consultant",
-      ],
-    },
-    {
-      id: "cybersecurity-seg",
-      name: "Cybersecurity for Banking",
-      intro:
-        "SOC, IAM, DLP and threat detection for regulated banks. Zero-trust programmes and payment-security uplift are the biggest bench draws.",
-      roles: [
-        "Palo Alto Networks Consultant",
-        "IBM Security for FS Specialist",
-        "Fortinet Financial Security Lead",
-        "IAM / SailPoint Consultant",
-        "SIEM / Splunk Architect",
-        "Zero Trust Programme Consultant",
-        "DLP Systems Specialist",
-        "Cloud Security Consultant",
-        "Threat Detection Analyst",
-      ],
-    },
-    {
-      id: "fpna-seg",
-      name: "Financial Planning & Analytics",
-      intro:
-        "Group FP&A, product-level P&L and scenario modelling. Modernisation from Excel-heavy stacks to Anaplan/EPM is the recurring theme.",
-      roles: [
-        "Anaplan FS Model Builder",
-        "Oracle EPM / PBCS Specialist",
-        "SAP Analytics Cloud Lead",
-        "Group Consolidation Consultant",
-        "Scenario Modelling Analyst",
-        "Product Control Systems Lead",
-        "Cost Allocation Specialist",
-        "Board Reporting Consultant",
-        "Tableau for Finance Lead",
+        "Lending Functional Consultant",
+        "Loan Origination Consultant",
+        "Collections Consultant",
+        "Lending Solution Architect",
+        "Credit Risk Business Analyst",
       ],
     },
     {
       id: "reg-compliance-seg",
       name: "Regulatory Compliance & Governance",
       intro:
-        "Multi-jurisdiction reporting under FCA, PRA, DFSA, RBI and more. Wolters Kluwer and Axiom migrations continue to dominate the pipeline.",
+        "Reporting to the region's central banks, Basel and IFRS 9, and the governance around the models behind it. Regulators are named and never interpreted.",
       roles: [
-        "Wolters Kluwer Reg Reporting Consultant",
-        "Thomson Reuters ONESOURCE Specialist",
-        "MetricStream GRC Lead",
-        "AxiomSL Reporting Consultant",
-        "SFTR / EMIR Reporting Specialist",
-        "COREP / FINREP Consultant",
-        "SEC Reporting Lead",
-        "Model Governance Consultant",
-        "Reg Change Programme Manager",
-      ],
-    },
-    {
-      id: "it-infra-seg",
-      name: "IT Infrastructure & Operations",
-      intro:
-        "Cloud landing zones, ITSM and DR programmes for regulated environments. Legacy midrange to cloud rehost/replatform is the busiest track.",
-      roles: [
-        "ServiceNow ITSM Consultant",
-        "BMC Helix Specialist",
-        "Microsoft Endpoint Manager Lead",
-        "AWS / Azure Landing Zone Architect",
-        "Mainframe Modernisation Consultant",
-        "DR / BCM Consultant",
-        "Kubernetes Platform Engineer",
-        "Observability / Splunk Specialist",
-        "Network Modernisation Lead",
-      ],
-    },
-    {
-      id: "procurement-seg",
-      name: "Procurement & Vendor Management",
-      intro:
-        "Third-party risk, contracts and sourcing in a regulator-watched environment. Ariba/Coupa migrations run hot every year.",
-      roles: [
-        "SAP Ariba Consultant",
-        "Coupa Procurement Specialist",
-        "Oracle Procurement Cloud Lead",
-        "Third-Party Risk Consultant",
-        "Contracts Systems Specialist",
-        "Vendor Master Data Consultant",
-        "S2P Programme Manager",
-        "Category Management Analyst",
-        "Sourcing Optimisation Lead",
-      ],
-    },
-    {
-      id: "data-ai-seg",
-      name: "Data & AI in Financial Services",
-      intro:
-        "Data platform, ML models and MLOps at bank scale. Fraud, credit and personalisation use-cases dominate the specialist demand.",
-      roles: [
-        "Snowflake for Finance Consultant",
-        "Google Cloud AI for FS Specialist",
-        "Azure AI for Banking Lead",
-        "Databricks Consultant",
-        "Fraud ML Model Consultant",
-        "Credit Risk Model Specialist",
-        "MLOps Architect",
-        "Data Governance Consultant",
-        "Personalisation ML Lead",
+        "Regulatory Reporting Business Analyst",
+        "Basel Reporting Consultant",
+        "IFRS 9 Consultant",
+        "OFSAA Consultant",
       ],
     },
   ],

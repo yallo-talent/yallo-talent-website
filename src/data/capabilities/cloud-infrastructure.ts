@@ -466,35 +466,6 @@ export const cloudInfrastructureData: L1PageData = {
       ],
     },
     {
-      id: "finance",
-      name: "Banking & Financial Services",
-      intro:
-        "Regulated landing-zones, ring-fenced workloads, DORA-aligned resilience and cloud controls for financial services programmes.",
-      roles: [
-        "Regulated Landing-Zone Architect",
-        "DORA Resilience Engineer",
-        "Cloud Controls Lead",
-      ],
-    },
-    {
-      id: "healthcare",
-      name: "Healthcare & Life Sciences",
-      intro:
-        "HIPAA and NHS-aligned cloud environments, clinical workload security and disaster-recovery engineering for healthcare programmes.",
-      roles: ["HIPAA Cloud Architect", "Clinical Workload SRE", "DR Engineer"],
-    },
-    {
-      id: "government",
-      name: "Public Sector",
-      intro:
-        "Sovereign cloud landing-zones, assurance-aligned platforms and legacy modernisation for central and local government.",
-      roles: [
-        "Sovereign Cloud Architect",
-        "Assurance Platform Lead",
-        "Legacy Modernisation Engineer",
-      ],
-    },
-    {
       id: "manufacturing",
       name: "Manufacturing & Logistics",
       intro:
@@ -506,6 +477,35 @@ export const cloudInfrastructureData: L1PageData = {
       ],
     },
     {
+      id: "finance",
+      name: "Banking & Financial Services",
+      intro:
+        "Regulated landing-zones, ring-fenced workloads, DORA-aligned resilience and cloud controls for financial services programmes.",
+      roles: [
+        "Regulated Landing-Zone Architect",
+        "DORA Resilience Engineer",
+        "Cloud Controls Lead",
+      ],
+    },
+    {
+      id: "government",
+      name: "Government & Public Sector",
+      intro:
+        "Sovereign cloud landing-zones, assurance-aligned platforms and legacy modernisation for central and local government.",
+      roles: [
+        "Sovereign Cloud Architect",
+        "Assurance Platform Lead",
+        "Legacy Modernisation Engineer",
+      ],
+    },
+    {
+      id: "healthcare",
+      name: "Healthcare & Life Sciences",
+      intro:
+        "HIPAA and NHS-aligned cloud environments, clinical workload security and disaster-recovery engineering for healthcare programmes.",
+      roles: ["HIPAA Cloud Architect", "Clinical Workload SRE", "DR Engineer"],
+    },
+    {
       id: "telco",
       name: "Telco & Media",
       intro:
@@ -514,6 +514,17 @@ export const cloudInfrastructureData: L1PageData = {
         "Carrier-Grade Cloud Architect",
         "5G Edge Platform Engineer",
         "CDN Infrastructure Lead",
+      ],
+    },
+    {
+      id: "education",
+      name: "Education & Universities",
+      intro:
+        "Campus and research computing estates, multi-campus landing zones and the term-start load peak for university and school-group programmes.",
+      roles: [
+        "Cloud Landing-Zone Architect",
+        "Campus Network Engineer",
+        "Principal SRE",
       ],
     },
   ],
