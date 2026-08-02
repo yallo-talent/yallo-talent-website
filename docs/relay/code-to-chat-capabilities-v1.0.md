@@ -8,7 +8,7 @@ Parallel with the platform round on `main`.
 
 ## TL;DR
 
-The capabilities pillar went from two live disciplines to seven, all at the same depth. The three named Data & Analytics defects are fixed at the class rather than the instance, and two of the three turned out to have a different cause than the hypothesis in the brief. The four planned desks are seeded and serving with 31 L2 routes, so `PLANNED_CAPABILITIES` is now empty. The AI estate diagram ships with its role-family overlay derived from the existing stack matrix rather than retyped. The site-wide "YALLO" fault was real, was on every page, and was **not a string** — it was `text-transform: uppercase` applied to copy containing the word, which is why grep found nothing; it is fixed in eight places and guarded by a new browser-based gate.
+The capabilities pillar went from two live disciplines to seven, all at the same depth. The three named Data & Analytics defects are fixed at the class rather than the instance, and two of the three turned out to have a different cause than the hypothesis in the brief. S2 was initially recorded here as not reproducible; that was wrong, and §2 now carries the correction and the fix. The four planned desks are seeded and serving with 31 L2 routes, so `PLANNED_CAPABILITIES` is now empty. The AI estate diagram ships with its role-family overlay derived from the existing stack matrix rather than retyped. The site-wide "YALLO" fault was real, was on every page, and was **not a string** — it was `text-transform: uppercase` applied to copy containing the word, which is why grep found nothing; it is fixed in eight places and guarded by a new browser-based gate.
 
 One item is **not** done and is listed in "What I stopped short of". Nothing is claimed as verified that I did not observe.
 
@@ -58,7 +58,21 @@ Two carriers, both fixed:
 
 Guard: `scripts/check-taxonomy.mjs` now fails the build if a desk name resolves into the discipline taxonomy, or if any surface re-declares a label map. Verified: 13 → 0.
 
-### S2 · "L2 links not clickable" — NOT REPRODUCIBLE, and the brief's cause was not the cause
+### S2 · "L2 links not clickable" — FOUND. It was the nav mega panel, and my first pass looked in the wrong place
+
+**Correcting my own earlier finding in this document.** I first recorded S2 as not reproducible, having measured the capabilities hub and the Data & Analytics expertise grid. Both were genuinely clean. I had not opened the Specialisms mega panel, and that is where the defect was. Sumeet's report was right; my measurement was too narrow, which is the same "measure the surface the user is actually looking at" failure as the Yallo casing one.
+
+**The cause: `nav-config.ts` was a third copy of the discipline taxonomy** — seven hand-written labels and seven `published` flags, independent of `capabilitiesIndex` and of the hub. So seeding the four desks updated the hub and not the menu. The menu went on marking four **live** pages "Desk in build" and kept the retired label "Artificial Intelligence" on a row whose *subtitle* had already updated, because the subtitle is read from the index and the label was not. That split is the tell, and it is visible in Sumeet's screenshot.
+
+Fixed by deriving the column from `capabilityNavEntries`, one predicate now shared with the hub. `check-taxonomy.mjs` gains a rule: navigation files may not hardcode a capability route. Rule 2 had missed it because a nav column is an inline array rather than a `const xLabels =` map. Verified in the opened panel: all seven rows are `<a>` elements, none `aria-disabled`, label reads "AI Talent", no "Desk in build".
+
+The Platforms column is still hand-written and has the same latent fault. Left alone: the platform set is session 1's to change.
+
+**Row alignment, asked for in the same review.** The support line had a two-line clamp as a maximum only, so row height tracked tagline length (61px on one line, 80px on two) and the three columns did not line up. Reserving the second line in CSS is the fix rather than padding copy: measured at 1280/1440/1728/1920, the wrap point is **not monotonic with viewport** — a 61-character line wrapped at 1440 but not at the other three — so strings tuned to one width come apart at the next. It is also the only option for AI Talent, whose subtitle is ratified §7 copy. Four taglines were lengthened as well so the reserved line carries content. Measured after: every row in all three columns is 80px at all four widths.
+
+**One row is still short, and it is yours to decide.** Informatica has no support line because it is absent from `platformsIndex`, so `TAGLINE_BY_SLUG` has nothing for it. It costs nothing else — the platform page supplies its own label, so there is no lowercase-slug fallback anywhere, which I checked — but it is the last unlevel row in the panel. One index entry with a tagline fixes it, and writing platform copy is not mine to do.
+
+### The original S2 measurement, kept because it is still true of those surfaces
 
 The brief said to check `published: false` against real route status. I did, and it is not that. Measured on the live page:
 
@@ -68,9 +82,7 @@ The brief said to check `published: false` against real route status. I did, and
 
 So there is no clickability defect on the expertise grid in the current tree.
 
-**What I think you saw, and it matters because it changes the fix.** Two candidates, both real:
-1. **The capabilities index.** Four of six discipline cards were correctly non-interactive because their routes 404'd. If "L2" meant "the pages below Capabilities", then the four inert cards *were* the defect — and the fix is seeding, not a flag change. That is done; all seven now link.
-2. `/capabilities/data-analytics` served **200 from a stale production build** on port 3000 throughout your review. My first measurement pass read that build and mistook it for the current tree. If your screenshot predates the commit that built the capability L2 route, the links genuinely did not exist then and already exist now.
+Both of those surfaces were clean, and both still are. The defect was one surface further out, in the mega panel, and is written up above.
 
 **One process finding worth keeping.** Port 3000 was running `next start` on a prebuilt `.next`, not `next dev`. Every measurement against it describes a build snapshot, not the working tree. I have made `distDir` overridable via `NEXT_DIST_DIR` so two sessions can each run a server without corrupting the other's `.next`; I used `.next-caps` on port 3477.
 
