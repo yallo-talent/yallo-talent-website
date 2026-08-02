@@ -199,3 +199,48 @@ clean.
 one boundary the round named explicitly (saasinator). No open items.
 
 ---
+
+## 3. /permanent
+
+### Findings
+
+1. **[Completeness, closed — §3 Q1/Q6]** Added audience (CIOs and Heads of
+   Delivery building the leadership bench; Heads of Talent Acquisition
+   wanting fits over CV volume) and boundary (Permanent is for roles that
+   outlast a single programme; a defined term is Contract, no local entity
+   is EOR).
+2. **[Completeness, open — §3 Q7]** No case study in the existing set of ten
+   is tagged `engagement: Permanent` — zero, confirmed against the same
+   frontmatter survey used for `/contract` and `/managed-delivery`. No Proof
+   section added; inventing one would mean either fabricating a study or
+   misattributing a Contract/Managed-Delivery study to Permanent, both
+   banned. **Open item for Sumeet: Permanent currently has no evidentiary
+   backing on the site. The exact question: is there a real placement this
+   round can name once ratified, or does Permanent stay proof-free until
+   one exists?**
+3. **[Honesty, checked — not altered]** An existing FAQ ("What's your fee
+   model?") states a "rebate structure if a placement leaves inside the
+   first six months." Checked for corroboration elsewhere on the site
+   (why-yallo's guarantee table, other FAQs) and found none — but this
+   content predates round 9 and isn't contradicted by anything else either,
+   unlike the Contract "four weeks" clause, which conflicted with a
+   different ratified statement. Left as-is rather than remove
+   already-shipped copy on a hunch. **Open item: can Sumeet confirm the
+   six-month rebate window is accurate, so it can be cross-referenced on
+   `/why-yallo` rather than standing alone?**
+
+### Gates run
+
+`tsc --noEmit` clean · `eslint` clean · `check:terms`, `check:taxonomy`,
+`check:prose` clean · `check:a11y --routes /permanent` clean (axe, 2 themes x
+2 widths) · `check:reflow` clean · `check:motion` clean · `check:gate-coverage`
+clean.
+
+### Close-out
+
+`/permanent` closed on five of seven §3 questions with real content;
+proof (Q7) and the six-month rebate's provenance are logged as open items,
+per §8's own expectation that some pillar content needs a fact only Sumeet
+holds.
+
+---
