@@ -218,6 +218,65 @@ const CLAIM_ALLOWED = [
 ];
 
 /**
+ * The scarcity work's own licence position (Blueprint v2, 2 Aug 2026): rank,
+ * do not republish. No LinkedIn Talent Insights attribution, pool size or
+ * percentage reaches these files — see
+ * docs/design/context-programme-staffing-blueprint-v2.md §1 and §5. Scoped to
+ * the files this exercise actually touches rather than the whole site,
+ * because "LinkedIn" is a legitimate word elsewhere (a candidate's own
+ * LinkedIn URL on the CV upload form) and a blind sitewide ban would flag it.
+ */
+const SCARCITY_SCOPE_FILES = new Set(["src/data/l1/types.ts"]);
+const SCARCITY_SCOPE_DIRS = [
+  "src/data/blueprint/",
+  "src/data/platforms/",
+  "src/data/capabilities/",
+  "src/data/ai-talent/",
+];
+function inScarcityScope(file) {
+  return SCARCITY_SCOPE_FILES.has(file) || SCARCITY_SCOPE_DIRS.some((d) => file.startsWith(d));
+}
+
+const SCARCITY_BANNED_TERMS = [/linkedin/i, /talent insights/i];
+
+/**
+ * Platform and role names this scarcity exercise ranks. Deliberately the
+ * exact vocabulary the evidence file's tables use — SAP/Oracle/Salesforce
+ * roles, the hyperscalers, and the two named data-platform products — not a
+ * generic word list, because "Security" or "Integration" bare would trip on
+ * ordinary copy across the whole site. A percentage beside one of these,
+ * inside the files this rule scopes to, is exactly the citable-figure defect
+ * the licence position exists to stop.
+ */
+const SCARCITY_ROLE_TOKENS = [
+  "SAP",
+  "Oracle",
+  "Salesforce",
+  "GCP",
+  "Azure",
+  "AWS",
+  "Snowflake",
+  "Databricks",
+  "Workday",
+  "Blue Yonder",
+  "DevOps",
+  "Security",
+  "Integration",
+  "Payroll",
+  "Financials",
+  "Fusion",
+  "DX",
+  "Commerce Cloud",
+  "Service Cloud",
+  "Marketing Cloud",
+  "Data migration",
+  "E-Business Suite",
+  "Bedrock",
+  "Vertex AI",
+  "Azure AI Foundry",
+];
+
+/**
  * Lines that legitimately contain a banned term: the rules that document the
  * ban, and this file. Matched as substrings of the line.
  */
@@ -344,6 +403,34 @@ for (const file of files) {
           label: `abstraction: ${abstraction}`,
           text: line.trim().slice(0, 100),
         });
+      }
+    }
+
+    // Blueprint v2 scarcity licence position, scoped to the files this
+    // exercise touches — see SCARCITY_SCOPE_DIRS above.
+    if (inScarcityScope(file)) {
+      for (const re of SCARCITY_BANNED_TERMS) {
+        if (re.test(line)) {
+          remaining.push({
+            file,
+            line: i + 1,
+            label: `scarcity licence: ${re.source} — rank, do not republish`,
+            text: line.trim().slice(0, 100),
+          });
+        }
+      }
+      if (line.includes("%")) {
+        const hit = SCARCITY_ROLE_TOKENS.find((t) =>
+          new RegExp(`\\b${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i").test(line),
+        );
+        if (hit) {
+          remaining.push({
+            file,
+            line: i + 1,
+            label: `scarcity licence: percentage beside "${hit}" — ordinal band only, no figure`,
+            text: line.trim().slice(0, 100),
+          });
+        }
       }
     }
   });

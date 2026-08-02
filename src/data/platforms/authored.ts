@@ -87,6 +87,14 @@ export interface AuthoredModule {
    * error in our own IA.
    */
   variants?: string[];
+  /**
+   * v2 scarcity read, ranked not republished — same rule as
+   * `BlueprintScarcityRole` in `src/data/blueprint/index.ts` and the same
+   * evidence file. Deliberately absent (not `null`) on every module this
+   * exercise has no evidence for; only fill a module in with a stated ruling.
+   */
+  scarcityBand?: "scarcest" | "moderate" | "least-scarce" | null;
+  scarcityNote?: string;
 }
 
 export interface AuthoredPlatform {
@@ -337,6 +345,9 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
           "Oracle Workflow Developer",
           "EBS to Fusion Migration Lead",
         ],
+        scarcityBand: "moderate",
+        scarcityNote:
+          "pool size does not indicate scarcity here; treat as a delivery-capacity signal, not a headcount one.",
       },
       {
         slug: "oracle-enterprise-performance-management",

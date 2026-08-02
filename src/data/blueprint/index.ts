@@ -54,6 +54,22 @@ export interface BlueprintUnderScoped {
   consequence: string;
 }
 
+/**
+ * A platform-market scarcity read for one named role or skill within an
+ * archetype, ranked against that platform's own baseline pool rather than as
+ * an absolute figure — see docs/design/context-programme-staffing-blueprint-v2.md.
+ * `scarcityNote` never carries a percentage, a pool size or a market-research
+ * attribution: the licence position is rank, not republish. `null` and
+ * absence are different states — a role can be explicitly rated null, but a
+ * platform with no scarcity work done on it (Workday, Blue Yonder) carries no
+ * entry at all, not a null one.
+ */
+export interface BlueprintScarcityRole {
+  role: string;
+  scarcityBand: "scarcest" | "moderate" | "least-scarce" | null;
+  scarcityNote?: string;
+}
+
 export interface BlueprintArchetype {
   slug: string;
   /** The programme type as a buyer would name it. */
@@ -69,6 +85,8 @@ export interface BlueprintArchetype {
   screenHardest: { roles: string[]; evidence: string };
   /** Band 7, the platform desks that staff it. Slugs under /platforms. */
   desks: Array<{ slug: string; name: string }>;
+  /** v2: scarcity per role in-region — see BlueprintScarcityRole. */
+  scarcity?: BlueprintScarcityRole[];
   seo: { title: string; description: string };
 }
 
@@ -210,6 +228,11 @@ const sapS4hana: BlueprintArchetype = {
     { slug: "sap", name: taxonomyLabels("sap").label },
     { slug: "informatica", name: taxonomyLabels("informatica").label },
   ],
+  scarcity: [
+    { role: "Security", scarcityBand: "scarcest" },
+    { role: "Integration", scarcityBand: "moderate" },
+    { role: "Data migration", scarcityBand: "least-scarce" },
+  ],
   seo: {
     title: "SAP S/4HANA Programme Staffing Blueprint | Yallo Talent",
     description:
@@ -348,6 +371,11 @@ const oracleFusion: BlueprintArchetype = {
     evidence: "Ask for the parallel run they got wrong and what they changed.",
   },
   desks: [{ slug: "oracle", name: taxonomyLabels("oracle").label }],
+  scarcity: [
+    { role: "Payroll", scarcityBand: "scarcest" },
+    { role: "Fusion (OFA + HCM)", scarcityBand: "moderate" },
+    { role: "Financials", scarcityBand: "least-scarce" },
+  ],
   seo: {
     title: "Oracle Fusion Programme Staffing Blueprint | Yallo Talent",
     description:
@@ -476,6 +504,18 @@ const salesforceMultiCloud: BlueprintArchetype = {
     evidence: "Evidence of a live release train, not a sandbox.",
   },
   desks: [{ slug: "salesforce", name: taxonomyLabels("salesforce").label }],
+  scarcity: [
+    { role: "DX", scarcityBand: "scarcest" },
+    { role: "Commerce Cloud", scarcityBand: "scarcest" },
+    { role: "Data migration", scarcityBand: "moderate" },
+    { role: "Service Cloud", scarcityBand: "moderate" },
+    {
+      role: "Marketing Cloud",
+      scarcityBand: "least-scarce",
+      scarcityNote:
+        "directional only, magnitude unverified, do not cite a figure",
+    },
+  ],
   seo: {
     title: "Salesforce Multi-Cloud Programme Staffing Blueprint | Yallo Talent",
     description:
@@ -506,10 +546,11 @@ export const BLUEPRINT_BASE = "/intelligence/programme-staffing-blueprint";
  * page content, and a "what is missing" band would be a coming-soon state.
  *
  *  1. Time-to-hire per role, from Vincere history, with the definition used.
- *  2. Scarcity per role in-region. LICENCE CHECK OUTSTANDING — LinkedIn Talent
- *     Insights terms typically restrict external redistribution of derived
- *     data. Verify before any scarcity figure is published. Vincere data is
- *     Yallo's own and is the fallback.
+ *  2. Scarcity per role in-region — DONE, see `scarcity` on each archetype
+ *     above. Ranked, not republished: the field carries an ordinal band and
+ *     an optional note, never a figure, a pool size or a market-research
+ *     attribution. See docs/design/context-programme-staffing-blueprint-v2.md
+ *     for the evidence and the licence position that shaped this rule.
  *  3. Team size and effort per phase.
  *  4. Rate bands, which stay off the public site and inside the requested
  *     planning pack only.
