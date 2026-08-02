@@ -24,7 +24,6 @@ import {
   existsSync, rmSync,
   mkdirSync,
   readdirSync,
-  writeFileSync,
 } from "node:fs";
 import { basename, extname, join } from "node:path";
 import sharp from "sharp";
