@@ -11,6 +11,33 @@
         ],
         "createdAt": "2026-08-01T13:59:33.514Z",
         "reason": "User confirmed: the 62x5px hero score bar animates width so the quarter-round corner (canon 5 structural signature) stays crisp; scaleX distorts it and there is no measurable perf gain at that size"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/components/blocks/editorial/EditorialLayout.module.css"
+        ],
+        "createdAt": "2026-08-02T06:22:45.617Z",
+        "reason": "Canon 5 makes the hero grid load-bearing, not decorative: it is one of the named structural signatures of the ambient hero, drawn at 3 percent alpha (--wa03) behind a radial mask so it reads as texture under the H1 and fades before the copy. Sumeet ratified keeping it, 2 Aug 2026. Scoped to the three .heroGrid declarations that draw it; the rule stays live everywhere else."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/components/blocks/l2/L2PageShell.module.css"
+        ],
+        "createdAt": "2026-08-02T06:22:45.659Z",
+        "reason": "Canon 5 makes the hero grid load-bearing, not decorative: it is one of the named structural signatures of the ambient hero, drawn at 3 percent alpha (--wa03) behind a radial mask so it reads as texture under the H1 and fades before the copy. Sumeet ratified keeping it, 2 Aug 2026. Scoped to the three .heroGrid declarations that draw it; the rule stays live everywhere else."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/components/blocks/l1/L1HubShell.module.css"
+        ],
+        "createdAt": "2026-08-02T06:22:45.707Z",
+        "reason": "Canon 5 makes the hero grid load-bearing, not decorative: it is one of the named structural signatures of the ambient hero, drawn at 3 percent alpha (--wa03) behind a radial mask so it reads as texture under the H1 and fades before the copy. Sumeet ratified keeping it, 2 Aug 2026. Scoped to the three .heroGrid declarations that draw it; the rule stays live everywhere else."
       }
     ]
   }
