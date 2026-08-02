@@ -24,7 +24,6 @@ import {
   existsSync, rmSync,
   mkdirSync,
   readdirSync,
-  writeFileSync,
 } from "node:fs";
 import { basename, extname, join } from "node:path";
 import sharp from "sharp";
@@ -80,9 +79,6 @@ const INTEGRATORS = {
 
 const missing = [];
 let written = 0;
-/** slug -> intrinsic size of the emitted silhouette, for the rail's legibility
- *  floor. Written to public/logos/manifest.json. */
-const manifest = {};
 /** Marks that failed the legibility gate and ship as their name instead. */
 const nameOnly = [];
 
@@ -361,46 +357,23 @@ async function convert(slug, file, outDir) {
     .png({ compressionLevel: 9 })
     .toFile(out);
 
-  // OPTICAL SCALE — the fix for "Wipro is tiny next to Infosys".
+  // NO DISPLAY HEIGHT IS WRITTEN HERE ANY MORE.
   //
-  // Every mark is capped to one cap HEIGHT, which is the wrong invariant for a
-  // rail. Height-capping gives a wide wordmark like TCS several times the ink
-  // area of a square mark like Wipro at the same nominal size, so the rail reads
-  // as a row of mismatched weights rather than a set.
+  // This used to solve one `dh` per mark against a hand-chosen TARGET_AREA of
+  // 1150px², clamped to 20-46px, and write it to the manifest. Two things were
+  // wrong with that and the manifest showed both:
   //
-  // What the eye actually compares is INK AREA. So each mark reports the area
-  // its ink occupies, and the rail scales it toward a common area. sqrt because
-  // area grows with the square of the linear scale. Clamped hard: normalising
-  // area exactly would blow a small square mark up past its neighbours' cap
-  // height and shrink a long wordmark to nothing, so this only pulls the
-  // outliers in rather than making every mark identical.
-  let inkPixels = 0;
-  for (const a of alpha) if (a > 96) inkPixels++;
-  const inkFrac = inkPixels / alpha.length;
-  // Solve for the DISPLAY HEIGHT that gives every mark the same ink area.
+  //   - NINE of fifteen marks sat pinned at the 46px ceiling, so for those nine
+  //     the clamp was the operative rule and the normalisation never ran.
+  //     Rendered ink area still spanned 6.07x across the rail.
+  //   - A display height is a property of a SURFACE, and there are three at
+  //     three box sizes. One number could not serve them, so the case cards and
+  //     the platform axis ignored it and used a flat max-height instead.
   //
-  // Ink fraction alone was not enough, and the rail showed why: Richemont is
-  // 14.45:1, so at a shared 40px cap it ran 578px wide and swamped the row,
-  // while square marks like Wipro and Chalhoub sat at 40px and read as tiny.
-  // Aspect ratio, not ink density, was doing most of the damage.
-  //
-  // At display height H a mark of aspect A covers H*H*A of box, of which inkFrac
-  // is ink. Setting H*H*A*inkFrac = TARGET_AREA and solving gives the height at
-  // which every mark carries the same weight. Clamped 20-46px: past that a very
-  // wide mark shrinks to a hairline and a very dense one overruns the band.
-  const aspect = info.width / info.height;
-  const TARGET_AREA = 1150; // px^2 of ink, tuned against the shipped pack
-  const ideal = Math.sqrt(TARGET_AREA / Math.max(aspect * inkFrac, 0.01));
-  const displayH = Math.max(20, Math.min(46, ideal));
-
-  manifest[slug] = {
-    w: info.width,
-    h: info.height,
-    bg: Math.round(bg),
-    ink: +inkFrac.toFixed(4),
-    /* Display height in CSS px that equalises ink area across the pack. */
-    dh: +displayH.toFixed(1),
-  };
+  // Measurement now belongs to scripts/measure-marks.mjs, which reads what is
+  // actually in public/logos — including the seven platform vectors this script
+  // never touches — and derivation belongs to src/lib/mark-scale.ts. This
+  // script generates assets. Run `pnpm logos` to do both in order.
   console.log(
     `  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB (alpha silhouette)`,
   );
@@ -417,11 +390,9 @@ for (const [slug, file] of Object.entries(INTEGRATORS)) {
   await convert(slug, file, OUT_INTEGRATORS);
 }
 
-writeFileSync(
-  join(process.cwd(), "public", "logos", "manifest.json"),
-  `${JSON.stringify(manifest, null, 2)}\n`,
+console.log(
+  `\n${written} logo files written. Run scripts/measure-marks.mjs to refresh the manifest.`,
 );
-console.log(`\n${written} logo files written, manifest.json updated.`);
 if (nameOnly.length) {
   console.log(
     `\n${nameOnly.length} mark(s) ship as their NAME — the source will not key to one clean ink:`,

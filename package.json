@@ -21,7 +21,11 @@
     "prepare": "husky || true",
     "check:taxonomy": "node scripts/check-taxonomy.mjs",
     "check:yallo-case": "node scripts/check-yallo-case.mjs",
-    "check:estate": "node scripts/check-estate-interaction.mjs"
+    "check:estate": "node scripts/check-estate-interaction.mjs",
+    "check:marks": "node scripts/check-marks.mjs",
+    "marks:measure": "node scripts/measure-marks.mjs",
+    "logos": "node scripts/build-logos.mjs && node scripts/measure-marks.mjs",
+    "check:crawlers": "node scripts/check-crawler-access.mjs"
   },
   "engines": {
     "node": "22.x",

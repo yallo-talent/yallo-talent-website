@@ -1,107 +1,252 @@
 {
-  "alshaya": {
-    "w": 261,
-    "h": 224,
-    "bg": 253,
-    "ink": 0.1333,
-    "dh": 46
-  },
-  "landmark-group": {
-    "w": 914,
-    "h": 224,
-    "bg": 245,
-    "ink": 0.1281,
-    "dh": 46
-  },
-  "majid-al-futtaim": {
-    "w": 1256,
-    "h": 224,
-    "bg": 252,
-    "ink": 0.2713,
-    "dh": 27.5
-  },
-  "al-tayer": {
-    "w": 412,
-    "h": 224,
-    "bg": 251,
-    "ink": 0.1489,
-    "dh": 46
-  },
   "al-futtaim": {
+    "family": "clients",
     "w": 262,
     "h": 224,
-    "bg": 249,
     "ink": 0.2589,
-    "dh": 46
-  },
-  "chalhoub-group": {
-    "w": 193,
-    "h": 224,
-    "bg": 249,
-    "ink": 0.1627,
-    "dh": 46
+    "bw": 257,
+    "bh": 220,
+    "pad": 0.0366,
+    "plate": false
   },
   "al-othaim-markets": {
+    "family": "clients",
     "w": 236,
     "h": 224,
-    "bg": 242,
     "ink": 0.2031,
-    "dh": 46
+    "bw": 127,
+    "bh": 198,
+    "pad": 0.5243,
+    "plate": false
   },
-  "richemont": {
-    "w": 1344,
-    "h": 93,
-    "bg": 40,
-    "ink": 0.1904,
-    "dh": 20.4
-  },
-  "marks-and-spencer": {
-    "w": 536,
+  "al-tayer": {
+    "family": "clients",
+    "w": 412,
     "h": 224,
-    "bg": 27,
-    "ink": 0.1438,
-    "dh": 46
+    "ink": 0.1494,
+    "bw": 405,
+    "bh": 216,
+    "pad": 0.0521,
+    "plate": false
   },
-  "panda-retail": {
-    "w": 302,
+  "alshaya": {
+    "family": "clients",
+    "w": 261,
     "h": 224,
-    "bg": 252,
-    "ink": 0.2318,
-    "dh": 46
+    "ink": 0.1334,
+    "bw": 261,
+    "bh": 224,
+    "pad": 0,
+    "plate": false
+  },
+  "chalhoub-group": {
+    "family": "clients",
+    "w": 193,
+    "h": 224,
+    "ink": 0.1644,
+    "bw": 191,
+    "bh": 217,
+    "pad": 0.0413,
+    "plate": false
   },
   "informatica": {
+    "family": "clients",
     "w": 912,
     "h": 224,
-    "bg": 253,
     "ink": 0.1803,
-    "dh": 39.6
+    "bw": 908,
+    "bh": 217,
+    "pad": 0.0355,
+    "plate": false
   },
-  "tcs": {
-    "w": 808,
+  "landmark-group": {
+    "family": "clients",
+    "w": 914,
     "h": 224,
-    "bg": 231,
-    "ink": 0.2722,
-    "dh": 34.2
+    "ink": 0.1294,
+    "bw": 896,
+    "bh": 208,
+    "pad": 0.0897,
+    "plate": false
   },
-  "wipro": {
-    "w": 227,
+  "majid-al-futtaim": {
+    "family": "clients",
+    "w": 1256,
     "h": 224,
-    "bg": 252,
-    "ink": 0.0886,
-    "dh": 46
+    "ink": 0.2713,
+    "bw": 1254,
+    "bh": 224,
+    "pad": 0.0016,
+    "plate": false
+  },
+  "marks-and-spencer": {
+    "family": "clients",
+    "w": 536,
+    "h": 224,
+    "ink": 0.1438,
+    "bw": 534,
+    "bh": 209,
+    "pad": 0.0704,
+    "plate": false
+  },
+  "panda-retail": {
+    "family": "clients",
+    "w": 302,
+    "h": 224,
+    "ink": 0.2318,
+    "bw": 302,
+    "bh": 224,
+    "pad": 0,
+    "plate": false
+  },
+  "richemont": {
+    "family": "clients",
+    "w": 1344,
+    "h": 93,
+    "ink": 0.1904,
+    "bw": 1339,
+    "bh": 77,
+    "pad": 0.1751,
+    "plate": false
+  },
+  "capgemini": {
+    "family": "integrators",
+    "w": 502,
+    "h": 112,
+    "ink": 0.2929,
+    "bw": 502,
+    "bh": 112,
+    "pad": 0,
+    "plate": false
   },
   "infosys": {
+    "family": "integrators",
     "w": 545,
     "h": 224,
-    "bg": 8,
     "ink": 0.3387,
-    "dh": 37.4
+    "bw": 545,
+    "bh": 223,
+    "pad": 0.0045,
+    "plate": false
   },
   "oracle-consulting": {
+    "family": "integrators",
     "w": 1344,
     "h": 174,
-    "bg": 247,
-    "ink": 0.3678,
-    "dh": 20.1
+    "ink": 0.3683,
+    "bw": 1340,
+    "bh": 172,
+    "pad": 0.0144,
+    "plate": false
+  },
+  "tcs": {
+    "family": "integrators",
+    "w": 808,
+    "h": 224,
+    "ink": 0.2722,
+    "bw": 804,
+    "bh": 218,
+    "pad": 0.0316,
+    "plate": false
+  },
+  "wipro": {
+    "family": "integrators",
+    "w": 227,
+    "h": 224,
+    "ink": 0.0892,
+    "bw": 168,
+    "bh": 132,
+    "pad": 0.5639,
+    "plate": false
+  },
+  "aws": {
+    "family": "platforms",
+    "w": 855,
+    "h": 512,
+    "ink": 0.315,
+    "bw": 845,
+    "bh": 506,
+    "pad": 0.0233,
+    "plate": false
+  },
+  "blue-yonder": {
+    "family": "platforms",
+    "w": 448,
+    "h": 64,
+    "ink": 1,
+    "bw": 448,
+    "bh": 64,
+    "pad": 0,
+    "plate": true
+  },
+  "googlecloud": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.4411,
+    "bw": 512,
+    "bh": 411,
+    "pad": 0.1973,
+    "plate": false
+  },
+  "microsoft": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.6602,
+    "bw": 448,
+    "bh": 448,
+    "pad": 0.2344,
+    "plate": false
+  },
+  "oracle": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.2661,
+    "bw": 506,
+    "bh": 320,
+    "pad": 0.3823,
+    "plate": false
+  },
+  "salesforce": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.4984,
+    "bw": 512,
+    "bh": 358,
+    "pad": 0.3008,
+    "plate": false
+  },
+  "sap": {
+    "family": "platforms",
+    "w": 1035,
+    "h": 512,
+    "ink": 0.7531,
+    "bw": 1035,
+    "bh": 512,
+    "pad": 0,
+    "plate": false
+  },
+  "servicenow": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.4067,
+    "bw": 456,
+    "bh": 408,
+    "pad": 0.2903,
+    "plate": false
+  },
+  "workday": {
+    "family": "platforms",
+    "w": 512,
+    "h": 512,
+    "ink": 0.2081,
+    "bw": 354,
+    "bh": 400,
+    "pad": 0.4598,
+    "plate": false
   }
 }

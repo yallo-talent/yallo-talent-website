@@ -1,0 +1,35 @@
+# The published order of the case studies. One editorial decision, one file.
+#
+# The homepage rail takes the first HOMEPAGE_CASE_STUDY_COUNT of these and
+# /case-studies lists all of them in this order. Reranking is moving a line.
+#
+# This ships carrying the order the `featured` integers already encoded, so the
+# merge changes no positions. Sumeet reranks after.
+#
+# Two rules, both enforced in src/lib/case-study-order.ts:
+#   - A slug named here that resolves to no case study FAILS THE BUILD. Delete a
+#     study and delete its line in the same commit. An order file that skips
+#     silently keeps working while describing a site that no longer exists.
+#   - A published study not named here still publishes; it appends behind these
+#     in date order, newest first. Adding a study never requires editing this.
+#
+# Round 7 note for the evidence audit at §4.1 and §7: the client column below is
+# a comment, not data, and it is the duplication the audit exists to resolve.
+# Four Majid Al Futtaim entries, four Alshaya, two Chalhoub, and one reading
+# "Undisclosed enterprise" under a heading promising named clients.
+
+order:
+  - rapidly-building-a-high-performing-azure-data-engineering-team # Alshaya Group
+  - oracle-hyperion-financial-management-hfm-implementation # Majid Al Futtaim
+  - enabling-sap-s-4hana-transformation-for-al-tayer-group # Al Tayer Group
+  - enabling-supply-chain-transformation-through-targeted-delivery-expertise # Chalhoub Group
+  - enabling-azure-data-platform-delivery-at-enterprise-scale # Alshaya Group
+  - rapid-recruitment-for-critical-supply-chain-roles # Chalhoub Group
+  - building-a-scalable-arabic-speaking-offshore-it-hub-for-al-othaim-markets # Al Othaim Markets
+  - optimising-enterprise-it-delivery-through-a-unified-partner-model # Majid Al Futtaim
+  - defining-a-target-operating-model-for-sephora-middle-easts-digital-carve-out # Sephora Middle East
+  - engineering-a-custom-planning-platform # Alshaya Group
+  - driving-consistent-it-delivery-across-a-complex-retail-technology-landscape # Alshaya Group
+  - reducing-time-and-materials-cost-for-majid-al-futtaim # Majid Al Futtaim
+  - unlocking-cost-efficiency-across-multi-platform-enterprise-it-landscape # Majid Al Futtaim
+  - enabling-accurate-asset-governance-through-oracle-fusion-fixed-assets # Undisclosed enterprise

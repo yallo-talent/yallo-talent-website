@@ -1,8 +1,7 @@
 import { logoRail } from "@/data/home/hero";
 import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
-import logoManifest from "../../../../public/logos/manifest.json";
+import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
-import { LogoImage } from "./LogoImage";
 import { RailViewport } from "./RailViewport";
 
 /**
@@ -51,19 +50,6 @@ export function LogoRail() {
   );
 }
 
-/** The build's per-mark display height, solved so ink area is even across the
-    pack. 34px for anything not in the manifest. */
-function markHeight(logo?: string | null): number {
-  if (!logo) return 34;
-  const slug =
-    logo
-      .split("/")
-      .pop()
-      ?.replace(/\.[a-z]+$/i, "") ?? "";
-  const entry = (logoManifest as Record<string, { dh?: number }>)[slug];
-  return entry?.dh ?? 34;
-}
-
 function LogoItems({
   clients,
   ariaHidden,
@@ -71,6 +57,13 @@ function LogoItems({
   clients: Client[];
   ariaHidden?: boolean;
 }) {
+  /* The whole rail's mark set, so every mark is normalised against the same
+     median. Ink-area normalisation is a property of the set: a mark has no
+     correct size until you know what it sits beside. */
+  const set = clients
+    .map((c) => c.logo)
+    .filter((logo): logo is string => Boolean(logo) && hasLogoAsset(logo));
+
   return (
     <>
       {clients.map((c) => (
@@ -78,47 +71,23 @@ function LogoItems({
           key={`${c.name}${ariaHidden ? "-dup" : ""}`}
           className={`${styles.logo}${ariaHidden ? ` ${styles.logoDup}` : ""}`}
           aria-hidden={ariaHidden || undefined}
-          /* Optical scale from the build manifest. Height-capping alone gives a
-             wide wordmark several times the ink area of a square mark, which is
-             why Wipro read as tiny beside Infosys and TCS. The build measures
-             each mark's ink fraction and reports the factor that pulls it toward
-             a common area; this applies it. Clamped in the build, so no mark can
-             overrun its cell. */
-          style={
-            {
-              "--markH": `${markHeight(c.logo)}px`,
-            } as React.CSSProperties
-          }
         >
-          {hasLogoAsset(c.logo) && c.logo ? (
-            /* The FIRST track is eager and the duplicate is not, which is the
-               only combination that satisfies both gates. Lazy on the first
-               track meant marks on a horizontally-translated marquee never
-               entered the viewport and so never loaded at all. Eager on BOTH
-               put 36 images in front of the `load` event and timed out CI's
-               reduced-motion navigation at 30s. The duplicate is aria-hidden
-               decoration sharing the same URLs, so it paints from cache without
-               ever blocking load. */
-            /* 300x68 — ORDER 6 round 2's enlarged cell. The box the mark actually occupies — not 120x26, which
-               is the geometry the rail had BEFORE it was enlarged. These props
-               are not decoration: next/image builds its srcset from the
-               declared width, so a stale 120 made the optimiser serve a
-               variant sized for a box 42% narrower than the real one, and
-               every mark resampled up to fill 208px. The source PNGs were
-               never the problem — build-logos.mjs emits them 112px tall and
-               they DOWNSCALE 0.66x — the request was.
-               Width is the cell's inner max; .logo img keeps width:auto, so
-               the intrinsic aspect still governs what is painted. */
-            <LogoImage
-              src={c.logo}
-              alt={ariaHidden ? "" : c.name}
-              width={300}
-              height={68}
-              eager={!ariaHidden}
-            />
-          ) : (
-            <span className={styles.wordmark}>{c.name}</span>
-          )}
+          {/* The FIRST track is eager and the duplicate is not, which is the
+              only combination that satisfies both gates. Lazy on the first
+              track meant marks on a horizontally-translated marquee never
+              entered the viewport and so never loaded at all. Eager on BOTH
+              put 36 images in front of the `load` event and timed out CI's
+              reduced-motion navigation at 30s. The duplicate is aria-hidden
+              decoration sharing the same URLs, so it paints from cache without
+              ever blocking load. */}
+          <ClientMark
+            src={hasLogoAsset(c.logo) ? c.logo : undefined}
+            name={c.name}
+            surface="rail"
+            set={set}
+            decorative={ariaHidden}
+            eager={!ariaHidden}
+          />
         </li>
       ))}
     </>

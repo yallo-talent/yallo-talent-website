@@ -37,6 +37,13 @@ const GATES = [
   "check-reflow",
   "check-rendered-type",
   "check-yallo-case",
+  /* Round 7. A new page template joins every enumerating guard in the commit
+     that introduces it, and a new enumerating guard joins this list the same
+     way — otherwise the coverage report describes a smaller set of gates than
+     the repository actually runs. check-marks enumerates the pages that render
+     a mark; check-crawler-access enumerates HOSTS rather than routes, so it is
+     deliberately absent. */
+  "check-marks",
 ];
 
 /* ------------------------------------------------------- route templates -- */
