@@ -80,6 +80,12 @@ const PAGES = [
      the site, under A4's 14px sans floor, unaudited. */
   "/industries/retail/customer-experience",
   "/intelligence/programme-staffing-blueprint/sap-s4hana",
+  /* Added 2 Aug by check-gate-coverage rather than by a critique finding a
+     breach, which is the point of that gate: these two rendering units were
+     visited by no enumerating guard at all. The blueprint ARCHETYPE was listed
+     and its index was not, and they are different components. */
+  "/intelligence",
+  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
 ];
 
 // Two viewports, because one was the gate's second blind axis. Reporting CLEAN

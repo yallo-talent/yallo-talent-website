@@ -264,7 +264,7 @@ Seven desaturated hues that live exclusively in the ambient layer: radial washes
 bands, PetalPlate gradients, glow at section boundaries. Tonally sibling to the
 saasinator family, tuned per theme. **Never on text, controls, borders, or as a fill
 behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha` —
-8% maximum on light, 14% on dark.
+20% on light, 30% on dark.
 
 - **Plum** `#8e4a72` / dark `#b45c8e` · **Violet** `#5f5694` / `#7a6fb8` ·
   **Teal** `#3d7d7d` / `#4e9a9a` · **Harbour** `#3e6e85` / `#5289a5` ·
@@ -276,19 +276,35 @@ behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha`
   renamed rather than aliased, so no `--amb-moss-*` or `--amb-umber-*` exists. The
   measured separation cost is recorded in `docs/design/identity-palette-proposal.md`.
 
-  **Two statements in this section are known to be out of date and are NOT corrected
-  here, because resolving either changes a ratified rule rather than recording a
-  change already made.** The paragraph above gives the ambient alpha as 8% and 14%;
-  R11 raised those to 20% and 30%, and `--amb-alpha` in `globals.css` is the live
-  value. The Rhythm Rule below says per-taxonomy assignment is banned; it predates
-  R4, which introduced exactly that as the `--id-*` identity layer. Both need
-  Sumeet, not an edit.
+  *Corrected 2 August 2026, round 3 ruling §2.6.* Two statements here contradicted
+  ratified rules and were left standing on the reasoning that changing them would
+  change a rule. They did the opposite: this file **records** ratified decisions, it
+  does not propose them, so where it disagreed with a ratified rule it was simply
+  wrong. The alpha figures above now read 20% and 30% per R11, matching
+  `--amb-alpha` in `globals.css`. The Rhythm Rule below now records R4's identity
+  layer. Read anything in this file as a record of what was decided, and if it
+  disagrees with `globals.css` or the canon, this file is the one that is stale.
+
+  The separation between these seven hues, measured on the painted wash rather
+  than on the token, is below the approved floor for six of the twenty-one pairs
+  and is an open ruling for Sumeet. Run `node scripts/check-hue-separation.mjs`;
+  the evidence is in `docs/status/shots/hues-v8/`.
 
 **The Rhythm Rule.** A section takes its ambient hue from its *position* in the page
-(`.amb-1`…`.amb-6`), never from what its content is about. Per-taxonomy assignment is
-banned — it is the retired per-sector hue system returning. Two schemes exist behind
+(`.amb-1`…`.amb-6`), never from what its content is about. Two schemes exist behind
 `data-ambient` on `<html>` ("spectrum", the default, and "gold", monochrome); the flip
 is one constant in `src/config/theme.ts`.
+
+**Per-taxonomy assignment, and why it is now permitted (R4).** A page declares
+`data-identity` once at its root and every `.amb-N` inside it resolves to that one
+hue, so the section rhythm comes from alpha rather than from a different colour. Six
+positions still read as six steps; they now read as six steps of the same hue. This
+is not the retired per-sector system returning, and the distinction is the whole
+point of the rule: that one pushed its hue into borders, labels and card washes, so
+a page's **accent** changed with the branch. Here the hue never leaves the ambient
+layer and gold stays the only interactive colour. A page with no `data-identity`
+keeps the positional rhythm, so the homepage and the editorial surfaces are
+unaffected.
 
 ### Neutral
 

@@ -155,8 +155,8 @@
   --id-blue-yonder-d: var(--amb-harbour-d);
   --id-workday-l: var(--amb-plum-l);
   --id-workday-d: var(--amb-plum-d);
-  /* 7th platform, 7th hue. Mulberry is Informatica's and nothing else's this
-     round: no discipline and no sector takes it. */
+  /* 7th platform, 7th hue. Mulberry is Informatica's among the PLATFORMS.
+     AI Talent takes it too, one taxonomy over — see --id-ai-talent below. */
   --id-informatica-l: var(--amb-mulberry-l);
   --id-informatica-d: var(--amb-mulberry-d);
   --id-data-analytics-l: var(--amb-teal-l);
@@ -171,6 +171,16 @@
   --id-devops-platform-engineering-d: var(--amb-claret-d);
   --id-testing-quality-engineering-l: var(--amb-plum-l);
   --id-testing-quality-engineering-d: var(--amb-plum-d);
+  /* AI Talent, the seventh discipline (canon §3 amendment, 1 Aug 2026). Its URL
+     is /ai-talent rather than /capabilities/*, which is why it was missed when
+     the other six were wired, so the discipline carrying the paid marketing wore
+     whichever hue its section index happened to give it.
+     Mulberry, because it is the only hue no other DISCIPLINE holds: the other
+     six take teal, indigo, violet, harbour, claret and plum. It is Informatica's
+     among the platforms, and reuse across taxonomies is the rule this palette
+     runs on, since a visitor is inside one family at a time. */
+  --id-ai-talent-l: var(--amb-mulberry-l);
+  --id-ai-talent-d: var(--amb-mulberry-d);
   --id-retail-l: var(--amb-plum-l);
   --id-retail-d: var(--amb-plum-d);
   --id-finance-l: var(--amb-indigo-l);
@@ -198,7 +208,7 @@
   --r: 56px; /* panels, cards, the hero instrument */
   --r-md: 18px; /* buttons, small cards */
   --r-sm: 12px; /* chips, inner tiles, hero pillars */
-  --r-xs: 8px; /* logo tiles, flags, entity marks */
+  --r-xs: 8px; /* logo tiles, flags, entity marks, product-family chips */
   --r-micro: 3px; /* progress bars and other hairline-scale fills */
   /* Fully rounded. Status pills only — the "Desk in build" marker in the mega
      panel and on the platform L1's planned families. Added because the shape was
@@ -207,18 +217,13 @@
      keep the quarter-round petal signature. */
   --r-pill: 999px;
 
-  /* Product-family chips, and only those. Ratified in
-     docs/design/context-platform-parity-round.md §2: "uniform soft radius,
-     6px, no petal at chip scale". The petal is the structural signature and it
-     belongs on cards and bands; repeated across twenty-five chips in one block
-     it stops reading as a signature.
-
-     A token rather than a literal, following the --r-pill precedent directly
-     above: a shape outside the scale becomes reviewable the moment it has a
-     name. Worth Sumeet knowing that this lands 2px from --r-xs, so if he would
-     rather not grow the scale the two can collapse onto 8px with no visible
-     change at chip size — flagged rather than decided. */
-  --r-chip: 6px;
+  /* --r-chip WAS HERE, at 6px, and was collapsed onto --r-xs on 2 August 2026.
+     Round 3 ruling: "two steps 2px apart is not a scale, it is noise." The
+     ratified decision the token carried is unchanged and still holds — uniform
+     soft radius on product-family chips, no petal at chip scale, per
+     docs/design/context-platform-parity-round.md §2. Only the step is gone.
+     The chip is 34px tall, so 8px is nowhere near pilling it; the fallback of
+     moving --r-xs down to 6px was not needed. */
 
   /* ---- weight, and why there are only three ----------------------------
      Two independent critique passes converged on the same defect: 92 of 181
@@ -1099,6 +1104,12 @@ button {
 :root[data-theme="dark"] [data-identity="telco"] {
   --id: var(--id-telco-d);
 }
+:root[data-theme] [data-identity="ai-talent"] {
+  --id: var(--id-ai-talent-l);
+}
+:root[data-theme="dark"] [data-identity="ai-talent"] {
+  --id: var(--id-ai-talent-d);
+}
 
 .amb-1 {
   --amb: var(--amb-1);
@@ -1193,6 +1204,10 @@ button {
 :root[data-theme] [data-identity="telco"] .band-dark,
 :root[data-theme] [data-identity="telco"].band-dark {
   --amb: var(--id-telco-d);
+}
+:root[data-theme] [data-identity="ai-talent"] .band-dark,
+:root[data-theme] [data-identity="ai-talent"].band-dark {
+  --amb: var(--id-ai-talent-d);
 }
 
 .amb-2 {

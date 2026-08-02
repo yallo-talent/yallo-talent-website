@@ -27,6 +27,7 @@
  *
  * Usage: node scripts/check-interaction.mjs [baseUrl]
  */
+
 import { chromium } from "@playwright/test";
 
 const BASE = process.argv[2] ?? "http://localhost:3100";
@@ -44,6 +45,31 @@ const MAX_STOPS_TO_CTA = 12;
 /** A phrase this long, repeated this often, is a tell rather than a motif. */
 const PHRASE_WORDS = 4;
 const MAX_REPEATS = 2;
+
+/* ── The styled-enough floor, relative rather than absolute ────────────────
+   It was a flat `rules < 600`, calibrated on the heaviest template, and it
+   failed /platforms/sap/sap-datasphere at 451 rules. Nothing was wrong with that
+   page: it is simply lighter than /platforms/sap, which delivers 743. A gate
+   that fires on a page's weight rather than on its state is a gate defect, and
+   this one blocked a green run.
+
+   A STORED per-route baseline was the obvious fix and it is wrong, which only
+   showed up on measuring it: the same datasphere page delivers 451 rules under
+   `next dev` and 842 under `next start`, because the two chunk CSS differently.
+   A figure recorded in one mode fails the other, so the file would have to be
+   re-recorded per mode and would rot between them.
+
+   So the floor is derived inside the run instead. Every page in one run shares
+   one build, so the heaviest page is the honest yardstick and RATIO of it is the
+   floor. Self-calibrating, no stored state, correct in dev and in production.
+
+   ABSOLUTE catches the case the relative check cannot — a build where EVERY page
+   is partial, so the maximum is degraded too. 300 sits below the lightest real
+   template measured in either mode (451) and above the 153-rule partial build
+   that got through the old ">= 100 rules" check. */
+const RATIO = 0.5;
+const ABSOLUTE = 300;
+const ruleCounts = new Map();
 
 const browser = await chromium.launch();
 const failures = [];
@@ -85,9 +111,10 @@ for (const path of PAGES) {
     }
     return { rules, bg: getComputedStyle(document.body).backgroundColor };
   });
-  if (styled.rules < 600) {
+  ruleCounts.set(`${path}@${viewport.width}`, styled.rules);
+  if (styled.rules < ABSOLUTE) {
     failures.push(
-      `${path} @${viewport.width}  only ${styled.rules} CSS rules — a partial build, refusing to judge it`,
+      `${path} @${viewport.width}  only ${styled.rules} CSS rules, under the ${ABSOLUTE} smoke floor — a partial build, refusing to judge it`,
     );
     await page.close();
     continue;
@@ -332,6 +359,24 @@ for (const path of PAGES) {
 }
 
 await browser.close();
+
+/* The relative half of the styled assert, which can only run once every page in
+   the run has been counted. */
+{
+  const counts = [...ruleCounts.values()];
+  const heaviest = Math.max(...counts, 0);
+  const floor = Math.round(heaviest * RATIO);
+  const thin = [...ruleCounts.entries()].filter(([, n]) => n < floor);
+  for (const [key, n] of thin)
+    failures.push(
+      `${key}  ${n} CSS rules against ${floor}, half the heaviest page in this run (${heaviest}) — a partial build, refusing to judge it`,
+    );
+  console.log(
+    `\nCSS rule counts, ${Math.min(...counts)} to ${heaviest}, floor ${floor}:`,
+  );
+  for (const [key, n] of [...ruleCounts.entries()].sort((a, b) => a[1] - b[1]))
+    console.log(`  ${key.padEnd(44)} ${n}`);
+}
 
 if (notes.length) {
   console.log(`\n${notes.length} repetition note(s) — advisory, not failing:`);

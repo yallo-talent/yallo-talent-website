@@ -1,0 +1,136 @@
+/**
+ * TEMPORARY. Renders the hue contact sheet so it can be screenshotted on a real
+ * page, with the real .amb-wash, the real --amb-alpha and the real grounds.
+ * Deleted in the same commit that lands the screenshots — see
+ * docs/status/shots/hues-v8/.
+ */
+import sets from "./sets.json";
+
+type Pair = { a: string; b: string; l: number; d: number; min: number };
+type Set = {
+  hues: Record<string, [string, string]>;
+  pairs: Pair[];
+  presence: { n: string; l: number; d: number }[];
+  min: number;
+  binding: string;
+};
+
+const TITLES: Record<string, string> = {
+  A_current: "A · shipped today, seven hues",
+  B_seven_tight: "B · seven, re-derived, briefs held tight",
+  C_seven_loose: "C · seven, re-derived, briefs relaxed",
+  D_five: "D · five, the only set that meets the floor",
+};
+const NOTES: Record<string, string> = {
+  A_current: "Six pairs under the floor. This is what the round 3 ruling rejected.",
+  B_seven_tight:
+    "Harbour capped at the chroma that keeps it soft; claret held off orange. Best minimum reachable with the briefs as written.",
+  C_seven_loose:
+    "Same search, chroma and hue ranges widened by roughly a third. Buys 0.12. The ceiling is structural, not a tuning failure.",
+  D_five:
+    "Claret and mulberry withdrawn. Harbour costs nothing at all: the minimum is still the approved indigo/violet pair. But five hues cannot give seven platforms one each.",
+};
+
+const FLOOR = 4.65;
+
+export default function HueSheet() {
+  const entries = Object.entries(sets as Record<string, Set>);
+  return (
+    <main style={{ padding: "40px 32px 80px", background: "var(--ground)" }}>
+      <h1 style={{ fontSize: 28, marginBottom: 4 }}>
+        Identity hue separation, measured on the painted wash
+      </h1>
+      <p style={{ maxWidth: 780, color: "var(--text-2)", marginBottom: 28 }}>
+        Every band below is a real <code>.amb-wash</code> at the real{" "}
+        <code>--amb-alpha</code>, 20% on light and 30% on dark, over the real
+        ground. Numbers are CIEDE2000 between painted washes, worse theme of the
+        two. The floor is {FLOOR}, the weakest pair among the four approved hues.
+      </p>
+
+      {entries.map(([key, set]) => {
+        const names = Object.keys(set.hues);
+        const worst = set.pairs.filter((p) => p.min < FLOOR);
+        return (
+          <section key={key} style={{ marginBottom: 44 }}>
+            <h2 style={{ fontSize: 19, marginBottom: 2 }}>
+              {TITLES[key]} — minimum {set.min.toFixed(2)}, binding pair{" "}
+              {set.binding}
+              {set.min >= FLOOR ? "  ✓ meets the floor" : `  ✗ ${worst.length} pair(s) below`}
+            </h2>
+            <p style={{ color: "var(--text-2)", fontSize: 14, marginBottom: 12, maxWidth: 780 }}>
+              {NOTES[key]}
+            </p>
+
+            {/* The washes themselves, each on its own band. */}
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(${names.length}, 1fr)`, gap: 8 }}>
+              {names.map((n) => (
+                <div
+                  key={n}
+                  data-identity={`sheet-${key}-${n}`}
+                  className="amb-wash amb-1"
+                  style={{
+                    position: "relative",
+                    minHeight: 132,
+                    padding: "12px 12px 10px",
+                    border: "1px solid var(--hair)",
+                    // The one place a literal is right: this IS the candidate
+                    // under test, and it must not become a token.
+                    ["--id" as string]: `var(--sheet-${key}-${n})`,
+                  }}
+                >
+                  <div style={{ position: "relative", fontSize: 13, fontWeight: 600 }}>{n}</div>
+                  <div style={{ position: "relative", fontSize: 11, color: "var(--text-3)", fontFamily: "var(--font-mono)" }}>
+                    {set.hues[n][0]} / {set.hues[n][1]}
+                  </div>
+                  <p style={{ position: "relative", fontSize: 12, color: "var(--text-2)", marginTop: 8 }}>
+                    Body copy sits over this wash on a real band, which is the
+                    only place the hue is ever seen.
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Every pair. */}
+            <table style={{ marginTop: 12, fontSize: 12, fontFamily: "var(--font-mono)", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ textAlign: "left" }}>
+                  <th style={{ padding: "2px 14px 2px 0" }}>pair</th>
+                  <th style={{ padding: "2px 14px 2px 0" }}>light</th>
+                  <th style={{ padding: "2px 14px 2px 0" }}>dark</th>
+                  <th style={{ padding: "2px 14px 2px 0" }}>min</th>
+                </tr>
+              </thead>
+              <tbody>
+                {set.pairs.map((p) => (
+                  <tr key={`${p.a}${p.b}`} style={{ color: p.min < FLOOR ? "var(--fn-signal-text)" : "var(--text-2)" }}>
+                    <td style={{ padding: "1px 14px 1px 0" }}>{p.a}/{p.b}</td>
+                    <td style={{ padding: "1px 14px 1px 0" }}>{p.l.toFixed(2)}</td>
+                    <td style={{ padding: "1px 14px 1px 0" }}>{p.d.toFixed(2)}</td>
+                    <td style={{ padding: "1px 14px 1px 0" }}>{p.min.toFixed(2)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        );
+      })}
+
+      <style
+        // Each candidate hue as a variable the band above consumes, per theme.
+        dangerouslySetInnerHTML={{
+          __html: entries
+            .map(([key, set]) =>
+              Object.entries(set.hues)
+                .map(
+                  ([n, [l, d]]) =>
+                    `:root[data-theme] [data-identity="sheet-${key}-${n}"]{--sheet-${key}-${n}:${l}}` +
+                    `:root[data-theme="dark"] [data-identity="sheet-${key}-${n}"]{--sheet-${key}-${n}:${d}}`,
+                )
+                .join(""),
+            )
+            .join(""),
+        }}
+      />
+    </main>
+  );
+}

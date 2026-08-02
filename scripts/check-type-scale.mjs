@@ -43,9 +43,47 @@ function walk(dir, out = []) {
 }
 
 const errors = [];
-/** Same class opened twice at top level in one module. Reported, not failed. */
-const duplicateClasses = [];
+/** Same class twice in one module, sharing no property. Reported, not failed. */
+const duplicateAdditive = [];
+/** Same class twice, both setting the same property. The later wins. Fails. */
+const duplicateCollisions = [];
 const warnings = [];
+
+/**
+ * The properties two same-named top-level blocks both set, with each value.
+ * Reads from a selector line to its closing brace by brace depth, so nested
+ * at-rules and pseudo blocks inside either one are included as written.
+ */
+function collidingProps(lines, startA, startB) {
+  const body = (start) => {
+    const out = [];
+    let depth = 0;
+    let began = false;
+    for (let i = start - 1; i < lines.length; i++) {
+      out.push(lines[i]);
+      for (const ch of lines[i]) {
+        if (ch === "{") {
+          depth += 1;
+          began = true;
+        } else if (ch === "}") depth -= 1;
+      }
+      if (began && depth === 0) break;
+    }
+    return out.join("\n");
+  };
+  const declared = (text) => {
+    const map = new Map();
+    for (const m of text.matchAll(/^\s*([a-z-]+)\s*:\s*([^;]+);/gm))
+      if (!map.has(m[1])) map.set(m[1], m[2].trim());
+    return map;
+  };
+  const a = declared(body(startA));
+  const b = declared(body(startB));
+  const out = [];
+  for (const [prop, va] of a)
+    if (b.has(prop)) out.push({ prop, a: va, b: b.get(prop) });
+  return out;
+}
 
 // ── 1. The ramp itself may not declare a step below the floor ──────────────
 const tokenSrc = readFileSync(TOKENS, "utf8");
@@ -414,12 +452,24 @@ const TRANSLUCENT =
  * the authoring of either component was wrong; the collision was invisible in
  * both files.
  *
- * Reported, NOT failed. Ten pre-existing duplicates already exist across seven
- * modules and some of them are deliberate second blocks by the same component,
- * which this cannot distinguish from a genuine cross-component collision. Making
- * the build red on all ten at once would teach everyone to skip the gate, which
- * is worse than the bug. The list is printed on every run so a new one is
- * visible immediately, and the ten are logged for triage.
+ * TRIAGED 2 August 2026, and the guard now makes the distinction it could not.
+ * It used to report all twelve at one severity, on the grounds that it could not
+ * tell a deliberate second block from a real collision. It can: read both blocks
+ * and compare the PROPERTIES they set. Two blocks that share no property are
+ * additive and harmless — the later one adds `resize` to a textarea, or
+ * `pointer-events` to a close button — and no amount of reading the file makes
+ * them a bug. Two blocks that set the same property at the same specificity are
+ * a collision, and the later one silently wins.
+ *
+ * Of the twelve on this branch, eleven were additive and one was real:
+ * Home.module.css `.moduleLink` declared `display: inline-flex` and then
+ * `display: flex` eighteen lines later, so the first was dead the day it was
+ * written. Merged into one block.
+ *
+ * A collision now FAILS. An additive duplicate is reported, because it is still
+ * worth seeing — a class in two places is harder to read even when it is
+ * correct — but it does not make the build red, and a gate that goes red on
+ * things that are not wrong is a gate people learn to skip.
  *
  * A duplicate top-level class in one module is therefore reported here. State
  * and variant selectors (.a:hover, .a .b, .a.b, .a::before) are not duplicates
@@ -446,11 +496,16 @@ for (const file of walk("src").filter((f) => f.endsWith(".module.css"))) {
       if (m) {
         const name = m[1];
         if (seen.has(name)) {
-          duplicateClasses.push(
-            `${file}  .${name} declared at line ${seen.get(name)} and again at ${lineNo}`,
-          );
+          const first = seen.get(name);
+          const clash = collidingProps(lines, first.line, lineNo);
+          const where = `${file}  .${name} declared at line ${first.line} and again at ${lineNo}`;
+          if (clash.length)
+            duplicateCollisions.push(
+              `${where}\n      both set ${clash.map((c) => `${c.prop} (${c.a} then ${c.b})`).join(", ")}`,
+            );
+          else duplicateAdditive.push(where);
         } else {
-          seen.set(name, lineNo);
+          seen.set(name, { line: lineNo });
         }
       }
     }
@@ -474,11 +529,23 @@ if (strict && warnings.length) {
   process.exit(1);
 }
 
-if (duplicateClasses.length) {
+if (duplicateAdditive.length) {
   console.log(
-    `\n${duplicateClasses.length} duplicate top-level class declaration(s) — a CSS module scopes by FILE, so the later rule wins on equal specificity and the earlier component can repaint silently:`,
+    `\n${duplicateAdditive.length} additive duplicate class declaration(s) — same class, two top-level blocks, no property in common. Harmless, and still worth reading in one place:`,
   );
-  for (const d of duplicateClasses) console.log(`  ${d}`);
+  for (const d of duplicateAdditive) console.log(`  ${d}`);
+}
+
+if (duplicateCollisions.length) {
+  console.error(
+    `\n${duplicateCollisions.length} colliding duplicate class declaration(s) — a CSS module scopes by FILE, so at equal specificity the later block silently wins and the earlier one is dead:`,
+  );
+  for (const d of duplicateCollisions) console.error(`  ${d}`);
+  console.error(
+    "\nMerge the two blocks, keeping the value that ships. Do not resolve this by\n" +
+      "raising specificity: the two rules are the same component, not an override.",
+  );
+  process.exit(1);
 }
 
 console.log(

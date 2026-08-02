@@ -48,6 +48,11 @@ const PAGES = [
   "/eor",
   "/about",
   "/intelligence/programme-staffing-blueprint",
+  /* Added 2 Aug by check-gate-coverage: no enumerating guard visited either
+     unit. Case studies are the surface most likely to carry a client's own
+     capitalisation of Yallo, so the omission mattered most here. */
+  "/intelligence",
+  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
 ];
 
 const browser = await chromium.launch();

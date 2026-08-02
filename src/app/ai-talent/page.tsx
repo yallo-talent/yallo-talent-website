@@ -91,7 +91,15 @@ export default function AiTalentPage() {
   const matrix = stacksByGroup();
 
   return (
-    <>
+    /* R4: the discipline's identity hue, declared once. Until this landed, the
+       page carrying the paid marketing had no `data-identity` at all, so every
+       `.amb-N` on it fell through to the POSITIONAL rhythm and it wore whichever
+       hue its section index happened to give it — indigo in the hero, teal in the
+       invert band. Its own token existed; nothing consumed it.
+       A plain div, because the page is a fragment of sibling sections and the
+       attribute needs an element to sit on. Layout-neutral: these were already
+       block children in this order. */
+    <div data-identity="ai-talent">
       {/* 1 — Hero. */}
       <section className={`${styles.section} ${styles.g1}`}>
         <div className={styles.wrap}>
@@ -260,6 +268,6 @@ export default function AiTalentPage() {
 
       {/* 8 — The close. */}
       <L1BottomCta />
-    </>
+    </div>
   );
 }

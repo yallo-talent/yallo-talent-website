@@ -60,6 +60,11 @@ const ROUTES = [
   "/ai-talent",
   "/jobs",
   "/insights",
+  /* Added 2 Aug by check-gate-coverage: no enumerating guard visited either
+     unit. A case study is the longest single prose column on the site and the
+     blueprint index carries a card grid, so both are reflow-relevant. */
+  "/intelligence",
+  "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
 ];
 
 const browser = await chromium.launch();

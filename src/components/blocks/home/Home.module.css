@@ -1384,7 +1384,8 @@
 
    NO PETAL AT CHIP SCALE. The quarter-round is the structural signature and it
    belongs on cards and bands; at chip scale repeated twenty-five times it stops
-   reading as a signature and becomes noise. Uniform 6px instead. */
+   reading as a signature and becomes noise. Uniform --r-xs instead, 8px, which
+   absorbed the one-off 6px chip step on 2 Aug 2026. */
 .moduleIndexLink {
   display: inline-flex;
   align-items: center;
@@ -1397,7 +1398,7 @@
      not enough to read as a gradient. */
   background: linear-gradient(180deg, var(--ground-2) 0%, var(--ground) 100%);
   border: 1px solid var(--hairline);
-  border-radius: var(--r-chip);
+  border-radius: var(--r-xs);
   box-shadow:
     0 1px 2px rgb(0 0 0 / 8%),
     inset 0 1px 0 rgb(255 255 255 / 4%);
@@ -2529,14 +2530,6 @@
 /* The module title as a drill-down on a platform page. Inherits the heading's
    own size and weight — a link that changes the type is a different heading,
    not a link — and takes the accent plus an arrow to say it goes somewhere. */
-.moduleLink {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  color: inherit;
-  transition: color 0.16s ease;
-}
-
 /* Deliberately NOT a stretched full-card link, and the reason is worth keeping.
    The expertise cards took that fix because each holds exactly one destination.
    These do not: a module card can also carry a cross-link to the sector page it
@@ -2546,12 +2539,23 @@
    covered nothing. Both facts point the same way: this card is not a single
    link and should not pretend to be one.
    What it gets instead is a full-WIDTH title row, so the primary target grows
-   from roughly 340x31 to the card's width, plus a card-level hover cue. */
+   from roughly 340x31 to the card's width, plus a card-level hover cue.
+
+   ONE BLOCK, merged 2 Aug 2026. This was two `.moduleLink` blocks eighteen lines
+   apart and it was the only LIVE collision among the twelve the duplicate guard
+   reports: the first declared `display: inline-flex`, the second `display: flex`,
+   and a CSS module scopes by file, so the later silently won. The full-width row
+   above is what ships and what was measured, so `flex` is the survivor and
+   `inline-flex` was dead the day it was written. `align-items: baseline` was
+   declared identically in both. */
 .moduleLink {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: baseline;
+  gap: 8px;
+  color: inherit;
+  transition: color 0.16s ease;
 }
 
 /* Scoped with :has so it only fires on cards that actually link — the derived

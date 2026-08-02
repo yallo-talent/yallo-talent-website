@@ -17,6 +17,26 @@ interface Props {
 }
 
 /**
+ * Every URL this shell builds, derived from the L1's OWN category.
+ *
+ * This shell is shared by sector L2s and capability L2s, and that reuse is the
+ * point of it. Four places built hrefs from a literal `/industries/` instead, so
+ * on every capability L2 the breadcrumb, the back link, the sidebar's whole
+ * function list and the related-functions grid all pointed into the sector tree.
+ * The breadcrumb was found and fixed on its own; the other three were the same
+ * defect and survived, because a critique names one instance and the fix has to
+ * be the class. The RSC prefetch of the dead /industries/data-analytics is also
+ * what stalled check-yallo-case on `networkidle` — the gate could not finish the
+ * page, so a dead link presented as a broken gate.
+ *
+ * `routeExists` guards data-driven cross-links, which is why it never caught
+ * these: a template literal is not data.
+ */
+const l1Href = (sector: L1PageData) => `/${sector.category}/${sector.slug}`;
+const l2Href = (sector: L1PageData, fnSlug: string) =>
+  `${l1Href(sector)}/${fnSlug}`;
+
+/**
  * B1: `sector.title` is hero copy ("Retail tech contractors,"), not a label.
  * The display names come from the index, which is their single source.
  */
@@ -79,10 +99,7 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
           <span className={styles.crumbSep} aria-hidden="true">
             /
           </span>
-          <Link
-            href={`/${sector.category}/${sector.slug}`}
-            className={styles.crumbLink}
-          >
+          <Link href={l1Href(sector)} className={styles.crumbLink}>
             {taxonomyLabels(sector.slug).short}
           </Link>
           <span className={styles.crumbSep} aria-hidden="true">
@@ -620,7 +637,7 @@ function L2RelatedFunctions({
             return (
               <Link
                 key={rf.slug}
-                href={`/industries/${sector.slug}/${rf.slug}`}
+                href={l2Href(sector, rf.slug)}
                 className={styles.relatedCard}
               >
                 <span className={styles.relatedNum}>{rf.num}</span>
@@ -730,7 +747,7 @@ function L2Sidebar({
     <aside className={styles.sidebar} aria-label="Sector function list">
       <div className={styles.sbTop}>
         <Link
-          href={`/industries/${sector.slug}`}
+          href={l1Href(sector)}
           className={styles.sbBack}
           aria-label={`Back to ${taxonomyLabels(sector.slug).label}`}
         >
@@ -748,7 +765,7 @@ function L2Sidebar({
           {sector.expertise.map((item) => {
             const isActive = item.slug === activeSlug;
             const enabled = Boolean(item.tools && item.tools.length > 0);
-            const href = `/industries/${sector.slug}/${item.slug}`;
+            const href = l2Href(sector, item.slug);
             return (
               <li
                 key={item.slug}
