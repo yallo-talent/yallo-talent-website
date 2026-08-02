@@ -73,6 +73,12 @@ const PAGES = [
      saying which templates exist. */
   "/ai-talent",
   "/ai-talent/agentic-ai-developer",
+  /* An INDUSTRY L2. The list already had a platform module L2, and the two use
+     different shells — L2PageShell versus PlatformModuleShell — so covering one
+     never covered the other. L2PageShell was putting --fs-data, a mono-only
+     token, on six SANS rules: 46 nodes of 13px Inter on every industry L2 on
+     the site, under A4's 14px sans floor, unaudited. */
+  "/industries/retail/customer-experience",
   "/intelligence/programme-staffing-blueprint/sap-s4hana",
 ];
 

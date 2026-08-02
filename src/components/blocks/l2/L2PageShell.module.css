@@ -314,7 +314,7 @@
 .overviewBullet {
   position: relative;
   padding-left: 18px;
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.55;
 }
@@ -643,7 +643,10 @@
   gap: 8px;
   padding: 11px 16px;
   border-radius: 0 0 0 var(--r-md);
-  font-size: var(--fs-data);
+  /* A4 puts filled controls at 15px; --fs-caption is the 14px META role.
+     My first pass moved this 13 -> 14 to clear the sans floor and landed on the
+     wrong one of the two floors. */
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
   background: var(--wa03);
@@ -683,6 +686,15 @@
   padding: clamp(24px, 3vw, 40px) clamp(24px, 4vw, 52px) clamp(48px, 6vw, 72px);
 }
 
+/* The 60px rail is a decorative index column. It held its width at every
+   breakpoint, so at 360 the tracks resolved to 60px + 166px and the screening
+   paragraph ran ELEVEN lines at 25 characters — against a 45-85 target, and
+   against 4 lines at 78 characters on the same paragraph at 1440. The file's
+   media queries stop at 560 and none of them touched this rule.
+
+   The rail is dropped rather than shrunk below 620: at that width it is
+   spending a sixth of the viewport on decoration while the text it decorates
+   becomes unreadable. */
 .screeningInner {
   display: grid;
   grid-template-columns: 60px 1fr;
@@ -703,6 +715,13 @@
   border-left: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   box-shadow: inset 0 1px 0 var(--wa08);
+}
+
+@media (max-width: 620px) {
+  .screeningInner {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 22px 20px;
+  }
 }
 
 .screeningIcon {
@@ -828,7 +847,7 @@
   background: var(--ground-2);
   border: 1px solid var(--hairline);
   color: var(--fg);
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
   transition:
@@ -849,6 +868,7 @@
 }
 
 .crossChipArrow {
+  font-weight: var(--fw-mono-strong);
   color: var(--accent-label);
   font-family: var(--font-mono);
   transition: transform 0.2s ease;
@@ -1011,7 +1031,7 @@
 .engagePillarBullet {
   position: relative;
   padding-left: 14px;
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-subtle);
   line-height: 1.5;
 }
@@ -1106,7 +1126,9 @@
   padding: 12px 22px;
   background: var(--accent-mark);
   color: var(--ink);
-  font-size: var(--fs-caption);
+  /* Already 14px before this round, on every industry L2. Invisible until the
+     gate was pointed at this template. */
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   border-radius: 0 0 0 var(--r-md);
   transition:
@@ -1128,7 +1150,7 @@
   color: var(--fg);
   border: 1px solid var(--wa25);
   border-radius: 0 0 0 var(--r-md);
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
   background: color-mix(in oklab, var(--ground) 40%, transparent);
   transition:
@@ -1208,7 +1230,7 @@
 }
 
 .relatedBlurb {
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   color: var(--fg-muted);
   line-height: 1.5;
 }
@@ -1517,7 +1539,7 @@
   padding: 9px 20px;
   border-left: 2px solid transparent;
   color: var(--fg-muted);
-  font-size: var(--fs-data);
+  font-size: var(--fs-caption);
   font-weight: var(--fw-body);
   line-height: 1.35;
   transition:
@@ -1532,7 +1554,12 @@
   border-left-color: var(--sector-accent-35);
 }
 
+/* Explicit weight, because the PARENT sets --fw-strong and this element only
+   changes the family. Plex Mono ships 400 and 500 only, so the inherited 600
+   was synthesised — the browser geometrically smearing the 500 rather than
+   failing. Same for .crossChipArrow below. */
 .sbItemNum {
+  font-weight: var(--fw-mono-strong);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   letter-spacing: 0.14em;
