@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 export const telcoData: L1PageData = {
@@ -5,7 +6,7 @@ export const telcoData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Telco & Media" },
+    { label: taxonomyLabels("telco").label },
   ],
 
   eyebrow: "Telco & Media · Contract-first",
@@ -659,12 +660,12 @@ export const telcoData: L1PageData = {
   related: [
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     {
       href: "/industries/government",
-      label: "Government & Public Sector",
+      label: taxonomyLabels("government").label,
       category: "Industry",
     },
     {

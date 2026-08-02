@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 export const healthcareData: L1PageData = {
@@ -5,7 +6,7 @@ export const healthcareData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Healthcare & Life Sciences" },
+    { label: taxonomyLabels("healthcare").label },
   ],
 
   eyebrow: "Healthcare & Life Sciences · Contract-first",
@@ -644,12 +645,12 @@ export const healthcareData: L1PageData = {
   related: [
     {
       href: "/industries/government",
-      label: "Government & Public Sector",
+      label: taxonomyLabels("government").label,
       category: "Industry",
     },
     {
       href: "/industries/manufacturing",
-      label: "Manufacturing & Logistics",
+      label: taxonomyLabels("manufacturing").label,
       category: "Industry",
     },
     { href: "/platforms/sap", label: "SAP", category: "Platform" },

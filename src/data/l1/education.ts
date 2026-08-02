@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 /**
@@ -36,7 +37,7 @@ export const educationData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Education & Universities" },
+    { label: taxonomyLabels("education").label },
   ],
 
   eyebrow: "Education & Universities · Contract-first",
@@ -635,12 +636,12 @@ export const educationData: L1PageData = {
   related: [
     {
       href: "/industries/government",
-      label: "Government & Public Sector",
+      label: taxonomyLabels("government").label,
       category: "Industry",
     },
     {
       href: "/industries/healthcare",
-      label: "Healthcare & Life Sciences",
+      label: taxonomyLabels("healthcare").label,
       category: "Industry",
     },
     { href: "/platforms/oracle", label: "Oracle", category: "Platform" },

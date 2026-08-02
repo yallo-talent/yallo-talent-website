@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 export const manufacturingData: L1PageData = {
@@ -5,7 +6,7 @@ export const manufacturingData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Manufacturing & Logistics" },
+    { label: taxonomyLabels("manufacturing").label },
   ],
 
   eyebrow: "Manufacturing & Logistics · Contract-first",
@@ -660,12 +661,12 @@ export const manufacturingData: L1PageData = {
   related: [
     {
       href: "/industries/retail",
-      label: "Retail & Consumer",
+      label: taxonomyLabels("retail").label,
       category: "Industry",
     },
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     { href: "/platforms/sap", label: "SAP", category: "Platform" },

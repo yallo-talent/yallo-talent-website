@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 export const cloudInfrastructureData: L1PageData = {
@@ -456,7 +457,7 @@ export const cloudInfrastructureData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Peak-trading resilience, omnichannel platform reliability and store-network cloud connectivity for retail programmes.",
       roles: [
@@ -467,7 +468,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "Edge-to-cloud pipelines, factory-floor connectivity and IIoT platform engineering for manufacturing programmes.",
       roles: [
@@ -478,7 +479,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Regulated landing-zones, ring-fenced workloads, DORA-aligned resilience and cloud controls for financial services programmes.",
       roles: [
@@ -489,7 +490,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "Sovereign cloud landing-zones, assurance-aligned platforms and legacy modernisation for central and local government.",
       roles: [
@@ -500,14 +501,14 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "HIPAA and NHS-aligned cloud environments, clinical workload security and disaster-recovery engineering for healthcare programmes.",
       roles: ["HIPAA Cloud Architect", "Clinical Workload SRE", "DR Engineer"],
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "Carrier-grade cloud, 5G edge platforms and content-delivery infrastructure for telco and media programmes.",
       roles: [
@@ -518,7 +519,7 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Campus and research computing estates, multi-campus landing zones and the term-start load peak for university and school-group programmes.",
       roles: [
@@ -602,12 +603,12 @@ export const cloudInfrastructureData: L1PageData = {
     },
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     {
       href: "/industries/retail",
-      label: "Retail & Consumer",
+      label: taxonomyLabels("retail").label,
       category: "Industry",
     },
   ],

@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 /**
@@ -442,7 +443,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Peak trading readiness, store estate release management and e-commerce scale for retail programmes.",
       roles: [
@@ -453,14 +454,14 @@ export const devopsPlatformEngineeringData: L1PageData = {
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "Plant-adjacent systems, ERP release trains and operational automation for manufacturing programmes.",
       roles: ["Release Manager", "DevOps Engineer", "Automation Engineer"],
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Regulated change control, resilience requirements and audit-ready pipelines for banking and financial services programmes.",
       roles: [
@@ -471,7 +472,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "Cloud landing zones, service reliability and change governance for central and local government programmes.",
       roles: [
@@ -482,7 +483,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "Clinical system availability, validated environments and controlled release for healthcare programmes.",
       roles: [
@@ -493,7 +494,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "High-volume platforms, network automation and large-scale observability for telco and media programmes.",
       roles: [
@@ -504,7 +505,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Release trains that have to clear a fixed academic calendar, shared platform teams across campuses and environment management for institutional systems.",
       roles: [

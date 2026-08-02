@@ -7,6 +7,8 @@
  * are not in the platform set; AWS folds into cloud-infrastructure.
  */
 
+import { taxonomyLabels } from "@/data/l1/index";
+
 export interface PlatformAxis {
   name: string;
   slug: string;
@@ -109,42 +111,42 @@ export interface SectorAxis {
 
 export const sectors: SectorAxis[] = [
   {
-    name: "Retail & Consumer",
+    name: taxonomyLabels("retail").label,
     slug: "retail",
     scope: "Commerce, POS, supply chain",
     icon: "biz",
     published: true,
   },
   {
-    name: "Banking & Financial Services",
+    name: taxonomyLabels("finance").label,
     slug: "finance",
     scope: "Core banking, payments, risk",
     icon: "arch",
     published: true,
   },
   {
-    name: "Manufacturing & Logistics",
+    name: taxonomyLabels("manufacturing").label,
     slug: "manufacturing",
     scope: "ERP, WMS, TMS",
     icon: "biz",
     published: true,
   },
   {
-    name: "Government & Public Sector",
+    name: taxonomyLabels("government").label,
     slug: "government",
     scope: "Digital delivery, data platforms",
     icon: "arch",
     published: true,
   },
   {
-    name: "Healthcare & Life Sciences",
+    name: taxonomyLabels("healthcare").label,
     slug: "healthcare",
     scope: "Clinical systems, EMR",
     icon: "app",
     published: true,
   },
   {
-    name: "Telco & Media",
+    name: taxonomyLabels("telco").label,
     slug: "telco",
     scope: "OSS/BSS, network, data",
     icon: "cloud",
@@ -153,7 +155,7 @@ export const sectors: SectorAxis[] = [
   {
     /* 7th sector, behind the Yallo AI Academy push into education. No route
        yet. */
-    name: "Education & Universities",
+    name: taxonomyLabels("education").label,
     slug: "education",
     scope: "Student systems, research and campus platforms",
     icon: "biz",

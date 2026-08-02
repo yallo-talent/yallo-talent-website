@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 export const governmentData: L1PageData = {
@@ -5,7 +6,7 @@ export const governmentData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Government & Public Sector" },
+    { label: taxonomyLabels("government").label },
   ],
 
   eyebrow: "Government & Public Sector · Contract-first",
@@ -644,12 +645,12 @@ export const governmentData: L1PageData = {
   related: [
     {
       href: "/industries/healthcare",
-      label: "Healthcare & Life Sciences",
+      label: taxonomyLabels("healthcare").label,
       category: "Industry",
     },
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     {

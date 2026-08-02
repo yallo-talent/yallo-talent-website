@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 /**
@@ -363,7 +364,7 @@ export const testingQualityEngineeringData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Peak load readiness, omnichannel regression and store estate testing for retail programmes.",
       roles: [
@@ -374,7 +375,7 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "ERP regression, warehouse system testing and integration cycles for manufacturing programmes.",
       roles: [
@@ -385,7 +386,7 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Regulatory test evidence, payment testing and resilience validation for banking and financial services programmes.",
       roles: [
@@ -396,7 +397,7 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "Accessibility conformance, citizen service testing and acceptance coordination for government programmes.",
       roles: [
@@ -407,14 +408,14 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "Validated testing, clinical safety evidence and controlled environment management for healthcare programmes.",
       roles: ["Test Lead", "Environment Manager", "Functional Test Analyst"],
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "High-volume performance testing, order-to-activation regression and OSS/BSS test cycles for telco and media programmes.",
       roles: [
@@ -425,7 +426,7 @@ export const testingQualityEngineeringData: L1PageData = {
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Parallel run and reconciliation on student records, registration load testing and accessibility conformance for institutional systems.",
       roles: [
