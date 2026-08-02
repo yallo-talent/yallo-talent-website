@@ -13,7 +13,12 @@ export const financeData: L1PageData = {
   sectorNoun: "financial services",
   screeningContext: "regulated delivery, audit trails and change control",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Temenos, FLEXCUBE, Finacle, Guidewire and Murex specialists for core banking, payments, wealth and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
+  /* Hero copy rewritten with the expertise grid, 2 Aug 2026, per
+     docs/design/context-finance-depth.md §1. It promised "wealth" and the grid
+     no longer carries a wealth function, which is the same defect as promising
+     twenty functions and shipping nine. What the five named platforms actually
+     cover is core banking, Islamic banking, payments and insurance. */
+  sub: "Temenos, Oracle FLEXCUBE, Infosys Finacle, Guidewire and Murex specialists for core banking, Islamic banking, payments and insurance programmes across the Middle East, Europe and India. Specialist-screened for regulated-industry depth.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -62,9 +67,17 @@ export const financeData: L1PageData = {
       engagement: "contract",
     },
     {
+      /* THE BADGE MOVED HERE, 2 Aug 2026, per context-round3-rulings.md §5.4.
+         The pattern is ratified: `contract-perm` marks architect- and lead-grade
+         roles, where a genuine permanent alternative exists. Finance was the one
+         desk of six applying it to neither: the badge sat on "nCino Loan
+         Origination Specialist", a Specialist-grade title. Verification found
+         the other five desks already correct (healthcare, manufacturing and
+         telco on Architect; government and retail on Lead), so this is the only
+         move. */
       name: "Oracle FLEXCUBE Solution Architect",
       scarcity: "high",
-      engagement: "contract",
+      engagement: "contract-perm",
     },
     {
       name: "Finacle Core Banking Consultant",
@@ -84,7 +97,7 @@ export const financeData: L1PageData = {
     {
       name: "nCino Loan Origination Specialist",
       scarcity: "high",
-      engagement: "contract-perm",
+      engagement: "contract",
     },
     {
       name: "PSD2 / Open Banking Integration Architect",
@@ -99,249 +112,541 @@ export const financeData: L1PageData = {
   ],
 
   expertiseEyebrow: "Our expertise",
-  expertiseTitle:
-    "Every finance function area, with a contractor bench behind it.",
+  /* THE GRID WAS REBUILT, 2 Aug 2026, from
+     docs/design/context-finance-depth.md v1.0 (ratified by Sumeet, 2 Aug 2026).
+
+     Was: twenty functions, every one of them carrying zero `tools`. Because the
+     L2 route, the card href and `routeExists` all derive from `tools`, that
+     meant no finance L2 existed and all twenty cards were dead ends — on the
+     page a banking buyer opens to test whether module depth is a retail-only
+     claim. Retail had twenty of twenty.
+
+     Now: nine functions, each populated, deliberately shallower than retail and
+     restricted to the five platforms already named in the hero (Temenos, Oracle
+     FLEXCUBE, Infosys Finacle, Guidewire, Murex), weighted to what Middle East
+     banks actually run. Islamic banking is its own function rather than a note
+     under core banking, because it is a distinct configuration hire.
+
+     Thirteen of the twenty are gone. Seven mapped onto functions here; the rest
+     were either folded in (cards-issuing into payments, investment-banking into
+     capital markets, kyc-aml and reg-compliance into risk) or removed as
+     out-of-domain for the five platforms (wealth, fs-crm, fpna, finance-ops,
+     data-ai-fs, cybersecurity-fs, procurement, hcm-fs, it-infra-fs). The last
+     two of those live on the capability desks and are cross-linked from
+     `related` rather than restated here. Nothing was invented to reach a count.
+
+     The old titles are NOT retained as empty cards: a card with no tools is the
+     dead end this change exists to remove. */
+  expertiseTitle: "The banking and insurance functions we staff.",
   expertiseSub:
-    "From core banking to capital markets — we place specialists into every function that moves a financial-services programme forward.",
+    "Weighted to what Middle East banks actually run: core banking and the Islamic products beside it, the payment rails around both, and the migration and cutover work that decides whether either lands.",
   expertise: [
     {
       slug: "core-banking",
       num: "01",
-      title: "Core Banking Systems",
+      title: "Core Banking Platform",
       icon: "finance",
-      blurb: "Deposits, ledger and account services",
+      blurb: "Ledger, deposits and account services",
       roles: [
         "Temenos Transact Consultant",
-        "Oracle FLEXCUBE Specialist",
-        "Finacle Core Banking Lead",
+        "FLEXCUBE Functional Consultant",
+        "Core Banking Solution Architect",
+      ],
+      overview:
+        "Core banking is the programme every other bank workstream waits on, and the seat that decides it is the one that has done the configuration before rather than read the release notes. We place consultants, developers and architects across Temenos Transact, Oracle FLEXCUBE Universal Banking and Infosys Finacle Core Banking, screened on the modules they have configured and the migrations they have sat through.",
+      tools: [
+        {
+          slug: "temenos-transact",
+          vendor: "Temenos",
+          name: "Temenos Transact",
+          roles: [
+            "Temenos Transact Consultant",
+            "T24 Technical Developer",
+            "Temenos Solution Architect",
+            "Core Banking Business Analyst",
+          ],
+        },
+        {
+          slug: "oracle-flexcube-universal-banking",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle FLEXCUBE Universal Banking",
+          roles: [
+            "FLEXCUBE Functional Consultant",
+            "FLEXCUBE Technical Consultant",
+            "Core Banking Solution Architect",
+            "Core Banking Business Analyst",
+          ],
+        },
+        {
+          slug: "infosys-finacle-core-banking",
+          vendor: "Infosys Finacle",
+          name: "Infosys Finacle Core Banking",
+          roles: [
+            "Finacle Functional Consultant",
+            "Finacle Technical Developer",
+            "Core Banking Solution Architect",
+            "Core Banking Business Analyst",
+          ],
+        },
       ],
     },
     {
-      slug: "digital-payments",
+      /* First among equals in this domain even though core banking is the larger
+         desk: every major Middle East market has both fully Islamic banks and
+         conventional banks running Islamic windows, and it is the function a
+         UK-origin competitor cannot staff credibly.
+
+         Copy discipline per context-finance-depth.md §2.2: describe what Yallo
+         places and screens for. Do not explain Sharia compliance, do not
+         characterise any ruling or standard, do not imply Yallo certifies
+         anything. */
+      slug: "islamic-banking",
       num: "02",
-      title: "Digital Payments",
-      icon: "pricing",
-      blurb: "Card, real-time payments and issuing",
+      title: "Islamic Banking",
+      icon: "cases",
+      blurb: "Islamic windows and fully Islamic banks",
       roles: [
-        "Fiserv Digital Payments Consultant",
-        "ACI Worldwide Specialist",
-        "Mastercard Payment Gateway Lead",
+        "Islamic Banking Functional Consultant",
+        "Sharia-compliant Product Configuration Specialist",
+        "Islamic Treasury Consultant",
+      ],
+      overview:
+        "Every major Middle East market has both fully Islamic banks and conventional banks running Islamic windows, and the seat that configures those products is a different hire from a conventional core consultant. That difference is what we screen for: consultants who have configured Islamic products on Temenos, FLEXCUBE and Finacle, and the analysts and product owners who specify them. Yallo places and screens these specialists. We do not certify products and we do not advise on compliance.",
+      tools: [
+        {
+          slug: "temenos-islamic-banking",
+          vendor: "Temenos",
+          name: "Temenos Islamic Banking",
+          roles: [
+            "Islamic Banking Functional Consultant",
+            "Sharia-compliant Product Configuration Specialist",
+            "Islamic Banking Business Analyst",
+            "Islamic Finance Product Owner",
+          ],
+        },
+        {
+          slug: "flexcube-islamic-banking",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "FLEXCUBE Islamic Banking",
+          roles: [
+            "Islamic Banking Functional Consultant",
+            "Sharia-compliant Product Configuration Specialist",
+            "Islamic Treasury Consultant",
+            "Islamic Banking Business Analyst",
+          ],
+        },
+        {
+          slug: "finacle-islamic-banking",
+          vendor: "Infosys Finacle",
+          name: "Finacle Islamic Banking",
+          roles: [
+            "Islamic Banking Functional Consultant",
+            "Sharia-compliant Product Configuration Specialist",
+            "Islamic Finance Product Owner",
+            "Islamic Banking Business Analyst",
+          ],
+        },
+      ],
+    },
+    {
+      slug: "digital-channels",
+      num: "03",
+      title: "Digital Channels & Onboarding",
+      icon: "omnichannel",
+      blurb: "Mobile, internet banking and eKYC onboarding",
+      roles: [
+        "Digital Banking Consultant",
+        "Customer Onboarding and eKYC Consultant",
+        "Open Banking and API Consultant",
+      ],
+      overview:
+        "Channel programmes fail at the joins rather than the front end: the onboarding flow that stalls at identity verification, the API layer that cannot serve the app and the branch from one contract. We place digital banking consultants, onboarding and eKYC specialists, mobile product owners and front-end engineers who have shipped banking channels on Temenos Infinity, Oracle Banking Digital Experience and the Finacle Digital Engagement Suite.",
+      tools: [
+        {
+          slug: "temenos-infinity",
+          vendor: "Temenos",
+          name: "Temenos Infinity",
+          roles: [
+            "Digital Banking Consultant",
+            "Mobile Banking Product Owner",
+            "Front-end Engineer, banking channels",
+            "Digital Channels Business Analyst",
+          ],
+        },
+        {
+          slug: "oracle-banking-digital-experience",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Banking Digital Experience",
+          roles: [
+            "Digital Banking Consultant",
+            "Open Banking and API Consultant",
+            "Customer Onboarding and eKYC Consultant",
+            "Digital Channels Business Analyst",
+          ],
+        },
+        {
+          slug: "finacle-digital-engagement-suite",
+          vendor: "Infosys Finacle",
+          name: "Finacle Digital Engagement Suite",
+          roles: [
+            "Digital Banking Consultant",
+            "Customer Onboarding and eKYC Consultant",
+            "Mobile Banking Product Owner",
+            "Front-end Engineer, banking channels",
+          ],
+        },
+      ],
+    },
+    {
+      slug: "payments",
+      num: "04",
+      title: "Payments & ISO 20022",
+      icon: "pricing",
+      blurb: "Payment hubs, SWIFT and instant-payment schemes",
+      /* The regional schemes are NAMED in the overview and given no tool card of
+         their own, deliberately. A card implies a product with a bench behind
+         it; these are schemes. Per context-finance-depth.md §2.4 they are named
+         and never interpreted: no mandate dates, no deadlines, no statement of
+         what any scheme obliges a bank to do. Same discipline already applied to
+         the regional frameworks on the Cybersecurity & Risk desk. */
+      roles: [
+        "Payments Solution Architect",
+        "ISO 20022 Migration Consultant",
+        "SWIFT Consultant",
+      ],
+      overview:
+        "Payments hiring splits into the hub itself and the message layer around it, and it is the second that briefs routinely under-scope. We place payments architects, ISO 20022 migration and SWIFT consultants, integration developers and testing specialists across Temenos Payments, Oracle Banking Payments and Finacle Payments, including work on the regional instant-payment schemes: Aani in the UAE, sarie in Saudi Arabia and Buna regionally.",
+      tools: [
+        {
+          slug: "temenos-payments",
+          vendor: "Temenos",
+          name: "Temenos Payments",
+          roles: [
+            "Payments Solution Architect",
+            "Payments Integration Developer",
+            "Payments Business Analyst",
+            "Payments Testing Specialist",
+          ],
+        },
+        {
+          slug: "oracle-banking-payments",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Banking Payments",
+          roles: [
+            "Payments Solution Architect",
+            "ISO 20022 Migration Consultant",
+            "Payments Integration Developer",
+            "Payments Business Analyst",
+          ],
+        },
+        {
+          slug: "finacle-payments",
+          vendor: "Infosys Finacle",
+          name: "Finacle Payments",
+          roles: [
+            "Payments Solution Architect",
+            "Instant Payments Scheme Consultant",
+            "Payments Integration Developer",
+            "Payments Testing Specialist",
+          ],
+        },
+        {
+          slug: "swift-iso-20022",
+          vendor: "SWIFT",
+          name: "SWIFT and ISO 20022 message standards",
+          roles: [
+            "SWIFT Consultant",
+            "ISO 20022 Migration Consultant",
+            "Payments Integration Developer",
+            "Instant Payments Scheme Consultant",
+          ],
+        },
+      ],
+    },
+    {
+      slug: "treasury-capital-markets",
+      num: "05",
+      title: "Treasury & Capital Markets",
+      icon: "analytics",
+      blurb: "Front office, market risk, collateral and XVA",
+      roles: [
+        "Murex Front Office Consultant",
+        "Murex MxML Developer",
+        "Murex Market Risk Consultant",
+      ],
+      overview:
+        "Murex is not one skill. The front-office consultant, the MxML developer and the market-risk specialist are three different hires, and a brief that asks for a Murex resource gets whichever of the three is nearest. We place each separately across MX.3 front office, market risk, collateral and XVA, and on Oracle Banking Treasury Management for the bank treasury side.",
+      tools: [
+        {
+          slug: "murex-mx3-front-office",
+          vendor: "Murex",
+          name: "Murex MX.3 Front Office",
+          roles: [
+            "Murex Front Office Consultant",
+            "Murex Back Office Consultant",
+            "Murex MxML Developer",
+            "Treasury Business Analyst",
+          ],
+        },
+        {
+          slug: "murex-mx3-risk-collateral-xva",
+          vendor: "Murex",
+          name: "Murex MX.3 Market Risk, Collateral and XVA",
+          roles: [
+            "Murex Market Risk Consultant",
+            "Collateral and XVA Consultant",
+            "Murex Datamart Developer",
+            "Murex MxML Developer",
+          ],
+        },
+        {
+          /* Two roles rather than four. The authored source gives seven role
+             titles for this function and five of them are Murex-specific; the
+             two here are the ones that genuinely sit on this product. Padding it
+             to four would have meant inventing a title. */
+          slug: "oracle-banking-treasury-management",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Banking Treasury Management",
+          roles: ["Treasury Business Analyst", "Collateral and XVA Consultant"],
+        },
+      ],
+    },
+    {
+      slug: "risk-regulatory-financial-crime",
+      num: "06",
+      title: "Risk, Regulatory Reporting & Financial Crime",
+      icon: "security",
+      blurb: "Risk engines, reporting and financial crime",
+      roles: [
+        "OFSAA Consultant",
+        "IFRS 9 Consultant",
+        "AML and Sanctions Screening Consultant",
+      ],
+      overview:
+        "Three things banks often brief as one: the risk and finance engine, the reporting that comes out of it, and the financial-crime stack beside it. We place OFSAA consultants, IFRS 9 and Basel reporting specialists, AML and sanctions screening consultants, financial crime analysts and model validation specialists. Regulators and frameworks are what we screen a candidate against. Yallo does not interpret them and certifies no one against them.",
+      tools: [
+        {
+          slug: "oracle-fsaa",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "Oracle Financial Services Analytical Applications",
+          roles: [
+            "OFSAA Consultant",
+            "IFRS 9 Consultant",
+            "Basel Reporting Consultant",
+            "Model Validation Specialist",
+          ],
+        },
+        {
+          /* Category cards, not vendors, and that is deliberate. The authored
+             source names no AML or reporting product, because every candidate
+             product sits outside the five platforms this desk is built on.
+             Naming one to fill the badge would have widened the surface the
+             ruling narrowed. `vendor` renders as a text badge, so a category
+             reads correctly; `vendorSlug` is omitted because no logo is claimed. */
+          slug: "aml-sanctions-screening",
+          vendor: "Financial crime",
+          name: "AML and sanctions screening platforms",
+          roles: [
+            "AML and Sanctions Screening Consultant",
+            "Financial Crime Analyst",
+            "Model Validation Specialist",
+            "Regulatory Reporting Business Analyst",
+          ],
+        },
+        {
+          slug: "regulatory-reporting",
+          vendor: "Regulatory reporting",
+          name: "Reporting to the region's central banks, Basel and IFRS 9",
+          roles: [
+            "Basel Reporting Consultant",
+            "IFRS 9 Consultant",
+            "Regulatory Reporting Business Analyst",
+            "Model Validation Specialist",
+          ],
+        },
       ],
     },
     {
       slug: "lending",
-      num: "03",
-      title: "Lending & Loan Management",
+      num: "07",
+      title: "Lending & Credit",
       icon: "returns",
       blurb: "Origination, servicing and collections",
       roles: [
-        "nCino Loan Origination Specialist",
-        "Finastra Loan IQ Consultant",
-        "Temenos Lending Lead",
+        "Lending Functional Consultant",
+        "Loan Origination Consultant",
+        "Lending Solution Architect",
+      ],
+      overview:
+        "Origination gets the attention on the business case and collections gets the contractor shortage. We place lending functional consultants, origination and collections specialists, credit risk analysts and lending architects across Temenos Loan Origination, FLEXCUBE Lending and Finacle Lending and Collections.",
+      tools: [
+        {
+          slug: "temenos-loan-origination",
+          vendor: "Temenos",
+          name: "Temenos Loan Origination",
+          roles: [
+            "Lending Functional Consultant",
+            "Loan Origination Consultant",
+            "Lending Solution Architect",
+            "Credit Risk Business Analyst",
+          ],
+        },
+        {
+          slug: "flexcube-lending",
+          vendor: "Oracle",
+          vendorSlug: "oracle",
+          name: "FLEXCUBE Lending",
+          roles: [
+            "Lending Functional Consultant",
+            "Loan Origination Consultant",
+            "Credit Risk Business Analyst",
+            "Lending Solution Architect",
+          ],
+        },
+        {
+          slug: "finacle-lending-collections",
+          vendor: "Infosys Finacle",
+          name: "Finacle Lending and Collections",
+          roles: [
+            "Lending Functional Consultant",
+            "Collections Consultant",
+            "Loan Origination Consultant",
+            "Credit Risk Business Analyst",
+          ],
+        },
       ],
     },
     {
-      slug: "cards-issuing",
-      num: "04",
-      title: "Cards & Issuing",
-      icon: "pricing",
-      blurb: "Debit, credit and prepaid card platforms",
-      roles: [
-        "TSYS Issuer Solutions Consultant",
-        "FIS Card Management Specialist",
-        "Marqeta Platform Lead",
-      ],
-    },
-    {
-      slug: "wealth",
-      num: "05",
-      title: "Wealth & Asset Management",
-      icon: "loyalty",
-      blurb: "Portfolio, advisor tools and reporting",
-      roles: [
-        "FIS Wealth Management Consultant",
-        "Temenos WealthSuite Specialist",
-        "Oracle Wealth Management Lead",
-      ],
-    },
-    {
-      slug: "investment-banking",
-      num: "06",
-      title: "Investment Banking Solutions",
-      icon: "analytics",
-      blurb: "Trading, risk and post-trade",
-      roles: [
-        "Murex Front-Office Consultant",
-        "ION Trading Specialist",
-        "Calypso Software Lead",
-      ],
-    },
-    {
-      slug: "treasury",
-      num: "07",
-      title: "Treasury & Cash Management",
-      icon: "supply",
-      blurb: "Liquidity, FX and cash-flow forecasting",
-      roles: [
-        "SAP Treasury & Risk Consultant",
-        "Kyriba Treasury Specialist",
-        "Oracle Treasury Cloud Lead",
-      ],
-    },
-    {
-      slug: "insurance-policy",
+      /* Insurance sits inside this L1 because canon §3 renders `finance` as
+         Banking & Financial Services and Guidewire is one of the five platforms
+         named in the hero. Kept visibly distinct from the banking functions
+         rather than blurred into them. */
+      slug: "insurance-platforms",
       num: "08",
-      title: "Insurance Policy Administration",
+      title: "Insurance Platforms",
       icon: "eor",
-      blurb: "Policy, billing and claims platforms",
+      blurb: "Policy, claims and billing on Guidewire",
       roles: [
-        "Guidewire ClaimCenter Consultant",
-        "Duck Creek Policy Specialist",
-        "SAP FS-PM Lead",
+        "Guidewire PolicyCenter Developer",
+        "Guidewire Configuration Consultant",
+        "Guidewire Solution Architect",
+      ],
+      overview:
+        "Guidewire hiring is configuration-led, and the distinctions matter more than the platform name: the PolicyCenter developer who has done rating, the ClaimCenter developer who has done the integrations, the test automation engineer who has kept a suite alive through an upgrade. We place all of them, and the architects who hold the InsuranceSuite design together.",
+      tools: [
+        {
+          slug: "guidewire-policycenter",
+          vendor: "Guidewire",
+          name: "Guidewire PolicyCenter",
+          roles: [
+            "Guidewire PolicyCenter Developer",
+            "Guidewire Configuration Consultant",
+            "Guidewire Integration Developer",
+            "Guidewire Solution Architect",
+          ],
+        },
+        {
+          slug: "guidewire-claimcenter",
+          vendor: "Guidewire",
+          name: "Guidewire ClaimCenter",
+          roles: [
+            "ClaimCenter Developer",
+            "Guidewire Configuration Consultant",
+            "Guidewire Integration Developer",
+            "Guidewire Test Automation Engineer",
+          ],
+        },
+        {
+          slug: "guidewire-billingcenter",
+          vendor: "Guidewire",
+          name: "Guidewire BillingCenter",
+          roles: [
+            "BillingCenter Developer",
+            "Guidewire Configuration Consultant",
+            "Guidewire Integration Developer",
+            "Guidewire Solution Architect",
+          ],
+        },
+        {
+          slug: "guidewire-insurancesuite-cloud",
+          vendor: "Guidewire",
+          name: "Guidewire InsuranceSuite Cloud",
+          roles: [
+            "Guidewire Solution Architect",
+            "Guidewire Configuration Consultant",
+            "Guidewire Integration Developer",
+            "Guidewire Test Automation Engineer",
+          ],
+        },
+        {
+          slug: "guidewire-datahub-infocenter",
+          vendor: "Guidewire",
+          name: "Guidewire DataHub and InfoCenter",
+          roles: [
+            "Guidewire Integration Developer",
+            "Guidewire Solution Architect",
+            "Guidewire Configuration Consultant",
+            "Guidewire Test Automation Engineer",
+          ],
+        },
       ],
     },
     {
-      slug: "risk-compliance",
+      slug: "migration-testing-cutover",
       num: "09",
-      title: "Risk & Compliance Management",
-      icon: "security",
-      blurb: "Credit, market and operational risk",
-      roles: [
-        "SAS Risk Management Consultant",
-        "Oracle FSAA Specialist",
-        "Wolters Kluwer OneSumX Lead",
-      ],
-    },
-    {
-      slug: "kyc-aml",
-      num: "10",
-      title: "KYC / AML & Fin Crime",
-      icon: "security",
-      blurb: "Customer due diligence and transaction monitoring",
-      roles: [
-        "NICE Actimize AML Consultant",
-        "SAS AML Specialist",
-        "Oracle Financial Crime Lead",
-      ],
-    },
-    {
-      slug: "reg-compliance",
-      num: "11",
-      title: "Regulatory Compliance & Governance",
-      icon: "government",
-      blurb: "FCA / PRA / DFSA reporting and controls",
-      roles: [
-        "Wolters Kluwer Regulatory Reporting Consultant",
-        "Thomson Reuters ONESOURCE Specialist",
-        "MetricStream GRC Lead",
-      ],
-    },
-    {
-      slug: "digital-onboarding",
-      num: "12",
-      title: "Digital Onboarding & Open Banking",
+      title: "Core Banking Migration, Testing & Cutover",
       icon: "integration",
-      blurb: "PSD2 APIs, KYC onboarding and consent",
+      blurb: "Data migration, parallel run, cutover and hypercare",
       roles: [
-        "Open Banking Integration Architect",
-        "Onfido / Jumio KYC Specialist",
-        "Backbase Digital Banking Consultant",
+        "Core Banking Data Migration Lead",
+        "Test Manager, core banking",
+        "Cutover Manager",
       ],
-    },
-    {
-      slug: "fs-crm",
-      num: "13",
-      title: "Financial Services CRM",
-      icon: "crm",
-      blurb: "Client, householding and lifecycle",
-      roles: [
-        "Salesforce Financial Services Cloud Consultant",
-        "MS Dynamics 365 FS CRM Specialist",
-        "Oracle CX for FS Lead",
-      ],
-    },
-    {
-      slug: "fpna",
-      num: "14",
-      title: "Financial Planning & Analytics",
-      icon: "analytics",
-      blurb: "FP&A, budgeting and scenario modelling",
-      roles: [
-        "SAP Analytics Cloud for Finance Consultant",
-        "Oracle EPM / PBCS Specialist",
-        "Anaplan FS Model Builder",
-      ],
-    },
-    {
-      slug: "finance-ops",
-      num: "15",
-      title: "Accounting & Financial Operations",
-      icon: "finance",
-      blurb: "GL, close, IFRS 9/17 and product control",
-      roles: [
-        "SAP S/4HANA Finance for FS Consultant",
-        "Oracle Financials Cloud Specialist",
-        "MS Dynamics 365 Finance Lead",
-      ],
-    },
-    {
-      slug: "data-ai-fs",
-      num: "16",
-      title: "Data & AI in Financial Services",
-      icon: "dataAi",
-      blurb: "Data platform, ML models and MLOps",
-      roles: [
-        "Snowflake Data Cloud for Finance Consultant",
-        "Google Cloud AI for FS Specialist",
-        "Azure AI for Banking Lead",
-      ],
-    },
-    {
-      slug: "cybersecurity-fs",
-      num: "17",
-      title: "Cybersecurity for Financial Services",
-      icon: "security",
-      blurb: "SOC, IAM and threat detection",
-      roles: [
-        "Palo Alto Networks for Finance Consultant",
-        "IBM Security for FS Specialist",
-        "Fortinet Financial Cybersecurity Lead",
-      ],
-    },
-    {
-      slug: "procurement",
-      num: "18",
-      title: "Procurement & Vendor Management",
-      icon: "finance",
-      blurb: "Sourcing, contracts and third-party risk",
-      roles: [
-        "SAP Ariba Consultant",
-        "Coupa Procurement Specialist",
-        "Oracle Procurement Cloud Lead",
-      ],
-    },
-    {
-      slug: "hcm-fs",
-      num: "19",
-      title: "Human Capital Management",
-      icon: "workforce",
-      blurb: "Talent, comp and workforce planning",
-      roles: [
-        "SAP SuccessFactors Consultant",
-        "Oracle HCM Cloud Specialist",
-        "Workday HCM Lead",
-      ],
-    },
-    {
-      slug: "it-infra-fs",
-      num: "20",
-      title: "IT Infrastructure & Operations",
-      icon: "cloud",
-      blurb: "ITSM, endpoint and platform ops",
-      roles: [
-        "ServiceNow ITSM Consultant",
-        "BMC Helix Specialist",
-        "Microsoft Endpoint Manager Lead",
+      overview:
+        "The function banks under-scope, and the one that decides whether a core programme lands on the weekend it promised. Migration, parallel run, cutover and hypercare are separate seats with separate screening, and they are needed in a fixed order rather than all at once. We place migration leads and developers, test managers and automation engineers, cutover and hypercare leads, reconciliation analysts and environment managers.",
+      tools: [
+        {
+          /* Categories rather than vendors throughout, as the authored source
+             gives them. A named migration or test product here would be a
+             platform outside the ratified five. */
+          slug: "core-banking-data-migration",
+          vendor: "Data migration",
+          name: "Core banking data migration tooling",
+          roles: [
+            "Core Banking Data Migration Lead",
+            "Migration Developer",
+            "Reconciliation Analyst",
+            "Environment Manager",
+          ],
+        },
+        {
+          slug: "core-banking-test-automation",
+          vendor: "Test automation",
+          name: "Test automation for core banking",
+          roles: [
+            "Test Manager, core banking",
+            "Test Automation Engineer",
+            "Environment Manager",
+            "Migration Developer",
+          ],
+        },
+        {
+          slug: "reconciliation-parallel-run",
+          vendor: "Cutover",
+          name: "Reconciliation and parallel-run tooling",
+          roles: [
+            "Cutover Manager",
+            "Hypercare Lead",
+            "Reconciliation Analyst",
+            "Test Manager, core banking",
+          ],
+        },
       ],
     },
   ],
@@ -681,6 +986,22 @@ export const financeData: L1PageData = {
       category: "Platform",
     },
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
+    /* Added per context-finance-depth.md §3, which asks for these two links once
+       each and in both directions. Informatica carries the migration and data
+       quality work behind function 09; the blueprint carries the phase-by-phase
+       staffing argument that function 09 makes in one paragraph. Neither is
+       expressible through the L2 cross-link maps, which derive platform links
+       from tool vendors and this function's tools are categories by design. */
+    {
+      href: "/platforms/informatica",
+      label: "Informatica",
+      category: "Platform",
+    },
+    {
+      href: "/intelligence/programme-staffing-blueprint/oracle-fusion",
+      label: "Programme Staffing Blueprint",
+      category: "Intelligence",
+    },
     {
       href: "/capabilities/data-analytics",
       label: "Data & Analytics",

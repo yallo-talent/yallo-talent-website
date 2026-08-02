@@ -60,10 +60,11 @@ export function L2PageShell({ sector, fn }: Props) {
           <L2Overview sector={sector} fn={fn} />
           <L2Roles fn={fn} />
           <L2Tools sector={sector} fn={fn} />
-          <L2Screening />
+          <L2Screening fn={fn} />
           <L2Engagement />
           <L2BottomCta sector={sector} fn={fn} />
           <L2RelatedFunctions sector={sector} fn={fn} />
+          <L2Twin fn={fn} />
           <L2CrossLinks fn={fn} />
         </main>
       </div>
@@ -272,7 +273,22 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
 }
 
 /* ============ SCREENING CALLOUT ============ */
-function L2Screening() {
+/**
+ * The band now reads `fn.screening`, per context-round3-rulings.md §5.5.4.
+ *
+ * It took no props and was therefore identical on every L2 on the site. The
+ * heading and the three chips stay constant on purpose: they are the standing
+ * promise, and a promise that is reworded per page reads as a different promise.
+ * The paragraph is the part that has to be specific, because it is the one
+ * making a claim about this function's screening rather than about Yallo.
+ *
+ * The fallback is the original sentence, so a function with nothing authored
+ * makes a true general claim rather than borrowing another function's.
+ */
+const SCREENING_FALLBACK =
+  "Every contractor on our bench is assessed for implementation depth by specialists who have run delivery in this function. Not certification badges. Not platform familiarity. Track records inside programmes like yours, verified before they get on the shortlist.";
+
+function L2Screening({ fn }: { fn: L1ExpertiseCard }) {
   return (
     <section className={`${styles.screening} amb-wash`}>
       <div className={styles.screeningInner}>
@@ -295,10 +311,7 @@ function L2Screening() {
             Specialist-screened, not keyword-matched.
           </h3>
           <p className={styles.screeningCopy}>
-            Every contractor on our bench is assessed for implementation depth
-            by specialists who have run delivery in this function. Not
-            certification badges. Not platform familiarity. Track records inside
-            programmes like yours — verified before they get on the shortlist.
+            {fn.screening ?? SCREENING_FALLBACK}
           </p>
           <div className={styles.screeningChips}>
             <span className={styles.screeningChip}>
@@ -314,6 +327,48 @@ function L2Screening() {
               Contract · EOR · Managed Delivery
             </span>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ============ TWIN SUB-DESK (the other side of a shared subject) ============
+   Added by session B, 2 Aug 2026, per context-round3-rulings.md §5.3, and LOGGED
+   as a boundary crossing in the relay: this file is session A's, and A had not
+   touched it on `fix/design-system-and-gates` when this was written.
+
+   Kept as small as the job allows. No new CSS: it reuses the `related*` classes,
+   which already style exactly this shape — a heading over a grid of cards each
+   carrying a title, a line of explanation and an arrow. A twin is a peer link to
+   another discipline's sub-desk, which `L2CrossLinks` cannot express: that
+   function derives platform links from tool vendors and capability links from a
+   slug map, and both land on an L1 rather than on the sub-desk that answers the
+   reader's question.
+
+   Renders nothing where `twin` is absent, which is every function outside the
+   Cloud & Infrastructure and DevOps & Platform Engineering pair. */
+function L2Twin({ fn }: { fn: L1ExpertiseCard }) {
+  const twins = (fn.twin ?? []).filter((t) => routeExists(t.href));
+  if (twins.length === 0) return null;
+
+  return (
+    <section className={styles.related}>
+      <div className={styles.relatedInner}>
+        <div className={styles.secLabel}>The other side of this subject</div>
+        <h3 className={styles.relatedH}>
+          This subject is staffed from two desks
+        </h3>
+        <div className={styles.relatedGrid}>
+          {twins.map((t) => (
+            <Link key={t.href} href={t.href} className={styles.relatedCard}>
+              <span className={styles.relatedTitle}>{t.label}</span>
+              <span className={styles.relatedBlurb}>{t.note}</span>
+              <span className={styles.relatedArrow} aria-hidden="true">
+                →
+              </span>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

@@ -94,8 +94,15 @@ export const cloudInfrastructureData: L1PageData = {
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
     "Every enterprise Cloud & Infrastructure programme, covered function by function.",
+  /* THE DISTINCTION LINE, added 2 Aug 2026 per context-round3-rulings.md §5.3.
+     This desk and DevOps & Platform Engineering share six sub-desk subjects:
+     platform engineering, infrastructure as code, Kubernetes and containers,
+     observability, SRE and FinOps. The split by subject is correct and canon
+     ratifies both desks. The defect was that a buyer had to infer the split from
+     the sub-desk names, which is exactly what the names cannot do when six of
+     them match. Stated here, and the mirror of it on the DevOps desk. */
   expertiseSub:
-    "From landing-zone to production resilience — specialists we place into every function that moves a cloud programme forward.",
+    "This desk staffs the estate itself, from landing-zone to production resilience. The delivery system that runs on top of it is the DevOps & Platform Engineering desk, and the two are usually briefed together.",
   /**
    * S3 parity, applied to the last discipline that lacked it.
    *
@@ -160,6 +167,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Platform Engineering",
       icon: "integration",
       blurb: "Internal developer platforms, golden paths, Backstage.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/platform-engineering",
+          label: "Platform Engineering & Internal Developer Platforms",
+          note: "The same subject from the delivery side: the platform as the thing delivery teams ship through, rather than as the estate they self-serve from.",
+        },
+      ],
       overview:
         "Here the platform is the cloud estate presented as something a delivery team can safely self-serve: an account vended with guardrails already on, a paved path to a compliant workload, and a catalogue that reflects what actually exists. The failure is a platform that adds a request queue where there used to be a ticket. We screen for what a team could do without asking permission, and for how the platform handled the case it did not anticipate.",
       roles: ["Platform Engineer", "IDP Architect", "Backstage Lead"],
@@ -184,6 +198,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "SRE & Reliability",
       icon: "spark",
       blurb: "SLOs, error budgets, incident response and chaos.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/observability-sre",
+          label: "Observability & Site Reliability",
+          note: "DevOps runs observability and reliability as one desk where this side runs them as two. Brief there if the reliability work sits on the delivery system rather than on the estate.",
+        },
+      ],
       overview:
         "Reliability engineering is mostly an organisational discipline wearing a technical title. Anyone can define a service level objective; the question is whether it was ever allowed to stop a release, and whether an incident review changed a system rather than producing an action log. We screen on incidents actually commanded, on an error budget policy someone honoured under pressure, and on failure testing run against something that mattered.",
       roles: ["Principal SRE", "Reliability Engineer", "Incident Commander"],
@@ -206,6 +227,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Kubernetes & Containers",
       icon: "cloud",
       blurb: "EKS, AKS, GKE, service mesh and workload security.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/kubernetes-container-platforms",
+          label: "Container Platforms & Kubernetes",
+          note: "The same clusters from the delivery side: OpenShift, Argo CD and Helm, where here the subject is the managed cluster and its lifecycle.",
+        },
+      ],
       overview:
         "The interview question that separates claimed Kubernetes experience from held Kubernetes experience is about upgrades, not deployments. Cluster lifecycle under change control, resource limits set from measurement, network policy someone will have to debug at speed, and a service mesh whose failure modes the team understands. We screen for operators of managed clusters in production, not for engineers who have shipped a workload onto one somebody else runs.",
       roles: [
@@ -240,6 +268,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "IaC & Automation",
       icon: "integration",
       blurb: "Terraform, Pulumi, Crossplane, policy-as-code.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/infrastructure-as-code",
+          label: "Infrastructure as Code",
+          note: "The same tools inside the delivery system, including Ansible and Vault. Here the subject is the estate the code describes.",
+        },
+      ],
       overview:
         "Infrastructure as code is where an estate's discipline becomes legible. State management that survives more than one team, modules other people can consume without reading the source, drift between what is committed and what is running, and a plan output a reviewer can reason about at four in the afternoon. We screen for people who have inherited an estate and refactored it without an outage, because greenfield modules are the easy half.",
       roles: ["Terraform Lead", "Pulumi Engineer", "Policy-as-Code Architect"],
@@ -322,6 +357,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "FinOps & Cost",
       icon: "finance",
       blurb: "Unit economics, tagging, showback and rate optimisation.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/finops",
+          label: "FinOps",
+          note: "Cost engineering inside the delivery system, including commitment planning. Here the subject is the estate's unit economics and its rate structure.",
+        },
+      ],
       overview:
         "Cloud cost is an engineering problem routinely handed to finance, which produces a report nobody can act on. The role that works sits between the two: someone who can read a bill down to the workload, tell an engineering team which architectural decision generates the spend, and model a commitment without stranding the organisation on it. We screen on reductions actually delivered and how, not on dashboards produced.",
       roles: ["FinOps Practitioner", "Cloud Economist", "Cost Governance Lead"],
@@ -344,6 +386,13 @@ export const cloudInfrastructureData: L1PageData = {
       title: "Observability",
       icon: "analytics",
       blurb: "OpenTelemetry, Datadog, Grafana, log/metric/trace pipelines.",
+      twin: [
+        {
+          href: "/capabilities/devops-platform-engineering/observability-sre",
+          label: "Observability & Site Reliability",
+          note: "The same instrumentation held together with reliability on the DevOps desk. Brief there when what you are watching is the delivery system rather than the estate.",
+        },
+      ],
       overview:
         "Most estates are monitored and few are observable: the dashboards exist, and when something unfamiliar breaks nobody can ask a new question of the data. The work is instrumentation that outlives the team that wrote it, cardinality controlled before the bill notices, and traces that actually cross a service boundary. We screen for engineers who have cut an observability bill without losing the signal, which is the test of whether they understood what they were collecting.",
       roles: [

@@ -34,5 +34,22 @@ export function routeExists(href: string): boolean {
     );
   }
 
+  /* Capability sub-desks. The sector equivalent above has been here since the
+     cross-links were made data-driven; the capability one had not, so every
+     /capabilities/{cap}/{fn} href fell through to the permissive default and was
+     never actually checked. The twin links added for
+     context-round3-rulings.md §5.3 are exactly this shape, and a guard that
+     always returns true is not a guard. Same rule as the sector branch: a
+     function without tools has no L2 route. */
+  const capFn = /^\/capabilities\/([^/]+)\/([^/]+)$/.exec(path);
+  if (capFn?.[1] && capFn[2]) {
+    const c = capabilityRegistry[capFn[1]];
+    return Boolean(
+      c?.expertise.some(
+        (e) => e.slug === capFn[2] && (e.tools?.length ?? 0) > 0,
+      ),
+    );
+  }
+
   return true;
 }

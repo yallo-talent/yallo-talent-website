@@ -1,4 +1,5 @@
 import { agenticAiDeveloper } from "./agentic-ai-developer";
+import { aiDataEngineer } from "./ai-data-engineer";
 import { aiEvaluationSpecialist } from "./ai-evaluation-specialist";
 import { aiExperienceDesigner } from "./ai-experience-designer";
 import { aiGovernanceLead } from "./ai-governance-lead";
@@ -11,19 +12,26 @@ import type { RoleFamilySlug } from "./stacks";
 import type { AiRoleFamily } from "./types";
 
 /**
- * The nine AI role families, ordered as context §4.
+ * The ten AI role families, ordered as context §4.
  *
- * The set comes from the legacy corpus role taxonomy, which is real and already
- * in the repo. A tenth is NOT added without Sumeet. One candidate exists and is
- * deliberately absent: "AI Data Engineer, retrieval and RAG pipelines" is
- * proposed and not ratified, so it is left out and reported rather than shipped
- * on the assumption it would be waved through.
+ * The first nine come from the legacy corpus role taxonomy, which is real and
+ * already in the repo. The tenth, "AI Data Engineer, retrieval and RAG
+ * pipelines", was proposed in the previous round and deliberately left out
+ * rather than shipped on the assumption it would be waved through. It is now
+ * ratified by Sumeet, 2 Aug 2026 (context-round3-rulings.md §2, question 3): the
+ * retrieval work was split across two families, so no family owned it, and this
+ * is the domain carrying paid spend, which makes a gap in it expensive.
  *
- * Order is the render order on the L1 and the order of the L2 route set.
+ * It sits third rather than last because the order groups the hands-on build
+ * roles first, and because it reads next to the family it took ownership from.
+ *
+ * Order is the render order on the L1 and the order of the L2 route set. It must
+ * stay in step with FAMILY_ORDER in ./estate.ts, which the overlay reads.
  */
 export const aiRoleFamilies: AiRoleFamily[] = [
   agenticAiDeveloper,
   llmEngineer,
+  aiDataEngineer,
   aiSolutionArchitect,
   mlopsEngineer,
   aiEvaluationSpecialist,

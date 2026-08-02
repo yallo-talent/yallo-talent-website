@@ -99,6 +99,19 @@ export const estateLayers: EstateLayer[] = [
     name: "Data and grounding",
     contents:
       "SAP Business Data Cloud, Databricks, Snowflake, Microsoft Fabric, vector stores, retrieval and knowledge graphs.",
+    /**
+     * The layer the tenth family staffs, and it arrives here without an edit
+     * because the overlay is derived: adding ai-data-engineer to the retrieval
+     * group in stacks.ts marks this layer, which is the behaviour the derivation
+     * exists for.
+     *
+     * Re-checked after the tenth family, per context-round3-rulings.md §5.2. The
+     * measured overlay across ten families: experience 3, orchestration 5, models
+     * 5, data 4, systems of record 2, evaluation rail 4, governance rail 2. No
+     * band carries most of the set. Before the LlamaIndex move the orchestration
+     * layer would have reached six of ten, which is what that move avoids; see
+     * the note in stacks.ts.
+     */
     fromGroups: ["Retrieval and vector stores"],
   },
   {
@@ -177,6 +190,7 @@ export function familiesFor(entry: EstateLayer | EstateRail): RoleFamilySlug[] {
 const FAMILY_ORDER: RoleFamilySlug[] = [
   "agentic-ai-developer",
   "llm-engineer",
+  "ai-data-engineer",
   "ai-solution-architect",
   "mlops-engineer",
   "ai-evaluation-specialist",

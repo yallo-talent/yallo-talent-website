@@ -2,6 +2,44 @@ import { allL1, type TaxonomyLabel, taxonomyLabels } from "@/data/l1/index";
 import { sectorRegistry } from "@/data/l1/registry";
 import { authoredPlatforms } from "@/data/platforms/authored";
 
+/**
+ * Union authored role titles with the derived ones, letting the authored title
+ * win where the two name the same job at different levels of specificity.
+ *
+ * The union used to be a plain `new Set([...authored, ...derived])`, which
+ * de-duplicates identical strings and nothing else. Blue Yonder showed what that
+ * leaves behind: "MFP Specialist" sitting next to "Blue Yonder MFP Specialist",
+ * and "WMS Solution Architect" next to "Blue Yonder WMS Solution Architect".
+ * Both halves are real, and that is why neither side was wrong to write them.
+ * The derived titles come from sector tool cards, where "MFP Specialist" is
+ * unambiguous because the card already says Blue Yonder; the authored titles
+ * carry the vendor because a platform page has no such context. Projected onto
+ * one list they read as two different jobs, and a buyer counting the bench
+ * counts each of them twice.
+ *
+ * The test is suffix containment: a derived title is dropped when some authored
+ * title ends with it on a word boundary, which is exactly the "same role, vendor
+ * prefix added" case and nothing looser. A derived title with no more specific
+ * authored form survives untouched, because the generic is then the only name
+ * that job has here.
+ *
+ * Deliberately not a hand-maintained suppression list: the pair that was
+ * reported is one of several, and a list would have to grow every time a sector
+ * tool card is edited.
+ */
+function mergeRoles(authored: string[], derived: string[]): string[] {
+  const out = [...new Set(authored)];
+  const lower = out.map((r) => r.toLowerCase());
+  for (const d of derived) {
+    const dl = d.toLowerCase();
+    if (lower.includes(dl)) continue;
+    if (lower.some((a) => a.endsWith(` ${dl}`))) continue;
+    out.push(d);
+    lower.push(dl);
+  }
+  return out;
+}
+
 /** Index of a module in its platform's authored list; unauthored sort last. */
 function authoredOrder(platformSlug: string, moduleSlug?: string): number {
   const mods = authoredPlatforms[platformSlug]?.modules;
@@ -183,7 +221,7 @@ function collect(): Map<string, PlatformCoverage> {
         scope: am.scope,
         variants: am.variants,
         family: am.family,
-        roles: [...new Set([...am.roles, ...(match?.roles ?? [])])],
+        roles: mergeRoles(am.roles, match?.roles ?? []),
         appearsIn: match?.appearsIn ?? [],
       };
     });
@@ -202,7 +240,25 @@ function collect(): Map<string, PlatformCoverage> {
       (a, b) =>
         authoredOrder(cov.slug, a.slug) - authoredOrder(cov.slug, b.slug),
     );
-    cov.roles = [...new Set(cov.modules.flatMap((m) => m.roles))].sort();
+    /* The same collapse again, one level up, and it is needed because
+       `mergeRoles` runs per module. A generic can survive inside module A while
+       the specific form of it lives in module B, and this flat list is where the
+       two finally meet: Blue Yonder rendered a bare "Solution Architect" beside
+       "Blue Yonder WMS Solution Architect", "Assortment Solution Architect" and
+       "Space Solution Architect". Same suffix test, so a generic with no more
+       specific sibling anywhere on the platform still survives: "TMS Consultant"
+       stays, because "Blue Yonder TMS Functional Consultant" is a different job
+       rather than the same one with a prefix. */
+    const flat = [...new Set(cov.modules.flatMap((m) => m.roles))];
+    const flatLower = flat.map((r) => r.toLowerCase());
+    cov.roles = flat
+      .filter(
+        (_role, i) =>
+          !flatLower.some(
+            (other, j) => j !== i && other.endsWith(` ${flatLower[i]}`),
+          ),
+      )
+      .sort();
     cov.moduleCount = cov.modules.length;
     cov.roleCount = cov.roles.length;
   }

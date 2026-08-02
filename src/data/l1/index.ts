@@ -125,6 +125,24 @@ export const platformsIndex: L1IndexEntry[] = [
     category: "platforms",
     tagline: "HCM, Payroll, Recruiting and Adaptive Planning specialists.",
   },
+  {
+    /* Informatica was missing from this index entirely, which is why its row was
+       the only one in the mega-menu panel with no support line under it. Sumeet
+       noticed it twice. The platform itself has been real since the canon §3
+       amendment of 1 Aug 2026 (R-INF1) and has nine authored desks in
+       platforms/authored.ts; only the taxonomy entry was absent, so every surface
+       that reads labels and taglines from here had nothing to render.
+
+       The tagline names real products from those nine desks and nothing else,
+       and is written to the register its six siblings already use: the products
+       a buyer would recognise, then "specialists". */
+    slug: "informatica",
+    label: "Informatica" as TaxonomyLabel,
+    short: "Informatica" as TaxonomyLabel,
+    category: "platforms",
+    tagline:
+      "IDMC, data integration, MDM, data quality and governance specialists.",
+  },
 ];
 
 /**

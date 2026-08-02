@@ -48,6 +48,51 @@ export interface L1ExpertiseCard {
    * with the contractor roles Yallo places into it.
    */
   tools?: L2Tool[];
+  /**
+   * Sub-desks on ANOTHER discipline that cover this same subject from the other
+   * side, per context-round3-rulings.md §5.3.
+   *
+   * Cloud & Infrastructure and DevOps & Platform Engineering share six sub-desk
+   * subjects: platform engineering, infrastructure as code, Kubernetes and
+   * containers, observability, SRE and FinOps. The split between them is by
+   * subject and canon ratifies both, but six matching names cannot themselves
+   * tell a buyer which side they are on. Each L1 now states the distinction in
+   * one line, and this field puts the other side one click away rather than
+   * leaving the reader to navigate back up and across.
+   *
+   * An array because the mapping is not one to one: DevOps runs observability
+   * and SRE as a single desk where Cloud runs them as two.
+   *
+   * NOT the same thing as `L2CrossLinks`, which links a function to a whole
+   * platform or discipline. This is peer to peer, sub-desk to sub-desk, and
+   * `note` carries why the reader might want the other one.
+   */
+  twin?: Array<{ href: string; label: string; note: string }>;
+  /**
+   * What the screening band says for THIS function, per
+   * context-round3-rulings.md §5.5.4.
+   *
+   * The band used to be a hardcoded paragraph in `L2PageShell` taking no props,
+   * so it was word-for-word identical on every L2 on the site. Twenty retail
+   * functions each claimed to be "assessed for implementation depth by
+   * specialists who have run delivery in this function" in exactly the same
+   * sentence, which is the kind of sameness a buyer reads as generated.
+   *
+   * A screening claim is the page's most load-bearing one, so it is the worst
+   * place for boilerplate: it is the only band that says what Yallo actually
+   * does that a job board does not.
+   *
+   * Optional, and the fallback is the original generic paragraph rather than
+   * nothing. A function that has not said what it screens for makes the honest
+   * general claim; it does not borrow another function's specifics. That is the
+   * same rule `screeningContext` already follows on L1PageData.
+   *
+   * Note what is deliberately NOT here: an engagement equivalent. The engagement
+   * band is the four commercial models in canon §7, and those do not vary by
+   * function. Making them differ per function would mean inventing distinctions
+   * that do not exist, so that half of the band's sameness is correct.
+   */
+  screening?: string;
 }
 
 /**

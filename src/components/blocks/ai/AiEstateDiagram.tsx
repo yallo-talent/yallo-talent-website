@@ -31,7 +31,7 @@ import styles from "./AiEstateDiagram.module.css";
  * only geometry that needs to be a shape (the rail span markers) is a CSS gradient
  * hairline. What replaces the SVG canvas is a semantic structure, and that is a
  * gain rather than a compromise: the layers are an ordered list, each layer's
- * staffing overlay is a list of links to the nine L2 pages, and a screen reader
+ * staffing overlay is a list of links to the family L2 pages, and a screen reader
  * reads the estate bottom to top in the same order a sighted reader sees it. An
  * SVG would have needed all of that bolted on with aria.
  *
