@@ -1,3 +1,4 @@
+import { platformLabels } from "./platforms";
 import { SITE } from "./seo";
 
 /**
@@ -55,14 +56,12 @@ const SERVICES = [
   "Managed Delivery",
 ];
 
-const PLATFORMS = [
-  "SAP",
-  "Oracle",
-  "Microsoft",
-  "Salesforce",
-  "Blue Yonder",
-  "Workday",
-];
+/* DERIVED. Six hand-written names, missing Informatica since it was ratified on
+   1 Aug (R-INF1), so the structured data every crawler reads understated the
+   platform set by one while the site itself published seven. A copy of a
+   taxonomy in a file nobody renders is the copy least likely to be noticed and
+   the one search engines see first. */
+const PLATFORMS = platformLabels();
 
 /** Organization, with each entity as a LocalBusiness sub-organisation. */
 export function organisationJsonLd() {

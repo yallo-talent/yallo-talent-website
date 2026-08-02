@@ -89,6 +89,46 @@ function isComment(line) {
   );
 }
 
+/**
+ * Which lines of a file sit inside a comment, tracked as a block rather than
+ * guessed per line.
+ *
+ * `isComment` above tests one line in isolation, so it sees a block comment only
+ * where the continuation line happens to begin with `*`. Prose wrapped inside a
+ * `/* ... *\/` block does not, and a wrapped line that opens with a quoted term
+ * looks exactly like a copied label. That produced a false failure the moment
+ * rule 6 was tightened: a comment in HubLandingSections explaining that the rail
+ * used to say "Cybersecurity & Risk" was read as a surface saying it.
+ *
+ * Fixed here rather than with an allow-list entry, deliberately. Round 4 quieted
+ * a rule with an `ALLOWED_LINES` entry that also exempted the real JSX line
+ * beside it, because the comment and the defect were the same string. Teaching
+ * the scanner where comments actually end exempts no code at all.
+ */
+function commentMask(src) {
+  const lines = src.split("\n");
+  const mask = new Array(lines.length).fill(false);
+  let inBlock = false;
+  lines.forEach((line, i) => {
+    if (inBlock) {
+      mask[i] = true;
+      if (line.includes("*/")) inBlock = false;
+      return;
+    }
+    const opens = line.lastIndexOf("/*");
+    const closesAfter = opens !== -1 && line.indexOf("*/", opens) === -1;
+    if (closesAfter) {
+      inBlock = true;
+      /* The opening line counts as a comment only when nothing precedes the
+         marker; `const x = 1; /* note` still has code on it. */
+      mask[i] = line.slice(0, opens).trim() === "";
+    } else {
+      mask[i] = isComment(line);
+    }
+  });
+  return mask;
+}
+
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir)) {
     if (entry === "node_modules" || entry.startsWith(".next")) continue;
@@ -319,97 +359,204 @@ for (const slug of indexSlugs) {
 notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
 
 /* ---------------------------------------------------------------------------
-   Rule 5. Nothing writes a sector label. The SECTOR taxonomy derives.
+   Rules 5, 6 and 7. Nothing writes a taxonomy label. ALL THREE taxonomies derive.
 
-   The sixth hand-copied taxonomy of the round was the "where we deploy" rail,
-   and it managed to be wrong three ways at once: a different order from the mega
-   menu, "Public Sector" where the menu says "Government & Public Sector", and
-   the singular "Life Science" where the menu says the plural. One cause. Rule 2
-   above already does this for disciplines; sectors needed the same.
+   Rule 5 (sectors) came first, from the sixth hand-copied taxonomy of round 4:
+   the "where we deploy" rail, wrong three ways at once — a different order from
+   the mega menu, "Public Sector" where the menu says "Government & Public
+   Sector", and the singular "Life Science" where the menu says the plural.
 
-   What is asserted: outside the index, no file writes a sector's display label
-   as a literal. Order is not checked because it can no longer be expressed —
-   every surface renders `sectorNavEntries()` or `deriveSectorRail()`, and
-   neither takes an order.
+   Rules 6 (platforms) and 7 (disciplines) generalise it, per
+   context-round5-rulings.md §5. The conclusion there is not that sectors were
+   unusually bad; it is that ANY taxonomy rendered from a hand-written list will
+   drift, and sectors were merely the one that had been looked at. That was
+   correct. Round 5 found six live copies of the platform set and five of them
+   were missing Informatica, ratified on 1 August, including the JSON-LD every
+   crawler reads and the CV form's platform list. One had also transposed
+   Microsoft and Salesforce against canon §3's order.
 
-   The `short` forms ("Retail", "Banking") are NOT sector labels and are not
+   What is asserted, per taxonomy: outside the index and the derivation, no file
+   writes that taxonomy's display label as a literal in a `label:`/`name:`/
+   `title:`/`short:` position. Order is not checked because it can no longer be
+   expressed — every surface renders a derivation, and none of them takes an
+   order.
+
+   The `short` forms ("Retail", "Banking", "Cloud") are NOT labels and are not
    checked: they are the breadcrumb and sidebar register, minted by
    `taxonomyLabels` from the same index.
+
+   ONE TAXONOMY AT A TIME, AND THAT IS THE POINT. Canon §3 runs two taxonomies
+   that share labels — the six specialist DESKS also contain a "Data & Analytics"
+   and a "Cloud & Infrastructure" — which is how relay v6.0's desk rename crossed
+   into the discipline taxonomy. Rules 1 and 2 above guard that crossing. These
+   rules only ever compare a label against the index it came from.
    --------------------------------------------------------------------------- */
 {
   const idxSrc = readFileSync(join("src", "data", "l1", "index.ts"), "utf8");
-  const indBlock = idxSrc.slice(
-    idxSrc.indexOf("export const industriesIndex"),
-    idxSrc.indexOf("export const platformsIndex"),
-  );
-  const sectorLabels = [
-    ...indBlock.matchAll(/label:\s*"([^"]+)"\s*as TaxonomyLabel/g),
-  ].map((m) => m[1]);
+  const bounds = (from, to) =>
+    idxSrc.slice(
+      idxSrc.indexOf(from),
+      to === null ? undefined : idxSrc.indexOf(to),
+    );
+  const labelsIn = (block) =>
+    [...block.matchAll(/label:\s*"([^"]+)"\s*as TaxonomyLabel/g)].map(
+      (m) => m[1],
+    );
 
-  /* Files allowed to name a sector, each with its reason. Data files that
-     AUTHOR per-sector prose are not on this list and do not need to be: the
+  /* Files allowed to name a taxonomy, each with its reason. Data files that
+     AUTHOR per-domain prose are not on these lists and do not need to be: the
      rule matches a label in a `label:`/`name:` position, which is the
-     taxonomy-copy shape, not prose that happens to mention retail. */
-  const SECTOR_LABEL_ALLOWED = [
+     taxonomy-copy shape, not prose that happens to mention retail or SAP. */
+  const COMMON_ALLOWED = [
     ["src/data/l1/index.ts", "the index itself, the single source"],
-    ["src/lib/sectors.ts", "the derivation, which names none of them"],
     ["scripts/", "the rules that document the rule"],
   ];
 
+  const TAXONOMIES = [
+    {
+      rule: 5,
+      noun: "sector",
+      labels: labelsIn(
+        bounds("export const industriesIndex", "export const platformsIndex"),
+      ),
+      derivation: "industriesIndex, via sectorNavEntries() or deriveSectorRail()",
+      allowed: [
+        ...COMMON_ALLOWED,
+        ["src/lib/sectors.ts", "the derivation, which names none of them"],
+      ],
+    },
+    {
+      rule: 6,
+      noun: "platform",
+      labels: labelsIn(
+        bounds("export const platformsIndex", "export const capabilitiesIndex"),
+      ),
+      derivation:
+        "platformsIndex, via platformNavEntries(), derivePlatformList() or vendorSlugMap()",
+      allowed: [
+        ...COMMON_ALLOWED,
+        ["src/lib/platforms.ts", "the derivation, which names none of them"],
+      ],
+    },
+    {
+      rule: 7,
+      noun: "discipline",
+      labels: labelsIn(bounds("export const capabilitiesIndex", null)),
+      derivation:
+        "capabilitiesIndex, via capabilityNavEntries() or deriveCapabilityList()",
+      allowed: [
+        ...COMMON_ALLOWED,
+        ["src/lib/capabilities.ts", "the derivation, which names none of them"],
+        [
+          "src/data/capabilities/index.ts",
+          "capabilityNavEntries, the discipline derivation, which names none of them",
+        ],
+      ],
+    },
+  ];
+
   /* RENDERING code fails. DATA files are reported by name and do not fail yet,
-     and that split is deliberate rather than a softened rule.
+     and that split is deliberate rather than a softened rule: the sweep belongs
+     to the session that owns src/data, and failing here would hand that session
+     a red gate for work this one is not allowed to do.
 
-     Every rendering surface now derives, so a label sitting in a data file is
-     already inert — `deriveSectorRail` overwrites `name` from the index before
-     it paints, and the rail cannot disagree with the menu whatever the data
-     says. What is left in src/data is dead copy to be swept, and the sweep
-     belongs to the session that owns those files and is mid-way through adding
-     the seventh sector to them. Failing on it here would hand that session a
-     red gate for work this one is not allowed to do.
+     WHAT THE REPORT DOES AND DOES NOT CLAIM. It lists labels written in a data
+     file. It does not certify that each one is unreachable. Round 5 checked that
+     claim rather than repeating it, and it did not hold: three of the platform
+     lists flagged here were live, not inert — the AI estate bridge, the
+     Blueprint archetype desks, and `PlatformCoverage.name`, which is the
+     platform's own H1, <title> and every "Also in X" rail and was being taken
+     from whichever sector tool card the walk reached first. Each is derived now.
+     The remaining entries are reported for the data sweep; a surface added later
+     that reads one of them straight is caught by the rendering half of this rule
+     only if the label is written in the rendering file, so the report is a
+     handover list and not a proof of inertness.
 
-     Promote to a failure once the sweep lands. The list below is the handover. */
-  const dataCopies = [];
-  for (const file of allFiles) {
-    if (SECTOR_LABEL_ALLOWED.some(([p]) => file.startsWith(p))) continue;
-    const lines = readFileSync(file, "utf8").split("\n");
-    lines.forEach((line, i) => {
-      if (isComment(line)) return;
-      for (const label of sectorLabels) {
-        /* A label in a label:/name:/title: position is a copy of the taxonomy.
-           The same words inside a sentence are prose and are left alone. */
-        if (
-          new RegExp(
-            `\\b(label|name|title|short)\\s*:\\s*"${label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`,
-          ).test(line)
-        ) {
-          const hit =
-            `${file}:${i + 1}  writes the sector label "${label}".\n` +
-            `      Sector labels and order derive from industriesIndex, via sectorNavEntries()\n` +
-            `      or deriveSectorRail(). A label typed here does not move when the index does,\n` +
-            `      which is how the rail came to disagree with the mega menu three ways at once.\n` +
-            `      ${line.trim().slice(0, 90)}`;
-          if (file.startsWith("src/data/")) dataCopies.push(`${file}:${i + 1}`);
-          else failures.push(hit);
+     Promote each to a failure once its sweep lands. */
+  for (const tax of TAXONOMIES) {
+    const dataCopies = [];
+    for (const file of allFiles) {
+      if (tax.allowed.some(([p]) => file.startsWith(p))) continue;
+      const src = readFileSync(file, "utf8");
+      const lines = src.split("\n");
+      const comments = commentMask(src);
+      /* THE OTHER TAXONOMY, and it is the one canon §3 warns about by name.
+         `SPECIALIST_DESKS` is the six specialist desks that carry the screening
+         proof — Architecture, Software Development, Cloud & Infrastructure,
+         Packaged Software, Data & AI, Agile & DevOps. Two of those names are
+         also discipline labels, legitimately and permanently: the desks are a
+         different axis, not a copy of this one. Applying a discipline rule to
+         them is the same mistake in the opposite direction from relay v6.0's,
+         which renamed the desk and took the discipline with it.
+         Scoped to the declaration, not to the file. L1PageShell is a large
+         rendering file and a genuine discipline copy elsewhere in it must still
+         fail — verified by putting one there and watching it. */
+      let inDeskArray = false;
+      lines.forEach((line, i) => {
+        if (/const SPECIALIST_DESKS\s*=\s*\[/.test(line)) inDeskArray = true;
+        else if (inDeskArray && /^\s*\]/.test(line)) inDeskArray = false;
+        if (inDeskArray) return;
+        if (comments[i]) return;
+        for (const label of tax.labels) {
+          const q = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          /* TWO shapes, and the second exists because the first missed the very
+             defect this rule was written for.
+
+             (a) A label in a label:/name:/title:/short: position. The same words
+                 inside a sentence are prose and are left alone.
+
+             (b) A label as a bare ARRAY ELEMENT. The first draft of rule 6
+                 checked only (a), was green, and was then tested the way the
+                 brief requires — by typing a platform label back into rendering
+                 code and watching it fail. It did not fail. Both real copies it
+                 was written to catch, the JSON-LD `PLATFORMS` list and the CV
+                 form's `interestOptions`, are bare arrays of quoted names with
+                 no key in front of them, so a keyed-position rule could never
+                 have seen either. A rule that cannot fail on its own motivating
+                 case is not a rule.
+
+             The element test is deliberately tight: the quoted string must equal
+             the label exactly, open after `[`, `,` or line-leading whitespace,
+             and close before `,` or `]`. That admits `["SAP", "Oracle"]` and one
+             name per line, and excludes `=== "SAP"`, `case "SAP":`, a call
+             argument, and any sentence that merely contains the word. */
+          const keyed = new RegExp(
+            `\\b(label|name|title|short)\\s*:\\s*"${q}"`,
+          );
+          const element = new RegExp(`(^\\s*|[[,]\\s*)"${q}"\\s*[,\\]]`);
+          if (keyed.test(line) || element.test(line)) {
+            const hit =
+              `${file}:${i + 1}  writes the ${tax.noun} label "${label}".\n` +
+              `      ${tax.noun[0].toUpperCase()}${tax.noun.slice(1)} labels and order derive from ${tax.derivation}.\n` +
+              `      A label typed here does not move when the index does, which is how five\n` +
+              `      copies of the platform set never heard that Informatica had been ratified.\n` +
+              `      ${line.trim().slice(0, 90)}`;
+            if (file.startsWith("src/data/"))
+              dataCopies.push(`${file}:${i + 1}`);
+            else failures.push(hit);
+          }
         }
-      }
-    });
-  }
-  notes.push(`${sectorLabels.length} sector labels, none written in rendering code.`);
-  if (dataCopies.length) {
-    const byFile = new Map();
-    for (const c of dataCopies) {
-      const f = c.slice(0, c.lastIndexOf(":"));
-      byFile.set(f, (byFile.get(f) ?? 0) + 1);
+      });
     }
-    console.log(
-      `\n${dataCopies.length} inert sector label(s) still written into src/data, across ${byFile.size} file(s).\n` +
-        "Not a failure: every rendering surface derives, so these no longer reach a page.\n" +
-        "They are dead copy for the data session to sweep, after which this becomes a failure.\n" +
-        [...byFile]
-          .sort((a, b) => b[1] - a[1])
-          .map(([f, n]) => `  ${n.toString().padStart(2)}  ${f}`)
-          .join("\n"),
+    notes.push(
+      `${tax.labels.length} ${tax.noun} labels, none written in rendering code.`,
     );
+    if (dataCopies.length) {
+      const byFile = new Map();
+      for (const c of dataCopies) {
+        const f = c.slice(0, c.lastIndexOf(":"));
+        byFile.set(f, (byFile.get(f) ?? 0) + 1);
+      }
+      console.log(
+        `\n${dataCopies.length} inert ${tax.noun} label(s) still written into src/data, across ${byFile.size} file(s).\n` +
+          "Not a failure: every rendering surface derives, so these no longer reach a page.\n" +
+          "They are dead copy for the data session to sweep, after which this becomes a failure.\n" +
+          [...byFile]
+            .sort((a, b) => b[1] - a[1])
+            .map(([f, n]) => `  ${n.toString().padStart(2)}  ${f}`)
+            .join("\n"),
+      );
+    }
   }
 }
 

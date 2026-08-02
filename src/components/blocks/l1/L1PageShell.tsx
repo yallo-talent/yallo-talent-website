@@ -8,6 +8,7 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
+import { deriveLinkLabels } from "@/lib/taxonomy-links";
 import { deriveSectorRail } from "@/lib/sectors";
 import styles from "./L1PageShell.module.css";
 import { L1SubNav, L1SubNavScope } from "./L1SubNav";
@@ -1100,9 +1101,18 @@ function L1ReadNext({ data }: Props) {
     Capability: [] as typeof data.related,
     Intelligence: [] as typeof data.related,
   };
-  // Only rail links whose target exists — the related arrays are authored data
-  // and several entries point at pages that were never built.
-  for (const r of data.related.filter((x) => routeExists(x.href))) {
+  /* Only rail links whose target exists — the related arrays are authored data
+     and several entries point at pages that were never built.
+
+     `deriveLinkLabels` then takes the NAME from the index that owns the href,
+     leaving authored labels alone where the href is not a taxonomy route (case
+     studies, service pages, intelligence). The href was already checked against
+     the registries here and the label beside it never was, so a rename moved the
+     page and left every cross-link pointing at it saying the old name. Six of
+     these rails name platforms and none of them had heard of Informatica. */
+  for (const r of deriveLinkLabels(data.related).filter((x) =>
+    routeExists(x.href),
+  )) {
     if (r.category === "Industry") buckets.Industry.push(r);
     else if (r.category === "Platform") buckets.Platform.push(r);
     else if (r.category === "Capability") buckets.Capability.push(r);

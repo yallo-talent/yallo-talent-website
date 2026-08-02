@@ -1,18 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { platformLabels } from "@/lib/platforms";
 import styles from "./BriefForm.module.css";
 
-const interestOptions = [
-  "SAP",
-  "Oracle",
-  "Microsoft",
-  "Salesforce",
-  "Blue Yonder",
-  "Workday",
+/* The platform names DERIVE; the two trailing options are authored and stay.
+   That split is the point of the rule rather than an exception to it:
+   "Programme leadership" and "Data & platform" are not platforms and have no
+   index to come from, so a deriver that owned this whole list would have to
+   invent them.
+   The platform half was hand-written and had lost Informatica, so a candidate
+   with Informatica experience could not say so on the form for the one platform
+   whose desk Yallo had just stood up. */
+const interestOptions: readonly string[] = [
+  ...platformLabels(),
   "Programme leadership",
   "Data & platform",
-] as const;
+];
 
 type Status = "idle" | "submitting" | "success" | "error";
 

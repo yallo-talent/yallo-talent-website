@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { placeCopy, platforms, sectors } from "@/data/home/place";
+import { sectorRegistry } from "@/data/l1/registry";
+import { publishedPlatformSlugs } from "@/data/platforms/derive";
+import { derivePlatformList } from "@/lib/platforms";
 import { deriveSectorList } from "@/lib/sectors";
 import styles from "./Home.module.css";
 import { RoleGlyph } from "./icons";
@@ -34,7 +37,20 @@ export function WherePlace() {
           <div>
             <p className={styles.axisLabel}>{placeCopy.platformsLabel}</p>
             <ul className={styles.axisList}>
-              {platforms.map((p) => {
+              {/* Name and order derive from `platformsIndex`, and `published`
+                  derives from module coverage rather than from the flag in the
+                  data. Decision 9 of context-round5-rulings.md: a hand-declared
+                  publication state is the same class of defect as a hand-copied
+                  label, and this rail was the live instance. place.ts marked
+                  Informatica `published: false` while /platforms/informatica
+                  returned 200, so the homepage rendered a real page as unbuilt
+                  and hid the seventh platform, while the mega menu linked it
+                  correctly on the same screen.
+                  The flag left in the data is now inert, the same way the
+                  authored sector names beneath it are. The scope line, the mark
+                  and the module list stay authored. */}
+              {derivePlatformList(platforms, (p) => p.slug).map((p) => {
+                const published = publishedPlatformSlugs().includes(p.slug);
                 const body = (
                   <div className={styles.axisItem}>
                     {/* R9: a keyed silhouette or the vendor's NAME — never a
@@ -67,7 +83,7 @@ export function WherePlace() {
                 );
                 return (
                   <li key={p.slug}>
-                    {p.published ? (
+                    {published ? (
                       <Link
                         className={styles.axisLink}
                         href={`/platforms/${p.slug}`}
@@ -91,10 +107,21 @@ export function WherePlace() {
               {/* Order and label from the sector index, not from place.ts.
                   This rail carried its own copy of the taxonomy and its own
                   order, which put Manufacturing third where the mega menu puts
-                  it second. The scope line, the icon and the published flag
-                  stay authored — they are real per-card content and exist
-                  nowhere else. §4.3. */}
+                  it second. The scope line and the icon stay authored — they are
+                  real per-card content and exist nowhere else. §4.3. */}
               {deriveSectorList(sectors, (s) => s.slug).map((s) => {
+                /* `published` DERIVES from the registry as of round 5, the same
+                   as the platform column above. Round 4 left it authored here
+                   and the flag went stale in the other direction within the
+                   round: place.ts marked Telco & Media unpublished while
+                   /industries/telco returned 200, so the homepage rendered a
+                   live sector as unbuilt and the only place that said so was a
+                   greyed-out row nobody would think to click.
+                   Found by measuring the rendered page rather than by reading
+                   the data, which is the only way this shape of fault surfaces:
+                   both files agreed with each other and both were wrong about
+                   the site. Decision 9 generalised. */
+                const published = s.slug in sectorRegistry;
                 /* Same body either way, so the two branches cannot drift. */
                 const body = (
                   <div className={styles.axisItem}>
@@ -107,18 +134,15 @@ export function WherePlace() {
                     </span>
                   </div>
                 );
-                /* The platforms column above has honoured `published` all
-                   along; this one linked every sector unconditionally. Education
-                   is marked published: false in place.ts AND in nav-config, and
-                   both of those were respected — so the flag looked like it was
-                   working, while the homepage shipped a live link to
-                   /industries/education that 404s. Found by crawling every
-                   internal link on all 152 routes; it was the only dead one.
-
-                   Not a data fix. The data was right in both files. */
+                /* The history, kept because it is the argument for deriving.
+                   This rail once linked every sector unconditionally and shipped
+                   a live link to /industries/education while that route 404ed.
+                   Round 4 fixed it by honouring the authored flag; within the
+                   same round the flag was wrong the other way, on Telco. Reading
+                   the registry ends both directions at once. */
                 return (
                   <li key={s.slug}>
-                    {s.published ? (
+                    {published ? (
                       <Link
                         className={styles.axisLink}
                         href={`/industries/${s.slug}`}

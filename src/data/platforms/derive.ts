@@ -1,6 +1,7 @@
 import { allL1, type TaxonomyLabel, taxonomyLabels } from "@/data/l1/index";
 import { sectorRegistry } from "@/data/l1/registry";
 import { authoredPlatforms } from "@/data/platforms/authored";
+import { platformLabel, vendorSlugMap } from "@/lib/platforms";
 
 /**
  * Union authored role titles with the derived ones, letting the authored title
@@ -111,20 +112,21 @@ export interface PlatformCoverage {
 /**
  * Vendor name -> platform slug. The canon platform set, in canon order.
  *
- * Informatica is the seventh and last (R-INF1/R-INF2, 1 Aug 2026). Adding it
- * here is what lets the sector data reach the platform axis: retail already
- * carries an "Informatica MDM" tool with real roles, so the desk inherits a
- * genuine sector without anything being authored twice.
+ * DERIVED from `platformsIndex` as of round 5, rather than retyped here. This
+ * copy was correct and complete, and it was still one of six hand-written
+ * copies of the platform set — the one in `L2PageShell` had the same shape and
+ * had already lost Informatica. Being right is not the same as being unable to
+ * go wrong.
+ *
+ * Read through a function rather than a module-level constant: `@/lib/platforms`
+ * is a pure module over the index, but this file is on its import cycle through
+ * `@/lib/routes`, and a binding evaluated at module load would be the half of
+ * that cycle that reads undefined. Every use below is inside `collect()`, which
+ * runs well after both modules have initialised.
  */
-const VENDOR_SLUGS: Record<string, string> = {
-  SAP: "sap",
-  Oracle: "oracle",
-  Microsoft: "microsoft",
-  Salesforce: "salesforce",
-  "Blue Yonder": "blue-yonder",
-  Workday: "workday",
-  Informatica: "informatica",
-};
+function vendorSlugs(): Record<string, string> {
+  return vendorSlugMap();
+}
 
 /**
  * A platform page needs enough module coverage to be worth a visit. Below this
@@ -134,20 +136,31 @@ const MIN_MODULES = 3;
 
 function collect(): Map<string, PlatformCoverage> {
   const out = new Map<string, PlatformCoverage>();
+  /* Resolved once, not per tool card: this walks every tool on every function
+     of every sector. */
+  const slugs = vendorSlugs();
 
   for (const sector of Object.values(sectorRegistry)) {
     const { label: sectorLabel } = taxonomyLabels(sector.slug);
 
     for (const fn of sector.expertise) {
       for (const tool of fn.tools ?? []) {
-        const slug = VENDOR_SLUGS[tool.vendor];
+        const slug = slugs[tool.vendor];
         if (!slug) continue; // not in the canon platform set
 
         let cov = out.get(slug);
         if (!cov) {
           cov = {
             slug,
-            name: tool.vendor,
+            /* The display name is the INDEX's, not the vendor string that
+               happened to match first. `cov.name` is the platform's name on its
+               own H1, eyebrow, <title>, module headings and every "Also in X"
+               rail, and it was being taken from whichever sector tool card the
+               walk reached first. That made the largest platform-name surface on
+               the site the one place a rename would not reach.
+               The vendor string stays the fallback, so a vendor outside the
+               canon set still names itself rather than rendering blank. */
+            name: platformLabel(slug) ?? tool.vendor,
             modules: [],
             roles: [],
             sectors: [],
@@ -202,7 +215,8 @@ function collect(): Map<string, PlatformCoverage> {
     if (!cov) {
       cov = {
         slug: authored.slug,
-        name: authored.name,
+        /* Index first, for the same reason as the derived branch above. */
+        name: platformLabel(authored.slug) ?? authored.name,
         modules: [],
         roles: [],
         sectors: [],
@@ -292,7 +306,7 @@ export function platformIndex(): Array<{
   roleCount: number;
 }> {
   const cov = coverage();
-  return Object.entries(VENDOR_SLUGS).map(([name, slug]) => {
+  return Object.entries(vendorSlugs()).map(([name, slug]) => {
     const c = cov.get(slug);
     const moduleCount = c?.moduleCount ?? 0;
     return {

@@ -1,5 +1,7 @@
 import { capabilityNavEntries } from "@/data/capabilities";
 import { capabilitiesIndex } from "@/data/l1/index";
+import { publishedPlatformSlugs } from "@/data/platforms/derive";
+import { platformNavEntries } from "@/lib/platforms";
 import { sectorNavEntries } from "@/lib/sectors";
 
 export interface NavItem {
@@ -62,6 +64,24 @@ const capabilityNavItems: NavItem[] = capabilityNavEntries(
 }));
 
 /**
+ * The Platforms column, order and label from `platformsIndex`.
+ *
+ * `published` derives from module coverage rather than being declared, the same
+ * way the Industries column derives it from the sector registry: a platform with
+ * too little module data to justify a page renders as non-interactive text and
+ * becomes a link on the commit that gives it one. That is decision 9 of
+ * context-round5-rulings.md generalised — a hand-declared publication state is
+ * the same class of defect as a hand-copied label.
+ */
+const platformNavItems: NavItem[] = platformNavEntries((slug) =>
+  publishedPlatformSlugs().includes(slug),
+).map(({ label, href, published }) => ({
+  label,
+  href,
+  ...(published ? {} : { published: false }),
+}));
+
+/**
  * The Industries column, derived the same way, and for a sharper reason.
  *
  * This column WAS the canonical order — the "where we deploy" rail was ruled
@@ -92,34 +112,17 @@ export const primaryNav: NavGroup[] = [
     columns: [
       {
         heading: "Platforms",
-        items: [
-          { label: "SAP", href: "/platforms/sap" },
-          { label: "Oracle", href: "/platforms/oracle" },
-          {
-            label: "Microsoft",
-            href: "/platforms/microsoft",
-          },
-          {
-            label: "Salesforce",
-            href: "/platforms/salesforce",
-          },
-          {
-            label: "Blue Yonder",
-            href: "/platforms/blue-yonder",
-          },
-          {
-            label: "Workday",
-            href: "/platforms/workday",
-          },
-          {
-            /* 7th platform, and LAST in the order everywhere the order is
-               expressed (R-INF2): a real desk, not a co-equal of the ERP
-               suites. The route now exists with nine authored desks, so the
-               published flag is gone and this is a link again. */
-            label: "Informatica",
-            href: "/platforms/informatica",
-          },
-        ],
+        /* DERIVED, closing the eighth instance of the hand-copied-taxonomy class
+           (context-round5-rulings.md §5). This column was seven hand-written
+           entries and admitted as much in its own comment, which is the tell:
+           the fault was known, named in the file, and still could not be fixed
+           by care, because care does not survive the next edit.
+           Informatica is the proof it needed a mechanism. Ratified as the
+           seventh platform on 1 Aug (R-INF1) and last in the order (R-INF2), it
+           was added to this column and to the index by hand, and then missed on
+           five other copies of the same list. Deriving means the eighth platform
+           appears everywhere by being added in one place. */
+        items: platformNavItems,
       },
       {
         heading: "Capabilities",

@@ -6,6 +6,7 @@ import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import { taxonomyLabels } from "@/data/l1/index";
 import type { L1ExpertiseCard, L1IconKey, L1PageData } from "@/data/l1/types";
+import { vendorSlugMap } from "@/lib/platforms";
 import { routeExists } from "@/lib/routes";
 import styles from "./L2PageShell.module.css";
 
@@ -383,14 +384,11 @@ function L2Twin({ fn }: { fn: L1ExpertiseCard }) {
 }
 
 /* ============ CROSS-LINKS ============ */
-const vendorToPlatformSlug: Record<string, string> = {
-  SAP: "sap",
-  Oracle: "oracle",
-  Salesforce: "salesforce",
-  Microsoft: "microsoft",
-  "Blue Yonder": "blue-yonder",
-  Workday: "workday",
-};
+/* DERIVED. This was a second copy of the vendor map in platforms/derive.ts, and
+   the two had already diverged: this one was missing Informatica, so an
+   Informatica L2 rendered no link back to its own platform page while every
+   other module had one. Both now read `vendorSlugMap()`. */
+const vendorToPlatformSlug: Record<string, string> = vendorSlugMap();
 
 const fnToCapabilitySlugs: Record<string, string[]> = {
   "customer-experience": ["data-analytics", "integration-middleware"],

@@ -9,6 +9,7 @@ import {
   blueprintArchetype,
   blueprintSlugs,
 } from "@/data/blueprint";
+import { derivePlatformList } from "@/lib/platforms";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -197,7 +198,9 @@ export default async function BlueprintArchetypePage({
             id="desks-heading"
           />
           <ul className={styles.logos}>
-            {a.desks.map((d) => (
+            {/* Name and order from `platformsIndex`. Which desks an archetype
+                draws on stays authored; only their names derive. */}
+            {derivePlatformList(a.desks, (d) => d.slug).map((d) => (
               <li key={d.slug}>
                 <Link
                   className={styles.btnSecondary}

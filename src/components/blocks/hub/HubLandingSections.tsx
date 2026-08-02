@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
-import { capabilitiesIndex } from "@/data/l1/index";
+import { capabilitiesIndex, platformsIndex } from "@/data/l1/index";
 import type { L1IconKey } from "@/data/l1/types";
 import { routeExists } from "@/lib/routes";
 import styles from "./HubLandingSections.module.css";
@@ -268,25 +268,21 @@ export function HubCrossConnected() {
           <div className={styles.crossRail}>
             <div className={styles.crossRailLabel}>Platforms we staff</div>
             <div className={styles.crossChips}>
-              {[
-                { slug: "sap", label: "SAP" },
-                { slug: "oracle", label: "Oracle" },
-                {
-                  slug: "salesforce",
-                  label: "Salesforce",
-                },
-                {
-                  slug: "microsoft",
-                  label: "Microsoft",
-                },
-                {
-                  slug: "blue-yonder",
-                  label: "Blue Yonder",
-                },
-                { slug: "workday", label: "Workday" },
-              ]
-                // Only platforms with a page. Microsoft and Workday have no
-                // module data yet and render nowhere rather than 404.
+              {platformsIndex
+                /* DERIVED, and it was carrying two live defects at once, which
+                   is what a hand-written copy of a taxonomy looks like after a
+                   ratification it did not hear about.
+                   It was missing Informatica, ratified as the seventh platform
+                   on 1 Aug (R-INF1), so this rail showed six platforms where the
+                   mega menu showed seven. And it ran Salesforce before
+                   Microsoft, against canon §3's order, which the menu had right.
+                   Neither was visible from inside this file. Both are gone by
+                   construction now: the order is the index's and so is every
+                   name. */
+                .map((p) => ({ slug: p.slug, label: p.label }))
+                // Only platforms with a page: below the module-coverage floor
+                // the honest answer is no page, so the chip renders nowhere
+                // rather than linking to a 404.
                 .filter((p) => routeExists(`/platforms/${p.slug}`))
                 .map((p) => (
                   <Link

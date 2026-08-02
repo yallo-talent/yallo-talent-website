@@ -19,6 +19,7 @@ import {
 import { platformNarrative } from "@/data/platforms/narrative";
 import { whyPoints } from "@/data/platforms/why";
 import { buildMetadata } from "@/lib/seo";
+import { deriveLinkLabels } from "@/lib/taxonomy-links";
 
 /**
  * Platform depth at module level — the wedge.
@@ -598,7 +599,9 @@ export default async function PlatformPage({
               id="read-next-heading"
             />
             <ul className={styles.logos}>
-              {nar.related.links.map((l) => (
+              {/* Labels from the index that owns each href; authored labels
+                  survive where the href is not a taxonomy route. */}
+              {deriveLinkLabels(nar.related.links).map((l) => (
                 <li key={l.href}>
                   <Link className={styles.btnSecondary} href={l.href}>
                     {l.label}

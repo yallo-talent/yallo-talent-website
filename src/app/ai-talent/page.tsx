@@ -15,6 +15,7 @@ import {
 } from "@/data/ai-talent";
 import { stackMatrixAssertion, stacksByGroup } from "@/data/ai-talent/stacks";
 import { aiCopy } from "@/data/home/intelligence";
+import { derivePlatformList } from "@/lib/platforms";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -269,7 +270,12 @@ export default function AiTalentPage() {
             />
             <AiEstateDiagram />
             <ul className={styles.logos}>
-              {estateBridge.map((p) => (
+              {/* Name and order from `platformsIndex`. WHICH platforms appear
+                  here stays authored — the estate bridge is a curated set, and
+                  Blue Yonder and Workday are left out on purpose because the AI
+                  data layer does not meet those desks. Only the names of the
+                  ones chosen derive. */}
+              {derivePlatformList(estateBridge, (p) => p.slug).map((p) => (
                 <li key={p.slug}>
                   <Link
                     className={styles.btnSecondary}
