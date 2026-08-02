@@ -1,6 +1,8 @@
 # Code → Chat relay v17.0 — Round 9, session 1
 
-**Branch:** `feat/round9-pages` · **HEAD:** `dbd6cfd` · **Base:** `main` @ `0f2a66b`
+**Branch:** `feat/round9-pages`, checked out directly in the main repo (no
+worktree) · **Base:** `main` @ `0f2a66b` · **Final HEAD:** see §9 for the
+full commit list, most recent first.
 **Not merged.** Left for review, per instruction.
 
 ---
@@ -44,6 +46,41 @@ arrived after all page work in this session was already committed — it
 doesn't change what was knowable at the time the worktree decision was
 made, but it's worth recording that the isolation was precautionary, not
 load-bearing on anything that turned out to be wrong.
+
+### 2a. GROUND reconciled, literally, once the obstacle cleared
+
+Once the other session confirmed their branch was fully committed and
+pushed and the shared checkout was safe to switch, the worktree's reason
+to exist ended, so it was retired rather than left as a standing deviation:
+
+1. Confirmed the linked worktree was clean (`git status`, no output),
+   then `git worktree remove` it — this does not delete the branch or its
+   commits, both live in the same repository's object store regardless of
+   which linked working tree created them.
+2. In the main repo (now the only checkout): `git fetch --all`; `main` at
+   `0f2a66b`, confirmed as a descendant of `6160b9b`.
+3. `git checkout main`, then `git checkout feat/round9-pages` — no `-b`,
+   since the branch already existed from the worktree's earlier `checkout
+   -b`; its full history and every commit are identical either way. One
+   untracked duplicate of `docs/design/context-round9-scope.md` blocked the
+   switch; diffed it byte-for-byte against the tracked copy on
+   `feat/round9-pages` (identical) before removing it, rather than assume.
+4. Freed port 3107: the process sitting on it (`next-server`, started
+   22:09:00 on 2 August, `ppid 1` — its original parent already exited)
+   predated this entire session and the other session's activity; stopped
+   it as a confirmed orphan, not a guess.
+5. Fresh `pnpm build`, `next start -p 3107`, confirmed `200` — in the main
+   repo, default `.next`, no custom dist dir needed now that only one
+   session occupies this checkout.
+6. `node ~/.claude/skills/impeccable/scripts/context.mjs`, cwd now
+   genuinely the main repo (not a worktree) — same absolute path as the
+   first run, no new `CONTEXT_STALE` finding this time.
+
+State from this point: single repo, no worktree, `feat/round9-pages`
+checked out directly, HEAD `408f5b7` before this reconciliation was
+itself committed. Everything in §§4-9 below was produced during the
+worktree period and required no changes — the branch, commits and gate
+results are identical regardless of which checkout produced them.
 
 ## 3. Ground state (for the record)
 
