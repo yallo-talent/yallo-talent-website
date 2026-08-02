@@ -107,7 +107,30 @@ let pairsChecked = 0;
 for (const viewport of VIEWPORTS) {
 const page = await browser.newPage({ viewport });
 for (const path of PAGES) {
-  const res = await page.goto(BASE + path, { waitUntil: "networkidle" });
+  /* `domcontentloaded`, not `networkidle`, and not `load` either.
+
+     THE FAILURE WAS A FLAKE, AND THAT IS THE WHOLE POINT. This gate timed out
+     at 30s on `/` on a freshly built dist directory, and passed on the same
+     commit minutes later. Measured rather than reasoned about: networkidle on
+     `/` takes over 30,000ms against a cold image-optimiser cache and 801ms
+     against a warm one. `next start` optimises on first request, and the
+     client rail is five logos across four srcset widths, so a run that follows
+     a clean build pays for twenty optimisations inside one navigation timeout
+     while a run that follows any earlier page load pays for none.
+
+     So the gate's verdict depended on whether something had already visited the
+     site, which is the property a gate must not have. `load` is hostage to the
+     same images and was tried first; it timed out the same way.
+
+     Nothing measured here needs images. The gate reads computed font sizes,
+     settled once the stylesheets and fonts are, and `document.fonts.ready`
+     below is what actually gates the measurement — it already did. Verified
+     after the change by putting an 11px sans class on the site and watching all
+     32 violations come back.
+
+     capture-pages.mjs has carried a note about networkidle and lazy images
+     since it was written. Two gates never got it. */
+  const res = await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
   if (!res?.ok()) {
     failures.push(`${path} @${viewport.width}  did not load (HTTP ${res?.status() ?? "no response"})`);
     continue;

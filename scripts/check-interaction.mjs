@@ -87,6 +87,24 @@ const VIEWPORTS = [
   { width: 390, height: 844 },
 ];
 
+/* KNOWN LATENT FLAKE, left in place deliberately and recorded so the next
+   session does not spend the time twice.
+
+   The three `networkidle` waits below are the same hazard that made
+   check-rendered-type time out on 2 Aug 2026: on `/`, networkidle takes over
+   30,000ms against a cold next/image optimiser cache and 801ms against a warm
+   one, because the client rail is five logos across four srcset widths and
+   `next start` optimises on first request. A run straight after a clean build
+   can therefore time out where the identical commit passes a minute later.
+
+   Not changed here, and the reason is not caution about churn. This gate drives
+   hover, focus and Tab, so it needs React hydrated; `domcontentloaded` is the
+   right wait for the type gate precisely because that one only reads computed
+   styles, and it would be the wrong wait here. Removing the flake properly
+   means waiting on a hydration signal rather than on the network, which is a
+   change worth making on its own evidence rather than as a side effect.
+
+   Until then: warm the cache before a cold-build run, or expect one retry. */
 for (const viewport of VIEWPORTS) {
 for (const path of PAGES) {
   const page = await browser.newPage({ viewport });
