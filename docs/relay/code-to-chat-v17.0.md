@@ -251,13 +251,17 @@ Seven gates remain unwired into CI (`check:taxonomy`, `check:yallo-case`,
 ## 9. Commits this session
 
 ```
-4d49d6d docs(design): commit round 9 scope context
-96eef87 fix(nav): one mega-panel inset token, distinct column headings, EOR index
-dfb06fd feat(contract): answer the four-pillar questions the template had no room for
-a67c04c feat(managed-delivery): name the buyer, the saasinator boundary, and proof
-2cbd817 feat(permanent): name the buyer and the boundary, log the proof gap
+4f49c23 docs(relay): v17.0, GROUND reconciled literally in the main repo
+408f5b7 docs(relay): v17.0, GROUND compliance addendum
+590e79a docs(relay): v17.0, global chrome and all four pillars closed, session stops
 dbd6cfd fix(eor): rewrite the page for three countries, no invented mechanism
+2cbd817 feat(permanent): name the buyer and the boundary, log the proof gap
+a67c04c feat(managed-delivery): name the buyer, the saasinator boundary, and proof
+dfb06fd feat(contract): answer the four-pillar questions the template had no room for
+96eef87 fix(nav): one mega-panel inset token, distinct column headings, EOR index
+4d49d6d docs(design): commit round 9 scope context
 ```
 
-Six commits, explicit paths throughout, none touching `tsconfig.json`
-(checked out before every stage per the repo's own session-hygiene rule).
+Nine commits total (six page/gate work, three relay iterations), explicit
+paths throughout, none touching `tsconfig.json` (checked out before every
+stage per the repo's own session-hygiene rule).
