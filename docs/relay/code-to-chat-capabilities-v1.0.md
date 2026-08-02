@@ -1,6 +1,7 @@
 # Code → Chat relay — Capabilities parity round
 
 **v1.0 · 2 August 2026 · Branch `feat/capabilities-parity` · Project GTM.01**
+**SUPERSEDED by `code-to-chat-capabilities-v1.1.md`.** Kept as the record: it carries the S2 correction trail, where a defect was first reported as not reproducible and then found one surface further out.
 Against `docs/design/context-capabilities-parity-round.md` v1.0 and `context-ai-talent.md`.
 Parallel with the platform round on `main`.
 
