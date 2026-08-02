@@ -69,6 +69,13 @@ const PAGES = [
      capitalisation of Yallo, so the omission mattered most here. */
   "/intelligence",
   "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+  /* The landing hub, added at the round 7 close. The detail template above was
+     already here; the hub is a separate rendering unit and it renders the card
+     TITLES and EXCERPTS, which is the surface §3.5's rule was written for. The
+     round's own notes logged this for round 8, and AGENTS.md's standing rule is
+     that a new template joins every enumerating guard in the commit that
+     introduces it. One line now beats a list that failed for the third time. */
+  "/case-studies",
   /* Added 2 Aug for the dead-link assertion. The template is the same as
      /industries/retail, so template coverage was already satisfied and
      check-gate-coverage was right not to complain — but the assertion below is

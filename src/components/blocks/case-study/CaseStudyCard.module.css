@@ -37,26 +37,24 @@
   transform: translateY(-2px);
 }
 
+/* The CELL only. Never the mark's own height, and never a rule reaching the
+   image element inside it.
+
+   This carried `height: 28px` plus a `.logo img { max-height: 22px; width: auto }`
+   descendant rule, both left over from the withdrawn LogoImage's fixed
+   96x22 box. `.logo img` is specificity 0,1,1 against ClientMark's own `.img`
+   at 0,1,0, so it won: every mark on the grid painted clamped to 22px and
+   check:marks measured the surface 46.4% off its median while the identical
+   marks on the homepage sat at 0.0%. `width: auto` was the second half of it,
+   which is the aspect-rounding bug ClientMark.module.css documents.
+
+   min-height, not height, so the cell can never squeeze a solved box. Sizing
+   belongs to src/lib/mark-scale.ts and arrives as --mark-h and --mark-w. */
 .logo {
-  display: grid;
-  place-items: center;
-  height: 28px;
+  min-height: 32px;
   width: fit-content;
   min-width: 64px;
   margin-bottom: 16px;
-}
-
-.logo img {
-  max-height: 22px;
-  width: auto;
-  object-fit: contain;
-}
-
-.wordmark {
-  font-family: var(--font-display);
-  font-size: var(--fs-body);
-  font-weight: var(--fw-strong);
-  color: var(--fg);
 }
 
 .meta {
