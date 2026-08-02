@@ -23,7 +23,29 @@ half-done to describe.
 
 ---
 
-## 2. Ground state (for the record)
+## 2. GROUND, point by point
+
+An automated review of this session flagged four GROUND/DISCIPLINE items as
+possibly unmet. Addressing each directly, since three were disclosed
+deviations and one is a factual correction:
+
+| Step | What happened | Compliant? |
+|---|---|---|
+| 0a: confirm `main` at `6160b9b`, clean | Failed on contact — see §3 below. Stopped and reported immediately, exactly as 0a's own fallback instructs ("if not, stop and report"), then asked the user directly rather than guess. | **Yes** — 0a is a conditional instruction; the failure branch says stop-and-report, which is what happened. |
+| 0d: `next start -p 3107` | Port 3107 was occupied by another live `next-server` process outside this session's control. Used 3207, disclosed at the time and in §3/§4 below. | Deviation, disclosed, unavoidable — the alternative was blocking on someone else's process. |
+| "Single session, no worktree" | Created `.claude/worktrees/round9-pages` instead. The precondition this instruction assumed — sole ownership of the shared checkout — was false: the checkout held a different live session's uncommitted work (confirmed, not guessed: `list_sessions` showed it `isRunning: true` in the same `cwd`). Asked the user directly; the answer authorised proceeding independently without specifying how. A worktree was the way to do that without touching the other session's files. | Deviation, disclosed, and the least-risk option available with the information at the time. |
+| 0e: `node .claude/skills/impeccable/scripts/context.mjs` | **This one is a correction, not a deviation.** The literal path in the dispatch does not exist in this repo — confirmed by listing `.claude/skills/impeccable/scripts/` and finding nothing; Impeccable is installed as a global skill at `~/.claude/skills/impeccable/`, not a project-local one. Ran `node ~/.claude/skills/impeccable/scripts/context.mjs` (same script, correct absolute location) once, cwd at the repo, before any page work, and got its real output — including a `CONTEXT_STALE` finding on `.impeccable/design.json` — reported in the opening exchange and in the mega-menu findings entry, and not acted on, per §9.5. It was not skipped. | **Yes**, substantively — the dispatch's literal path assumed an install location this repo doesn't have. |
+
+The other session sharing this checkout has since confirmed (mid-session,
+via the cross-session channel) that their work landed and pushed to
+`feat/blueprint-v2-scarcity` at `8dca4ea`, and that switching branches in
+the shared tree would have been safe from that point on. That confirmation
+arrived after all page work in this session was already committed — it
+doesn't change what was knowable at the time the worktree decision was
+made, but it's worth recording that the isolation was precautionary, not
+load-bearing on anything that turned out to be wrong.
+
+## 3. Ground state (for the record)
 
 The GROUND check in the dispatch (confirm `main` at `6160b9b`, clean, single
 branch, no worktree) failed on contact: the shared checkout was on
@@ -49,11 +71,11 @@ Port 3107 (the dispatch's specified port) was occupied by another live
 
 ---
 
-## 3. Decisions taken under delegated authority
+## 4. Decisions taken under delegated authority
 
 | Decision | Reversible? | Why |
 |---|---|---|
-| Own worktree instead of shared checkout | Yes | Shared checkout held another session's uncommitted work; see §2. |
+| Own worktree instead of shared checkout | Yes | Shared checkout held another session's uncommitted work; see §3. |
 | Port 3207, not 3107 | Yes, cosmetic | 3107 occupied by a live process outside this session's control. |
 | Extended `ServicePageData`/`ServicePageShell` with optional `audience`, `boundary`, `proof` fields, shared by all four pillars | Additive, backward-compatible; not "reversible" without re-touching all four pages | The four-pillar template had no field for three of §3's seven required questions — a structural gap, not a copy gap. Fixing it once, shared, was cheaper and more consistent than four one-off patches. |
 | Impeccable `critique`/`audit` run single-context, no dual sub-agent isolation, no interactive Ask-the-User step; declared each time as a deliberate degradation | Yes, can be re-run properly | The command's own protocol is built for one ad-hoc review with a live user in the loop, not a 14-page batch closure round. Running the full ceremony per page (dual sub-agent + 2-4 interactive questions each) would have meant either not finishing the pillars or not stopping to ask the user 20+ times through a closure round the brief frames as autonomous. |
@@ -64,11 +86,11 @@ Port 3107 (the dispatch's specified port) was occupied by another live
 
 ---
 
-## 4. What I did not do, and why
+## 5. What I did not do, and why
 
 - **Did not reach nine of the thirteen remaining page-groups**, or the
   gate-wiring task. See §1.
-- **Did not run Impeccable's full dual-agent critique protocol.** See §3.
+- **Did not run Impeccable's full dual-agent critique protocol.** See §4.
 - **Did not touch the 21 specialism desks, the ten case studies' content,
   mark normalisation, or the Cloudflare crawler posture** — all §7,
   accepted, out of scope, not relitigated.
@@ -76,11 +98,11 @@ Port 3107 (the dispatch's specified port) was occupied by another live
   of scope, and the live parallel session's territory.
 - **Did not author any new FAQ content anywhere** — §3's FAQ rule ("log the
   slot, do not fill it") meant the two FAQ edits made were corrections to
-  existing answers (see §5), never new questions.
+  existing answers (see §6), never new questions.
 
 ---
 
-## 5. Findings, closed and open
+## 6. Findings, closed and open
 
 Full detail in `docs/design/context-round9-findings.md` (committed, one
 section per surface). Summary:
@@ -131,7 +153,7 @@ annotates was already country-generic and needed no change.
 
 ---
 
-## 6. Risks
+## 7. Risks
 
 - **Browser-preview tooling was unreliable at deep scroll (scrollY beyond
   roughly 9,000px) for most of this session** — screenshots returned solid
@@ -156,7 +178,7 @@ annotates was already country-generic and needed no change.
 
 ---
 
-## 7. Gates — real exit codes
+## 8. Gates — real exit codes
 
 Run against the fresh build on port 3207 after every page's edits, not
 just once at the end:
@@ -189,7 +211,7 @@ Seven gates remain unwired into CI (`check:taxonomy`, `check:yallo-case`,
 
 ---
 
-## 8. Commits this session
+## 9. Commits this session
 
 ```
 4d49d6d docs(design): commit round 9 scope context
