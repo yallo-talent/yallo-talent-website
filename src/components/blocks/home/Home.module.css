@@ -2706,23 +2706,6 @@
    grid across families, not wrap each family in another one. Left as-is
    rather than shipped broken. */
 
-/* Who acts at each step of the screen. Sits with the step name rather than in
-   the body, so the sequence can be read as "you, then us, us, us" at a glance. */
-.stepActor {
-  display: inline-block;
-  margin-left: 8px;
-  vertical-align: middle;
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-medium);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--accent-label);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-pill);
-  padding: 1px 8px;
-}
-
 /* ---------------------------------------------------------------------------
    POINT 11 — the AI-talent to evidence seam.
 

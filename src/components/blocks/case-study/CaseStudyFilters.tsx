@@ -46,6 +46,18 @@ export function CaseStudyFilters({
     [cards, pillar, platform, sector],
   );
 
+  /* Taken over every card rather than the filtered ones, and once rather than
+     per card. The mark set is what the median is taken from, so deriving it
+     from `filtered` would rescale every mark on the grid whenever a facet
+     changed. */
+  const markSet = useMemo(
+    () =>
+      cards
+        .map((c) => c.clientLogo)
+        .filter((logo): logo is string => Boolean(logo)),
+    [cards],
+  );
+
   return (
     <div>
       <div className={styles.facets}>
@@ -84,7 +96,7 @@ export function CaseStudyFilters({
       {filtered.length > 0 ? (
         <div className={styles.grid}>
           {filtered.map((card) => (
-            <CaseStudyCard key={card.slug} card={card} />
+            <CaseStudyCard key={card.slug} card={card} set={markSet} />
           ))}
         </div>
       ) : (

@@ -52,11 +52,6 @@ export const caseStudyFrontmatterSchema = insightFrontmatterSchema.extend({
   /** The published URL this was ported from, for provenance. */
   sourceUrl: z.url().optional(),
   /**
-   * Homepage rail position (canon's eight, relay §8). Absent means the study
-   * appears on the hub in date order but not in the rail.
-   */
-  featured: z.number().int().positive().optional(),
-  /**
    * Optional, deliberately. Requiring an outcome line and a metrics array is
    * what drove the first pass of this content to invent both — the real
    * published studies carry neither as separate quotable fields. A figure

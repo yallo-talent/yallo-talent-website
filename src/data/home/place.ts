@@ -72,13 +72,17 @@ export const platforms: PlatformAxis[] = [
     name: taxonomyLabels("blue-yonder").label,
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    /* blue-yonder.png, not sap.svg. The two entries were adjacent in this array
-       and the wrong literal got carried over, publishing SAP's mark under Blue
-       Yonder's name on the homepage platform axis — a false vendor association,
-       round 7 §4.3. This is a raster, unlike the other five platform marks, so
-       it does not get the SAP entry's full-colour box-lockup treatment above;
-       it renders through whatever raster path the rail already supports. */
-    mark: "/logos/platforms/blue-yonder.png",
+    /* NAME text, like Informatica below, and not blue-yonder.png.
+       Two separate findings meet here. The entry pointed at sap.svg, because the
+       two were adjacent in this array and the wrong literal got carried over,
+       publishing SAP's mark under Blue Yonder's name: a false vendor
+       association, round 7 §4.3. Correcting the path alone would have swapped
+       that for a different defect, because blue-yonder.png measures as an opaque
+       plate at 100% ink with no alpha, so the register's invert paints a solid
+       black bar. Canon §8 allows a keyed silhouette or the name, and this file
+       cannot be the first. One transparent monochrome asset reverses this line,
+       round 7 close-out §4.1. */
+    mark: null,
     published: true,
   },
   {

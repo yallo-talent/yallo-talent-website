@@ -4,11 +4,6 @@ import type { FilterableCard } from "@/components/blocks/case-study/CaseStudyFil
 import { CaseStudyFilters } from "@/components/blocks/case-study/CaseStudyFilters";
 import styles from "@/components/blocks/case-study/CaseStudyLanding.module.css";
 import {
-  findClientMark,
-  hasLogoAsset,
-} from "@/components/blocks/case-study/client-lookup";
-import { interimOrderedCaseStudies } from "@/components/blocks/case-study/interim-order";
-import {
   pillarChip,
   pillarFilterOptions,
   platformChip,
@@ -16,6 +11,8 @@ import {
   sectorChip,
   sectorFilterOptions,
 } from "@/components/blocks/case-study/taxonomy";
+import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import { buildMetadata } from "@/lib/seo";
 
@@ -30,15 +27,13 @@ export const metadata: Metadata = buildMetadata({
 
 export default function CaseStudiesHub() {
   const all = getAllCaseStudies();
-  const ordered = interimOrderedCaseStudies(all);
+  const ordered = orderedCaseStudies(all);
   const frontmatters = all.map((e) => e.frontmatter);
 
   const cards: FilterableCard[] = ordered.map(({ frontmatter: fm }) => {
-    const match = fm.clientPublic ? findClientMark(fm.client) : undefined;
     const clientLabel = fm.clientPublic
-      ? (match?.name ?? fm.client)
+      ? clientDisplayNameFor(fm.client)
       : `${fm.region} · ${fm.platform}`;
-    const showLogo = match?.logo && hasLogoAsset(match.logo);
     const pillar = pillarChip(fm.engagement);
     const platform = platformChip(fm.platform);
     const sector = sectorChip(fm.industry);
@@ -48,7 +43,7 @@ export default function CaseStudiesHub() {
       title: fm.cardTitle ?? fm.title,
       summary: fm.excerpt ?? fm.summary,
       clientLabel,
-      clientLogo: showLogo ? match?.logo : undefined,
+      clientLogo: fm.clientPublic ? clientLogoFor(fm.client) : undefined,
       meta: [pillar?.label, fm.region].filter(Boolean).join(" · "),
       pillar: pillar?.label,
       platformHref: platform?.href,

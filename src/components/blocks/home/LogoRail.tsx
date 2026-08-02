@@ -20,10 +20,17 @@ import { RailViewport } from "./RailViewport";
  * dark, which is what read as "illegible dark blobs".
  *
  * A mark whose source will not key to one clean ink, or which cannot reach a
- * readable cap height in the cell, is NOT shipped as an image at all — the build
- * gate measures both and declines. Those render as the client's NAME, per canon
- * §8: never a padded box, never a redrawn mark. `hasLogoAsset` is the check,
- * because clients.yaml still names them; only the asset is absent.
+ * readable cap height in the cell, is NOT shipped as an image at all: the build
+ * gate measures both and declines. Sephora, Wickes and Radwell are in that state
+ * today.
+ *
+ * THIS RAIL DROPS THEM RATHER THAN SETTING THEIR NAME. Canon §8's name fallback
+ * is right on a card, where the name sits in a text block that already carries
+ * words. Here it is wrong: a row of silhouettes with three words threaded
+ * through it reads as three marks that failed to load, and the rail's whole
+ * claim is that these are marks. Consent is not the issue and `consentOnFile`
+ * stays true for all three; only the asset is absent, and one transparent file
+ * each puts them back with no code change. The other surfaces keep the name.
  *
  * Motion: one slow translateX loop over a duplicated track, paused on hover, on
  * focus-within, by a discreet control, and by prefers-reduced-motion. Marks are
@@ -33,7 +40,7 @@ export function LogoRail() {
   const clients: Client[] = [
     ...getConsentedClients("enterprise"),
     ...getConsentedClients("integrators"),
-  ];
+  ].filter((c) => hasLogoAsset(c.logo));
 
   return (
     <section className={styles.rail} aria-label="Clients and integrators">
@@ -59,10 +66,11 @@ function LogoItems({
 }) {
   /* The whole rail's mark set, so every mark is normalised against the same
      median. Ink-area normalisation is a property of the set: a mark has no
-     correct size until you know what it sits beside. */
+     correct size until you know what it sits beside. Every client reaching here
+     has an asset, filtered in LogoRail above. */
   const set = clients
     .map((c) => c.logo)
-    .filter((logo): logo is string => Boolean(logo) && hasLogoAsset(logo));
+    .filter((logo): logo is string => Boolean(logo));
 
   return (
     <>
@@ -81,7 +89,7 @@ function LogoItems({
               decoration sharing the same URLs, so it paints from cache without
               ever blocking load. */}
           <ClientMark
-            src={hasLogoAsset(c.logo) ? c.logo : undefined}
+            src={c.logo}
             name={c.name}
             surface="rail"
             set={set}

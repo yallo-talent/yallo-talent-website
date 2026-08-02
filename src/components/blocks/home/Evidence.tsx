@@ -1,4 +1,4 @@
-import { clientLogoFor } from "@/data/home/client-logos";
+import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
 import { evidenceCopy, testimonial } from "@/data/home/intelligence";
 import {
   HOMEPAGE_CASE_STUDY_COUNT,
@@ -31,8 +31,11 @@ export function Evidence() {
       // and metadata. Excerpts are compression of the body only.
       title: s.frontmatter.cardTitle ?? s.frontmatter.title,
       summary: s.frontmatter.excerpt ?? s.frontmatter.summary,
+      // The register's display name, never the frontmatter string: the card
+      // read "Sephora Middle East" where the register says "Sephora", which is
+      // a second source of truth for a name the register already states.
       client: s.frontmatter.clientPublic
-        ? s.frontmatter.client
+        ? clientDisplayNameFor(s.frontmatter.client)
         : "Undisclosed enterprise",
       // Only a named client gets a mark; an undisclosed one must not be
       // identifiable by its logo.

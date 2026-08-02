@@ -63,7 +63,7 @@
   color: var(--accent-label);
   background: var(--ground);
   border: 1px solid var(--boundary);
-  border-radius: 999px;
+  border-radius: var(--r-pill);
   margin: 0 0 24px;
 }
 

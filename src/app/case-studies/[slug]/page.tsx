@@ -4,12 +4,12 @@ import { BriefCTA } from "@/components/blocks/BriefCTA";
 import styles from "@/components/blocks/case-study/CaseStudyDetail.module.css";
 import { CaseStudyHero } from "@/components/blocks/case-study/CaseStudyHero";
 import { ClientCard } from "@/components/blocks/case-study/ClientCard";
-import { findClientMark } from "@/components/blocks/case-study/client-lookup";
 import { EngagementStrip } from "@/components/blocks/case-study/EngagementStrip";
-import { interimOrderedCaseStudies } from "@/components/blocks/case-study/interim-order";
 import { MetricsStrip } from "@/components/blocks/case-study/MetricsStrip";
 import { Movements } from "@/components/blocks/case-study/Movements";
 import { NextCaseStudy } from "@/components/blocks/case-study/NextCaseStudy";
+import { clientDisplayNameFor } from "@/data/home/client-logos";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import {
   getAllCaseStudies,
   getAllCaseStudySlugs,
@@ -64,10 +64,10 @@ export default async function CaseStudyPage({ params }: PageProps) {
   const { frontmatter, body } = entry;
 
   const clientLabel = frontmatter.clientPublic
-    ? (findClientMark(frontmatter.client)?.name ?? frontmatter.client)
+    ? clientDisplayNameFor(frontmatter.client)
     : `${frontmatter.region} · ${frontmatter.platform}`;
 
-  const ordered = interimOrderedCaseStudies(getAllCaseStudies());
+  const ordered = orderedCaseStudies(getAllCaseStudies());
   const currentIndex = ordered.findIndex(
     (e) => e.frontmatter.slug === frontmatter.slug,
   );
