@@ -190,9 +190,36 @@ const approved = pairs.filter((p) => p.approved);
 const floor = Math.min(...approved.map((p) => p.min));
 const below = pairs.filter((p) => !p.approved && p.min < floor);
 
+/* THE GOVERNING CRITERION, ratified 2 Aug 2026. Separation from BARE GROUND,
+   not pairwise, and this is the thing the file now fails on.
+
+   The pairwise floor was set by analogy with the approved four, without asking
+   whether a reader ever sees two identity hues at once. They do not: the
+   palette assigns hues so that no two members of one taxonomy share, precisely
+   because a visitor is inside one family at a time. A delta-E between two
+   colours nobody can compare measures a comparison that never happens. The
+   only set that met the pairwise floor met it by withdrawing two hues and
+   making two platforms share one, which breaks the rule the floor existed to
+   protect. That is what settled it.
+
+   Ground distance is what R4 actually asks: does each page read as having its
+   own colour. The floor is derived the same self-calibrating way the pairwise
+   one was, from the weakest of the four frozen hues, so it cannot drift into an
+   arbitrary constant and cannot be met by removing a hue. */
+const groundFloor = Math.min(
+  ...presence
+    .filter((p) => FROZEN.includes(p.hue))
+    .map((p) => Math.min(p.light, p.dark)),
+);
+const groundFailures = presence.filter(
+  (p) => Math.min(p.light, p.dark) < groundFloor,
+);
+
 if (process.argv.includes("--json")) {
-  console.log(JSON.stringify({ floor, pairs, presence }, null, 2));
-  process.exit(0);
+  console.log(
+    JSON.stringify({ floor, groundFloor, pairs, presence }, null, 2),
+  );
+  process.exit(groundFailures.length === 0 ? 0 : 1);
 }
 
 const f = (n, w = 6) => n.toFixed(2).padStart(w);
@@ -214,19 +241,46 @@ console.log(
   `  approved band ${floor.toFixed(2)} to ${Math.max(...approved.map((p) => p.min)).toFixed(2)}.  whole-family minimum ${pairs[0].min.toFixed(2)}.`,
 );
 
-console.log("\n  Each wash against its own bare ground:");
-for (const p of presence)
-  console.log(`  ${p.hue.padEnd(24)}${f(p.light)}  ${f(p.dark)}`);
-
 if (below.length) {
   console.log(
-    `\n  ${below.length} pair(s) below the floor: ${below.map((p) => `${p.a}/${p.b}`).join(", ")}.`,
+    `\n  ${below.length} pair(s) below the pairwise floor: ${below.map((p) => `${p.a}/${p.b}`).join(", ")}.`,
   );
   console.log(
-    "  Reported, not failed. Whether the floor is the right criterion is an open\n" +
-      "  ruling: these hues are never rendered side by side, so pair separation may\n" +
-      "  be the wrong test and presence against the ground the right one. See\n" +
-      "  docs/status/shots/hues-v8/.",
+    "  Measured and reported, never a gate. Ratified 2 Aug 2026: identity hues are\n" +
+      "  assigned so no two members of a taxonomy share, so a reader is inside one\n" +
+      "  family at a time and never sees two side by side. The pairwise number is\n" +
+      "  kept so drift stays visible; it does not fail. See DESIGN.md R4a.",
   );
 }
+
+console.log(
+  "\n  THE GATE — each wash against its own bare ground (does the page read as\n" +
+    "  having its own colour). Worse theme binds.\n",
+);
+console.log("  hue                      light    dark     worse");
+for (const p of presence) {
+  const worse = Math.min(p.light, p.dark);
+  console.log(
+    `  ${p.hue.padEnd(24)}${f(p.light)}  ${f(p.dark)}  ${f(worse)}` +
+      (FROZEN.includes(p.hue) ? "   approved" : "") +
+      (worse < groundFloor ? "   BELOW FLOOR" : ""),
+  );
+}
+console.log(
+  `\n  ground floor ${groundFloor.toFixed(2)}, set by the weakest approved hue.`,
+);
+
+if (groundFailures.length) {
+  console.error(
+    `\n  ${groundFailures.length} hue(s) below the ground floor: ${groundFailures
+      .map((p) => p.hue)
+      .join(", ")}. A hue that does not separate from bare ground gives its page\n` +
+      "  no colour of its own, which is the whole of R4.",
+  );
+  process.exit(1);
+}
+
+console.log(
+  `\n  ${HUES.length} hues, all clear the ground floor. Pairwise minimum ${pairs[0].min.toFixed(2)}, reported only.`,
+);
 process.exit(0);

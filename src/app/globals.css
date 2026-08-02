@@ -36,7 +36,7 @@
      gate and fails the reader. 4.63:1 worst case, claret on --paper at 20%.
      Not applied globally: on bare ground --ink-3 already passes, and darkening
      it everywhere would close the gap to --ink-2 for no gain. */
-  --ink-3-wash: #545456; /* 4.63:1 over the worst light composite */
+  --ink-3-wash: #535355; /* 4.63:1 over the worst light composite (set C harbour on --paper) */
 
   --rule: #cdcbc3; /* decorative hairline */
   --rule-strong: #807e76; /* 3.11:1 — control boundaries only */
@@ -70,7 +70,7 @@
      deliberately close rather than comfortably clear — every step up narrows
      the gap to --dk-txt-2 at #afafaf, and the hierarchy between secondary and
      subtle copy is the thing being spent to buy the ratio. 1.12:1 apart. */
-  --dk-txt-3-wash: #a5a5a5; /* 4.61:1 over the worst dark composite */
+  --dk-txt-3-wash: #a6a6a6; /* 4.61:1 over the worst dark composite (set C claret on --dk-2) */
 
   --dk-line: #2b2b2b; /* decorative hairline — 1.17:1, gentler than 1.24:1 */
   --dk-line-strong: #717171; /* 3.40:1 — control boundaries only */
@@ -129,13 +129,20 @@
      was below the just-noticeable threshold and every page read the same brown.
      A permanently dark surface (.band-dark) takes the DARK figure in both
      themes — it restates it locally, since these live on :root. */
+  /* Set C, ratified 2 Aug 2026. Four hues frozen, three re-derived by search
+     on the lexicographic minimum: harbour off indigo, claret off plum, and
+     mulberry out of the 43-degree gap it had between violet and plum. Whole
+     family minimum rises 2.29 -> 3.51, a 53% improvement on every failing pair
+     with no hue leaving its brief.
+     The governing criterion is separation from BARE GROUND, not pairwise —
+     see the note on --id-* below and DESIGN.md R4a. */
   --amb-plum-l: #8e4a72;
   --amb-violet-l: #5f5694;
   --amb-teal-l: #3d7d7d;
-  --amb-harbour-l: #3e6e85;
+  --amb-harbour-l: #005a82; /* set C: pushed off indigo, still a cool soft blue */
   --amb-indigo-l: #3a5a8a;
-  --amb-claret-l: #8b3e4e; /* muted wine: the family's warm end without brown */
-  --amb-mulberry-l: #7b4988; /* 7th hue, Informatica. 288deg, between violet and plum */
+  --amb-claret-l: #a36365; /* set C: muted wine, the family's warm end without brown */
+  --amb-mulberry-l: #8e62ad; /* 7th hue, Informatica. Set C: opened up off violet and plum */
 
   /* --- Identity hues (canon §5, R4, 31 Jul) -------------------------------
      ONE hue per platform, discipline and sector, used only in that family's
@@ -212,10 +219,10 @@
   --amb-plum-d: #b45c8e;
   --amb-violet-d: #7a6fb8;
   --amb-teal-d: #4e9a9a;
-  --amb-harbour-d: #5289a5;
+  --amb-harbour-d: #427ea8; /* set C */
   --amb-indigo-d: #5677b3;
-  --amb-claret-d: #af5f70;
-  --amb-mulberry-d: #9d63ab;
+  --amb-claret-d: #bf7f80; /* set C */
+  --amb-mulberry-d: #aa7cc4; /* set C */
 
   /* --- Non-colour primitives ------------------------------------------- */
   /* The quarter-round petal: three square corners, one radius. Five scales,

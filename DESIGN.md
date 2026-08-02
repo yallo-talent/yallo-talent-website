@@ -267,9 +267,9 @@ behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha`
 20% on light, 30% on dark.
 
 - **Plum** `#8e4a72` / dark `#b45c8e` · **Violet** `#5f5694` / `#7a6fb8` ·
-  **Teal** `#3d7d7d` / `#4e9a9a` · **Harbour** `#3e6e85` / `#5289a5` ·
-  **Indigo** `#3a5a8a` / `#5677b3` · **Mulberry** `#7b4988` / `#9d63ab` ·
-  **Claret** `#8b3e4e` / `#af5f70`.
+  **Teal** `#3d7d7d` / `#4e9a9a` · **Harbour** `#005a82` / `#427ea8` ·
+  **Indigo** `#3a5a8a` / `#5677b3` · **Mulberry** `#8e62ad` / `#aa7cc4` ·
+  **Claret** `#a36365` / `#bf7f80`.
 
   *Amended 2 Aug 2026.* Sumeet rejected moss and umber; moss became harbour, umber
   became claret, and mulberry was added as the seventh for Informatica. Tokens were
@@ -285,10 +285,35 @@ behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha`
   layer. Read anything in this file as a record of what was decided, and if it
   disagrees with `globals.css` or the canon, this file is the one that is stale.
 
-  The separation between these seven hues, measured on the painted wash rather
-  than on the token, is below the approved floor for six of the twenty-one pairs
-  and is an open ruling for Sumeet. Run `node scripts/check-hue-separation.mjs`;
-  the evidence is in `docs/status/shots/hues-v8/`.
+  **R4a — the governing test is separation from bare ground, ratified 2 August
+  2026.** Set C ships: four hues frozen, harbour, claret and mulberry re-derived
+  by search. Whole-family pairwise minimum rises 2.29 to 3.51.
+
+  The pairwise floor is withdrawn as a gate, and this is a ruling about the test
+  rather than about the values. It was set by analogy with the approved four
+  without asking whether a reader ever sees two identity hues at once. They do
+  not: hues are assigned so no two members of one taxonomy share, precisely
+  because a visitor is inside one family at a time. A ΔE between two colours
+  nobody can compare measures a comparison that never happens, and the only
+  candidate set that met the floor met it by making two platforms share a hue —
+  breaking the rule the floor existed to protect.
+
+  What R4 actually asks is whether each page reads as having its own colour, so
+  the gate is each wash against its own bare ground, worse theme binding. All
+  seven clear: 7.94 to 10.53 on light, 12.70 to 17.81 on dark. The floor is
+  7.94, derived from the weakest approved hue rather than fixed as a constant,
+  so it cannot drift and cannot be met by withdrawing a hue.
+
+  Pairwise separation stays measured and reported, never a gate.
+  `scripts/check-hue-separation.mjs` fails on ground distance and prints the
+  weakest pairs beside it. Contact sheet: `docs/status/shots/hues-v8/`.
+
+  **Subtle text over the wash takes its own token.** `--ink-3` clears 4.94:1 on
+  bare paper and 4.02:1 once a hue is laid over it at `--amb-alpha`, so a token
+  that passes in isolation fails where it is actually read. `--ink-3-wash`
+  `#535355` and `--dk-txt-3-wash` `#a6a6a6` apply inside `.amb-wash` only, at
+  4.63:1 and 4.61:1 worst case against all seven hues at full alpha. R11's alpha
+  is unchanged. `check:contrast` measures composites, not just tokens.
 
 **The Rhythm Rule.** A section takes its ambient hue from its *position* in the page
 (`.amb-1`…`.amb-6`), never from what its content is about. Two schemes exist behind

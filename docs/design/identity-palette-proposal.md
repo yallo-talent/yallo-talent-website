@@ -1,5 +1,42 @@
 # R4 identity palette — the full mapping, SHIPPED
 
+> **RATIFIED 2 August 2026 — set C, and the governing test changes.**
+>
+> **The test is separation from bare ground, not pairwise separation.** This
+> supersedes the pairwise floor recorded in the note below, which is kept
+> because the numbers in it are still measured and still reported.
+>
+> The pairwise floor was set by analogy with the approved four without asking
+> whether a reader ever sees two identity hues at once. They do not. The palette
+> assigns hues so that no two members of one taxonomy share, precisely because a
+> visitor is inside one family at a time. A ΔE between two colours nobody can
+> compare measures a comparison that never happens. The only candidate set that
+> met the floor met it by withdrawing two hues and making two platforms share
+> one, which breaks the rule the floor existed to protect. That settles it.
+>
+> **What ships: set C, seven hues, whole-family pairwise minimum 3.51**, a 53%
+> improvement on every failing pair with no hue leaving its brief. Four hues are
+> frozen and untouched — indigo, teal, plum, violet. Three are re-derived by
+> search on the lexicographic minimum:
+>
+> | Hue | Was | Now |
+> |---|---|---|
+> | harbour | `#3E6E85` / `#5289A5` | `#005A82` / `#427EA8` |
+> | claret | `#8B3E4E` / `#AF5F70` | `#A36365` / `#BF7F80` |
+> | mulberry | `#7B4988` / `#9D63AB` | `#8E62AD` / `#AA7CC4` |
+>
+> **Ground distance, the gate.** Measured on painted washes at real alpha, worse
+> theme binding: teal 7.94, claret 8.16, indigo 8.42, violet 9.20, mulberry
+> 10.48, plum 10.34, harbour 10.53. The floor is 7.94, derived from the weakest
+> approved hue rather than set as a constant, so it cannot drift and cannot be
+> met by removing a hue. `scripts/check-hue-separation.mjs` fails on it.
+>
+> **Pairwise stays measured and reported, never a gate.** The same script keeps
+> printing the weakest pairs so drift stays visible.
+>
+> Contact sheet for Sumeet's eye: `docs/status/shots/hues-v8/`. One line reverses
+> this if the eye disagrees.
+
 > **AMENDED 2 August 2026 — the family is SEVEN, and two members changed.**
 > Sumeet rejected moss and umber. `moss` becomes **harbour** `#3E6E85` / `#5289A5`,
 > `umber` becomes **claret** `#8B3E4E` / `#AF5F70`, and Informatica takes a
