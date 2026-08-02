@@ -217,7 +217,34 @@ reports the six pairs rather than failing them.
 3. Unchanged from round 3 and untouched here: the LinkedIn Talent Insights
    reports, Informatica's consent flag, and Backbase.
 
-## 7. Notes for session B
+## 7. Integration, read before merging either branch
+
+Checked by reading refs, without entering B's worktree.
+
+**B was never actually blocked.** `L1SubNav` had already been extracted into its
+own file in the platform-parity round, so it was importable from `main` before
+this session started. The §3 ruling assumed it was still private to
+`L1PageShell`. My export is therefore a convenience rather than an unblock, and
+B built `/ai-talent`'s sub-nav at `5e58f10` without taking `0cb7cce`.
+
+**B got the containment right independently.** B wraps the bar in
+`l1.subNavScope`, reaching into the CSS module the way the platform template used
+to. So there is no occlusion defect on `/ai-talent`, which was the thing worth
+checking. What is left is two idioms for one behaviour: B's raw class and this
+branch's `L1SubNavScope` component. Reconcile onto the component at merge.
+
+**One real conflict, in `src/app/ai-talent/page.tsx`.** Both sessions changed the
+page's root. B added the sub-nav and its scope wrapper; this branch replaced the
+bare fragment with a `data-identity="ai-talent"` wrapper so the hue resolves.
+Both are needed and they nest: identity outermost, then the sub-nav scope around
+the bar and the sections it indexes. Neither should be dropped in favour of the
+other.
+
+**B's commit message for `5e58f10` credits this session's export.** It is
+describing the earlier extraction, not `0cb7cce`, which is not on B's branch.
+Worth correcting if the message matters for the record.
+
+## 8. Notes for session B
 
 - `L1SubNav` and `L1SubNavScope` are on `fix/design-system-and-gates` at
   `0cb7cce`. Take that commit before building `/ai-talent`'s sub-nav.
