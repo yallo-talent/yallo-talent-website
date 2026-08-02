@@ -1,6 +1,6 @@
 # Code → Chat relay v7.0
 
-**2 August 2026 · yallo-talent-website · HEAD `b18095e` on `feat/platform-parity-round` · nine gates 9/9**
+**2 August 2026 · yallo-talent-website · HEAD `2c9c448` on `feat/platform-parity-round` · nine gates 9/9**
 
 **Two rounds are recorded here.** §§1-9 are the original v7.0 goal. §10 is the
 platform parity bolt-on that followed it.
@@ -362,3 +362,91 @@ at my commit. Flagged for whoever owns that component, not fixed by me.
 The parallel session is also mid-write across `.husky/pre-commit`,
 `package.json`, `next.config.ts` and several pages. **Measurements taken in this
 tree from here on are unreliable**, which is the reason this round stops here.
+
+
+---
+
+# 11. Parity round, continued
+
+## 11.1 The narrative gap, which was the real parity gap
+
+Measured before authoring. SAP painted **eight H2 sections and 14,170px**;
+every other platform painted **four and roughly 6,500**. The difference was not
+inventory, it was argument: SAP opens with a problem, names the roles that are
+hard to fill, tells the reader which estate they are running, and routes
+onward. The other six had a module grid, a role list, the rhythm and the ask.
+
+All seven now carry the full band set:
+
+| | Sections | Height |
+|---|---|---|
+| SAP | 8 | 14,170px |
+| Oracle | 8 | 10,439px |
+| Microsoft | 8 | 10,387px |
+| Blue Yonder | 8 | 9,800px |
+| Workday | 8 | 9,369px |
+| Salesforce | 8 | 9,254px |
+| Informatica | 8 | 8,984px |
+
+`narrative.ts` carries its own rule that every role named in a scarce band must
+already exist in that platform's data. **Enforced rather than trusted**: the
+rendered bench was read on all seven and diffed against the scarce names. All
+19 read-next links resolve. No figure, client, quotation, date or scarcity
+number appears, and the interface has no field for one.
+
+Content is genuine to each platform rather than SAP's argument with the nouns
+swapped. Oracle opens on the role model and FBDI conversion, because that is
+what delays a Fusion pilot. Salesforce on Marketing Cloud being a separate
+market and release engineering being stood up late. Blue Yonder on three
+benches sharing a vendor and MOCA having no substitute. Workday on a product
+that resists modification, so the work is design rather than build. Microsoft
+on being four benches that shortlists treat as one.
+
+## 11.2 A correction to §10.6
+
+I reported the 18 literal font-sizes in `AiEstateDiagram.module.css` as
+"untracked, not in my commit, not mine to fix". That was true when written. The
+file has since been **committed**, so the branch carried a genuinely red
+`check-type-scale --strict`. I also mis-read its exit code once, by capturing
+`tail`'s status through a pipe rather than the script's.
+
+Chasing the literals found the larger fault. **Six classes on `/ai-talent`
+rendered SANS at 13px**, under A4's 14px sans floor — `layerIndex`,
+`layerContents`, `railNote`, `railItem`, `caption` and an uppercase overlay
+label. The rendered-type gate enforces exactly that rule and would have caught
+it on sight. **It never looked: `/ai-talent` was not in its PAGES list.**
+
+Both halves fixed. Sizes resolve through the ramp, and the overlay label takes
+the site's real eyebrow grammar, which is mono at 13px — setting the family is
+what makes that size legal rather than an exception. The gate's blind spot is
+closed: `/ai-talent`, an AI role-family L2 and a Blueprint archetype are added,
+taking coverage from 7 templates to 10 and 184 family/weight pairs to 272.
+
+"One page per template" was right, and was applied to the templates that
+existed when it was written. Three page families have landed since and none of
+them was audited.
+
+## 11.3 A duplicate that came back
+
+Blue Yonder listed the same job twice, 4px apart on one row: "Fulfillment Lead"
+and "Fulfilment Lead". `authored.ts` already carried a comment explaining the
+earlier fix — but the authored roles are **unioned** with the derived sector
+roles rather than overriding them, and `retail.ts` and `manufacturing.ts` still
+held the other spelling, so it reappeared through derivation. Fixed at both
+sources. Bench 48 to 47.
+
+The general lesson, now recorded in the file: an authored fix does not stick
+while a sector file disagrees.
+
+## 11.4 Still open
+
+- **Blue Yonder carries sector-derived generics** beside its real titles:
+  "Business Analyst", "Solution Architect", "Integration Consultant", plus
+  near-duplicates like "MFP Specialist" against "Blue Yonder MFP Specialist".
+  They come through the same union as the spelling duplicate. Not touched,
+  because those titles are legitimate on the sector pages they come from and
+  untangling them is a data decision rather than a cleanup.
+- **`--r-chip` sits 2px from `--r-xs`.** If you would rather not grow the radius
+  scale the two can collapse onto 8px with no visible change.
+- **The hue separation failures in §10.5** stand, reported and unfixed by
+  instruction.
