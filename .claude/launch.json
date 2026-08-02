@@ -6,6 +6,18 @@
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["dev"],
       "port": 3000
+    },
+    {
+      "name": "yallo-talent-b",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_DIST_DIR=.next-b",
+        "pnpm",
+        "dev",
+        "--port",
+        "3002"
+      ],
+      "port": 3002
     }
   ]
 }
