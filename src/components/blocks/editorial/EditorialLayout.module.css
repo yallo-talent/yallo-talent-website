@@ -409,6 +409,14 @@
   color: var(--text);
 }
 
+.prose h4 {
+  margin: 24px 0 8px;
+  font-family: var(--font-display);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
 .prose p {
   margin: 0 0 16px;
   font-size: var(--fs-body);
@@ -418,18 +426,89 @@
 
 .prose ul,
 .prose ol {
+  list-style: none;
   margin: 0 0 18px;
-  padding-left: 20px;
+  padding-left: 0;
 }
 
 .prose li {
+  position: relative;
   margin-bottom: 8px;
+  padding-left: 20px;
   font-size: var(--fs-body);
   line-height: 1.65;
   color: var(--text-2);
 }
 
+.prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* Restores native decimal numbering preflight strips, in the same neutral
+   currentColor rather than gold — a marker is not the interactive/decorative
+   accent gold is reserved for, same ruling as the dot above. */
+.prose ol {
+  counter-reset: prose-ol;
+}
+
+.prose ol > li {
+  counter-increment: prose-ol;
+}
+
+.prose ol > li::before {
+  content: counter(prose-ol) ".";
+  position: absolute;
+  left: 0;
+  color: currentColor;
+  font-variant-numeric: tabular-nums;
+}
+
 .prose strong {
   color: var(--text);
   font-weight: var(--fw-strong);
+}
+
+.prose blockquote {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 20px;
+  border-left: 2px solid var(--border-strong);
+  font-style: italic;
+  color: var(--fg-muted);
+}
+
+.prose blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose hr {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid var(--hairline);
+}
+
+.prose table {
+  width: 100%;
+  margin: 0 0 18px;
+  border-collapse: collapse;
+  font-size: var(--fs-body-sm);
+}
+
+.prose th,
+.prose td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--text-2);
+}
+
+.prose th {
+  font-weight: var(--fw-strong);
+  color: var(--text);
 }

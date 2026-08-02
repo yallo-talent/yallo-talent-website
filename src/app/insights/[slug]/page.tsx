@@ -88,25 +88,29 @@ export default async function InsightPage({ params }: PageProps) {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <MDXRemote source={body} />
+            <div className={styles.prose}>
+              <MDXRemote source={body} />
+            </div>
             {frontmatter.sources && frontmatter.sources.length > 0 && (
               <aside>
                 <h2 className={styles.sectionH}>Sources</h2>
-                <ul>
-                  {frontmatter.sources.map((s) => (
-                    <li key={`${s.claim}-${s.source}`}>
-                      <strong>{s.claim}</strong> — {s.source}
-                      {s.url && (
-                        <>
-                          {" "}
-                          <a href={s.url} rel="noopener noreferrer">
-                            (link)
-                          </a>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                <div className={styles.prose}>
+                  <ul>
+                    {frontmatter.sources.map((s) => (
+                      <li key={`${s.claim}-${s.source}`}>
+                        <strong>{s.claim}</strong> — {s.source}
+                        {s.url && (
+                          <>
+                            {" "}
+                            <a href={s.url} rel="noopener noreferrer">
+                              (link)
+                            </a>
+                          </>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </aside>
             )}
           </div>
