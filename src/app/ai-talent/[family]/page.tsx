@@ -11,6 +11,7 @@ import {
 } from "@/data/ai-talent";
 import { stacksForFamily } from "@/data/ai-talent/stacks";
 import { BLUEPRINT_BASE, blueprintArchetype } from "@/data/blueprint";
+import { disciplineLink } from "@/lib/capabilities";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -65,6 +66,12 @@ export default async function AiRoleFamilyPage({
   if (!f) notFound();
 
   const stacks = stacksForFamily(f.slug);
+  /* Undefined when the family declares no discipline, and also when it declares
+     one that does not resolve — an unbuilt sub-desk renders nothing rather than
+     a dead link. */
+  const discipline = f.adjacentDiscipline
+    ? disciplineLink(f.adjacentDiscipline)
+    : undefined;
   const blueprints = f.blueprints
     .map((slug) => blueprintArchetype(slug))
     .filter((a) => a !== null);
@@ -210,8 +217,19 @@ export default async function AiRoleFamilyPage({
         </div>
       </section>
 
-      {/* 8 — Adjacent families, three maximum. */}
-      {f.adjacent.length > 0 ? (
+      {/* 8 — Adjacent families, three maximum, plus at most one discipline.
+
+          The discipline link is decision 7's return leg: Data Science links out
+          to AI Talent from its `twin` band, and until now nothing came back.
+          It sits in this band rather than in one of its own because it answers
+          the band's own question — what this role gets confused with — and the
+          answer for the AI Data Engineer genuinely is a role on another desk.
+
+          `disciplineLink` resolves the label from the capability data, so the
+          band cannot name a desk by a name that desk no longer uses, and
+          resolves to undefined rather than rendering a link to a route that
+          does not exist. */}
+      {f.adjacent.length > 0 || discipline ? (
         <section className={`${styles.section} ${styles.g2}`} id="adjacent">
           <div className={styles.wrap}>
             <SectionHead
@@ -231,6 +249,14 @@ export default async function AiRoleFamilyPage({
                   </Link>
                 </li>
               ))}
+              {discipline ? (
+                <li key={discipline.href}>
+                  <Link className={styles.btnSecondary} href={discipline.href}>
+                    {discipline.label}
+                    <ArrowGlyph />
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </div>
         </section>

@@ -748,47 +748,32 @@ function L2Insights({ sector }: { sector: L1PageData }) {
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
-          {published.map((post, _i) => {
-            const inner = (
-              <>
-                <PetalPlate
-                  seed={post.href}
-                  className={styles.insImg}
-                  ratio={0.66}
-                />
-                <div className={styles.insImgTint} aria-hidden="true" />
-                <div className={styles.insImgShade} aria-hidden="true" />
-                <span className={styles.insCat}>{post.category}</span>
-                <div className={styles.insOverlay}>
-                  <h3 className={styles.insTitle}>{post.title}</h3>
-                  <div className={styles.insMeta}>
-                    <span className={styles.insAuthor}>
-                      {post.author} · {post.minutes} min
-                    </span>
-                    {post.published !== false && (
-                      <span className={styles.insRead}>Read →</span>
-                    )}
-                  </div>
+          {/* The unpublished branch that used to live here is deleted rather
+              than left unreachable. `published` is already filtered above, so
+              the branch could not fire, and dead code carrying the behaviour a
+              ruling just removed is how the behaviour comes back. Same reasoning
+              as the deleted `_L1CrossSector`. */}
+          {published.map((post) => (
+            <Link key={post.href} href={post.href} className={styles.insCard}>
+              <PetalPlate
+                seed={post.href}
+                className={styles.insImg}
+                ratio={0.66}
+              />
+              <div className={styles.insImgTint} aria-hidden="true" />
+              <div className={styles.insImgShade} aria-hidden="true" />
+              <span className={styles.insCat}>{post.category}</span>
+              <div className={styles.insOverlay}>
+                <h3 className={styles.insTitle}>{post.title}</h3>
+                <div className={styles.insMeta}>
+                  <span className={styles.insAuthor}>
+                    {post.author} · {post.minutes} min
+                  </span>
+                  <span className={styles.insRead}>Read →</span>
                 </div>
-              </>
-            );
-            if (post.published === false) {
-              return (
-                <div
-                  key={post.href}
-                  className={styles.insCard}
-                  aria-disabled="true"
-                >
-                  {inner}
-                </div>
-              );
-            }
-            return (
-              <Link key={post.href} href={post.href} className={styles.insCard}>
-                {inner}
-              </Link>
-            );
-          })}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

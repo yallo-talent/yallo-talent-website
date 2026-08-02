@@ -53,6 +53,12 @@ export const aiDataEngineer: AiRoleFamily = {
     "Blocked by data access rather than by model choice, so it starts at whatever point the programme can get at the documents, which is usually earlier than the plan assumes and later than it should be. This is the role whose absence is discovered during evaluation, when the prompt layer has been tuned twice against a corpus that cannot answer the question. Keep it retained after go-live: sources change, access rules change, and an index that is correct on the cutover weekend drifts from that day onward.",
   blueprints: [],
   adjacent: ["llm-engineer", "ai-solution-architect", "mlops-engineer"],
+  /* The return leg of the Data Science cross-link, decision 7. The AI Data
+     Engineer is the role the two desks genuinely share, and the Data Science
+     desk already names it as the role briefed from here — so this is the one
+     family the reverse link belongs on, rather than on /ai-talent as a whole.
+     No label: the sub-desk's title is resolved from the capability data. */
+  adjacentDiscipline: { capability: "data-analytics", fn: "data-science" },
   seo: {
     title: "AI Data Engineers, Retrieval and RAG Pipelines | Yallo Talent",
     description:

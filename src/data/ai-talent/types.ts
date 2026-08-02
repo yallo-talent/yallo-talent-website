@@ -46,6 +46,27 @@ export interface AiRoleFamily {
   blueprints: string[];
   /** Band 8. Internal links, three maximum (context §3). */
   adjacent: RoleFamilySlug[];
+  /**
+   * Band 8, the cross-taxonomy half. One optional discipline, or one sub-desk
+   * of one.
+   *
+   * Decision 7 of context-round5-rulings.md, and it is the least structure that
+   * satisfies round 4 §7's both-directions requirement. Data Science already
+   * links out to AI Talent through its `twin` band; the return leg had nowhere
+   * to live, because `adjacent` above is typed to AI families only and
+   * `estateBridge` is platform-shaped. A discipline link in either would have
+   * been the wrong axis in a round about keeping axes apart.
+   *
+   * NOT A NEW BAND. It renders inside the adjacent band beside the role-family
+   * links, because it answers the same reader question — what this role is
+   * confused with — and a band of one link would be a heading with a chip
+   * under it.
+   *
+   * Optional, and one maximum. The label is never written here: `fn` names a
+   * sub-desk whose title already exists in the capability data, and
+   * `disciplineLink` resolves both. An unresolvable reference renders nothing.
+   */
+  adjacentDiscipline?: { capability: string; fn?: string };
   /** Search title and description. */
   seo: { title: string; description: string };
 }

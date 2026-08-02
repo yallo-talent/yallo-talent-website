@@ -1,3 +1,4 @@
+import { capabilityRegistry } from "@/data/capabilities";
 import { capabilitiesIndex } from "@/data/l1/index";
 
 /**
@@ -53,6 +54,40 @@ export function isCapability(slug: string): boolean {
 export function capabilityHref(slug: string): string | undefined {
   const entry = capabilitiesIndex.find((e) => e.slug === slug);
   return entry ? (entry.href ?? `/capabilities/${entry.slug}`) : undefined;
+}
+
+/**
+ * Resolve a discipline reference, optionally to one of its sub-desks, into the
+ * label and href to render.
+ *
+ * This is the AI Talent to Data Science reverse link of decision 7, and it
+ * exists as a resolver rather than as an authored label for the usual reason:
+ * "Data Science" is already written down once, as the sub-desk's `title` on the
+ * Data & Analytics desk. Typing it a second time on the AI side would create the
+ * eleventh copy of a taxonomy name in a round spent removing ten.
+ *
+ * Returns undefined when the reference does not resolve, so a link is never
+ * rendered to a page that is not there and no label is ever invented for one.
+ */
+export function disciplineLink(ref: {
+  capability: string;
+  fn?: string;
+}): { label: string; href: string } | undefined {
+  const base = capabilityLabel(ref.capability);
+  const href = capabilityHref(ref.capability);
+  if (!base || !href) return undefined;
+  if (!ref.fn) return { label: base, href };
+
+  const desk = capabilityRegistry[ref.capability]?.expertise.find(
+    (e) => e.slug === ref.fn,
+  );
+  /* A sub-desk with no tools has no L2 route — the same rule `routeExists`
+     applies — so it resolves to nothing rather than to a 404. */
+  if (!desk || (desk.tools?.length ?? 0) === 0) return undefined;
+  return {
+    label: desk.title,
+    href: `/capabilities/${ref.capability}/${ref.fn}`,
+  };
 }
 
 /**

@@ -934,8 +934,24 @@ function L1Segments({ data }: Props) {
 }
 
 /* ============ INSIGHTS (scrolling) ============ */
+/**
+ * The insight row, and it renders PUBLISHED items only.
+ *
+ * Decision 1 of context-round5-rulings.md, the Blueprint's no-empty-slot rule
+ * applied sitewide. The row used to render every item in the array and grey out
+ * the ones with no article behind them, so a reader met a card with a headline,
+ * a byline and a reading time that could not be opened. On the sector pages that
+ * was the whole row: canon §9 descopes insight articles from this build, so
+ * every teaser on six of the seven sectors is a placeholder.
+ *
+ * A placeholder is worse than an absence, and worse again when it has gone
+ * stale — two finance teasers were still advertising platforms the desk had
+ * stopped staffing, one of them with an unsourced market claim in its excerpt.
+ * Nothing published means no row at all, no eyebrow and no heading.
+ */
 function L1Insights({ data }: Props) {
-  if (!data.insights || data.insights.length === 0) return null;
+  const published = (data.insights ?? []).filter((p) => p.published !== false);
+  if (published.length === 0) return null;
   return (
     <section className={`${styles.insights} amb-wash amb-5`}>
       <div className={styles.wrap}>
@@ -957,47 +973,30 @@ function L1Insights({ data }: Props) {
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
-          {data.insights.map((post, _i) => {
-            const inner = (
-              <>
-                <PetalPlate
-                  seed={post.href}
-                  className={styles.insImg}
-                  ratio={0.66}
-                />
-                <div className={styles.insImgTint} aria-hidden="true" />
-                <div className={styles.insImgShade} aria-hidden="true" />
-                <span className={styles.insCat}>{post.category}</span>
-                <div className={styles.insOverlay}>
-                  <h3 className={styles.insTitle}>{post.title}</h3>
-                  <div className={styles.insMeta}>
-                    <span className={styles.insAuthor}>
-                      {post.author} · {post.minutes} min read
-                    </span>
-                    {post.published !== false && (
-                      <span className={styles.insRead}>Read →</span>
-                    )}
-                  </div>
+          {/* Every card here is published, so every card is a link. The
+              disabled-card branch is gone rather than left unreachable: an
+              unpublished teaser has no rendering at all now. */}
+          {published.map((post) => (
+            <Link key={post.href} href={post.href} className={styles.insCard}>
+              <PetalPlate
+                seed={post.href}
+                className={styles.insImg}
+                ratio={0.66}
+              />
+              <div className={styles.insImgTint} aria-hidden="true" />
+              <div className={styles.insImgShade} aria-hidden="true" />
+              <span className={styles.insCat}>{post.category}</span>
+              <div className={styles.insOverlay}>
+                <h3 className={styles.insTitle}>{post.title}</h3>
+                <div className={styles.insMeta}>
+                  <span className={styles.insAuthor}>
+                    {post.author} · {post.minutes} min read
+                  </span>
+                  <span className={styles.insRead}>Read →</span>
                 </div>
-              </>
-            );
-            if (post.published === false) {
-              return (
-                <div
-                  key={post.href}
-                  className={styles.insCard}
-                  aria-disabled="true"
-                >
-                  {inner}
-                </div>
-              );
-            }
-            return (
-              <Link key={post.href} href={post.href} className={styles.insCard}>
-                {inner}
-              </Link>
-            );
-          })}
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </section>

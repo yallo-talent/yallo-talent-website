@@ -315,6 +315,27 @@ behind body copy.** Consumed only through `--amb-1`…`--amb-6` at `--amb-alpha`
   4.63:1 and 4.61:1 worst case against all seven hues at full alpha. R11's alpha
   is unchanged. `check:contrast` measures composites, not just tokens.
 
+  **A wash band carries TWO text levels, not three. Ratified 2 August 2026 as
+  decision 4 of `docs/design/context-round5-rulings.md`, and it is a constraint
+  rather than a preference.** Buying AA for subtle text over the wash spent the
+  gap between subtle and secondary: inside `.amb-wash` on dark,
+  `--dk-txt-3-wash` `#a6a6a6` sits **1.11:1** from `--dk-txt-2` `#afafaf`, down
+  from 1.40:1 before the lift. 1.11:1 is not a visible step. A reader cannot see
+  a hierarchy at that separation, so designing one into a wash band produces two
+  levels that look identical and a third that is really the heading.
+
+  The honest statement is the constraint: **inside a wash band, use body and one
+  quieter level, and carry any further hierarchy on something other than tone** —
+  size, weight, case, family or position, all of which A4's ramp already
+  separates. Do not add a third tonal level to a wash band and do not reach for
+  `--dk-txt-2` and `--dk-txt-3-wash` as adjacent steps in one, because they are
+  not adjacent steps, they are the same step twice.
+
+  The alternative was lowering `--amb-alpha`, which R11 raised for a reason: at
+  8% the identity hue sat below the just-noticeable threshold and every page read
+  the same coffee-brown. Spending an invisible tonal step to keep a visible hue
+  is the right trade, and it is recorded here so it is not reopened as a defect.
+
 **The Rhythm Rule.** A section takes its ambient hue from its *position* in the page
 (`.amb-1`…`.amb-6`), never from what its content is about. Two schemes exist behind
 `data-ambient` on `<html>` ("spectrum", the default, and "gold", monochrome); the flip
