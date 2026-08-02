@@ -33,10 +33,22 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+/**
+ * The description does NOT enumerate the platform set, per
+ * context-round6-rulings.md §6.4, and the reason is the reason the derivation
+ * exists in code.
+ *
+ * It read "Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue
+ * Yonder, Workday" — six of the seven, missing Informatica, ratified on 1
+ * August. That is the same defect round 5 closed across six live copies of the
+ * platform list, sitting in the one string every crawler reads first. A meta
+ * description that enumerates a taxonomy goes stale the moment canon amends it,
+ * and the fix is not to add the seventh name: it is to stop counting.
+ */
 export const metadata: Metadata = {
   title: "Yallo Talent — Contract, Permanent, EOR, Managed Delivery",
   description:
-    "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platforms: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+    "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platform programmes staffed at module level, not at vendor level.",
 };
 
 export default function RootLayout({

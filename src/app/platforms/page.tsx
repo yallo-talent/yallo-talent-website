@@ -4,11 +4,22 @@ import { platformsIndex } from "@/data/l1/index";
 import { publishedPlatformSlugs } from "@/data/platforms/derive";
 import { buildMetadata } from "@/lib/seo";
 
+/**
+ * Non-enumerating, per context-round6-rulings.md §6.4. It read "SAP, Oracle,
+ * Microsoft, Salesforce, Blue Yonder and Workday specialists" — six of seven,
+ * missing Informatica, on the hub page that renders the set correctly from
+ * `platformsIndex` directly below. The page derived and its own description did
+ * not, which is the whole class in one file.
+ *
+ * The list is not extended to seven. A description that names the taxonomy
+ * dates every time canon amends it, and the second sentence's duplicate
+ * "Specialists ... Specialists" goes with it.
+ */
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Platforms · Yallo Talent",
     description:
-      "SAP, Oracle, Microsoft, Salesforce, Blue Yonder and Workday specialists. Specialists across the Middle East and Europe.",
+      "Enterprise platform specialists, screened at module level rather than by vendor name. Contract, permanent and EOR across the Middle East and Europe.",
   },
   path: "/platforms",
 });

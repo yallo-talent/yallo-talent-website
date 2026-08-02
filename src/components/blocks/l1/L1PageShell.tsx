@@ -16,10 +16,14 @@ import { l1Icons } from "./l1-icons";
 
 /**
  * Re-exported so a bespoke page can take the sticky bar off the shell without
- * rebuilding itself on the shell. /ai-talent is the case: it carries the stack
- * matrix and the estate diagram, which the shell has no slot for, and it was
- * the only L1 with no section bar. Import both from here — the scope is not
- * optional, see its own comment.
+ * rebuilding itself on the shell. /ai-talent is the case: it carries the estate
+ * band, which the shell has no slot for, and it was the only L1 with no section
+ * bar. Import both from here — the scope is not optional, see its own comment.
+ *
+ * The list of what /ai-talent could not give up used to read "the stack matrix
+ * and the estate diagram". Round 6 merged the first into the second, and
+ * `L1StatsStrip` is exported below for the same reason this is: the desk should
+ * borrow the standard bands rather than hand-build near-copies of them.
  */
 export { L1SubNav, L1SubNavScope } from "./L1SubNav";
 

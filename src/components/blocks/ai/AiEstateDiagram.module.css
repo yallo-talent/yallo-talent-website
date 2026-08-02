@@ -233,11 +233,15 @@
 
 .desk {
   display: inline-block;
-  padding: 4px 10px 5px;
+  padding: 5px 11px 6px;
   border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-xs);
   background: var(--surface);
-  font-size: var(--fs-caption);
+  /* --fs-body-sm, not --fs-caption. These are filled controls, and A4 puts
+     buttons and nav at 15px against the 14px card/meta floor —
+     `check-rendered-type` reads the painted background to tell one from the
+     other and caught this at 14px on eight route/width pairs. */
+  font-size: var(--fs-body-sm);
   line-height: 1.4;
   color: var(--text-2);
 }
@@ -288,11 +292,16 @@ a.desk:focus-visible {
 
 .chip {
   display: inline-block;
-  padding: 4px 9px 5px;
+  padding: 5px 11px 6px;
   border: 1px solid var(--accent-line);
   border-radius: 0 0 0 var(--r-sm);
   background: var(--accent-wash);
-  font-size: var(--fs-caption);
+  /* A4's button step, and here it is the rule's own worked example rather than
+     a gate being satisfied. A4 was raised BECAUSE "role chips, module lists,
+     metric labels" had settled at the smallest size on the page, so the product
+     Yallo sells rendered smaller than the meta around it. These are the role
+     chips. They are also filled controls, which is the 15px role. */
+  font-size: var(--fs-body-sm);
   line-height: 1.35;
   color: var(--accent-label);
   cursor: pointer;
