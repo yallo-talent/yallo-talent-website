@@ -18,18 +18,38 @@ import { getConsentedClients, hasLogoAsset } from "@/lib/clients";
  * image cache still held the deleted files. `hasLogoAsset` is now the check.
  */
 export function clientLogoFor(client: string): string | undefined {
+  const hit = matchClient(client);
+  return hasLogoAsset(hit?.logo) ? hit?.logo : undefined;
+}
+
+/**
+ * Resolves a case-study's raw client string to the register's own display
+ * name — "Sephora Middle East" becomes "Sephora", per the ALIASES map below.
+ * Falls back to the input unchanged when nothing in the register matches, so
+ * a name outside the register (an unlisted integrator, say) still renders as
+ * written rather than disappearing.
+ *
+ * Round 7 §4.4: a card carried "Sephora Middle East" as a second, driftable
+ * source of truth for a name the register already states as "Sephora". This
+ * is the derivation the case-study card must call instead of trusting its own
+ * frontmatter `client` string.
+ */
+export function clientDisplayNameFor(client: string): string {
+  return matchClient(client)?.name ?? client;
+}
+
+function matchClient(client: string) {
   const all = [
     ...getConsentedClients("enterprise"),
     ...getConsentedClients("integrators"),
   ];
   const target = normalise(client);
-  const hit = all.find((c) => {
+  return all.find((c) => {
     const name = normalise(c.name);
     return (
       name === target || target.startsWith(name) || name.startsWith(target)
     );
   });
-  return hasLogoAsset(hit?.logo) ? hit?.logo : undefined;
 }
 
 /** "Tata Consultancy Services" and "TCS" have to meet somewhere. */

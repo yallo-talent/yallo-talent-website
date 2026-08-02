@@ -20,6 +20,18 @@ export interface CommitmentColumn {
 
 export const commitmentColumns: [CommitmentColumn, CommitmentColumn] = [
   {
+    kind: "Contract workforce",
+    heading: "Rate-card based, and replaced if the quality misses.",
+    badge: { value: "2–4", label: "weeks to onboard" },
+    terms: [
+      "Published rate card",
+      "Replacement on quality",
+      "Ramp up and ramp down",
+      "Contract to hire available",
+    ],
+    cta: { label: "How Contract works", href: "/contract" },
+  },
+  {
     kind: "Permanent hiring",
     heading: "You pay when someone starts, and only if they stay.",
     badge: { value: "100", label: "day warranty" },
@@ -31,23 +43,11 @@ export const commitmentColumns: [CommitmentColumn, CommitmentColumn] = [
     ],
     cta: { label: "How Permanent works", href: "/permanent" },
   },
-  {
-    kind: "Contract hiring",
-    heading: "Rate-card based, and replaced if the quality misses.",
-    badge: { value: "2–4", label: "weeks to onboard" },
-    terms: [
-      "Published rate card",
-      "Replacement on quality",
-      "Ramp up and ramp down",
-      "Contract to hire available",
-    ],
-    cta: { label: "How Contract works", href: "/contract" },
-  },
 ];
 
 export const commitmentCopy = {
   eyebrow: "The commitment",
-  heading: "What sits in the contract, not just on the website.",
+  heading: "What sits in the agreement, not just in the pitch.",
   lede: "Permanent and contract carry different terms. Both are in writing before you brief us.",
   /* Hosting added: the old line implied EOR only applies when the client has no
      entity, which is the smaller half of what we actually do. */
