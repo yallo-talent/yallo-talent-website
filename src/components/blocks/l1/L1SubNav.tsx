@@ -61,3 +61,18 @@ export function L1SubNav({
     </nav>
   );
 }
+
+/**
+ * The containing block the sticky bar needs, exposed so a bespoke page gets it
+ * without knowing the class name.
+ *
+ * A sticky element sticks for the length of its containing block. Wrap the bar
+ * AND the sections it navigates in this, and nothing else: as a direct child of
+ * the page the bar stays pinned over the read-next rail and the closing card,
+ * which it does not navigate. On the sector L1 that measured as three live
+ * links reduced to zero clickable area at the terminal scroll position. Any new
+ * consumer of L1SubNav inherits the same defect unless it inherits this too.
+ */
+export function L1SubNavScope({ children }: { children: React.ReactNode }) {
+  return <div className={styles.subNavScope}>{children}</div>;
+}

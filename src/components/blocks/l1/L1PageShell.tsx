@@ -9,8 +9,17 @@ import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { routeExists } from "@/lib/routes";
 import styles from "./L1PageShell.module.css";
-import { L1SubNav } from "./L1SubNav";
+import { L1SubNav, L1SubNavScope } from "./L1SubNav";
 import { l1Icons } from "./l1-icons";
+
+/**
+ * Re-exported so a bespoke page can take the sticky bar off the shell without
+ * rebuilding itself on the shell. /ai-talent is the case: it carries the stack
+ * matrix and the estate diagram, which the shell has no slot for, and it was
+ * the only L1 with no section bar. Import both from here — the scope is not
+ * optional, see its own comment.
+ */
+export { L1SubNav, L1SubNavScope } from "./L1SubNav";
 
 function L1Icon({ icon, className }: { icon: L1IconKey; className?: string }) {
   const Comp = l1Icons[icon];
@@ -78,7 +87,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
           and reduced three live links to ZERO clickable area; that rail is the
           only way off this page other than the brief form. Scoped here, sticky
           releases when the last navigated section ends. */}
-      <div className={styles.subNavScope}>
+      <L1SubNavScope>
         <L1SubNav items={subNavItems} />
         <div id="why">
           <L1Intro data={data} />
@@ -96,7 +105,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
         )}
         <L1Expertise data={data} />
         <L1Segments data={data} />
-      </div>
+      </L1SubNavScope>
       {/* Three sections dropped, on the re-critique's own finding: six of
           thirteen were the same figure — eyebrow, counted H2, lede, row of equal
           tiles — while the page's genuinely distinctive assets were the least

@@ -4,9 +4,12 @@ import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
-import { L1BottomCta, L1HowWeWork } from "@/components/blocks/l1/L1PageShell";
-import l1 from "@/components/blocks/l1/L1PageShell.module.css";
-import { L1SubNav } from "@/components/blocks/l1/L1SubNav";
+import {
+  L1BottomCta,
+  L1HowWeWork,
+  L1SubNav,
+  L1SubNavScope,
+} from "@/components/blocks/l1/L1PageShell";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import {
@@ -234,7 +237,7 @@ export default async function PlatformPage({
           it a 49px parent and zero travel — measured, it scrolled clean off at
           top:-855 while retail's stayed pinned at 80. Retail's scope is 5,068px
           tall for exactly this reason. Closed after the last indexed section. */}
-      <div className={l1.subNavScope}>
+      <L1SubNavScope>
         {subNavItems.length > 1 ? <L1SubNav items={subNavItems} /> : null}
 
         {/* Module coverage — the substance of the page.
@@ -581,7 +584,7 @@ export default async function PlatformPage({
             </div>
           </section>
         ) : null}
-      </div>
+      </L1SubNavScope>
 
       {/* READ NEXT. Retail routes onward and SAP ended on its own ask, which
           makes the deepest page on the site a cul-de-sac. Every href is checked
