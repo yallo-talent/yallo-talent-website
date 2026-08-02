@@ -114,7 +114,7 @@ export default function AboutPage() {
               <Link href="/contract" className={styles.card}>
                 <h3 className={styles.cardTitle}>Contract Workforce</h3>
                 <p className={styles.cardCopy}>
-                  Interim specialists on your programme in 72 hours.
+                  Interim specialists shortlisted in 72 hours.
                 </p>
               </Link>
               <Link href="/permanent" className={styles.card}>

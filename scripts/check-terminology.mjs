@@ -166,6 +166,58 @@ const ABSTRACTION_ALLOWED = [
 ];
 
 /**
+ * The 72-hour claim. Canon §6 publishes exactly one: brief to SHORTLIST,
+ * defined as three screened candidates from a complete brief. It does not
+ * publish 72 hours to a contractor on the programme, and the two are not the
+ * same promise — deployment runs through calibration, interview, offer,
+ * notice, visa and onboarding, which canon §7 itself puts at two to four
+ * weeks. The published one is what a buyer holds us to.
+ *
+ * `L2PageShell` hardcoded the deployed variant into the L2 hero, so the
+ * over-claim was live on every L2 on the site while roughly ninety other
+ * occurrences said shortlisted correctly. That is why this is a lint and not a
+ * one-off fix: the phrase is everywhere, and one wrong verb among ninety right
+ * ones is invisible to review.
+ *
+ * Do not add a failing phrase to ALLOWED_LINES to quiet this file's own
+ * comments. That was tried while writing it and the exemption matched the real
+ * JSX line too, because the comment and the defect were the same string. The
+ * comments here are worded to avoid the construction instead.
+ *
+ * Detection is the CONSTRUCTION, not the phrase. A delivery verb that lands a
+ * person somewhere, within the same sentence as a 72-hour figure, with no
+ * mention of a shortlist to qualify it. Sentence scope matters: "a specialist
+ * is placed without regulated-industry screening. Yallo's shortlist is in your
+ * inbox in 72h" carries both a verb and a figure and is correct, because they
+ * are in different sentences. So does "a shortlist calibrated to your
+ * programme, inside 72 hours", which the shortlist exemption clears.
+ */
+const CLAIM_DELIVERY_VERB =
+  /\b(deployed|deploys?|placed?|places|delivered|onboarded|mobilised|started|starts|hired|working|in post|on ?-?site|on your [a-z ]{0,20}(programme|project|team|desk))\b/i;
+const CLAIM_FIGURE = /\b(in|inside|within|to)\s*72\s*-?\s*(h\b|hours?\b)/i;
+const CLAIM_QUALIFIED = /shortlist/i;
+
+/**
+ * Sentence split for the claim check. Splits on full stops, and on the middot
+ * and em dash the copy uses as sentence-equivalent separators in eyebrows and
+ * SEO titles.
+ */
+function sentences(line) {
+  return line.split(/[.!?·—]|\|/);
+}
+
+/**
+ * Occurrences where the construction is correct despite matching. Each needs a
+ * reason, same discipline as ABSTRACTION_ALLOWED.
+ */
+const CLAIM_ALLOWED = [
+  [
+    "2–4 weeks to onboard",
+    "canon §7's real onboarding term, which is the claim this lint protects",
+  ],
+];
+
+/**
  * Lines that legitimately contain a banned term: the rules that document the
  * ban, and this file. Matched as substrings of the line.
  */
@@ -192,6 +244,9 @@ const ALLOWED_LINES = [
   "vocabulary for the channel path",
   "CRM/CDP vocabulary",
   "a real role name Yallo places",
+  "CLAIM_DELIVERY_VERB",
+  "CLAIM_ALLOWED",
+  "the claim this lint protects",
 ];
 
 function walk(dir, out = []) {
@@ -251,6 +306,21 @@ for (const file of files) {
       if (term.test(line)) {
         remaining.push({ file, line: i + 1, label, text: line.trim().slice(0, 100) });
       }
+    }
+
+    // The 72-hour claim. Sentence-scoped, because a delivery verb and a
+    // 72-hour figure in two different sentences on one line is not a claim.
+    for (const s of sentences(line)) {
+      if (!CLAIM_FIGURE.test(s)) continue;
+      if (CLAIM_QUALIFIED.test(s)) continue;
+      if (!CLAIM_DELIVERY_VERB.test(s)) continue;
+      if (CLAIM_ALLOWED.some(([phrase]) => s.includes(phrase))) continue;
+      remaining.push({
+        file,
+        line: i + 1,
+        label: "72h over-claim: canon §6 publishes 72 hours to shortlist",
+        text: s.trim().slice(0, 100),
+      });
     }
 
     // Banned abstractions, src/ only. Allow-listed occurrences are removed from

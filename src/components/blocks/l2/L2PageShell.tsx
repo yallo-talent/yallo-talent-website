@@ -117,8 +117,15 @@ function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
         <h1 className={styles.heroTitle}>
           {fn.title}
           <br />
+          {/* Canon §6 publishes 72 hours to SHORTLIST, defined as three
+              screened candidates from a complete brief. "Deployed" is a
+              different promise and the harder one: it puts a contractor on
+              the programme inside three days, through calibration, interview,
+              offer, notice, visa and onboarding. A buyer holds us to the
+              published claim, so the published claim is the one on the page.
+              This is the L2 hero, so it was live on every L2 on the site. */}
           <span className={styles.heroEmphasis}>
-            contractors, deployed in 72 hours.
+            contractors, shortlisted in 72 hours.
           </span>
         </h1>
 
@@ -506,7 +513,7 @@ const engagementPillars: {
     icon: "pillarContract",
     eyebrow: "01 · Contract",
     title: "Contract & interim",
-    copy: "Specialist-screened contractors placed in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
+    copy: "Specialist-screened contractors shortlisted in 72 hours. Day-rate and fixed-term across the Middle East, Europe and India.",
     bullets: [
       "72h brief to shortlist",
       "IR35, day-rate or fixed-term",

@@ -5,7 +5,7 @@ export const contractData: ServicePageData = {
   slug: "contract",
   eyebrow: "Contract Workforce · Middle East · Europe · India",
   title: "Get contract specialists",
-  emphasis: "on your programme in 72 hours.",
+  emphasis: "shortlisted in 72 hours.",
   lede: "When your programme has a delivery gap or a peak, get specialist-screened contract talent — mobilised faster than a permanent hire, screened to the same bar.",
   heroStat: { n: "72h", l: "brief to shortlist" },
   primaryCta: { label: "Send us a brief", href: "/brief" },
@@ -101,8 +101,8 @@ export const contractData: ServicePageData = {
     },
   ],
   seo: {
-    title: "Contract Workforce · Contractors in 72 hours | Yallo Talent",
+    title: "Contract Workforce · Shortlists in 72 hours | Yallo Talent",
     description:
-      "Get specialist-screened contract specialists on your enterprise programme in 72 hours. the Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+      "Specialist-screened contract specialists for your enterprise programme, shortlisted in 72 hours. The Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
   },
 };
