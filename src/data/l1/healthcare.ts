@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "./index";
 import type { L1PageData } from "./types";
 
 export const healthcareData: L1PageData = {
@@ -5,7 +6,7 @@ export const healthcareData: L1PageData = {
   category: "industries",
   breadcrumb: [
     { label: "Industries", href: "/industries" },
-    { label: "Healthcare & Life Sciences" },
+    { label: taxonomyLabels("healthcare").label },
   ],
 
   eyebrow: "Healthcare & Life Sciences · Contract-first",
@@ -29,15 +30,23 @@ export const healthcareData: L1PageData = {
     "Every Epic go-live, every Veeva Vault rollout, every pharma serialisation programme shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside GxP and HIPAA environments.",
     "Our bench is assessed by specialists who have delivered inside providers, payers, and life-sciences organisations. We screen for the operating context — validated systems, HL7 / FHIR, IEC 62304, MDR — not just certification badges.",
   ],
+  /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
+
+     Canon section 6 requires a source on any published figure, and
+     `L1IntroStatCard.source` exists so that a card without one is a visible
+     omission rather than an invisible one. Neither card carried the field, and
+     no source was ever recorded for either, so they cannot be re-cited. They
+     return only with attribution.
+
+     THIS IS THE CLASS, NOT A FIFTH INSTANCE. R18 deleted a figure of exactly
+     this shape on 1 Aug and the sweep stopped at the page it was reported on.
+     Four sector pages kept theirs: 64%/4-7 wks, 69%/6-8 wks, 63%/5-7 wks and
+     66%/6-9 wks, one per page, on the same sentence template with the number
+     changed. Five capability pages carry a 72% card that STAYS, because it
+     names ManpowerGroup in a source field. The rule is the source, not the
+     figure. The card left below is the one retail, finance and education
+     already carry, word for word. */
   introStatCards: [
-    {
-      n: "69%",
-      l: "of health-system CIOs report contractor quality — not budget — is the primary reason clinical and admin programmes slip past go-live.",
-    },
-    {
-      n: "6–8 wks",
-      l: "Average time lost when a specialist is placed without regulated-industry screening. Yallo's shortlist is in your inbox in 72h.",
-    },
     {
       n: "Contract-first",
       l: "Primary focus is interim and contract deployment. Also available in Permanent, EOR and Managed Delivery models.",
@@ -644,12 +653,12 @@ export const healthcareData: L1PageData = {
   related: [
     {
       href: "/industries/government",
-      label: "Government & Public Sector",
+      label: taxonomyLabels("government").label,
       category: "Industry",
     },
     {
       href: "/industries/manufacturing",
-      label: "Manufacturing & Logistics",
+      label: taxonomyLabels("manufacturing").label,
       category: "Industry",
     },
     { href: "/platforms/sap", label: "SAP", category: "Platform" },

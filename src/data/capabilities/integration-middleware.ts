@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 /**
@@ -354,14 +355,14 @@ export const integrationMiddlewareData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Order and inventory interfaces, trading partner onboarding and store-to-centre messaging for retail programmes.",
       roles: ["Integration Architect", "EDI and B2B Analyst", "Kafka Engineer"],
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "Plant and warehouse system interfaces, EDI with logistics partners and ERP integration for manufacturing programmes.",
       roles: [
@@ -372,21 +373,21 @@ export const integrationMiddlewareData: L1PageData = {
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Payment interfaces, open banking APIs and core banking integration for financial services programmes.",
       roles: ["API Architect", "Integration Architect", "APIM Engineer"],
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "Cross-department data exchange, citizen service APIs and legacy system integration for government programmes.",
       roles: ["Integration Architect", "APIM Engineer", "API Architect"],
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "Clinical system interfaces, HL7 and FHIR messaging and regulated data exchange for healthcare programmes.",
       roles: [
@@ -397,7 +398,7 @@ export const integrationMiddlewareData: L1PageData = {
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "OSS and BSS integration, provisioning interfaces and high-volume event streaming for telco and media programmes.",
       roles: [
@@ -408,7 +409,7 @@ export const integrationMiddlewareData: L1PageData = {
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Student record to learning platform interfaces, admissions handover into enrolment and statutory reporting feeds for institutional programmes.",
       roles: [

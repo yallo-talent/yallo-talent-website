@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 /**
@@ -388,7 +389,7 @@ export const cybersecurityData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Payment card environments, store estate exposure and e-commerce application security for retail programmes.",
       roles: [
@@ -399,7 +400,7 @@ export const cybersecurityData: L1PageData = {
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "Plant and industrial control security, IT and OT convergence and supply chain exposure for manufacturing programmes.",
       roles: [
@@ -410,21 +411,21 @@ export const cybersecurityData: L1PageData = {
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Regulatory supervision, payment security, fraud controls and third-party risk for banking and financial services programmes.",
       roles: ["Security Architect", "GRC Consultant", "IAM Architect"],
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "National framework alignment, citizen data protection and security operations for central and local government programmes.",
       roles: ["GRC Consultant", "SOC Analyst", "Enterprise Security Architect"],
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "Clinical system availability, medical device exposure and patient data protection for healthcare and life sciences programmes.",
       roles: [
@@ -435,14 +436,14 @@ export const cybersecurityData: L1PageData = {
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "Network and subscriber data protection, fraud and large-scale security operations for telco and media programmes.",
       roles: ["Detection Engineer", "SIEM Engineer", "Security Architect"],
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Student and staff identity at cohort scale, research data protection and campus network segmentation for institutional programmes.",
       roles: [
@@ -474,12 +475,12 @@ export const cybersecurityData: L1PageData = {
     { href: "/platforms/microsoft", label: "Microsoft", category: "Platform" },
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     {
       href: "/industries/government",
-      label: "Government & Public Sector",
+      label: taxonomyLabels("government").label,
       category: "Industry",
     },
   ],

@@ -1,3 +1,4 @@
+import { taxonomyLabels } from "@/data/l1/index";
 import type { L1PageData } from "@/data/l1/types";
 
 export const dataAnalyticsData: L1PageData = {
@@ -591,7 +592,7 @@ export const dataAnalyticsData: L1PageData = {
   segments: [
     {
       id: "retail",
-      name: "Retail & Consumer",
+      name: taxonomyLabels("retail").label,
       intro:
         "Personalisation, demand forecasting, real-time inventory intelligence and clienteling analytics for retail programmes.",
       roles: [
@@ -602,7 +603,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "manufacturing",
-      name: "Manufacturing & Logistics",
+      name: taxonomyLabels("manufacturing").label,
       intro:
         "IIoT payloads, predictive maintenance, demand forecasting and factory-floor analytics for manufacturing programmes.",
       roles: [
@@ -613,7 +614,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "finance",
-      name: "Banking & Financial Services",
+      name: taxonomyLabels("finance").label,
       intro:
         "Risk models, fraud detection, regulatory analytics and open-banking data platforms for financial services programmes.",
       roles: [
@@ -624,7 +625,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "government",
-      name: "Government & Public Sector",
+      name: taxonomyLabels("government").label,
       intro:
         "Government data platforms, service analytics, fraud and compliance modelling for central and local government.",
       roles: [
@@ -635,7 +636,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "healthcare",
-      name: "Healthcare & Life Sciences",
+      name: taxonomyLabels("healthcare").label,
       intro:
         "Clinical data platforms, HL7/FHIR pipelines, real-world evidence analytics and pharmaceutical R&D data science.",
       roles: [
@@ -646,7 +647,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "telco",
-      name: "Telco & Media",
+      name: taxonomyLabels("telco").label,
       intro:
         "Network analytics, churn modelling, subscriber intelligence and content recommendation engines for telco and media.",
       roles: [
@@ -657,7 +658,7 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       id: "education",
-      name: "Education & Universities",
+      name: taxonomyLabels("education").label,
       intro:
         "Institutional research, student data and reporting assembled across the student record, the finance ledger and the learning platform.",
       roles: [
@@ -748,12 +749,12 @@ export const dataAnalyticsData: L1PageData = {
     },
     {
       href: "/industries/finance",
-      label: "Banking & Financial Services",
+      label: taxonomyLabels("finance").label,
       category: "Industry",
     },
     {
       href: "/industries/retail",
-      label: "Retail & Consumer",
+      label: taxonomyLabels("retail").label,
       category: "Industry",
     },
   ],

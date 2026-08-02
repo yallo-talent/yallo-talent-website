@@ -7,6 +7,8 @@
  * are not in the platform set; AWS folds into cloud-infrastructure.
  */
 
+import { taxonomyLabels } from "@/data/l1/index";
+
 export interface PlatformAxis {
   name: string;
   slug: string;
@@ -86,14 +88,26 @@ export const platforms: PlatformAxis[] = [
     published: true,
   },
   {
-    /* 7th platform — the MDM vendor Yallo is focusing on. No route yet, so it
-       renders as a row without a link rather than a promise that 404s, and no
-       mark ships because the pack has no Informatica artwork. */
+    /* 7th platform, the MDM vendor Yallo is focusing on.
+
+       PUBLISHED FLIPPED 2 Aug 2026, per context-round5-rulings.md decision 9.
+       The "no route yet" this comment used to carry stopped being true when the
+       desk shipped: /platforms/informatica was measured at 200 on a production
+       build before the flag moved. The homepage was rendering a real page as
+       unbuilt and hiding the seventh platform while the mega menu linked it
+       correctly. A hand-declared publication state is the same class of defect
+       as a hand-copied label, so session A makes this derive from the registry
+       the way sectorNavEntries already does; this flag is the data half.
+
+       `mark` stays null and that half of the old comment still holds: the pack
+       has no Informatica platform artwork. The informatica.png under
+       public/logos/clients is the CLIENT mark, a different thing, and it ships
+       at consentOnFile false per canon section 3. */
     name: "Informatica",
     slug: "informatica",
     modules: "MDM · data quality · integration",
     mark: null,
-    published: false,
+    published: true,
   },
 ];
 
@@ -109,42 +123,42 @@ export interface SectorAxis {
 
 export const sectors: SectorAxis[] = [
   {
-    name: "Retail & Consumer",
+    name: taxonomyLabels("retail").label,
     slug: "retail",
     scope: "Commerce, POS, supply chain",
     icon: "biz",
     published: true,
   },
   {
-    name: "Banking & Financial Services",
+    name: taxonomyLabels("finance").label,
     slug: "finance",
     scope: "Core banking, payments, risk",
     icon: "arch",
     published: true,
   },
   {
-    name: "Manufacturing & Logistics",
+    name: taxonomyLabels("manufacturing").label,
     slug: "manufacturing",
     scope: "ERP, WMS, TMS",
     icon: "biz",
     published: true,
   },
   {
-    name: "Government & Public Sector",
+    name: taxonomyLabels("government").label,
     slug: "government",
     scope: "Digital delivery, data platforms",
     icon: "arch",
     published: true,
   },
   {
-    name: "Healthcare & Life Sciences",
+    name: taxonomyLabels("healthcare").label,
     slug: "healthcare",
     scope: "Clinical systems, EMR",
     icon: "app",
     published: true,
   },
   {
-    name: "Telco & Media",
+    name: taxonomyLabels("telco").label,
     slug: "telco",
     scope: "OSS/BSS, network, data",
     icon: "cloud",
@@ -153,7 +167,7 @@ export const sectors: SectorAxis[] = [
   {
     /* 7th sector, behind the Yallo AI Academy push into education. No route
        yet. */
-    name: "Education & Universities",
+    name: taxonomyLabels("education").label,
     slug: "education",
     scope: "Student systems, research and campus platforms",
     icon: "biz",
