@@ -35,7 +35,16 @@ CMS at launch.
   3002. Sharing `.next` is how a whole measurement pass came to describe
   a stale build. Stage explicit paths, never `git add -A`. `next dev`
   rewrites `tsconfig.json` to add its dist dir's types and reformats the
-  file while it is there — revert it, never stage it.
+  file while it is there. Under a custom `NEXT_DIST_DIR` the rewrite
+  names that directory, so the file becomes session-local and must never
+  reach a commit: `git checkout -- tsconfig.json` before staging, and
+  never include it in an explicit path list.
+- **A context document is not in play until it is committed.** Chat writes
+  `docs/design/context-*.md` into one session's working tree; a parallel
+  worktree cannot see an uncommitted file and reads the absence as a
+  blocked task. In round 4 a P0 was nearly reported blocked for exactly
+  this. Every `docs/design/context-*.md` present in the tree is committed
+  in the first commit of a run, before any work that depends on it.
 - Before trusting any measurement, check WHICH server is on the port.
   `next start` on a stale build answers 200 and never shows your edits,
   and a job killed in one shell does not die in the next. `lsof -ti:PORT`.

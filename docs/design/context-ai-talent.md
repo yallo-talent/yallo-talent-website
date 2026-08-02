@@ -8,7 +8,7 @@ Purpose: everything Code needs to build the AI talent family without inventing a
 
 ## 1. Rulings
 
-**R-AI1 · Route map.** `/ai-talent` is the L1 hub and the 301 destination for `emerging-technologies` (canon §3, already ratified). L2 pages sit at `/ai-talent/{roleFamily}`, one per role family in §4. Nine L2 pages.
+**R-AI1 · Route map. Amended 1 Aug 2026, see `context-capabilities-parity-round.md` §7.** AI Talent is now the **seventh capability discipline and the first in the order**, not a standalone hub. `/ai-talent` remains the canonical route and the 301 destination for `emerging-technologies`; `/capabilities/ai-talent` redirects to it. L2s stay at `/ai-talent/{roleFamily}`, nine pages. The page now carries the full Data & Analytics discipline treatment plus the AI estate diagram, its label is "AI Talent" rather than "Artificial Intelligence", and its hue is mulberry. **Ownership transferred to the capabilities session.**
 
 **R-AI2 · No new taxonomy for AI vendors.** Anthropic, OpenAI, Bedrock and the rest do **not** become `/platforms/*` pages. Canon §3 fixes six platforms and states that ServiceNow and AWS are not platform destinations; adding model vendors would break that and dilute the enterprise-programme wedge. AI stacks render as a **governed matrix** on the L1 and as a stacks band inside each L2. Vendor pages may be added later only where search demand justifies one, as a canon amendment.
 
