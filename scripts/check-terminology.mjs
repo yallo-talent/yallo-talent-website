@@ -163,6 +163,10 @@ const ABSTRACTION_ALLOWED = [
   ["intelligent ecosystems", "part of a real published article title — a title is a fact"],
   ["tailored to your specific situation", "legal wording on the terms page"],
   ["platform ecosystem", "the one literal use of 'ecosystem' canon permits"],
+  [
+    "technology-landscape",
+    "substring of a real case-study URL slug (the Alshaya multi-vendor consolidation study) — a route, not prose, and not renamable to satisfy this lint",
+  ],
 ];
 
 /**

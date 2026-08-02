@@ -11,6 +11,11 @@ export const managedDeliveryData: ServicePageData = {
   primaryCta: { label: "Scope a delivery package", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine: "Fixed-scope · outcome-owned · Yallo carries delivery risk",
+  audienceLabel: "Who this is for",
+  audience: [
+    "CIOs and Delivery Directors who want a workstream delivered, not staffed",
+    "Practice Leads without the in-house depth to run it themselves",
+  ],
   benefitsHeading: "What you get with Managed Delivery",
   benefits: [
     {
@@ -52,6 +57,33 @@ export const managedDeliveryData: ServicePageData = {
       title: "Delivery, gate, handover",
       copy: "Milestone reviews with you, gate approvals, sign-off on final deliverable. Warranty period post-handover.",
       tag: "Life of engagement",
+    },
+  ],
+  boundaryHeading: "Where Managed Delivery ends",
+  boundary:
+    "Managed Delivery is the up-market move: a fixed-scope workstream on the platforms you already run, with our specialists accountable for the outcome. It ends at the platform boundary itself. Yallo delivers fixed scope on your existing enterprise platforms; saasinator builds the new AI-native systems you go on to own.",
+  proofHeading: "Proof, from Managed Delivery engagements",
+  proof: [
+    {
+      title: "Consolidating Alshaya's multi-vendor IT delivery into one model",
+      client: "Alshaya Group",
+      href: "/case-studies/driving-consistent-it-delivery-across-a-complex-retail-technology-landscape",
+      excerpt:
+        "Alshaya ran Oracle Retail, Fusion, EPM and Azure through multiple vendors, driving up costs, inconsistent quality and slow onboarding. Yallo consolidated delivery into one hybrid, accountable model and reduced T&M costs.",
+    },
+    {
+      title: "Building Al Othaim Markets' Arabic-speaking IT hub in Cairo",
+      client: "Al Othaim Markets",
+      href: "/case-studies/building-a-scalable-arabic-speaking-offshore-it-hub-for-al-othaim-markets",
+      excerpt:
+        "Al Othaim Markets needed an Arabic-speaking offshore IT team in Cairo, fast and on budget, covering development, ERP, integration and testing. Yallo built the pipeline and delivered the hub within budget and target.",
+    },
+    {
+      title: "Delivering MAF's Oracle Hyperion financial consolidation",
+      client: "Majid Al Futtaim",
+      href: "/case-studies/oracle-hyperion-financial-management-hfm-implementation",
+      excerpt:
+        "MAF's group-wide Oracle Hyperion consolidation programme needed governance and predictability. Yallo supplied senior HFM architects and specialists, reaching first-phase go-live with a roadmap for what followed.",
     },
   ],
   rolesHeading: "Managed Delivery workstreams",

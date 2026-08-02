@@ -151,3 +151,51 @@ open items specific to this page; the missing Permanent/EOR proof sections
 are logged against those pages, not this one.
 
 ---
+
+## 2. /managed-delivery
+
+### Findings
+
+1. **[Completeness, closed — §3 Q1/Q6/Q7]** Same structural gap as
+   `/contract` (shared template). Added audience (CIOs, Delivery Directors,
+   Practice Leads — the outcome-owning buyers, not the headcount buyers),
+   the saasinator boundary named explicitly by §3 item 6 ("Yallo delivers
+   fixed scope on your existing enterprise platforms; saasinator builds the
+   new AI-native systems you go on to own" — phrased from the round's own
+   ruling, not independently authored), and a Proof section.
+2. **[Honesty/completeness, closed — §3 Q7]** Of the ten case studies, six
+   are tagged `engagement: Managed Delivery` — the most of any pillar,
+   correctly the deepest evidence base. Selected three for client diversity
+   (Alshaya Group multi-vendor consolidation, Al Othaim Markets offshore
+   hub, Majid Al Futtaim Oracle Hyperion) rather than all six, to keep the
+   section proportionate rather than maximalist. `cardTitle`/`excerpt` used
+   verbatim from frontmatter; all three hrefs confirmed 200.
+3. **[Correctness, closed]** `check:terms` flagged the banned-abstraction
+   word "landscape" — not in prose, but inside the real case-study URL slug
+   `…-complex-retail-technology-landscape` used as an href. Added it to
+   `check-terminology.mjs`'s existing `ABSTRACTION_ALLOWED` list (the
+   established mechanism for load-bearing, unrenamable occurrences — e.g.
+   "SAP landscape" is already on it) rather than alter a real route to
+   satisfy a prose lint. First attempt hand-typed the full slug into the
+   allowlist's own reason string, which `check:taxonomy`'s pre-commit hook
+   correctly caught as the hand-copied-slug class this repo lints for —
+   reworded the reason to describe the study instead of repeating its slug.
+4. **[Boundary duplication, checked]** The page already had an FAQ
+   ("When should I use Managed Delivery vs Contract?") covering the
+   Contract/Managed-Delivery line. The new boundary section covers the
+   saasinator line instead — complementary, not overlapping.
+
+### Gates run
+
+`tsc --noEmit` clean · `eslint` on touched file clean · `check:terms` clean
+after the slug allowlist addition · `check:taxonomy`, `check:prose` clean ·
+`check:a11y --routes /managed-delivery` clean (axe, 2 themes x 2 widths) ·
+`check:reflow` clean (22 routes) · `check:motion` clean · `check:gate-coverage`
+clean.
+
+### Close-out
+
+`/managed-delivery` closed. All seven §3 questions answered, including the
+one boundary the round named explicitly (saasinator). No open items.
+
+---
