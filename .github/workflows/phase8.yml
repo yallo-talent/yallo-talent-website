@@ -1,0 +1,51 @@
+name: Phase 8 performance gate
+on:
+  schedule:
+    # Daily, offset from the crawler-access probe. Eight routes times four
+    # passes is slow and the scores drift with host load, so gating merges
+    # on it would fail PRs for reasons unrelated to the diff — the same
+    # reasoning check:crawlers already applies. It runs on a cadence and is
+    # watched, not on every push. round12-scope.md §5.5.
+    - cron: "41 6 * * *"
+  workflow_dispatch: {}
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build (production)
+        run: pnpm build
+
+      - name: Start (production server)
+        run: |
+          PORT=3100 pnpm start &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:3100 && break
+            sleep 1
+          done
+
+      # Lighthouse 12.8.2, pinned exactly — a newer major recalibrates the
+      # performance curve and drops the diagnostic audits this gate reads
+      # (largest-contentful-paint-element, render-blocking-resources,
+      # font-display). Four passes and the worst-pass rule: run-to-run
+      # variance on this site is wide enough that two passes cannot
+      # attribute anything under about 7 points. round12-scope.md §5.5.
+      - name: Phase 8 (Lighthouse Mobile, eight routes, four passes)
+        run: |
+          node scripts/check-phase8.mjs --base http://localhost:3100 --passes 4 \
+            --json phase8-results.json --label "ci-${{ github.run_id }}"
+
+      - name: Upload raw results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase8-results
+          path: phase8-results.json
+          if-no-files-found: ignore
