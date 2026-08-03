@@ -23,6 +23,12 @@ const regionOptions: { value: BriefFormValues["region"]; label: string }[] = [
   { value: "multi", label: "Multi-region" },
 ];
 
+/* No no-JS fallback. Confirmed absent, logged twice (round 11) and again
+ * here rather than fixed: the site's only conversion surface submits via
+ * fetch, and closing this means a classic POST with a server-rendered
+ * response or a Server Action — a candidate for a post-cutover round, not
+ * this one. round12-scope.md §4.5.
+ */
 export function BriefForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<

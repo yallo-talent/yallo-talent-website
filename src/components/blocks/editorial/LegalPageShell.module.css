@@ -12,6 +12,13 @@
    defect; the utility carries the restatement. Swept site-wide rather than fixed
    per instance, because the composed-contrast check found two and grep found
    four more. */
+/* band-dark, deliberately, not the .sectionAlt collapse fix — legal pages are
+   reference material with one permanent register in both themes, not a
+   mid-page alternation signalling content type. Different from
+   /case-studies/[slug]'s light "Read mode" register for the same nominal
+   name: legal pages are reference material, case studies are evidence in a
+   sales path — genuinely different classes, not an inconsistency to close.
+   round12-scope.md §4.5. */
 .body {
   composes: band-dark from global;
   position: relative;

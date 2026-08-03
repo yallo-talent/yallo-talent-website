@@ -25,6 +25,9 @@ import styles from "./ThemeToggle.module.css";
  * whether the site gets a user-facing theme switch is a design decision, and
  * canon §2 ("light is the default register") is the reason to ask rather than
  * assume. Logged in the round 10 relay as an open question.
+ *
+ * ROUND 12: still true, still deliberate. Do not mount it and do not delete
+ * it — round12-scope.md §4.5, open item 3.
  */
 function subscribe(onChange: () => void): () => void {
   /* The attribute is written by three parties: the pre-paint script, this
