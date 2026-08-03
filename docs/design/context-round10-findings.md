@@ -163,3 +163,34 @@ unchanged by diff. One shared-component defect logged for Session A
 (item 3 above) rather than fixed, per the ownership boundary.
 
 ---
+
+## 3. `/case-studies` and `/case-studies/[slug]`
+
+Rendered the list template and one detail template
+(`oracle-hyperion-financial-management-hfm-implementation`, representative
+of the ten verified studies) across both themes, desktop and mobile.
+
+### Findings
+
+No honesty, accessibility, correctness, IA or completeness defects found.
+Filter chips (pillar/platform) work off `taxonomy.ts` derivation, not
+hand-typed labels. Detail template's Context/Challenge/Approach/Outcome
+structure carries no invented metrics or claims beyond what each MDX body
+states — consistent with `check:cs-excerpts` passing (every proper noun in
+a summary/excerpt is verifiable against the body). PetalPlate divider
+graphic between sections, no photography. Client logo consent remains the
+known open item (§9.2.1 of `context-round10-scope.md`), not actioned here.
+
+### Gates run
+
+`check:a11y --routes /case-studies,/case-studies/[slug]` — axe clean, 2
+routes x 2 themes x 2 widths · `check:reflow` clean · `check:motion` —
+reduced motion honoured · `check:cs-excerpts` — 10 case studies checked,
+clean · `check:yallo-case` — 131 internal links resolve, casing correct.
+
+### Close-out
+
+Both templates closed with no code changes required. No commit — nothing
+changed.
+
+---
