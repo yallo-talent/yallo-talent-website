@@ -376,3 +376,55 @@ biographical claims never confirmed as ratified copy, and attached five
 more unconfirmed personas around it.
 
 ---
+
+## 6. `/about`
+
+### Findings
+
+1. **[Correctness, closed — fix the class, not the instance]** The
+   Employer of Record card read "UAE visa and India payroll cover" —
+   two countries, omitting Saudi Arabia entirely. This is the exact
+   defect round 9 §4 already found and fixed on the mega menu and
+   `/eor`, via the single-source `src/data/services/eor-countries.ts`
+   (`eorCorridorProse`). This page's card was simply never updated to
+   consume it. **Fix:** wired the card to `eorCorridorProse`, now
+   rendering "UAE, Saudi Arabia and India coverage" — corridor-level,
+   no per-country service descriptor invented, consistent with §4b.
+2. **[Honesty, closed]** The Yallo AI Academy card in "The group" read
+   "Role-based AI enablement for leaders and teams. **Launching
+   soon.**" — a direct instance of the forbidden "coming soon" pattern
+   (`context-round9-scope.md` §7), distinct from the footer's inert
+   "LAUNCHING" badge that §11.6 explicitly protects from action. This is
+   a full sentence in body copy, not a footer marker, and nothing
+   protects it. **Fix:** removed "Launching soon" — declined to invent
+   a replacement claim about timing, consistent with Impeccable's
+   "declines, does not ask" rule for this round. The card now states
+   only what the Academy is.
+3. **[Honesty, closed — fix the class, not the instance]** The founding
+   timeline named "Sumeet Goenka" specifically. Same underlying fact
+   pattern as the `/leadership` finding above: the round's ruling that
+   no individual is ratified for public naming isn't scoped to one page,
+   only demonstrated on one page. **Fix:** "Sumeet Goenka and a small
+   team of enterprise operators start Yallo Talent" → "A small team of
+   enterprise operators start Yallo Talent" — the company-founding fact
+   stands, the individual name doesn't.
+4. **[Checked, not a defect]** The clients section already gates
+   correctly: `getConsentedClients()` filters `content/clients.yaml` on
+   `consentOnFile`, with an honest fallback sentence when the list is
+   empty ("We name clients only where written consent is on file.").
+   Did not touch `content/clients.yaml` — which specific clients carry
+   consent is a business fact, not a code defect, and remains the
+   cutover blocker logged at §9.2.1.
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes /about`
+— axe clean, 2 themes x 2 widths · `check:reflow` clean · `check:motion`
+— reduced motion honoured · `check:terms` clean · `check:taxonomy` clean
+· `check:yallo-case` — 131 internal links resolve.
+
+### Close-out
+
+`/about` closed. Three findings closed, none logged open.
+
+---
