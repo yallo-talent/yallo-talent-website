@@ -94,6 +94,10 @@ const PAGES = [
      assumed clean by family resemblance. AGENTS.md: a new template joins every
      enumerating guard in the commit that introduces it. */
   "/case-studies",
+  /* Added round 12: names five real people with links to their real
+     profiles, and it was visited by only one of six enumerating gates —
+     round12-scope.md §4.6. */
+  "/leadership",
 ];
 
 // Two viewports, because one was the gate's second blind axis. Reporting CLEAN

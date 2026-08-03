@@ -38,6 +38,7 @@ const PAGES = [
   "/platforms/sap/sap-datasphere",
   "/capabilities/data-analytics",
   "/industries/retail",
+  "/leadership",
 ];
 
 /** Tab stops allowed before the header's primary CTA. */

@@ -84,6 +84,10 @@ const PAGES = [
      one card that deliberately routes off its own axis because it has no tools.
      The page the rule was written for has to be a page the rule visits. */
   "/industries/education",
+  /* Added round 12: names five real people with links to their real
+     profiles, and it was visited by only one of six enumerating gates —
+     round12-scope.md §4.6. */
+  "/leadership",
 ];
 
 const browser = await chromium.launch();

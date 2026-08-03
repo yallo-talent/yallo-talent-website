@@ -44,7 +44,7 @@ export default function LeadershipPage() {
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            Yallo Talent&apos;s leadership
+            Leadership
           </div>
           <h1 className={styles.heroTitle}>
             The people leading{" "}
@@ -70,9 +70,7 @@ export default function LeadershipPage() {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>
-              Yallo Talent&apos;s leadership
-            </span>
+            <span className={styles.sectionEyebrow}>The team</span>
             <h2 className={styles.sectionH}>
               Five people leading Yallo Talent.
             </h2>
