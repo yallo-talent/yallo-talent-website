@@ -751,9 +751,12 @@ function L1Expertise({ data }: Props) {
                 });
               }}
               aria-expanded={showAll}
-              aria-label={
-                showAll ? "Show less" : `Show all ${total} function areas`
-              }
+              /* No aria-label: the button's own visible text already says
+                 everything ("Show all N function areas" + "+M more"), and an
+                 override that duplicates it by hand is exactly what drifted —
+                 WCAG 2.5.3, found by the axe experimental-rules pass,
+                 round12-scope.md §4.1. Letting the accessible name come from
+                 content keeps the two from ever disagreeing again. */
             >
               {showAll ? "Show less" : `Show all ${total} function areas`}
               <span aria-hidden="true">{showAll ? "↑" : "↓"}</span>

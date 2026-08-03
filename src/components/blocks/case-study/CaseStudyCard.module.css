@@ -87,3 +87,15 @@
   font-size: var(--fs-body-sm);
   color: var(--accent-label);
 }
+
+/* The card is the target; the link stays the cue. .card is already
+   position: relative and nothing else inside it is interactive, so a
+   stretched pseudo-element keeps exactly ONE anchor per card rather than
+   wrapping and duplicating the destination — mirrors Home.module.css
+   .caseFoot .btnSecondary::after. */
+.foot .footLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}

@@ -4,6 +4,10 @@
  * floor. Canon's accessibility floor is WCAG 2.2 AA on every surface in both
  * themes independently, so this runs each route four times.
  *
+ * Runs axe's "experimental" tag alongside the WCAG tags. A WCAG tag alone
+ * does not enable a rule axe ships disabled by default — that gap is exactly
+ * how WCAG 2.5.3 Label in Name sat unfound on the brand link for six rounds.
+ *
  * Lighthouse is deliberately NOT here: it needs the real host, and a score
  * measured against a dev server would be a number with no meaning.
  *
@@ -127,8 +131,22 @@ for (const theme of ["light", "dark"]) {
         process.exit(1);
       }
 
+      /* "experimental" is deliberate, not an oversight left for later. WCAG
+         2.5.3 Label in Name lived on the brand link for six rounds because
+         axe ships label-content-name-mismatch disabled by default and tags
+         it "experimental" — a WCAG tag alone does not pull it in, only this
+         tag does. Lighthouse's accessibility category weights the same audit
+         at zero, so neither instrument this repo already ran could have
+         caught it. round12-scope.md §4.1. */
       const { violations, incomplete } = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        .withTags([
+          "wcag2a",
+          "wcag2aa",
+          "wcag21a",
+          "wcag21aa",
+          "wcag22aa",
+          "experimental",
+        ])
         .analyze();
 
       /* R10: an ABSTENTION IS NOT A PASS.
