@@ -1,40 +1,87 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { DEFAULT_THEME, THEME_STORAGE_KEY, type Theme } from "@/config/theme";
 import styles from "./ThemeToggle.module.css";
 
-function applyTheme(theme: Theme) {
-  document.documentElement.setAttribute("data-theme", theme);
+/**
+ * ROUND 10. The old version held the theme in `useState`, seeded it from a
+ * mount effect, and carried a second `mounted` flag purely so the first render
+ * could match the server. That is the react-hooks/set-state-in-effect pattern
+ * in its textbook form, and the flag was the tell: two pieces of state
+ * describing one fact that already existed outside React.
+ *
+ * It already exists on <html>. The pre-paint script in src/config/theme.ts
+ * resolves stored choice, then `prefers-color-scheme`, then the build default,
+ * and stamps `data-theme` before first paint. So the attribute is the single
+ * source of truth and this component is a view of it — which is precisely what
+ * useSyncExternalStore is for. The mount effect goes, the `mounted` flag goes,
+ * and the accessible name is correct from the first client render instead of
+ * reading "Toggle theme" until an effect has run.
+ *
+ * NOT MOUNTED ANYWHERE. Measured in round 10: nothing in src/ imports this
+ * component, so it renders on no page and the lint error it carried could not
+ * have produced a user-visible defect. Fixed rather than deleted because
+ * whether the site gets a user-facing theme switch is a design decision, and
+ * canon §2 ("light is the default register") is the reason to ask rather than
+ * assume. Logged in the round 10 relay as an open question.
+ */
+function subscribe(onChange: () => void): () => void {
+  /* The attribute is written by three parties: the pre-paint script, this
+     component's own toggle, and nothing else. A MutationObserver covers all of
+     them without needing any of them to know this component exists. */
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  /* The OS preference still wins while the visitor has made no stored choice,
+     so a mid-session OS switch has to repaint. Guarded on storage so an
+     explicit choice is never overridden. */
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const onMedia = () => {
+    let stored: string | null = null;
+    try {
+      stored = window.localStorage.getItem(THEME_STORAGE_KEY);
+    } catch {
+      // private mode: treat as no stored choice
+    }
+    if (stored === "light" || stored === "dark") return;
+    document.documentElement.setAttribute(
+      "data-theme",
+      media.matches ? "dark" : "light",
+    );
+  };
+  media.addEventListener("change", onMedia);
+
+  return () => {
+    observer.disconnect();
+    media.removeEventListener("change", onMedia);
+  };
 }
 
-/**
- * Mirrors the pre-paint script in src/config/theme.ts: stored choice wins,
- * then the OS preference, then the build-time default.
- */
-function readInitialTheme(): Theme {
-  if (typeof window === "undefined") return DEFAULT_THEME;
-  const stored = window.localStorage.getItem(THEME_STORAGE_KEY) as Theme | null;
-  if (stored === "light" || stored === "dark") return stored;
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) return "dark";
-  if (window.matchMedia("(prefers-color-scheme: light)").matches)
-    return "light";
+function getSnapshot(): Theme {
+  const attr = document.documentElement.getAttribute("data-theme");
+  return attr === "dark" || attr === "light" ? attr : DEFAULT_THEME;
+}
+
+/* The server has no <html> to read and no visitor to read it for. React uses
+   this for the hydration render, then reconciles against getSnapshot without a
+   mismatch warning, which is what replaced the `mounted` flag. */
+function getServerSnapshot(): Theme {
   return DEFAULT_THEME;
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(DEFAULT_THEME);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setTheme(readInitialTheme());
-    setMounted(true);
-  }, []);
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isDark = theme === "dark";
 
   const toggle = () => {
-    const next: Theme = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    applyTheme(next);
+    const next: Theme = isDark ? "light" : "dark";
+    /* Write to the external system and let the observer bring the value back.
+       One direction, so the attribute and the button can never disagree. */
+    document.documentElement.setAttribute("data-theme", next);
     try {
       window.localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
@@ -42,22 +89,17 @@ export function ThemeToggle() {
     }
   };
 
-  const isDark = theme === "dark";
-  const label = mounted
-    ? `Switch to ${isDark ? "light" : "dark"} theme`
-    : "Toggle theme";
-
   return (
     <button
       type="button"
       className={styles.toggle}
-      aria-label={label}
+      aria-label={`Switch to ${isDark ? "light" : "dark"} theme`}
       aria-pressed={isDark}
       onClick={toggle}
       suppressHydrationWarning
     >
       <span className={styles.icon} aria-hidden="true">
-        {mounted && isDark ? <MoonIcon /> : <SunIcon />}
+        {isDark ? <MoonIcon /> : <SunIcon />}
       </span>
     </button>
   );

@@ -8,7 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { allL1 } from "@/data/l1/index";
 import { Lockup } from "./Lockup";
@@ -148,8 +148,44 @@ function MegaItem({ item, onSelect }: { item: NavItem; onSelect: () => void }) {
   );
 }
 
+/**
+ * State that must not outlive the route it was opened on.
+ *
+ * ROUND 10, and it is one defect wearing two faces. Both pieces of chrome state
+ * have to close when the route changes, and the previous fix reset only the
+ * mega panel, from inside an effect. Measured at 360: opening the drawer and
+ * pressing browser back landed on the new page with `aria-expanded="true"`, 33
+ * links from the old panel still rendered, `body` AND `documentElement` still
+ * `overflow: hidden`, and the header still `inert` — a page the reader cannot
+ * scroll, with a header they cannot use. The mega panel's own case is milder
+ * only because a panel over the right page looks less broken than a lock.
+ *
+ * Stamping the value with the route it was set on lets RENDER derive the reset.
+ * No effect, no setState-in-effect, and no cascading render on navigation —
+ * which is what react-hooks/set-state-in-effect was reporting. A pending
+ * hover-intent timer that fires after a navigation stamps the route it was
+ * started on, so it derives closed instead of opening a panel on the new page,
+ * and that is the behaviour we want rather than a side effect to suppress.
+ */
+function useRouteScopedState<T>(initial: T, pathname: string) {
+  const [stamped, setStamped] = useState<{ value: T; path: string }>({
+    value: initial,
+    path: pathname,
+  });
+  const value = stamped.path === pathname ? stamped.value : initial;
+  const set = useCallback(
+    (next: T) => setStamped({ value: next, path: pathname }),
+    [pathname],
+  );
+  return [value, set] as const;
+}
+
 export function NavBar() {
-  const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const pathname = usePathname();
+  const [openGroup, setOpenGroup] = useRouteScopedState<string | null>(
+    null,
+    pathname,
+  );
 
   /* ORDER 5: hover-INTENT, not hover.
      Opening on raw mouseenter meant a pointer crossing the nav on its way
@@ -197,27 +233,30 @@ export function NavBar() {
   /* ORDER 5: close on route change. A panel that survives navigation is a panel
      covering the page the reader just asked for. pathname is the only reliable
      signal here — a click handler on each link misses keyboard activation and
-     browser back. */
+     browser back, and browser back is the case measurement proved reaches this.
+     The reset itself now DERIVES from pathname in useRouteScopedState above. */
   /* The open group as DATA, so one panel can render any group's content. */
   const activeGroup = primaryNav.find((g) => g.label === openGroup) ?? null;
 
-  const pathname = usePathname();
   useEffect(() => {
-    /* pathname is READ here, not merely listed as a trigger — biome was right
-       that a dependency the body never touches is a dependency it cannot verify.
-       The timer clear is inlined for the same reason: referencing clearIntent
-       would make this effect depend on a function identity that changes every
-       render. */
+    /* Only the timers are cleared here now, and a timer is exactly the external
+       system an effect is for. Nothing sets state: a pending timer that fires
+       after a navigation already derives closed, so this is hygiene rather than
+       correctness, and it saves one inert render per navigation.
+       The clearTimeout calls are inlined for the reason the original gave —
+       referencing clearIntent would make this effect depend on a function
+       identity that changes every render. And pathname is READ rather than only
+       listed, which is the same reason the original carried this guard: biome
+       rejects a dependency the body never touches, and it is right to. */
     if (pathname !== null) {
       if (intent.current) clearTimeout(intent.current);
       intent.current = null;
       if (leave.current) clearTimeout(leave.current);
       leave.current = null;
-      setOpenGroup(null);
     }
   }, [pathname]);
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useRouteScopedState(false, pathname);
   const { scrollY } = useScroll();
 
   useMotionValueEvent(scrollY, "change", (value) => {
@@ -264,15 +303,25 @@ export function NavBar() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
       setOpenGroup(null);
-      // Focus would otherwise be stranded inside a panel that no longer exists.
+      /* Focus would otherwise be stranded inside a panel that no longer exists,
+         and it WAS: this selector still required aria-haspopup="true" after the
+         attribute was deliberately removed one round earlier in favour of
+         aria-controls (see the trigger's own comment below). It matched nothing,
+         so trigger?.focus() was a silent no-op. Measured at 1280: open a panel,
+         Tab to a link inside it, press Escape — aria-expanded went false and
+         focus stayed on a link in the dismissed panel. Keyed on data-group,
+         which is what the trigger actually carries. */
       const trigger = document.querySelector<HTMLElement>(
-        `[aria-haspopup="true"][data-group="${openGroup}"]`,
+        `button[data-group="${openGroup}"]`,
       );
       trigger?.focus();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
-  }, [openGroup]);
+    /* setOpenGroup is route-scoped, so its identity changes with pathname and it
+       is a real dependency rather than a lint formality. Re-subscribing costs
+       nothing: the body returns immediately unless a panel is open. */
+  }, [openGroup, setOpenGroup]);
 
   /**
    * The drawer is a modal, and last round it only looked like one.
@@ -320,7 +369,10 @@ export function NavBar() {
       // Focus belongs back on the control that opened it, not on <body>.
       document.querySelector<HTMLElement>("[data-hamburger]")?.focus();
     };
-  }, [mobileOpen]);
+    /* As above: route-scoped setter, real dependency. On a route change the
+       drawer derives closed, so this effect's cleanup is what lifts the scroll
+       lock and the inert attributes — which is the browser-back defect fixed. */
+  }, [mobileOpen, setMobileOpen]);
 
   return (
     <>
@@ -491,7 +543,7 @@ export function NavBar() {
               aria-controls="mobile-drawer"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
-              onClick={() => setMobileOpen((v) => !v)}
+              onClick={() => setMobileOpen(!mobileOpen)}
             >
               <span className={styles.hamburgerBar} />
               <span className={styles.hamburgerBar} />
