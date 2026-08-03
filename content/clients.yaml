@@ -52,12 +52,12 @@ enterprise:
     logo: /logos/clients/radwell.png
     consentOnFile: true
   # R-INF3, 1 Aug 2026. Informatica is an account Yallo staffs as well as the
-  # seventh platform desk. Consent is NOT on file, so this renders nowhere —
-  # the loader filters it at read time. Code does not flip this flag; Sumeet
-  # does. The mark is already built and keyed, so the flip is one word.
+  # seventh platform desk. Consent obtained 3 August 2026, Sumeet's assertion
+  # per round12-scope.md §1.4 — the mark was already built and keyed, so the
+  # flip is the one word it always was.
   - name: Informatica
     logo: /logos/clients/informatica.png
-    consentOnFile: false
+    consentOnFile: true
 
 # Heading on the site: "the systems integrators delivering them come to us for
 # specialists". Never describes the commercial arrangement.
