@@ -29,7 +29,8 @@
     "check:cs-excerpts": "node scripts/check-case-study-excerpts.mjs",
     "check:prose": "node scripts/check-prose-rules.mjs",
     "check:gate-coverage": "node scripts/check-gate-coverage.mjs",
-    "check:no-redirects": "node scripts/check-no-redirect-hops.mjs"
+    "check:no-redirects": "node scripts/check-no-redirect-hops.mjs",
+    "check:phase8": "node scripts/check-phase8.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -65,9 +66,11 @@
     "@types/react-dom": "^19",
     "@types/turndown": "^5.0.6",
     "cheerio": "^1.2.0",
+    "chrome-launcher": "^1.2.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "husky": "^9.1.7",
+    "lighthouse": "12.8.2",
     "tailwindcss": "^4",
     "turndown": "^7.2.4",
     "typescript": "^5.9.3"

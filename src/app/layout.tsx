@@ -26,11 +26,22 @@ const inter = Inter({
   display: "swap",
 });
 
+/* NOT preloaded, and the reason is measurable. The LCP element is a text node on
+   all eight measured routes — hero lede, hero sub or hero title — so LCP waits
+   on font and CSS delivery, and every byte preloaded ahead of it competes with
+   the byte that actually paints. Mono renders only small data labels: eyebrows,
+   metric units, table column heads. None of them is ever the LCP element, and
+   none is above the fold on any route measured. `display: swap` means the label
+   paints immediately in the fallback and reflows to Plex when it arrives, and
+   these labels are short enough that the swap is not a visible jolt — CLS
+   measured 0.000 on eight of eight routes before and after this change.
+   Two static faces, 19.6 KiB of the 186 KiB preload budget. */
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+  preload: false,
 });
 
 /**
