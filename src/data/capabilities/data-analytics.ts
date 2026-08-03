@@ -118,6 +118,14 @@ export const dataAnalyticsData: L1PageData = {
     },
   ],
 
+  platformScarcity: [
+    { skill: "GCP", scarcityBand: "scarcest" },
+    { skill: "Snowflake", scarcityBand: "moderate" },
+    { skill: "Databricks", scarcityBand: "moderate" },
+    { skill: "Azure", scarcityBand: "least-scarce" },
+    { skill: "AWS", scarcityBand: "least-scarce" },
+  ],
+
   expertiseEyebrow: "Our expertise",
   expertiseTitle: "Every data discipline, with a contractor bench behind it.",
   expertiseSub:

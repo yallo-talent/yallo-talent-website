@@ -92,6 +92,14 @@ export const cloudInfrastructureData: L1PageData = {
     },
   ],
 
+  platformScarcity: [
+    { skill: "GCP", scarcityBand: "scarcest" },
+    { skill: "Azure", scarcityBand: "moderate" },
+    { skill: "AWS", scarcityBand: "least-scarce" },
+    { skill: "DevOps (skill)", scarcityBand: "least-scarce" },
+    { skill: "Azure DevOps Services", scarcityBand: "least-scarce" },
+  ],
+
   expertiseEyebrow: "Our expertise",
   expertiseTitle:
     "Every enterprise Cloud & Infrastructure programme, covered function by function.",

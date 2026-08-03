@@ -184,6 +184,22 @@ export interface L1ScarceRole {
 }
 
 /**
+ * A platform or skill's market-scarcity read on a capability desk — a
+ * different axis from `L1ScarceRole` above, which names job ROLES with an
+ * engagement type. This names a PLATFORM or SKILL ("GCP", "Snowflake") and
+ * has no engagement concept, so it is its own type rather than an overload.
+ * Ranked, not republished — see `BlueprintScarcityRole` in
+ * `src/data/blueprint/index.ts` for the shared evidence and rule:
+ * `scarcityNote` never carries a percentage, a pool size or a market-research
+ * attribution.
+ */
+export interface L1PlatformScarcity {
+  skill: string;
+  scarcityBand: "scarcest" | "moderate" | "least-scarce" | null;
+  scarcityNote?: string;
+}
+
+/**
  * A cross-link chip in the "Read next" row at the bottom.
  */
 export interface L1RelatedLink {
@@ -264,6 +280,8 @@ export interface L1PageData {
   scarceRoles?: L1ScarceRole[];
   scarceIcon?: L1IconKey;
   scarceCta?: { label: string; href: string };
+  /** v2, capability desks only: per-platform/skill scarcity — see L1PlatformScarcity. */
+  platformScarcity?: L1PlatformScarcity[];
 
   /** Expertise grid */
   expertiseEyebrow: string;
