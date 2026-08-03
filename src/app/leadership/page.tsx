@@ -1,48 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { teamIndex } from "@/data/team";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Leadership · Yallo Talent",
     description:
-      "Meet the specialist team behind Yallo Talent — enterprise operators from Richemont, Landmark and Alshaya EMEA who screen every shortlist.",
+      "Meet Yallo Talent's leadership: Sumeet Goenka, Chandrashekhar Kolar, Niharika Patir, Raphy Varghese and Kritika Poddar.",
   },
   path: "/leadership",
 });
 
-const team = [
-  {
-    role: "Founder & CEO",
-    bio: "Built Yallo after running enterprise programmes at Richemont, Landmark Group and Alshaya EMEA. Still reviews the calibration call personally.",
-  },
-  {
-    role: "SAP practice lead",
-    bio: "Reviews every SAP shortlist personally. Screens for delivery fit, not keyword match.",
-  },
-  {
-    role: "Oracle practice lead",
-    bio: "Depth-tests every Oracle candidate for functional and technical fit before it reaches your shortlist.",
-  },
-  {
-    role: "Cloud and Data practice lead",
-    bio: "Runs screening for cloud, data engineering and DevOps roles across every programme.",
-  },
-  {
-    role: "Managed Delivery lead",
-    bio: "Runs Yallo Managed Delivery engagements — from scope to hypercare, accountable for outcomes.",
-  },
-  {
-    role: "Contract + EOR ops lead",
-    bio: "Runs the operating tempo — brief calibration, rate cards, visa cover, payroll. Where the 72-hour SLA actually lives.",
-  },
-];
-
 const philosophy = [
   {
     title: "Specialists, not sourcers",
-    copy: "Every practice lead has run the role they screen for. Depth beats keyword-match, every time.",
+    /* Reused verbatim from /about's own "Specialist-led, always" value, rather
+       than the retired "every practice lead" framing that no longer matches
+       any role title on this page. */
+    copy: "Every shortlist is reviewed by an operator who has run the same programme. No keyword-match, no volume, no filler.",
   },
   {
     title: "One team, one bench",
@@ -67,15 +44,15 @@ export default function LeadershipPage() {
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            The specialist team
+            Yallo Talent&apos;s leadership
           </div>
           <h1 className={styles.heroTitle}>
-            The operators screening{" "}
-            <span className={styles.emphasis}>every shortlist.</span>
+            The people leading{" "}
+            <span className={styles.emphasis}>Yallo Talent.</span>
           </h1>
           <p className={styles.heroLede}>
-            Yallo's specialist team spent two decades building the programmes
-            you're building. Now they screen the specialists you hire.
+            Delivery, talent operations, marketing and finance: the people
+            running Yallo Talent.
           </p>
           <div className={styles.heroCtas}>
             <Link href="/brief" className={styles.ctaPrimary}>
@@ -93,17 +70,34 @@ export default function LeadershipPage() {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The specialist team</span>
-            <h2 className={styles.sectionH}>Six operators. Six practices.</h2>
+            <span className={styles.sectionEyebrow}>
+              Yallo Talent&apos;s leadership
+            </span>
+            <h2 className={styles.sectionH}>
+              Five people leading Yallo Talent.
+            </h2>
             <p className={styles.sectionLede}>
-              Each practice lead has been in the role they screen for. Depth
-              beats keyword-match — always.
+              Name, role and a link to their profile.
             </p>
             <div className={styles.cardGrid3}>
-              {team.map((member) => (
-                <article key={member.role} className={styles.card}>
-                  <h3 className={styles.cardTitle}>{member.role}</h3>
-                  <p className={styles.cardCopy}>{member.bio}</p>
+              {teamIndex.map((member) => (
+                <article key={member.slug} className={styles.card}>
+                  <h3 className={styles.cardTitle}>{member.name}</h3>
+                  <p className={styles.cardCopy}>{member.role}</p>
+                  {member.bio && (
+                    <p className={styles.cardCopy}>{member.bio}</p>
+                  )}
+                  {member.linkedin && (
+                    <p className={styles.cardCopy}>
+                      <a
+                        href={member.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        LinkedIn <span aria-hidden="true">↗</span>
+                      </a>
+                    </p>
+                  )}
                 </article>
               ))}
             </div>
@@ -139,7 +133,8 @@ export default function LeadershipPage() {
                 Work with operators, not sourcers.
               </h2>
               <p className={styles.bottomSub}>
-                Send your brief. A practice lead picks it up personally.
+                Send your brief. Yallo Talent&apos;s team picks it up
+                personally.
               </p>
               <div className={styles.bottomActions}>
                 <Link href="/brief" className={styles.ctaPrimary}>
