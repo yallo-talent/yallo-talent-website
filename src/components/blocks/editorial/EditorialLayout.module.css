@@ -182,8 +182,24 @@
    defect; the utility carries the restatement. Swept site-wide rather than fixed
    per instance, because the composed-contrast check found two and grep found
    four more. */
+/* band-invert, not band-dark. `.sectionAlt` is the mid-page alternation and
+   band-dark is a PERMANENTLY dark surface — identical in both themes, per
+   globals.css. In dark theme that made .sectionAlt resolve to the same
+   rgb(14, 15, 17) as the plain .section around it, so every mid-page section
+   collapsed into one undifferentiated surface with no rhythm. band-invert
+   flips relative to the active theme instead, which is what an alternation
+   needs. globals.css reserves band-dark for .hero, .bottomCta and the
+   L1/L2/service hero plates — this is not one of those.
+
+   `background: var(--ground)` is load-bearing, not decoration: unlike
+   .band-dark (which self-paints `background: var(--dk)`), .band-invert only
+   re-scopes the custom properties for descendants — Home.module.css's own
+   .invert class is the precedent for restating the paint locally. Without
+   it .sectionAlt stays transparent, the body's un-scoped --ground shows
+   through unchanged, and the alternation silently does nothing. */
 .sectionAlt {
-  composes: band-dark from global;
+  composes: band-invert from global;
+  background: var(--ground);
 }
 
 .sectionAlt::before {
