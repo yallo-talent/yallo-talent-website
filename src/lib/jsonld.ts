@@ -56,6 +56,17 @@ const SERVICES = [
   "Managed Delivery",
 ];
 
+/* Supplied by Sumeet, 3 August — round12-scope.md §1.4 and §4.7. It is the
+   Yallo Group page; there is no separate Yallo Talent company page. sameAs is
+   corroboration of identity against a real, owned, authoritative profile —
+   not an assertion of the group relationship. `name` below stays "Yallo
+   Talent", with no `parentOrganization` and no group naming anywhere
+   user-facing: asserting the parent relationship in structured data invites
+   a knowledge panel for yallo.co to render the group's name, which is the
+   shell R1 and R2 exist to remove. One is corroboration; the other is
+   structure. `Person` schema stays deferred (§4.7) — a separate decision. */
+const LINKEDIN_URL = "https://www.linkedin.com/company/yallogroup/";
+
 /* DERIVED. Six hand-written names, missing Informatica since it was ratified on
    1 Aug (R-INF1), so the structured data every crawler reads understated the
    platform set by one while the site itself published seven. A copy of a
@@ -72,6 +83,7 @@ export function organisationJsonLd() {
     name: "Yallo Talent",
     url: SITE.url,
     logo: `${SITE.url}/logos/yallo-flower.svg`,
+    sameAs: [LINKEDIN_URL],
     description:
       "Yallo Talent staffs and delivers enterprise platform programmes across the Middle East, Europe and India with specialist-screened people, including AI talent.",
     areaServed: ENTITIES.map((e) => ({
