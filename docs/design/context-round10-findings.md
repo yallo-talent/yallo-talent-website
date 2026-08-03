@@ -533,3 +533,69 @@ that an unfixed gap is a finding, not a blocker, when fixing it properly
 means a second form-architecture rewrite this late in the round.
 
 ---
+
+## 9. `/privacy`, `/terms`, `/cookies` (one unit, Read mode)
+
+`LegalPageShell.tsx` confirmed single-consumer of these three pages
+(`grep -rl "LegalPageShell" src/app/`) before editing.
+
+### Findings
+
+1. **[Honesty, closed — internal contradiction]** `/terms`'s
+   intellectual-property clause said "Photography is licensed from third
+   parties (Unsplash and equivalent) under permissive terms" — directly
+   contradicted by `/cookies`, on the same three-page unit, correctly
+   stating "This site loads no third-party images." Canon bans
+   photography sitewide (PetalPlate, generated in-page, only); this
+   clause read like unedited boilerplate from a generic legal template,
+   never updated to describe this site's actual imagery system. **Fix:**
+   "Photography is licensed from third parties (Unsplash and
+   equivalent) under permissive terms" → "All imagery is generated in
+   the page itself — no licensed or third-party photography is used" —
+   now consistent with `/cookies` and with fact.
+2. **[Correctness, closed]** All three pages' shared footer read
+   "Questions? Reach us at [get in touch] → /brief" — routing every
+   legal/privacy/cookie question to the commercial brief-intake form,
+   whose fields (platform, engagement type, programme phase) don't fit
+   a legal query. `/privacy`'s own body already names the correct
+   channel twice ("email privacy@yallo.co" for general questions and for
+   rights requests, with a 30-day response commitment) — the shell's
+   generic CTA just never used it. **Fix:** shared footer in
+   `LegalPageShell.tsx` now reads "Questions about this notice? Email
+   privacy@yallo.co" on all three pages, linking `mailto:`. Not a new
+   email invented — reused the address already published in
+   `privacy.ts`.
+3. **[Design, logged, not actioned — judgement call, not a defect]**
+   `LegalPageShell`'s `.body` composes `band-dark`, so all three pages
+   render permanently dark end to end, in both themes — correctly
+   implemented (full Layer 2c alias restatement, confirmed clean by
+   `check:a11y` and `check:contrast`, not the `/brief`-class bug) but a
+   genuine design-consistency question: `/case-studies/[slug]`, the
+   other template round 9 §9.3 classifies as "Read" mode, uses a light
+   ground for the same kind of dense, extended-reading content. Two
+   "Read mode" templates disagree on register for the same content
+   class. No comment in the CSS explains this as a deliberate choice
+   either way. **Not fixed**: converting a permanently-dark long-form
+   template to theme-relative is a register-level change, not a
+   targeted bug fix, and Impeccable's rule for this round is refinement
+   only — the incumbent look is the target, never the anti-reference.
+   **Exact question for Sumeet/Session A: should legal pages read
+   permanently dark by design, or should `.body` match
+   `/case-studies/[slug]`'s light register for long-form text?**
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes
+/privacy,/terms,/cookies` — axe clean, 3 routes x 2 themes x 2 widths ·
+`check:reflow` clean · `check:motion` — reduced motion honoured ·
+`check:terms` clean · `check:yallo-case` — 131 internal links resolve ·
+`check:contrast` — 32 token pairs + 6 composites, all AA.
+
+### Close-out
+
+All three closed as one unit. One cross-page factual contradiction
+fixed, one contact-routing inconsistency fixed, one design-register
+question logged rather than actioned given the refinement-only
+constraint.
+
+---
