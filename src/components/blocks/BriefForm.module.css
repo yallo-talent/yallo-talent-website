@@ -1,9 +1,17 @@
+/* R10: composes band-dark from global rather than a hand-set dark ground.
+   A permanently dark band must RESTATE the Layer 2c aliases (--fg,
+   --fg-muted, --fg-subtle…) or its descendants resolve them against the
+   LIGHT register — every label and the h2 measured 1.07-1.72:1 in light
+   theme before this, near-illegible on the site's only conversion form.
+   Setting the background colour alone (--black-950, which already equals
+   the same --dk value band-dark uses) was the defect; band-dark carries
+   the alias restatement that setting background alone does not. */
 .section {
+  composes: band-dark from global;
   position: relative;
   padding: clamp(80px, 10vw, 128px) 0;
   overflow: hidden;
   color: var(--fg);
-  background: var(--black-950);
   background-image:
     radial-gradient(ellipse 80% 50% at 50% 0%, var(--ya13) 0%, transparent 55%),
     linear-gradient(var(--ya04) 1px, transparent 1px),
@@ -99,6 +107,15 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--fg-muted);
+}
+
+/* <legend> carries UA default border/padding/display that <label> doesn't;
+   reset so the engagement-type group heading matches every other label. */
+.legend {
+  display: block;
+  padding: 0;
+  border: 0;
+  margin: 0 0 12px;
 }
 
 .req {

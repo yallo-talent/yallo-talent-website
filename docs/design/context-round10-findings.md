@@ -194,3 +194,106 @@ Both templates closed with no code changes required. No commit — nothing
 changed.
 
 ---
+
+## 4. `/brief` — the site's only conversion surface
+
+Territory note: `BriefForm.tsx`/`BriefForm.module.css` live under
+`src/components/blocks/**`, nominally Session A's per
+`context-round10-scope.md` §4. Confirmed single-consumer
+(`grep -rl "BriefForm" src/app/` returns only `src/app/brief/page.tsx`)
+before editing — nothing to fork, no other page to conflict with at
+merge. Edited directly rather than logged, given §5's explicit
+instruction to test and fix this page's failure paths.
+
+### Findings
+
+1. **[Accessibility, closed, serious]** `check:a11y` found the whole form
+   section failing contrast in **light** theme: labels and the legend at
+   1.72:1 (need 4.5:1), the h2 at 1.07:1 (need 3:1, effectively
+   invisible), the submit button also failing. Root cause: `.section` set
+   `background: var(--black-950)` by hand (a literal permanent-dark
+   token, correct in itself — it resolves to the same `--dk` value
+   `.band-dark` uses) but did not compose `.band-dark`, so the Layer 2c
+   aliases (`--fg`, `--fg-muted`, `--fg-subtle`…) stayed resolved against
+   the *light* register while sitting on a dark ground — the exact bug
+   class `globals.css`'s own comments describe as already found and
+   fixed on `EditorialLayout.module.css`'s `.hero`/`.bottomCta`. Not
+   previously caught because nothing had run `check:a11y` against
+   `/brief` specifically. **Fix:** `.section` now composes `band-dark
+   from global` and the redundant hand-set `background` was removed.
+   Re-ran `check:a11y --routes /brief`: clean, 0 violations, both themes.
+2. **[Accessibility, closed, serious]** Submitting the form with any
+   field empty produced visible red error text per field but nothing a
+   screen reader would ever hear: no `aria-invalid`, no
+   `aria-describedby`, no `role="alert"` on the error text, no
+   `aria-live` region on the status message, and focus stayed on the
+   submit button rather than moving to the first invalid field. Verified
+   directly (not assumed) by reading computed DOM attributes before and
+   after a blind empty submit. **Fix:** every field (`Field` component,
+   the region `<select>`, the message `<textarea>`, the engagement
+   radios) now carries `aria-invalid`/`aria-describedby` wired to a
+   `role="alert"` error span with a stable id; the engagement radio group
+   is now a real `<fieldset>`/`<legend>` rather than a `<div>` with a
+   floating `<label>`; the status paragraph carries `role="status"
+   aria-live="polite"`; and validation failure moves focus to the first
+   invalid field. Re-verified: empty submit now reports `aria-invalid`,
+   `aria-describedby`, `role="alert"`, `role="status"`/`aria-live`, and
+   `document.activeElement` on the first errored field, all present.
+3. **[Correctness, closed]** `message` had no upper bound in
+   `briefFormSchema` (`src/lib/schemas.ts`) — inconsistent with the
+   sibling `cvUploadSchema.message`, which already caps at 1000. Pasting
+   6,000+ characters programmatically (bypassing the browser's native
+   paste-truncation) submitted successfully with no feedback, forwarding
+   an unbounded string into the API's HTML email body. **Fix:** added
+   `.max(4000, …)` to the schema (defence in depth — catches direct API
+   calls, not only browser paste) and `maxLength={4000}` on the textarea
+   (native truncation on normal typing/paste, so most users never see the
+   error). Verified both layers independently: native maxLength truncates
+   a real paste; the schema still rejects a value set past the cap by
+   direct DOM manipulation, exactly the no-JS/direct-POST case the schema
+   guards.
+4. **[Correctness, logged, not fixed]** **No-JS path does not exist.**
+   Confirmed by reading the server-rendered HTML directly
+   (`curl … | grep '<form'`): the `<form>` has no `action` and no
+   `method` attribute. Per §11.4, this is explicitly "a finding, not a
+   pass" rather than a mandate to rebuild. With JavaScript disabled,
+   clicking submit falls back to the HTML default — GET to the current
+   URL — which reloads `/brief` with every field value appended as a
+   query string, submits nothing to `/api/brief`, and shows no
+   confirmation and no error. The user cannot tell the difference between
+   success and total failure. **Not fixed this round**: closing this
+   properly means either a classic `method="POST" action="/api/brief"`
+   submission with a server-rendered success/error response (the current
+   API returns JSON, not HTML, so it would need a second code path or
+   content negotiation) or a Next.js Server Action — either is a real
+   architecture change to the only conversion surface on the site, higher
+   risk than the scope of a refinement round with five page-groups still
+   open. **Exact question for Sumeet: is a no-JS fallback for `/brief`
+   worth a dedicated follow-up round, given the audience (CHRO/programme
+   director on a corporate laptop) makes JS-disabled traffic unlikely but
+   not zero?**
+5. **[Checked, not a defect]** Success state renders correctly ("Thanks —
+   we'll be in touch within one working day."), form resets, and the API
+   route degrades gracefully with no `RESEND_API_KEY` set (logs and
+   returns `{ok:true, delivered:false}` rather than erroring) — confirmed
+   in this session's local run, which has no key configured. No
+   invented delivery guarantee, no fabricated turnaround claim beyond
+   what was already live.
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes /brief`
+— axe clean, 2 themes x 2 widths (first pass caught the contrast defect
+above; second pass clean) · `check:reflow` clean · `check:motion` —
+reduced motion honoured · `check:contrast` — 32 token pairs + 6
+composites, all AA.
+
+### Close-out
+
+`/brief` closed. Two serious accessibility defects fixed and verified by
+re-running the gate that first caught each one. One correctness gap
+(message length) closed with layered validation. One architectural gap
+(no-JS path) logged with the exact question rather than actioned, per
+§11.4's own instruction that this is a finding, not a required fix.
+
+---

@@ -57,6 +57,10 @@ export function BriefForm() {
       setErrors(fieldErrors);
       setStatus("error");
       setMessage("Please fix the highlighted fields.");
+      const firstInvalid = Object.keys(fieldErrors)[0];
+      if (firstInvalid) {
+        form.querySelector<HTMLElement>(`[name="${firstInvalid}"]`)?.focus();
+      }
       return;
     }
 
@@ -137,6 +141,8 @@ export function BriefForm() {
                 className={styles.select}
                 defaultValue=""
                 required
+                aria-invalid={Boolean(errors.region)}
+                aria-describedby={errors.region ? "region-error" : undefined}
               >
                 <option value="" disabled>
                   Select region
@@ -148,14 +154,16 @@ export function BriefForm() {
                 ))}
               </select>
               {errors.region && (
-                <span className={styles.error}>{errors.region}</span>
+                <span id="region-error" role="alert" className={styles.error}>
+                  {errors.region}
+                </span>
               )}
             </div>
           </div>
-          <div className={styles.field}>
-            <label htmlFor="engagement" className={styles.label}>
+          <fieldset className={styles.field}>
+            <legend className={`${styles.label} ${styles.legend}`}>
               Engagement type <span className={styles.req}>*</span>
-            </label>
+            </legend>
             <div className={styles.chipRow}>
               {engagementOptions.map((o) => (
                 <label key={o.value} className={styles.chip}>
@@ -164,15 +172,21 @@ export function BriefForm() {
                     name="engagement"
                     value={o.value}
                     required
+                    aria-invalid={Boolean(errors.engagement)}
+                    aria-describedby={
+                      errors.engagement ? "engagement-error" : undefined
+                    }
                   />
                   <span>{o.label}</span>
                 </label>
               ))}
             </div>
             {errors.engagement && (
-              <span className={styles.error}>{errors.engagement}</span>
+              <span id="engagement-error" role="alert" className={styles.error}>
+                {errors.engagement}
+              </span>
             )}
-          </div>
+          </fieldset>
           <div className={styles.field}>
             <label htmlFor="message" className={styles.label}>
               A little context <span className={styles.req}>*</span>
@@ -181,12 +195,17 @@ export function BriefForm() {
               id="message"
               name="message"
               rows={5}
+              maxLength={4000}
               className={styles.textarea}
               placeholder="Programme, timelines, must-haves — a few sentences is enough."
               required
+              aria-invalid={Boolean(errors.message)}
+              aria-describedby={errors.message ? "message-error" : undefined}
             />
             {errors.message && (
-              <span className={styles.error}>{errors.message}</span>
+              <span id="message-error" role="alert" className={styles.error}>
+                {errors.message}
+              </span>
             )}
           </div>
 
@@ -201,6 +220,8 @@ export function BriefForm() {
             </button>
             {message && (
               <p
+                role="status"
+                aria-live="polite"
                 className={`${styles.msg} ${status === "success" ? styles.msgOk : styles.msgErr}`}
               >
                 {message}
@@ -230,6 +251,7 @@ function Field({
   required,
   error,
 }: FieldProps) {
+  const errorId = `${name}-error`;
   return (
     <div className={styles.field}>
       <label htmlFor={name} className={styles.label}>
@@ -243,8 +265,14 @@ function Field({
         placeholder={placeholder}
         required={required}
         className={styles.input}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? errorId : undefined}
       />
-      {error && <span className={styles.error}>{error}</span>}
+      {error && (
+        <span id={errorId} role="alert" className={styles.error}>
+          {error}
+        </span>
+      )}
     </div>
   );
 }
