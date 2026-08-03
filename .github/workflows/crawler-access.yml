@@ -1,0 +1,27 @@
+name: Crawler access
+on:
+  schedule:
+    # Daily. This probes the live production host and the placeholder over
+    # the real network — a Cloudflare zone setting anyone can change at any
+    # time, invisible to every other gate in this repository. It is not a
+    # statement about the code in this PR, so it does not block merges;
+    # AGENTS.md's rule is that it runs on a cadence and is watched.
+    - cron: "17 6 * * *"
+  workflow_dispatch: {}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+
+      # Can Googlebot, Bingbot and the retrieval/agent crawlers actually
+      # reach the production host, and is the placeholder still refusing
+      # everyone rather than serving something indexable. Fails on a Search
+      # or Agent crawler being blocked on the gated (production) host.
+      - name: Crawler access (production and placeholder)
+        run: node scripts/check-crawler-access.mjs

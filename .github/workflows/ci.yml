@@ -29,6 +29,22 @@ jobs:
       - name: Contrast
         run: pnpm check:contrast
 
+      # Stops one taxonomy's names resolving into another's, and a copy of the
+      # label map surviving outside the index. Round 10: proved to fail by
+      # writing "Data & AI" into a discipline data file and watching it flag
+      # the exact line, then reverting.
+      - name: Taxonomy
+        run: pnpm check:taxonomy
+
+      # An excerpt is compression of the body, never a new fact. Round 10:
+      # --selftest proves the gate catches a fixture excerpt naming a client
+      # its body never mentions, run here before the real corpus so a broken
+      # checker cannot pass by going blind.
+      - name: Case-study excerpts (self-test, then the real corpus)
+        run: |
+          node scripts/check-case-study-excerpts.mjs --selftest
+          pnpm check:cs-excerpts
+
       # Relay v2.0 §3.1. Nothing renders below 12px, and uppercase mono labels
       # carry at least 0.12em tracking. The 11px eyebrow was the case flagged
       # as unreadable, and it appeared on every page.
@@ -126,6 +142,46 @@ jobs:
       # themes with nothing in CI able to see it.
       - name: Reflow (360px, every route, both registers)
         run: PORT=3100 pnpm check:reflow
+
+      # Canon §2: capital Y only, judged on what the browser renders — a
+      # text-transform or a literal string can both produce "YALLO" and
+      # neither is visible to a static grep. Also proves every internal link
+      # it walks resolves. Round 10: proved to fail by setting a literal
+      # "YALLO" in rendered copy and watching it name the element, then
+      # reverting.
+      - name: Yallo casing (rendered) and internal link resolution
+        run: BASE_URL=http://localhost:3100 pnpm check:yallo-case
+
+      # §3.4: the estate band's role-to-tool interaction must be keyboard
+      # reachable, paired with a non-motion cue, and never hide a fact at
+      # rest. Round 10: proved to fail by removing the data-lit wiring and
+      # watching keyboard focus light nothing, then reverting.
+      - name: Estate band interaction (keyboard, motion-free cue, at-rest completeness)
+        run: node scripts/check-estate-interaction.mjs http://localhost:3100
+
+      # Every mark normalised on rendered ink area against its surface's
+      # median. Round 10: proved to fail by inflating one asset's declared
+      # ink fraction in the manifest and watching the rendered box fall
+      # outside tolerance, then reverting.
+      - name: Mark scale (rendered ink area against surface median)
+        run: node scripts/check-marks.mjs http://localhost:3100
+
+      # The guard on the guards: every rendering unit with a live URL must be
+      # visited by at least one enumerating gate, read from each gate's own
+      # source list rather than a maintained copy. Round 10: proved to fail by
+      # dropping one route from check-reflow's list and watching its shell
+      # report zero coverage, then reverting.
+      - name: Gate coverage (every rendering unit has an enumerating gate)
+        run: node scripts/check-gate-coverage.mjs http://localhost:3100
+
+      # check-yallo-case already proves every internal href eventually
+      # resolves, following redirects — a working 301 chain passes it. A hop
+      # is a different defect and costs AI retrieval eligibility, not only
+      # crawl budget. Round 10: proved to fail by linking to a page carrying
+      # a real legacy redirect and watching it name the 308 and its
+      # destination, then reverting.
+      - name: No internal link resolves through a redirect
+        run: node scripts/check-no-redirect-hops.mjs http://localhost:3100
 
       - name: Upload captures on failure
         if: failure()
