@@ -1,0 +1,72 @@
+/* Comparison table, /why-yallo only. Copy is frozen (context-round10-scope.md
+   §11.3); this file governs markup semantics and reflow, nothing else.
+   A real <table> replaces two parallel <ul>s so a screen reader announces
+   each row as a "Traditional recruiters" / "Yallo Talent" pair rather than
+   two unrelated lists placed side by side. */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  overflow-x: auto;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r);
+}
+
+.table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.theadThem,
+.theadUs {
+  text-align: left;
+  padding: 24px 24px 20px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  font-weight: var(--fw-medium, 500);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.theadThem {
+  background: var(--ground-3);
+  color: var(--fg-subtle);
+}
+
+.theadUs {
+  background: var(--sector-accent-08);
+  color: var(--accent-label);
+  border-left: 1px solid var(--sector-accent-35);
+}
+
+.cellThem,
+.cellUs {
+  padding: 16px 24px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  border-top: 1px solid var(--hairline);
+  vertical-align: top;
+}
+
+.cellThem {
+  background: var(--ground-3);
+  color: var(--fg-muted);
+}
+
+.cellUs {
+  background: var(--sector-accent-08);
+  color: var(--fg);
+  font-weight: 500;
+  border-left: 1px solid var(--sector-accent-35);
+}

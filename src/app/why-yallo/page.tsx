@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
 import { buildMetadata } from "@/lib/seo";
+import cmp from "./comparison.module.css";
 
 export const metadata: Metadata = buildMetadata({
   seo: {
@@ -167,104 +168,38 @@ export default function WhyYalloPage() {
               Traditional recruitment optimises for candidate throughput. We
               optimise for the hire actually shipping your programme.
             </p>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 20,
-                background: "var(--ground-2)",
-                border: "1px solid var(--hairline)",
-                borderRadius: "0 0 0 var(--r)",
-                overflow: "hidden",
-              }}
+            {/* A scrollable container must be focusable to be keyboard
+                scrollable, which SC 2.1.1 requires. */}
+            <section
+              className={cmp.wrap}
+              // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+              tabIndex={0}
+              aria-label="Scrollable comparison table"
             >
-              <div
-                style={{
-                  padding: 24,
-                  background: "var(--ground-3)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "var(--fs-data)",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "var(--fg-subtle)",
-                    marginBottom: 20,
-                  }}
-                >
-                  Traditional recruiters
-                </div>
-                <ul
-                  style={{
-                    listStyle: "none",
-                    margin: 0,
-                    padding: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 16,
-                  }}
-                >
+              <table className={cmp.table}>
+                <caption className={cmp.srOnly}>
+                  Comparison between traditional recruiters and Yallo Talent
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col" className={cmp.theadThem}>
+                      Traditional recruiters
+                    </th>
+                    <th scope="col" className={cmp.theadUs}>
+                      Yallo Talent
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
                   {comparison.map((row) => (
-                    <li
-                      key={row.them}
-                      style={{
-                        fontSize: "var(--fs-caption)",
-                        color: "var(--fg-muted)",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {row.them}
-                    </li>
+                    <tr key={row.them}>
+                      <td className={cmp.cellThem}>{row.them}</td>
+                      <td className={cmp.cellUs}>{row.us}</td>
+                    </tr>
                   ))}
-                </ul>
-              </div>
-              <div
-                style={{
-                  padding: 24,
-                  background: "var(--sector-accent-08)",
-                  borderLeft: "1px solid var(--sector-accent-35)",
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "var(--fs-data)",
-                    letterSpacing: "0.16em",
-                    textTransform: "uppercase",
-                    color: "var(--accent-label)",
-                    marginBottom: 20,
-                  }}
-                >
-                  Yallo Talent
-                </div>
-                <ul
-                  style={{
-                    listStyle: "none",
-                    margin: 0,
-                    padding: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 16,
-                  }}
-                >
-                  {comparison.map((row) => (
-                    <li
-                      key={row.us}
-                      style={{
-                        fontSize: "var(--fs-caption)",
-                        color: "var(--fg)",
-                        lineHeight: 1.6,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {row.us}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+                </tbody>
+              </table>
+            </section>
           </div>
         </div>
       </section>
