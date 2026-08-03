@@ -33,10 +33,14 @@ const quickLinks = [
   { label: "Jobs", href: "/jobs" },
 ];
 
+/* Yallo AI Academy is withdrawn, not deferred to a date or a "coming soon" —
+   round12-scope.md §4.4. It sits on a host that doesn't exist yet
+   (academy.yallo.co), so there is nothing to link to and no date that
+   wouldn't be quietly wrong within a month. One line to add back once that
+   host is real. */
 const yalloFamily = [
-  { label: "Yallo Talent", href: "https://talent.yallo.co", live: true },
-  { label: "saasinator AI", href: "https://saasinator.ai", live: true },
-  { label: "Yallo AI Academy", href: "#", live: false },
+  { label: "Yallo Talent", href: "https://talent.yallo.co" },
+  { label: "saasinator AI", href: "https://saasinator.ai" },
 ];
 
 const offices = [
@@ -88,27 +92,13 @@ export function Footer() {
             <div className={styles.linkCol}>
               <div className="eyebrow">Group companies</div>
               <ul className={styles.linkList}>
-                {yalloFamily.map((item) =>
-                  item.live ? (
-                    <li key={item.label}>
-                      <Link href={item.href} className={styles.link}>
-                        {item.label}
-                      </Link>
-                    </li>
-                  ) : (
-                    /* Not an anchor at all. This rendered <a href="#"> with
-                       aria-disabled and pointer-events:none, so a mouse user got
-                       nothing while a keyboard user could still focus it and
-                       activate a jump to "#". Canon §9 says render nothing and
-                       name the gap; a disabled-looking link does neither. The
-                       marker is the same one the mega menu uses for a desk in
-                       build. */
-                    <li key={item.label} className={styles.linkPlanned}>
+                {yalloFamily.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className={styles.link}>
                       {item.label}
-                      <span className={styles.plannedMark}>Launching</span>
-                    </li>
-                  ),
-                )}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
