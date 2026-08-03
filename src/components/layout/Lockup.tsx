@@ -45,6 +45,21 @@ export function Lockup({
       <YalloFlower size={36} className={styles.mark} />
       <span className={styles.text}>
         <span className={styles.wordmark}>Yallo</span>
+        {/* A real space, and it is load-bearing for WCAG 2.5.3.
+            The gap between the wordmark and the qualifier was CSS only, so the
+            lockup's textContent read "YalloTalent" with nothing between the
+            words. The header brand link takes its accessible name from
+            aria-label="Yallo Talent home", and Label in Name asks that the name
+            contain the visible label: "yallotalent" is not inside "yallo talent
+            home", so the Phase 8 Lighthouse run failed
+            label-content-name-mismatch on every one of the eight routes
+            measured. Measured, not inferred - textContent "YalloTalent" against
+            an aria-label of "Yallo Talent home".
+            .text is display:flex, so a whitespace-only node is not a flex item
+            and the painted lockup does not move; the measured width is 137.55px
+            either way. The repo's own axe gate never caught this because
+            label-content-name-mismatch is an axe experimental rule and the gate
+            does not run experimental rules. */}{" "}
         <span className={styles.suffix}>Talent</span>
       </span>
     </span>
