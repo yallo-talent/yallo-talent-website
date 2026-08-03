@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CvUploadForm } from "@/components/blocks/CvUploadForm";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { desks } from "@/data/home/screen";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -12,45 +13,6 @@ export const metadata: Metadata = buildMetadata({
   },
   path: "/jobs",
 });
-
-const openings = [
-  {
-    role: "SAP FICO Functional Consultant",
-    engagement: "Contract",
-    location: "Dubai, UAE",
-    days: "12-month engagement",
-  },
-  {
-    role: "Oracle Fusion Cloud Architect",
-    engagement: "Contract",
-    location: "London, UK",
-    days: "9-month engagement",
-  },
-  {
-    role: "Salesforce Commerce Cloud Lead",
-    engagement: "Permanent",
-    location: "Riyadh, Saudi Arabia",
-    days: "Immediate start",
-  },
-  {
-    role: "Blue Yonder WMS Specialist",
-    engagement: "Contract",
-    location: "Bengaluru, India",
-    days: "6-month engagement",
-  },
-  {
-    role: "Cloud Platform Engineer (Azure)",
-    engagement: "Permanent",
-    location: "London, UK",
-    days: "Rolling",
-  },
-  {
-    role: "Data Engineering Lead",
-    engagement: "Contract",
-    location: "Remote (UK/UAE)",
-    days: "12-month engagement",
-  },
-];
 
 export default function JobsPage() {
   return (
@@ -82,7 +44,7 @@ export default function JobsPage() {
               <span aria-hidden="true">→</span>
             </Link>
             <Link href="#openings" className={styles.ctaGhost}>
-              Browse openings
+              Where we screen
             </Link>
           </div>
         </div>
@@ -119,7 +81,7 @@ export default function JobsPage() {
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Regional coverage</h3>
                 <p className={styles.cardCopy}>
-                  the UK, UAE, Saudi Arabia and India — with visa cover and
+                  The UK, UAE, Saudi Arabia and India — with visa cover and
                   payroll support if the role sits in a market you're not
                   resident in.
                 </p>
@@ -129,106 +91,25 @@ export default function JobsPage() {
         </div>
       </section>
 
-      {/* OPEN ROLES */}
+      {/* SCREENING DESKS */}
       <section id="openings" className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>Current openings</span>
-            <h2 className={styles.sectionH}>
-              Live briefs we're screening for.
-            </h2>
+            <span className={styles.sectionEyebrow}>Where we screen</span>
+            <h2 className={styles.sectionH}>Six specialist desks, one CV.</h2>
             <p className={styles.sectionLede}>
-              A sample of the enterprise programmes we're actively staffing.
-              Send your CV even if you don't see your exact role — we screen for
-              more than what's listed.
+              We don't publish a live jobs board yet. Send your CV once and an
+              operator on the relevant desk screens it against the enterprise
+              programmes we're actively staffing across the UK, Middle East and
+              India.
             </p>
-            <div
-              style={{
-                display: "grid",
-                gap: 12,
-                marginTop: 24,
-              }}
-            >
-              {openings.map((o) => (
-                <div
-                  key={o.role}
-                  className={styles.card}
-                  style={
-                    {
-                      display: "grid",
-                      gridTemplateColumns: "1fr auto auto auto",
-                      gap: 24,
-                      alignItems: "center",
-                      padding: "20px 24px",
-                    } as React.CSSProperties
-                  }
-                >
-                  <div>
-                    <div
-                      style={{
-                        fontSize: "var(--fs-body-sm)",
-                        fontWeight: 700,
-                        color: "var(--fg)",
-                        letterSpacing: "-0.01em",
-                        marginBottom: 4,
-                      }}
-                    >
-                      {o.role}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "var(--fs-data)",
-                        letterSpacing: "0.06em",
-                        color: "var(--fg-muted)",
-                      }}
-                    >
-                      {o.location} · {o.days}
-                    </div>
-                  </div>
-                  <span
-                    style={{
-                      padding: "5px 12px",
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--fs-data)",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: "var(--accent-label)",
-                      background: "var(--sector-accent-08)",
-                      border: "1px solid var(--sector-accent-35)",
-                      borderRadius: 999,
-                    }}
-                  >
-                    {o.engagement}
-                  </span>
-                  <Link
-                    href="#upload"
-                    style={{
-                      fontFamily: "var(--font-mono)",
-                      fontSize: "var(--fs-data)",
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      color: "var(--fg)",
-                      transition: "color 0.15s ease",
-                    }}
-                  >
-                    Apply →
-                  </Link>
-                </div>
+            <div className={styles.cardGrid3}>
+              {desks.map((desk) => (
+                <article key={desk} className={styles.card}>
+                  <h3 className={styles.cardTitle}>{desk}</h3>
+                </article>
               ))}
             </div>
-            <p
-              style={{
-                marginTop: 24,
-                fontFamily: "var(--font-mono)",
-                fontSize: "var(--fs-data)",
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: "var(--fg-subtle)",
-              }}
-            >
-              Full jobs board coming soon — for now, send us your CV.
-            </p>
           </div>
         </div>
       </section>

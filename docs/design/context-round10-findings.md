@@ -468,3 +468,68 @@ Blueprint content itself untouched, per scope.
 against what they actually contain and now describe it accurately.
 
 ---
+
+## 8. `/jobs`
+
+### Findings
+
+1. **[Honesty, closed, highest severity found this round bar
+   `/leadership`]** The page hardcoded six specific "live" openings —
+   named roles, named cities, specific durations ("12-month engagement",
+   "Immediate start", "Rolling") — introduced by a lede claiming "A
+   sample of the enterprise programmes we're actively staffing." These
+   cannot be real: `context-round10-scope.md` §7 lists **"the Volcanic
+   `/jobs` punchout"** as a not-yet-built hard cutover dependency, so
+   there is no ATS or jobs-board integration behind this page at all.
+   Six specific, dated-sounding vacancies with no data source
+   (hand-typed directly in the page component, unlike case studies which
+   pull from verified MDX) is a fabricated capability claim of exactly
+   the kind canon forbids — and worse than most, because a real
+   candidate could act on it. The section also closed with an explicit
+   "Full jobs board coming soon" — the forbidden pattern again.
+   **Fix:** replaced the six invented listings with the six real,
+   ratified specialist desks (`desks` from `src/data/home/screen.ts`,
+   the same single source the homepage's "Screened by six specialist
+   desks" section already uses — not a new list, not hand-typed a
+   second time). Copy now states plainly that there is no live jobs
+   board yet and CVs are screened against real programmes by desk.
+   Removed "coming soon" without replacing it with an invented timeline.
+2. **[Correctness, closed, trivial]** "the UK, UAE, Saudi Arabia and
+   India" — sentence-starting lowercase "the" on a card. Capitalised.
+3. **[Checked, confirmed fixed by inheritance]** `CvUploadForm.tsx`
+   shares `BriefForm.module.css` (`import styles from "./BriefForm
+   .module.css"`), so the light-theme contrast fix from finding 4.1
+   applies here too without further action — confirmed by rendering,
+   not assumed.
+4. **[Accessibility, logged, not fixed]** `CvUploadForm` has no
+   client-side validation at all (`onSubmit` posts `FormData` directly,
+   `noValidate` set, no zod parse before the fetch) and no per-field
+   error display — a server rejection surfaces only as one generic
+   status line ("Validation failed"), with no `aria-invalid`,
+   `aria-describedby` or focus movement to the field that failed. Same
+   defect class as `/brief` finding 4.2, not fixed here: `/jobs` is not
+   this round's designated "only conversion surface" (`/brief` is,
+   per §5), and matching the `/brief` fix exactly would mean rewriting
+   a second form's validation architecture at the end of the round.
+   Server-side validation itself is solid (file type/size checks, zod
+   schema, HTML-escaped email body) — confirmed by reading
+   `src/app/api/cv/route.ts`. **Exact ask: worth a follow-up pass to
+   bring `CvUploadForm` to the same accessible-validation pattern now
+   established on `BriefForm`?**
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes /jobs`
+— axe clean, 2 themes x 2 widths · `check:reflow` clean · `check:motion`
+— reduced motion honoured · `check:terms` clean · `check:yallo-case` —
+131 internal links resolve · `check:taxonomy` clean.
+
+### Close-out
+
+`/jobs` closed. One high-severity honesty defect (invented job listings)
+and one trivial copy fix closed. One accessibility gap logged for a
+follow-up round rather than actioned, matching §11.4's own instruction
+that an unfixed gap is a finding, not a blocker, when fixing it properly
+means a second form-architecture rewrite this late in the round.
+
+---
