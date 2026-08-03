@@ -1,0 +1,83 @@
+# Round 10 findings log — Session B
+
+Working log for the nine-page close-out loop, `context-round10-scope.md` §4.
+Rubric and severity order per `context-round9-scope.md` §6, carried forward
+unchanged. Close-out lines appended at the end of each page's section.
+
+---
+
+## 1. `/` — homepage
+
+**Method note.** Impeccable ran single-context per the round 9 ruling now
+standing protocol (`context-round10-scope.md` §1): no dual sub-agent, no
+interactive questions, direction already ratified by canon and `DESIGN.md`.
+`CONTEXT_STALE` reported once at session start (`.impeccable/design.json`
+stale against `DESIGN.md`), not acted on.
+
+### Render and score
+
+Rendered via the repo's own `scripts/capture-home.mjs` (full-page, both
+themes, desktop 1280 and mobile 360, device-scale 2x) rather than the
+browser-pane tool, which hit the documented deep-scroll artifact on this
+page (22,038px tall at 2x): a duplicated sticky header mid-capture. Verified
+by computed style that the live DOM holds exactly one `<header>`
+(`position: sticky`) — the duplication is a Chromium tiled-screenshot
+limit on oversized captures, not a rendered defect. Consistent with the
+prior "black beyond ~9,000px" tool artifact already on file; not
+re-diagnosed further.
+
+Sampled hero, gap/quotes, stats, process, role coverage, commitment,
+where-we-place, evidence carousel, start-here CTA and footer in both
+themes, plus mobile hero.
+
+### Findings
+
+No honesty, accessibility, correctness, IA or completeness defects found.
+Two items checked and confirmed non-issues rather than logged as open:
+
+1. **[Checked, not a defect]** The "SHORTLIST IN PROGRESS" hero mockup
+   card renders as a fixed dark panel in both light and dark theme. This
+   is the deliberate product-mockup pattern (a simulated dashboard
+   screenshot), not the page's own theme failing to apply — confirmed by
+   inspecting the card in light theme where the rest of the page correctly
+   inverts around it.
+2. **[Checked, not a defect]** Three "IN PREPARATION" tags (AI practice,
+   Programme Staffing Blueprint, AI Talent Atlas) read as status labels on
+   real, named, in-flight initiatives explicitly out of scope for round 10
+   (`context-round10-scope.md` rules: "Blueprint, insights, DNS, Volcanic:
+   out of scope"; round 9 ruling: the AI Talent lane is a separate
+   consumer). Distinguished from the forbidden "coming soon" pattern
+   (`context-round9-scope.md` §7), which targets placeholders standing in
+   for missing content on a page that should already be finished — these
+   labels state true status on cross-links to work genuinely in progress
+   elsewhere, and do not claim the homepage itself is incomplete.
+
+Footer's "Yallo AI Academy — LAUNCHING" marker left exactly as is per
+`context-round10-scope.md` §11.6 — logged there, not actioned here.
+Footer's Industries column and `MotionConfig reducedMotion="user"` also
+left untouched per §11.5.
+
+### Gates run
+
+`node scripts/capture-home.mjs` (PORT=3207) — all visual and markup
+assertions passed, including server-rendered (no-JS) markup and
+prefers-reduced-motion · `check:a11y --base http://localhost:3207` — axe
+clean, 1 exemption applied (ghost numerals, pre-documented) · `check:reflow`
+— no horizontal overflow, 22 routes x 2 themes at 320/360px · `check:motion`
+— reduced motion honoured on every animated route · `check:rendered-type`
+— clean, 14 templates x 4 widths · `check:terms` — clean, 240 files ·
+`check:prose` — clean · `check:contrast` — 32 token pairs + 6 composites,
+all AA · `check:yallo-case` — 131 internal links resolve, casing correct
+across 19 pages · `check:marks` — all logo ink areas within tolerance,
+worst deviation 12.8% (Chalhoub Group rail mark, under the ±13% band).
+
+All of the above are site-wide gates (the repo has no homepage-only
+variant for several of them); homepage is one of the routes each one
+covers.
+
+### Close-out
+
+`/` closed with no code changes required. No commit — nothing changed.
+Logged here as the close-out record per step 9 of the loop.
+
+---
