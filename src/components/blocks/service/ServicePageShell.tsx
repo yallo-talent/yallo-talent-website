@@ -35,6 +35,8 @@ export function ServicePageShell({ data }: Props) {
       <ServiceBenefits data={data} />
       <ServiceProcess data={data} />
       <ServiceRoles data={data} />
+      <ServiceBoundary data={data} />
+      <ServiceProof data={data} />
       <ServiceFaq data={data} />
       <ServiceBottomCta data={data} />
     </div>
@@ -59,6 +61,16 @@ function ServiceHero({ data }: Props) {
             <span className={styles.emphasis}>{data.emphasis}</span>
           </h1>
           <p className={styles.heroLede}>{data.lede}</p>
+          {data.audience && data.audience.length > 0 && (
+            <div className={styles.heroAudience}>
+              <span className={styles.heroAudienceLabel}>
+                {data.audienceLabel ?? "Who this is for"}
+              </span>
+              <span className={styles.heroAudienceList}>
+                {data.audience.join(" · ")}
+              </span>
+            </div>
+          )}
           <div className={styles.heroCtas}>
             <Link href={data.primaryCta.href} className={styles.ctaPrimary}>
               {data.primaryCta.label}
@@ -194,6 +206,47 @@ function ServiceRoles({ data }: Props) {
             <span key={role} className={styles.rolePill}>
               {role}
             </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceBoundary({ data }: Props) {
+  if (!data.boundary) return null;
+  return (
+    <section className={styles.boundary}>
+      <div className={styles.wrap}>
+        <div className={styles.boundaryCard}>
+          <h2 className={styles.sectionH}>
+            {data.boundaryHeading ?? "Where this ends"}
+          </h2>
+          <p className={styles.boundaryCopy}>{data.boundary}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceProof({ data }: Props) {
+  if (!data.proof || data.proof.length === 0) return null;
+  return (
+    <section className={styles.proof}>
+      <div className={styles.wrap}>
+        <div className={styles.proofHead}>
+          <h2 className={styles.sectionH}>{data.proofHeading ?? "Proof"}</h2>
+        </div>
+        <div className={styles.proofGrid}>
+          {data.proof.map((p) => (
+            <Link key={p.href} href={p.href} className={styles.proofCard}>
+              <span className={styles.proofClient}>{p.client}</span>
+              <span className={styles.proofTitle}>{p.title}</span>
+              <span className={styles.proofExcerpt}>{p.excerpt}</span>
+              <span className={styles.proofLink} aria-hidden="true">
+                Read the case study →
+              </span>
+            </Link>
           ))}
         </div>
       </div>

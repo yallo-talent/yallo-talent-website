@@ -150,6 +150,30 @@
   max-width: 60ch;
 }
 
+/* Canon §3 Q1 — the buyer role, named. Sits with the lede, not the trust
+   strip: it answers "is this page for me" before the page asks for trust. */
+.heroAudience {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  max-width: 60ch;
+}
+
+.heroAudienceLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.heroAudienceList {
+  font-size: var(--fs-caption);
+  color: var(--fg-subtle);
+}
+
 /* Hero visual */
 .heroVisual {
   position: relative;
@@ -652,6 +676,93 @@
   background: var(--wa03);
   border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
+}
+
+/* ============ BOUNDARY (canon §3 Q6) ============ */
+.boundary {
+  position: relative;
+  padding: clamp(60px, 8vw, 96px) 0;
+  background: var(--ground);
+}
+
+.boundaryCard {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.boundaryCopy {
+  margin-top: 16px;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--fg-subtle);
+}
+
+/* ============ PROOF (canon §3 Q7 — real case studies, pillar-filtered) ============ */
+.proof {
+  position: relative;
+  padding: clamp(60px, 8vw, 96px) 0;
+  background: var(--ground-2);
+}
+
+.proofHead {
+  max-width: 720px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.proofGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.proofCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 28px 24px;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  color: var(--fg);
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.proofCard:hover,
+.proofCard:focus-visible {
+  border-color: var(--border-accent);
+  transform: translateY(-2px);
+}
+
+.proofClient {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.proofTitle {
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+}
+
+.proofExcerpt {
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--fg-subtle);
+}
+
+.proofLink {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  color: var(--accent-label);
 }
 
 /* ============ FAQ (redesigned — 2-col with aside) ============ */

@@ -1,6 +1,7 @@
 import { capabilityNavEntries } from "@/data/capabilities";
 import { capabilitiesIndex } from "@/data/l1/index";
 import { publishedPlatformSlugs } from "@/data/platforms/derive";
+import { eorCorridorLabel } from "@/data/services/eor-countries";
 import { platformNavEntries } from "@/lib/platforms";
 import { sectorNavEntries } from "@/lib/sectors";
 
@@ -176,7 +177,11 @@ export const primaryNav: NavGroup[] = [
           {
             label: "Employer of Record",
             href: "/eor",
-            description: "UAE visa + India payroll cover",
+            /* Corridor only, no mechanism — §4b. The per-country service
+               (entity, payroll, visa sponsorship, or some subset) is not
+               ratified for Saudi Arabia, so this line names the three
+               countries the index carries and stops there. */
+            description: eorCorridorLabel,
           },
           {
             label: "Managed Delivery",
@@ -198,7 +203,7 @@ export const primaryNav: NavGroup[] = [
     label: "Evidence",
     columns: [
       {
-        heading: "Explore",
+        heading: "Evidence",
         items: [
           {
             label: "Case studies",
@@ -230,7 +235,7 @@ export const primaryNav: NavGroup[] = [
     label: "Intelligence",
     columns: [
       {
-        heading: "Explore",
+        heading: "Intelligence",
         items: [
           {
             label: "Insights",

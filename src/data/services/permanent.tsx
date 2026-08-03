@@ -12,6 +12,11 @@ export const permanentData: ServicePageData = {
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine:
     "Same 72h SLA as contract · specialist-vetted for stay-power · region-deep",
+  audienceLabel: "Who this is for",
+  audience: [
+    "CIOs and Heads of Delivery building the leadership bench for a multi-year programme",
+    "Heads of Talent Acquisition who need specialist-vetted fits, not CV volume",
+  ],
   benefitsHeading: "What you get with Yallo Permanent",
   benefits: [
     {
@@ -55,6 +60,9 @@ export const permanentData: ServicePageData = {
       tag: "Weeks 2–8",
     },
   ],
+  boundaryHeading: "Where Permanent ends",
+  boundary:
+    "Permanent is for the roles that must outlast any single programme — leadership, architecture, product ownership. When the need has a defined term and a defined end, that's Contract. When you've made the hire but have no local entity to employ them, that's Employer of Record.",
   rolesHeading: "Permanent roles we place",
   roles: [
     "Chief Information Officer",
