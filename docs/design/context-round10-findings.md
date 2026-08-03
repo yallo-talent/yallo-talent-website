@@ -428,3 +428,43 @@ more unconfirmed personas around it.
 `/about` closed. Three findings closed, none logged open.
 
 ---
+
+## 7. `/intelligence` (landing only)
+
+Blueprint content itself untouched, per scope.
+
+### Findings
+
+1. **[Honesty, closed]** The "AI talent" card read "Nine AI role
+   families". `src/data/ai-talent/stacks.ts`'s `RoleFamilySlug` union
+   has ten members, and the build generates ten `/ai-talent/[family]`
+   routes. `/ai-talent/page.tsx`'s own top-of-file comment documents
+   this exact bug already happening once, on 2 August: "the tenth
+   family was ratified and 'nine role families' was live in three
+   places", and states the fix as a rule (R21) — **the count is
+   deliberately never written down anywhere on that page**, because a
+   literal number is what goes stale the moment the list changes.
+   `/intelligence` is evidently a fourth surviving instance the original
+   sweep missed (or that postdated it). **Fix:** followed the
+   established rule rather than updating the number — "Nine AI role
+   families" → "The AI role families", no count asserted, nothing left
+   to date.
+2. **[Consistency, closed, cosmetic]** The page's own top-of-file
+   comment said "it routes to the two things that are real", but
+   `entries` has three items (Blueprint, Insights, AI talent) — stale
+   documentation, not a rendered defect. Corrected the comment to not
+   assert a count either, for the same reason as item 1.
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes
+/intelligence` — axe clean, 2 themes x 2 widths, 0 contrast abstentions ·
+`check:reflow` clean · `check:motion` — reduced motion honoured ·
+`check:yallo-case` — 131 internal links resolve · `check:terms` clean.
+
+### Close-out
+
+`/intelligence` landing closed. Both links (Blueprint, AI talent) checked
+against what they actually contain and now describe it accurately.
+
+---
