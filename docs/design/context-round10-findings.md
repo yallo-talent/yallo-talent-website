@@ -297,3 +297,82 @@ re-running the gate that first caught each one. One correctness gap
 §11.4's own instruction that this is a finding, not a required fix.
 
 ---
+
+## 5. `/leadership`
+
+**This page was in direct violation of the round's own ruling before this
+session touched it.** `context-round10-scope.md` §4 states as settled
+fact: "No ratified named consultants exist... Ship roles with real
+credentials: no names, no photographs, no `Person` schema." The page as
+found did the opposite of all three:
+
+- A "Founder Spotlight" section named "Sumeet Goenka" against a
+  photograph-styled `PetalPlate` card (a gradient plate dressed with a
+  bottom-aligned name/title overlay, functioning as a portrait
+  surrogate) with specific biographical claims ("two decades... the SAP
+  go-lives, the WMS cutovers, the multi-country payroll
+  consolidations").
+- The six-person team grid named a founder by name and gave the other
+  five an initials monogram ("AK", "RM", "PN"…) plus specific,
+  unverifiable career claims ("20+ years of SAP delivery across retail
+  and financial services", "Ex-Oracle Fusion delivery leader", "Azure
+  and AWS platform builder") for people the ruling states are not
+  ratified to name or describe this specifically — initials still
+  function as a person-identifying element once paired with a role, so
+  removing the name but keeping "AK" would not have closed this.
+- The bottom CTA named "Sumeet" directly in body copy outside the team
+  grid.
+
+No `Person` schema was present (checked `src/lib/jsonld.ts` and the page
+itself) — that part was already compliant.
+
+### Fix
+
+Rewrote `team` in `src/app/leadership/page.tsx` to the pattern already
+live and unchallenged on `/why-yallo`'s credentials section (company +
+role-type, no individual named) rather than inventing a new one:
+
+- Removed the "Founder Spotlight" section entirely — no name, no
+  photo-styled card, no `PetalPlate`-as-portrait treatment. Removed the
+  now-unused `PetalPlate` import with it.
+- Removed the initials monogram from every card.
+- Rewrote all six bios to describe what the role does and what standard
+  it holds candidates to, dropping every specific, unverifiable
+  individual claim (tenure counts, named past employers for the five
+  practice leads) that nothing else on the site corroborates. Kept the
+  Richemont / Landmark Group / Alshaya EMEA claim for the founder role
+  only because that fact is already asserted consistently elsewhere
+  (`/why-yallo`'s credentials, this page's own hero copy, the homepage) —
+  not a new invention, and it names a company history, not an individual.
+- Removed "Sumeet" from the bottom CTA body copy ("A practice lead picks
+  it up personally").
+
+**Not invented:** no new person, company, tenure figure, or capability
+claim was added anywhere in this rewrite — every remaining sentence
+either already existed elsewhere on the site or describes methodology
+(what a role does) rather than a biography (who did what, for how long).
+
+### Findings
+
+No further honesty, accessibility, correctness, IA, completeness or
+design defects found after the rewrite. Logged per the ruling, not
+actioned: this remains a "roles with credentials, no names" page by
+design, per §4 — it is not waiting on anything and does not block
+publish.
+
+### Gates run
+
+`pnpm build` clean · `tsc --noEmit` clean · `check:a11y --routes
+/leadership` — axe clean, 2 themes x 2 widths · `check:reflow` clean ·
+`check:motion` — reduced motion honoured · `check:terms` — clean, 241
+files · `check:yallo-case` — 131 internal links resolve.
+
+### Close-out
+
+`/leadership` closed. The page now matches its own ruling instead of
+contradicting it — this was the highest-severity (honesty) finding of
+the round so far, since it named a real person with specific
+biographical claims never confirmed as ratified copy, and attached five
+more unconfirmed personas around it.
+
+---
