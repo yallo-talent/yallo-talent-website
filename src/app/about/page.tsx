@@ -37,7 +37,7 @@ const timeline = [
   {
     year: "Founded",
     title: "The specialist team assembles",
-    copy: "A small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
+    copy: "Sumeet Goenka and a small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
   },
   {
     year: "Middle East · Europe",
