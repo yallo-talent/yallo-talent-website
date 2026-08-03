@@ -121,8 +121,8 @@ export function L1HubShell({
               <div className={styles.bottomEyebrow}>Ready to hire?</div>
               <h2 className={styles.bottomH}>Talent for every one of these.</h2>
               <p className={styles.bottomSub}>
-                Send a brief and we'll come back with a shortlist calibrated to
-                your programme, inside 72 hours.
+                Send a brief and we&apos;ll come back with a shortlist
+                calibrated to your programme, inside 72 hours.
               </p>
             </div>
             <div className={styles.bottomActions}>

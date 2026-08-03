@@ -92,7 +92,7 @@ export const permanentData: ServicePageData = {
     },
     {
       q: "What's your fee model?",
-      a: "Fixed retained fee or contingent placement, transparent up-front. Rebate structure if a placement leaves inside the first six months.",
+      a: "Fixed retained fee or contingent placement, transparent up-front.",
     },
     {
       q: "Which regions do you cover?",

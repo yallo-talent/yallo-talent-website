@@ -266,7 +266,7 @@ function ServiceFaq({ data }: Props) {
             <h2 className={styles.sectionH}>{data.faqHeading}</h2>
             <p className={styles.faqAsideCopy}>
               The questions we get most often — answered directly. Anything not
-              covered? Send us a brief and we'll pick it up.
+              covered? Send us a brief and we&apos;ll pick it up.
             </p>
             <div className={styles.faqAsideStats}>
               <div className={styles.faqAsideStat}>
@@ -342,8 +342,8 @@ function ServiceBottomCta({ data }: Props) {
           <div className={styles.bottomInner}>
             <h2 className={styles.bottomH}>Ready to close your talent gap?</h2>
             <p className={styles.bottomSub}>
-              Send a brief. We'll come back with a calibrated shortlist inside
-              72 hours.
+              Send a brief. We&apos;ll come back with a calibrated shortlist
+              inside 72 hours.
             </p>
             <div className={styles.bottomActions}>
               <Link href={data.primaryCta.href} className={styles.ctaPrimary}>
