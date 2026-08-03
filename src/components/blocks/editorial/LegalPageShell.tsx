@@ -1,4 +1,3 @@
-import Link from "next/link";
 import editorial from "./EditorialLayout.module.css";
 import styles from "./LegalPageShell.module.css";
 
@@ -75,8 +74,8 @@ export function LegalPageShell({ data }: Props) {
 
               <div className={styles.footer}>
                 <p className={styles.para}>
-                  Questions? Reach us at <Link href="/brief">get in touch</Link>
-                  .
+                  Questions about this notice? Email{" "}
+                  <a href="mailto:privacy@yallo.co">privacy@yallo.co</a>.
                 </p>
               </div>
             </article>

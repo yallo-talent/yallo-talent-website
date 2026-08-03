@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { eorCorridorProse } from "@/data/services/eor-countries";
 import { getConsentedClients } from "@/lib/clients";
 import { buildMetadata } from "@/lib/seo";
 
@@ -36,7 +37,7 @@ const timeline = [
   {
     year: "Founded",
     title: "The specialist team assembles",
-    copy: "Sumeet Goenka and a small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
+    copy: "A small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
   },
   {
     year: "Middle East · Europe",
@@ -127,7 +128,7 @@ export default function AboutPage() {
               <Link href="/eor" className={styles.card}>
                 <h3 className={styles.cardTitle}>Employer of Record</h3>
                 <p className={styles.cardCopy}>
-                  UAE visa and India payroll cover — you direct the work.
+                  {eorCorridorProse} coverage — you direct the work.
                 </p>
               </Link>
               <Link href="/managed-delivery" className={styles.card}>
@@ -224,8 +225,7 @@ export default function AboutPage() {
               <div className={styles.card}>
                 <h3 className={styles.cardTitle}>Yallo AI Academy</h3>
                 <p className={styles.cardCopy}>
-                  Role-based AI enablement for leaders and teams. Launching
-                  soon.
+                  Role-based AI enablement for leaders and teams.
                 </p>
               </div>
             </div>

@@ -14,10 +14,10 @@ import { buildMetadata } from "@/lib/seo";
  * dead link ever shipped. It also meant the group's own destination did not
  * exist: three items in a column, no page behind the column.
  *
- * This is deliberately thin. It routes to the two things that are real and
- * says nothing about a third — no roadmap, no "more coming", no placeholder
- * card for an asset that has not been written. A hub that lists two things is
- * honest; a hub that lists two things and a promise is not.
+ * This is deliberately thin. It routes to what is real and says nothing
+ * about anything else — no roadmap, no "more coming", no placeholder card
+ * for an asset that has not been written. A hub that lists what exists is
+ * honest; a hub that lists what exists and a promise is not.
  */
 
 export const metadata: Metadata = buildMetadata({
@@ -43,7 +43,7 @@ const entries = [
   {
     href: "/ai-talent",
     title: "AI talent",
-    copy: "Nine AI role families, the stacks we screen against, and the mis-hire pattern behind each one.",
+    copy: "The AI role families, the stacks we screen against, and the mis-hire pattern behind each one.",
   },
 ];
 

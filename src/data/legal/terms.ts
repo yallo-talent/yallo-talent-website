@@ -22,7 +22,7 @@ export const termsData: LegalPageData = {
     {
       heading: "Intellectual property",
       body: [
-        "The Yallo Talent brand, the design system, the copy, and the original content on this site are owned by Yallo Group. Photography is licensed from third parties (Unsplash and equivalent) under permissive terms.",
+        "The Yallo Talent brand, the design system, the copy, and the original content on this site are owned by Yallo Group. All imagery is generated in the page itself — no licensed or third-party photography is used.",
         "You're welcome to reference or link to our content with attribution. Please don't republish substantial extracts without asking.",
       ],
     },
