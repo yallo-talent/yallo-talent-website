@@ -16,6 +16,11 @@ export const briefFormSchema = z.object({
     .string()
     .min(10, "Give us a couple of sentences of context.")
     .max(4000, "Keep it under 4,000 characters — the rest is easy on a call."),
+  // One brief shape, two surfaces. `source` tells the capture layer which
+  // produced the payload; `transcriptRef` names the assistant conversation
+  // it was assembled from and is absent for a directly-submitted form.
+  source: z.enum(["form", "assistant"]).default("form"),
+  transcriptRef: z.string().optional(),
 });
 
 export type BriefFormValues = z.infer<typeof briefFormSchema>;

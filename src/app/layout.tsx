@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { MotionProvider } from "@/components/layout/MotionProvider";
@@ -62,6 +63,19 @@ export const metadata: Metadata = {
     "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platform programmes staffed at module level, not at vendor level.",
 };
 
+/* Deferred island: fetched on first interaction, never in the initial bundle.
+   Flag defaults off — talent.yallo.co is noindex pre-cutover, so there is no
+   traffic to pilot an answer surface against. See context-round13-chatbot.md
+   §3, §6 (pilot gate). */
+const AssistantLauncher = dynamic(
+  () =>
+    import("@/components/assistant/AssistantLauncher").then(
+      (m) => m.AssistantLauncher,
+    ),
+  { ssr: false },
+);
+const ASSISTANT_ENABLED = process.env.NEXT_PUBLIC_ASSISTANT_ENABLED === "true";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -118,6 +132,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <StickyBriefCTA />
+          {ASSISTANT_ENABLED && <AssistantLauncher />}
         </MotionProvider>
       </body>
     </html>
