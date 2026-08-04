@@ -1,0 +1,21 @@
+name: Purge expired assistant transcripts
+on:
+  schedule:
+    # Daily. Retention is stated as 12 months (src/lib/db/transcripts.ts);
+    # a schedule this frequent just keeps the lag between expiry and
+    # deletion small, not because the table grows fast.
+    - cron: "15 3 * * *"
+  workflow_dispatch: {}
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run db:purge-transcripts
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

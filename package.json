@@ -33,6 +33,8 @@
     "check:phase8": "node scripts/check-phase8.mjs",
     "check:nav-promise": "node scripts/check-nav-promise.mjs",
     "db:migrate": "node scripts/db-migrate.mjs",
+    "db:purge-transcripts": "node scripts/purge-assistant-transcripts.mjs",
+    "db:read-submissions": "node scripts/db-read-submissions.mjs",
     "check:assistant-refusal": "node scripts/check-assistant-refusal.mjs",
     "check:assistant-grounding": "node scripts/check-assistant-grounding.mjs",
     "check:assistant-terms": "node scripts/check-assistant-terms.mjs",
