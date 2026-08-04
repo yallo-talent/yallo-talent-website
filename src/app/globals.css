@@ -732,6 +732,11 @@
    ========================================================================== */
 :root {
   --font-display: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  /* round13-scope.md §4.5 — the split-off weight-600 italic face. Only the
+     two selectors that actually set font-style: italic under a --font-display
+     heading reference this; --font-display itself no longer carries italic. */
+  --font-display-italic:
+    var(--font-newsreader-italic), Georgia, "Times New Roman", serif;
   --font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-mono:
     var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;

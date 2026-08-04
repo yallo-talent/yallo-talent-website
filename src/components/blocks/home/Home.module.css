@@ -217,6 +217,7 @@
    at 7.41:1. The solid colour underneath is the fallback for any engine that
    drops background-clip, and forced-colors drops the clip entirely. */
 .heroHeadline em {
+  font-family: var(--font-display-italic);
   font-style: italic;
   font-weight: var(--fw-strong);
   color: var(--accent-line);
@@ -1978,6 +1979,12 @@
 }
 
 .aiStatValue {
+  /* Not a heading: a stat callout beside its own claim sentence, same shape
+     as .personaStatValue below — a span rather than a <p>, and axe's
+     p-as-heading rule (large bold text styled to look like a heading it
+     isn't) only selects <p>. .aiStat has no flex context, so the block
+     display <p> gave for free has to be stated explicitly here. */
+  display: block;
   font-family: var(--font-display);
   font-size: var(--fs-numeral-lg);
   font-weight: var(--fw-strong);
@@ -2307,6 +2314,7 @@
 }
 
 .closeGrid h2 em {
+  font-family: var(--font-display-italic);
   font-style: italic;
   font-weight: var(--fw-strong);
   color: var(--gold);

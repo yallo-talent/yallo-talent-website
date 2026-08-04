@@ -10,7 +10,9 @@ export const managedDeliveryData: ServicePageData = {
   heroStat: { n: "End-to-end", l: "scoped to the work" },
   primaryCta: { label: "Scope a delivery package", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
-  trustLine: "Fixed-scope · outcome-owned · Yallo carries delivery risk",
+  /* No "Yallo" here — .trustLine renders uppercase (canon §2), and the other
+     three services' trust lines already avoid the word for the same reason. */
+  trustLine: "Fixed-scope · outcome-owned · delivery risk is ours",
   audienceLabel: "Who this is for",
   audience: [
     "CIOs and Delivery Directors who want a workstream delivered, not staffed",

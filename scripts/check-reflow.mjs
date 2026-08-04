@@ -24,9 +24,20 @@
  * Requires a server on PORT (default 3000).
  *
  *   node scripts/check-reflow.mjs [--width 360]
+ *
+ * ROUTES, round13-scope.md §4.4: every published route, not a hand list.
+ * This gate's own history is two rounds of the identical defect — a template
+ * shipped a real overflow and nothing in CI could see it, because the
+ * template was not on this list. Neither incident was a rule failing; both
+ * were the enumeration falling short of what the rule already covers.
+ * Reflow has no route PROPERTY to scope by the way check-motion (Framer
+ * animation) and check-marks (client marks) do — any rendered page can
+ * overflow — so an exhaustive set is the correct scope for it, the same
+ * reasoning applied to check-yallo-case. Measured cost: ~30s for the 22
+ * routes this list carried before, ~4 minutes for all published routes.
  */
 import { chromium } from "@playwright/test";
-import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
+import { fetchPublishedPaths } from "./lib/published-paths.mjs";
 
 const arg = (n, d) => {
   const i = process.argv.indexOf(`--${n}`);
@@ -40,33 +51,7 @@ const WIDTHS = arg("width", "")
   ? [Number.parseInt(arg("width", "320"), 10)]
   : [320, 360];
 
-const ROUTES = [
-  "/",
-  "/brief",
-  "/contract",
-  "/permanent",
-  "/eor",
-  "/managed-delivery",
-  "/industries",
-  "/industries/retail",
-  "/industries/retail/customer-experience",
-  "/capabilities/data-analytics",
-  "/platforms/microsoft",
-  "/case-studies",
-  "/about",
-  "/why-yallo",
-  "/leadership",
-  "/terms",
-  "/privacy",
-  "/ai-talent",
-  "/jobs",
-  "/insights",
-  /* Added 2 Aug by check-gate-coverage: no enumerating guard visited either
-     unit. A case study is the longest single prose column on the site and the
-     blueprint index carries a card grid, so both are reflow-relevant. */
-  "/intelligence",
-  `/case-studies/${sampleCaseStudySlug()}`,
-];
+const ROUTES = await fetchPublishedPaths(BASE);
 
 const browser = await chromium.launch();
 const failures = [];

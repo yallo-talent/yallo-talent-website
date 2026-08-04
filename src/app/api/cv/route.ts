@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { z } from "zod";
+import { recordDelivery, recordSubmission } from "@/lib/db/submissions";
 import { cvUploadSchema } from "@/lib/schemas";
+
+const campaignSchema = z.record(z.string(), z.string().max(200)).optional();
 
 const RESEND_FROM =
   process.env.RESEND_FROM ?? "Yallo Talent <bench@talent.yallo.co>";
@@ -63,8 +67,42 @@ export async function POST(request: Request) {
   const v = parsed.data;
   const apiKey = process.env.RESEND_API_KEY;
 
+  let campaignRaw: unknown;
+  try {
+    campaignRaw = JSON.parse(String(form.get("campaign") ?? "null"));
+  } catch {
+    campaignRaw = null;
+  }
+  const campaign = campaignSchema.safeParse(campaignRaw);
+
+  let submissionId: string;
+  try {
+    submissionId = await recordSubmission({
+      endpoint: "cv",
+      payload: v,
+      referrer: request.headers.get("referer"),
+      campaign: campaign.success ? (campaign.data ?? null) : null,
+    });
+  } catch (err) {
+    console.error("[cv] capture failed:", err);
+    return NextResponse.json(
+      {
+        ok: false,
+        error: "Could not record your submission. Please try again.",
+      },
+      { status: 502 },
+    );
+  }
+
   if (!apiKey) {
-    console.warn("[cv] RESEND_API_KEY not set — metadata only:", v.filename);
+    console.warn(
+      "[cv] RESEND_API_KEY not set — persisted, not delivered:",
+      v.filename,
+    );
+    await recordDelivery(submissionId, "email", {
+      delivered: false,
+      error: "RESEND_API_KEY not set",
+    });
     return NextResponse.json({ ok: true, delivered: false });
   }
 
@@ -90,16 +128,22 @@ export async function POST(request: Request) {
       attachments: [{ filename: file.name, content: fileBuffer }],
     });
     if (error) {
-      return NextResponse.json(
-        { ok: false, error: error.message ?? "Delivery failed." },
-        { status: 502 },
-      );
+      await recordDelivery(submissionId, "email", {
+        delivered: false,
+        error: error.message,
+      });
+      return NextResponse.json({ ok: true, delivered: false });
     }
     // TODO(phase-4): also push to ATS/vendor system
+    await recordDelivery(submissionId, "email", { delivered: true });
     return NextResponse.json({ ok: true, delivered: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Delivery failed.";
-    return NextResponse.json({ ok: false, error: message }, { status: 502 });
+    await recordDelivery(submissionId, "email", {
+      delivered: false,
+      error: message,
+    });
+    return NextResponse.json({ ok: true, delivered: false });
   }
 }
 

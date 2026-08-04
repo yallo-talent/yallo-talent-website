@@ -26,7 +26,7 @@ export function AITalent() {
         <div className={styles.aiGrid}>
           <div>
             <div className={styles.aiStat}>
-              <p className={styles.aiStatValue}>{aiCopy.stat.value}</p>
+              <span className={styles.aiStatValue}>{aiCopy.stat.value}</span>
               <p className={styles.aiStatClaim}>
                 {aiCopy.stat.claim}
                 <cite className={styles.aiStatSource}>

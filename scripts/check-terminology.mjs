@@ -310,6 +310,14 @@ const ALLOWED_LINES = [
   "CLAIM_DELIVERY_VERB",
   "CLAIM_ALLOWED",
   "the claim this lint protects",
+  /* system-prompt.ts's own forbidden-vocabulary instruction to the model
+     names every banned term to tell it never to write one — the model-
+     facing analogue of this file's own docstring, which is exempt the
+     same way by sitting outside ROOTS. */
+  'never write "GCC" to mean the Gulf',
+  'never "KSA" (write Saudi Arabia)',
+  "the pillar is Managed Delivery",
+  'never "UK · ME · India" framing',
 ];
 
 function walk(dir, out = []) {

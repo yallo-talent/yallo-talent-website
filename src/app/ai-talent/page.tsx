@@ -204,7 +204,9 @@ export default function AiTalentPage() {
             />
 
             <figure className={styles.personaStat}>
-              <p className={styles.personaStatValue}>{aiCopy.stat.value}</p>
+              <span className={styles.personaStatValue}>
+                {aiCopy.stat.value}
+              </span>
               <p className={styles.personaStatClaim}>{aiCopy.stat.claim}</p>
               <figcaption className={styles.personaStatSource}>
                 {aiCopy.stat.source}

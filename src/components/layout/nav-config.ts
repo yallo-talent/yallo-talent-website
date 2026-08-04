@@ -268,12 +268,20 @@ export const primaryNav: NavGroup[] = [
         ],
       },
     ],
+    /* Was pointed at /insights with copy promising "Compensation windows,
+       availability signals and hiring notes" — the same fix as the AI talent
+       card above it, one row later. The LTI/Blueprint evidence base holds no
+       compensation data of any kind, so no page could ever have kept that
+       promise. Repointed at /intelligence, the hub the column's own items
+       already sit under, and reworded to describe what it actually
+       publishes. check-nav-promise.mjs is the gate that should have caught
+       this the first time; it did not exist until now. */
     featured: {
-      eyebrow: "Latest research",
-      title: "Talent research briefings",
-      copy: "Compensation windows, availability signals and hiring notes across the Middle East, Europe and India.",
-      href: "/insights",
-      ctaLabel: "Read the briefings →",
+      eyebrow: "Talent intelligence",
+      title: "What we publish",
+      copy: "The Programme Staffing Blueprint, hiring analysis and AI talent research — open, and written to be used.",
+      href: "/intelligence",
+      ctaLabel: "See what we publish →",
     },
   },
 ];
