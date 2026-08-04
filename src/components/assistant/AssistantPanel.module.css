@@ -180,6 +180,21 @@
   margin: 0;
 }
 
+/* Same shape as .assistantMsg, not .draftErr — this sits in the message log
+   as a reply the assistant "said", not as a form-field-style status line. */
+.errorMsg {
+  align-self: flex-start;
+  margin: 0;
+  padding: 8px 12px;
+  max-width: 88%;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--signal-text);
+  background: var(--ground-2);
+  border: 1px solid var(--signal-text);
+  border-radius: var(--r-sm) var(--r-sm) var(--r-sm) 0;
+}
+
 .form {
   display: flex;
   gap: 8px;

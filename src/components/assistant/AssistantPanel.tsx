@@ -36,7 +36,6 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const transcriptId = useRef(newId());
-  const liveRegionRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [input, setInput] = useState("");
@@ -220,10 +219,9 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
             …
           </p>
         )}
-      </div>
-
-      <div ref={liveRegionRef} className={styles.srOnly} aria-live="polite">
-        {status === "error" && error}
+        {status === "error" && error && (
+          <p className={styles.errorMsg}>{error}</p>
+        )}
       </div>
 
       {draft && (
