@@ -36,6 +36,18 @@
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r13 pnpm dev -p 3213"],
       "port": 3213
+    },
+    {
+      "name": "session-a-r14",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r14 pnpm dev -p 3114"],
+      "port": 3114
+    },
+    {
+      "name": "session-b-r14",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r14 pnpm dev -p 3214"],
+      "port": 3214
     }
   ]
 }
