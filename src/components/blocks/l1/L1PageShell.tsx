@@ -649,10 +649,16 @@ function L1Expertise({ data }: Props) {
             </Link>
           ) : null}
         </div>
-        {/* Focusable because it scrolls at narrow widths (SC 2.1.1). */}
-        <div
+        {/* Focusable because it scrolls at narrow widths (SC 2.1.1). A
+            <section>, not a <div> — axe's focus-order-semantics flags a
+            focusable div with no role appropriate for interactive content;
+            SECTION is one of the tag names it accepts outright, same as
+            CaseRail and the two insights rails this pattern also appears
+            on (L1PageShell's own insightsScroll, L2PageShell's). */}
+        <section
           className={`${styles.expertiseGrid} ${collapsible && !showAll ? styles.expertiseGridCollapsed : ""}`}
           style={{ "--exp-cols": expCols } as React.CSSProperties}
+          aria-label="Expertise areas, scrollable"
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
@@ -729,7 +735,7 @@ function L1Expertise({ data }: Props) {
               </motion.div>
             );
           })}
-        </div>
+        </section>
         {collapsible && (
           <div className={styles.expertiseFoot}>
             <button
@@ -972,10 +978,13 @@ function L1Insights({ data }: Props) {
       <div className={styles.insightsScrollWrap}>
         {/* SC 2.1.1: a scrollable container must be keyboard operable. The
             cards' links are reachable already; the container itself was not, so
-            arrow-key scrolling was impossible. Focusability is all the criterion
-            needs — no role, matching how CaseRail handles the same problem. */}
-        <div
+            arrow-key scrolling was impossible. A <section>, not a <div> — axe's
+            focus-order-semantics flags a focusable div with no role appropriate
+            for interactive content; SECTION is one of the tag names it accepts
+            outright, same as CaseRail. */}
+        <section
           className={`${styles.insightsScroll} amb-5`}
+          aria-label="Insights, scrollable"
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
@@ -1003,7 +1012,7 @@ function L1Insights({ data }: Props) {
               </div>
             </Link>
           ))}
-        </div>
+        </section>
       </div>
     </section>
   );

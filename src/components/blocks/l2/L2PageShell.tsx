@@ -742,9 +742,13 @@ function L2Insights({ sector }: { sector: L1PageData }) {
         </h2>
       </div>
       <div className={styles.insightsScrollWrap}>
-        {/* Focusable because it scrolls (SC 2.1.1). */}
-        <div
+        {/* Focusable because it scrolls (SC 2.1.1). A <section>, not a <div> —
+            axe's focus-order-semantics flags a focusable div with no role
+            appropriate for interactive content; SECTION is one of the tag
+            names it accepts outright, same as CaseRail. */}
+        <section
           className={styles.insightsScroll}
+          aria-label="Insights, scrollable"
           // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
           tabIndex={0}
         >
@@ -774,7 +778,7 @@ function L2Insights({ sector }: { sector: L1PageData }) {
               </div>
             </Link>
           ))}
-        </div>
+        </section>
       </div>
     </section>
   );

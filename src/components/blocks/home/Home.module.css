@@ -1978,6 +1978,12 @@
 }
 
 .aiStatValue {
+  /* Not a heading: a stat callout beside its own claim sentence, same shape
+     as .personaStatValue below — a span rather than a <p>, and axe's
+     p-as-heading rule (large bold text styled to look like a heading it
+     isn't) only selects <p>. .aiStat has no flex context, so the block
+     display <p> gave for free has to be stated explicitly here. */
+  display: block;
   font-family: var(--font-display);
   font-size: var(--fs-numeral-lg);
   font-weight: var(--fw-strong);
