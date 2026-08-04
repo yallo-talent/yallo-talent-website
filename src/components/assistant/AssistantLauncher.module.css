@@ -1,9 +1,12 @@
 /* Opposite corner from StickyBriefCTA (src/components/layout/StickyBriefCTA
    fixes bottom:20/right:20), so the two floating affordances never occupy
    the same space on desktop. Below 640px, StickyBriefCTA widens to span
-   left:12–right:12, so the launcher lifts above it rather than sitting
-   behind it — cheap to do from this side alone, but real simultaneous
-   visibility is worth a visual check once A's layout.tsx mount lands. */
+   left:12–right:12, and the launcher's own bottom:84 lift is not enough on
+   its own: round14-scope.md §2.4 measured a real 54x44px overlap at 360
+   once both were visible in one viewport. AssistantLauncher.tsx now hides
+   the launcher outright at this width whenever StickyBriefCTA is present in
+   the DOM, so this rule still keeps them apart visually the rest of the
+   time (desktop, and the moment before/after StickyBriefCTA is on screen). */
 .fab {
   position: fixed;
   bottom: 20px;

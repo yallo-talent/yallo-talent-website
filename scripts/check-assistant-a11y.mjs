@@ -74,11 +74,14 @@ async function runRoute(page, route, theme, width, blocking, advisory) {
   }
 
   // Keyboard reachability: Tab from a fresh load until the launcher has
-  // focus, then activate with the keyboard, never the mouse. The launcher
-  // is appended last in the DOM (after Footer and StickyBriefCTA), so on
-  // a content-heavy route this is a genuinely large number of stops, not
-  // a bug in the count — the actual number reached is logged so a large
-  // value is visible as a UX question rather than silently accepted.
+  // focus, then activate with the keyboard, never the mouse. round14-
+  // scope.md §2.3: the launcher used to mount last in the DOM (after
+  // Footer and StickyBriefCTA), which measured 77-84 stops on the
+  // homepage and was ruled unreachable in practice rather than advisory.
+  // layout.tsx now mounts it right after NavBar — fixed-position, so DOM
+  // order carries no screen position — and the actual number reached is
+  // still logged so a regression back to a large value is visible as a
+  // failure of this rule, not silently accepted.
   let reached = false;
   let stopsTaken = 0;
   for (let i = 0; i < 400; i++) {
