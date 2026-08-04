@@ -217,6 +217,7 @@
    at 7.41:1. The solid colour underneath is the fallback for any engine that
    drops background-clip, and forced-colors drops the clip entirely. */
 .heroHeadline em {
+  font-family: var(--font-display-italic);
   font-style: italic;
   font-weight: var(--fw-strong);
   color: var(--accent-line);
@@ -2313,6 +2314,7 @@
 }
 
 .closeGrid h2 em {
+  font-family: var(--font-display-italic);
   font-style: italic;
   font-weight: var(--fw-strong);
   color: var(--gold);

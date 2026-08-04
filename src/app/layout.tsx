@@ -16,7 +16,24 @@ const newsreader = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
+  style: ["normal"],
+  display: "swap",
+});
+
+/* round13-scope.md §4.5. `[MEASURED]` twice, independently: italic renders at
+   weight 600 only, 3 nodes, on exactly two routes (Hero.tsx and Close.tsx on
+   /, the platform hero's <em> on every /platforms/[platform] page) — a
+   third of the whole preload budget (63.0 KiB) to carry a variable font's
+   full 400-600 x normal-and-italic range for two short phrases. Split to a
+   second declaration at exactly the weight and style actually used. Still
+   preloaded, deliberately: both known instances are above the fold, so
+   `preload: false` would trade a flash of fallback italic for bytes this
+   split already recovers without one. */
+const newsreaderItalic = Newsreader({
+  variable: "--font-newsreader-italic",
+  subsets: ["latin"],
+  weight: ["600"],
+  style: ["italic"],
   display: "swap",
 });
 
@@ -81,7 +98,7 @@ export default function RootLayout({
           mid-way on scroll-up" bug: the sub-nav was correct all along and the
           header was not. body keeps min-h-full, which is what the full-height
           layout actually needed. */
-      className={`${newsreader.variable} ${inter.variable} ${plexMono.variable} antialiased`}
+      className={`${newsreader.variable} ${newsreaderItalic.variable} ${inter.variable} ${plexMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <head>
