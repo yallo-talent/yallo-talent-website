@@ -30,7 +30,12 @@
     "check:prose": "node scripts/check-prose-rules.mjs",
     "check:gate-coverage": "node scripts/check-gate-coverage.mjs",
     "check:no-redirects": "node scripts/check-no-redirect-hops.mjs",
-    "check:phase8": "node scripts/check-phase8.mjs"
+    "check:phase8": "node scripts/check-phase8.mjs",
+    "check:assistant-refusal": "node scripts/check-assistant-refusal.mjs",
+    "check:assistant-grounding": "node scripts/check-assistant-grounding.mjs",
+    "check:assistant-terms": "node scripts/check-assistant-terms.mjs",
+    "check:assistant-bundle": "node scripts/check-assistant-bundle.mjs",
+    "check:assistant-a11y": "node scripts/check-assistant-a11y.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -43,6 +48,7 @@
     }
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
     "framer-motion": "12",
     "gray-matter": "^4.0.3",
     "next": "16.2.12",
