@@ -375,6 +375,29 @@
   margin: 0 0 10px;
 }
 
+/* Round 14: `.card` is shared by linked cards (an `<a>`) and static ones
+   (`<article>`/`<div>`) — leadership and jobs use the same class for cards
+   that go nowhere. Scoped to `a.card` so the arrow appears only where the
+   heading is genuinely a hyperlink, on hover, matching the `.vow` treatment
+   in Home.module.css. */
+a.card .cardTitle::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--accent-label);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+a.card:hover .cardTitle::after,
+a.card:focus-visible .cardTitle::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .cardCopy {
   font-size: var(--fs-caption);
   line-height: 1.7;

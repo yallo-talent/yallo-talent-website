@@ -1469,6 +1469,30 @@
   max-width: none;
 }
 
+/* Round 14: a bare `<Link>` inside `.vow h3` — intelligence, the blueprint
+   index, /ai-talent — carried no visual cue that the heading was
+   clickable at all. `.moduleLink` anchors already carry their own arrow
+   (the flex row + ArrowGlyph rule below), so this is scoped to skip them
+   and dress only the plain case, on hover, so the card reads calm until
+   the visitor's cursor says otherwise. */
+.vow h3 > a:not(.moduleLink)::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--accent-label);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.vow h3 > a:not(.moduleLink):hover::after,
+.vow h3 > a:not(.moduleLink):focus-visible::after {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .vowBadge {
   display: inline-flex;
   align-items: baseline;
