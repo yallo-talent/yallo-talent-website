@@ -181,12 +181,18 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
       className={styles.panel}
     >
       <header className={styles.header}>
-        <div>
+        <div className={styles.headerText}>
           <p className={styles.eyebrow}>Yallo Talent assistant</p>
+          {/* Single line, and true to what actually happens today: no
+              transcript store exists yet (context-round13-chatbot.md §6
+              requires 12-month retention once the flag is live for real
+              traffic, but that layer isn't built — round 13's relay logged
+              it as the pilot-gate blocker). Claiming retention that isn't
+              happening would be the false statement; saying it isn't saved
+              is the accurate one until that layer ships, at which point
+              this line updates to match, not the other way round. */}
           <p className={styles.disclosure}>
-            This conversation is recorded and kept for 12 months. It answers
-            from this site's own published content and serves clients only — see{" "}
-            <a href="/privacy">/privacy</a>.
+            Not saved. Details at <a href="/privacy">/privacy</a>.
           </p>
         </div>
         <button

@@ -31,6 +31,18 @@
   border-bottom: 1px solid var(--hairline);
 }
 
+/* min-width: 0 overrides the flexbox default (min-width: auto), which pins
+   a flex item to its content's min-content width. .disclosure's nowrap line
+   has no line-break to shrink to, so without this the div refused to give
+   up any width — measured at 360: the header's own box fit its 334px
+   allowance, but .closeButton got pushed 26px past .panel's right edge and
+   entirely behind its `overflow: hidden`, present in the DOM and clickable
+   via direct dispatch but invisible on screen. Zero visual change above
+   ~460px, where there was always enough room regardless. */
+.headerText {
+  min-width: 0;
+}
+
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--fs-label);
@@ -40,11 +52,18 @@
   margin: 0 0 4px;
 }
 
+/* One line, deliberately — the round 13 version wrapped to three lines at
+   30ch. Truncates with an ellipsis rather than forcing the row wider than
+   the panel now that .headerText can shrink (see its own comment) — a
+   graceful narrow-viewport degradation instead of the alternative, which is
+   the close button disappearing behind the panel's own overflow: hidden. */
 .disclosure {
   font-size: var(--fs-caption);
   color: var(--fg-muted);
   margin: 0;
-  max-width: 30ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .disclosure a {
