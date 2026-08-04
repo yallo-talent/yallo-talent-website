@@ -45,6 +45,10 @@ const GATES = [
      a mark; check-crawler-access enumerates HOSTS rather than routes, so it is
      deliberately absent. */
   "check-marks",
+  /* Round 13 session B: both enumerate a route sample the same shape as
+     check-a11y.mjs's, neither was credited before this merge. */
+  "check-assistant-a11y",
+  "check-assistant-bundle",
 ];
 
 /* ------------------------------------------------------- route templates -- */

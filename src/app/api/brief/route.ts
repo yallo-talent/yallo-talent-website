@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       endpoint: "brief",
       payload: v,
       originSource: v.source,
-      transcriptRef: v.transcriptRef ?? null,
+      transcriptRef: v.transcriptId ?? null,
       referrer: request.headers.get("referer"),
       campaign: campaign.success ? (campaign.data ?? null) : null,
     });
