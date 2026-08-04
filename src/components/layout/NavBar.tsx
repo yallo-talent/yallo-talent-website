@@ -20,6 +20,7 @@ import {
   primaryCTAHref,
   primaryNav,
 } from "./nav-config";
+import { ThemeToggle } from "./ThemeToggle";
 
 /* No per-item icon. Each row carried a 36x36 bordered tile with its own tinted
    ground, which meant twenty competing objects in one panel and a row height
@@ -531,7 +532,23 @@ export function NavBar() {
           </nav>
 
           <div className={styles.actions}>
-            {/* Theme toggle hidden until light theme is production-ready. */}
+            {/* round14-scope.md §3(b): the stale comment this replaced named
+                light-theme readiness as the blocker, but src/config/theme.ts
+                has said otherwise since round 10 — "Light and dark are peers,
+                not inversions... each passes WCAG 2.2 AA independently."
+                ThemeToggle.tsx itself was already built and fixed in round 10;
+                nothing in src/ imported it. The blocker was never the theme
+                system, it was that no component ever mounted the switch.
+
+                Desktop only (hidden at the same 1024px breakpoint .primary
+                collapses to the hamburger at, NavBar.module.css). The bar
+                below 480px is tuned to a zero-slack pixel budget — measured
+                and commented at length just below in the CSS — and a second
+                control here overflows it. The mobile instance lives in the
+                drawer instead, where the width fight does not exist. */}
+            <span className={styles.themeToggleDesktop}>
+              <ThemeToggle />
+            </span>
             <Link href={primaryCTAHref} className={styles.ctaPrimary}>
               Start a brief
               <span aria-hidden="true">→</span>
@@ -610,6 +627,10 @@ export function NavBar() {
                 </div>
               ))}
               <div className={styles.mobileGroup}>
+                <div className={styles.mobileThemeRow}>
+                  <span>Theme</span>
+                  <ThemeToggle />
+                </div>
                 <Link
                   href={jobSeekersHref}
                   className={styles.mobileLink}
