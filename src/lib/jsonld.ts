@@ -1,3 +1,4 @@
+import { teamIndex } from "@/data/team";
 import { platformLabels } from "./platforms";
 import { SITE } from "./seo";
 
@@ -108,6 +109,32 @@ export function organisationJsonLd() {
       itemOffered: { "@type": "Service", name: s },
     })),
   };
+}
+
+/**
+ * Person, one per real named leader on `/leadership`. round14-scope.md §2.5:
+ * the discoverability ban on `Person` schema holds until real named
+ * consultants exist; five now do, on the leadership surface, so the ban
+ * lifts for exactly them.
+ *
+ * Four fields only — `name`, `jobTitle`, `url`, `worksFor` — every one
+ * derived from `teamIndex` (src/data/team/index.ts) so this cannot drift
+ * from what the page itself publishes. Deliberately excludes `email`,
+ * `telephone`, `knowsAbout`, any specialism, biography, seniority claim or
+ * years-of-experience figure: none of that is in `teamIndex`, and this
+ * function has no field to invent one into. Those are Sumeet's to supply;
+ * see the round 14 relay for the open slots.
+ */
+export function leadershipPersonJsonLd() {
+  return teamIndex.map((member) => ({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE.url}/leadership#${member.slug}`,
+    name: member.name,
+    jobTitle: member.role,
+    url: `${SITE.url}/leadership#${member.slug}`,
+    worksFor: { "@id": `${SITE.url}/#organisation` },
+  }));
 }
 
 /** WebSite, so the site name resolves in search results. */
