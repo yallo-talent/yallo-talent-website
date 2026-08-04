@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCampaignParams } from "@/lib/campaign";
 import { platformLabels } from "@/lib/platforms";
 import { type CvUploadValues, cvUploadSchema } from "@/lib/schemas";
 import styles from "./BriefForm.module.css";
@@ -74,6 +75,8 @@ export function CvUploadForm() {
     setMessage("");
 
     try {
+      const campaign = getCampaignParams();
+      if (campaign) formData.append("campaign", JSON.stringify(campaign));
       const res = await fetch("/api/cv", { method: "POST", body: formData });
       const body = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !body.ok) {

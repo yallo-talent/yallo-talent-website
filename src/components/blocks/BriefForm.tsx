@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getCampaignParams } from "@/lib/campaign";
 import { type BriefFormValues, briefFormSchema } from "@/lib/schemas";
 import styles from "./BriefForm.module.css";
 
@@ -54,6 +55,7 @@ export function BriefForm() {
     };
 
     const parsed = briefFormSchema.safeParse(payload);
+    const campaign = getCampaignParams();
     if (!parsed.success) {
       const fieldErrors: Partial<Record<keyof BriefFormValues, string>> = {};
       for (const issue of parsed.error.issues) {
@@ -78,7 +80,7 @@ export function BriefForm() {
       const res = await fetch("/api/brief", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: JSON.stringify({ ...parsed.data, campaign }),
       });
       const body = (await res.json()) as { ok: boolean; error?: string };
       if (!res.ok || !body.ok) {

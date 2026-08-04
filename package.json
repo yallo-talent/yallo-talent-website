@@ -30,7 +30,8 @@
     "check:prose": "node scripts/check-prose-rules.mjs",
     "check:gate-coverage": "node scripts/check-gate-coverage.mjs",
     "check:no-redirects": "node scripts/check-no-redirect-hops.mjs",
-    "check:phase8": "node scripts/check-phase8.mjs"
+    "check:phase8": "node scripts/check-phase8.mjs",
+    "db:migrate": "node scripts/db-migrate.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -43,6 +44,7 @@
     }
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
     "framer-motion": "12",
     "gray-matter": "^4.0.3",
     "next": "16.2.12",
