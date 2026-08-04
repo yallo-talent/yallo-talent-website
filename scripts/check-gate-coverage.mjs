@@ -122,6 +122,13 @@ for (const path of live) {
 
 const listOf = (gate) => {
   const src = readFileSync(`scripts/${gate}.mjs`, "utf8");
+  // round13-scope.md §4.4: check-yallo-case and check-reflow no longer carry
+  // a literal list — they fetch every published route at runtime via the
+  // same lib/published-paths.mjs this script's own `live` array comes from.
+  // Trivially complete by construction: a gate that visits every live URL
+  // cannot omit a template, so its coverage is `live` itself rather than
+  // something to extract from source.
+  if (src.includes("fetchPublishedPaths(")) return live;
   const m = src.match(/const (?:PAGES|ROUTES) = (\[[\s\S]*?\]);/);
   if (!m) return null;
   const quoted = [...m[1].matchAll(/"(\/[^"]*)"/g)].map(

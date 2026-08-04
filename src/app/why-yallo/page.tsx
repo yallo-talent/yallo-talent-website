@@ -95,7 +95,10 @@ export default function WhyYalloPage() {
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
-            Why Yallo Talent
+            {/* No "Yallo" — .eyebrow renders uppercase (canon §2). Reused from
+                this page's own metadata tagline rather than inventing new
+                copy. */}
+            Specialist-led, not agency-volume
           </div>
           <h1 className={styles.heroTitle}>
             The hiring partner your{" "}
@@ -160,8 +163,9 @@ export default function WhyYalloPage() {
       <section className={styles.section}>
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
+            {/* No "Yallo" — .sectionEyebrow renders uppercase (canon §2). */}
             <span className={styles.sectionEyebrow}>
-              Yallo vs. volume recruiters
+              Us vs. volume recruiters
             </span>
             <h2 className={styles.sectionH}>Different by design.</h2>
             <p className={styles.sectionLede}>
@@ -185,8 +189,9 @@ export default function WhyYalloPage() {
                     <th scope="col" className={cmp.theadThem}>
                       Traditional recruiters
                     </th>
+                    {/* No "Yallo" — .theadUs renders uppercase (canon §2). */}
                     <th scope="col" className={cmp.theadUs}>
-                      Yallo Talent
+                      Specialist-led delivery
                     </th>
                   </tr>
                 </thead>

@@ -34,6 +34,7 @@
 
 import { chromium } from "@playwright/test";
 import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
+import { fetchPublishedPaths } from "./lib/published-paths.mjs";
 
 /**
  * Base URL: `BASE_URL` first, then `argv[2]`, then the default.
@@ -47,48 +48,29 @@ import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
  */
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3100";
 
-/* One page per template, plus the two hubs. The footer appears on all of them,
-   which is how the every-page instance was caught. */
-const PAGES = [
-  "/",
-  "/ai-talent",
-  "/ai-talent/llm-engineer",
-  "/capabilities",
-  "/capabilities/data-analytics",
-  "/capabilities/cybersecurity",
-  "/capabilities/data-analytics/data-engineering",
-  "/industries/retail",
-  "/platforms/sap",
-  "/jobs",
-  "/brief",
-  "/contract",
-  "/eor",
-  "/about",
-  "/intelligence/programme-staffing-blueprint",
-  /* Added 2 Aug by check-gate-coverage: no enumerating guard visited either
-     unit. Case studies are the surface most likely to carry a client's own
-     capitalisation of Yallo, so the omission mattered most here. */
-  "/intelligence",
-  `/case-studies/${sampleCaseStudySlug()}`,
-  /* The landing hub, added at the round 7 close. The detail template above was
-     already here; the hub is a separate rendering unit and it renders the card
-     TITLES and EXCERPTS, which is the surface §3.5's rule was written for. The
-     round's own notes logged this for round 8, and AGENTS.md's standing rule is
-     that a new template joins every enumerating guard in the commit that
-     introduces it. One line now beats a list that failed for the third time. */
-  "/case-studies",
-  /* Added 2 Aug for the dead-link assertion. The template is the same as
-     /industries/retail, so template coverage was already satisfied and
-     check-gate-coverage was right not to complain — but the assertion below is
-     about DATA, not about a template, and Education is the sector carrying the
-     one card that deliberately routes off its own axis because it has no tools.
-     The page the rule was written for has to be a page the rule visits. */
-  "/industries/education",
-  /* Added round 12: names five real people with links to their real
-     profiles, and it was visited by only one of six enumerating gates —
-     round12-scope.md §4.6. */
-  "/leadership",
-];
+/**
+ * Every published route, not a hand list. round13-scope.md §1.4 / §4.4: this
+ * gate missed /why-yallo the same way it once missed /leadership — a new
+ * page joins the site by being added to `publishedPaths()`, and a gate that
+ * doesn't read that function has to be remembered separately, which is the
+ * defect class this repository keeps finding.
+ *
+ * check-motion and check-marks stay on their own hand-picked route sets —
+ * both are scoped by their own rule to a route PROPERTY (carries a Framer
+ * animation; carries a client mark) that most published routes do not have,
+ * so an exhaustive set would spend most of its runtime asserting nothing.
+ * This gate has no such property: any rendered page can carry "Yallo" in the
+ * wrong case, which is what makes an exhaustive route set the correct scope
+ * for it specifically, per round13-scope.md §1.4.
+ */
+const PAGES = await fetchPublishedPaths(BASE);
+/* case-study-sample.mjs's own selection remains the one place that name is
+   chosen — publishedPagePaths() already lists every case-study slug that
+   exists, so sampleCaseStudySlug() only has to prove it agrees, not enumerate
+   a second time. */
+if (!PAGES.some((p) => p.startsWith("/case-studies/"))) {
+  PAGES.push(`/case-studies/${sampleCaseStudySlug()}`);
+}
 
 const browser = await chromium.launch();
 const failures = [];
