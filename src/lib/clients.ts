@@ -6,9 +6,9 @@ import { z } from "zod";
 const clientSchema = z.object({
   name: z.string().min(1),
   /**
-   * Omitted where no file exists in the supplied pack (currently Radwell and
-   * Capgemini). Consumers render a set wordmark in that case — never a
-   * substituted logo, and never a broken image.
+   * Omitted where no file exists. Consumers render a set wordmark in that case
+   * — never a substituted logo, and never a broken image. Radwell was the last
+   * assetless consented row and retired in round 17 §2.4.
    */
   logo: z.string().min(1).optional(),
   consentOnFile: z.boolean(),

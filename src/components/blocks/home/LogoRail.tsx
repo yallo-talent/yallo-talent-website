@@ -22,8 +22,9 @@ import { RailViewport } from "./RailViewport";
  *
  * A mark whose source will not key to one clean ink, or which cannot reach a
  * readable cap height in the cell, is NOT shipped as an image at all: the build
- * gate measures both and declines. Sephora, Wickes and Radwell are in that state
- * today.
+ * gate measures both and declines. Wickes is in that state today; Radwell
+ * retired from content/clients.yaml in round 17 §2.4 rather than sit there as a
+ * name with no asset behind it.
  *
  * THIS RAIL DROPS THEM RATHER THAN SETTING THEIR NAME. Canon §8's name fallback
  * is right on a card, where the name sits in a text block that already carries

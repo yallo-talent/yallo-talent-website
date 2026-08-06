@@ -7,10 +7,14 @@
 # `consentOnFile: false` means the entry renders nowhere — the loader filters at
 # read time and every consumer must respect that filter.
 #
-# Every consented name now has a mark. Radwell and Capgemini were absent from
-# the supplied pack and were sourced separately as vectors — see the header of
-# scripts/build-logos.mjs for provenance. If a future name has no file, omit
-# `logo` and it renders as a set wordmark; never substitute a similar logo.
+# If a name has no file, omit `logo` and it renders as a set wordmark; never
+# substitute a similar logo. See the header of scripts/build-logos.mjs for the
+# provenance of the marks that exist.
+#
+# Radwell retired 6 August 2026, round 17 §2.4: its asset was absent, so
+# `hasLogoAsset()` already dropped the entry and nothing rendered either way. A
+# named row with no asset behind it is a hand-maintained claim with nothing
+# behind it, and the loader silently agreeing is what let it sit here.
 enterprise:
   - name: Alshaya Group
     logo: /logos/clients/alshaya.png
@@ -47,9 +51,6 @@ enterprise:
     consentOnFile: true
   - name: Wickes
     logo: /logos/clients/wickes.png
-    consentOnFile: true
-  - name: Radwell
-    logo: /logos/clients/radwell.png
     consentOnFile: true
   # R-INF3 flipped to true 1 Aug 2026, then reversed 6 Aug 2026 — Sumeet's own
   # correction: Informatica belongs on the platform axis, not the client

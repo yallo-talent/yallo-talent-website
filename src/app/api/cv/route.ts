@@ -11,10 +11,11 @@ const campaignSchema = z.record(z.string(), z.string().max(200)).optional();
    (chat, round 14) — no talent.yallo.co, and only brief@yallo.co and
    hello@yallo.co as default recipients.
 
-   NOTE for round 17: bench@yallo.co is a third sender address, which is the
-   very thing api/brief's comment says it avoided inventing. Left as-is —
-   changing a live sender address is Sumeet's call, not an adjacent fix. */
-const RESEND_FROM = resendFrom("Yallo Talent <bench@yallo.co>");
+   ROUND 17 §2.4: aligned to brief@yallo.co. bench@yallo.co was a third sender
+   address — the very thing api/brief's comment says it avoided inventing — and
+   an outward-facing address was correctly not treated as an adjacent fix last
+   round. Ruled now, so it changes here. RESEND_FROM still overrides it. */
+const RESEND_FROM = resendFrom("Yallo Talent <brief@yallo.co>");
 const RESEND_TO = resendTo();
 
 const MAX_BYTES = 5 * 1024 * 1024;
