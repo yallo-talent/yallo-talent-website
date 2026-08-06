@@ -47,7 +47,9 @@
     "research:pdf": "node scripts/build-research-pdf.mjs",
     "check:research-pdf": "node scripts/check-research-pdf.mjs",
     "check:asset-case": "node scripts/check-asset-case.mjs",
-    "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs"
+    "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs",
+    "check:admin-isolation": "node scripts/check-admin-isolation.mjs",
+    "admin:hash": "node scripts/admin-password-hash.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -65,6 +67,7 @@
     "framer-motion": "12",
     "gray-matter": "^4.0.3",
     "next": "16.2.12",
+    "next-auth": "5.0.0-beta.32",
     "next-mdx-remote": "^6.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",

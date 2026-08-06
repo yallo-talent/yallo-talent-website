@@ -32,6 +32,13 @@ const assistantSection = {
        derives from the same number the purge enforces, so this page and
        `src/lib/db/transcripts.ts` cannot drift apart again. */
     `yallo.co offers an in-page assistant that answers questions from this site's own published content and can help put together a brief. ${assistantRetentionSentence} If a conversation results in a brief, the brief itself persists as a commercial record in the same way a brief sent through our contact form does.`,
+    /* ROUND 17, §2.3, and it is a factual statement about data handling rather
+       than a positioning choice. Retention answers "how long is this kept"; it
+       does not answer "who can read it", and to a visitor those are different
+       statements. One named administrator at Yallo can open a recorded
+       conversation, so that is said plainly rather than left to be inferred
+       from the existence of a retention period. */
+    "Recorded conversations can be read by one named administrator at Yallo, and by nobody else. They are not used to train any model, are not shared with any third party beyond the infrastructure that stores them, and are deleted on the schedule above whether or not they have been read.",
     "The assistant serves prospective clients only. It does not collect anything beyond what our brief form already collects, and it never asks for payment details, passwords or identity documents.",
   ],
 };

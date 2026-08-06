@@ -223,6 +223,31 @@ jobs:
       - name: Research PDF agrees with the pages that produced it
         run: node scripts/check-research-pdf.mjs http://localhost:3100
 
+      # Round 17 §2.3. /admin reads every brief and every assistant conversation
+      # the site has captured, so six independent things must hold: absent from
+      # sitemap.xml, absent from llms.txt, absent from the assistant corpus,
+      # disallowed in robots.txt with a noindex header on every response
+      # including redirects, linked from no published page, and no admin secret
+      # in the client bundle. It also asserts an anonymous request to each pane
+      # is redirected rather than served.
+      #
+      # THE CORPUS ASSERTION IS THE ONE THAT WOULD BE FORGOTTEN. The corpus is
+      # generated from src/data/** and content/**, and an assistant that can
+      # describe the admin surface — including where to sign in — is the failure
+      # mode, not a cosmetic leak.
+      #
+      # Proved red six ways, real exit 1 each: /admin/ dropped from the robots
+      # policy, a corpus source file naming /admin, the hash script's scrypt
+      # parameters drifting from the verifier's, a sitemap entry, a homepage link,
+      # and — rebuilt for these two — the layout guard removed so panes served to
+      # an anonymous request, and the middleware's admin branch removed so the
+      # noindex header disappeared.
+      #
+      # The client-bundle assertion needs the real secrets and says so rather than
+      # skipping silently; it is exercised where they exist.
+      - name: Admin cockpit isolation (six assertions, one anonymous read)
+        run: node scripts/check-admin-isolation.mjs http://localhost:3100
+
       - name: Upload captures on failure
         if: failure()
         uses: actions/upload-artifact@v4

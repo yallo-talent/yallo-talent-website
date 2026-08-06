@@ -1,8 +1,10 @@
 {
   "productionUrl": "https://yallo.co",
+  "adminBase": "/admin",
   "disallow": [
     "/api/",
     "/users/",
+    "/admin/",
     "/downloads/",
     "/intelligence/research/corridor/print"
   ]

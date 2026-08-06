@@ -1,0 +1,281 @@
+/* The cockpit's own surface.
+
+   Deliberately plainer than the site: this is an instrument, and every token it
+   uses is one the design system already defines, so it inherits both registers
+   and the contrast gate covers it without a single new colour. Zero hex values
+   here — .claude/hooks/check-colours.js enforces that on every commit. */
+
+.shell {
+  min-height: 100dvh;
+  background: var(--ground);
+  color: var(--fg);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 3vw, 32px);
+  flex-wrap: wrap;
+  padding: 16px clamp(16px, 3vw, 32px);
+  border-bottom: 1px solid var(--hairline);
+  background: var(--ground-2);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.wordmark {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  gap: clamp(12px, 2vw, 24px);
+  margin-inline-end: auto;
+  font-size: var(--fs-caption);
+}
+
+/* SC 2.5.8: every target at least 24px in both axes. A text link in a dense
+   toolbar is exactly where that gets missed, so the padding is not decorative. */
+.nav a,
+.signOut {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 2px;
+}
+
+.signOut {
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: transparent;
+  color: var(--fg-muted);
+  font-family: inherit;
+  font-size: var(--fs-caption);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.signOut:hover {
+  color: var(--fg);
+  border-color: var(--fg-muted);
+}
+
+.main {
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 32px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+.lede {
+  margin: 0 0 clamp(20px, 3vw, 32px);
+  max-width: 68ch;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin: 0 0 12px;
+}
+
+/* ── Rows ─────────────────────────────────────────────────────────────── */
+
+.rows {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+  padding: clamp(14px, 1.8vw, 20px);
+}
+
+.rowHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.rowTitle {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* Delivery outcome. The one thing this pane exists to make legible at a glance,
+   because the question it answers is "did Resend take it". */
+.ok,
+.bad {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ok {
+  color: var(--text-3);
+}
+
+.bad {
+  color: var(--fg);
+  border-bottom: 2px solid var(--accent-line);
+}
+
+.payload {
+  margin: 12px 0 0;
+  padding: 12px;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  line-height: 1.6;
+  /* A payload is arbitrary width. It scrolls inside its own box rather than
+     pushing the page sideways — SC 1.4.10 at the 320px floor. */
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.turn {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-left: 2px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.turnUser {
+  border-left-color: var(--accent-line);
+}
+
+.turnRole {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+
+.empty {
+  border: 1px dashed var(--hairline);
+  padding: clamp(20px, 3vw, 32px);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+/* ── Sign-in ──────────────────────────────────────────────────────────── */
+
+.signInWrap {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(24px, 5vw, 64px) 16px;
+  background: var(--ground);
+  color: var(--fg);
+}
+
+.signInCard {
+  width: min(100%, 42ch);
+  border: 1px solid var(--hairline);
+  background: var(--ground-2);
+  padding: clamp(24px, 4vw, 40px);
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.field {
+  display: block;
+  margin-top: 18px;
+}
+
+.fieldLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 6px;
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: var(--fs-body-sm);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.submit {
+  margin-top: 24px;
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--accent-mark);
+  background: var(--accent-mark);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  cursor: pointer;
+}
+
+.error {
+  margin: 18px 0 0;
+  padding: 12px;
+  border: 1px solid var(--accent-line);
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+}
+
+.note {
+  margin: 18px 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--text-3);
+}
