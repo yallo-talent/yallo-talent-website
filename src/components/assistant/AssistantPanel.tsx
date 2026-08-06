@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { AssistantMessage } from "@/lib/assistant/schema";
+import { engagementLabel, regionLabel } from "@/lib/briefLabels";
 import type { BriefFormValues } from "@/lib/schemas";
 import styles from "./AssistantPanel.module.css";
 import { renderAssistantText } from "./renderAssistantText";
@@ -256,11 +257,11 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
             </div>
             <div>
               <dt>Region</dt>
-              <dd>{draft.region}</dd>
+              <dd>{regionLabel(draft.region)}</dd>
             </div>
             <div>
               <dt>Engagement</dt>
-              <dd>{draft.engagement}</dd>
+              <dd>{engagementLabel(draft.engagement)}</dd>
             </div>
           </dl>
           {briefStatus === "sent" || briefStatus === "error" ? (

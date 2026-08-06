@@ -19,7 +19,7 @@ import { aiRoleFamilies } from "@/data/ai-talent";
 import { BLUEPRINT_BASE, blueprintArchetypes } from "@/data/blueprint";
 import { capabilityRegistry } from "@/data/capabilities";
 import { hero as homeHero } from "@/data/home/hero";
-import { industriesIndex } from "@/data/l1";
+import { industriesIndex, taxonomyLabels } from "@/data/l1";
 import { educationData } from "@/data/l1/education";
 import { financeData } from "@/data/l1/finance";
 import { governmentData } from "@/data/l1/government";
@@ -41,12 +41,23 @@ import type { ServicePageData } from "@/data/services/types";
 import { teamIndex } from "@/data/team";
 import { getAllCaseStudies, getPublishedInsights } from "@/lib/content";
 import { publishedPaths } from "@/lib/published-routes";
+import { SITE } from "@/lib/seo";
 
 export interface CorpusDocument {
   path: string;
   title: string;
   summary: string;
   facts: string[];
+  /**
+   * A short display name for this page, for surfaces that link to it (the
+   * assistant's own citation links, client.ts's `linkifyCitations`) rather
+   * than describe it. Falls back to `title` when absent, which is fine for
+   * every family whose `title` is already short (platforms, modules,
+   * AI-talent families, case studies, insights, leadership, the static
+   * pages). Set explicitly only where `title` is a hero headline, not a
+   * name — home and the four L1 families below.
+   */
+  linkLabel?: string;
 }
 
 const industryDataBySlug: Record<string, L1PageData> = {
@@ -66,10 +77,28 @@ const serviceDataBySlug: Record<string, ServicePageData> = {
   "managed-delivery": managedDeliveryData,
 };
 
+/* Matches the four "How we work" mega-menu labels, src/components/layout/
+   nav-config.ts — the site's own published short name for each page, not
+   re-derived from that file directly (a nested nav config is a heavier
+   dependency for four stable brand terms than the four terms themselves).
+   Update alongside nav-config.ts if either changes. */
+const serviceLinkLabel: Record<string, string> = {
+  contract: "Contract",
+  permanent: "Permanent",
+  eor: "Employer of Record",
+  "managed-delivery": "Managed Delivery",
+};
+
 function l1Digest(path: string, data: L1PageData): CorpusDocument {
+  // The slug is the path's last segment for every L1 family (/industries/
+  // retail, /capabilities/data-analytics) — taxonomyLabels() is the single
+  // source src/data/l1/index.ts built for exactly this, so a citation link
+  // gets "Retail", not the hero headline this doc's own `title` carries.
+  const slug = path.split("/").pop() as string;
   return {
     path,
     title: `${data.title} ${data.emphasis}`.trim(),
+    linkLabel: taxonomyLabels(slug).short,
     summary: data.sub,
     facts: [
       `Screening context: ${data.screeningContext ?? "specialist-led, region-deep screening"}`,
@@ -146,11 +175,12 @@ function buildAiTalentDocs(published: Set<string>): CorpusDocument[] {
 
 function buildServiceDocs(published: Set<string>): CorpusDocument[] {
   return Object.entries(serviceDataBySlug)
-    .map(([slug, data]) => [`/${slug}`, data] as const)
-    .filter(([path]) => published.has(path))
-    .map(([path, data]) => ({
+    .map(([slug, data]) => [slug, `/${slug}`, data] as const)
+    .filter(([, path]) => published.has(path))
+    .map(([slug, path, data]) => ({
       path,
       title: `${data.title} ${data.emphasis}`.trim(),
+      linkLabel: serviceLinkLabel[slug],
       summary: data.lede,
       facts: data.benefits.slice(0, 4).map((b) => `${b.title}: ${b.copy}`),
     }));
@@ -236,6 +266,7 @@ function buildHomeDoc(published: Set<string>): CorpusDocument | null {
   return {
     path: "/",
     title: `${homeHero.headline.lead} ${homeHero.headline.emphasis}`,
+    linkLabel: SITE.name,
     summary: homeHero.lede,
     facts: [`Pillars: ${homeHero.pillars.join(", ")}`],
   };

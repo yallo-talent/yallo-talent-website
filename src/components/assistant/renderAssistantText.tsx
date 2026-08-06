@@ -11,20 +11,34 @@ import type { ReactNode } from "react";
  *
  * No markdown dependency added — `package.json` is A's territory this
  * round, and the subset an assistant reply actually needs (paragraphs,
- * `**bold**`, `-`/numbered lists) doesn't need a real parser. Citations are
- * plain text by design (system-prompt.ts: "cite... e.g. see /industries/
- * retail"), not markdown links, so there is no `[text](url)` case to cover.
+ * `**bold**`, `-`/numbered lists, and now `[title](url)` links) doesn't
+ * need a real parser. The model itself still cites in plain text
+ * ("see /industries/retail", per system-prompt.ts) — the `[title](url)`
+ * form is produced server-side, by client.ts's `linkifyCitations`, which
+ * turns a bare citation into a real link using the same corpus the model
+ * was grounded in. This renderer just has to know how to draw the result.
  */
 
 const LIST_ITEM = /^\s*(?:[-•]|\d+[.)])\s+(.+)$/;
 const ORDERED_MARKER = /^\s*\d+[.)]/;
-const BOLD = /(\*\*[^*]+\*\*)/g;
+const INLINE = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+const LINK = /^\[([^\]]+)\]\(([^)]+)\)$/;
 
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
-  return text.split(BOLD).map((part, i) => {
+  return text.split(INLINE).map((part, i) => {
     if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
       // biome-ignore lint/suspicious/noArrayIndexKey: parsed fresh from one fixed, already-received message string every render — the split never reorders or re-inserts.
       return <strong key={`${keyPrefix}-${i}`}>{part.slice(2, -2)}</strong>;
+    }
+    const link = part.match(LINK);
+    if (link) {
+      const [, label, href] = link;
+      return (
+        // biome-ignore lint/suspicious/noArrayIndexKey: same fixed-content split as above.
+        <a key={`${keyPrefix}-${i}`} href={href}>
+          {label}
+        </a>
+      );
     }
     return part;
   });

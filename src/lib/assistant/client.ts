@@ -1,7 +1,34 @@
 import Anthropic from "@anthropic-ai/sdk";
+import { buildAssistantCorpus } from "@/lib/assistant/corpus";
 import type { AssistantMessage } from "@/lib/assistant/schema";
 import { buildSystemPrompt } from "@/lib/assistant/system-prompt";
 import type { BriefFormValues } from "@/lib/schemas";
+
+/* Same class of pattern check-assistant-grounding.mjs already asserts
+   citations against (a path token after start/whitespace/an opening
+   bracket or quote), kept as its own declaration rather than shared
+   across the src/lib <-> scripts/ boundary — the existing check-assistant-*
+   gates are plain Node scripts that don't resolve the `@/` path alias, so
+   nothing under scripts/ imports src/lib today. */
+const CITATION_PATTERN = /(?<=^|[\s("'])\/[a-z][a-z0-9/-]*/g;
+
+/**
+ * Turns a bare citation ("see /platforms/sap") into a real markdown link
+ * with the page's own title, using the same corpus the model was grounded
+ * in — never a second, hand-maintained title list. Only paths the corpus
+ * actually recognises get linked; anything else (a citation the model got
+ * wrong, or plain text that merely looks like a path) is left as-is rather
+ * than linked to a guess.
+ */
+function linkifyCitations(text: string): string {
+  const titleByPath = new Map(
+    buildAssistantCorpus().map((doc) => [doc.path, doc.linkLabel ?? doc.title]),
+  );
+  return text.replace(CITATION_PATTERN, (path) => {
+    const title = titleByPath.get(path);
+    return title ? `[${title}](${path})` : path;
+  });
+}
 
 /**
  * One model, Sonnet 5, no router — context-round13-chatbot.md §3, ratified
@@ -117,5 +144,5 @@ export async function requestAssistantReply(
   if (textBlock?.type !== "text") {
     throw new Error("The model returned no text content.");
   }
-  return { type: "text", text: textBlock.text };
+  return { type: "text", text: linkifyCitations(textBlock.text) };
 }
