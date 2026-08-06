@@ -256,6 +256,21 @@
   text-wrap: pretty;
 }
 
+/* A closing link reads as an onward move, not as a word in a sentence, so it
+   carries the same arrow every other CTA on the site carries. inline-flex keeps
+   the glyph on the text's baseline row and stops it wrapping onto a line of its
+   own; the gap is the only thing separating them, so no space character has to
+   survive JSX formatting. */
+.nextLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nextLink svg {
+  flex: none;
+}
+
 /* ── The gate ───────────────────────────────────────────────────────────── */
 
 .gate {

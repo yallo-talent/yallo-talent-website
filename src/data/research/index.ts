@@ -681,7 +681,3 @@ export const researchMethodology: string[] = [
   "The extract has no Gulf column. Where a figure compares the Gulf with the UK it is the unweighted mean of the Saudi Arabian and Emirati shares, stated so the construction can be checked.",
   "The research covers the five platform and capability families the extract measures. It is not a complete view of the desks Yallo staffs, and nothing here should be read as coverage of the ones it does not name.",
 ];
-
-/** What the set does not cover, said plainly on the index. */
-export const researchCoverageNote =
-  "These five families are the ones the source extract measures. Workday, Blue Yonder, Microsoft, ServiceNow and Informatica are not in it, and no figure here should be read as covering them.";

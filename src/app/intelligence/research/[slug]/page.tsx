@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "@/components/blocks/home/Home.module.css";
+import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import research from "@/components/blocks/research/Research.module.css";
 import { ResearchBars } from "@/components/blocks/research/ResearchBars";
 import {
   RESEARCH_BASE,
   researchHref,
-  researchMethodology,
   researchPiece,
   researchSlugs,
 } from "@/data/research";
@@ -119,21 +119,6 @@ export default async function ResearchPiecePage({
         </section>
       ) : null}
 
-      <section className={`${styles.section} ${styles.g2}`} id="method">
-        <div className={styles.wrap}>
-          <SectionHead
-            eyebrow="Method"
-            heading="How to read these numbers."
-            id="method-heading"
-          />
-          <ul className={research.method}>
-            {researchMethodology.map((note) => (
-              <li key={note}>{note}</li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
       <section className={`${styles.section} ${styles.g2}`} id="next">
         <div className={styles.wrap}>
           <SectionHead
@@ -143,11 +128,18 @@ export default async function ResearchPiecePage({
             id="next-heading"
           />
           <p className={research.coverage}>
-            <Link href={`${RESEARCH_BASE}/${SYNTHESIS_SLUG}`}>
+            <Link
+              className={research.nextLink}
+              href={`${RESEARCH_BASE}/${SYNTHESIS_SLUG}`}
+            >
               Read the cross-market synthesis
+              <ArrowGlyph />
             </Link>
             {" · "}
-            <Link href="/brief">Start a brief</Link>
+            <Link className={research.nextLink} href="/brief">
+              Start a brief
+              <ArrowGlyph />
+            </Link>
           </p>
         </div>
       </section>

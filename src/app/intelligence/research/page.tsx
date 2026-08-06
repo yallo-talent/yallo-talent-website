@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/home/Home.module.css";
+import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import research from "@/components/blocks/research/Research.module.css";
-import {
-  RESEARCH_BASE,
-  researchCoverageNote,
-  researchHref,
-  researchMethodology,
-  researchPieces,
-} from "@/data/research";
+import { RESEARCH_BASE, researchHref, researchPieces } from "@/data/research";
 import { LTI_AS_AT_DISPLAY } from "@/data/research/dataset";
 import {
   SYNTHESIS_SLUG,
@@ -76,7 +71,6 @@ export default function ResearchIndexPage() {
               </article>
             ))}
           </div>
-          <p className={research.coverage}>{researchCoverageNote}</p>
         </div>
       </section>
 
@@ -89,28 +83,16 @@ export default function ResearchIndexPage() {
             id="synthesis-heading"
           />
           <p className={research.coverage}>
-            <Link href={`${RESEARCH_BASE}/${SYNTHESIS_SLUG}`}>
+            <Link
+              className={research.nextLink}
+              href={`${RESEARCH_BASE}/${SYNTHESIS_SLUG}`}
+            >
               Read the cross-market synthesis
+              <ArrowGlyph />
             </Link>
             {" — "}
             {synthesisTitle}.
           </p>
-        </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.g2}`} id="method">
-        <div className={styles.wrap}>
-          <SectionHead
-            eyebrow="Method"
-            heading="How to read these numbers."
-            lede="The limits of the source are stated here rather than buried, because they are also the argument: a declared skill is not a screened one."
-            id="method-heading"
-          />
-          <ul className={research.method}>
-            {researchMethodology.map((note) => (
-              <li key={note}>{note}</li>
-            ))}
-          </ul>
         </div>
       </section>
     </>
