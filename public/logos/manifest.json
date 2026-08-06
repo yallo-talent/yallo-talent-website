@@ -109,6 +109,16 @@
     "pad": 0.1751,
     "plate": false
   },
+  "sephora": {
+    "family": "clients",
+    "w": 260,
+    "h": 224,
+    "ink": 0.0806,
+    "bw": 260,
+    "bh": 222,
+    "pad": 0.0089,
+    "plate": false
+  },
   "capgemini": {
     "family": "integrators",
     "w": 502,
