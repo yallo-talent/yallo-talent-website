@@ -3,7 +3,7 @@ import type { LegalPageData } from "@/components/blocks/editorial/LegalPageShell
 export const cookiesData: LegalPageData = {
   title: "Cookies notice",
   lastUpdated: "2026-07-27",
-  lede: "How Yallo Talent uses cookies and similar technologies on talent.yallo.co. Short version: we keep it minimal.",
+  lede: "How Yallo Talent uses cookies and similar technologies on yallo.co. Short version: we keep it minimal.",
   sections: [
     {
       heading: "What cookies do we use?",
