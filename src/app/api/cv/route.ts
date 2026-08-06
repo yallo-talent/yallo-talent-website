@@ -2,18 +2,20 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { recordDelivery, recordSubmission } from "@/lib/db/submissions";
+import { resendFrom, resendTo } from "@/lib/mail-config";
 import { cvUploadSchema } from "@/lib/schemas";
 
 const campaignSchema = z.record(z.string(), z.string().max(200)).optional();
 
 /* Same fix as api/brief/route.ts, same reason: Sumeet's direct instruction
    (chat, round 14) — no talent.yallo.co, and only brief@yallo.co and
-   hello@yallo.co as default recipients. */
-const RESEND_FROM = process.env.RESEND_FROM ?? "Yallo Talent <bench@yallo.co>";
-const RESEND_TO = (process.env.RESEND_TO ?? "brief@yallo.co,hello@yallo.co")
-  .split(",")
-  .map((addr) => addr.trim())
-  .filter(Boolean);
+   hello@yallo.co as default recipients.
+
+   NOTE for round 17: bench@yallo.co is a third sender address, which is the
+   very thing api/brief's comment says it avoided inventing. Left as-is —
+   changing a live sender address is Sumeet's call, not an adjacent fix. */
+const RESEND_FROM = resendFrom("Yallo Talent <bench@yallo.co>");
+const RESEND_TO = resendTo();
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([

@@ -35,11 +35,18 @@ CMS at launch.
   the route tree from the filesystem and each guard's list from source,
   and fails when a rendering unit is visited by no guard at all. Adding
   the route is the fix; silencing the guard is not.
+- **A single-session round uses one dist directory and one port.** The
+  default is plain `.next`; do not invent a per-session name when there
+  is no second session to collide with.
 - Two sessions in one repository use two branches, two worktrees and two
   build directories. `NEXT_DIST_DIR` is honoured by `next.config.ts`;
   `.claude/launch.json` carries `session-a` on 3001 and `session-b` on
   3002. Sharing `.next` is how a whole measurement pass came to describe
-  a stale build. Stage explicit paths, never `git add -A`. `next dev`
+  a stale build. **Any session that creates a per-session dist directory
+  deletes it at the end of its round.** The convention was never wrong;
+  nothing ever required the cleanup, and that omission is the whole
+  cause. Round 16 swept what was left of it. Stage explicit paths, never
+  `git add -A`. `next dev`
   rewrites `tsconfig.json` to add its dist dir's types and reformats the
   file while it is there. Under a custom `NEXT_DIST_DIR` the rewrite
   names that directory, so the file becomes session-local and must never

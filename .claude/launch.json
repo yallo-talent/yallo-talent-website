@@ -8,52 +8,22 @@
       "port": 3000
     },
     {
+      "name": "round-prod",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "pnpm start -p 3115"],
+      "port": 3115
+    },
+    {
       "name": "session-a",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r7 pnpm dev -p 3107"],
-      "port": 3107
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a pnpm dev -p 3001"],
+      "port": 3001
     },
     {
       "name": "session-b",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r7 pnpm dev -p 3207"],
-      "port": 3207
-    },
-    {
-      "name": "session-c",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-c-r7 pnpm dev -p 3307"],
-      "port": 3307
-    },
-    {
-      "name": "session-a-r13",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r13 pnpm dev -p 3113"],
-      "port": 3113
-    },
-    {
-      "name": "session-b-r13",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r13 pnpm dev -p 3213"],
-      "port": 3213
-    },
-    {
-      "name": "session-a-r14",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a-r14 pnpm dev -p 3114"],
-      "port": 3114
-    },
-    {
-      "name": "session-b-r14",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b-r14 pnpm dev -p 3214"],
-      "port": 3214
-    },
-    {
-      "name": "session-r15",
-      "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-r15 pnpm dev -p 3115"],
-      "port": 3115
+      "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-b pnpm dev -p 3002"],
+      "port": 3002
     }
   ]
 }
