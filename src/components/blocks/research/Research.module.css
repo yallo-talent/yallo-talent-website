@@ -238,6 +238,13 @@
 }
 
 .asAt {
+  /* Direct instruction, chat, round 17: this line sat hard against the
+     paragraph above it. A mono uppercase attribution reads as a separate
+     register from body prose, so it needs the space that says so — the
+     standfirst carries no bottom margin of its own, and adjacent block margins
+     in flow do not collapse into anything here because there was nothing to
+     collapse with. */
+  margin-top: clamp(18px, 2vw, 26px);
   font-family: var(--font-mono);
   font-size: var(--fs-label);
   font-weight: var(--fw-mono);

@@ -12,7 +12,7 @@ import {
   researchPiece,
   researchSlugs,
 } from "@/data/research";
-import { LTI_AS_AT_DISPLAY, LTI_SOURCE } from "@/data/research/dataset";
+import { LTI_AS_AT_MONTH, LTI_SOURCE } from "@/data/research/dataset";
 import { SYNTHESIS_SLUG } from "@/data/research/synthesis";
 import { routeExists } from "@/lib/routes";
 import { buildMetadata } from "@/lib/seo";
@@ -78,7 +78,7 @@ export default async function ResearchPiecePage({
           <h1 className={styles.heroHeadline}>{piece.title}</h1>
           <p className={research.standfirst}>{piece.standfirst}</p>
           <p className={research.asAt}>
-            {LTI_SOURCE} · measured as at {LTI_AS_AT_DISPLAY}
+            Source: {LTI_SOURCE} · {LTI_AS_AT_MONTH}
           </p>
         </div>
       </section>

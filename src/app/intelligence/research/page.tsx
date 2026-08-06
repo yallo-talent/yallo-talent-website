@@ -5,7 +5,7 @@ import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import research from "@/components/blocks/research/Research.module.css";
 import { RESEARCH_BASE, researchHref, researchPieces } from "@/data/research";
-import { LTI_AS_AT_DISPLAY } from "@/data/research/dataset";
+import { LTI_AS_AT_MONTH } from "@/data/research/dataset";
 import {
   SYNTHESIS_SLUG,
   synthesisStandfirst,
@@ -45,7 +45,7 @@ export default function ResearchIndexPage() {
             Arabia and the UAE actually look like, and what each one means for
             staffing a programme.
           </p>
-          <p className={research.asAt}>Measured as at {LTI_AS_AT_DISPLAY}</p>
+          <p className={research.asAt}>{LTI_AS_AT_MONTH}</p>
         </div>
       </section>
 

@@ -34,7 +34,7 @@ import {
   publishedPlatformSlugs,
 } from "@/data/platforms/derive";
 import { RESEARCH_BASE, researchHref, researchPieces } from "@/data/research";
-import { LTI_AS_AT_DISPLAY } from "@/data/research/dataset";
+import { LTI_AS_AT_MONTH } from "@/data/research/dataset";
 import {
   SYNTHESIS_SLUG,
   synthesisStandfirst,
@@ -233,7 +233,7 @@ function buildResearchDocs(published: Set<string>): CorpusDocument[] {
       facts: [
         piece.conclusion,
         ...piece.sections.map((s) => s.heading),
-        `Measured as at ${LTI_AS_AT_DISPLAY}. Skills are self-declared and counts within a family overlap.`,
+        `Measured ${LTI_AS_AT_MONTH}. Skills are self-declared and counts within a family overlap.`,
       ],
     }));
 

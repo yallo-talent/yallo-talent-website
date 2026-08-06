@@ -16,6 +16,9 @@ export const LTI_AS_AT = "2026-08-02";
 /** The extract date as prose. Use this anywhere a reader sees it. */
 export const LTI_AS_AT_DISPLAY = "2 August 2026";
 
+/** The extract date to the month. The attribution line a reader sees. */
+export const LTI_AS_AT_MONTH = "August 2026";
+
 /** How the source is attributed wherever a figure appears. */
 export const LTI_SOURCE = "LinkedIn Talent Insights";
 

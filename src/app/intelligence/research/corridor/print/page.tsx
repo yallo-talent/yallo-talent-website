@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { LTI_AS_AT_DISPLAY, LTI_SOURCE } from "@/data/research/dataset";
+import {
+  LTI_AS_AT_DISPLAY,
+  LTI_AS_AT_MONTH,
+  LTI_SOURCE,
+} from "@/data/research/dataset";
 import {
   synthesisChapters,
   synthesisStandfirst,
@@ -38,7 +42,7 @@ export default function SynthesisPrintPage() {
         <h1 className={styles.title}>{synthesisTitle}</h1>
         <p className={styles.standfirst}>{synthesisStandfirst}</p>
         <p className={styles.meta}>
-          {LTI_SOURCE} · measured as at {LTI_AS_AT_DISPLAY}
+          Source: {LTI_SOURCE} · {LTI_AS_AT_MONTH}
         </p>
       </header>
 

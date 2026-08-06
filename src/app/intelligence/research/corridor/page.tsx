@@ -5,7 +5,7 @@ import { SectionHead } from "@/components/blocks/home/SectionHead";
 import research from "@/components/blocks/research/Research.module.css";
 import { ResearchGate } from "@/components/blocks/research/ResearchGate";
 import { RESEARCH_BASE, researchHref, researchPieces } from "@/data/research";
-import { LTI_AS_AT_DISPLAY, LTI_SOURCE } from "@/data/research/dataset";
+import { LTI_AS_AT_MONTH, LTI_SOURCE } from "@/data/research/dataset";
 import {
   SYNTHESIS_CAPTURE_SOURCE,
   SYNTHESIS_SLUG,
@@ -52,7 +52,7 @@ export default function SynthesisPage() {
           <h1 className={styles.heroHeadline}>{synthesisTitle}</h1>
           <p className={research.standfirst}>{synthesisStandfirst}</p>
           <p className={research.asAt}>
-            {LTI_SOURCE} · measured as at {LTI_AS_AT_DISPLAY}
+            Source: {LTI_SOURCE} · {LTI_AS_AT_MONTH}
           </p>
         </div>
       </section>

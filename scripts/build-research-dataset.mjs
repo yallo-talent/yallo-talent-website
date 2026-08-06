@@ -56,6 +56,18 @@ const AS_AT_DISPLAY = new Date(`${AS_AT}T00:00:00Z`).toLocaleDateString(
   { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" },
 );
 
+/**
+ * The same date to the month, for the attribution line a reader sees under a
+ * heading. Direct instruction, chat, round 17: a day-precision extract date read
+ * as spurious accuracy on a supply-side snapshot. Derived from AS_AT like the
+ * full display date, so the two cannot disagree and neither is typed.
+ */
+const AS_AT_MONTH = new Date(`${AS_AT}T00:00:00Z`).toLocaleDateString("en-GB", {
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
 const BASELINE_LABEL = "BASELINE (denominator)";
 
 function parseCsv(text) {
@@ -193,6 +205,9 @@ export const LTI_AS_AT = ${JSON.stringify(AS_AT)};
 
 /** The extract date as prose. Use this anywhere a reader sees it. */
 export const LTI_AS_AT_DISPLAY = ${JSON.stringify(AS_AT_DISPLAY)};
+
+/** The extract date to the month. The attribution line a reader sees. */
+export const LTI_AS_AT_MONTH = ${JSON.stringify(AS_AT_MONTH)};
 
 /** How the source is attributed wherever a figure appears. */
 export const LTI_SOURCE = "LinkedIn Talent Insights";
