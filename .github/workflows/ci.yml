@@ -204,6 +204,25 @@ jobs:
       - name: Metrics attribution (one dated line, every publishing page)
         run: node scripts/check-metrics-attribution.mjs http://localhost:3100
 
+      # Round 17 §2.1. The research PDF is generated from the site's own print
+      # surface, so it holds no typed figures — but it is COMMITTED, so a changed
+      # figure moved every page and left the document behind until somebody
+      # remembered `pnpm research:pdf`. Nothing failed. Eleventh instance of a
+      # second copy no gate compared, and it is the one asset a stranger hands
+      # over an email address for.
+      #
+      # Not a byte diff: Chromium's PDF output is not reproducible, so comparing
+      # bytes fails every run and teaches everyone to skip the gate. The manifest
+      # binds the file (size + SHA-256) and the content (a whitespace-collapsed
+      # text fingerprint, <script> stripped so the build id does not enter it),
+      # and build-research-pdf.mjs writes both from the one run.
+      #
+      # Proved red three ways, real exit 1 each: a figure changed on the served
+      # page with the PDF untouched, the PDF altered without regenerating, and
+      # the PDF missing entirely.
+      - name: Research PDF agrees with the pages that produced it
+        run: node scripts/check-research-pdf.mjs http://localhost:3100
+
       - name: Upload captures on failure
         if: failure()
         uses: actions/upload-artifact@v4

@@ -45,6 +45,7 @@
     "research:dataset": "node scripts/build-research-dataset.mjs",
     "check:research-dataset": "node scripts/build-research-dataset.mjs --check",
     "research:pdf": "node scripts/build-research-pdf.mjs",
+    "check:research-pdf": "node scripts/check-research-pdf.mjs",
     "check:asset-case": "node scripts/check-asset-case.mjs",
     "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs"
   },
