@@ -41,9 +41,14 @@
 }
 
 /* SC 2.5.8: every target at least 24px in both axes. A text link in a dense
-   toolbar is exactly where that gets missed, so the padding is not decorative. */
-.nav a,
-.signOut {
+   toolbar is exactly where that gets missed, so the padding is not decorative.
+
+   ONE BLOCK EACH, not a shared block plus an override. The first version shared
+   `padding: 4px 2px` here and then set `4px 12px` on `.signOut` below — a CSS
+   module scopes by file, so at equal specificity the later block silently won and
+   the earlier padding shipped nowhere. check:type caught it; I had not re-run
+   that gate after the last CSS change, which is the actual mistake. */
+.nav a {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
@@ -51,13 +56,16 @@
 }
 
 .signOut {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 4px 12px;
   border: 1px solid var(--hairline);
   border-radius: 0 0 0 var(--r-md);
   background: transparent;
   color: var(--fg-muted);
   font-family: inherit;
   font-size: var(--fs-caption);
-  padding: 4px 12px;
   cursor: pointer;
 }
 
@@ -137,20 +145,23 @@
 }
 
 /* Delivery outcome. The one thing this pane exists to make legible at a glance,
-   because the question it answers is "did Resend take it". */
-.ok,
+   because the question it answers is "did Resend take it".
+
+   One block each for the same reason as .signOut above: a shared block plus a
+   same-class override reads as a cascade decision and is not one. */
+.ok {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
 .bad {
   font-family: var(--font-mono);
   font-size: var(--fs-data);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-}
-
-.ok {
-  color: var(--text-3);
-}
-
-.bad {
   color: var(--fg);
   border-bottom: 2px solid var(--accent-line);
 }
