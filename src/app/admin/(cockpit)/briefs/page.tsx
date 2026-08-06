@@ -63,7 +63,7 @@ export default async function BriefsPane() {
       ) : rows.length === 0 ? (
         <p className={styles.empty}>
           No submissions recorded yet. This is what an empty table looks like,
-          not a failed read — a failed read says so above.
+          not a failed read: a failed read says so above.
         </p>
       ) : (
         <>

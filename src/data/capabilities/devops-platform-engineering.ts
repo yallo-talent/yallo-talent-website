@@ -53,7 +53,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
   introStatCards: [
     {
       n: "72%",
-      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      l: "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
       source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
@@ -253,7 +253,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
         },
       ],
       overview:
-        "Kubernetes experience is claimed far more often than it is held, and the interview question that separates the two is about upgrades rather than deployments. Cluster lifecycle under change control, resource limits set from measurement rather than habit, network policy that someone will have to debug, and a GitOps workflow that survives an urgent fix. We screen for operators, not for people who have deployed a workload onto a managed cluster someone else runs.",
+        "Kubernetes experience is claimed far more often than it is held, and the interview question that separates the two is about upgrades rather than deployments. Cluster lifecycle under change control, resource limits set from measurement rather than habit, network policy that someone will have to debug, and a GitOps workflow that survives an urgent fix. We screen for people who have run clusters themselves, not for people who have deployed a workload onto a managed cluster someone else runs.",
       roles: [
         "Kubernetes Engineer",
         "Platform Engineer",
@@ -437,7 +437,7 @@ export const devopsPlatformEngineeringData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle: "Every sector runs a platform team — we staff them all.",
+  segmentsTitle: "Every sector runs a platform team. We staff them all.",
   segmentsSub:
     "A bank's change control, a retailer's peak trading freeze or a telco's scale changes which platform specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [

@@ -63,7 +63,7 @@ export const cybersecurityData: L1PageData = {
   introStatCards: [
     {
       n: "72%",
-      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      l: "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
       source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
@@ -383,7 +383,7 @@ export const cybersecurityData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle: "Every sector runs a security programme — we staff them all.",
+  segmentsTitle: "Every sector runs a security programme. We staff them all.",
   segmentsSub:
     "A bank's regulatory position, a hospital's clinical availability constraint or a plant's patch window changes which security specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [

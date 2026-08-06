@@ -27,8 +27,8 @@ export const governmentData: L1PageData = {
   introTitle:
     "Public sector programmes stall when the specialist can't clear the room.",
   introCopy: [
-    "Every citizen-services digital rollout, every ArcGIS-led planning programme, every ServiceNow platform build shares the same failure mode — the implementation depends on the depth of the contractor in the room, and often on their clearance. Generic recruiters place platform names. We place implementation track records inside regulated public-sector environments.",
-    "Our bench is assessed by specialists who have delivered inside central government, local authority, defence and public healthcare programmes. We screen for the operating context — procurement frameworks, DDaT roles, GDS service standards, mission-critical uptime — not just certification badges.",
+    "Every citizen-services digital rollout, every ArcGIS-led planning programme, every ServiceNow platform build shares the same failure mode: the implementation depends on the depth of the contractor in the room, and often on their clearance. Generic recruiters place platform names. We place implementation track records inside regulated public-sector environments.",
+    "Our bench is assessed by specialists who have delivered inside central government, local authority, defence and public healthcare programmes. We screen for the operating context: procurement frameworks, DDaT roles, GDS service standards, mission-critical uptime, not just certification badges.",
   ],
   /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
 
@@ -56,7 +56,7 @@ export const governmentData: L1PageData = {
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
   scarceTitle:
-    "The roles every public-sector programme needs — and struggles to find.",
+    "The roles every public-sector programme needs, and struggles to find.",
   scarceCopy:
     "These are the cleared specialists that appear on every public-sector brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -107,7 +107,7 @@ export const governmentData: L1PageData = {
   expertiseTitle:
     "Every public-sector function area, with a contractor bench behind it.",
   expertiseSub:
-    "From citizen services to defence — we place specialists into every function that moves a public-sector programme forward.",
+    "From citizen services to defence. We place specialists into every function that moves a public-sector programme forward.",
   expertise: [
     {
       slug: "citizen-services",
@@ -354,7 +354,7 @@ export const governmentData: L1PageData = {
   segmentsEyebrow: "Segments we support",
   segmentsTitle: "Public-sector segments. Specialists who know the context.",
   segmentsSub:
-    "Central government runs different programmes from a local authority or a police force. Our contractors understand the specific operating context — not just the platform.",
+    "Central government runs different programmes from a local authority or a police force. Our contractors understand the specific operating context, not just the platform.",
   /* TEN SEGMENTS REMOVED, 2 Aug 2026, per context-round5-rulings.md §6.
 
      A SEGMENT IS CUSTOMER-SHAPED, and the test that separates the four below

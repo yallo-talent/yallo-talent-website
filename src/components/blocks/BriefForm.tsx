@@ -73,7 +73,7 @@ export function BriefForm() {
         );
       }
       setStatus("success");
-      setMessage("Thanks — we'll be in touch within one working day.");
+      setMessage("Thanks. We'll be in touch within one working day.");
       form.reset();
     } catch (err) {
       setStatus("error");
@@ -189,7 +189,7 @@ export function BriefForm() {
               rows={5}
               maxLength={4000}
               className={styles.textarea}
-              placeholder="Programme, timelines, must-haves — a few sentences is enough."
+              placeholder="Programme, timelines, must-haves, a few sentences is enough."
               required
               aria-invalid={Boolean(errors.message)}
               aria-describedby={errors.message ? "message-error" : undefined}

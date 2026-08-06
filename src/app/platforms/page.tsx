@@ -37,7 +37,7 @@ export default function PlatformsHub() {
       eyebrow="Platforms"
       title="Six enterprise platforms."
       emphasis="Deep specialist-screened benches."
-      sub="Every platform we staff has a lead specialist with implementation depth in it. We don't send you people who list a certification — we send people who've shipped the product."
+      sub="Every platform we staff has a lead specialist with implementation depth in it. We don't send you people who list a certification. We send people who've shipped the product."
       entries={publishedPlatforms}
     />
   );

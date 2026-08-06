@@ -90,7 +90,7 @@ export default function ResearchIndexPage() {
               Read the cross-market synthesis
               <ArrowGlyph />
             </Link>
-            {" — "}
+            {" · "}
             {synthesisTitle}.
           </p>
         </div>

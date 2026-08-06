@@ -26,8 +26,8 @@ export function BriefCTA() {
               </span>
             </h2>
             <p className={styles.sub}>
-              Your programme, your platform, your region — matched.
-              Specialist-led screening from operators who've run enterprise
+              Your programme, your platform, your region, matched.
+              Specialist-led screening by people who have run enterprise
               delivery themselves.
             </p>
           </div>

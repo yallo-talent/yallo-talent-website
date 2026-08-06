@@ -46,7 +46,7 @@ export const integrationMiddlewareData: L1PageData = {
   introStatCards: [
     {
       n: "72%",
-      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      l: "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
       source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
@@ -349,7 +349,7 @@ export const integrationMiddlewareData: L1PageData = {
 
   segmentsEyebrow: "Where we deploy",
   segmentsTitle:
-    "Every sector runs an integration workstream — we staff them all.",
+    "Every sector runs an integration workstream. We staff them all.",
   segmentsSub:
     "A bank's payment rails, a retailer's trading partners or a manufacturer's plant systems change which integration specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [

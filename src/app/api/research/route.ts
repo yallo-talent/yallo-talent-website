@@ -78,7 +78,7 @@ export async function POST(request: Request) {
      outage. The row is already durable either way. */
   if (!apiKey) {
     console.warn(
-      "[research] RESEND_API_KEY not set — persisted, not delivered:",
+      "[research] RESEND_API_KEY not set: persisted, not delivered:",
       subject,
     );
     await recordDelivery(submissionId, "email", {

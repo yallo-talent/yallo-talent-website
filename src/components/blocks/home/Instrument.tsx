@@ -196,7 +196,7 @@ export function Instrument() {
           </div>
           <div />
           <div className={styles.screenedOutScore} aria-hidden="true">
-            —
+            :
           </div>
         </div>
       </div>

@@ -153,7 +153,7 @@ export const primaryNav: NavGroup[] = [
     featured: {
       eyebrow: "Named specialism",
       title: "AI talent, on demand",
-      copy: "Applied AI engineers, prompt architects and data scientists — screened for delivery, not certifications.",
+      copy: "Applied AI engineers, prompt architects and data scientists: screened for delivery, not certifications.",
       href: "/ai-talent",
       ctaLabel: "Explore AI talent →",
     },
@@ -279,7 +279,7 @@ export const primaryNav: NavGroup[] = [
     featured: {
       eyebrow: "Talent intelligence",
       title: "What we publish",
-      copy: "The Programme Staffing Blueprint, hiring analysis and AI talent research — open, and written to be used.",
+      copy: "The Programme Staffing Blueprint, hiring analysis and AI talent research: open, and written to be used.",
       href: "/intelligence",
       ctaLabel: "See what we publish →",
     },

@@ -31,7 +31,7 @@ export const personas: Persona[] = [
     cue: "Can't staff fast enough",
     headline: "You win the work faster than you can staff it.",
     quotes: [
-      "We've signed the programme — now I need a team on the ground, fast.",
+      "We've signed the programme, now I need a team on the ground, fast.",
       "Contractor churn keeps resetting delivery every few months.",
       "Half the budget sits benched, waiting on the right specialists.",
     ],
@@ -60,19 +60,19 @@ export const personas: Persona[] = [
     cue: "Every open seat is red",
     headline: "Every red seat is a red programme.",
     quotes: [
-      "Half my status pack is 'awaiting hire' — leadership sees red before delivery does.",
+      "Half my status pack is 'awaiting hire'. Leadership sees red before delivery does.",
       "Recruitment says four weeks, but by week six the sprint has already slipped twice.",
       "By the time the seat is filled, the mitigation plan has become the plan.",
     ],
     value: "~63 days",
     claim:
-      "median time to fill a role today — and specialist tech roles routinely run longer, dragging every milestone behind them.",
+      "median time to fill a role today, and specialist tech roles routinely run longer, dragging every milestone behind them.",
     source: "Employ Recruiting Benchmarks Report, 2026",
   },
   {
     role: "VP Engineering",
     cue: "Backlog stalls on specialists",
-    headline: "The backlog isn't the problem — the bench is.",
+    headline: "The backlog isn't the problem: the bench is.",
     quotes: [
       "I've got the roadmap. What I don't have is two senior specialists who can actually ship it.",
       "Contract agencies send me profiles. I need people who've built this at scale.",
@@ -80,7 +80,7 @@ export const personas: Persona[] = [
     ],
     value: "72%",
     claim:
-      "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
     source: "ManpowerGroup Talent Shortage Survey, 2026",
   },
   {
@@ -88,13 +88,13 @@ export const personas: Persona[] = [
     cue: "Bench is thin at the top",
     headline: "Certified isn't the same as delivered.",
     quotes: [
-      "Ninety percent of the CVs look right on paper — five percent have actually shipped this platform.",
+      "Ninety percent of the CVs look right on paper: five percent have actually shipped this platform.",
       "I end up screening every candidate myself because generalist recruiters can't tell the difference.",
-      "The good ones aren't on the market — they're already placed on someone else's programme.",
+      "The good ones aren't on the market. They're already placed on someone else's programme.",
     ],
     value: "up to 30%",
     claim:
-      "of first-year salary is the cost of a single bad hire — and replacing a senior specialist can reach two times salary.",
+      "of first-year salary is the cost of a single bad hire, and replacing a senior specialist can reach two times salary.",
     source: "U.S. Department of Labor; SHRM",
   },
 ];

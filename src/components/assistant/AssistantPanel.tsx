@@ -164,7 +164,7 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
       }
       setBriefStatus("sent");
       setBriefMessage(
-        "Sent — the team will be in touch within one working day.",
+        "Sent: the team will be in touch within one working day.",
       );
     } catch (err) {
       setBriefStatus("error");
@@ -211,7 +211,7 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
       <div className={styles.messages} role="log" aria-live="polite">
         {messages.length === 0 && (
           <p className={styles.empty}>
-            Ask about a platform, an industry or an engagement model — I'll
+            Ask about a platform, an industry or an engagement model. I'll
             answer from the site and can put together a brief as we go.
           </p>
         )}

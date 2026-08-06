@@ -43,7 +43,7 @@ export function Intelligence() {
               </ul>
               <p className={styles.intelFoot}>
                 <span className={styles.unbuiltFlag}>
-                  {a.cta.label} — in preparation
+                  {a.cta.label}, in preparation
                 </span>
               </p>
             </article>

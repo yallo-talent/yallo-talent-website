@@ -36,7 +36,7 @@ export function AITalent() {
             </div>
             <p className={styles.ctaRow}>
               <span className={styles.unbuiltFlag}>
-                {aiCopy.cta.label} — in preparation
+                {aiCopy.cta.label}, in preparation
               </span>
             </p>
           </div>

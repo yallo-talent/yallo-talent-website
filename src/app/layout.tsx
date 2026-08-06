@@ -75,7 +75,7 @@ const plexMono = IBM_Plex_Mono({
  * and the fix is not to add the seventh name: it is to stop counting.
  */
 export const metadata: Metadata = {
-  title: "Yallo Talent — Contract, Permanent, EOR, Managed Delivery",
+  title: "Yallo Talent: Contract, Permanent, EOR, Managed Delivery",
   description:
     "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platform programmes staffed at module level, not at vendor level.",
 };

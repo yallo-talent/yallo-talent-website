@@ -336,7 +336,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         slug: "oracle-e-business-suite",
         name: "Oracle E-Business Suite",
         scope:
-          "EBS consultants and PL/SQL developers — the estates still running it, and the ones leaving it.",
+          "EBS consultants and PL/SQL developers: the estates still running it, and the ones leaving it.",
         roles: [
           "Oracle EBS Financials Consultant",
           "Oracle PL/SQL Developer",
@@ -624,14 +624,14 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
       { name: "ZATCA", market: "Saudi Arabia" },
     ],
     ratified:
-      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain — see QUESTIONS.md Q9.",
+      "Suite-level rebuild 31 Jul 2026, names sourced verbatim from the legacy corpus platform pages. Three desks flagged uncertain: see QUESTIONS.md Q9.",
     modules: [
       {
         slug: "sap-s4hana",
         family: "Core ERP",
         name: "SAP S/4HANA",
         scope:
-          "Core finance and logistics consultants across every deployment — brownfield conversion crews on-premise, standard-first consultants on public cloud, and mixed benches on private edition.",
+          "Core finance and logistics consultants across every deployment: brownfield conversion crews on-premise, standard-first consultants on public cloud, and mixed benches on private edition.",
         /* ORDER 1: one entry, deployment variants inside. Verified against SAP's
            2026 portfolio — the deployments are On-Premise, Cloud Public Edition
            and Cloud Private Edition. RISE is named as what it is, a commercial
@@ -663,7 +663,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         family: "Autonomous Finance",
         name: "SAP S/4HANA Finance",
         scope:
-          "Finance transformation consultants — record to report, treasury and group close.",
+          "Finance transformation consultants: record to report, treasury and group close.",
         roles: [
           "SAP FI/CO Consultant",
           "Finance Transformation Lead",
@@ -753,7 +753,7 @@ export const authoredPlatforms: Record<string, AuthoredPlatform> = {
         name: "SAP BTP (Business Technology Platform)",
         shortName: "SAP BTP",
         scope:
-          "Integration and extension engineers — CPI, event mesh and side-by-side extensions.",
+          "Integration and extension engineers: CPI, event mesh and side-by-side extensions.",
         roles: [
           "SAP CPI Integration Developer",
           "Integration Architect",

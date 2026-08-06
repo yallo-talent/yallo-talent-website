@@ -306,7 +306,7 @@ function buildLeadershipDoc(published: Set<string>): CorpusDocument | null {
     title: "Leadership",
     summary: "Yallo Talent's leadership team, named for public credibility.",
     facts: teamIndex.map((m) =>
-      [m.name, m.role, m.linkedin, m.bio].filter(Boolean).join(" — "),
+      [m.name, m.role, m.linkedin, m.bio].filter(Boolean).join(" · "),
     ),
   };
 }

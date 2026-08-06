@@ -41,8 +41,8 @@ export const financeData: L1PageData = {
   introTitle:
     "Finance programmes stall when regulated-industry depth isn't in the room.",
   introCopy: [
-    "Every Temenos core migration, every Guidewire policy admin rollout, every Murex trading platform build shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside regulated environments.",
-    "Our bench is assessed by specialists who have run banking, insurance and capital markets delivery. We screen for the specific operating context — KYC/AML, PCI, PRA/FCA, DFSA, RBI — not just certification badges.",
+    "Every Temenos core migration, every Guidewire policy admin rollout, every Murex trading platform build shares the same failure mode: the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside regulated environments.",
+    "Our bench is assessed by specialists who have run banking, insurance and capital markets delivery. We screen for the specific operating context: KYC/AML, PCI, PRA/FCA, DFSA, RBI, not just certification badges.",
   ],
   /* TWO FIGURES REMOVED, 2 Aug 2026, and the precedent decided it rather than
      my judgement. "71% of banking CIOs..." and "5-8 wks average time lost" both
@@ -65,7 +65,7 @@ export const financeData: L1PageData = {
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
   scarceTitle:
-    "The roles every banking programme needs — and struggles to find.",
+    "The roles every banking programme needs, and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every finance brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -692,7 +692,7 @@ export const financeData: L1PageData = {
   segmentsTitle:
     "Financial-services segments. Specialists who know the context.",
   segmentsSub:
-    "Retail banking runs different programmes from insurance or capital markets. Our contractors understand the specific operating context — not just the platform.",
+    "Retail banking runs different programmes from insurance or capital markets. Our contractors understand the specific operating context, not just the platform.",
   /* ELEVEN SEGMENTS REMOVED ACROSS TWO ROUNDS, and the second round removed the
      test that had kept five of them.
 
@@ -828,7 +828,7 @@ export const financeData: L1PageData = {
       title:
         "Guidewire ClaimCenter contractors: the roles insurers are hiring six months too late.",
       excerpt:
-        "The insurers that delivered on time last year confirmed the ClaimCenter tech lead before the vendor was even signed. The fix isn't faster hiring — it's earlier briefing.",
+        "The insurers that delivered on time last year confirmed the ClaimCenter tech lead before the vendor was even signed. The fix isn't faster hiring. It's earlier briefing.",
       author: "Yallo Talent",
       minutes: 5,
     },

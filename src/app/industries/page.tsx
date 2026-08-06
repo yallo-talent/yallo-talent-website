@@ -25,7 +25,7 @@ export default function IndustriesHub() {
         eyebrow="Industries"
         title="Six sectors."
         emphasis="One specialist-led bench."
-        sub="Enterprise technology talent calibrated to your sector — from retail transformation to public-sector digital and telco OSS/BSS."
+        sub="Enterprise technology talent calibrated to your sector, from retail transformation to public-sector digital and telco OSS/BSS."
         entries={industriesIndex}
       />
       <HubWhatWeDeliver label="enterprise" />

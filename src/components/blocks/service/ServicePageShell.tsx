@@ -265,7 +265,7 @@ function ServiceFaq({ data }: Props) {
             <div className={styles.faqEyebrow}>Quick answers</div>
             <h2 className={styles.sectionH}>{data.faqHeading}</h2>
             <p className={styles.faqAsideCopy}>
-              The questions we get most often — answered directly. Anything not
+              The questions we get most often: answered directly. Anything not
               covered? Send us a brief and we&apos;ll pick it up.
             </p>
             <div className={styles.faqAsideStats}>

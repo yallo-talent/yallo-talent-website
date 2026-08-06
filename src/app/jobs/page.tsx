@@ -9,7 +9,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Job Seekers · Yallo Talent",
     description:
-      "Contract, permanent and EOR opportunities across the Middle East, Europe and India. Send your CV — we'll match you to your next enterprise programme.",
+      "Contract, permanent and EOR opportunities across the Middle East, Europe and India. Send your CV. We'll match you to your next enterprise programme.",
   },
   path: "/jobs",
 });
@@ -35,7 +35,7 @@ export default function JobsPage() {
           </h1>
           <p className={styles.heroLede}>
             Yallo places enterprise IT specialists onto real delivery programmes
-            across UK, Middle East and India. Send your CV — we'll match you
+            across UK, Middle East and India. Send your CV. We'll match you
             where your depth genuinely fits.
           </p>
           <div className={styles.heroCtas}>
@@ -67,7 +67,7 @@ export default function JobsPage() {
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Actual conversations</h3>
                 <p className={styles.cardCopy}>
-                  A real screening call with an operator, not a five-minute
+                  A real screening call with a specialist, not a five-minute
                   keyword-list phone screen.
                 </p>
               </article>
@@ -81,7 +81,7 @@ export default function JobsPage() {
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Regional coverage</h3>
                 <p className={styles.cardCopy}>
-                  The UK, UAE, Saudi Arabia and India — with visa cover and
+                  The UK, UAE, Saudi Arabia and India, with visa cover and
                   payroll support if the role sits in a market you're not
                   resident in.
                 </p>
@@ -99,7 +99,7 @@ export default function JobsPage() {
             <h2 className={styles.sectionH}>Six specialist desks, one CV.</h2>
             <p className={styles.sectionLede}>
               We don't publish a live jobs board yet. Send your CV once and an
-              operator on the relevant desk screens it against the enterprise
+              specialist on the relevant desk screens it against the enterprise
               programmes we're actively staffing across the UK, Middle East and
               India.
             </p>

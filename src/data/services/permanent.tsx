@@ -6,7 +6,7 @@ export const permanentData: ServicePageData = {
   eyebrow: "Permanent Hiring · Middle East · Europe · India",
   title: "Build your permanent bench",
   emphasis: "with specialists placed to stay.",
-  lede: "For the programme-critical roles you need long-term — specialist-vetted, retention-minded, and matched to the delivery outcomes your team is on the hook for.",
+  lede: "For the programme-critical roles you need long-term: specialist-vetted, retention-minded, and matched to the delivery outcomes your team is on the hook for.",
   heroStat: { n: "2:1", l: "CV-to-interview ratio" },
   primaryCta: { label: "Discuss a permanent hire", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
@@ -21,23 +21,23 @@ export const permanentData: ServicePageData = {
   benefits: [
     {
       title: "Fits, not filler",
-      copy: "A 2:1 CV-to-interview ratio means your hiring managers only meet candidates worth their time — no more sifting piles of misaligned CVs.",
+      copy: "A 2:1 CV-to-interview ratio means your hiring managers only meet candidates worth their time, no more sifting piles of misaligned CVs.",
       icon: shieldIcon,
     },
     {
       title: "Depth over volume",
-      copy: "We calibrate to your team's delivery style, tech stack, and cultural fit — not just to a job spec keyword list.",
+      copy: "We calibrate to your team's delivery style, tech stack, and cultural fit, not just to a job spec keyword list.",
       icon: layersIcon,
     },
     {
       title: "Retention-focused matching",
-      copy: "We ask candidates how they think about staying, growing and shipping — screening out the mercenaries before they land in your inbox.",
+      copy: "We ask candidates how they think about staying, growing and shipping, screening out the mercenaries before they land in your inbox.",
       icon: usersIcon,
     },
   ],
   processHeading: "How Permanent works",
   processLede:
-    "The same 72-hour brief-to-shortlist rigour we apply to contract — for the permanent roles that matter most to your programme.",
+    "The same 72-hour brief-to-shortlist rigour we apply to contract, for the permanent roles that matter most to your programme.",
   process: [
     {
       title: "Brief & calibrate",
@@ -46,12 +46,12 @@ export const permanentData: ServicePageData = {
     },
     {
       title: "Specialist-led screening",
-      copy: "We sift the market against your calibration, not the JD. Every candidate is depth-tested by an operator who has been in that role.",
+      copy: "We sift the market against your calibration, not the JD. Every candidate is depth-tested against the role by a specialist who has held it.",
       tag: "Days 1–3",
     },
     {
       title: "Shortlist delivered",
-      copy: "3–5 candidates worth interviewing, each with detailed reasoning — not a CV dump.",
+      copy: "3–5 candidates worth interviewing, each with detailed reasoning, not a CV dump.",
       tag: "72h",
     },
     {
@@ -62,7 +62,7 @@ export const permanentData: ServicePageData = {
   ],
   boundaryHeading: "Where Permanent ends",
   boundary:
-    "Permanent is for the roles that must outlast any single programme — leadership, architecture, product ownership. When the need has a defined term and a defined end, that's Contract. When you've made the hire but have no local entity to employ them, that's Employer of Record.",
+    "Permanent is for the roles that must outlast any single programme: leadership, architecture, product ownership. When the need has a defined term and a defined end, that's Contract. When you've made the hire but have no local entity to employ them, that's Employer of Record.",
   rolesHeading: "Permanent roles we place",
   roles: [
     "Chief Information Officer",
@@ -80,15 +80,15 @@ export const permanentData: ServicePageData = {
     "Engineering Manager",
     "Change & Transformation Director",
   ],
-  faqHeading: "Permanent — common questions",
+  faqHeading: "Permanent: common questions",
   faqs: [
     {
       q: "How is Yallo different from a traditional search firm?",
-      a: "Traditional recruiters send you volume — we send you fits. Every candidate is reviewed by architects who have run the role themselves. You interview two people who could do the job, not ten who couldn't.",
+      a: "Traditional recruiters send you volume. We send you fits. Every candidate is reviewed by architects who have run the role themselves. You interview two people who could do the job, not ten who couldn't.",
     },
     {
       q: "When should I use Permanent vs Contract?",
-      a: "Permanent for roles that are core to your programme long-term — leadership, architecture, product ownership. Contract for delivery peaks, specialist skills you don't hold in-house, and fixed-term programmes.",
+      a: "Permanent for roles that are core to your programme long-term: leadership, architecture, product ownership. Contract for delivery peaks, specialist skills you don't hold in-house, and fixed-term programmes.",
     },
     {
       q: "What's your fee model?",
@@ -104,12 +104,12 @@ export const permanentData: ServicePageData = {
     },
     {
       q: "Do you handle counter-offers and negotiations?",
-      a: "Yes — we position the role, brief candidates on the compensation window early, and manage counter-offer scenarios before they escalate.",
+      a: "Yes. We position the role, brief candidates on the compensation window early, and manage counter-offer scenarios before they escalate.",
     },
   ],
   seo: {
     title: "Permanent Hiring · Enterprise IT Specialists | Yallo Talent",
     description:
-      "Specialist-vetted permanent enterprise IT hires with a 2:1 CV-to-interview ratio. Placed to stay. Middle East, Europe, India — SAP, Oracle, Microsoft and more.",
+      "Specialist-vetted permanent enterprise IT hires with a 2:1 CV-to-interview ratio. Placed to stay. Middle East, Europe, India: SAP, Oracle, Microsoft and more.",
   },
 };

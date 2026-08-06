@@ -31,19 +31,19 @@ const whatWeDeliverCards: {
   {
     icon: "scarce",
     eyebrow: "Contract-first bench",
-    title: "Specialists in the seat — not sourced in a week.",
+    title: "Specialists in the seat, not sourced in a week.",
     copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the specialist leading that practice.",
     bullets: [
       "72h from brief to shortlist",
       "2:1 CV-to-interview ratio",
-      "Named consultants — not agency profiles",
+      "Named consultants, not agency profiles",
     ],
   },
   {
     icon: "workforce",
     eyebrow: "Specialist-led screening",
     title: "Screening depth that recruiters can't reproduce.",
-    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
+    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it: evidence does.",
     bullets: [
       "Practice leads screen every candidate",
       "Sector-specific context tests",
@@ -53,7 +53,7 @@ const whatWeDeliverCards: {
   {
     icon: "spark",
     eyebrow: "Multi-market flexibility",
-    title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
+    title: "Middle East · Europe · India: contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
       /* R17 — same unevidenced claim as the L1 shell. See that comment. */
@@ -71,14 +71,14 @@ export function HubWhatWeDeliver({ label }: { label: string }) {
         <div className={styles.wwdHead}>
           <div className={styles.eyebrow}>What we deliver</div>
           <h2 className={styles.h2}>
-            Three things every {label.toLowerCase()} programme buys from us —{" "}
+            Three things every {label.toLowerCase()} programme buys from us,{" "}
             <span className={styles.emphasis}>
               speed, screening depth, and coverage.
             </span>
           </h2>
           <p className={styles.sub}>
             The Yallo Talent bench is engineered around three commitments. Every
-            programme we support gets all three — from the first brief.
+            programme we support gets all three, from the first brief.
           </p>
         </div>
         <div className={styles.wwdGrid}>
@@ -120,7 +120,7 @@ const howWeWorkSteps: {
   {
     n: "01",
     title: "Send us the brief",
-    copy: "Role, platform, timeline, engagement model. No CVs on speculation — we start from what your programme actually needs.",
+    copy: "Role, platform, timeline, engagement model. No CVs on speculation. We start from what your programme actually needs.",
   },
   {
     n: "02",
@@ -135,7 +135,7 @@ const howWeWorkSteps: {
   {
     n: "04",
     title: "Deploy the model that fits",
-    copy: "Contract, EOR, Permanent or Managed Delivery — matched to who needs to carry the contract and the visa.",
+    copy: "Contract, EOR, Permanent or Managed Delivery: matched to who needs to carry the contract and the visa.",
   },
 ];
 
@@ -146,7 +146,7 @@ export function HubHowWeWork() {
         <div className={styles.hwwHead}>
           <div className={styles.eyebrow}>How we work</div>
           <h2 className={styles.h2}>
-            Four steps from brief to bench —{" "}
+            Four steps from brief to bench:{" "}
             <span className={styles.emphasis}>
               every programme, same rhythm.
             </span>
@@ -154,7 +154,7 @@ export function HubHowWeWork() {
           <p className={styles.sub}>
             Yallo Talent is a contract-first bench built on specialist-led
             screening. Every engagement follows the same disciplined operating
-            rhythm — regardless of sector, platform or model.
+            rhythm, regardless of sector, platform or model.
           </p>
         </div>
         <div className={styles.hwwGrid}>
@@ -183,7 +183,7 @@ const architects: {
   {
     name: "Sumeet Goenka",
     role: "Founder & CEO",
-    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries — now runs the team that staffs them.",
+    bio: "Two decades running enterprise programmes across Richemont, Landmark Group and Alshaya EMEA. Ran the deliveries, now runs the team that staffs them.",
   },
   {
     name: "SAP practice lead",
@@ -217,7 +217,7 @@ export function HubArchitects() {
           <p className={styles.sub}>
             Yallo Talent is specialist-led, not sourcer-led. Every practice lead
             has decades of delivery under them. They review every candidate
-            personally before the shortlist leaves the building — the reason our
+            personally before the shortlist leaves the building, the reason our
             72h SLA holds up.
           </p>
         </div>
@@ -258,7 +258,7 @@ export function HubCrossConnected() {
         <div className={styles.crossHead}>
           <div className={styles.eyebrow}>Also connected</div>
           <h2 className={styles.h2}>
-            Same bench, three ways to browse it —{" "}
+            Same bench, three ways to browse it:{" "}
             <span className={styles.emphasis}>
               by industry, platform or capability.
             </span>

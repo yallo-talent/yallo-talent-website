@@ -58,7 +58,7 @@ export const testingQualityEngineeringData: L1PageData = {
   introStatCards: [
     {
       n: "72%",
-      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      l: "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
       source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
@@ -358,7 +358,7 @@ export const testingQualityEngineeringData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle: "Every sector runs a test cycle — we staff them all.",
+  segmentsTitle: "Every sector runs a test cycle. We staff them all.",
   segmentsSub:
     "A bank's regulatory evidence, a retailer's peak readiness or a hospital's clinical safety case changes which test specialist you need. Same screened bench, calibrated to the operating context.",
   segments: [

@@ -27,8 +27,8 @@ export const healthcareData: L1PageData = {
   introTitle:
     "Care programmes stall when regulated-industry depth isn't in the room.",
   introCopy: [
-    "Every Epic go-live, every Veeva Vault rollout, every pharma serialisation programme shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside GxP and HIPAA environments.",
-    "Our bench is assessed by specialists who have delivered inside providers, payers, and life-sciences organisations. We screen for the operating context — validated systems, HL7 / FHIR, IEC 62304, MDR — not just certification badges.",
+    "Every Epic go-live, every Veeva Vault rollout, every pharma serialisation programme shares the same failure mode: the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records inside GxP and HIPAA environments.",
+    "Our bench is assessed by specialists who have delivered inside providers, payers, and life-sciences organisations. We screen for the operating context: validated systems, HL7 / FHIR, IEC 62304, MDR, not just certification badges.",
   ],
   /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
 
@@ -56,7 +56,7 @@ export const healthcareData: L1PageData = {
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
   scarceTitle:
-    "The roles every healthcare & life-sciences programme needs — and struggles to find.",
+    "The roles every healthcare & life-sciences programme needs, and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every provider, payer and life-sciences brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -107,7 +107,7 @@ export const healthcareData: L1PageData = {
   expertiseTitle:
     "Every healthcare and life-sciences function area, with a contractor bench behind it.",
   expertiseSub:
-    "From clinical systems to lab operations — we place specialists into every function that moves a care or life-sciences programme forward.",
+    "From clinical systems to lab operations. We place specialists into every function that moves a care or life-sciences programme forward.",
   expertise: [
     {
       slug: "patient-mgmt",
@@ -355,7 +355,7 @@ export const healthcareData: L1PageData = {
   segmentsTitle:
     "Every healthcare & life-sciences segment. Specialists who know the context.",
   segmentsSub:
-    "Providers run different programmes from CROs or biotech. Our contractors understand the specific operating context — not just the platform.",
+    "Providers run different programmes from CROs or biotech. Our contractors understand the specific operating context, not just the platform.",
   segments: [
     {
       id: "patient-mgmt-seg",
@@ -378,7 +378,7 @@ export const healthcareData: L1PageData = {
       id: "ehr-seg",
       name: "Electronic Health Records (EHR)",
       intro:
-        "Provider EHR platforms — clinical documentation, orders, decision support. IEC 62304 and CDSS integration expertise matters.",
+        "Provider EHR platforms: clinical documentation, orders, decision support. IEC 62304 and CDSS integration expertise matters.",
       roles: [
         "Epic Systems Consultant",
         "Cerner Millennium Specialist",

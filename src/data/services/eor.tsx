@@ -12,7 +12,7 @@ export const eorData: ServicePageData = {
      subset) is not ratified, so this names the employment relationship in
      general rather than pinning "visa" to one country and "payroll" to
      another the way the UAE/India-only version did. */
-  lede: `Found the specialist yourself? We handle the employment relationship in the ${eorCorridorProse} so you don't have to. You direct the work, we hold the compliance — no local entity setup, no legal exposure.`,
+  lede: `Found the specialist yourself? We handle the employment relationship in the ${eorCorridorProse} so you don't have to. You direct the work, we hold the compliance, no local entity setup, no legal exposure.`,
   heroStat: {
     n: String(eorCountries.length),
     l: `countries · ${eorCountries.join(", ")}`,
@@ -36,7 +36,7 @@ export const eorData: ServicePageData = {
     },
     {
       title: "Compliance on us",
-      copy: "Visa sponsorship, work permits, PF/ESI, gratuity, insurance, and end-of-service — we handle every regulatory obligation.",
+      copy: "Visa sponsorship, work permits, PF/ESI, gratuity, insurance, and end-of-service. We handle every regulatory obligation.",
       icon: shieldIcon,
     },
     {
@@ -47,7 +47,7 @@ export const eorData: ServicePageData = {
   ],
   processHeading: "How EOR works",
   processLede:
-    "You've made the hiring decision. We take it from offer letter to onboarded employee — visa-cleared, payroll-live, compliance-covered.",
+    "You've made the hiring decision. We take it from offer letter to onboarded employee: visa-cleared, payroll-live, compliance-covered.",
   process: [
     {
       title: "Confirm the hire",
@@ -61,7 +61,7 @@ export const eorData: ServicePageData = {
     },
     {
       title: "Payroll goes live",
-      copy: "Monthly payroll in local currency, WPS-compliant (UAE) or PF/TDS-compliant (India). Your invoice is a single service fee — one line item.",
+      copy: "Monthly payroll in local currency, WPS-compliant (UAE) or PF/TDS-compliant (India). Your invoice is a single service fee: one line item.",
       tag: "Month 1",
     },
     {
@@ -81,7 +81,7 @@ export const eorData: ServicePageData = {
     "Founding country teams (pre-entity)",
     "Contractor-to-employee conversions",
   ],
-  faqHeading: "EOR — common questions",
+  faqHeading: "EOR: common questions",
   faqs: [
     {
       /* TALENT HOSTING, added 1 Aug on Sumeet's brief. This is the half of the
@@ -90,11 +90,11 @@ export const eorData: ServicePageData = {
          MAF run a lot of it, it is a major line in Saudi Arabia and the UAE, and
          it competes with TASC and UHRS rather than with the global EOR players. */
       q: "We have already found the person. Can you employ them and deploy them back to us?",
-      a: "Yes — that is talent hosting, and it is a large part of what we do. You identify the consultant, we employ them and deploy them back to you, and you direct the work exactly as you would your own team. Two flavours. If the consultant already holds their own freelance visa we issue the work permit, onboard them, run payroll and manage them for the tenure. If they hold no visa we sponsor the visa and the permit in the country of deployment as well. Visa sponsorship is charged on actuals; onboarding, offboarding, payroll and management carry a flat fee.",
+      a: "Yes. That is talent hosting, and it is a large part of what we do. You identify the consultant, we employ them and deploy them back to you, and you direct the work exactly as you would your own team. Two flavours. If the consultant already holds their own freelance visa we issue the work permit, onboard them, run payroll and manage them for the tenure. If they hold no visa we sponsor the visa and the permit in the country of deployment as well. Visa sponsorship is charged on actuals; onboarding, offboarding, payroll and management carry a flat fee.",
     },
     {
       q: "What is the difference between talent hosting and Employer of Record?",
-      a: "The sourcing. Classic EOR is for hiring where you have no entity — we find or place the person and employ them for you. Talent hosting starts with a person you have already chosen. Everything downstream is the same: employment, visa where needed, payroll, compliance and end of service sit with us.",
+      a: "The sourcing. Classic EOR is for hiring where you have no entity. We find or place the person and employ them for you. Talent hosting starts with a person you have already chosen. Everything downstream is the same: employment, visa where needed, payroll, compliance and end of service sit with us.",
     },
     {
       q: "What's the difference between EOR and contracting through Yallo?",
@@ -102,7 +102,7 @@ export const eorData: ServicePageData = {
     },
     {
       q: "How is the fee structured?",
-      a: "Monthly service fee per employee, disclosed up-front. The employee's salary, benefits and statutory costs are separate line items on your invoice — no margin hidden inside the CTC.",
+      a: "Monthly service fee per employee, disclosed up-front. The employee's salary, benefits and statutory costs are separate line items on your invoice, no margin hidden inside the CTC.",
     },
     {
       q: "What visas can you sponsor in the UAE?",
@@ -110,11 +110,11 @@ export const eorData: ServicePageData = {
     },
     {
       q: "Can we transition an EOR employee to our own entity later?",
-      a: "Yes. When you set up your entity or the engagement changes, we run a clean transition — end-of-service processed on our side, new contract issued on yours, no gratuity or PF disruption for the employee.",
+      a: "Yes. When you set up your entity or the engagement changes, we run a clean transition: end-of-service processed on our side, new contract issued on yours, no gratuity or PF disruption for the employee.",
     },
     {
       q: "Do you handle India-specific compliance like PF and gratuity?",
-      a: "Yes. Full PF, ESI, professional tax, gratuity accrual, statutory bonus and TDS handling — filed and paid on your behalf. Employees see their Form 16 at year-end.",
+      a: "Yes. Full PF, ESI, professional tax, gratuity accrual, statutory bonus and TDS handling: filed and paid on your behalf. Employees see their Form 16 at year-end.",
     },
     {
       q: "How long from offer letter to onboarded employee?",
@@ -123,6 +123,6 @@ export const eorData: ServicePageData = {
   ],
   seo: {
     title: `Employer of Record · ${eorCountries.join(", ")} | Yallo Talent`,
-    description: `Deploy talent into the ${eorCorridorProse} without a local entity. Employment, payroll and statutory compliance handled — you direct the work.`,
+    description: `Deploy talent into the ${eorCorridorProse} without a local entity. Employment, payroll and statutory compliance handled. You direct the work.`,
   },
 };

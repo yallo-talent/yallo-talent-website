@@ -23,7 +23,7 @@ import { buildMetadata } from "@/lib/seo";
  */
 export const metadata: Metadata = buildMetadata({
   seo: {
-    title: "Yallo Talent — Contract, Permanent, EOR, Managed Delivery",
+    title: "Yallo Talent: Contract, Permanent, EOR, Managed Delivery",
     description:
       "Specialist-screened shortlists in 72 hours. Middle East · Europe. Enterprise platform programmes staffed at module level, not at vendor level.",
   },

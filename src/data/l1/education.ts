@@ -577,7 +577,7 @@ export const educationData: L1PageData = {
       id: "school-groups",
       name: "School Groups",
       intro:
-        "Multi-school operators running one estate across many sites. Consolidation onto shared admissions, learning and identity platforms is the constant theme.",
+        "Multi-school groups running one estate across many sites. Consolidation onto shared admissions, learning and identity platforms is the constant theme.",
       roles: [
         "Learning Management System Administrator",
         "Microsoft 365 Consultant",

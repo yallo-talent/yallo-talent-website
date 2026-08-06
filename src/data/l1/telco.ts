@@ -26,8 +26,8 @@ export const telcoData: L1PageData = {
   introEyebrow: "Why us for telco & media",
   introTitle: "Carrier programmes stall when OSS/BSS depth isn't in the room.",
   introCopy: [
-    "Every Amdocs or Netcracker BSS transformation, every 5G core rollout, every OSS inventory migration shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place carrier-grade implementation track records.",
-    "Our bench is assessed by specialists who have run OSS, BSS, 5G and media delivery. We screen for the specific operating context — TM Forum, ISO 20022 for MNO, live-service uptime, multi-year migration horizons — not just certification badges.",
+    "Every Amdocs or Netcracker BSS transformation, every 5G core rollout, every OSS inventory migration shares the same failure mode: the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place carrier-grade implementation track records.",
+    "Our bench is assessed by specialists who have run OSS, BSS, 5G and media delivery. We screen for the specific operating context: TM Forum, ISO 20022 for MNO, live-service uptime, multi-year migration horizons, not just certification badges.",
   ],
   /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
 
@@ -55,7 +55,7 @@ export const telcoData: L1PageData = {
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
   scarceTitle:
-    "The roles every telco & media programme needs — and struggles to find.",
+    "The roles every telco & media programme needs, and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every carrier and media brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -106,7 +106,7 @@ export const telcoData: L1PageData = {
   expertiseTitle:
     "Every telco and media function area, with a contractor bench behind it.",
   expertiseSub:
-    "From network operations to advertising ops — we place specialists into every function that moves a carrier or media programme forward.",
+    "From network operations to advertising ops. We place specialists into every function that moves a carrier or media programme forward.",
   expertise: [
     {
       slug: "network-ops",
@@ -354,7 +354,7 @@ export const telcoData: L1PageData = {
   segmentsTitle:
     "Every telco & media segment. Specialists who know the context.",
   segmentsSub:
-    "A tier-1 MNO runs different programmes from a broadcaster or a hyperscaler-connect carrier. Our contractors understand the specific operating context — not just the platform.",
+    "A tier-1 MNO runs different programmes from a broadcaster or a hyperscaler-connect carrier. Our contractors understand the specific operating context, not just the platform.",
   segments: [
     {
       id: "network-ops-seg",
@@ -656,7 +656,7 @@ export const telcoData: L1PageData = {
       title:
         "OSS/BSS modernisation: the migration architects who actually delivered legacy-to-cloud in the last 24 months.",
       excerpt:
-        "The specialist bench you need for a real cloud-native carrier stack — where they are and what they cost.",
+        "The specialist bench you need for a real cloud-native carrier stack, where they are and what they cost.",
       author: "Yallo Talent",
       minutes: 6,
     },

@@ -310,19 +310,19 @@ const whatWeDeliverCards: {
   {
     icon: "scarce",
     eyebrow: "Contract-first bench",
-    title: "Specialists in the seat — not sourced in a week.",
+    title: "Specialists in the seat, not sourced in a week.",
     copy: "Every role we place already sits on an assessed bench. Named consultants with delivery track records, screened by the specialist leading that practice.",
     bullets: [
       "72h from brief to shortlist",
       "2:1 CV-to-interview ratio",
-      "Named consultants — not agency profiles",
+      "Named consultants, not agency profiles",
     ],
   },
   {
     icon: "workforce",
     eyebrow: "Specialist-led screening",
     title: "Screening depth that recruiters can't reproduce.",
-    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it — evidence does.",
+    copy: "Every shortlist is depth-tested by specialists who have delivered this platform, in this sector, at this scale. Certifications don't cut it: evidence does.",
     bullets: [
       "Practice leads screen every candidate",
       "Sector-specific context tests",
@@ -332,7 +332,7 @@ const whatWeDeliverCards: {
   {
     icon: "spark",
     eyebrow: "Multi-market flexibility",
-    title: "Middle East · Europe · India — contract, EOR, perm or delivery.",
+    title: "Middle East · Europe · India: contract, EOR, perm or delivery.",
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
       /* R17. "Active bench across 3 markets" was unevidenced — nothing in the
@@ -356,14 +356,14 @@ function L1WhatWeDeliver({ data }: Props) {
         <div className={styles.wwdHead}>
           <div className={styles.eyebrow}>What we deliver</div>
           <h2 className={styles.h2}>
-            What every {sector} programme buys from us —{" "}
+            What every {sector} programme buys from us,{" "}
             <span className={styles.heroEmphasis}>
               speed, screening depth, and coverage.
             </span>
           </h2>
           <p className={styles.sub}>
             The Yallo Talent bench is engineered around three commitments. Every
-            programme we support gets all three — from the first brief.
+            programme we support gets all three, from the first brief.
           </p>
         </div>
         <div className={styles.wwdGrid}>
@@ -405,7 +405,7 @@ const howWeWorkSteps: {
   {
     n: "01",
     title: "Send us the brief",
-    copy: "Role, platform, timeline, engagement model. No CVs traded on speculation — we start from what your programme actually needs.",
+    copy: "Role, platform, timeline, engagement model. No CVs traded on speculation. We start from what your programme actually needs.",
   },
   {
     n: "02",
@@ -420,7 +420,7 @@ const howWeWorkSteps: {
   {
     n: "04",
     title: "Deploy the model that fits",
-    copy: "Contract, EOR, Permanent or Managed Delivery — matched to who needs to carry the contract and the visa.",
+    copy: "Contract, EOR, Permanent or Managed Delivery: matched to who needs to carry the contract and the visa.",
   },
 ];
 
@@ -437,7 +437,7 @@ export function L1HowWeWork({ noun }: { noun: string }) {
         <div className={styles.hwwHead}>
           <div className={styles.eyebrow}>How we work</div>
           <h2 className={styles.h2}>
-            From brief to bench —{" "}
+            From brief to bench:{" "}
             <span className={styles.heroEmphasis}>
               every {noun} programme, same rhythm.
             </span>
@@ -445,7 +445,7 @@ export function L1HowWeWork({ noun }: { noun: string }) {
           <p className={styles.sub}>
             Yallo Talent is a contract-first bench built on specialist-led
             screening. Every engagement follows the same disciplined operating
-            rhythm — regardless of sector, platform or model.
+            rhythm, regardless of sector, platform or model.
           </p>
         </div>
         <div className={styles.hwwGrid}>
@@ -950,7 +950,7 @@ function L1Segments({ data }: Props) {
                   href={`/brief?segment=${activeSeg.id}`}
                   className={styles.segCta}
                 >
-                  Brief us on {activeSeg.name.split(/[,&—]/)[0]?.trim()}{" "}
+                  Brief us on {activeSeg.name.split(/[,&, ]/)[0]?.trim()}{" "}
                   contractors
                   <span aria-hidden="true">→</span>
                 </Link>
@@ -1066,7 +1066,7 @@ export function L1BottomCta() {
           <div className={styles.bottomInner}>
             <div className={styles.eyebrow}>Ready to brief us?</div>
             <h2 className={styles.h2}>
-              Send the role, the platform, the timeline —{" "}
+              Send the role, the platform, the timeline,{" "}
               <span className={styles.heroEmphasis}>
                 get a shortlist in 72 hours.
               </span>

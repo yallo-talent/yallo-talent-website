@@ -104,7 +104,7 @@ export async function POST(request: Request) {
 
   if (!apiKey) {
     console.warn(
-      "[cv] RESEND_API_KEY not set — persisted, not delivered:",
+      "[cv] RESEND_API_KEY not set: persisted, not delivered:",
       v.filename,
     );
     await recordDelivery(submissionId, "email", {
@@ -127,7 +127,7 @@ export async function POST(request: Request) {
         <ul>
           <li><b>Name:</b> ${escapeHtml(v.name)}</li>
           <li><b>Email:</b> ${escapeHtml(v.email)}</li>
-          <li><b>LinkedIn:</b> ${escapeHtml(v.linkedin || "—")}</li>
+          <li><b>LinkedIn:</b> ${escapeHtml(v.linkedin || "Not supplied")}</li>
           <li><b>Interests:</b> ${escapeHtml(v.interests.join(", "))}</li>
         </ul>
         <p><b>Message:</b></p>

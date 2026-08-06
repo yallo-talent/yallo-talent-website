@@ -20,7 +20,7 @@ const philosophy = [
     /* Reused verbatim from /about's own "Specialist-led, always" value, rather
        than the retired "every practice lead" framing that no longer matches
        any role title on this page. */
-    copy: "Every shortlist is reviewed by an operator who has run the same programme. No keyword-match, no volume, no filler.",
+    copy: "Every shortlist is screened against a written standard by a specialist who has run the same programme. No keyword-match, no volume, no filler.",
   },
   {
     title: "One team, one bench",
@@ -28,7 +28,7 @@ const philosophy = [
   },
   {
     title: "Region-deep, not brand-broad",
-    copy: "We're not a global-brand office in every capital. We're operators who work the Middle East, Europe and India markets we know cold.",
+    copy: "We're not a global-brand office in every capital. We're specialists who work the Middle East, Europe and India markets we know cold.",
   },
 ];
 
@@ -141,7 +141,7 @@ export default function LeadershipPage() {
             <div className={styles.bottomGlow} aria-hidden="true" />
             <div className={styles.bottomInner}>
               <h2 className={styles.bottomH}>
-                Work with operators, not sourcers.
+                Work with specialists, not sourcers.
               </h2>
               <p className={styles.bottomSub}>
                 Send your brief. Yallo Talent&apos;s team picks it up

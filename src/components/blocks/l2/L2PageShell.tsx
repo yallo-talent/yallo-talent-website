@@ -187,10 +187,10 @@ function L2Overview({
               {sector.sectorNoun.charAt(0).toUpperCase() +
                 sector.sectorNoun.slice(1)}
               -context screening
-              {sector.screeningContext ? ` — ${sector.screeningContext}` : ""}
+              {sector.screeningContext ? `: ${sector.screeningContext}` : ""}
             </li>
             <li className={styles.overviewBullet}>
-              72h from brief to shortlist — every time
+              72h from brief to shortlist: every time
             </li>
           </ul>
         </div>
@@ -239,7 +239,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
         </h2>
         <p className={styles.toolsSub}>
           Every card lists the contractor roles Yallo places into that tool.
-          Send the brief — the shortlist is in your inbox in 72 hours.
+          Send the brief: the shortlist is in your inbox in 72 hours.
         </p>
         <div className={styles.toolsGrid}>
           {fn.tools.map((tool, _i) => {
@@ -636,7 +636,7 @@ function L2BottomCta({
             </span>
           </h2>
           <p className={styles.bottomSub}>
-            Send the role, the platform, the timeline — get an
+            Send the role, the platform, the timeline, get an
             specialist-screened shortlist inside 72 hours. No CVs until we
             understand your programme.
           </p>

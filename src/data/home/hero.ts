@@ -90,5 +90,5 @@ export const logoRail = {
      and one caption line — never as two walls. */
   mergedLabel: "Enterprise programmes staffed for",
   integratorCaption:
-    "— including the systems integrators who come to us for specialists.",
+    "Including the systems integrators who come to us for specialists.",
 } as const;

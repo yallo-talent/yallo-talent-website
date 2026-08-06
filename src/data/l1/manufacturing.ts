@@ -13,7 +13,7 @@ export const manufacturingData: L1PageData = {
   title: "Manufacturing tech contractors,",
   sectorNoun: "manufacturing",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just platform familiarity.",
+  sub: "SAP, Siemens, Rockwell, Blue Yonder and Manhattan specialists for shop-floor to network programmes across the Middle East, Europe and India. Specialist-screened for implementation depth, not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -27,8 +27,8 @@ export const manufacturingData: L1PageData = {
   introTitle:
     "Manufacturing programmes stall when shop-floor depth isn't in the room.",
   introCopy: [
-    "Every SAP S/4HANA manufacturing rollout, every Siemens Opcenter cutover, every Blue Yonder demand-planning go-live shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records.",
-    "Our bench is assessed by specialists who have run manufacturing tech delivery. We screen for the specific operating context — multi-plant rollouts, MES integration, IIoT payloads, regulated environments — not just certification badges.",
+    "Every SAP S/4HANA manufacturing rollout, every Siemens Opcenter cutover, every Blue Yonder demand-planning go-live shares the same failure mode: the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records.",
+    "Our bench is assessed by specialists who have run manufacturing tech delivery. We screen for the specific operating context: multi-plant rollouts, MES integration, IIoT payloads, regulated environments, not just certification badges.",
   ],
   /* TWO UNSOURCED CARDS REMOVED, 2 Aug 2026, a percentage and a week range.
 
@@ -56,7 +56,7 @@ export const manufacturingData: L1PageData = {
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
   scarceTitle:
-    "The roles every manufacturing programme needs — and struggles to find.",
+    "The roles every manufacturing programme needs, and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every manufacturing brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -107,7 +107,7 @@ export const manufacturingData: L1PageData = {
   expertiseTitle:
     "Every manufacturing function area, with a contractor bench behind it.",
   expertiseSub:
-    "From shop-floor execution to network-level planning — we place specialists into every function that moves a manufacturing programme forward.",
+    "From shop-floor execution to network-level planning. We place specialists into every function that moves a manufacturing programme forward.",
   expertise: [
     {
       slug: "production-planning",
@@ -355,7 +355,7 @@ export const manufacturingData: L1PageData = {
   segmentsTitle:
     "Every manufacturing segment. Specialists who know the context.",
   segmentsSub:
-    "Aerospace runs different programmes from FMCG. Our contractors understand the specific operating context — not just the platform.",
+    "Aerospace runs different programmes from FMCG. Our contractors understand the specific operating context, not just the platform.",
   segments: [
     {
       id: "automotive",
@@ -378,7 +378,7 @@ export const manufacturingData: L1PageData = {
       id: "aerospace",
       name: "Aerospace & Defence",
       intro:
-        "Aircraft, defence systems and space equipment. Precision, traceability and regulatory compliance are non-negotiable — the contractor bench needs configuration-controlled experience.",
+        "Aircraft, defence systems and space equipment. Precision, traceability and regulatory compliance are non-negotiable: the contractor bench needs configuration-controlled experience.",
       roles: [
         "SAP PLM Consultant",
         "Dassault ENOVIA Specialist",
@@ -625,7 +625,7 @@ export const manufacturingData: L1PageData = {
       title:
         "Smart manufacturing: IoT's role in shaping intelligent ecosystems.",
       excerpt:
-        "The gap between IIoT pilots and plant-wide rollout is now a talent problem, not a technology one. Where the specialists actually are — and what they cost.",
+        "The gap between IIoT pilots and plant-wide rollout is now a talent problem, not a technology one. Where the specialists actually are, and what they cost.",
       author: "Yallo Talent",
       minutes: 6,
     },
@@ -636,7 +636,7 @@ export const manufacturingData: L1PageData = {
       title:
         "Supply chain resilience: overcoming disruptions with predictive analytics.",
       excerpt:
-        "Every manufacturer that got hit hardest in 2024 had the same profile — good tools, wrong contractors. What we've learned from placing planners across three continents.",
+        "Every manufacturer that got hit hardest in 2024 had the same profile: good tools, wrong contractors. What we've learned from placing planners across three continents.",
       author: "Yallo Talent",
       minutes: 5,
     },

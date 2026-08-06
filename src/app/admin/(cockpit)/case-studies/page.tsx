@@ -39,7 +39,7 @@ export default function CaseStudiesPane() {
       <h1 className={styles.h1}>Case studies</h1>
       <p className={styles.lede}>
         Everything in <code>content/case-studies/</code>, in the published order
-        from <code>order.yaml</code> — the same order the homepage rail and{" "}
+        from <code>order.yaml</code>: the same order the homepage rail and{" "}
         <code>/case-studies</code> render. Creating and reordering are not wired
         yet; this pane reads.
       </p>
@@ -52,7 +52,7 @@ export default function CaseStudiesPane() {
           <li key={study.frontmatter.slug} className={styles.row}>
             <div className={styles.rowHead}>
               <span className={styles.meta}>
-                {i < studies.length ? i + 1 : "—"}
+                {i < studies.length ? i + 1 : "unranked"}
               </span>
               <p className={styles.rowTitle}>{study.frontmatter.title}</p>
               <span className={styles.meta}>{study.frontmatter.date}</span>

@@ -16,7 +16,7 @@ export const metadata: Metadata = buildMetadata({
 const differentiators = [
   {
     stat: "72h",
-    title: "Brief to shortlist — always",
+    title: "Brief to shortlist: always",
     copy: "Not sometimes. Not for easy roles. Every calibrated brief returns a shortlist inside 72 hours. It's how we're set up to operate.",
   },
   {
@@ -31,7 +31,7 @@ const differentiators = [
   },
   {
     stat: "3",
-    title: "Four entities — London, Dubai, Riyadh, Bengaluru",
+    title: "Four entities: London, Dubai, Riyadh, Bengaluru",
     copy: "Not a global brand pretending to know these markets. Region-deep benches, local visa and compliance knowledge, active in the sectors that are hiring.",
   },
 ];
@@ -43,7 +43,7 @@ const comparison = [
   },
   {
     them: "Keyword-match against a JD",
-    us: "Depth-tested by an operator who has run the role",
+    us: "Depth-tested against the role by a specialist who has run it",
   },
   {
     them: "Weeks from brief to first CV",
@@ -59,26 +59,7 @@ const comparison = [
   },
   {
     them: "No accountability for the placement working",
-    us: "Specialist-led — the person who screened them stays involved",
-  },
-];
-
-const credentials = [
-  {
-    org: "Richemont",
-    role: "Enterprise IT operator",
-  },
-  {
-    org: "Landmark Group",
-    role: "Retail transformation lead",
-  },
-  {
-    org: "Alshaya EMEA",
-    role: "Programme director",
-  },
-  {
-    org: "Yallo Talent",
-    role: "Specialist team",
+    us: "Specialist-led: the person who screened them stays involved",
   },
 ];
 
@@ -105,9 +86,9 @@ export default function WhyYalloPage() {
             <span className={styles.emphasis}>delivery team wanted.</span>
           </h1>
           <p className={styles.heroLede}>
-            Not another recruitment agency. Yallo is specialist-led — the same
-            operators who shipped enterprise programmes at Richemont, Landmark
-            and Alshaya EMEA are the ones reviewing every shortlist you get.
+            Not another recruitment agency. Every shortlist is calibrated by
+            someone who has run these programmes, then screened against a
+            standard your hiring manager can read.
           </p>
           <div className={styles.heroCtas}>
             <Link href="/brief" className={styles.ctaPrimary}>
@@ -132,7 +113,7 @@ export default function WhyYalloPage() {
               Four numbers behind every shortlist.
             </h2>
             <p className={styles.sectionLede}>
-              This is our operating rhythm — not marketing. If we don't hit
+              This is our operating rhythm, not marketing. If we don't hit
               these, the model isn't working.
             </p>
             <div className={styles.cardGrid2}>
@@ -205,30 +186,6 @@ export default function WhyYalloPage() {
                 </tbody>
               </table>
             </section>
-          </div>
-        </div>
-      </section>
-
-      {/* CREDENTIALS */}
-      <section className={`${styles.section} ${styles.sectionAlt}`}>
-        <div className={styles.wrap}>
-          <div className={styles.sectionInner}>
-            <span className={styles.sectionEyebrow}>The specialist team</span>
-            <h2 className={styles.sectionH}>
-              Operators who ran the programmes you're running.
-            </h2>
-            <p className={styles.sectionLede}>
-              Every shortlist is reviewed by someone who has been in that role
-              themselves. Not a keyword match against a JD.
-            </p>
-            <div className={styles.cardGrid2}>
-              {credentials.map((c) => (
-                <article key={c.org} className={styles.card}>
-                  <h3 className={styles.cardTitle}>{c.org}</h3>
-                  <p className={styles.cardCopy}>{c.role}</p>
-                </article>
-              ))}
-            </div>
           </div>
         </div>
       </section>

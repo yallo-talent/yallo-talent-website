@@ -14,7 +14,7 @@ export const retailData: L1PageData = {
   sectorNoun: "retail",
   screeningContext: "high transaction volumes, multi-market rollouts",
   emphasis: "shortlisted in 72 hours.",
-  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Specialist-screened for implementation depth — not just platform familiarity.",
+  sub: "SAP, Oracle, Blue Yonder and Salesforce specialists for retail programmes across the Middle East, Europe and India. Specialist-screened for implementation depth, not just platform familiarity.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -28,8 +28,8 @@ export const retailData: L1PageData = {
   introTitle:
     "Retail programmes stall when the right contractor isn't in the seat.",
   introCopy: [
-    "Every SAP S/4HANA retail go-live, every Blue Yonder WMS cutover, every Salesforce Commerce Cloud launch shares the same failure mode — the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records.",
-    "Our contractor bench is assessed by specialists who have run retail tech delivery. We screen for the specific retail context — high transaction volumes, seasonal peaks, multi-market rollouts — not just certification badges.",
+    "Every SAP S/4HANA retail go-live, every Blue Yonder WMS cutover, every Salesforce Commerce Cloud launch shares the same failure mode: the implementation depends on the depth of the contractor in the room. Generic recruiters place platform names. We place implementation track records.",
+    "Our contractor bench is assessed by specialists who have run retail tech delivery. We screen for the specific retail context: high transaction volumes, seasonal peaks, multi-market rollouts, not just certification badges.",
   ],
   introStatCards: [
     {
@@ -40,8 +40,7 @@ export const retailData: L1PageData = {
 
   scarceEyebrow: "Scarce talent",
   scarceIcon: "scarce",
-  scarceTitle:
-    "The roles every retail programme needs — and struggles to find.",
+  scarceTitle: "The roles every retail programme needs, and struggles to find.",
   scarceCopy:
     "These are the specialists that appear on every retail programme brief and disappear from the market fastest. Yallo maintains an active bench in each of these areas across the Middle East, Europe and India. When you need one, you don't have six weeks.",
   scarceCta: { label: "Brief us on a scarce role", href: "/brief" },
@@ -92,7 +91,7 @@ export const retailData: L1PageData = {
   expertiseTitle:
     "Every retail function area, with a contractor bench behind it.",
   expertiseSub:
-    "From front-of-house customer experience to back-of-house supply chain — we place specialists into every function that moves a retail programme forward.",
+    "From front-of-house customer experience to back-of-house supply chain. We place specialists into every function that moves a retail programme forward.",
   expertise: [
     {
       slug: "customer-experience",
@@ -108,7 +107,7 @@ export const retailData: L1PageData = {
         "Personalisation Architect",
       ],
       overview:
-        "Retail CX programmes stall when the contractor understands the platform but not the shopper journey. We place specialists who have built brand-to-basket flows across web, app and store — with the personalisation stack that supports them.",
+        "Retail CX programmes stall when the contractor understands the platform but not the shopper journey. We place specialists who have built brand-to-basket flows across web, app and store, with the personalisation stack that supports them.",
       tools: [
         {
           slug: "sap-customer-experience",
@@ -277,7 +276,7 @@ export const retailData: L1PageData = {
         "D365 POS Developer",
       ],
       overview:
-        "POS is the highest-risk piece of the retail stack — outages hit revenue in real time. Our contractors have run POS rollouts at estate scale, from mobile POS in luxury boutiques to hyper-volume grocery checkouts.",
+        "POS is the highest-risk piece of the retail stack: outages hit revenue in real time. Our contractors have run POS rollouts at estate scale, from mobile POS in luxury boutiques to hyper-volume grocery checkouts.",
       tools: [
         {
           slug: "oracle-xstore",
@@ -390,7 +389,7 @@ export const retailData: L1PageData = {
         "Oracle Retail RPAS Consultant",
       ],
       overview:
-        "Assortment planning is the highest-leverage function in retail — the wrong plan wastes months of buying budget. Our contractors have run seasonal assortment cycles across apparel, grocery and mass-merchandise with Anaplan, Blue Yonder and Oracle Retail.",
+        "Assortment planning is the highest-leverage function in retail: the wrong plan wastes months of buying budget. Our contractors have run seasonal assortment cycles across apparel, grocery and mass-merchandise with Anaplan, Blue Yonder and Oracle Retail.",
       tools: [
         {
           slug: "anaplan-retail-planning",
@@ -675,7 +674,7 @@ export const retailData: L1PageData = {
         "Shopify Plus Specialist",
       ],
       overview:
-        "E-commerce contractors are the pointy end of retail delivery — storefront, checkout, headless commerce and everything in between. Our bench spans monolithic Magento estates, Salesforce Commerce Cloud rebuilds, SAP Commerce migrations and Shopify Plus scale-ups.",
+        "E-commerce contractors are the pointy end of retail delivery: storefront, checkout, headless commerce and everything in between. Our bench spans monolithic Magento estates, Salesforce Commerce Cloud rebuilds, SAP Commerce migrations and Shopify Plus scale-ups.",
       tools: [
         {
           slug: "sap-commerce-cloud",
@@ -732,7 +731,7 @@ export const retailData: L1PageData = {
         "Store Fulfilment Programme Manager",
       ],
       overview:
-        "Omnichannel fulfilment is where the digital and physical estate collide. Our contractors have built ship-from-store, click-and-collect and dark-store programmes at estate scale — from enablement in 50 stores to national rollouts.",
+        "Omnichannel fulfilment is where the digital and physical estate collide. Our contractors have built ship-from-store, click-and-collect and dark-store programmes at estate scale, from enablement in 50 stores to national rollouts.",
       tools: [
         {
           slug: "blue-yonder-fulfilment",
@@ -789,7 +788,7 @@ export const retailData: L1PageData = {
         "Fluent Commerce Specialist",
       ],
       overview:
-        "OMS is the connective tissue of modern retail — it routes every order, allocates inventory and drives service promises. Our contractors have run distributed order orchestration programmes on IBM Sterling, Manhattan Active Omni and Fluent Commerce.",
+        "OMS is the connective tissue of modern retail. It routes every order, allocates inventory and drives service promises. Our contractors have run distributed order orchestration programmes on IBM Sterling, Manhattan Active Omni and Fluent Commerce.",
       tools: [
         {
           slug: "ibm-sterling-oms",
@@ -846,7 +845,7 @@ export const retailData: L1PageData = {
         "Blue Yonder WMS Specialist",
       ],
       overview:
-        "WMS programmes are the highest-stakes retail deliveries — a bad go-live shuts the DC. Our contractors have run Manhattan WMS, SAP EWM and Blue Yonder migrations across grocery, apparel and 3PL estates.",
+        "WMS programmes are the highest-stakes retail deliveries: a bad go-live shuts the DC. Our contractors have run Manhattan WMS, SAP EWM and Blue Yonder migrations across grocery, apparel and 3PL estates.",
       tools: [
         {
           slug: "manhattan-wms",
@@ -903,7 +902,7 @@ export const retailData: L1PageData = {
         "Blue Yonder TMS Architect",
       ],
       overview:
-        "TMS is where cost and CX meet — the platform that decides whether the promise gets kept. Our contractors have run OTM, Manhattan Active TMS and Blue Yonder programmes across DC-to-store and last-mile networks.",
+        "TMS is where cost and CX meet: the platform that decides whether the promise gets kept. Our contractors have run OTM, Manhattan Active TMS and Blue Yonder programmes across DC-to-store and last-mile networks.",
       tools: [
         {
           slug: "oracle-transportation-management",
@@ -1236,13 +1235,13 @@ export const retailData: L1PageData = {
   segmentsEyebrow: "Segments we support",
   segmentsTitle: "Every retail segment. Specialists who know the context.",
   segmentsSub:
-    "Luxury retail runs different programmes from grocery. Our contractors understand the specific operating context — not just the platform.",
+    "Luxury retail runs different programmes from grocery. Our contractors understand the specific operating context, not just the platform.",
   segments: [
     {
       id: "apparel",
       name: "Apparel, Luxury & Accessories",
       intro:
-        "High-SKU, multi-market, seasonally volatile. Luxury programmes demand contractors who understand clienteling, single-view-of-customer and complex omnichannel fulfilment — not just ERP basics.",
+        "High-SKU, multi-market, seasonally volatile. Luxury programmes demand contractors who understand clienteling, single-view-of-customer and complex omnichannel fulfilment, not just ERP basics.",
       roles: [
         "SAP CX Consultant",
         "Retail Planning Lead",
@@ -1312,7 +1311,7 @@ export const retailData: L1PageData = {
       id: "mass",
       name: "Mass Merchandise & Department Stores",
       intro:
-        "Complex assortment planning, multi-format operations and large-scale SAP landscapes. Programmes often run parallel workstreams — breadth of contractor bench matters here more than anywhere.",
+        "Complex assortment planning, multi-format operations and large-scale SAP landscapes. Programmes often run parallel workstreams: breadth of contractor bench matters here more than anywhere.",
       roles: [
         "SAP Retail Functional",
         "Assortment Planning Lead",
@@ -1397,7 +1396,7 @@ export const retailData: L1PageData = {
       id: "offprice",
       name: "Off-Price / Discounts",
       intro:
-        "Opportunistic buying, rapid markdown decisions and high inventory turnover. Pricing and promotions systems expertise — particularly Oracle Retail Pricing and Revionics — is the core requirement.",
+        "Opportunistic buying, rapid markdown decisions and high inventory turnover. Pricing and promotions systems expertise: particularly Oracle Retail Pricing and Revionics: is the core requirement.",
       roles: [
         "Pricing Systems Lead",
         "Markdown Optimisation Specialist",
@@ -1431,7 +1430,7 @@ export const retailData: L1PageData = {
       id: "convenience",
       name: "Convenience & Fuel",
       intro:
-        "POS integration, fuel management systems and high-frequency loyalty programmes. A segment where speed of contractor deployment matters most — programmes run on tight timelines.",
+        "POS integration, fuel management systems and high-frequency loyalty programmes. A segment where speed of contractor deployment matters most: programmes run on tight timelines.",
       roles: [
         "POS Systems Lead",
         "Loyalty Programme Specialist",
@@ -1474,7 +1473,7 @@ export const retailData: L1PageData = {
       title:
         "Blue Yonder Luminate contractors: why the bench dried up and what retail programmes are doing about it.",
       excerpt:
-        "Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months — here's what we know about where the available contractors are and what they cost.",
+        "Luminate went GA faster than the talent market could absorb. We've placed Luminate specialists across three continents in the last 18 months: here's what we know about where the available contractors are and what they cost.",
       author: "Yallo Talent",
       minutes: 6,
     },
@@ -1485,7 +1484,7 @@ export const retailData: L1PageData = {
       title:
         "SAP Commerce Cloud in the Gulf: implementation contractors are being hired six months too late.",
       excerpt:
-        "Every SAP Commerce programme in the ME region that slipped in 2024 had one thing in common: the technical architect was confirmed after the project structure was already locked. The fix isn't faster hiring — it's earlier briefing.",
+        "Every SAP Commerce programme in the ME region that slipped in 2024 had one thing in common: the technical architect was confirmed after the project structure was already locked. The fix isn't faster hiring. It's earlier briefing.",
       author: "Yallo Talent",
       minutes: 5,
     },
@@ -1494,7 +1493,7 @@ export const retailData: L1PageData = {
       published: false,
       category: "Planning & Analytics",
       title:
-        "Anaplan Model Builders in retail: the role that's reshaping how large retailers plan — and why there aren't enough of them.",
+        "Anaplan Model Builders in retail: the role that's reshaping how large retailers plan, and why there aren't enough of them.",
       excerpt:
         "Anaplan has moved from finance tool to enterprise planning platform faster than the talent pool has followed. In retail specifically, the demand for Model Builders outstrips supply by a ratio we haven't seen since SAP HANA launched in 2015.",
       author: "Yallo Talent",
@@ -1504,8 +1503,7 @@ export const retailData: L1PageData = {
       href: "/insights/retail-cx-contractor-retention",
       published: false,
       category: "Customer Experience",
-      title:
-        "Why retail CX contractors walk at go-live — and how to keep them.",
+      title: "Why retail CX contractors walk at go-live, and how to keep them.",
       excerpt:
         "The highest-risk moment in any retail CX programme is the 30 days before and after go-live. What we've learned about contractor exit patterns, commercial triggers, and how to structure engagement to prevent it.",
       author: "Yallo Talent",

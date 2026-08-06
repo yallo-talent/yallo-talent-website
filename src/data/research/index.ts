@@ -247,7 +247,7 @@ const oracle: ResearchPiece = {
     {
       heading: "The one family where the Gulf is the deep end",
       paragraphs: [
-        `${pct(oracleFamily.gulfShareOfPool)} of the Oracle professionals measured sit in Saudi Arabia or the UAE — the highest Gulf share of any family in the set. Financials runs ${points(oracleFinancials.gulfVsUkMean)} higher in the Gulf than in the UK, and Fusion ${points(oracleFusion.gulfVsUkMean)} higher.`,
+        `${pct(oracleFamily.gulfShareOfPool)} of the Oracle professionals measured sit in Saudi Arabia or the UAE: the highest Gulf share of any family in the set. Financials runs ${points(oracleFinancials.gulfVsUkMean)} higher in the Gulf than in the UK, and Fusion ${points(oracleFusion.gulfVsUkMean)} higher.`,
         "This matters because the corridor is usually described in one direction, as though the Gulf were short of everything and the UK had a surplus. On Oracle it is the other way round. The two ends of the corridor specialise; neither is simply the shallow end.",
       ],
       chart: {
@@ -405,7 +405,7 @@ const salesforce: ResearchPiece = {
       heading: "Mobilisation planning is the whole of the difference",
       paragraphs: [
         "Two programmes with identical scope and identical budget can have very different outcomes here, and the difference is decided before either one starts.",
-        "The first plans for a local team, mobilises, discovers in week six that the shortlist is not going to materialise, and then does the corridor sourcing anyway — late, at pace, against a date that has already been communicated. The second writes the corridor into the business case, budgets for mobilisation and entity costs, and starts sourcing before the programme does.",
+        "The first plans for a local team, mobilises, discovers in week six that the shortlist is not going to materialise, and then does the corridor sourcing anyway: late, at pace, against a date that has already been communicated. The second writes the corridor into the business case, budgets for mobilisation and entity costs, and starts sourcing before the programme does.",
         "Nothing in the data distinguishes those two programmes. The only difference is whether the plan admitted the arithmetic while it was still cheap to admit it.",
       ],
     },
@@ -451,7 +451,7 @@ const cloud: ResearchPiece = {
       heading: "Breadth is not the good news it looks like",
       paragraphs: [
         `Azure DevOps Services is declared by ${pct(cloudAdo.ratioCombined)} of the ${count(cloudFamily.baseline.combined)} cloud and DevOps professionals measured, and AWS by ${pct(cloudAws.ratioCombined)}. Those are the two highest shares in this family.`,
-        `They are not the highest in the whole extract — ${ltiHighestRatio.family} ${ltiHighestRatio.label} reaches ${pct(ltiHighestRatio.ratio)} — and the distinction matters, because comparing shares across families compares the width of two different title nets rather than two markets.`,
+        `They are not the highest in the whole extract: ${ltiHighestRatio.family} ${ltiHighestRatio.label} reaches ${pct(ltiHighestRatio.ratio)}, and the distinction matters, because comparing shares across families compares the width of two different title nets rather than two markets.`,
         "A skill declared by nearly half a pool has stopped discriminating. A search on it returns a list that is large and undifferentiated, which feels like abundance and behaves like noise. The constraint at this layer is not finding candidates; it is telling them apart, and that is screening work rather than sourcing work.",
         "This is the clearest place in the corpus where the gap between a declared skill and a demonstrated one is the entire problem. Everything on LinkedIn is self-declared. A profile listing a platform is not a person who has run it in production under load.",
       ],
@@ -494,7 +494,7 @@ const cloud: ResearchPiece = {
     {
       heading: "The GCP finding runs against the assumption",
       paragraphs: [
-        `The received view is that the Gulf is Azure-first. On this measure Google Cloud is declared by ${pct(cloudGcp.ratioSaudi)} of the Saudi pool against ${pct(cloudGcp.ratioUk)} of the UK pool — ${points(cloudGcp.gulfVsUkMean)} higher across the Gulf as a whole.`,
+        `The received view is that the Gulf is Azure-first. On this measure Google Cloud is declared by ${pct(cloudGcp.ratioSaudi)} of the Saudi pool against ${pct(cloudGcp.ratioUk)} of the UK pool: ${points(cloudGcp.gulfVsUkMean)} higher across the Gulf as a whole.`,
         "One measurement does not overturn a market assumption, and this one is self-declared. It is enough to say that a Saudi programme choosing its platform on an assumption about local skills availability should check the assumption rather than inherit it.",
       ],
       chart: {

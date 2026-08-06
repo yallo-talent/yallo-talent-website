@@ -42,7 +42,7 @@ export default async function SignInPage({
         {ready ? null : (
           <p className={styles.error}>
             The cockpit is not configured on this machine. Missing:{" "}
-            {missing.join(", ")}. Add them to <code>.env.local</code> —{" "}
+            {missing.join(", ")}. Add them to <code>.env.local</code>,{" "}
             <code>pnpm admin:hash</code> produces the password hash without
             printing the password.
           </p>

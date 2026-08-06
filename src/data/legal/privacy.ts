@@ -25,20 +25,20 @@ export const privacyData: LegalPageData = {
       body: [
         "Candidate data is used to match you to open programmes, present you to clients where relevant, and manage the engagement lifecycle (contracts, payroll, EOR, ongoing employment).",
         "Client data is used to calibrate briefs, deliver shortlists, invoice for our services, and stay in touch about ongoing programmes.",
-        "Website analytics data helps us understand which pages are useful and where the experience needs improvement — nothing more.",
+        "Website analytics data helps us understand which pages are useful and where the experience needs improvement, nothing more.",
       ],
     },
     {
       heading: "Our legal basis",
       body: [
-        "For most candidate and client processing, we rely on legitimate interest (running our recruitment and workforce services) and — where applicable — the contract we've entered into with you.",
+        "For most candidate and client processing, we rely on legitimate interest (running our recruitment and workforce services) and, where applicable: the contract we've entered into with you.",
         "For marketing communications, we rely on your consent, which you can withdraw at any time.",
       ],
     },
     {
       heading: "Who we share your data with",
       body: [
-        "Candidate data is shared with the specific clients we're proposing you to — never sold or bulk-shared. We tell you before your CV is submitted anywhere.",
+        "Candidate data is shared with the specific clients we're proposing you to: never sold or bulk-shared. We tell you before your CV is submitted anywhere.",
         "We use trusted service providers for email delivery (Resend), analytics, applicant tracking, and payroll processing under Employer of Record engagements. Each is contractually bound to protect your data.",
         "For UAE and India EOR engagements, some data is shared with statutory authorities as required by local law.",
       ],

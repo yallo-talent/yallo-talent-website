@@ -14,8 +14,8 @@ export const cookiesData: LegalPageData = {
     {
       heading: "Strictly necessary",
       body: [
-        "yallo-theme (localStorage) — remembers whether you set the site to light or dark mode. No personal data.",
-        "Session cookies from our hosting provider (Vercel) — routing and load-balancing. These are set by the infrastructure and expire when you close the browser.",
+        "yallo-theme (localStorage): remembers whether you set the site to light or dark mode. No personal data.",
+        "Session cookies from our hosting provider (Vercel), routing and load-balancing. These are set by the infrastructure and expire when you close the browser.",
       ],
     },
     {

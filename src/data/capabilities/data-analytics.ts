@@ -53,7 +53,7 @@ export const dataAnalyticsData: L1PageData = {
   introStatCards: [
     {
       n: "72%",
-      l: "of employers can't find the skilled talent they need — with AI, IT and data roles now the hardest to fill.",
+      l: "of employers can't find the skilled talent they need, with AI, IT and data roles now the hardest to fill.",
       source: "ManpowerGroup Talent Shortage Survey, 2026",
     },
   ],
@@ -594,9 +594,9 @@ export const dataAnalyticsData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle: "Every sector runs a data programme — we staff them all.",
+  segmentsTitle: "Every sector runs a data programme. We staff them all.",
   segmentsSub:
-    "Retail personalisation, banking risk models, healthcare analytics or public-sector data platforms — same specialist-screened bench, calibrated to your operating context.",
+    "Retail personalisation, banking risk models, healthcare analytics or public-sector data platforms: same specialist-screened bench, calibrated to your operating context.",
   segments: [
     {
       id: "retail",
@@ -699,7 +699,7 @@ export const dataAnalyticsData: L1PageData = {
       href: "/insights/genai-in-enterprise",
       published: false,
       category: "GenAI",
-      title: "GenAI in the enterprise — beyond the demo.",
+      title: "GenAI in the enterprise: beyond the demo.",
       excerpt:
         "The gap between an LLM prototype and a production system is a specialist bench most organisations don't have. What separates the shipping teams from the stuck ones.",
       author: "Yallo Talent",

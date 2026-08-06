@@ -17,15 +17,15 @@ export const metadata: Metadata = buildMetadata({
 const values = [
   {
     title: "Specialist-led, always",
-    copy: "Every shortlist is reviewed by an operator who has run the same programme. No keyword-match, no volume, no filler.",
+    copy: "Every shortlist is screened against a written standard by a specialist who has run the same programme. No keyword-match, no volume, no filler.",
   },
   {
     title: "Region-deep, not surface-broad",
-    copy: "UK, Middle East, India. We know the local markets, the visa realities, the compensation windows — not a global brand pretending it does.",
+    copy: "UK, Middle East, India. We know the local markets, the visa realities, the compensation windows, not a global brand pretending it does.",
   },
   {
     title: "72 hours, always",
-    copy: "The 72-hour brief-to-shortlist SLA is our operating rhythm — not a marketing claim.",
+    copy: "The 72-hour brief-to-shortlist SLA is our operating rhythm, not a marketing claim.",
   },
   {
     title: "Transparent economics",
@@ -37,7 +37,7 @@ const timeline = [
   {
     year: "Founded",
     title: "The specialist team assembles",
-    copy: "Sumeet Goenka and a small team of enterprise operators start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
+    copy: "Sumeet Goenka and a small team of enterprise delivery specialists start Yallo Talent to fix the volume-over-fit problem in enterprise hiring.",
   },
   {
     year: "Middle East · Europe",
@@ -52,7 +52,7 @@ const timeline = [
   {
     year: "Today",
     title: "Group of businesses",
-    copy: "Yallo Talent is one arm of a group — with saasinator (AI advisory & build) and Yallo AI Academy (enablement) launching in support of enterprise transformation.",
+    copy: "Yallo Talent is one arm of a group, with saasinator (AI advisory & build) and Yallo AI Academy (enablement) launching in support of enterprise transformation.",
   },
 ];
 
@@ -77,10 +77,10 @@ export default function AboutPage() {
           </div>
           <h1 className={styles.heroTitle}>
             Enterprise talent, run by{" "}
-            <span className={styles.emphasis}>enterprise operators.</span>
+            <span className={styles.emphasis}>enterprise specialists.</span>
           </h1>
           <p className={styles.heroLede}>
-            We're not a recruitment agency. Yallo Talent is specialist-led — a
+            We're not a recruitment agency. Yallo Talent is specialist-led, a
             small, region-deep team of specialists who have shipped enterprise
             programmes themselves, now screening every shortlist that lands in
             your inbox.
@@ -103,7 +103,7 @@ export default function AboutPage() {
           <div className={styles.sectionInner}>
             <span className={styles.sectionEyebrow}>What we do</span>
             <h2 className={styles.sectionH}>
-              Talent for enterprise tech programmes — across four engagement
+              Talent for enterprise tech programmes, across four engagement
               models.
             </h2>
             <p className={styles.sectionLede}>
@@ -128,7 +128,7 @@ export default function AboutPage() {
               <Link href="/eor" className={styles.card}>
                 <h3 className={styles.cardTitle}>Employer of Record</h3>
                 <p className={styles.cardCopy}>
-                  {eorCorridorProse} coverage — you direct the work.
+                  {eorCorridorProse} coverage. You direct the work.
                 </p>
               </Link>
               <Link href="/managed-delivery" className={styles.card}>
@@ -149,7 +149,7 @@ export default function AboutPage() {
             <span className={styles.sectionEyebrow}>How we operate</span>
             <h2 className={styles.sectionH}>The Yallo standard.</h2>
             <p className={styles.sectionLede}>
-              Applied to every brief, every screening call and every placement —
+              Applied to every brief, every screening call and every placement,
               or the placement doesn't happen.
             </p>
             <div className={styles.cardGrid2}>
@@ -170,7 +170,7 @@ export default function AboutPage() {
           <div className={styles.sectionInner}>
             <span className={styles.sectionEyebrow}>How we got here</span>
             <h2 className={styles.sectionH}>
-              Built by operators, not recruiters.
+              Screened to a delivery standard, not a keyword match.
             </h2>
             <div className={styles.cardGrid2}>
               {timeline.map((t) => (
@@ -202,7 +202,7 @@ export default function AboutPage() {
           <div className={styles.sectionInner}>
             <span className={styles.sectionEyebrow}>The group</span>
             <h2 className={styles.sectionH}>
-              Beyond talent — advisory, build and enablement.
+              Beyond talent: advisory, build and enablement.
             </h2>
             <p className={styles.sectionLede}>
               Talent is one arm of Yallo. Our sister companies pick up when your
@@ -212,7 +212,7 @@ export default function AboutPage() {
               <div className={styles.card}>
                 <h3 className={styles.cardTitle}>Yallo Talent</h3>
                 <p className={styles.cardCopy}>
-                  Specialist enterprise talent — permanent, contract, EOR,
+                  Specialist enterprise talent: permanent, contract, EOR,
                   managed delivery.
                 </p>
               </div>
@@ -286,7 +286,7 @@ export default function AboutPage() {
             <div className={styles.bottomInner}>
               <h2 className={styles.bottomH}>Ready to see how we work?</h2>
               <p className={styles.bottomSub}>
-                Send us a brief — you'll have a calibrated shortlist inside 72
+                Send us a brief. You'll have a calibrated shortlist inside 72
                 hours.
               </p>
               <div className={styles.bottomActions}>

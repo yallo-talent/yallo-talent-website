@@ -102,7 +102,7 @@ const whyAi = [
   {
     kicker: "Screened on evidence",
     title: "Read by someone who has shipped an agent",
-    body: "Screening looks for evaluation discipline, retrieval design and cost control — the things that decide whether an AI build survives contact with production.",
+    body: "Screening looks for evaluation discipline, retrieval design and cost control: the things that decide whether an AI build survives contact with production.",
     figure: publishedFigure("CVs per interview"),
   },
   {

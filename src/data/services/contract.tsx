@@ -6,7 +6,7 @@ export const contractData: ServicePageData = {
   eyebrow: "Contract Workforce · Middle East · Europe · India",
   title: "Get contract specialists",
   emphasis: "shortlisted in 72 hours.",
-  lede: "When your programme has a delivery gap or a peak, get specialist-screened contract talent — mobilised faster than a permanent hire, screened to the same bar.",
+  lede: "When your programme has a delivery gap or a peak, get specialist-screened contract talent: mobilised faster than a permanent hire, screened to the same bar.",
   heroStat: { n: "72h", l: "brief to shortlist" },
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
@@ -27,12 +27,12 @@ export const contractData: ServicePageData = {
     },
     {
       title: "Specialist-screened, not keyword-matched",
-      copy: "Every candidate is reviewed by operators who have shipped the same programmes you're running — depth checks before you ever see a CV.",
+      copy: "Every candidate is reviewed by specialists who have shipped the same programmes you're running: depth checks before you ever see a CV.",
       icon: shieldIcon,
     },
     {
       title: "Mobilised in days, not months",
-      copy: "Interviews to offer to onboarding — we handle the rate negotiation, contracts and start-date coordination so your delivery date holds.",
+      copy: "Interviews to offer to onboarding. We handle the rate negotiation, contracts and start-date coordination so your delivery date holds.",
       icon: boltIcon,
     },
   ],
@@ -47,7 +47,7 @@ export const contractData: ServicePageData = {
     },
     {
       title: "Specialist-led screening",
-      copy: "Our team assesses candidates for depth and delivery risk — not just keyword match. You review fits, not filler.",
+      copy: "Our team assesses candidates for depth and delivery risk, not just keyword match. You review fits, not filler.",
       tag: "Days 1–3",
     },
     {
@@ -99,15 +99,15 @@ export const contractData: ServicePageData = {
     "Change & Adoption Lead",
     "Test Manager",
   ],
-  faqHeading: "Contract — common questions",
+  faqHeading: "Contract: common questions",
   faqs: [
     {
       q: "How quickly can you actually mobilise a contractor?",
-      a: "For most enterprise stacks (SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday) we return a shortlist within 72 hours of the calibration call. Once you interview and select, we handle rate negotiation, contract issuance, and coordinate notice periods — most contractors are on-site within one to two weeks.",
+      a: "For most enterprise stacks (SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday) we return a shortlist within 72 hours of the calibration call. Once you interview and select, we handle rate negotiation, contract issuance, and coordinate notice periods: most contractors are on-site within one to two weeks.",
     },
     {
       q: "What screening do you do before I see a CV?",
-      a: "Each candidate is reviewed by our specialist team — the same operators who have shipped enterprise programmes at Richemont, Landmark Group and Alshaya EMEA. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
+      a: "Each candidate is reviewed by a specialist who has shipped the same kind of programme. We assess technical depth, prior delivery risk, cultural fit for your programme, and rate reasonableness. On average two to three candidates get through screening for every one you interview.",
     },
     {
       q: "Which regions do you cover?",
@@ -115,7 +115,7 @@ export const contractData: ServicePageData = {
     },
     {
       q: "How do you handle rate cards and margins?",
-      a: "Transparent day rate on your invoice, with our margin disclosed up-front. No inflation between candidate rate and client rate — you see the whole stack.",
+      a: "Transparent day rate on your invoice, with our margin disclosed up-front. No inflation between candidate rate and client rate. You see the whole stack.",
     },
     {
       q: "What if the contractor doesn't work out?",
@@ -129,6 +129,6 @@ export const contractData: ServicePageData = {
   seo: {
     title: "Contract Workforce · Shortlists in 72 hours | Yallo Talent",
     description:
-      "Specialist-screened contract specialists for your enterprise programme, shortlisted in 72 hours. The Middle East, Europe and India — SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
+      "Specialist-screened contract specialists for your enterprise programme, shortlisted in 72 hours. The Middle East, Europe and India: SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday.",
   },
 };

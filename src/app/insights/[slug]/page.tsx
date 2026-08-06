@@ -98,7 +98,7 @@ export default async function InsightPage({ params }: PageProps) {
                   <ul>
                     {frontmatter.sources.map((s) => (
                       <li key={`${s.claim}-${s.source}`}>
-                        <strong>{s.claim}</strong> — {s.source}
+                        <strong>{s.claim}</strong>, {s.source}
                         {s.url && (
                           <>
                             {" "}

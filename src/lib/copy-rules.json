@@ -57,6 +57,11 @@
       "why": "The whole module is a boot-time banner printed to a developer's terminal and it renders nothing: there is no visitor-facing string in it to protect. A file-level entry rather than the DIAGNOSTIC_CALL heuristic because its lines are array elements assembled hundreds of characters away from the console call that prints them, and widening that lookbehind far enough to catch them would start swallowing real copy in files that both log and render."
     },
     {
+      "file": "src/data/team/index.ts",
+      "id": "operator",
+      "why": "One real person's stated career history (\"Enterprise IT operator at Richemont\"), not house vocabulary about Yallo's screening. Rewriting what someone's past role was called is a claim about a real named person, which R-A9 makes Sumeet's decision rather than a lint's. Flagged in the relay for him. Every other instance of the word was rewritten."
+    },
+    {
       "file": "src/data/legal/terms.ts",
       "id": "em-dash",
       "why": "Legal wording, which canon §2's standing method allow-lists rather than rewrites: the terms page is a contract with a visitor and its punctuation is not a house-style decision."

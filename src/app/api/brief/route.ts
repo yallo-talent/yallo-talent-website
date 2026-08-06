@@ -73,7 +73,7 @@ export async function POST(request: Request) {
       <li><b>Company:</b> ${escapeHtml(v.company)}</li>
       <li><b>Email:</b> ${escapeHtml(v.email)}</li>
       <li><b>Role:</b> ${escapeHtml(v.role)}</li>
-      <li><b>Platform:</b> ${escapeHtml(v.platform ?? "—")}</li>
+      <li><b>Platform:</b> ${escapeHtml(v.platform ?? "Not supplied")}</li>
       <li><b>Region:</b> ${escapeHtml(v.region)}</li>
       <li><b>Engagement:</b> ${escapeHtml(v.engagement)}</li>
     </ul>
@@ -87,7 +87,7 @@ export async function POST(request: Request) {
   // without having reached recordSubmission above.
   if (!apiKey) {
     console.warn(
-      "[brief] RESEND_API_KEY not set — persisted, not delivered:",
+      "[brief] RESEND_API_KEY not set: persisted, not delivered:",
       subject,
     );
     await recordDelivery(submissionId, "email", {

@@ -13,7 +13,7 @@ export const cloudInfrastructureData: L1PageData = {
   title: "Cloud & Infrastructure contractors,",
   sectorNoun: "cloud and infrastructure",
   emphasis: "shortlisted in 72 hours.",
-  sub: "Cloud architects, platform engineers, SREs and DevOps specialists for AWS, Azure and GCP programmes across the Middle East, Europe and India. Specialist-screened for landing-zone depth, FinOps discipline and production resilience — not just certification badges.",
+  sub: "Cloud architects, platform engineers, SREs and DevOps specialists for AWS, Azure and GCP programmes across the Middle East, Europe and India. Specialist-screened for landing-zone depth, FinOps discipline and production resilience, not just certification badges.",
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "View expertise", href: "#expertise" },
   statusDots: [
@@ -27,8 +27,8 @@ export const cloudInfrastructureData: L1PageData = {
   introTitle:
     "Cloud programmes stall when the platform depth isn't in the room.",
   introCopy: [
-    "Every AWS landing-zone, every Azure migration, every GCP data platform rollout shares the same failure mode — the outcome depends on the depth of the engineer running the build. Recruiters place tool names. We place production track records.",
-    "Our contractor bench is assessed by cloud architects who have shipped landing-zones, hardened Kubernetes clusters and run FinOps at enterprise scale. We screen for the specific operating context — regulated workloads, multi-region resilience, cost governance, zero-trust networking.",
+    "Every AWS landing-zone, every Azure migration, every GCP data platform rollout shares the same failure mode: the outcome depends on the depth of the engineer running the build. Recruiters place tool names. We place production track records.",
+    "Our contractor bench is assessed by cloud architects who have shipped landing-zones, hardened Kubernetes clusters and run FinOps at enterprise scale. We screen for the specific operating context: regulated workloads, multi-region resilience, cost governance, zero-trust networking.",
   ],
   /**
    * Both cards deleted, and this is the more serious of the two capability
@@ -244,7 +244,7 @@ export const cloudInfrastructureData: L1PageData = {
         },
       ],
       overview:
-        "The interview question that separates claimed Kubernetes experience from held Kubernetes experience is about upgrades, not deployments. Cluster lifecycle under change control, resource limits set from measurement, network policy someone will have to debug at speed, and a service mesh whose failure modes the team understands. We screen for operators of managed clusters in production, not for engineers who have shipped a workload onto one somebody else runs.",
+        "The interview question that separates claimed Kubernetes experience from held Kubernetes experience is about upgrades, not deployments. Cluster lifecycle under change control, resource limits set from measurement, network policy someone will have to debug at speed, and a service mesh whose failure modes the team understands. We screen for people who have operated managed clusters in production, not for engineers who have shipped a workload onto one somebody else runs.",
       roles: [
         "Kubernetes Platform Engineer",
         "Service Mesh Architect",
@@ -459,9 +459,9 @@ export const cloudInfrastructureData: L1PageData = {
   ],
 
   segmentsEyebrow: "Where we deploy",
-  segmentsTitle: "Every sector runs a cloud programme — we staff them all.",
+  segmentsTitle: "Every sector runs a cloud programme. We staff them all.",
   segmentsSub:
-    "Retail resilience, banking landing-zones, healthcare compliant clouds or public-sector modernisation — same specialist-screened bench, calibrated to your operating context.",
+    "Retail resilience, banking landing-zones, healthcare compliant clouds or public-sector modernisation: same specialist-screened bench, calibrated to your operating context.",
   segments: [
     {
       id: "retail",
@@ -568,7 +568,7 @@ export const cloudInfrastructureData: L1PageData = {
       category: "Kubernetes",
       title: "Why every Kubernetes platform team of five is really seven.",
       excerpt:
-        "The two roles teams forget to hire — and the production incidents that show up six months later. Notes from a decade of platform builds.",
+        "The two roles teams forget to hire, and the production incidents that show up six months later. Notes from a decade of platform builds.",
       author: "Yallo Talent",
       minutes: 8,
     },
@@ -576,7 +576,7 @@ export const cloudInfrastructureData: L1PageData = {
       href: "/insights/sre-in-regulated-clouds",
       published: false,
       category: "SRE",
-      title: "SRE inside a regulated cloud — the parts nobody documents.",
+      title: "SRE inside a regulated cloud: the parts nobody documents.",
       excerpt:
         "Error budgets, incident review and change control when auditors, not just PagerDuty, are watching. How enterprise SREs adapt.",
       author: "Yallo Talent",
@@ -631,6 +631,6 @@ export const cloudInfrastructureData: L1PageData = {
   seo: {
     title: "Cloud & Infrastructure Contractors · Yallo Talent",
     description:
-      "Specialist-screened Cloud & Infrastructure contractors — landing-zones, Kubernetes, SRE, FinOps, cloud security. 72h shortlist across the Middle East, Europe and India.",
+      "Specialist-screened Cloud & Infrastructure contractors: landing-zones, Kubernetes, SRE, FinOps, cloud security. 72h shortlist across the Middle East, Europe and India.",
   },
 };

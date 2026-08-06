@@ -69,7 +69,7 @@ export const engagementModels: EngagementModel[] = [
        offboarding, payroll and management. */
     name: "Employer of Record",
     positioning:
-      "Hire where you have no entity — or host a consultant you found yourself.",
+      "Hire where you have no entity, or host a consultant you found yourself.",
     rightFor: [
       "Saudi Arabia and the UAE",
       "Talent hosting: your hire, our payroll",
