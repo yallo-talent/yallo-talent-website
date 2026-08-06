@@ -123,12 +123,63 @@ for (const theme of ["light", "dark"]) {
       () => document.documentElement.scrollWidth > window.innerWidth + 1,
     );
     if (overflow) {
-      const w = await page.evaluate(() => ({
-        scroll: document.documentElement.scrollWidth,
-        inner: window.innerWidth,
-      }));
+      /**
+       * NAME THE ELEMENT, its width and the face it is set in.
+       *
+       * Round 18 §4. This assertion has failed on the CI runner for five pushes
+       * and passed locally every time: 362 against 360, both themes, homepage.
+       * "There is an overflow of 2px" is not actionable, and re-running it does
+       * not make it more so. The standing hypothesis is that the Linux runner
+       * lacks a font the design specifies and falls back to a face with wider
+       * metrics, so the diagnostic reports the widest offending element together
+       * with its COMPUTED font-family and the faces the document actually
+       * loaded. One CI run then answers it rather than another round of guessing.
+       */
+      const w = await page.evaluate(() => {
+        const inner = window.innerWidth;
+        const offenders = [];
+        for (const el of document.querySelectorAll("*")) {
+          const r = el.getBoundingClientRect();
+          const right = r.right + window.scrollX;
+          if (right <= inner + 0.5) continue;
+          if (r.width === 0 || r.height === 0) continue;
+          const cs = getComputedStyle(el);
+          offenders.push({
+            tag: el.tagName.toLowerCase(),
+            cls: String(el.className || "").slice(0, 60),
+            width: Math.round(r.width),
+            right: Math.round(right),
+            over: Math.round(right - inner),
+            font: cs.fontFamily.slice(0, 60),
+            size: cs.fontSize,
+            transform: cs.transform === "none" ? "" : cs.transform.slice(0, 30),
+            position: cs.position,
+          });
+        }
+        offenders.sort((a, b) => b.over - a.over);
+        return {
+          scroll: document.documentElement.scrollWidth,
+          inner,
+          loadedFaces: [...document.fonts]
+            .filter((f) => f.status === "loaded")
+            .map((f) => `${f.family} ${f.weight} ${f.style}`)
+            .slice(0, 12),
+          offenders: offenders.slice(0, 5),
+        };
+      });
       failures.push(
-        `horizontal overflow at ${theme}/${vp.name}: ${w.scroll} > ${w.inner}`,
+        `horizontal overflow at ${theme}/${vp.name}: ${w.scroll} > ${w.inner}\n` +
+          `      loaded faces: ${w.loadedFaces.join(" | ") || "(none reported)"}\n` +
+          (w.offenders.length === 0
+            ? "      no element extends past the viewport, so the overflow is a scrollWidth\n" +
+              "      rounding artefact rather than a laid-out box. Compare with local before fixing."
+            : w.offenders
+                .map(
+                  (o) =>
+                    `      +${o.over}px  <${o.tag} class="${o.cls}">  w=${o.width} right=${o.right}\n` +
+                    `             font: ${o.font} @ ${o.size}${o.transform ? `  transform: ${o.transform}` : ""}  position: ${o.position}`,
+                )
+                .join("\n")),
       );
     }
 
