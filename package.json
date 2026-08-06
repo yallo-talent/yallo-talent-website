@@ -13,6 +13,7 @@
     "check:type": "node scripts/check-type-scale.mjs --strict",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:motion": "node scripts/check-motion.mjs",
+    "check:orbs": "node scripts/check-orbs.mjs",
     "check:type-render": "node scripts/check-rendered-type.mjs",
     "check:interaction": "node scripts/check-interaction.mjs",
     "check:reflow": "node scripts/check-reflow.mjs",

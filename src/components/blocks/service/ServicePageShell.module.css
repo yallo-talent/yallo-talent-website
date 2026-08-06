@@ -265,23 +265,14 @@
   isolation: isolate;
 }
 
-.benefits::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 60% 50% at 15% 20%,
-      var(--sector-accent-08),
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse 40% 40% at 85% 80%,
-      var(--accent-muted),
-      transparent 55%
-    );
-  pointer-events: none;
-}
+/* ORB REMOVED, round 18 §2.2. DESIGN.md: "no orbs — the incumbent build's
+   blurred-orb-and-glass register is an explicit anti-reference". This ::before
+   existed only to paint positioned ellipse gradients over the band, which is the
+   technique round 8 claimed to have deleted, round 14 neutralised in the hero of
+   this same shell, and round 18 found still live here. Enforced now by
+   scripts/check-orbs.mjs, so it cannot come back a fourth time. The sanctioned
+   way to tint a band is the ambient wash: one gradient sized larger than its own
+   box, so it reads as a tint rather than a shape. See globals.css .amb-wash. */
 
 .benefitsGrid {
   display: grid;
@@ -635,18 +626,6 @@
   background: var(--ground-2);
   overflow: hidden;
   isolation: isolate;
-}
-
-.roles::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 70% 50% at 50% 100%,
-    var(--sector-accent-08),
-    transparent 55%
-  );
-  pointer-events: none;
 }
 
 .rolesHead {

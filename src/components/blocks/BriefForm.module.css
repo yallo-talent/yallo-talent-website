@@ -12,12 +12,13 @@
   padding: clamp(80px, 10vw, 128px) 0;
   overflow: hidden;
   color: var(--fg);
+  /* The glow layer is gone, round 18 §2.2: a positioned ellipse gradient over a
+     band is the orb technique DESIGN.md names as anti-reference. The 44px grid
+     stays, and its two background-size entries with it. */
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% 0%, var(--ya13) 0%, transparent 55%),
     linear-gradient(var(--ya04) 1px, transparent 1px),
     linear-gradient(90deg, var(--ya04) 1px, transparent 1px);
   background-size:
-    100% 100%,
     44px 44px,
     44px 44px;
   isolation: isolate;

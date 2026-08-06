@@ -24,6 +24,12 @@ if [ -n "$STAGED" ]; then
 fi
 
 node .claude/hooks/check-colours.js
+# Round 18. The blurred-orb ban has been re-added three times in eight rounds —
+# round 8 claimed a deletion that never happened, round 14 fixed the hero pair,
+# round 18 found the band pair in the same file. It is a source-only check over 33
+# stylesheets and costs milliseconds, so it runs at commit time rather than
+# waiting for CI to find it after the fact.
+node scripts/check-orbs.mjs
 node scripts/check-type-scale.mjs
 node scripts/check-taxonomy.mjs
 # Round 16. Two tracked paths differing only by case are ONE file on macOS,

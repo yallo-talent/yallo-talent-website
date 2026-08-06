@@ -25,6 +25,19 @@ jobs:
       - name: Terminology
         run: pnpm check:terms
 
+      # Round 18 §2.2. DESIGN.md bans blurred orbs twice and nothing enforced it:
+      # round 8 wrote a comment claiming two were deleted when only one rule had
+      # been touched, round 14 neutralised that hero pair, and round 18 found the
+      # band pair in the same file plus 15 more across four others. 17 removed.
+      #
+      # The gate distinguishes the banned technique from the ambient wash canon §5
+      # sanctions, which is the only hard part: both are radial gradients, and the
+      # difference is that a wash is sized LARGER than its box (a tint) while an orb
+      # is a positioned sub-box ellipse (a shape). Proven red on the exact rule that
+      # recurred and on the blur route, and proven not to fire on the wash.
+      - name: Blurred orbs (DESIGN.md anti-reference)
+        run: pnpm check:orbs
+
       # Both themes must pass WCAG 2.2 AA independently. Fails on any miss.
       - name: Contrast
         run: pnpm check:contrast

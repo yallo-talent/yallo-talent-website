@@ -1290,24 +1290,14 @@
   background: var(--ground-2);
 }
 
-.expertise::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 50% 40% at 20% 10%,
-      var(--sector-accent-08),
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse 40% 40% at 85% 90%,
-      var(--accent-muted),
-      transparent 55%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
+/* ORB REMOVED, round 18 §2.2. DESIGN.md: "no orbs — the incumbent build's
+   blurred-orb-and-glass register is an explicit anti-reference". This ::before
+   existed only to paint positioned ellipse gradients over the band, which is the
+   technique round 8 claimed to have deleted, round 14 neutralised in the hero of
+   this same shell, and round 18 found still live here. Enforced now by
+   scripts/check-orbs.mjs, so it cannot come back a fourth time. The sanctioned
+   way to tint a band is the ambient wash: one gradient sized larger than its own
+   box, so it reads as a tint rather than a shape. See globals.css .amb-wash. */
 
 .expertise > .wrap {
   position: relative;
@@ -1769,25 +1759,6 @@
   overflow: hidden;
 }
 
-.arch::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 40% 30% at 15% 10%,
-      var(--sector-accent-08),
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse 40% 30% at 85% 90%,
-      var(--accent-muted),
-      transparent 55%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
 .arch > .wrap {
   position: relative;
   z-index: 1;
@@ -1940,19 +1911,6 @@
   padding: clamp(48px, 6vw, 76px) 0;
   isolation: isolate;
   overflow: hidden;
-}
-
-.segments::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 50%,
-    var(--sector-accent-08),
-    transparent 65%
-  );
-  pointer-events: none;
-  z-index: 0;
 }
 
 .segments > .wrap {
@@ -2272,25 +2230,6 @@
   overflow: hidden;
 }
 
-.partners::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 40% 30% at 80% 10%,
-      var(--sector-accent-08),
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse 40% 30% at 20% 90%,
-      var(--sector-accent-08),
-      transparent 55%
-    );
-  pointer-events: none;
-  z-index: 0;
-}
-
 .partners > .wrap {
   position: relative;
   z-index: 1;
@@ -2358,19 +2297,6 @@
   padding: clamp(48px, 6vw, 76px) 0;
   isolation: isolate;
   overflow: hidden;
-}
-
-.insights::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    ellipse 50% 40% at 50% 20%,
-    var(--sector-accent-08),
-    transparent 55%
-  );
-  pointer-events: none;
-  z-index: 0;
 }
 
 .insights > .wrap {
@@ -2580,25 +2506,6 @@
   padding: clamp(48px, 6vw, 76px) 0;
   isolation: isolate;
   overflow: hidden;
-}
-
-.pillars::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse 45% 35% at 15% 10%,
-      var(--sector-accent-08),
-      transparent 55%
-    ),
-    radial-gradient(
-      ellipse 40% 35% at 85% 90%,
-      var(--accent-muted),
-      transparent 55%
-    );
-  pointer-events: none;
-  z-index: 0;
 }
 
 .pillars > .wrap {
