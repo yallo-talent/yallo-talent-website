@@ -12,10 +12,16 @@
    that content, while the panel's own link and dismiss button stay live. It
    still overlaps visually on a narrow viewport, which is a composition cost — but
    it can no longer take an interaction that was aimed at something else. */
+/* Swapped with AssistantLauncher's corner on Sumeet's direct instruction
+   (chat, round 14): this was bottom-right, the launcher bottom-left: now
+   the reverse. Placement only — every dismiss/show/hide/Escape behaviour
+   below is untouched, per that same instruction. Below 640px this was
+   already full-width (left:12–right:12) regardless of which desktop
+   corner it anchored to, so the swap changes nothing on mobile. */
 .cta {
   position: fixed;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   z-index: 40;
   max-width: min(420px, calc(100vw - 40px));
   pointer-events: none;
@@ -49,7 +55,9 @@
   gap: 14px;
   padding: 14px 18px;
   border: 1px solid var(--border-accent);
-  border-radius: 0 0 0 var(--r-md);
+  /* Mirrored for the left corner (was 0 0 0 var(--r-md)) — the open
+     corner still faces away from the screen edge it now sits against. */
+  border-radius: 0 0 var(--r-md) 0;
 }
 
 .text {
@@ -92,7 +100,8 @@
   color: var(--black-950);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
-  border-radius: 0 0 0 var(--r-md);
+  /* Mirrored alongside .inner — was 0 0 0 var(--r-md). */
+  border-radius: 0 0 var(--r-md) 0;
   transition: background 0.15s ease;
   white-space: nowrap;
 }

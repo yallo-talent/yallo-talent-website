@@ -1,7 +1,9 @@
+/* Anchors from the same side as the launcher (round 14's corner swap) —
+   this opens FROM the button, not from the opposite side of the screen. */
 .panel {
   position: fixed;
   bottom: 84px;
-  left: 20px;
+  right: 20px;
   z-index: 42;
   width: min(380px, calc(100vw - 40px));
   max-height: min(560px, calc(100vh - 120px));
@@ -9,7 +11,7 @@
   flex-direction: column;
   background: var(--ground);
   border: 1px solid var(--boundary);
-  border-radius: var(--r) 0 0 0;
+  border-radius: 0 var(--r) 0 0;
   overflow: hidden;
 }
 
