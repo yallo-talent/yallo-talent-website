@@ -99,6 +99,16 @@
     "pad": 0,
     "plate": false
   },
+  "radwell": {
+    "family": "clients",
+    "w": 962,
+    "h": 224,
+    "ink": 0.1602,
+    "bw": 962,
+    "bh": 224,
+    "pad": 0,
+    "plate": false
+  },
   "richemont": {
     "family": "clients",
     "w": 1344,
@@ -117,6 +127,16 @@
     "bw": 260,
     "bh": 222,
     "pad": 0.0089,
+    "plate": false
+  },
+  "wickes": {
+    "family": "clients",
+    "w": 1020,
+    "h": 224,
+    "ink": 0.5071,
+    "bw": 1020,
+    "bh": 224,
+    "pad": 0,
     "plate": false
   },
   "capgemini": {

@@ -12,22 +12,24 @@
  * rest of the pack is deliberately not shipped — they are not current trading
  * relationships.
  *
- * Two marks are NOT in the supplied pack and are committed directly rather
- * than generated here, so this script does not touch them:
+ * ONE mark is not in the supplied pack and is committed directly rather than
+ * generated here, so this script does not touch it:
  *   public/logos/integrators/capgemini.png  — Capgemini_201x_logo.svg, Wikimedia Commons
- *   public/logos/clients/radwell.png        — from the header of radwell.co.uk
- * Both are used nominatively to identify a client with consent on file.
+ * It is used nominatively to identify a client with consent on file.
  *
- * ROUND 16, §2.6, which asked what these two are for. The answer, and a
- * correction: this block said `.svg` for both while the measurement step
- * below and content/clients.yaml have always said `.png`. Same drift as the
- * BlueYonder comment. And radwell.png IS NOT IN THE REPOSITORY — the
- * measurement step reports it missing on every run, and `hasLogoAsset()`
- * (src/lib/clients.ts) drops the Radwell entry rather than shipping a broken
- * image, so nothing renders and nothing failed. The clients.yaml entry is a
- * dangling reference waiting for the asset. capgemini.png is present and in
- * use. Nothing deleted: the yaml row is the record that consent is on file,
- * and removing it would lose that.
+ * ROUND 17, AND THIS COMMENT WAS WRONG FOR THREE ROUNDS. It said Radwell was
+ * absent from the supplied pack and committed by hand, and round 16 §2.6 went
+ * further with "radwell.png IS NOT IN THE REPOSITORY". Both false.
+ * `assets/client-logos/Radwell.png` had been in the pack the whole time; what was
+ * missing was the BUILT file, because the slug sat commented out of CLIENTS below
+ * so this script never converted it. Every downstream conclusion inherited the
+ * error: `hasLogoAsset()` dropped the row, the rail comment listed Radwell as
+ * unkeyable, and round 17 §2.4 retired the yaml row on the stated grounds that the
+ * asset did not exist.
+ *
+ * The lesson worth keeping: "the asset is absent" had been checked against
+ * public/logos/clients/, which is this script's OUTPUT. Absence there means the
+ * build did not run, not that the source is missing.
  *
  *   node scripts/build-logos.mjs
  */
@@ -73,13 +75,16 @@ const CLIENTS = {
   richemont: "Richemont.jpeg",
   "marks-and-spencer": "M&S.jpeg",
   "panda-retail": "Panda.png",
-  wickes: "Wickes.png",
+  /* Wickes-new.png, Sumeet's replacement, round 17. Both his files are the same
+     shield-with-knockout-text lockup and both now key, but this one is the
+     cleaner source: 244x148 and opaque, against 1044x504 with a translucent
+     shield edge whose antialiasing the keyer has to erode away. */
+  wickes: "Wickes-new.png",
+  radwell: "Radwell.png",
   informatica: "informatica.png", // R-INF3, 1 Aug. Consent is NOT on file — the
   // mark is built so it is ready, and content/clients.yaml keeps the entry
   // filtered out until Sumeet flips consentOnFile. Building it now is what makes
   // the flip a one-line data change rather than a task.
-  // radwell: committed directly as public/logos/clients/radwell.png — see header.
-  // NOT PRESENT in the repository today; the measurement step reports it.
 };
 
 const INTEGRATORS = {
@@ -118,6 +123,413 @@ const PLATFORMS = {
   "blue-yonder": "BlueYonder-icon.jpeg",
   "informatica-icon": "Informatica-icon.png",
 };
+
+/**
+ * The legibility assessment, as a function of an alpha buffer.
+ *
+ * Extracted from `convert` so the SAME judgement can be applied to two
+ * candidates: the default single-threshold key, and the polarity key below when
+ * the first is declined. A gate that can only see one candidate cannot choose.
+ */
+function assessAlpha(alpha, w, h) {
+  let tp = 0;
+  let mid = 0;
+  let solid = 0;
+  for (const a of alpha) {
+    if (a < 8) tp++;
+    else if (a <= 247) mid++;
+    if (a > 191) solid++;
+  }
+  const inkDensityPct = (100 * solid) / alpha.length;
+  const transparentPct = (100 * tp) / alpha.length;
+  const partialPct = (100 * mid) / alpha.length;
+  const capAtCell = Math.min(RAIL_CAP, (RAIL_CELL * h) / w);
+
+  const at = (x, y) => alpha[y * w + x];
+  let edgeInk = 0;
+  let edgeTotal = 0;
+  for (let x = 0; x < w; x++) {
+    for (const y of [0, h - 1]) {
+      edgeTotal++;
+      if (at(x, y) > 191) edgeInk++;
+    }
+  }
+  for (let y = 1; y < h - 1; y++) {
+    for (const x of [0, w - 1]) {
+      edgeTotal++;
+      if (at(x, y) > 191) edgeInk++;
+    }
+  }
+  const perimeterPct = (100 * edgeInk) / edgeTotal;
+
+  const reasons = [];
+
+  /* DENSITY ALONE CANNOT TELL A PLATE FROM A BOLD WORDMARK, so it no longer tries.
+     
+     The threshold was calibrated when every wordmark in the pack sat at or under
+     37% ink and the only dense thing was Sephora's placeholder plate at 48.5%. A
+     heavy sans wordmark breaks that: Wickes measures 45-66% depending on the crop,
+     with no plate anywhere in it, and would be refused for being bold.
+     
+     What actually separates them is STRUCTURE. A plate with knockout text is ONE
+     ink component and the letters are holes inside it. A wordmark is several
+     components, one per letter or letter group, and no single one dominates. So
+     density is now only a symptom, and the diagnosis is whether the ink is one
+     body: the largest component holding 80% or more of the ink is a plate, and
+     anything more distributed is type. Sephora's plate is 100% one component;
+     Wickes's wordmark spreads across six with the largest near a quarter. */
+  const inkMask = new Uint8Array(w * h);
+  for (let i = 0; i < alpha.length; i++) inkMask[i] = alpha[i] > 191 ? 1 : 0;
+  const inkComponents = components(inkMask, w, h).sort((a, b) => b.area - a.area);
+  const inkPixels = inkComponents.reduce((n, c) => n + c.area, 0);
+  const dominance = inkPixels > 0 ? inkComponents[0].area / inkPixels : 0;
+
+  if (inkDensityPct > 42 && dominance >= 0.8)
+    reasons.push(
+      `${inkDensityPct.toFixed(1)}% ink in one body (${(100 * dominance).toFixed(0)}% of it) — reads as a filled plate with knockout text`,
+    );
+  if (transparentPct < 25)
+    reasons.push(`only ${transparentPct.toFixed(1)}% transparent`);
+  if (partialPct > 45) reasons.push(`${partialPct.toFixed(1)}% partial alpha`);
+  if (capAtCell < RAIL_CAP_FLOOR)
+    reasons.push(`cap height ${capAtCell.toFixed(1)}px at the rail cell`);
+  /* The perimeter test is gated on the same structural evidence, and for the same
+     reason. It asks "does the ink run along the frame", which is true of a box
+     lockup and ALSO true of any bold wordmark trimmed to its own ink: the letters
+     define the bounding box, so they touch it. Wickes measured 44.6% perimeter as
+     a clean six-letter wordmark with no plate in it at all, while Radwell's
+     lighter serif measured 0.0% — the difference was stroke weight, not structure.
+     
+     A box lockup's perimeter ink is ONE component tracing the frame. A wordmark's
+     is many short runs from separate letters. Dominance already measures exactly
+     that, so both plate tests now share it: they fire only when the ink is one
+     body. A genuine plate is one body and still fails both. */
+  if (perimeterPct > SLAB_PERIMETER_PCT && dominance >= 0.8)
+    reasons.push(
+      `box lockup — ${perimeterPct.toFixed(1)}% perimeter ink in one body`,
+    );
+  return { reasons, inkDensityPct, dominance };
+}
+
+/** Connected components of a binary mask, with bounding boxes and pixel lists. */
+function components(mask, w, h) {
+  const seen = new Uint8Array(w * h);
+  const stack = new Int32Array(w * h);
+  const out = [];
+  for (let s = 0; s < w * h; s++) {
+    if (!mask[s] || seen[s]) continue;
+    let sp = 0;
+    stack[sp++] = s;
+    seen[s] = 1;
+    let area = 0;
+    let x0 = w;
+    let y0 = h;
+    let x1 = -1;
+    let y1 = -1;
+    const px = [];
+    while (sp) {
+      const p = stack[--sp];
+      const x = p % w;
+      const y = (p - x) / w;
+      area++;
+      px.push(p);
+      if (x < x0) x0 = x;
+      if (x > x1) x1 = x;
+      if (y < y0) y0 = y;
+      if (y > y1) y1 = y;
+      for (const [dx, dy] of [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ]) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+        const np = ny * w + nx;
+        if (mask[np] && !seen[np]) {
+          seen[np] = 1;
+          stack[sp++] = np;
+        }
+      }
+    }
+    out.push({ area, x0, y0, x1, y1, px });
+  }
+  return out;
+}
+
+/**
+ * A POLARITY-AWARE key, for sources whose letterforms are defined by two colours
+ * rather than one.
+ *
+ * WHY THE DEFAULT CANNOT DO THESE. Otsu picks ONE global threshold, which is
+ * exactly right for ink-on-ground and structurally wrong for a reversed-out
+ * composite. Radwell is the case that named it: a blue field, a white panel inset
+ * into it, the "R" in blue INSIDE the panel and "ADWELL" in white on the field.
+ * No single threshold keeps both — one polarity always keys as ground — so the
+ * default emitted a solid black square with the wordmark half knocked out of it.
+ * Wickes is the same shape without the panel: white letters on a blue shield,
+ * where the shield is what a single threshold silhouettes.
+ *
+ * HOW, all measured from the file rather than configured:
+ *   1. The FIELD is the modal opaque colour — the plate the artwork sits on.
+ *   2. A PANEL is the largest connected near-white region, by bounding box, and
+ *      only when it is solid (>55% fill) and substantial (>4% of the image).
+ *      Solidity is what tells a panel from a letter: a white rectangle with an R
+ *      knocked out of it fills 86% of its box; a "W" fills about half.
+ *   3. Ink is then polarity-dependent — dark inside the panel, light outside it.
+ *      Inside, the cut is deep (luminance < 120) because the panel's own
+ *      antialiased edge would otherwise key as a hairline down the mark. Radwell's
+ *      R is saturated brand blue at luminance 86, well clear of it.
+ *
+ * Two guards, both learned by watching this go wrong:
+ *   - Pixels within 2px of a translucent pixel are ignored, or the plate's alpha
+ *     boundary keys as a thin outline of the plate.
+ *   - Any ink component that TRACES the plate's outline — bounding box over 60% of
+ *     the plate at under 30% fill — is dropped. That removes Wickes's shield while
+ *     keeping its letters, stated as a rule rather than a special case: the
+ *     outline of a plate is the plate, not the mark.
+ *
+ * Returns null when it finds nothing usable, so the caller keeps the default.
+ */
+async function keyPolarity(src, targetHeight) {
+  /* Trimmed on the ALPHA edge and deliberately NOT flattened: flattening onto
+     white destroys the transparent-outside information this needs, and would make
+     the area outside a shield read as light ink.
+     
+     AND NOT RESIZED YET. Every decision below is morphological — a 2px erosion, a
+     connected-component solidity, a ring whose fill distinguishes it from a
+     letter — and those are properties of the artwork at ITS resolution, not of a
+     224px thumbnail. Measured: masking after the downscale left Wickes's shield
+     ring merged into the letterforms at 51.8% ink, because at 224px the ring is
+     two antialiased pixels wide and no longer a component of its own. The alpha is
+     resized at the end instead. */
+  const { data, info } = await sharp(src, { density: 300 })
+    .trim()
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const { width: w, height: h, channels: c } = info;
+  const at = (x, y) => {
+    const i = (y * w + x) * c;
+    return [data[i], data[i + 1], data[i + 2], data[i + 3]];
+  };
+  const lum = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+  const opaque = new Uint8Array(w * h);
+  for (let i = 0; i < w * h; i++) opaque[i] = data[i * c + 3] > 200 ? 1 : 0;
+
+  let px0 = w;
+  let py0 = h;
+  let px1 = -1;
+  let py1 = -1;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!opaque[y * w + x]) continue;
+      if (x < px0) px0 = x;
+      if (x > px1) px1 = x;
+      if (y < py0) py0 = y;
+      if (y > py1) py1 = y;
+    }
+  }
+  if (px1 < 0) return null;
+  const plateArea = (px1 - px0 + 1) * (py1 - py0 + 1);
+
+  const interior = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!opaque[y * w + x]) continue;
+      let ok = 1;
+      for (let dy = -2; dy <= 2 && ok; dy++) {
+        for (let dx = -2; dx <= 2; dx++) {
+          const nx = x + dx;
+          const ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= w || ny >= h || !opaque[ny * w + nx]) {
+            ok = 0;
+            break;
+          }
+        }
+      }
+      interior[y * w + x] = ok;
+    }
+  }
+
+  const counts = new Map();
+  for (let i = 0; i < w * h; i++) {
+    if (!interior[i]) continue;
+    const o = i * c;
+    const k =
+      ((data[o] >> 4) << 8) | ((data[o + 1] >> 4) << 4) | (data[o + 2] >> 4);
+    counts.set(k, (counts.get(k) ?? 0) + 1);
+  }
+  if (counts.size === 0) return null;
+  let modal = 0;
+  let modalN = -1;
+  for (const [k, n] of counts) {
+    if (n > modalN) {
+      modalN = n;
+      modal = k;
+    }
+  }
+  const fr = ((modal >> 8) & 15) * 17;
+  const fg = ((modal >> 4) & 15) * 17;
+  const fb = (modal & 15) * 17;
+  const isField = (r, g, b) =>
+    Math.abs(r - fr) < 56 && Math.abs(g - fg) < 56 && Math.abs(b - fb) < 56;
+
+  const light = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!interior[y * w + x]) continue;
+      const [r, g, b] = at(x, y);
+      light[y * w + x] = lum(r, g, b) > 200 && !isField(r, g, b) ? 1 : 0;
+    }
+  }
+
+  let panel = null;
+  const biggest = components(light, w, h).sort((a, b) => b.area - a.area)[0];
+  if (biggest) {
+    const bw = biggest.x1 - biggest.x0 + 1;
+    const bh = biggest.y1 - biggest.y0 + 1;
+    const solidity = biggest.area / (bw * bh);
+    const share = (bw * bh) / (w * h);
+    if (solidity > 0.55 && share > 0.04 && bw > 12 && bh > 12) {
+      panel = {
+        x0: biggest.x0,
+        y0: biggest.y0,
+        x1: biggest.x1,
+        y1: biggest.y1,
+      };
+    }
+  }
+  const inPanel = (x, y) =>
+    panel !== null &&
+    x >= panel.x0 &&
+    x <= panel.x1 &&
+    y >= panel.y0 &&
+    y <= panel.y1;
+
+  /* WHAT IS OUTSIDE THE ARTWORK, found by reachability rather than by colour.
+     
+     A plate is not always rectangular, and an opaque source keeps its background
+     in the corners that the trim cannot reach. Wickes's shield comes to a point,
+     so the white below that point survives the trim and — being light, and not the
+     field colour — keyed as ink: the mark shipped as the wordmark plus a solid
+     chevron. The measurements were clean, because a chevron is a legitimate second
+     component of ordinary size; only looking at the pixels showed it.
+     
+     So the outside is whatever is REACHABLE from the frame without crossing the
+     plate. Letters sit inside the plate and are never reachable, so they survive;
+     background survives nothing. Colour-independent, which is the point: it works
+     for a white surround, a dark one, or a transparent one.
+     
+     RUN AFTER PANEL DETECTION, WITH THE PANEL AS A WALL. Radwell's trim crops
+     tight enough that its white panel touches the frame, so a flood run before
+     the panel was known swallowed the panel and the "R" inside it, and the mark
+     silently fell back to the default key's black square. A detected panel is
+     part of the artwork by definition, so it stops the flood. */
+  const outside = new Uint8Array(w * h);
+  {
+    const stack = [];
+    const push = (x, y) => {
+      const p = y * w + x;
+      if (outside[p]) return;
+      const o = p * c;
+      if (inPanel(x, y)) return;
+      const translucent = data[o + 3] <= 200;
+      if (!translucent && isField(data[o], data[o + 1], data[o + 2])) return;
+      outside[p] = 1;
+      stack.push(p);
+    };
+    for (let x = 0; x < w; x++) {
+      push(x, 0);
+      push(x, h - 1);
+    }
+    for (let y = 0; y < h; y++) {
+      push(0, y);
+      push(w - 1, y);
+    }
+    while (stack.length) {
+      const p = stack.pop();
+      const x = p % w;
+      const y = (p - x) / w;
+      for (const [dx, dy] of [
+        [1, 0],
+        [-1, 0],
+        [0, 1],
+        [0, -1],
+      ]) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (nx < 0 || ny < 0 || nx >= w || ny >= h) continue;
+        push(nx, ny);
+      }
+    }
+  }
+
+
+  const mask = new Uint8Array(w * h);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!interior[y * w + x] || outside[y * w + x]) continue;
+      const [r, g, b] = at(x, y);
+      const L = lum(r, g, b);
+      if (inPanel(x, y)) {
+        if (L < 120) mask[y * w + x] = 1;
+      } else if (L > 200 && !isField(r, g, b)) {
+        mask[y * w + x] = 1;
+      }
+    }
+  }
+
+  let droppedOutlines = 0;
+  for (const comp of components(mask, w, h)) {
+    const bw = comp.x1 - comp.x0 + 1;
+    const bh = comp.y1 - comp.y0 + 1;
+    const bbox = bw * bh;
+    if (bbox > 0.6 * plateArea && comp.area / bbox < 0.3) {
+      for (const p of comp.px) mask[p] = 0;
+      droppedOutlines++;
+    }
+  }
+
+  let inkPixels = 0;
+  for (let i = 0; i < w * h; i++) if (mask[i]) inkPixels++;
+  if (inkPixels === 0) return null;
+
+  /* Trimmed again: dropping the panel and the plate outline leaves a wide
+     transparent margin, and the mark must occupy its own bounding box for the
+     cap-height test and the rail cell to mean anything. */
+  const rgba = Buffer.alloc(w * h * 4);
+  for (let i = 0; i < w * h; i++) rgba[i * 4 + 3] = mask[i] ? 255 : 0;
+  const trimmed = await sharp(rgba, {
+    raw: { width: w, height: h, channels: 4 },
+  })
+    .trim()
+    /* Down to the rail's render height only now that the morphology is done. */
+    .resize({
+      height: targetHeight,
+      width: targetHeight * 6,
+      fit: "inside",
+      withoutEnlargement: false,
+    })
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  const tw = trimmed.info.width;
+  const th = trimmed.info.height;
+  const alpha = Buffer.alloc(tw * th);
+  for (let i = 0; i < tw * th; i++) alpha[i] = trimmed.data[i * 4 + 3];
+
+  return {
+    alpha,
+    width: tw,
+    height: th,
+    panel: panel !== null,
+    droppedOutlines,
+  };
+}
 
 const missing = [];
 let written = 0;
@@ -316,55 +728,63 @@ async function convert(slug, file, outDir) {
   //              the two boxes are 25.0% and 30.5%, every real wordmark is at or
   //              under 5.0%. The threshold sits in a gap five times wider than
   //              the spread it has to resolve.
-  let tp = 0;
-  let mid = 0;
-  let solid = 0;
-  for (const a of alpha) {
-    if (a < 8) tp++;
-    else if (a <= 247) mid++;
-    if (a > 191) solid++;
-  }
-  const inkDensityPct = (100 * solid) / alpha.length;
-  const transparentPct = (100 * tp) / alpha.length;
-  const partialPct = (100 * mid) / alpha.length;
-  const capAtCell = Math.min(RAIL_CAP, (RAIL_CELL * ai.height) / ai.width);
+  // The default key, assessed. The metrics and their thresholds live in
+  // assessAlpha() so the same judgement can be applied to a second candidate.
+  let chosen = { alpha, width: ai.width, height: ai.height };
+  let { reasons } = assessAlpha(alpha, ai.width, ai.height);
+  let via = "";
 
-  const alphaAt = (x, y) => alpha[y * ai.width + x];
-  let edgeInk = 0;
-  let edgeTotal = 0;
-  for (let x = 0; x < ai.width; x++) {
-    for (const y of [0, ai.height - 1]) {
-      edgeTotal++;
-      if (alphaAt(x, y) > 191) edgeInk++;
+  // THE POLARITY KEY IS TRIED FOR EVERY MARK, and adopted on evidence.
+  //
+  // It was first written to run only when the default key was DECLINED, which
+  // seemed conservative and missed the case that prompted it. Radwell's default
+  // key passes every test — 31.9% ink, 0.0% perimeter, cap 68 — and is a solid
+  // black square with the wordmark half knocked out of it. The slab test assumes a
+  // plate runs its ink along the PERIMETER; Radwell's panel occupies the left
+  // third, so no edge of the trimmed box is filled and the measurement is clean
+  // while the mark is not. A gate that cannot see a defect cannot be the trigger
+  // for fixing it.
+  //
+  // So adoption rests on POSITIVE EVIDENCE that the source is a reversed-out
+  // composite, which is what keyPolarity actually reports: an inset near-white
+  // PANEL, or an ink component tracing the plate's own outline. Neither occurs in
+  // an ordinary ink-on-ground mark — a white ground is the field and produces no
+  // light component at all — so the evidence is specific rather than a heuristic
+  // about quality.
+  //
+  // Adopted when EITHER
+  //   the polarity key found composite evidence and its result passes the gate, OR
+  //   the default was declined and the polarity result passes.
+  // In both cases the same gate judges the candidate, so nothing ships that the
+  // default path would have refused, and a mark the polarity key cannot improve
+  // keeps whatever the default produced.
+  const alt = await keyPolarity(src, RENDER_HEIGHT * SCALE).catch((err) => {
+    /* Reported, not swallowed. A silent catch here cost two debugging cycles:
+       a thrown error and "this source is not a composite" are the same outcome
+       to the caller and must not look the same to the reader. */
+    console.log(`  ${slug}: polarity key errored — ${err.message}`);
+    return null;
+  });
+  if (alt) {
+    const second = assessAlpha(alt.alpha, alt.width, alt.height);
+    const composite = alt.panel || alt.droppedOutlines > 0;
+    if (second.reasons.length === 0 && (composite || reasons.length > 0)) {
+      chosen = alt;
+      reasons = [];
+      const notes = [
+        alt.panel ? "inset panel" : null,
+        alt.droppedOutlines ? `${alt.droppedOutlines} plate outline dropped` : null,
+      ].filter(Boolean);
+      via = ` (polarity key${notes.length ? `: ${notes.join(", ")}` : ""})`;
+    } else if (second.reasons.length > 0 && reasons.length > 0) {
+      /* Reported, never a silent fallthrough. Both keys were tried and both were
+         refused, which is a fact about the ASSET and the only thing that tells
+         you whether a replacement source would help. */
+      console.log(
+        `  ${slug}: polarity key also declined — ${second.reasons.join(", ")}`,
+      );
     }
   }
-  for (let y = 1; y < ai.height - 1; y++) {
-    for (const x of [0, ai.width - 1]) {
-      edgeTotal++;
-      if (alphaAt(x, y) > 191) edgeInk++;
-    }
-  }
-  const perimeterPct = (100 * edgeInk) / edgeTotal;
-
-  const reasons = [];
-  // FILLED PLATE, which the perimeter test cannot see.
-  //
-  // Sephora is white letters inside a solid black square. It keys "cleanly" —
-  // 0.0% perimeter ink, because the square's corners are rounded and the trim
-  // takes the outer ring — but 48.5% of the mark is ink, and the letterforms are
-  // HOLES in a plate rather than strokes on a ground. On the rail it renders as
-  // a black slab, which is the exact thing canon §8 forbids.
-  //
-  // Density separates it. Every genuine wordmark in this pack sits at or under
-  // 37% ink (Infosys 33.9, Oracle 36.8); a plate with knockout text is half the
-  // box or more. 42% sits in the gap.
-  if (inkDensityPct > 42)
-    reasons.push(`${inkDensityPct.toFixed(1)}% ink — reads as a filled plate with knockout text`);
-  if (transparentPct < 25) reasons.push(`only ${transparentPct.toFixed(1)}% transparent`);
-  if (partialPct > 45) reasons.push(`${partialPct.toFixed(1)}% partial alpha`);
-  if (capAtCell < RAIL_CAP_FLOOR) reasons.push(`cap height ${capAtCell.toFixed(1)}px at the rail cell`);
-  if (perimeterPct > SLAB_PERIMETER_PCT)
-    reasons.push(`box lockup — ${perimeterPct.toFixed(1)}% perimeter ink`);
 
   if (reasons.length) {
     nameOnly.push(`${slug}: ${reasons.join(", ")}`);
@@ -387,14 +807,14 @@ async function convert(slug, file, outDir) {
   // silhouette and paints it in a theme ink token, so only the alpha is read.
   const info = await sharp({
     create: {
-      width: ai.width,
-      height: ai.height,
+      width: chosen.width,
+      height: chosen.height,
       channels: 3,
       background: { r: 0, g: 0, b: 0 },
     },
   })
-    .joinChannel(alpha, {
-      raw: { width: ai.width, height: ai.height, channels: 1 },
+    .joinChannel(chosen.alpha, {
+      raw: { width: chosen.width, height: chosen.height, channels: 1 },
     })
     .png({ compressionLevel: 9 })
     .toFile(out);
@@ -417,7 +837,7 @@ async function convert(slug, file, outDir) {
   // never touches — and derivation belongs to src/lib/mark-scale.ts. This
   // script generates assets. Run `pnpm logos` to do both in order.
   console.log(
-    `  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB (alpha silhouette)`,
+    `  ${slug}.png ${info.width}x${info.height} ${(info.size / 1024).toFixed(1)}kB (alpha silhouette)${via}`,
   );
   written++;
 }
@@ -447,18 +867,19 @@ if (nameOnly.length) {
   for (const r of nameOnly) console.log(`  ${r}`);
 }
 
-// Marks committed as vectors outside this script. Verified, not generated —
-// so this MEASURES them and reports, rather than replacing or deleting them.
+// Marks committed outside this script. Verified, not generated — so this
+// MEASURES them and reports, rather than replacing or deleting them.
 //
-// The distinction is deliberate. These two were committed by hand, plausibly
-// because the keying path could not do them justice, and dropping a curated
-// asset on a heuristic written afterwards would be the script overruling a
-// human decision it has no standing to overrule. But the slab test does apply
-// to what ships regardless of how it got there, and radwell measures as a box
-// lockup — so the gate says so out loud every run instead of passing it in
-// silence. QUESTIONS.md Q13 carries the decision.
+// Capgemini was committed by hand, plausibly because the keying path could not do
+// it justice, and dropping a curated asset on a heuristic written afterwards
+// would be the script overruling a human decision it has no standing to
+// overrule. The slab test applies to what ships regardless of how it got there,
+// so the gate says so out loud every run rather than passing it in silence.
+// QUESTIONS.md Q13 carries the decision.
+//
+// Radwell used to be in this list. It is generated now — its source was always in
+// the pack — so the main gate above measures it like everything else.
 for (const [slug, file] of [
-  ["radwell", join(OUT_CLIENTS, "radwell.png")],
   ["capgemini", join(OUT_INTEGRATORS, "capgemini.png")],
 ]) {
   if (!existsSync(file)) {

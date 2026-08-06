@@ -7,8 +7,14 @@ const clientSchema = z.object({
   name: z.string().min(1),
   /**
    * Omitted where no file exists. Consumers render a set wordmark in that case
-   * — never a substituted logo, and never a broken image. Radwell was the last
-   * assetless consented row and retired in round 17 §2.4.
+   * — never a substituted logo, and never a broken image.
+   *
+   * Round 17: every consented row now has a mark. Radwell's file had been in the
+   * supplied pack all along — it was the BUILD that never ran for that slug, and
+   * "the asset is absent" had been checked against public/logos/clients/, which
+   * is build-logos.mjs's OUTPUT. Wickes needed a polarity-aware key rather than a
+   * new asset: a shield with knockout text silhouettes as the shield under one
+   * global threshold, and as its letters under two.
    */
   logo: z.string().min(1).optional(),
   consentOnFile: z.boolean(),

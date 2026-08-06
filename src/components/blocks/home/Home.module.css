@@ -608,13 +608,19 @@
   text-transform: uppercase;
   color: var(--text-3);
   margin: 0 0 14px;
-  padding-left: 20px;
+  padding-left: clamp(28px, 3vw, 44px);
   max-width: 56ch;
   /* Round 14, corrected: the standard --pad gutter indented the label well
      past where the edge-to-edge track below it actually starts, so caption
-     and content disagreed on where the edge was. 20px is breathing room
-     against the true viewport edge, not the content column's gutter —
-     the track has no gutter to match. */
+     and content disagreed on where the edge was. The inset is breathing room
+     against the true viewport edge, not the content column's gutter — the
+     track has no gutter to match.
+
+     Round 17, Sumeet's direct instruction: 20px read as too far left. Raised
+     and made fluid so the label keeps its relationship to the viewport edge as
+     the page widens, rather than sitting at a fixed 20px on a 1440px screen and
+     a 360px one alike. Still deliberately short of --pad, so the caption and
+     the edge-to-edge track below it still agree about where the edge is. */
 }
 
 .railGroup + .railGroup {

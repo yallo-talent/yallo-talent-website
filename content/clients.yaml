@@ -11,10 +11,15 @@
 # substitute a similar logo. See the header of scripts/build-logos.mjs for the
 # provenance of the marks that exist.
 #
-# Radwell retired 6 August 2026, round 17 §2.4: its asset was absent, so
-# `hasLogoAsset()` already dropped the entry and nothing rendered either way. A
-# named row with no asset behind it is a hand-maintained claim with nothing
-# behind it, and the loader silently agreeing is what let it sit here.
+# Radwell was retired on 6 August 2026 under round 17 §2.4 and RESTORED the same
+# day: the premise was wrong. `assets/client-logos/Radwell.png` had been in the
+# supplied pack all along; only the BUILT file was missing, because the slug was
+# commented out of build-logos.mjs. Sumeet caught it. It now keys through the same
+# gate as every other mark and passes at 0.0% perimeter ink.
+#
+# Wickes ships as a mark too, from Sumeet's Wickes-new.png. Both Wickes sources
+# are shield-with-knockout-text lockups, which the old single-threshold key
+# silhouetted as the SHIELD; the polarity key reads the letters instead.
 enterprise:
   - name: Alshaya Group
     logo: /logos/clients/alshaya.png
@@ -51,6 +56,9 @@ enterprise:
     consentOnFile: true
   - name: Wickes
     logo: /logos/clients/wickes.png
+    consentOnFile: true
+  - name: Radwell
+    logo: /logos/clients/radwell.png
     consentOnFile: true
   # R-INF3 flipped to true 1 Aug 2026, then reversed 6 Aug 2026 — Sumeet's own
   # correction: Informatica belongs on the platform axis, not the client

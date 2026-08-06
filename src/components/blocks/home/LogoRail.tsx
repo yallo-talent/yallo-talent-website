@@ -22,9 +22,13 @@ import { RailViewport } from "./RailViewport";
  *
  * A mark whose source will not key to one clean ink, or which cannot reach a
  * readable cap height in the cell, is NOT shipped as an image at all: the build
- * gate measures both and declines. Wickes is in that state today; Radwell
- * retired from content/clients.yaml in round 17 §2.4 rather than sit there as a
- * name with no asset behind it.
+ * gate measures both and declines. NO consented client is in that state today.
+ *
+ * Round 17 emptied the list, and neither entry belonged on it. Radwell's source
+ * had been in assets/client-logos/ the whole time — only the built file was
+ * missing, because the slug sat commented out of build-logos.mjs. Wickes needed a
+ * different KEY, not a different asset: a shield with knockout text silhouettes
+ * as the shield under one global threshold and as its letters under two.
  *
  * THIS RAIL DROPS THEM RATHER THAN SETTING THEIR NAME. Canon §8's name fallback
  * is right on a card, where the name sits in a text block that already carries
