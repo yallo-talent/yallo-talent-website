@@ -24,6 +24,36 @@
   }
 }
 
+/* Full-height slider, desktop only (Sumeet's direct instruction, chat,
+   round 14) — the exact inverse of the 640px block above, one boundary
+   rather than a second hand-picked breakpoint for the same "is this
+   mobile" question AssistantLauncher.tsx's own MOBILE_QUERY already
+   answers. Docked flush to the edge rather than floating with a margin,
+   which is why the radius drops to 0 here — a flush-edge drawer has no
+   corner to round. No backdrop by design: the rest of the page stays
+   fully interactive alongside it, so closing is Escape or the header's
+   own button, never an outside click, because there is nothing behind
+   the panel that would need to catch one. */
+@media (min-width: 641px) {
+  .panel {
+    /* --header-h (globals.css), not a measured pixel value — NavBar's own
+       sticky header sits at z-index: 50 above this panel's 42, and without
+       this the drawer opened flush under the header's transparent band
+       and visually buried the nav (measured: "Jobs" and "Intelligence"
+       both covered). The same variable NavBar's own mega panel and L1
+       sub-nav key off, so this can't drift from the header's real height. */
+    top: var(--header-h);
+    right: 0;
+    bottom: 0;
+    width: min(420px, 100vw);
+    max-height: none;
+    border-radius: 0;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+
 .header {
   display: flex;
   align-items: flex-start;

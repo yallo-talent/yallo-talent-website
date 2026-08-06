@@ -88,9 +88,9 @@ export function AssistantLauncher() {
         {open && (
           <motion.div
             key="assistant-panel-wrap"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 24 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <AssistantPanel onClose={() => setOpen(false)} />
