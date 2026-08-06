@@ -290,14 +290,13 @@ const STATIC_DOCS: CorpusDocument[] = [
     path: "/terms",
     title: "Terms of use",
     summary:
-      "The terms governing use of talent.yallo.co. Engagements are governed by a separate written agreement.",
+      "The terms governing use of yallo.co. Engagements are governed by a separate written agreement.",
     facts: [],
   },
   {
     path: "/cookies",
     title: "Cookies notice",
-    summary:
-      "How Yallo Talent uses cookies and browser storage on talent.yallo.co.",
+    summary: "How Yallo Talent uses cookies and browser storage on yallo.co.",
     facts: [],
   },
   {

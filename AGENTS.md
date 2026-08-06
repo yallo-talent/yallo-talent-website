@@ -1,4 +1,10 @@
-# AGENTS.md — talent.yallo.co (yallo-co)
+# AGENTS.md — yallo.co (yallo-co)
+
+Domain, ratified: **yallo.co is Yallo Talent's own domain — there is no
+permanent talent.yallo.co subdomain.** talent.yallo.co exists only as a
+pre-cutover placeholder (noindex, per `robots.ts`); direct instruction,
+chat, round 14. Any reference elsewhere in this repo to talent.yallo.co
+as a live, permanent address is stale.
 
 Contract-first Yallo Talent site. UK · ME · India. Next.js 16.2.12 / TS5
 strict / Tailwind 4 / pnpm 10.x / Framer Motion 12. Static-generated, no

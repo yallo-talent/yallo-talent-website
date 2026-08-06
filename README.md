@@ -1,4 +1,4 @@
-# Yallo Talent — talent.yallo.co
+# Yallo Talent — yallo.co
 
 Enterprise platform talent across the Middle East and Europe. Next.js 16 App
 Router, TypeScript strict, Tailwind 4, pnpm 10, Node 22. Statically generated,
