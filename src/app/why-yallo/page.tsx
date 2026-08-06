@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import {
+  ENTITY_CITIES_COMMA,
+  ENTITY_COUNT,
+  ENTITY_LABEL,
+} from "@/lib/entities";
 import { buildMetadata } from "@/lib/seo";
 import cmp from "./comparison.module.css";
 
@@ -30,36 +35,127 @@ const differentiators = [
     copy: "No CVs land in your inbox until we've had the calibration call. We understand the programme before we recommend anyone.",
   },
   {
-    stat: "3",
-    title: "Four entities: London, Dubai, Riyadh, Bengaluru",
+    /* Round 18 §2.3. This rendered a literal "3" under a label reading "Four
+       entities" that then listed four cities — the leftover of the retired "3
+       delivery regions" stat. Both the numeral and the label derive from
+       src/lib/entities.ts now, so they cannot disagree again. */
+    stat: String(ENTITY_COUNT),
+    title: `${ENTITY_LABEL}: ${ENTITY_CITIES_COMMA}`,
     copy: "Not a global brand pretending to know these markets. Region-deep benches, local visa and compliance knowledge, active in the sectors that are hiring.",
   },
 ];
 
+/**
+ * The three-column comparison, rebuilt per round 18 §2.5 (game plan §7 ratified
+ * the rebuild; this supersedes the round 10 §11.3 copy freeze on this table).
+ *
+ * WHY THREE COLUMNS. The two-column version lost the actual position, which is
+ * that Yallo sits BETWEEN volume recruitment and the consultancies. A table with
+ * one "them" column can only say "not that", and the interesting claim is "not
+ * either of those, and here is the axis".
+ *
+ * THE COMPETITOR COLUMNS ARE CATEGORIES, NOT NAMES. Sumeet named Tata, Infosys
+ * and Capgemini when describing the table he wants. Whether a competitor is named
+ * on the site is a publishing decision, which R-A9 makes his rather than mine, so
+ * this ships the category and the relay asks him to overrule it if he wants the
+ * names.
+ *
+ * EVERY CELL IN THE YALLO COLUMN RESTATES A CLAIM PUBLISHED ELSEWHERE, and the
+ * source is named per row below. §2.5's hard constraint, and the reason for it is
+ * that a comparison table is exactly where an unevidenced claim gets in: it reads
+ * as a summary of things already established, so nobody checks it. A row with no
+ * published claim behind it gets cut rather than written.
+ *
+ * Five rows from the legacy fifteen do not come across, and §2.5 records why so it
+ * is not re-litigated: Strategic Tech Advisory and Innovation + Co-Design are the
+ * consulting proposition R1 strips from this site; Real-time Performance
+ * Monitoring and Industry-Specific Playbooks assert capabilities nothing else here
+ * supports; Cost vs Value Efficiency invites the rate comparison game plan §3 says
+ * never to compete on; Embedded Knowledge Sharing carries no claim. The legacy
+ * subtitle "Seamless, Scalable Solutions" is banned vocabulary twice over.
+ */
 const comparison = [
   {
-    them: "Volume recruiters send 20 CVs and hope",
-    us: "We send 3–5 specialist-screened fits",
+    axis: "How candidates are screened",
+    volume: "Keyword-matched against the job description, at volume.",
+    consultancy:
+      "Assigned from whoever is free on the bench, then trained into the role.",
+    /* Published: /about and /leadership, "screened against a written standard by
+       a specialist who has run the same programme". */
+    yallo:
+      "Screened against a written standard by a specialist who has run the role.",
   },
   {
-    them: "Keyword-match against a JD",
-    us: "Depth-tested against the role by a specialist who has run it",
+    axis: "Brief to shortlist",
+    volume: "The first CVs arrive before the brief is understood.",
+    consultancy:
+      "Weeks, because the resourcing and the commercial are one conversation.",
+    /* Published: content/metrics.yaml, "Brief to shortlist / 72h / Three screened
+       candidates from a complete brief", and /contract's own FAQ. */
+    yallo: "Three screened candidates, 72 hours from a complete brief.",
   },
   {
-    them: "Weeks from brief to first CV",
-    us: "72 hours to shortlist, always",
+    axis: "Platform depth at module level",
+    volume: "The platform is named on the CV, never tested.",
+    consultancy:
+      "Depth sits in the practice, and you take the person it assigns.",
+    /* Published: every /platforms/[platform]/[module] page lists the roles it
+       staffs for that module. */
+    yallo:
+      "Roles published per module, so the depth is visible before you brief us.",
   },
   {
-    them: "Hidden margin between candidate and client rate",
-    us: "Day rate on your invoice, margin disclosed",
+    axis: "Who owns the shortlist",
+    volume: "A different consultant each time you call.",
+    consultancy:
+      "An engagement manager between you and the people doing the work.",
+    /* Published: src/data/home/screen.ts, "One account manager in front of them,
+       as your single point of contact", over the six specialist desks. */
+    yallo:
+      "One account manager as your single point of contact, in front of six specialist desks.",
   },
   {
-    them: "Replacement takes weeks + fresh fee",
-    us: "Free replacement search on same 72h SLA",
+    axis: "Engagement models",
+    volume: "Contingent placement, and that is the only shape on offer.",
+    consultancy: "A statement of work, priced and scoped as a project.",
+    /* Published: the four pillars, on the homepage commitment band and each of
+       the four service pages. */
+    yallo: "Contract, Permanent, Employer of Record or Managed Delivery.",
   },
   {
-    them: "No accountability for the placement working",
-    us: "Specialist-led: the person who screened them stays involved",
+    axis: "Commercial transparency",
+    volume: "The margin sits between the candidate's rate and your invoice.",
+    consultancy: "A blended day rate, with the mix inside it.",
+    /* Published: /contract's FAQ, "transparent day rate on your invoice, with our
+       margin disclosed up-front", and commitment.ts's "Published rate card". */
+    yallo:
+      "Day rate on your invoice, margin disclosed up front, against a published rate card.",
+  },
+  {
+    axis: "When a placement does not work",
+    volume: "A fresh fee and a fresh search.",
+    consultancy:
+      "A replacement from the bench, under the same statement of work.",
+    /* Published: /contract's FAQ, a replacement search on the same standard, and
+       commitment.ts's "Replacement on quality". */
+    yallo: "A replacement search on the same 72-hour standard.",
+  },
+  {
+    axis: "Scaling a team mid-programme",
+    volume: "A new requisition and a new search each time.",
+    consultancy: "A change request, scoped and priced again.",
+    /* Published: commitment.ts, "Ramp up and ramp down", inside the contract
+       workforce terms. */
+    yallo: "Ramp up and ramp down inside the same agreement.",
+  },
+  {
+    axis: "Accountability after placement",
+    volume: "The relationship ends at the invoice.",
+    consultancy: "Accountability sits with the programme, not with the hire.",
+    /* Published: commitment.ts, "You pay when someone starts, and only if they
+       stay", with the 100-day warranty on permanent. */
+    yallo:
+      "Permanent carries a 100-day warranty: you pay on start, and only if they stay.",
   },
 ];
 
@@ -145,13 +241,12 @@ export default function WhyYalloPage() {
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
             {/* No "Yallo" — .sectionEyebrow renders uppercase (canon §2). */}
-            <span className={styles.sectionEyebrow}>
-              Us vs. volume recruiters
-            </span>
+            <span className={styles.sectionEyebrow}>Where we sit</span>
             <h2 className={styles.sectionH}>Different by design.</h2>
             <p className={styles.sectionLede}>
-              Traditional recruitment optimises for candidate throughput. We
-              optimise for the hire actually shipping your programme.
+              Volume recruitment optimises for candidate throughput and the
+              consultancies optimise for the statement of work. We optimise for
+              the hire actually shipping your programme.
             </p>
             {/* A scrollable container must be focusable to be keyboard
                 scrollable, which SC 2.1.1 requires. */}
@@ -163,14 +258,25 @@ export default function WhyYalloPage() {
             >
               <table className={cmp.table}>
                 <caption className={cmp.srOnly}>
-                  Comparison between traditional recruiters and Yallo Talent
+                  How volume recruiters, consultancies and integrators, and
+                  Yallo Talent differ across nine aspects of staffing an
+                  enterprise platform programme.
                 </caption>
                 <thead>
                   <tr>
-                    <th scope="col" className={cmp.theadThem}>
-                      Traditional recruiters
+                    {/* The corner cell of a matrix names the row axis for a screen
+                        reader rather than sitting empty. */}
+                    <th scope="col" className={cmp.theadAxis}>
+                      <span className={cmp.srOnly}>What is being compared</span>
                     </th>
-                    {/* No "Yallo" — .theadUs renders uppercase (canon §2). */}
+                    <th scope="col" className={cmp.theadThem}>
+                      Volume recruiters
+                    </th>
+                    <th scope="col" className={cmp.theadThem}>
+                      Consultancies and integrators
+                    </th>
+                    {/* No "Yallo" in uppercase — .theadUs renders uppercase
+                        (canon §2), and the brand is capital-Y only. */}
                     <th scope="col" className={cmp.theadUs}>
                       Specialist-led delivery
                     </th>
@@ -178,9 +284,13 @@ export default function WhyYalloPage() {
                 </thead>
                 <tbody>
                   {comparison.map((row) => (
-                    <tr key={row.them}>
-                      <td className={cmp.cellThem}>{row.them}</td>
-                      <td className={cmp.cellUs}>{row.us}</td>
+                    <tr key={row.axis}>
+                      <th scope="row" className={cmp.cellAxis}>
+                        {row.axis}
+                      </th>
+                      <td className={cmp.cellThem}>{row.volume}</td>
+                      <td className={cmp.cellThem}>{row.consultancy}</td>
+                      <td className={cmp.cellUs}>{row.yallo}</td>
                     </tr>
                   ))}
                 </tbody>

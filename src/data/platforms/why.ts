@@ -1,6 +1,7 @@
 import type { WhyPoint } from "@/components/blocks/platform/WhyRail";
 import { publishedFigure } from "@/data/metrics";
 import type { PlatformCoverage } from "@/data/platforms/derive";
+import { ENTITY_CITIES_SENTENCE, ENTITY_LABEL } from "@/lib/entities";
 
 /**
  * The four points every platform page opens with.
@@ -48,7 +49,7 @@ export function whyPoints(cov: PlatformCoverage): WhyPoint[] {
       title: sectorLine
         ? `Placed into ${sectorLine} programmes`
         : "Placed across the Middle East, Europe and India",
-      body: "Four entities across London, Dubai, Riyadh and Bengaluru, so a specialist can start on your paper or ours without an entity of your own.",
+      body: `${ENTITY_LABEL} across ${ENTITY_CITIES_SENTENCE}, so a specialist can start on your paper or ours without an entity of your own.`,
       figure: publishedFigure("Brief to shortlist"),
     },
   ];

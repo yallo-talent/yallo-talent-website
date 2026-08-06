@@ -1,8 +1,14 @@
-/* Comparison table, /why-yallo only. Copy is frozen (context-round10-scope.md
-   §11.3); this file governs markup semantics and reflow, nothing else.
-   A real <table> replaces two parallel <ul>s so a screen reader announces
-   each row as a "Traditional recruiters" / "Yallo Talent" pair rather than
-   two unrelated lists placed side by side. */
+/* Comparison table, /why-yallo only.
+   A real <table> replaces two parallel <ul>s so a screen reader announces each
+   row as a comparison rather than as unrelated lists placed side by side.
+
+   ROUND 18 §2.5 rebuilt it as a matrix: a row-header column carrying the axis,
+   then three comparison columns. Game plan §7 ratified the rebuild, which
+   supersedes the round 10 §11.3 copy freeze on this table specifically.
+
+   Marks are TEXT, never images. The legacy table this draws from used image
+   ticks, which the project instructions name as the accessibility failure not to
+   repeat, and every cell here is a sentence rather than a symbol. */
 
 .srOnly {
   position: absolute;
@@ -24,10 +30,13 @@
 
 .table {
   width: 100%;
-  min-width: 560px;
+  /* Four columns rather than two, so the floor rises. The wrap scrolls on its own
+     axis, which is what keeps the 320px reflow assertion green. */
+  min-width: 880px;
   border-collapse: collapse;
 }
 
+.theadAxis,
 .theadThem,
 .theadUs {
   text-align: left;
@@ -39,9 +48,15 @@
   text-transform: uppercase;
 }
 
+.theadAxis {
+  background: var(--ground-2);
+  width: 22%;
+}
+
 .theadThem {
   background: var(--ground-3);
   color: var(--fg-subtle);
+  border-left: 1px solid var(--hairline);
 }
 
 .theadUs {
@@ -50,6 +65,7 @@
   border-left: 1px solid var(--sector-accent-35);
 }
 
+.cellAxis,
 .cellThem,
 .cellUs {
   padding: 16px 24px;
@@ -59,9 +75,19 @@
   vertical-align: top;
 }
 
+/* The row axis is a <th scope="row">, so it is a heading and reads as one: the
+   question the row answers, not a fourth opinion in the comparison. */
+.cellAxis {
+  background: var(--ground-2);
+  color: var(--fg);
+  font-weight: 600;
+  text-align: left;
+}
+
 .cellThem {
   background: var(--ground-3);
   color: var(--fg-muted);
+  border-left: 1px solid var(--hairline);
 }
 
 .cellUs {

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { l1Icons } from "@/components/blocks/l1/l1-icons";
 import { capabilitiesIndex, platformsIndex } from "@/data/l1/index";
 import type { L1IconKey } from "@/data/l1/types";
+import { ENTITY_CITIES_MIDDOT, ENTITY_LABEL } from "@/lib/entities";
 import { routeExists } from "@/lib/routes";
 import styles from "./HubLandingSections.module.css";
 
@@ -57,7 +58,7 @@ const whatWeDeliverCards: {
     copy: "Cross-market bench lets us place fast in the region that's constrained. Four commercial models decide who carries the contract, the visa and the notice period.",
     bullets: [
       /* R17 — same unevidenced claim as the L1 shell. See that comment. */
-      "Four entities: London · Dubai · Riyadh · Bengaluru",
+      `${ENTITY_LABEL}: ${ENTITY_CITIES_MIDDOT}`,
       "Contract · EOR · Perm · Managed",
       "IR35, VAT and compliance built in",
     ],

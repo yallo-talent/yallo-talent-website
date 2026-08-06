@@ -8,6 +8,7 @@ import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
 import { researchForDesk, researchHref } from "@/data/research";
+import { ENTITY_CITIES_MIDDOT, ENTITY_LABEL } from "@/lib/entities";
 import { routeExists } from "@/lib/routes";
 import { deriveSectorRail } from "@/lib/sectors";
 import { deriveLinkLabels } from "@/lib/taxonomy-links";
@@ -341,7 +342,7 @@ const whatWeDeliverCards: {
          four entities are a PUBLISHED fact (src/data/platforms/why.ts, and the
          homepage's own city list), and they say more: an entity is what lets a
          specialist start on our paper. Closes Q11. */
-      "Four entities: London · Dubai · Riyadh · Bengaluru",
+      `${ENTITY_LABEL}: ${ENTITY_CITIES_MIDDOT}`,
       "Contract · EOR · Perm · Managed",
       "IR35, VAT and compliance built in",
     ],

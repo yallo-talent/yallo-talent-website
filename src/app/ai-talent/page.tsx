@@ -16,6 +16,7 @@ import {
   metricsAttribution,
   publishedFigure,
 } from "@/data/metrics";
+import { ENTITY_CITIES_SENTENCE, ENTITY_LABEL } from "@/lib/entities";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -112,8 +113,8 @@ const whyAi = [
   },
   {
     kicker: "In region, at pace",
-    title: "Four entities, three demand markets",
-    body: "London, Dubai, Riyadh and Bengaluru, so a specialist can start on your paper or ours without an entity of your own.",
+    title: `${ENTITY_LABEL}, three demand markets`,
+    body: `${ENTITY_CITIES_SENTENCE}, so a specialist can start on your paper or ours without an entity of your own.`,
     figure: publishedFigure("Brief to shortlist"),
   },
 ];

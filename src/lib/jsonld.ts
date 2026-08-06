@@ -1,4 +1,5 @@
 import { teamIndex } from "@/data/team";
+import { ENTITIES } from "./entities";
 import { platformLabels } from "./platforms";
 import { SITE } from "./seo";
 
@@ -14,41 +15,11 @@ import { SITE } from "./seo";
  * claim, so neither does this.
  */
 
-export interface Entity {
-  city: string;
-  country: string;
-  /** ISO 3166-1 alpha-2. */
-  countryCode: string;
-  /** What the entity is for, in Yallo's own framing. */
-  role: string;
-}
-
-export const ENTITIES: Entity[] = [
-  {
-    city: "London",
-    country: "United Kingdom",
-    countryCode: "GB",
-    role: "Europe and UK demand",
-  },
-  {
-    city: "Dubai",
-    country: "United Arab Emirates",
-    countryCode: "AE",
-    role: "Regional headquarters",
-  },
-  {
-    city: "Riyadh",
-    country: "Saudi Arabia",
-    countryCode: "SA",
-    role: "In-country Saudi entity",
-  },
-  {
-    city: "Bengaluru",
-    country: "India",
-    countryCode: "IN",
-    role: "India and Global Capability Centre staffing",
-  },
-];
+/* ENTITIES moved to ./entities in round 18 §2.3 so the count and the city list
+   derive from one array, and so the two client components that publish the list
+   can import it without pulling this builder into a client bundle. Re-exported
+   because jsonld.ts was where every existing importer looked for it. */
+export { ENTITIES, type Entity } from "./entities";
 
 const SERVICES = [
   "Contract technology staffing",
