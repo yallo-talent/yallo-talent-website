@@ -1,0 +1,50 @@
+name: Robots policy, production branch
+on:
+  # A path filter rather than every push. NEXT_PUBLIC_SITE_URL is inlined at
+  # build time, so asserting the production branch costs a SECOND full build,
+  # and the only things that can move it are the four files below. Everything
+  # else is covered by ci.yml's non-production assertion on the build it
+  # already does.
+  pull_request:
+    paths:
+      - "src/app/robots.ts"
+      - "src/lib/robots-policy.json"
+      - "src/lib/crawler-families.json"
+      - "src/lib/seo.ts"
+      - ".github/workflows/robots-policy.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/app/robots.ts"
+      - "src/lib/robots-policy.json"
+      - "src/lib/crawler-families.json"
+      - "src/lib/seo.ts"
+      - ".github/workflows/robots-policy.yml"
+  # Run before the DNS cutover and again immediately after, on demand.
+  workflow_dispatch: {}
+  schedule:
+    # Weekly. The production branch guards a gated asset (/downloads/ holds the
+    # research PDF behind a capture form) and the cost of it silently going
+    # indexable is not bounded by when someone last touched robots.ts — a
+    # dependency bump or a Next.js metadata-route change could move the emitted
+    # output with no file in the path filter changing.
+    - cron: "20 6 * * 1"
+jobs:
+  production-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+
+      # The whole point. Until round 17 the production branch of robots.ts had
+      # been read in review and never executed, because no build on any machine
+      # or in any job had ever set this variable to the production origin.
+      - name: Build with the production origin
+        run: NEXT_PUBLIC_SITE_URL=https://yallo.co pnpm build
+
+      - name: Robots policy (production branch, as emitted)
+        run: NEXT_PUBLIC_SITE_URL=https://yallo.co pnpm check:robots

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import policy from "@/lib/robots-policy.json";
 import type { SEOMeta } from "@/types";
 
-const PRODUCTION_URL = "https://yallo.co";
+/* One copy of the production origin, shared with robots.ts's policy and with
+   scripts/check-robots-policy.mjs. The switch that decides whether the site is
+   indexable at all cannot be a value two files each spell for themselves. */
+const PRODUCTION_URL = policy.productionUrl;
 
 export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",

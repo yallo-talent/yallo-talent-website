@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import families from "@/lib/crawler-families.json";
+import policy from "@/lib/robots-policy.json";
 import { isProductionHost, SITE } from "@/lib/seo";
 
 /**
@@ -46,13 +47,13 @@ export default function robots(): MetadataRoute.Robots {
      what should rank. The print surface the PDF is generated from is a build
      input rather than a page; it already sends noindex and is absent from
      publishedPaths(), and it is named here so the posture is readable in one
-     place rather than inferred from three. */
-  const disallow = [
-    "/api/",
-    "/users/",
-    "/downloads/",
-    "/intelligence/research/corridor/print",
-  ];
+     place rather than inferred from three.
+
+     The paths themselves live in src/lib/robots-policy.json, for the same
+     reason the crawler list lives in a JSON file: scripts/check-robots-policy.mjs
+     asserts the BUILT robots.txt against them, and a gate carrying its own copy
+     of the list would be this build's signature defect rather than a check. */
+  const disallow = policy.disallow;
 
   return {
     rules: [

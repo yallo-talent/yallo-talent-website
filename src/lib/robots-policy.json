@@ -1,0 +1,9 @@
+{
+  "productionUrl": "https://yallo.co",
+  "disallow": [
+    "/api/",
+    "/users/",
+    "/downloads/",
+    "/intelligence/research/corridor/print"
+  ]
+}
