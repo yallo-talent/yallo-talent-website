@@ -1,0 +1,77 @@
+{
+  "_": [
+    "BANNED VOCABULARY FOR PUBLISHED COPY, as data rather than as prose.",
+    "",
+    "WHY THIS FILE EXISTS. Round 18 §2.1: the word \"operator\" rendered in an H2 on",
+    "/why-yallo and em dashes rendered in three more lines, while check:terms",
+    "reported exit 0 across 282 files. Neither rule was in the lint's rule set at",
+    "all. The em-dash rule had been restated in five separate ruling documents and",
+    "lived in none of them as anything a program could read, which is the definition",
+    "of a rule enforced by nothing.",
+    "",
+    "So the rule set is data, read by scripts/check-terminology.mjs. A rule added",
+    "here is enforced; a rule that is not here is not claimed to be enforced.",
+    "",
+    "THESE ARE COPY RULES, NOT SOURCE RULES, and the distinction is the whole reason",
+    "they are separate from the RULES array in the lint. The lint's existing rules",
+    "scan raw source lines, which is right for \"GCC\" and \"Bangalore\" — a wrong",
+    "geography in a comment is still wrong. An em dash in a comment is not a defect:",
+    "measured, there are 1384 em dashes in the trees the lint reads and 271 of them",
+    "are in copy. Banning the character in source would have meant rewriting a",
+    "thousand comments to enforce a rule about prose a buyer reads, and the pressure",
+    "to then narrow the rule to make the run small is exactly what §2.1 forbids.",
+    "Scoping to copy is not narrowing the rule; a comment was never copy.",
+    "",
+    "provenance is recorded per rule because one of these two turned out not to be",
+    "where it was said to be. Anything added here needs the same."
+  ],
+
+  "copyRules": [
+    {
+      "id": "em-dash",
+      "kind": "literal",
+      "pattern": "—",
+      "label": "em dash in published copy",
+      "guidance": "UK English house style. Use a comma, a colon, a full stop, or the middot the eyebrows already use as a separator. An en dash in a numeric range is a different character and is not matched.",
+      "provenance": "Standing rule, restated in context-round3-rulings.md, context-round6-rulings.md §4.4, context-round9-scope.md, and context-round13-scope.md §8.4 (\"UK English, no em dashes, canon vocabulary\"). Never present in canon §2's banned list and never in this lint until round 18."
+    },
+    {
+      "id": "operator",
+      "kind": "regex",
+      "pattern": "\\boperators?\\b",
+      "label": "\"operator\" describing Yallo's people or screening",
+      "guidance": "Ratified terminology is specialist-screened and specialist-led. Prefer describing what is checked over who checks it: a claim about a standard cannot overclaim the way a claim about a person can.",
+      "provenance": "Ruled round 18 §2.5. RECORDED HONESTLY: §2.1 described this as sitting on \"the standing banned AI-tell list in canon\". No such list exists in this repository — canon §2's banned-abstraction list does not contain the word, and no file matches \"AI-tell\". The ban is this round's ruling, which is authority enough; the provenance is corrected so a later round does not go looking for a list that was never there."
+    }
+  ],
+
+  "allow": [
+    {
+      "file": "src/lib/assistant/system-prompt.ts",
+      "id": "em-dash",
+      "why": "The model-facing forbidden-vocabulary instruction, and the same exemption the lint's own docstring gets by sitting outside ROOTS: telling a model never to write a character requires naming it, and the surrounding prose is instruction to the model rather than copy shown to a visitor. The assistant's OUTPUT is separately gated by check-assistant-terms."
+    },
+    {
+      "file": "src/instrumentation.ts",
+      "id": "em-dash",
+      "why": "The whole module is a boot-time banner printed to a developer's terminal and it renders nothing: there is no visitor-facing string in it to protect. A file-level entry rather than the DIAGNOSTIC_CALL heuristic because its lines are array elements assembled hundreds of characters away from the console call that prints them, and widening that lookbehind far enough to catch them would start swallowing real copy in files that both log and render."
+    },
+    {
+      "file": "src/data/legal/terms.ts",
+      "id": "em-dash",
+      "why": "Legal wording, which canon §2's standing method allow-lists rather than rewrites: the terms page is a contract with a visitor and its punctuation is not a house-style decision."
+    }
+  ],
+
+  "outOfScope": {
+    "dirs": ["content/"],
+    "why": [
+      "content/ bodies are ported verbatim and were ruled out of scope for the",
+      "abstraction lint in Relay v2.2 §2, which this follows rather than quietly",
+      "widening. Case-study prose is also published text about a named client, so",
+      "rewording it is a publishing decision under R-A9 and Sumeet's, not a lint's.",
+      "The instances found there are reported by the gate as INFORMATIONAL so the",
+      "count is visible and the exclusion cannot hide a growing pile."
+    ]
+  }
+}

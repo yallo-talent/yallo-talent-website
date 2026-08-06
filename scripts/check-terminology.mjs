@@ -448,6 +448,248 @@ for (const file of files) {
   });
 }
 
+/* ─────────────────────── COPY-SCOPED RULES, round 18 ─────────────────────── */
+
+/**
+ * The banned-vocabulary rules that apply to COPY rather than to source.
+ *
+ * WHY A SECOND MECHANISM AND NOT MORE ENTRIES IN `RULES`. Round 18 §2.1 found
+ * "operator" rendering in an H2 and em dashes in three more lines on /why-yallo
+ * while this gate reported exit 0 across 282 files. The diagnosis was not a
+ * coverage gap — the file was being read — it was that neither rule existed here
+ * at all, and that the two cannot be enforced the way the existing rules are.
+ *
+ * Everything above scans RAW SOURCE LINES, which is correct for "GCC" and
+ * "Bangalore": a wrong geography in a comment is still wrong, and the prose
+ * ALLOWED_LINES list exists to keep this file's own documentation from tripping
+ * it. An em dash in a comment is not a defect. Measured at the time this was
+ * written: 1384 em dashes in the trees this gate reads, 271 of them in copy. A
+ * source-level ban would have meant rewriting a thousand comments, and the
+ * pressure to then narrow the rule until the run looked small is exactly what
+ * §2.1 forbids. Scoping to copy is not narrowing the rule. A comment was never
+ * copy.
+ *
+ * The rules themselves live in src/lib/copy-rules.json, with the provenance of
+ * each recorded beside it, so the list and the enforcement cannot disagree and a
+ * later round can see where a rule came from.
+ *
+ * REPORT ONLY, never --fix. An em dash resolves to a comma, a colon, a full stop
+ * or a restructured sentence depending on the clause, and "operator" resolves to
+ * a specialist formulation that has to say something true. Both need a writer.
+ */
+const COPY_RULES_PATH = "src/lib/copy-rules.json";
+const copyRuleFile = JSON.parse(
+  readFileSync(new URL(`../${COPY_RULES_PATH}`, import.meta.url), "utf8"),
+);
+
+const COPY_RULES = copyRuleFile.copyRules.map((r) => ({
+  ...r,
+  re:
+    r.kind === "regex"
+      ? new RegExp(r.pattern, "gi")
+      : new RegExp(r.pattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
+}));
+
+/** file -> Set of rule ids permitted there, each with a recorded reason. */
+const COPY_ALLOW = new Map();
+for (const a of copyRuleFile.allow) {
+  if (!COPY_ALLOW.has(a.file)) COPY_ALLOW.set(a.file, new Set());
+  COPY_ALLOW.get(a.file).add(a.id);
+}
+
+/**
+ * Comments out, string contents intact, LINE STRUCTURE PRESERVED.
+ *
+ * Every removed character becomes a space and every newline survives, so a hit's
+ * line number is the line number in the real file. A naive strip that collapsed
+ * the file would have reported the right defect at the wrong place, which is
+ * worse than not reporting it — it sends the reader to unrelated code.
+ */
+function stripComments(src) {
+  let out = "";
+  let i = 0;
+  const n = src.length;
+  let quote = "";
+  while (i < n) {
+    const ch = src[i];
+    const nx = src[i + 1];
+    if (quote === "") {
+      if (ch === "/" && nx === "/") {
+        while (i < n && src[i] !== "\n") {
+          out += " ";
+          i++;
+        }
+        continue;
+      }
+      if (ch === "/" && nx === "*") {
+        out += "  ";
+        i += 2;
+        while (i < n && !(src[i] === "*" && src[i + 1] === "/")) {
+          out += src[i] === "\n" ? "\n" : " ";
+          i++;
+        }
+        out += "  ";
+        i += 2;
+        continue;
+      }
+      if (ch === '"' || ch === "'" || ch === "`") {
+        quote = ch;
+        out += ch;
+        i++;
+        continue;
+      }
+      out += ch;
+      i++;
+      continue;
+    }
+    if (ch === "\\") {
+      out += ch + (src[i + 1] ?? "");
+      i += 2;
+      continue;
+    }
+    if (ch === quote) {
+      quote = "";
+      out += ch;
+      i++;
+      continue;
+    }
+    out += ch;
+    i++;
+  }
+  return out;
+}
+
+/**
+ * The segments of a line that can reach a rendered page.
+ *
+ * For TS and TSX that is string and template literal CONTENTS plus JSX text
+ * nodes — the two ways a character gets from this repository onto a page. For
+ * MDX and YAML the line is copy already, minus its own comment syntax. CSS is
+ * excluded entirely: it carries no prose except `content:`, and every `content:`
+ * in this codebase is a decorative glyph.
+ */
+/**
+ * A DIAGNOSTIC IS NOT COPY, and this is the one exclusion about the KIND of
+ * string rather than the kind of file.
+ *
+ * `src/instrumentation.ts` prints a startup banner to a developer's terminal and
+ * `throw new Error("ANTHROPIC_API_KEY is not set …")` is read by whoever broke
+ * the deployment. Neither reaches a visitor, and rewriting them to satisfy a
+ * house-style rule about prose would make the diagnostics worse at the only job
+ * they have. Detected from the code PRECEDING the string rather than per file: a
+ * file that logs is usually also a file that renders, so excluding the whole file
+ * would hide real copy inside it.
+ *
+ * The window is generous because these calls wrap across lines — the four
+ * instrumentation.ts hits that survived the first version of this were arguments
+ * to a `line(...)` helper four lines below a `console.warn`.
+ */
+const DIAGNOSTIC_CALL = /(?:console\.\w+|new \w*Error)\s*\([^)]{0,400}$/;
+
+/**
+ * Every span of a comment-stripped file that can reach a rendered page, with the
+ * offset it starts at.
+ *
+ * WHOLE FILE, NOT LINE BY LINE, and that is the fix for the defect this round
+ * opened with. The first version scanned each line and matched JSX text with
+ * `>text<`, which requires the tag and the text on ONE line. The H2 that started
+ * round 18 —
+ *
+ *     <h2 className={styles.sectionH}>
+ *       Operators who ran the programmes you're running.
+ *     </h2>
+ *
+ * — puts the text on its own line, so the gate written to catch it did not.
+ * Template literals and wrapped diagnostic calls span lines for the same reason.
+ * Offsets are mapped back to line numbers afterwards, so a hit still points at
+ * the real line.
+ */
+function copySpans(file, body) {
+  const ext = extname(file);
+  if (ext === ".mdx" || ext === ".yaml" || ext === ".yml") {
+    const spans = [];
+    let offset = 0;
+    for (const line of body.split("\n")) {
+      const comment = ext === ".mdx" ? "<!--" : "#";
+      if (!line.trimStart().startsWith(comment)) {
+        spans.push({ text: line, at: offset });
+      }
+      offset += line.length + 1;
+    }
+    return spans;
+  }
+  if (ext !== ".ts" && ext !== ".tsx") return [];
+
+  const spans = [];
+  /* String and template literal contents. `s` flag so a template literal that
+     wraps is one span rather than a series of unparseable fragments. */
+  for (const m of body.matchAll(
+    /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g,
+  )) {
+    const text = m[1] ?? m[2] ?? m[3] ?? "";
+    if (text === "") continue;
+    if (DIAGNOSTIC_CALL.test(body.slice(Math.max(0, m.index - 400), m.index))) {
+      continue;
+    }
+    spans.push({ text, at: m.index });
+  }
+  /* JSX text nodes, across lines. Braces excluded so an expression is not read as
+     prose; the literal inside it is caught by the pass above. */
+  for (const m of body.matchAll(/>([^<>{}]+)</g)) {
+    if (m[1].trim() === "") continue;
+    /* Past the leading whitespace, so the reported line is the line the TEXT is
+       on rather than the line the opening tag is on. JSX puts them one apart. */
+    const lead = m[1].length - m[1].trimStart().length;
+    spans.push({ text: m[1], at: m.index + 1 + lead });
+  }
+  return spans;
+}
+
+const OUT_OF_SCOPE_DIRS = copyRuleFile.outOfScope.dirs;
+const informational = [];
+
+for (const file of files) {
+  const ext = extname(file);
+  if (ext === ".css") continue;
+  const raw = readFileSync(file, "utf8");
+  const body = ext === ".ts" || ext === ".tsx" ? stripComments(raw) : raw;
+
+  /* offset -> line number, built once per file. */
+  const lineStarts = [0];
+  for (let i = 0; i < body.length; i++) {
+    if (body[i] === "\n") lineStarts.push(i + 1);
+  }
+  const lineAt = (offset) => {
+    let lo = 0;
+    let hi = lineStarts.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi + 1) >> 1;
+      if (lineStarts[mid] <= offset) lo = mid;
+      else hi = mid - 1;
+    }
+    return lo + 1;
+  };
+
+  const allowed = COPY_ALLOW.get(file) ?? new Set();
+  const outOfScope = OUT_OF_SCOPE_DIRS.some((d) => file.startsWith(d));
+
+  for (const span of copySpans(file, body)) {
+    for (const rule of COPY_RULES) {
+      if (allowed.has(rule.id)) continue;
+      rule.re.lastIndex = 0;
+      if (!rule.re.test(span.text)) continue;
+      const hit = {
+        file,
+        line: lineAt(span.at),
+        label: `copy: ${rule.label}`,
+        text: span.text.replace(/\s+/g, " ").trim().slice(0, 100),
+      };
+      if (outOfScope) informational.push(hit);
+      else remaining.push(hit);
+    }
+  }
+}
+
 if (applied.length) {
   console.log(`${FIX ? "Applied" : "Would apply"} ${applied.length} replacement(s):\n`);
   const byFile = new Map();
@@ -460,6 +702,18 @@ if (applied.length) {
     for (const it of items) {
       console.log(`      ${it.change}${it.why ? `   (${it.why})` : ""}`);
     }
+  }
+}
+
+if (informational.length) {
+  console.log(
+    `\n${informational.length} copy-rule occurrence(s) in ${OUT_OF_SCOPE_DIRS.join(", ")} — REPORTED, NOT FAILED:\n` +
+      `  ${copyRuleFile.outOfScope.why.join("\n  ")}\n`,
+  );
+  const byFile = new Map();
+  for (const h of informational) byFile.set(h.file, (byFile.get(h.file) ?? 0) + 1);
+  for (const [f, n] of [...byFile].sort((a, b) => b[1] - a[1])) {
+    console.log(`     ${String(n).padStart(3)}  ${f}`);
   }
 }
 
