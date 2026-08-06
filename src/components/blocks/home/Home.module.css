@@ -1473,24 +1473,27 @@
    index, /ai-talent — carried no visual cue that the heading was
    clickable at all. `.moduleLink` anchors already carry their own arrow
    (the flex row + ArrowGlyph rule below), so this is scoped to skip them
-   and dress only the plain case, on hover, so the card reads calm until
-   the visitor's cursor says otherwise. */
+   and dress only the plain case. Always visible, matching "Start a brief →"
+   and every other static-arrow affordance on the site — a punch-out's
+   hyperlink cue should not require a hover to discover, only to react to
+   (the translateX nudge below still carries the hover moment). */
 .vow h3 > a:not(.moduleLink)::after {
   content: "→";
   display: inline-block;
   margin-left: 8px;
   color: var(--accent-label);
-  opacity: 0;
-  transform: translateX(-4px);
   transition:
-    opacity 0.2s ease,
+    color 0.16s ease,
     transform 0.2s ease;
 }
 
+/* A5: a hover rule that changes only transform leaves nothing for a
+   reduced-motion visitor, who has it zeroed globally. The colour step to
+   --gold-deep is the real cue; the nudge is the flourish on top of it. */
 .vow h3 > a:not(.moduleLink):hover::after,
 .vow h3 > a:not(.moduleLink):focus-visible::after {
-  opacity: 1;
-  transform: translateX(0);
+  color: var(--gold-deep);
+  transform: translateX(4px);
 }
 
 .vowBadge {

@@ -721,6 +721,35 @@
   --wa88: var(--dk-txt);
   --ba75: var(--dk);
 
+  /* Round 14: --ya04/08/13/20/35 were the one alias ladder this block forgot
+     to restate. Like --wa25 etc above, they are declared once on the
+     theme-agnostic :root and bake in :root's computed --accent-wash at
+     declaration time, so a descendant inheriting them ignores this block's
+     own --accent-wash restatement three lines up. BriefForm's hero grid
+     (composes: band-dark) used --ya04/--ya13 for its pattern lines: in dark
+     theme :root's --accent-wash already happened to equal this block's --dk-3,
+     so the leak was invisible; in light theme it leaked --gold-wash — a tint
+     meant for light grounds — onto a permanently dark surface, which is
+     exactly the "checkered" look reported on /brief in light mode. Restating
+     them here, against THIS block's own --accent-wash, makes every band-dark
+     consumer of the ya* ladder render identically in both themes, matching
+     the dark-theme look that was already correct. */
+  --ya04: var(--accent-wash);
+  --ya08: var(--accent-wash);
+  --ya13: var(--accent-wash);
+  --ya20: var(--accent-wash);
+  --ya35: transparent;
+
+  /* Same leak, same fix: --wa03/05/08 are built off --text at the same
+     unscoped :root and were not restated here either. .heroGrid
+     (EditorialLayout.module.css, composes: band-dark) uses --wa03 for its
+     grid lines — in light theme this baked in --ink instead of this block's
+     own --dk-txt, so the lines went from correctly faint-light-on-dark to
+     nearly invisible dark-on-dark. Restated against THIS block's --text. */
+  --wa03: color-mix(in oklab, var(--text) 3%, transparent);
+  --wa05: color-mix(in oklab, var(--text) 5%, transparent);
+  --wa08: color-mix(in oklab, var(--text) 7%, transparent);
+
   background: var(--dk);
   color: var(--dk-txt);
 }
