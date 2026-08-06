@@ -51,13 +51,14 @@ enterprise:
   - name: Radwell
     logo: /logos/clients/radwell.png
     consentOnFile: true
-  # R-INF3, 1 Aug 2026. Informatica is an account Yallo staffs as well as the
-  # seventh platform desk. Consent obtained 3 August 2026, Sumeet's assertion
-  # per round12-scope.md §1.4 — the mark was already built and keyed, so the
-  # flip is the one word it always was.
+  # R-INF3 flipped to true 1 Aug 2026, then reversed 6 Aug 2026 — Sumeet's own
+  # correction: Informatica belongs on the platform axis, not the client
+  # rail. The mark stays built (src/data/home/place.ts reuses this exact
+  # file for the platform mark) so the flip is still the one word it always
+  # was, just back the other way.
   - name: Informatica
     logo: /logos/clients/informatica.png
-    consentOnFile: true
+    consentOnFile: false
 
 # Heading on the site: "the systems integrators delivering them come to us for
 # specialists". Never describes the commercial arrangement.

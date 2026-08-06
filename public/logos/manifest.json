@@ -171,13 +171,13 @@
   },
   "blue-yonder": {
     "family": "platforms",
-    "w": 448,
-    "h": 64,
-    "ink": 1,
-    "bw": 448,
-    "bh": 64,
-    "pad": 0,
-    "plate": true
+    "w": 222,
+    "h": 224,
+    "ink": 0.3368,
+    "bw": 219,
+    "bh": 219,
+    "pad": 0.0355,
+    "plate": false
   },
   "googlecloud": {
     "family": "platforms",
@@ -187,6 +187,16 @@
     "bw": 512,
     "bh": 411,
     "pad": 0.1973,
+    "plate": false
+  },
+  "informatica-icon": {
+    "family": "platforms",
+    "w": 221,
+    "h": 224,
+    "ink": 0.3919,
+    "bw": 221,
+    "bh": 223,
+    "pad": 0.0045,
     "plate": false
   },
   "microsoft": {

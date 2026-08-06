@@ -31,6 +31,7 @@ import sharp from "sharp";
 const SRC = join(process.cwd(), "assets", "client-logos");
 const OUT_CLIENTS = join(process.cwd(), "public", "logos", "clients");
 const OUT_INTEGRATORS = join(process.cwd(), "public", "logos", "integrators");
+const OUT_PLATFORMS = join(process.cwd(), "public", "logos", "platforms");
 
 /* These four MUST track .logo and .logo img in Home.module.css. They were left
    behind when the rail was enlarged — cell 156 -> 208, cap 26 -> 37 — and a
@@ -75,6 +76,32 @@ const INTEGRATORS = {
   infosys: "Infosys.png",
   "oracle-consulting": "Oracle.png",
   // capgemini: committed directly as public/logos/integrators/capgemini.svg.
+};
+
+/**
+ * Round 14. The seven platform vectors this script otherwise never touches
+ * (see the header) are five committed SVGs, one hand-drawn RoleGlyph-style
+ * fallback, and Blue Yonder — a raster that shipped as an opaque plate with
+ * no real alpha, so src/data/home/place.ts declined it and fell back to the
+ * name. A real source arrived (BlueYonder.png). It goes through the SAME
+ * keying gate as every client mark rather than a hand-rolled second pass:
+ * the gate exists precisely to catch "looks fine, keys to a box" before it
+ * ships, and there is no reason a platform asset should skip the check a
+ * client asset cannot.
+ *
+ * The gate's RAIL_CELL/RAIL_CAP constants are calibrated for the rail, not
+ * the platform axis's smaller 26px inkCap (src/lib/mark-surfaces.json) — a
+ * mark that fails here would fail smaller too, but a pass here is not by
+ * itself proof of axis legibility. `pnpm run marks:measure -- --report`
+ * after this is what actually confirms the axis tolerance.
+ */
+const PLATFORMS = {
+  /* Icon-only sources, deliberately not the icon+wordmark lockups above —
+     Sumeet's correction: the axis shows a clean mark for every platform
+     (Oracle's ring, Workday's circle), and a wordmark baked into the source
+     file reads as illegible type at a 34px ink cap, not as a mark. */
+  "blue-yonder": "BlueYonder-icon.jpeg",
+  "informatica-icon": "Informatica-icon.png",
 };
 
 const missing = [];
@@ -330,7 +357,7 @@ async function convert(slug, file, outDir) {
     // mark that USED to pass keeps rendering from the stale file for ever:
     // Sephora was declined as a filled plate and still shipped as a black slab,
     // because the decision only ever added to a list and never cleaned up.
-    for (const dir of [OUT_CLIENTS, OUT_INTEGRATORS]) {
+    for (const dir of [OUT_CLIENTS, OUT_INTEGRATORS, OUT_PLATFORMS]) {
       const stale = join(dir, `${slug}.png`);
       if (existsSync(stale)) {
         rmSync(stale, { force: true });
@@ -388,6 +415,11 @@ for (const [slug, file] of Object.entries(CLIENTS)) {
 console.log("integrators:");
 for (const [slug, file] of Object.entries(INTEGRATORS)) {
   await convert(slug, file, OUT_INTEGRATORS);
+}
+
+console.log("platforms:");
+for (const [slug, file] of Object.entries(PLATFORMS)) {
+  await convert(slug, file, OUT_PLATFORMS);
 }
 
 console.log(
