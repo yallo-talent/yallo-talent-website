@@ -1,9 +1,12 @@
 name: Purge expired assistant transcripts
 on:
   schedule:
-    # Daily. Retention is stated as 12 months (src/lib/db/transcripts.ts);
-    # a schedule this frequent just keeps the lag between expiry and
-    # deletion small, not because the table grows fast.
+    # Daily. The retention window itself is src/lib/assistant/retention.json,
+    # the one number the purge, /privacy and the in-panel disclosure all
+    # derive from — deliberately not restated here, because a period written
+    # into a comment is a period that drifts. A schedule this frequent just
+    # keeps the lag between expiry and deletion small, not because the table
+    # grows fast.
     - cron: "15 3 * * *"
   workflow_dispatch: {}
 jobs:

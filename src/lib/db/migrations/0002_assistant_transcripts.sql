@@ -1,6 +1,8 @@
 -- One append-only row per assistant chat turn. Deliberately not part of the
 -- `submissions` family: `submissions` is the durable capture backstop and
--- must never lose a row, while a transcript has a stated 12-month retention
+-- must never lose a row, while a transcript has a stated retention window
+-- (src/lib/assistant/retention.json, not restated here — a period written
+-- into a comment is a period that drifts from the one being enforced)
 -- and must be purged on a schedule. Folding a purgeable row type into an
 -- append-only table forces the purge to distinguish row types inside the
 -- one store meant to be immutable — see docs/design/context-round14-scope.md

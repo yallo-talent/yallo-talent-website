@@ -1,16 +1,44 @@
 #!/usr/bin/env node
 // Deletes assistant_transcripts rows older than the stated retention
-// window (12 months, src/lib/db/transcripts.ts). Run on a schedule — see
+// window (src/lib/assistant/retention.json). Run on a schedule — see
 // .github/workflows/purge-transcripts.yml — never on a request path.
 // Requires DATABASE_URL in the environment:
 //   DATABASE_URL=postgres://... pnpm db:purge-transcripts
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { neon } from "@neondatabase/serverless";
 
-// Kept equal to src/lib/db/transcripts.ts's TRANSCRIPT_RETENTION_DAYS by
-// hand — this script runs as plain Node outside the Next.js path-aliased
-// build, the same reason db-migrate.mjs re-implements its own connection
-// rather than importing src/lib/db/client.ts.
-const RETENTION_DAYS = 365;
+// READ, not re-typed. This was "kept equal to src/lib/db/transcripts.ts by
+// hand", which is the copied-value defect this repository has now found nine
+// times — and the one place it is least affordable, because the copy that
+// drifts here does not render something wrong, it deletes the wrong rows.
+// A plain Node script cannot import a `.ts` module through the `@/` alias,
+// so the number lives in JSON that both sides read, the same arrangement
+// src/lib/mark-surfaces.json already uses across this boundary.
+const RETENTION_DAYS = JSON.parse(
+  readFileSync(
+    path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      "..",
+      "src",
+      "lib",
+      "assistant",
+      "retention.json",
+    ),
+    "utf8",
+  ),
+).transcriptRetentionDays;
+
+if (!Number.isFinite(RETENTION_DAYS) || RETENTION_DAYS <= 0) {
+  // Refuse rather than fall back. A missing or malformed window would make
+  // the interval below `now() - null`, and a delete with a null predicate is
+  // the failure mode that must never run unattended.
+  console.error(
+    `Refusing to purge: retention.json gave an unusable window (${RETENTION_DAYS}).`,
+  );
+  process.exit(1);
+}
 
 async function main() {
   const url = process.env.DATABASE_URL;

@@ -1,8 +1,14 @@
+import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
 import type { AssistantMessage } from "@/lib/assistant/schema";
 import { sql } from "./client";
 
-/** Stated in context-round14-scope.md §2.1: transcripts persist for 12 months. */
-export const TRANSCRIPT_RETENTION_DAYS = 365;
+/**
+ * Re-exported, not re-declared. The window is owned by
+ * `src/lib/assistant/retention.json` so that the purge, the privacy notice
+ * and the in-panel disclosure cannot disagree — context-round15-scope.md
+ * §2.1. Existing importers keep working through this name.
+ */
+export { TRANSCRIPT_RETENTION_DAYS };
 
 /**
  * Inserts one snapshot of the conversation so far. Never updates an

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { assistantDisclosureLine } from "@/lib/assistant/retention";
 import type { AssistantMessage } from "@/lib/assistant/schema";
 import { engagementLabel, regionLabel } from "@/lib/briefLabels";
 import type { BriefFormValues } from "@/lib/schemas";
@@ -185,16 +186,16 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
       <header className={styles.header}>
         <div className={styles.headerText}>
           <p className={styles.eyebrow}>Yallo Talent assistant</p>
-          {/* Single line, and true to what actually happens today: no
-              transcript store exists yet (context-round13-chatbot.md §6
-              requires 12-month retention once the flag is live for real
-              traffic, but that layer isn't built — round 13's relay logged
-              it as the pilot-gate blocker). Claiming retention that isn't
-              happening would be the false statement; saying it isn't saved
-              is the accurate one until that layer ships, at which point
-              this line updates to match, not the other way round. */}
+          {/* ROUND 15, §2.1: that layer has since shipped, so this line now
+              says so — and says it by derivation rather than by hand. The
+              round 14 version read "Not saved", which was true on the branch
+              that wrote it and false the moment `assistant_transcripts`
+              merged alongside it. `assistantDisclosureLine` comes from the
+              same number the purge deletes on, so this cannot go stale
+              against the store a second time. */}
           <p className={styles.disclosure}>
-            Not saved. Details at <a href="/privacy">/privacy</a>.
+            {assistantDisclosureLine} Details at <a href="/privacy">/privacy</a>
+            .
           </p>
         </div>
         <button
