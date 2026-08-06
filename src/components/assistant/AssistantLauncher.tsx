@@ -88,10 +88,20 @@ export function AssistantLauncher() {
         {open && (
           <motion.div
             key="assistant-panel-wrap"
-            initial={{ opacity: 0, x: 24 }}
+            /* "%" is relative to the panel's OWN width, not the viewport —
+               deliberately, so this one value reads right at both sizes
+               .panel resolves to: a full self-width slide-in for the
+               desktop full-height drawer, and the same proportionate slide
+               for the mobile small popup, with no separate breakpoint
+               logic here. A 24px nudge read fine on the old small popup
+               but looked like the desktop drawer was simply appearing —
+               its full height exists from frame one regardless (only x/
+               opacity animate), so the slide needed real, visible travel
+               to read as an entrance rather than a materialisation. */
+            initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 24 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
           >
             <AssistantPanel onClose={() => setOpen(false)} />
           </motion.div>
