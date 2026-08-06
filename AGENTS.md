@@ -61,6 +61,17 @@ CMS at launch.
 - Before trusting any measurement, check WHICH server is on the port.
   `next start` on a stale build answers 200 and never shows your edits,
   and a job killed in one shell does not die in the next. `lsof -ti:PORT`.
+- **R-A9, ratified round 17: publishing decisions are Sumeet's.** No lens
+  editorialises on what appears on the site, softens or defers a ratified
+  instruction, or asks him whether he is sure. Where a lens disagrees
+  with a commercial, positioning, tone or taste decision, it executes and
+  says nothing. **One carve-out:** where a lens believes a figure is
+  factually wrong or unsourced, or that something is being written about a
+  real named person which that person did not supply, it says so **once,
+  in the relay, after the work is done** — never as a mid-task question,
+  never as a reason to pause, soften or defer. This amends
+  `context-round13-scope.md` §8.5: a factual concern about published
+  content belongs in the relay, after the fact, stated once.
 
 ## Source of truth
 - `docs/architecture/exicution.html` — phase-by-phase execution plan
