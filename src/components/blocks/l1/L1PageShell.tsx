@@ -41,9 +41,11 @@ interface Props {
 interface ShellProps extends Props {
   /** The four published metrics, read server-side. See L1StatsStrip. */
   metrics: MetricStat[];
+  /** Their one dated attribution line, composed server-side. Round 17 §2.2. */
+  metricsAttribution: string;
 }
 
-export function L1PageShell({ data, metrics }: ShellProps) {
+export function L1PageShell({ data, metrics, metricsAttribution }: ShellProps) {
   const hasScarce =
     Boolean(data.scarceRoles) && (data.scarceRoles?.length ?? 0) > 0;
   /**
@@ -84,7 +86,7 @@ export function L1PageShell({ data, metrics }: ShellProps) {
        said it was for ("this lives on bands and panel edges"). */
     <div className={`${styles.page} amb-1`} data-identity={data.slug}>
       <L1Hero data={data} />
-      <L1StatsStrip metrics={metrics} />
+      <L1StatsStrip metrics={metrics} attribution={metricsAttribution} />
       {/* The sub-nav and the sections it navigates share one containing block,
           and that is the fix for a measured occlusion rather than tidying. A
           sticky element sticks for the length of its containing block, so as a
@@ -224,7 +226,21 @@ function L1Hero({ data }: Props) {
  * import because this is a client component and the loader reads the file
  * system; a server parent passes them, so they are still in the markup.
  */
-export function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
+export function L1StatsStrip({
+  metrics,
+  attribution,
+}: {
+  metrics: MetricStat[];
+  /**
+   * The one dated attribution line, round 17 §2.2, composed in
+   * src/data/metrics.ts. REQUIRED rather than optional on purpose: this is a
+   * client component and the composer reads the file system, so the string has
+   * to arrive as a prop — and an optional prop is how eleven pages lose their
+   * attribution with nothing to notice. Required makes a missed call site a
+   * type error instead.
+   */
+  attribution: string;
+}) {
   return (
     <section className={styles.statsStrip}>
       <dl className={styles.statsInner}>
@@ -239,6 +255,7 @@ export function L1StatsStrip({ metrics }: { metrics: MetricStat[] }) {
           </div>
         ))}
       </dl>
+      <p className={styles.statsSource}>{attribution}</p>
     </section>
   );
 }

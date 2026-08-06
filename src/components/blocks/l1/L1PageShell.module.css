@@ -438,6 +438,22 @@
   border-right: none;
 }
 
+/* The one dated attribution beneath the strip — round 17 §2.2. Sits OUTSIDE the
+   four-column grid, centred with the cells, because a fifth grid child would
+   either claim a column or force a full-width row inside a <dl> whose children
+   are all term/definition groups. Sentence case for the same reason as the
+   homepage's .metricsSource: uppercase mono at 0.12em turns one quiet line into
+   the loudest thing in the band. */
+.statsSource {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 32px) 22px;
+  text-align: center;
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--fg-subtle);
+}
+
 /* The same four metrics the homepage publishes, so the same house treatment:
    display serif at --fs-numeral, mono label, definition beneath. It previously
    used a literal clamp and a sans 800 weight, which made the identical figures

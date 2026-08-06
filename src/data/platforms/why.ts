@@ -1,4 +1,5 @@
 import type { WhyPoint } from "@/components/blocks/platform/WhyRail";
+import { publishedFigure } from "@/data/metrics";
 import type { PlatformCoverage } from "@/data/platforms/derive";
 
 /**
@@ -34,13 +35,13 @@ export function whyPoints(cov: PlatformCoverage): WhyPoint[] {
       kicker: "Screened by specialists",
       title: "Read by someone who has run the programme",
       body: "A specialist desk screens for implementation depth and delivery risk, never keyword match, and the reasons the others were rejected come attached to the shortlist.",
-      figure: { value: "2:1", label: "CVs per interview" },
+      figure: publishedFigure("CVs per interview"),
     },
     {
       kicker: "Terms in writing",
       title: "Four ways to contract, one screening standard",
       body: "Contract, Permanent, Employer of Record or Managed Delivery. The work is the same; what changes is who carries the contract, the visa and the notice period.",
-      figure: { value: "80%", label: "Contracts renewed" },
+      figure: publishedFigure("Contracts renewed"),
     },
     {
       kicker: "In region, at pace",
@@ -48,7 +49,7 @@ export function whyPoints(cov: PlatformCoverage): WhyPoint[] {
         ? `Placed into ${sectorLine} programmes`
         : "Placed across the Middle East, Europe and India",
       body: "Four entities across London, Dubai, Riyadh and Bengaluru, so a specialist can start on your paper or ours without an entity of your own.",
-      figure: { value: "72h", label: "Brief to shortlist" },
+      figure: publishedFigure("Brief to shortlist"),
     },
   ];
 }

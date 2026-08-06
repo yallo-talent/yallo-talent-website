@@ -1107,6 +1107,18 @@
   position: relative;
 }
 
+/* The single dated attribution beneath the block — round 17 §2.2.
+   Sentence case, not the uppercase mono the site uses for one-word source
+   labels: this is a full sentence, and set in uppercase mono at 0.12em it runs
+   to two shouting lines and reads as the loudest thing in the section, which is
+   the opposite of what one quiet dated line is for. */
+.metricsSource {
+  margin-top: clamp(16px, 1.6vw, 22px);
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
 /* ==========================================================================
    5 · The screen — ghost numerals and a connector, carried from the previous
    build whose execution of this was stronger than the prototype's

@@ -27,7 +27,23 @@ export interface WhyPoint {
   figure?: { value: string; label: string };
 }
 
-export function WhyRail({ points }: { points: WhyPoint[] }) {
+export function WhyRail({
+  points,
+  attribution,
+}: {
+  points: WhyPoint[];
+  /**
+   * The one dated attribution for the canon §6 figures in this rail — round 17
+   * §2.2. Required, not optional: this rail publishes three of the four
+   * first-party metrics on eight platform pages, and it was doing so with no
+   * source and no date until check:metrics-attribution found it. An optional
+   * prop is how that happens again.
+   *
+   * Arrives as a prop because the composer reads the file system and this is a
+   * client component.
+   */
+  attribution: string;
+}) {
   const track = useRef<HTMLUListElement>(null);
   const [paused, setPaused] = useState(false);
   const [stopped, setStopped] = useState(false);
@@ -52,45 +68,48 @@ export function WhyRail({ points }: { points: WhyPoint[] }) {
   }, [paused, stopped]);
 
   return (
-    <ul
-      ref={track}
-      className={styles.track}
-      /* Below 900px this track scrolls, and SC 2.1.1 requires a scrollable
+    <>
+      <ul
+        ref={track}
+        className={styles.track}
+        /* Below 900px this track scrolls, and SC 2.1.1 requires a scrollable
          container to be keyboard operable. The cards' own links are reachable,
          but the container itself must take focus so arrow keys can scroll it. */
-      // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
-      tabIndex={0}
-      aria-label="Why Yallo, four points"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={() => setPaused(false)}
-      // Any deliberate scroll or drag ends the auto-advance for good: once the
-      // reader has taken control, taking it back is rude.
-      onPointerDown={() => setStopped(true)}
-      onKeyDown={() => setStopped(true)}
-      onWheel={() => setStopped(true)}
-    >
-      {points.map((p) => (
-        <li key={p.title} className={styles.card}>
-          <p className={styles.kicker}>{p.kicker}</p>
-          {/* A card title, not a document section. These four sat as <h3> with
+        // biome-ignore lint/a11y/noNoninteractiveTabindex: a scrollable container must be focusable to be keyboard scrollable; the rule does not model overflow
+        tabIndex={0}
+        aria-label="Why Yallo, four points"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onFocusCapture={() => setPaused(true)}
+        onBlurCapture={() => setPaused(false)}
+        // Any deliberate scroll or drag ends the auto-advance for good: once the
+        // reader has taken control, taking it back is rude.
+        onPointerDown={() => setStopped(true)}
+        onKeyDown={() => setStopped(true)}
+        onWheel={() => setStopped(true)}
+      >
+        {points.map((p) => (
+          <li key={p.title} className={styles.card}>
+            <p className={styles.kicker}>{p.kicker}</p>
+            {/* A card title, not a document section. These four sat as <h3> with
               no <h2> above them, so the page's outline skipped h1 -> h3 — a real
               structural defect that axe does not report, because heading-order is
               tagged best-practice and the run filters to WCAG tags. Demoted
               rather than promoted: a four-card rail is not four sections of the
               page, so inventing an <h2> to cover it would make the outline worse,
               not better. */}
-          <p className={styles.title}>{p.title}</p>
-          <p className={styles.body}>{p.body}</p>
-          {p.figure ? (
-            <p className={styles.figure}>
-              <span className={styles.figureValue}>{p.figure.value}</span>
-              <span className={styles.figureLabel}>{p.figure.label}</span>
-            </p>
-          ) : null}
-        </li>
-      ))}
-    </ul>
+            <p className={styles.title}>{p.title}</p>
+            <p className={styles.body}>{p.body}</p>
+            {p.figure ? (
+              <p className={styles.figure}>
+                <span className={styles.figureValue}>{p.figure.value}</span>
+                <span className={styles.figureLabel}>{p.figure.label}</span>
+              </p>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+      <p className={styles.source}>{attribution}</p>
+    </>
   );
 }

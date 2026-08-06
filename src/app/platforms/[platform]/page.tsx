@@ -12,6 +12,7 @@ import {
 } from "@/components/blocks/l1/L1PageShell";
 import { WhyRail } from "@/components/blocks/platform/WhyRail";
 import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
+import { metricsAttribution } from "@/data/metrics";
 import {
   getPlatformCoverage,
   publishedPlatformSlugs,
@@ -214,9 +215,13 @@ export default async function PlatformPage({
           </p>
 
           {/* The four-point why rail: the wedge, the screen, the terms, the
-              speed. Three figures are derived from this platform's own
-              coverage; the fourth is a canon §6 metric. Nothing unsourced. */}
-          <WhyRail points={whyPoints(cov)} />
+              speed. ONE figure is derived from this platform's own coverage (the
+              module count); the other three are canon §6 metrics, and they now
+              come from content/metrics.yaml rather than being typed into
+              src/data/platforms/why.ts. This comment previously said the reverse,
+              which is how three typed first-party figures went eight platform
+              pages without a source or a date. */}
+          <WhyRail points={whyPoints(cov)} attribution={metricsAttribution} />
 
           <div className={styles.ctaRow}>
             <Link className={styles.btnPrimary} href="/brief">

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PlatformModuleShell } from "@/components/blocks/platform/PlatformModuleShell";
-import { homeMetrics } from "@/data/metrics";
+import { homeMetrics, metricsAttribution } from "@/data/metrics";
 import { authoredPlatforms } from "@/data/platforms/authored";
 import {
   getPlatformModule,
@@ -94,6 +94,7 @@ export default async function PlatformModulePage({
       platform={hit.platform}
       module={hit.module}
       metrics={homeMetrics}
+      metricsAttribution={metricsAttribution}
       studies={studies}
     />
   );

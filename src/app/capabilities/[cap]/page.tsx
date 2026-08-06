@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { L1PageShell } from "@/components/blocks/l1/L1PageShell";
 import { capabilityRegistry } from "@/data/capabilities";
-import { homeMetrics } from "@/data/metrics";
+import { homeMetrics, metricsAttribution } from "@/data/metrics";
 import { buildMetadata } from "@/lib/seo";
 
 interface RouteParams {
@@ -30,5 +30,11 @@ export default async function CapabilityPage({ params }: PageProps) {
   const { cap } = await params;
   const data = capabilityRegistry[cap];
   if (!data) notFound();
-  return <L1PageShell data={data} metrics={homeMetrics} />;
+  return (
+    <L1PageShell
+      data={data}
+      metrics={homeMetrics}
+      metricsAttribution={metricsAttribution}
+    />
+  );
 }

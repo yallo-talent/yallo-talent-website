@@ -11,7 +11,11 @@ import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { aiRoleFamilies, screeningPoints } from "@/data/ai-talent";
 import { stackMatrixAssertion } from "@/data/ai-talent/stacks";
 import { aiCopy } from "@/data/home/intelligence";
-import { homeMetrics } from "@/data/metrics";
+import {
+  homeMetrics,
+  metricsAttribution,
+  publishedFigure,
+} from "@/data/metrics";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -99,7 +103,7 @@ const whyAi = [
     kicker: "Screened on evidence",
     title: "Read by someone who has shipped an agent",
     body: "Screening looks for evaluation discipline, retrieval design and cost control — the things that decide whether an AI build survives contact with production.",
-    figure: { value: "2:1", label: "CVs per interview" },
+    figure: publishedFigure("CVs per interview"),
   },
   {
     kicker: "On your existing stack",
@@ -110,7 +114,7 @@ const whyAi = [
     kicker: "In region, at pace",
     title: "Four entities, three demand markets",
     body: "London, Dubai, Riyadh and Bengaluru, so a specialist can start on your paper or ours without an entity of your own.",
-    figure: { value: "72h", label: "Brief to shortlist" },
+    figure: publishedFigure("Brief to shortlist"),
   },
 ];
 
@@ -179,7 +183,7 @@ export default function AiTalentPage() {
           was missing outright. Canon §6's four, from content/metrics.yaml via the
           same component every other L1 uses, so the quarterly refresh reaches
           this page too. It did not before. */}
-      <L1StatsStrip metrics={homeMetrics} />
+      <L1StatsStrip metrics={homeMetrics} attribution={metricsAttribution} />
 
       {/* The scope wraps the bar AND everything the bar indexes, which is the
           lesson the platform L1 paid for: `position: sticky` travels inside its
@@ -213,7 +217,7 @@ export default function AiTalentPage() {
               </figcaption>
             </figure>
 
-            <WhyRail points={whyAi} />
+            <WhyRail points={whyAi} attribution={metricsAttribution} />
           </div>
         </section>
 

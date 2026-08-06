@@ -34,12 +34,15 @@ export function PlatformModuleShell({
   platform,
   module,
   metrics,
+  metricsAttribution,
   studies = [],
   clients = [],
 }: {
   platform: PlatformCoverage;
   module: PlatformModule;
   metrics: MetricStat[];
+  /** Their one dated attribution line, composed server-side. Round 17 §2.2. */
+  metricsAttribution: string;
   /** Named placements without a published study. Supplied, never derived. */
   clients?: Array<{ name: string; market: string }>;
   /**
@@ -148,6 +151,11 @@ export function PlatformModuleShell({
             </div>
           ))}
         </dl>
+        {/* One dated attribution beneath the strip, round 17 §2.2 — the same
+            line the homepage and the L1 shells carry, composed from the four
+            `source` values rather than written, so a refresh cannot leave a
+            stale attribution behind on this template alone. */}
+        <p className={styles.statsSource}>{metricsAttribution}</p>
       </section>
 
       <section className={`${styles.section} amb-wash amb-2`}>

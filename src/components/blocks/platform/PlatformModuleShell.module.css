@@ -196,6 +196,19 @@
   margin: 0 auto;
 }
 
+/* The one dated attribution beneath the strip — round 17 §2.2. Outside the
+   four-column grid so it does not claim a column, and sentence case rather than
+   the site's uppercase mono source treatment, which is for one-word labels. */
+.statsSource {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 32px) 20px;
+  text-align: center;
+  font-size: var(--fs-caption);
+  line-height: 1.55;
+  color: var(--text-3);
+}
+
 .statCell {
   padding: 24px clamp(16px, 3vw, 32px);
   text-align: center;

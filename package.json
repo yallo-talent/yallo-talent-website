@@ -26,6 +26,7 @@
     "marks:measure": "node scripts/measure-marks.mjs",
     "logos": "node scripts/build-logos.mjs && node scripts/measure-marks.mjs",
     "check:crawlers": "node scripts/check-crawler-access.mjs",
+    "check:robots": "node scripts/check-robots-policy.mjs",
     "check:cs-excerpts": "node scripts/check-case-study-excerpts.mjs",
     "check:prose": "node scripts/check-prose-rules.mjs",
     "check:gate-coverage": "node scripts/check-gate-coverage.mjs",
@@ -44,7 +45,8 @@
     "research:dataset": "node scripts/build-research-dataset.mjs",
     "check:research-dataset": "node scripts/build-research-dataset.mjs --check",
     "research:pdf": "node scripts/build-research-pdf.mjs",
-    "check:asset-case": "node scripts/check-asset-case.mjs"
+    "check:asset-case": "node scripts/check-asset-case.mjs",
+    "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs"
   },
   "engines": {
     "node": "22.x",

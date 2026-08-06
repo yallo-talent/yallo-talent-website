@@ -5,15 +5,33 @@
 # Indian SIs.
 #
 # `definition` renders on the page beneath each value — a number that means
-# exactly one thing is the point. `source` and `asAt` are provenance for
-# whoever refreshes these and are deliberately NOT rendered: all four come from
-# internal delivery records, so a visible "Yallo internal record" line adds no
-# credibility while inviting a challenge we cannot answer publicly. Third-party
-# figures elsewhere on the site (the five persona statistics) do carry visible
-# sources, because there the citation *is* the credibility.
+# exactly one thing is the point.
+#
+# `source` and `asAt` render too, ONCE, as a single compact attribution line
+# beneath the block: round 17 §2.2. Four visible "Yallo internal record" labels
+# read as defensive and invite a challenge we cannot answer publicly; no
+# attribution at all leaves the site's only first-party figures unsourced,
+# against canon and against the whole finding of the Phase 1 benchmark — every
+# firm in this category publishes claims nobody can attribute, so a DATED
+# first-party number is the one proof asset they do not have. The line is
+# composed from these fields by src/lib/metrics-attribution.ts and never typed
+# as prose, so it cannot survive a refresh that changes them.
+#
+# Third-party figures elsewhere on the site (the five persona statistics) carry
+# their own visible sources, because there the citation *is* the credibility.
 #
 # Refreshed quarterly. Update asAt whenever any value changes.
+#
+# asAt does NOT move to the go-live date — round 17 §2.2. Moving it would assert
+# the figures were pulled then. Re-pull all four at cutover and set the real
+# pull date; if they cannot be re-pulled, this stands and reads a month old,
+# which is normal.
 asAt: 2026-07-30
+
+# The role that re-pulls these, never a personal name — round 17 §2.2. Nobody is
+# recorded against a quarterly commitment they have not made. Sumeet may replace
+# it with a name in one line. Not rendered.
+refreshOwner: Head of Talent Acquisition
 metrics:
   - target: 72
     suffix: h

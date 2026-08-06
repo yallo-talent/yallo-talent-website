@@ -1,5 +1,5 @@
 import { metricsCopy } from "@/data/home/screen";
-import { homeMetrics } from "@/data/metrics";
+import { homeMetrics, metricsAttribution } from "@/data/metrics";
 import styles from "./Home.module.css";
 import { MetricValue } from "./MetricValue";
 import { SectionHead } from "./SectionHead";
@@ -12,7 +12,9 @@ import { SectionHead } from "./SectionHead";
  * thin client wrapper that animates *from* zero after hydration, and only when
  * motion is permitted.
  *
- * No source lines and no "as at" date render — see content/metrics.yaml for why.
+ * One dated attribution line renders beneath the block, naming each of the four
+ * records once — round 17 §2.2, composed rather than typed. Not four labels, and
+ * not silence. See src/lib/metrics-attribution.ts.
  */
 export function Metrics() {
   return (
@@ -37,6 +39,8 @@ export function Metrics() {
             </div>
           ))}
         </dl>
+
+        <p className={styles.metricsSource}>{metricsAttribution}</p>
       </div>
     </section>
   );

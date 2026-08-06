@@ -54,6 +54,16 @@ jobs:
       - name: Build
         run: pnpm build
 
+      # robots.ts branches on NEXT_PUBLIC_SITE_URL, which is inlined at build
+      # time, so this build is the non-production branch — the posture every
+      # preview and the talent.yallo.co placeholder ship. It had never been
+      # asserted either: reviewed in source, never compared against emitted
+      # output. Reads the built artefact, so it costs nothing beyond the build
+      # already above it. The production branch cannot be asserted from this
+      # build at all and has its own workflow, robots-policy.yml.
+      - name: Robots policy (non-production branch, as emitted)
+        run: pnpm check:robots
+
       - run: pnpm exec playwright install --with-deps chromium
 
       # Round 7 found Tailwind preflight had killed <ul> markers on every
@@ -182,6 +192,17 @@ jobs:
       # destination, then reverting.
       - name: No internal link resolves through a redirect
         run: node scripts/check-no-redirect-hops.mjs http://localhost:3100
+
+      # Round 17 §2.2: the four published figures never appear without one dated
+      # attribution, and every surface carries the SAME one. Proved red on real
+      # defects the moment it was written — seven /platforms/* pages were
+      # publishing three of the four as first-party claims with no source and no
+      # date, from figures TYPED into src/data/platforms/why.ts where the
+      # quarterly refresh could never reach them. tsc protects the four templates
+      # that take the line as a required prop; this is what protects the next
+      # template nobody remembers to add.
+      - name: Metrics attribution (one dated line, every publishing page)
+        run: node scripts/check-metrics-attribution.mjs http://localhost:3100
 
       - name: Upload captures on failure
         if: failure()
