@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState, useSyncExternalStore } from "react";
 import {
   ASSISTANT_LAUNCHER_ID,
+  FOOTER_SELECTOR,
   STICKY_BRIEF_CTA_SELECTOR,
 } from "@/components/layout/floating-affordances";
 import { ASSISTANT_ENABLED } from "@/lib/assistant/flag";
@@ -58,6 +59,62 @@ function getServerStickyCtaCollisionSnapshot(): boolean {
   return false;
 }
 
+/* ── The footer yield, round 16 ────────────────────────────────────────────
+   R-A1 turned the assistant on, and that made a second collision real that
+   the flag had been hiding. Measured at 1280: the fab sits exactly on the
+   footer's "Terms" link, and `elementFromPoint` at the link's centre returns
+   the fab, so the link is unreachable by pointer — WCAG 2.2 SC 2.4.11.
+   `check-interaction` caught it on /leadership and on the new synthesis page;
+   it is on every page carrying this footer.
+
+   The yield above is mobile-only and keyed to StickyBriefCTA, so it never
+   applied. This is the same idiom with a different partner and no width
+   condition, because the collision has none.
+
+   IntersectionObserver rather than a scroll handler: the question is "is the
+   footer on screen", which is exactly what it answers, and it does not run
+   work on every scroll frame. The observer is created inside `subscribe` so
+   it is torn down with the subscription, and the snapshot is a plain boolean
+   ref read — useSyncExternalStore requires getSnapshot to be cheap and
+   stable, and computing a rect inside it would return a new value on every
+   call and loop. */
+let footerVisible = false;
+
+function subscribeFooterCollision(onChange: () => void): () => void {
+  const footer = document.querySelector(FOOTER_SELECTOR);
+  if (!footer) {
+    /* No footer on this page: nothing to yield to, and the launcher must not
+       silently disappear because a selector missed. */
+    footerVisible = false;
+    return () => {};
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const next = entry.isIntersecting;
+      if (next !== footerVisible) {
+        footerVisible = next;
+        onChange();
+      }
+    },
+    { threshold: 0 },
+  );
+  observer.observe(footer);
+  return () => {
+    observer.disconnect();
+    footerVisible = false;
+  };
+}
+
+function getFooterCollisionSnapshot(): boolean {
+  return footerVisible;
+}
+
+function getServerFooterCollisionSnapshot(): boolean {
+  return false;
+}
+
 /**
  * The deferred island's mount point. Flag off by default (context-round13-
  * chatbot.md §3: "ships dark") — the check happens here too, in addition to
@@ -76,8 +133,18 @@ export function AssistantLauncher() {
     getStickyCtaCollisionSnapshot,
     getServerStickyCtaCollisionSnapshot,
   );
+  const yieldToFooter = useSyncExternalStore(
+    subscribeFooterCollision,
+    getFooterCollisionSnapshot,
+    getServerFooterCollisionSnapshot,
+  );
 
+  /* The panel is exempt from the footer yield: if a visitor has the assistant
+     OPEN and scrolls to the bottom, tearing the conversation off the screen
+     would be a far worse failure than the overlap this avoids. The yield
+     applies to the resting fab, which is the thing that covers the link. */
   if (!ASSISTANT_ENABLED || yieldToStickyCta) return null;
+  if (yieldToFooter && !open) return null;
 
   return (
     <>

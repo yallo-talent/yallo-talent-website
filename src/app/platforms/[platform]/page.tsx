@@ -18,6 +18,7 @@ import {
 } from "@/data/platforms/derive";
 import { platformNarrative } from "@/data/platforms/narrative";
 import { whyPoints } from "@/data/platforms/why";
+import { researchForDesk, researchHref } from "@/data/research";
 import { buildMetadata } from "@/lib/seo";
 import { deriveLinkLabels } from "@/lib/taxonomy-links";
 
@@ -89,6 +90,7 @@ export default async function PlatformPage({
      null and each band is gated on it, so the six others render exactly as
      they did before. */
   const nar = platformNarrative(platform);
+  const ownResearch = researchForDesk(`/platforms/${platform}`);
 
   /* Modules grouped by the vendor's current application family.
 
@@ -590,18 +592,20 @@ export default async function PlatformPage({
       {/* READ NEXT. Retail routes onward and SAP ended on its own ask, which
           makes the deepest page on the site a cul-de-sac. Every href is checked
           by the full-site link crawl. */}
-      {nar ? (
+      {nar || ownResearch ? (
         <section className={`${styles.section} ${styles.g2}`} id="read-next">
           <div className={styles.wrap}>
             <SectionHead
               eyebrow="Read next"
-              heading={nar.related.title}
+              heading={
+                nar?.related.title ?? "What we have measured about this."
+              }
               id="read-next-heading"
             />
             <ul className={styles.logos}>
               {/* Labels from the index that owns each href; authored labels
                   survive where the href is not a taxonomy route. */}
-              {deriveLinkLabels(nar.related.links).map((l) => (
+              {deriveLinkLabels(nar?.related.links ?? []).map((l) => (
                 <li key={l.href}>
                   <Link className={styles.btnSecondary} href={l.href}>
                     {l.label}
@@ -609,6 +613,21 @@ export default async function PlatformPage({
                   </Link>
                 </li>
               ))}
+              {/* The platform's own research piece, DERIVED from the shared
+                  slug rather than authored into `related` on either side. A
+                  platform with no piece gets no link, and the band still
+                  renders for a platform that has a piece but no narrative. */}
+              {ownResearch ? (
+                <li key={researchHref(ownResearch.slug)}>
+                  <Link
+                    className={styles.btnSecondary}
+                    href={researchHref(ownResearch.slug)}
+                  >
+                    {ownResearch.cardTitle}
+                    <ArrowGlyph />
+                  </Link>
+                </li>
+              ) : null}
             </ul>
           </div>
         </section>

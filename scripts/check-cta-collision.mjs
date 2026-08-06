@@ -39,7 +39,15 @@ const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3100";
    is identical on every route; what varies is document height, and the only
    thing that matters is that the page is tall enough for StickyBriefCTA to
    appear at all. These three are the tallest templates the site has. */
-const ROUTES = ["/", "/industries/retail", "/platforms/sap"];
+/* /intelligence/research/oracle added round 16: a new long-scrolling
+   template, so the assistant launcher and the sticky brief CTA meet on it
+   exactly as they do on the three originals. */
+const ROUTES = [
+  "/",
+  "/industries/retail",
+  "/platforms/sap",
+  "/intelligence/research/oracle",
+];
 
 /* StickyBriefCTA.tsx's own thresholds, restated as the SCROLL TARGET rather
    than as a copy of its logic: this gate does not decide when the prompt

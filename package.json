@@ -40,7 +40,10 @@
     "check:assistant-terms": "node scripts/check-assistant-terms.mjs",
     "check:assistant-bundle": "node scripts/check-assistant-bundle.mjs",
     "check:assistant-a11y": "node scripts/check-assistant-a11y.mjs",
-    "check:cta-collision": "node scripts/check-cta-collision.mjs"
+    "check:cta-collision": "node scripts/check-cta-collision.mjs",
+    "research:dataset": "node scripts/build-research-dataset.mjs",
+    "check:research-dataset": "node scripts/build-research-dataset.mjs --check",
+    "research:pdf": "node scripts/build-research-pdf.mjs"
   },
   "engines": {
     "node": "22.x",

@@ -53,10 +53,30 @@ async function askOnce(prompt) {
 
 async function main() {
   const failures = [];
+  /* Counted, not assumed. The success line used to report
+     SAMPLE_QUESTIONS.length regardless of how many replies were actually
+     examined, which is how it once printed "3 sampled generated replies"
+     clean when all three were the 502 error string. */
+  let inspected = 0;
 
   for (const prompt of SAMPLE_QUESTIONS) {
     const body = await askOnce(prompt);
-    if (!body.ok || body.reply?.type !== "text") continue;
+
+    /* ROUND 16, context-round16-scope.md §2.6. This was `continue`, so a run
+       that never reached the model skipped every assertion and then reported
+       success. A gate that asserts a clean result about output it never saw
+       is worse than a missing gate: the missing one is at least visible.
+       An unusable reply now FAILS. It does not warn and it does not skip. */
+    if (!body.ok || body.reply?.type !== "text") {
+      failures.push({
+        prompt,
+        label: `no usable reply to assert on (ok=${body.ok}, type=${body.reply?.type ?? "none"})${body.error ? `, error: ${body.error}` : ""}`,
+        text: JSON.stringify(body).slice(0, 200),
+      });
+      continue;
+    }
+
+    inspected += 1;
     const text = body.reply.text;
     for (const [pattern, label] of BANNED_TERMS) {
       if (pattern.test(text)) {
@@ -66,14 +86,18 @@ async function main() {
   }
 
   if (failures.length) {
-    console.error(`\n${failures.length} terminology failure(s) in generated output:\n`);
+    console.error(
+      `\n${failures.length} terminology failure(s) in generated output:\n`,
+    );
     for (const f of failures) {
       console.error(`  [${f.prompt}] ${f.label}\n    ${f.text.slice(0, 150)}`);
     }
     process.exit(1);
   }
 
-  console.log(`No banned terminology in ${SAMPLE_QUESTIONS.length} sampled generated replies.`);
+  console.log(
+    `No banned terminology in ${inspected} of ${SAMPLE_QUESTIONS.length} sampled generated replies, all of which reached the model.`,
+  );
 }
 
 main().catch((err) => {

@@ -4,6 +4,7 @@ import styles from "@/components/blocks/home/Home.module.css";
 import { ArrowGlyph } from "@/components/blocks/home/icons";
 import { SectionHead } from "@/components/blocks/home/SectionHead";
 import { BLUEPRINT_BASE } from "@/data/blueprint";
+import { RESEARCH_BASE } from "@/data/research";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -30,6 +31,11 @@ export const metadata: Metadata = buildMetadata({
 });
 
 const entries = [
+  {
+    href: RESEARCH_BASE,
+    title: "Talent research",
+    copy: "What the enterprise platform talent pools across the UK, Saudi Arabia and the UAE actually look like, family by family, and what each one means for staffing a programme.",
+  },
   {
     href: BLUEPRINT_BASE,
     title: "Programme Staffing Blueprint",

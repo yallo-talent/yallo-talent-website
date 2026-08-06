@@ -1,0 +1,100 @@
+/*
+ * Print sheet for the generated PDF.
+ *
+ * Deliberately its own stylesheet rather than the site's page chrome: the
+ * output is an A4 document, not a screenshot of a web page, so it wants
+ * document margins, a serif reading measure and no navigation. Colours are
+ * still Layer 1 aliases — a PDF that invented its own palette would be the
+ * same second-copy defect one layer down.
+ *
+ * Printed by scripts/build-research-pdf.mjs via Playwright's page.pdf().
+ */
+
+.sheet {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 28px;
+  background: var(--ground);
+  color: var(--text);
+}
+
+.cover {
+  border-bottom: 1px solid var(--boundary);
+  padding-bottom: 28px;
+  margin-bottom: 32px;
+  break-after: page;
+}
+
+.brand {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+  margin-bottom: 20px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-headline);
+  line-height: 1.12;
+  color: var(--text);
+  margin-bottom: 20px;
+  text-wrap: balance;
+}
+
+.standfirst {
+  font-size: var(--fs-lede);
+  line-height: 1.5;
+  color: var(--text-2);
+  margin-bottom: 20px;
+  text-wrap: pretty;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+
+.block {
+  margin-bottom: 30px;
+  break-inside: avoid-page;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 14px;
+  break-after: avoid-page;
+  text-wrap: balance;
+}
+
+.p {
+  font-size: var(--fs-body-sm);
+  line-height: 1.62;
+  color: var(--text-2);
+  margin-bottom: 12px;
+  text-wrap: pretty;
+  orphans: 2;
+  widows: 2;
+}
+
+.foot {
+  border-top: 1px solid var(--boundary);
+  padding-top: 18px;
+  margin-top: 32px;
+}
+
+@media print {
+  .sheet {
+    padding: 0;
+  }
+}

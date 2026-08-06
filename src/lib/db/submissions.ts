@@ -1,6 +1,12 @@
 import { sql } from "./client";
 
-export type SubmissionEndpoint = "brief" | "cv";
+/**
+ * "research" is the capture table's third consumer, per round 14's brief §5:
+ * no second form, no second store, no second delivery path. The table's
+ * `endpoint` column is free text and already indexed, so this needs no
+ * migration — only that the union stops excluding the new value.
+ */
+export type SubmissionEndpoint = "brief" | "cv" | "research";
 
 export interface RecordSubmissionInput {
   endpoint: SubmissionEndpoint;

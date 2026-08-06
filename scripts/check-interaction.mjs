@@ -39,6 +39,10 @@ const PAGES = [
   "/capabilities/data-analytics",
   "/industries/retail",
   "/leadership",
+  /* Added round 16. The synthesis page carries the research gate, which is
+     the round's only new interactive surface: three inputs and a submit, all
+     of which have to clear the 24px target floor. */
+  "/intelligence/research/corridor",
 ];
 
 /** Tab stops allowed before the header's primary CTA. */

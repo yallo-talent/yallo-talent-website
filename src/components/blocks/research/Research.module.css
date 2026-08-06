@@ -1,0 +1,319 @@
+/*
+ * Research family — the bar chart, the piece body, the method note, the gate.
+ *
+ * Every colour is a theme-resolved Layer 1 alias (--info-mark, --signal-mark,
+ * --text-*, --hairline, --boundary) and every size is a step on the --fs-*
+ * ramp. No hex value and no invented token: the first draft of this file
+ * reached for a --s-4 spacing scale and an --r-3 radius that do not exist in
+ * this codebase, which resolve to nothing and fail silently. Spacing is
+ * literal px here because that is what every other module does.
+ *
+ * The chart's tone is set on the figure and read by the fill, so a chart
+ * changes series colour by changing one data field rather than by a component
+ * picking a colour.
+ */
+
+.chart {
+  margin: 34px 0;
+  container-type: inline-size;
+}
+
+.chartTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.chartCaption {
+  caption-side: top;
+  text-align: left;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--text-2);
+  padding-bottom: 14px;
+  text-wrap: pretty;
+}
+
+.barRow,
+.barRowKey {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.barRow:last-child,
+.barRowKey:last-child {
+  border-bottom: 0;
+}
+
+.barLabel {
+  width: 42%;
+  text-align: left;
+  font-weight: var(--fw-body);
+  font-size: var(--fs-body-sm);
+  line-height: 1.45;
+  color: var(--text-2);
+  padding: 12px 16px 12px 0;
+  vertical-align: middle;
+  text-wrap: pretty;
+}
+
+.barRowKey .barLabel {
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.barCell {
+  padding: 12px 0;
+  vertical-align: middle;
+}
+
+/*
+ * The track is the full column; the fill takes the row's own --bar width.
+ * The track is drawn faintly so a short bar still reads as a share of
+ * something rather than as a stray mark.
+ */
+.barTrack {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 10px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--hairline) 55%, transparent);
+  overflow: hidden;
+}
+
+.barFill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--bar, 0%);
+  border-radius: var(--r-pill);
+  background: var(--info-mark);
+  opacity: 0.55;
+}
+
+.chart[data-tone="signal"] .barFill {
+  background: var(--signal-mark);
+}
+
+.barRowKey .barFill {
+  opacity: 1;
+}
+
+/*
+ * A zero bar paints nothing, which reads as a rendering fault rather than as
+ * the finding. Commerce Cloud in Saudi Arabia is zero and it is the sharpest
+ * number on that page, so a zero gets a visible stub and keeps its label.
+ */
+.barTrack[data-zero] .barFill {
+  width: 2px;
+  opacity: 1;
+}
+
+.barValue {
+  width: 5.5rem;
+  text-align: right;
+  padding: 12px 0 12px 16px;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.chart[data-tone="signal"] .barRowKey .barValue {
+  color: var(--signal-text);
+}
+
+.chart[data-tone="info"] .barRowKey .barValue {
+  color: var(--info-text);
+}
+
+.chartNote {
+  margin-top: 14px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-3);
+  text-wrap: pretty;
+}
+
+@container (max-width: 34rem) {
+  .chartTable,
+  .barRow,
+  .barRowKey,
+  .barLabel,
+  .barCell,
+  .barValue {
+    display: block;
+    width: auto;
+  }
+
+  .barRow,
+  .barRowKey {
+    padding: 12px 0;
+  }
+
+  .barLabel {
+    padding: 0 0 8px;
+  }
+
+  .barCell {
+    padding: 0;
+  }
+
+  .barValue {
+    text-align: left;
+    padding: 8px 0 0;
+  }
+}
+
+/* ── Piece body ─────────────────────────────────────────────────────────── */
+
+.standfirst {
+  font-size: var(--fs-lede);
+  line-height: 1.55;
+  color: var(--text-2);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.body {
+  max-width: 62ch;
+}
+
+.body p {
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+  margin-bottom: 18px;
+  text-wrap: pretty;
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+.sectionHeading {
+  font-size: var(--fs-title);
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 16px;
+  text-wrap: balance;
+}
+
+.sectionBlock {
+  margin-bottom: clamp(40px, 5vw, 68px);
+}
+
+.sectionBlock:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Method note ────────────────────────────────────────────────────────── */
+
+.method {
+  max-width: 68ch;
+  padding: 0;
+  list-style: none;
+}
+
+.method li {
+  font-size: var(--fs-body-sm);
+  line-height: 1.65;
+  color: var(--text-3);
+  padding-left: 18px;
+  position: relative;
+  margin-bottom: 12px;
+  text-wrap: pretty;
+}
+
+.method li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1px;
+  background: var(--boundary);
+}
+
+.asAt {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ── Index cards ────────────────────────────────────────────────────────── */
+
+.coverage {
+  max-width: 62ch;
+  font-size: var(--fs-body-sm);
+  line-height: 1.65;
+  color: var(--text-3);
+  text-wrap: pretty;
+}
+
+/* ── The gate ───────────────────────────────────────────────────────────── */
+
+.gate {
+  border: 1px solid var(--boundary);
+  border-radius: var(--r-sm);
+  padding: clamp(24px, 3vw, 36px);
+  max-width: 34rem;
+}
+
+.gateField {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.gateLabel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 8px;
+}
+
+.gateInput {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 12px;
+  font: inherit;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+  background: var(--ground-2);
+  border: 1px solid var(--boundary);
+  border-radius: var(--r-xs);
+}
+
+.gateInput:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.gateStatus {
+  margin-top: 16px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.gateError {
+  color: var(--signal-text);
+}
+
+.gateNote {
+  margin-top: 12px;
+  font-size: var(--fs-caption);
+  line-height: 1.6;
+  color: var(--text-3);
+  max-width: 62ch;
+}

@@ -46,3 +46,26 @@ export const ASSISTANT_LAUNCHER_ID = "assistant-launcher";
 
 /** Derived, same reason as above. */
 export const ASSISTANT_LAUNCHER_SELECTOR = `#${ASSISTANT_LAUNCHER_ID}`;
+
+/**
+ * The site footer's handle — the THIRD surface in this contract, added in
+ * round 16 because turning the assistant on (R-A1) made a second collision
+ * real that the flag had been hiding.
+ *
+ * Measured at 1280 with the flag on: the launcher's fab sits exactly on top
+ * of the footer's "Terms" link. `document.elementFromPoint` at the link's
+ * centre returns the fab's label span, so the link is not merely overlapped
+ * but entirely unreachable by pointer — WCAG 2.2 SC 2.4.11. It is on every
+ * page that has this footer, not the two `check-interaction` happens to
+ * enumerate; those two are where it was seen.
+ *
+ * The existing yield is mobile-only and keyed to StickyBriefCTA, so it never
+ * applied here. Same idiom, different partner: the launcher stands down while
+ * the footer is on screen, at every width. Nothing about the footer changes,
+ * which keeps the round-15 rule that a floating surface yields rather than
+ * making the thing underneath move.
+ */
+export const FOOTER_ID = "site-footer";
+
+/** Derived, same reason as above. */
+export const FOOTER_SELECTOR = `#${FOOTER_ID}`;

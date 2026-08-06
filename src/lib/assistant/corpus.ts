@@ -33,6 +33,14 @@ import {
   publishedModuleParams,
   publishedPlatformSlugs,
 } from "@/data/platforms/derive";
+import { RESEARCH_BASE, researchHref, researchPieces } from "@/data/research";
+import { LTI_AS_AT_DISPLAY } from "@/data/research/dataset";
+import {
+  SYNTHESIS_SLUG,
+  synthesisStandfirst,
+  synthesisSummary,
+  synthesisTitle,
+} from "@/data/research/synthesis";
 import { contractData } from "@/data/services/contract";
 import { eorData } from "@/data/services/eor";
 import { managedDeliveryData } from "@/data/services/managed-delivery";
@@ -203,6 +211,48 @@ function buildBlueprintDocs(published: Set<string>): CorpusDocument[] {
     }));
 }
 
+/**
+ * The research family.
+ *
+ * `facts` carries each piece's conclusion and its section headings, not its
+ * figures. That is deliberate and it is the same rule the rest of this module
+ * follows: the assistant should be able to say what a piece concludes and
+ * send the reader to it, and a figure quoted into a conversation arrives
+ * without the method note that governs it. The measurements are on the page,
+ * with their caveats attached, which is where they can be checked.
+ */
+function buildResearchDocs(published: Set<string>): CorpusDocument[] {
+  const pieces = researchPieces
+    .map((piece) => [researchHref(piece.slug), piece] as const)
+    .filter(([path]) => published.has(path))
+    .map(([path, piece]) => ({
+      path,
+      title: piece.title,
+      shortName: piece.cardTitle,
+      summary: piece.standfirst,
+      facts: [
+        piece.conclusion,
+        ...piece.sections.map((s) => s.heading),
+        `Measured as at ${LTI_AS_AT_DISPLAY}. Skills are self-declared and counts within a family overlap.`,
+      ],
+    }));
+
+  const synthesisPath = `${RESEARCH_BASE}/${SYNTHESIS_SLUG}`;
+  const synthesis = published.has(synthesisPath)
+    ? [
+        {
+          path: synthesisPath,
+          title: synthesisTitle,
+          shortName: "the cross-market synthesis",
+          summary: synthesisStandfirst,
+          facts: synthesisSummary,
+        },
+      ]
+    : [];
+
+  return [...pieces, ...synthesis];
+}
+
 function buildCaseStudyDocs(published: Set<string>): CorpusDocument[] {
   return getAllCaseStudies()
     .filter((entry) => published.has(`/case-studies/${entry.frontmatter.slug}`))
@@ -351,6 +401,7 @@ export function buildAssistantCorpus(): CorpusDocument[] {
     ...buildAiTalentDocs(published),
     ...buildServiceDocs(published),
     ...buildBlueprintDocs(published),
+    ...buildResearchDocs(published),
     ...buildCaseStudyDocs(published),
     ...buildInsightDocs(published),
   ].filter(

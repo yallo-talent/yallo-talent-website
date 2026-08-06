@@ -7,6 +7,7 @@ import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { PetalPlate } from "@/components/ui/PetalPlate";
 import type { L1IconKey, L1PageData } from "@/data/l1/types";
 import type { MetricStat } from "@/data/metrics";
+import { researchForDesk, researchHref } from "@/data/research";
 import { routeExists } from "@/lib/routes";
 import { deriveSectorRail } from "@/lib/sectors";
 import { deriveLinkLabels } from "@/lib/taxonomy-links";
@@ -1132,6 +1133,20 @@ function L1ReadNext({ data }: Props) {
     else if (r.category === "Capability") buckets.Capability.push(r);
     else if (r.category === "Blueprint" || r.category === "Intelligence")
       buckets.Intelligence.push(r);
+  }
+
+  /* The desk's own research piece, DERIVED from the desk's slug rather than
+     authored into `related`. A research piece and its desk share a slug
+     precisely so this link does not have to be typed on either side, and a
+     hand-typed pair is the defect class this repository has now paid for on
+     every taxonomy it owns. A desk with no piece gets no link. */
+  const ownResearch = researchForDesk(`/${data.category}/${data.slug}`);
+  if (ownResearch) {
+    buckets.Intelligence.push({
+      href: researchHref(ownResearch.slug),
+      label: ownResearch.cardTitle,
+      category: "Intelligence",
+    });
   }
   const rails: { label: string; items: typeof data.related }[] = [
     { label: "Adjacent industries", items: buckets.Industry },

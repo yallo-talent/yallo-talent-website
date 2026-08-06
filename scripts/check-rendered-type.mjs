@@ -94,6 +94,15 @@ const PAGES = [
      assumed clean by family resemblance. AGENTS.md: a new template joins every
      enumerating guard in the commit that introduces it. */
   "/case-studies",
+  /* Added round 16, in the commit that introduced the template, per
+     AGENTS.md. The research family is three rendering units — an index, the
+     piece template and the synthesis — sharing one new CSS module whose bar
+     chart, method list and gate carry a lot of new small type. This gate is
+     named in AGENTS.md as the one /ai-talent shipped six A4 breaches past by
+     not being on this list. */
+  "/intelligence/research",
+  "/intelligence/research/oracle",
+  "/intelligence/research/corridor",
   /* Added round 12: names five real people with links to their real
      profiles, and it was visited by only one of six enumerating gates —
      round12-scope.md §4.6. */

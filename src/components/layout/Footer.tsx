@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { sectorNavEntries } from "@/lib/sectors";
 import styles from "./Footer.module.css";
+import { FOOTER_ID } from "./floating-affordances";
 import { Lockup } from "./Lockup";
 
 const serviceLinks = [
@@ -59,8 +60,12 @@ export function Footer() {
        the light theme — 3.16:1 on near-black, a real AA failure that the token
        contrast gate cannot see because the pair is only formed at render.
        band-dark restates the semantic layer so descendants resolve against the
-       ground they actually sit on. */
-    <footer className={`${styles.footer} band-dark`}>
+       ground they actually sit on.
+
+       FOOTER_ID is the handle the assistant launcher watches so it can stand
+       down rather than cover a footer link. Owned in floating-affordances.ts
+       alongside the other two, never typed as a literal anywhere. */
+    <footer id={FOOTER_ID} className={`${styles.footer} band-dark`}>
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.brandBlock}>

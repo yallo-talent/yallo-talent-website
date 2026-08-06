@@ -9,6 +9,8 @@ import {
   publishedModuleParams,
   publishedPlatformSlugs,
 } from "@/data/platforms/derive";
+import { RESEARCH_BASE, researchSlugs } from "@/data/research";
+import { SYNTHESIS_SLUG } from "@/data/research/synthesis";
 import {
   getAllCaseStudySlugs,
   getAllInsightSlugs,
@@ -90,6 +92,17 @@ export function publishedPaths(): string[] {
     (slug) => `/capabilities/${slug}`,
   );
 
+  /* The five pieces, the index and the synthesis. The synthesis's PRINT
+     surface is deliberately absent: it is the build input the PDF is
+     generated from, not a page, and listing it here would put it in
+     sitemap.xml, llms.txt, the OG generator and the assistant's corpus, all
+     four of which derive from this one function. */
+  const researchRoutes = [
+    RESEARCH_BASE,
+    `${RESEARCH_BASE}/${SYNTHESIS_SLUG}`,
+    ...researchSlugs.map((slug) => `${RESEARCH_BASE}/${slug}`),
+  ];
+
   const insightRoutes = getAllInsightSlugs()
     .filter((slug) => {
       try {
@@ -119,6 +132,7 @@ export function publishedPaths(): string[] {
     ...aiTalentRoutes,
     ...blueprintRoutes,
     ...capabilityRoutes,
+    ...researchRoutes,
     ...insightRoutes,
     ...caseStudyRoutes,
     ...taxonomyRoutes,

@@ -39,13 +39,28 @@ export default function robots(): MetadataRoute.Robots {
     };
   }
 
+  /* `/downloads/` holds the generated research PDF, which sits behind a
+     capture form. Indexing it would route search traffic past the gate to the
+     file, which is not the same as making the argument citable — the HTML
+     synthesis is open, indexed and carries the whole conclusion, and it is
+     what should rank. The print surface the PDF is generated from is a build
+     input rather than a page; it already sends noindex and is absent from
+     publishedPaths(), and it is named here so the posture is readable in one
+     place rather than inferred from three. */
+  const disallow = [
+    "/api/",
+    "/users/",
+    "/downloads/",
+    "/intelligence/research/corridor/print",
+  ];
+
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow: ["/api/", "/users/"] },
+      { userAgent: "*", allow: "/", disallow },
       ...CRAWLERS.map((c) => ({
         userAgent: c.token,
         allow: "/",
-        disallow: ["/api/", "/users/"],
+        disallow,
       })),
     ],
     sitemap: `${SITE.url}/sitemap.xml`,

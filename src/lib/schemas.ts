@@ -40,3 +40,25 @@ export const cvUploadSchema = z.object({
 });
 
 export type CvUploadValues = z.infer<typeof cvUploadSchema>;
+
+/**
+ * The research gate. Three fields and no more.
+ *
+ * A lead magnet whose form asks what a brief asks is a brief with a worse
+ * conversion rate. The gate exists to know who is reading the analysis, so it
+ * asks the minimum that makes the row worth having, and the page routes
+ * anyone with an actual requirement to /brief instead.
+ *
+ * No `region` or `engagement` here deliberately: those are brief fields, and
+ * widening this schema toward the brief's shape is how one form quietly
+ * becomes two copies of the other.
+ */
+export const researchGateSchema = z.object({
+  name: z.string().min(2, "Please share your name."),
+  company: z.string().min(2, "Please share your company."),
+  email: z.string().email("Please share a valid work email."),
+  /** Which asset was requested, so the row says what it was for. */
+  asset: z.string().min(1),
+});
+
+export type ResearchGateValues = z.infer<typeof researchGateSchema>;
