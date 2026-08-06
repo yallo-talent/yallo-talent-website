@@ -12,11 +12,22 @@
  * rest of the pack is deliberately not shipped — they are not current trading
  * relationships.
  *
- * Two marks are NOT in the supplied pack and are committed directly as vectors
- * rather than generated here, so this script does not touch them:
- *   public/logos/clients/radwell.svg        — from the header of radwell.co.uk
- *   public/logos/integrators/capgemini.svg  — Capgemini_201x_logo.svg, Wikimedia Commons
+ * Two marks are NOT in the supplied pack and are committed directly rather
+ * than generated here, so this script does not touch them:
+ *   public/logos/integrators/capgemini.png  — Capgemini_201x_logo.svg, Wikimedia Commons
+ *   public/logos/clients/radwell.png        — from the header of radwell.co.uk
  * Both are used nominatively to identify a client with consent on file.
+ *
+ * ROUND 16, §2.6, which asked what these two are for. The answer, and a
+ * correction: this block said `.svg` for both while the measurement step
+ * below and content/clients.yaml have always said `.png`. Same drift as the
+ * BlueYonder comment. And radwell.png IS NOT IN THE REPOSITORY — the
+ * measurement step reports it missing on every run, and `hasLogoAsset()`
+ * (src/lib/clients.ts) drops the Radwell entry rather than shipping a broken
+ * image, so nothing renders and nothing failed. The clients.yaml entry is a
+ * dangling reference waiting for the asset. capgemini.png is present and in
+ * use. Nothing deleted: the yaml row is the record that consent is on file,
+ * and removing it would lose that.
  *
  *   node scripts/build-logos.mjs
  */
@@ -67,7 +78,8 @@ const CLIENTS = {
   // mark is built so it is ready, and content/clients.yaml keeps the entry
   // filtered out until Sumeet flips consentOnFile. Building it now is what makes
   // the flip a one-line data change rather than a task.
-  // radwell: committed directly as public/logos/clients/radwell.svg — see header.
+  // radwell: committed directly as public/logos/clients/radwell.png — see header.
+  // NOT PRESENT in the repository today; the measurement step reports it.
 };
 
 const INTEGRATORS = {
@@ -75,7 +87,7 @@ const INTEGRATORS = {
   wipro: "Wipro.png",
   infosys: "Infosys.png",
   "oracle-consulting": "Oracle.png",
-  // capgemini: committed directly as public/logos/integrators/capgemini.svg.
+  // capgemini: committed directly as public/logos/integrators/capgemini.png.
 };
 
 /**
@@ -83,7 +95,10 @@ const INTEGRATORS = {
  * (see the header) are five committed SVGs, one hand-drawn RoleGlyph-style
  * fallback, and Blue Yonder — a raster that shipped as an opaque plate with
  * no real alpha, so src/data/home/place.ts declined it and fell back to the
- * name. A real source arrived (BlueYonder.png). It goes through the SAME
+ * name. A real source arrived (BlueYonder-icon.jpeg — the comment said
+ * BlueYonder.png until round 16, while the map below has always read the
+ * -icon.jpeg; both files exist in assets/client-logos/, so the wrong name
+ * named a real file and nothing failed). It goes through the SAME
  * keying gate as every client mark rather than a hand-rolled second pass:
  * the gate exists precisely to catch "looks fine, keys to a box" before it
  * ships, and there is no reason a platform asset should skip the check a

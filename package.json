@@ -43,7 +43,8 @@
     "check:cta-collision": "node scripts/check-cta-collision.mjs",
     "research:dataset": "node scripts/build-research-dataset.mjs",
     "check:research-dataset": "node scripts/build-research-dataset.mjs --check",
-    "research:pdf": "node scripts/build-research-pdf.mjs"
+    "research:pdf": "node scripts/build-research-pdf.mjs",
+    "check:asset-case": "node scripts/check-asset-case.mjs"
   },
   "engines": {
     "node": "22.x",

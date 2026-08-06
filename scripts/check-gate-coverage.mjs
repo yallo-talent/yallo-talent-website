@@ -109,12 +109,25 @@ const listOf = (gate) => {
   // Trivially complete by construction: a gate that visits every live URL
   // cannot omit a template, so its coverage is `live` itself rather than
   // something to extract from source.
-  if (src.includes("fetchPublishedPaths(")) return live;
-  // check-a11y's default (PR-gate) run visits one live URL per shell,
-  // derived by the same function this line calls — so its registered
-  // coverage is exactly what its default run actually visits, not a claim
-  // taken on trust. context-round14-scope.md §2.2.
+  // ORDER IS LOAD-BEARING, and it was wrong until round 16
+  // (context-round16-scope.md §2.6). check-a11y.mjs contains BOTH markers: it
+  // calls fetchPublishedPaths() to get the live set and then narrows it with
+  // sampleOnePerShell(). With the fetchPublishedPaths test first, the line
+  // added for check-a11y never ran, and the gate was credited with every
+  // published URL instead of the per-shell sample it actually visits. It
+  // happened to be true anyway, because check-a11y's sample does reach every
+  // shell — true by coincidence, which is not the same as checked. The
+  // narrower test goes first, so a gate that narrows is credited with what it
+  // narrows to.
+  //
+  // check-a11y's default (PR-gate) run visits one live URL per shell, derived
+  // by the same function this line calls — so its registered coverage is
+  // exactly what its default run actually visits, not a claim taken on trust.
+  // context-round14-scope.md §2.2.
   if (src.includes("sampleOnePerShell(")) return sampleOnePerShell(live);
+  // round13-scope.md §4.4 (continued from above): a gate that visits every
+  // live URL and narrows nothing has `live` as its coverage.
+  if (src.includes("fetchPublishedPaths(")) return live;
   const m = src.match(/const (?:PAGES|ROUTES) = (\[[\s\S]*?\]);/);
   if (!m) return null;
   const quoted = [...m[1].matchAll(/"(\/[^"]*)"/g)].map(

@@ -26,3 +26,7 @@ fi
 node .claude/hooks/check-colours.js
 node scripts/check-type-scale.mjs
 node scripts/check-taxonomy.mjs
+# Round 16. Two tracked paths differing only by case are ONE file on macOS,
+# which is how a client wordmark was silently overwritten by a platform icon.
+# It costs milliseconds and it reads the index, not the directory.
+node scripts/check-asset-case.mjs
