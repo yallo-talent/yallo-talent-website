@@ -27,16 +27,16 @@
     "inkFloor": 10,
     "maxInkWidth": 96,
     "tolerance": 0.02,
-    "measured": 0.004,
-    "note": "The mark box grows from 24px to 32px, which is measured rather than aesthetic: at a 24px cap the five marks now on cards cannot come closer than 27.4% of their median, because the set needs a 3.18x range and 24 over a 10px floor gives 2.4x."
+    "measured": 0.005,
+    "note": "The mark box grows from 24px to 32px, which is measured rather than aesthetic: at a 24px cap the five marks now on cards cannot come closer than 27.4% of their median, because the set needs a 3.18x range and 24 over a 10px floor gives 2.4x. Measured figure moved 0.004 to 0.005 when mark-scale.ts's tie-break started preferring the larger R of an equal-deviation plateau, same fix as axis below."
   },
   "axis": {
-    "inkCap": 26,
+    "inkCap": 34,
     "inkFloor": 9,
     "maxInkWidth": 120,
     "tolerance": 0.02,
-    "measured": 0.008,
-    "note": "The seven platform vectors reach the band inside the existing 26px box, so the box is unchanged."
+    "measured": 0.003,
+    "note": "Round 14, two changes. First, and the actual fix: mark-scale.ts's search kept the FIRST reference height R that hit the best deviation, which on this surface is the SMALLEST of a whole plateau (R=18 through 30 all land on 0.0000) rather than a single optimum — so it was rendering the smallest of many equally-correct sizes. Ties now keep the larger R, free size at no deviation cost: Microsoft went 14px to 24px, SAP 9px to 16px, with the gate's own number improving 0.008 to 0.003. Second, inkCap raised 26 to 34 for headroom once Blue Yonder and Informatica joined the set, though the chosen R lands inside the old ceiling too — the plateau was already there."
   },
   "entity": {
     "inkCap": 40,
