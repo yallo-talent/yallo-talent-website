@@ -12,8 +12,9 @@ import styles from "./ThemeToggle.module.css";
  * describing one fact that already existed outside React.
  *
  * It already exists on <html>. The pre-paint script in src/config/theme.ts
- * resolves stored choice, then `prefers-color-scheme`, then the build default,
- * and stamps `data-theme` before first paint. So the attribute is the single
+ * resolves stored choice, then the build default — not `prefers-color-scheme`,
+ * which round 14 removed — and stamps `data-theme` before first paint. So the
+ * attribute is the single
  * source of truth and this component is a view of it — which is precisely what
  * useSyncExternalStore is for. The mount effect goes, the `mounted` flag goes,
  * and the accessible name is correct from the first client render instead of
@@ -31,37 +32,34 @@ import styles from "./ThemeToggle.module.css";
  * ready; round 14 answers it by mounting rather than re-deferring.
  */
 function subscribe(onChange: () => void): () => void {
-  /* The attribute is written by three parties: the pre-paint script, this
-     component's own toggle, and nothing else. A MutationObserver covers all of
-     them without needing any of them to know this component exists. */
+  /* The attribute is written by two parties: the pre-paint script and this
+     component's own toggle. A MutationObserver covers both without needing
+     either to know this component exists. */
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["data-theme"],
   });
 
-  /* The OS preference still wins while the visitor has made no stored choice,
-     so a mid-session OS switch has to repaint. Guarded on storage so an
-     explicit choice is never overridden. */
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  const onMedia = () => {
-    let stored: string | null = null;
-    try {
-      stored = window.localStorage.getItem(THEME_STORAGE_KEY);
-    } catch {
-      // private mode: treat as no stored choice
-    }
-    if (stored === "light" || stored === "dark") return;
-    document.documentElement.setAttribute(
-      "data-theme",
-      media.matches ? "dark" : "light",
-    );
-  };
-  media.addEventListener("change", onMedia);
+  /* NO `prefers-color-scheme` LISTENER. ROUND 15, §2.5.
+     There was one here, and it repainted the page mid-session whenever the
+     visitor's OS flipped to dark. Its own comment said "the OS preference
+     still wins while the visitor has made no stored choice" — which was true
+     when it was written and stopped being true in round 14, when the
+     pre-paint script in src/config/theme.ts was changed to resolve stored
+     choice then DEFAULT_THEME and to ignore the OS entirely. Neither session
+     could see the pair: one changed the script, the other never reread this
+     file.
+
+     What was left was one behaviour described by two mechanisms that
+     disagreed. A first-time visitor got the forced light default at load,
+     then had the page turn dark under them if their laptop happened to reach
+     sunset while they were reading it. The site either follows the OS or it
+     does not; it now does not, in both places. A visitor who wants dark
+     reaches for the toggle, and that choice is stored and honoured. */
 
   return () => {
     observer.disconnect();
-    media.removeEventListener("change", onMedia);
   };
 }
 
