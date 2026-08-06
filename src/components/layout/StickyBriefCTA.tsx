@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { STICKY_BRIEF_CTA_LABEL } from "./floating-affordances";
 import styles from "./StickyBriefCTA.module.css";
 
 /* An ABSOLUTE scroll distance, not a fraction of the page.
@@ -76,7 +77,10 @@ export function StickyBriefCTA() {
           exit={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
           role="complementary"
-          aria-label="Contact CTA"
+          /* §2.2: the one place this label is written is
+             ./floating-affordances.ts, because AssistantLauncher's collision
+             observer and check-cta-collision.mjs both depend on it. */
+          aria-label={STICKY_BRIEF_CTA_LABEL}
         >
           <div className={styles.inner}>
             <div className={styles.text}>

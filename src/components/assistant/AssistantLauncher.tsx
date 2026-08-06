@@ -2,6 +2,10 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useSyncExternalStore } from "react";
+import {
+  ASSISTANT_LAUNCHER_ID,
+  STICKY_BRIEF_CTA_SELECTOR,
+} from "@/components/layout/floating-affordances";
 import { ASSISTANT_ENABLED } from "@/lib/assistant/flag";
 import styles from "./AssistantLauncher.module.css";
 import { AssistantPanel } from "./AssistantPanel";
@@ -20,9 +24,17 @@ import { AssistantPanel } from "./AssistantPanel";
    resize or restyle StickyBriefCTA" is easiest to honour by not touching its
    file at all. Same technique ThemeToggle.tsx already uses for an external
    DOM signal: useSyncExternalStore over a MutationObserver, no cooperation
-   required from the thing being watched. */
+   required from the thing being watched.
+
+   ROUND 15, §2.2: the selector is no longer typed here. It was
+   `'[aria-label="Contact CTA"]'`, a literal with no connection to the JSX
+   that produces the label — rename the label and this observer matches
+   nothing, silently, and the 54x44px overlap returns with no gate to catch
+   it. Both sides now read
+   src/components/layout/floating-affordances.ts, and
+   scripts/check-cta-collision.mjs asserts the outcome rather than trusting
+   the wiring. */
 const MOBILE_QUERY = "(max-width: 640px)";
-const STICKY_CTA_SELECTOR = '[aria-label="Contact CTA"]';
 
 function subscribeStickyCtaCollision(onChange: () => void): () => void {
   const observer = new MutationObserver(onChange);
@@ -38,7 +50,7 @@ function subscribeStickyCtaCollision(onChange: () => void): () => void {
 function getStickyCtaCollisionSnapshot(): boolean {
   return (
     window.matchMedia(MOBILE_QUERY).matches &&
-    document.querySelector(STICKY_CTA_SELECTOR) !== null
+    document.querySelector(STICKY_BRIEF_CTA_SELECTOR) !== null
   );
 }
 
@@ -71,6 +83,10 @@ export function AssistantLauncher() {
     <>
       <button
         type="button"
+        /* A stable handle for check-cta-collision.mjs. Not the accessible
+           name, which toggles with panel state and would match in one state
+           and not the other. */
+        id={ASSISTANT_LAUNCHER_ID}
         className={styles.fab}
         aria-haspopup="dialog"
         aria-expanded={open}

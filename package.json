@@ -1,5 +1,5 @@
 {
-  "name": "talent.yallo.co",
+  "name": "yallo-talent-website",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -39,7 +39,8 @@
     "check:assistant-grounding": "node scripts/check-assistant-grounding.mjs",
     "check:assistant-terms": "node scripts/check-assistant-terms.mjs",
     "check:assistant-bundle": "node scripts/check-assistant-bundle.mjs",
-    "check:assistant-a11y": "node scripts/check-assistant-a11y.mjs"
+    "check:assistant-a11y": "node scripts/check-assistant-a11y.mjs",
+    "check:cta-collision": "node scripts/check-cta-collision.mjs"
   },
   "engines": {
     "node": "22.x",

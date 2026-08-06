@@ -58,6 +58,13 @@ const GATES = [
      six hand-picked routes, and this list is where that claim should have
      been checked from the start. context-round14-scope.md §2.2. */
   "check-a11y",
+  /* Round 15: registered in the commit that introduces it, per the rule three
+     comments up. Its ROUTES are three tall templates rather than a per-shell
+     sample — the property it tests lives in layout.tsx's fixed layer and is
+     identical on every route; what varies is document height, and a page too
+     short to trigger StickyBriefCTA cannot exercise the check at all. Listed
+     so a stale route in it is still caught. */
+  "check-cta-collision",
 ];
 
 /* ------------------------------------------------------- route templates -- */
