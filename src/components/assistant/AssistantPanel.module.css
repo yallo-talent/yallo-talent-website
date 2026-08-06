@@ -127,6 +127,48 @@
   border-radius: var(--r-sm) var(--r-sm) var(--r-sm) 0;
 }
 
+/* .assistantMsg is a div now (renderAssistantText.tsx returns p/ul/ol
+   blocks, and a <p> cannot legally contain those), still used as a <p>
+   in the two places that only ever hold plain text (the "…" sending
+   placeholder, .errorMsg) — this only targets the block children the
+   renderer actually produces. Resets the browser's default block margins
+   so blocks space by this rule alone, once, rather than by whatever each
+   element's UA stylesheet happens to default to. */
+.assistantMsg p,
+.assistantMsg ul,
+.assistantMsg ol {
+  margin: 0;
+}
+
+.assistantMsg p + p,
+.assistantMsg p + ul,
+.assistantMsg p + ol,
+.assistantMsg ul + p,
+.assistantMsg ol + p {
+  margin-top: 8px;
+}
+
+/* Tailwind's preflight resets ul/ol to list-style: none sitewide, so
+   without this a "list" here was just indented paragraphs with no bullet
+   or number — exactly the "no numbering" half of the reported defect. */
+.assistantMsg ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.assistantMsg ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.assistantMsg li + li {
+  margin-top: 2px;
+}
+
+.assistantMsg strong {
+  font-weight: var(--fw-strong);
+}
+
 .draft {
   margin: 0 16px 12px;
   padding: 12px;

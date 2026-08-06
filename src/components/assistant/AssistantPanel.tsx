@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { AssistantMessage } from "@/lib/assistant/schema";
 import type { BriefFormValues } from "@/lib/schemas";
 import styles from "./AssistantPanel.module.css";
+import { renderAssistantText } from "./renderAssistantText";
 
 type Status = "idle" | "sending" | "error";
 type BriefStatus = "idle" | "sending" | "sent" | "error";
@@ -212,14 +213,17 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
             answer from the site and can put together a brief as we go.
           </p>
         )}
-        {messages.map((m) => (
-          <p
-            key={m.id}
-            className={m.role === "user" ? styles.userMsg : styles.assistantMsg}
-          >
-            {m.content}
-          </p>
-        ))}
+        {messages.map((m) =>
+          m.role === "user" ? (
+            <p key={m.id} className={styles.userMsg}>
+              {m.content}
+            </p>
+          ) : (
+            <div key={m.id} className={styles.assistantMsg}>
+              {renderAssistantText(m.content)}
+            </div>
+          ),
+        )}
         {status === "sending" && (
           <p className={styles.assistantMsg} aria-hidden="true">
             …
