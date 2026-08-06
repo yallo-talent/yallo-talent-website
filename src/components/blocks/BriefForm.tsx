@@ -1,28 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { engagementOptions, regionOptions } from "@/lib/briefLabels";
 import { getCampaignParams } from "@/lib/campaign";
 import { type BriefFormValues, briefFormSchema } from "@/lib/schemas";
 import styles from "./BriefForm.module.css";
 
 type Status = "idle" | "submitting" | "success" | "error";
-
-const engagementOptions: {
-  value: BriefFormValues["engagement"];
-  label: string;
-}[] = [
-  { value: "contract", label: "Contract" },
-  { value: "permanent", label: "Permanent" },
-  { value: "eor", label: "EOR" },
-  { value: "managed-delivery", label: "Managed Delivery" },
-];
-
-const regionOptions: { value: BriefFormValues["region"]; label: string }[] = [
-  { value: "uk", label: "United Kingdom" },
-  { value: "me", label: "Middle East" },
-  { value: "india", label: "India" },
-  { value: "multi", label: "Multi-region" },
-];
 
 /* No no-JS fallback. Confirmed absent, logged twice (round 11) and again
  * here rather than fixed: the site's only conversion surface submits via

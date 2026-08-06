@@ -121,6 +121,16 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <MotionProvider>
           <NavBar />
+          {/* round14-scope.md §2.3: mounted here, right after the nav, rather
+              than after Footer and StickyBriefCTA where it sat before. The
+              launcher is fixed-position, so DOM order carries no screen
+              position — moving it costs nothing visually and collapses the
+              keyboard distance from 77-84 Tab stops (measured from a fresh
+              homepage load, after the nav and every piece of page content)
+              to a handful, right after the nav's own stops. Renders null
+              when the flag is off, so this is a no-op on the shipped site
+              until cutover. */}
+          <AssistantLauncherMount />
           {/* tabIndex -1 so the skip link MOVES FOCUS rather than only scrolling.
               Measured before: activeElement stayed on <body>, and Chromium's
               sequential-focus starting point happened to rescue traversal — which
@@ -136,7 +146,6 @@ export default function RootLayout({
           </main>
           <Footer />
           <StickyBriefCTA />
-          <AssistantLauncherMount />
         </MotionProvider>
       </body>
     </html>

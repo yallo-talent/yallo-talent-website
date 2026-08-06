@@ -19,15 +19,16 @@ import styles from "./ThemeToggle.module.css";
  * and the accessible name is correct from the first client render instead of
  * reading "Toggle theme" until an effect has run.
  *
- * NOT MOUNTED ANYWHERE. Measured in round 10: nothing in src/ imports this
- * component, so it renders on no page and the lint error it carried could not
- * have produced a user-visible defect. Fixed rather than deleted because
- * whether the site gets a user-facing theme switch is a design decision, and
- * canon §2 ("light is the default register") is the reason to ask rather than
- * assume. Logged in the round 10 relay as an open question.
- *
- * ROUND 12: still true, still deliberate. Do not mount it and do not delete
- * it — round12-scope.md §4.5, open item 3.
+ * ROUND 14: mounted twice in NavBar — the header actions row (desktop
+ * only past 1024px) and the mobile drawer (round14-scope.md §3(b)). Two
+ * instances of the same external-store subscription, never out of sync
+ * with each other because both read the one `data-theme` attribute.
+ * Rounds 10-13 left this unmounted as a deliberate open question — canon §2
+ * ("light is the default register") reads as a default, not a ban on
+ * switching, and light and dark have been peers in globals.css since round
+ * 10 (src/config/theme.ts), each independently AA. The open question was
+ * whether the site gets a user-facing switch at all, not whether dark was
+ * ready; round 14 answers it by mounting rather than re-deferring.
  */
 function subscribe(onChange: () => void): () => void {
   /* The attribute is written by three parties: the pre-paint script, this

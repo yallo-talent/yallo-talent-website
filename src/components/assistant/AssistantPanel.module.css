@@ -1,7 +1,9 @@
+/* Anchors from the same side as the launcher (round 14's corner swap) —
+   this opens FROM the button, not from the opposite side of the screen. */
 .panel {
   position: fixed;
   bottom: 84px;
-  left: 20px;
+  right: 20px;
   z-index: 42;
   width: min(380px, calc(100vw - 40px));
   max-height: min(560px, calc(100vh - 120px));
@@ -9,7 +11,7 @@
   flex-direction: column;
   background: var(--ground);
   border: 1px solid var(--boundary);
-  border-radius: var(--r) 0 0 0;
+  border-radius: 0 var(--r) 0 0;
   overflow: hidden;
 }
 
@@ -22,6 +24,36 @@
   }
 }
 
+/* Full-height slider, desktop only (Sumeet's direct instruction, chat,
+   round 14) — the exact inverse of the 640px block above, one boundary
+   rather than a second hand-picked breakpoint for the same "is this
+   mobile" question AssistantLauncher.tsx's own MOBILE_QUERY already
+   answers. Docked flush to the edge rather than floating with a margin,
+   which is why the radius drops to 0 here — a flush-edge drawer has no
+   corner to round. No backdrop by design: the rest of the page stays
+   fully interactive alongside it, so closing is Escape or the header's
+   own button, never an outside click, because there is nothing behind
+   the panel that would need to catch one. */
+@media (min-width: 641px) {
+  .panel {
+    /* --header-h (globals.css), not a measured pixel value — NavBar's own
+       sticky header sits at z-index: 50 above this panel's 42, and without
+       this the drawer opened flush under the header's transparent band
+       and visually buried the nav (measured: "Jobs" and "Intelligence"
+       both covered). The same variable NavBar's own mega panel and L1
+       sub-nav key off, so this can't drift from the header's real height. */
+    top: var(--header-h);
+    right: 0;
+    bottom: 0;
+    width: min(420px, 100vw);
+    max-height: none;
+    border-radius: 0;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+  }
+}
+
 .header {
   display: flex;
   align-items: flex-start;
@@ -29,6 +61,18 @@
   gap: 12px;
   padding: 16px 16px 12px;
   border-bottom: 1px solid var(--hairline);
+}
+
+/* min-width: 0 overrides the flexbox default (min-width: auto), which pins
+   a flex item to its content's min-content width. .disclosure's nowrap line
+   has no line-break to shrink to, so without this the div refused to give
+   up any width — measured at 360: the header's own box fit its 334px
+   allowance, but .closeButton got pushed 26px past .panel's right edge and
+   entirely behind its `overflow: hidden`, present in the DOM and clickable
+   via direct dispatch but invisible on screen. Zero visual change above
+   ~460px, where there was always enough room regardless. */
+.headerText {
+  min-width: 0;
 }
 
 .eyebrow {
@@ -40,11 +84,18 @@
   margin: 0 0 4px;
 }
 
+/* One line, deliberately — the round 13 version wrapped to three lines at
+   30ch. Truncates with an ellipsis rather than forcing the row wider than
+   the panel now that .headerText can shrink (see its own comment) — a
+   graceful narrow-viewport degradation instead of the alternative, which is
+   the close button disappearing behind the panel's own overflow: hidden. */
 .disclosure {
   font-size: var(--fs-caption);
   color: var(--fg-muted);
   margin: 0;
-  max-width: 30ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .disclosure a {
@@ -106,6 +157,48 @@
   color: var(--fg);
   border: 1px solid var(--hairline);
   border-radius: var(--r-sm) var(--r-sm) var(--r-sm) 0;
+}
+
+/* .assistantMsg is a div now (renderAssistantText.tsx returns p/ul/ol
+   blocks, and a <p> cannot legally contain those), still used as a <p>
+   in the two places that only ever hold plain text (the "…" sending
+   placeholder, .errorMsg) — this only targets the block children the
+   renderer actually produces. Resets the browser's default block margins
+   so blocks space by this rule alone, once, rather than by whatever each
+   element's UA stylesheet happens to default to. */
+.assistantMsg p,
+.assistantMsg ul,
+.assistantMsg ol {
+  margin: 0;
+}
+
+.assistantMsg p + p,
+.assistantMsg p + ul,
+.assistantMsg p + ol,
+.assistantMsg ul + p,
+.assistantMsg ol + p {
+  margin-top: 8px;
+}
+
+/* Tailwind's preflight resets ul/ol to list-style: none sitewide, so
+   without this a "list" here was just indented paragraphs with no bullet
+   or number — exactly the "no numbering" half of the reported defect. */
+.assistantMsg ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+.assistantMsg ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+}
+
+.assistantMsg li + li {
+  margin-top: 2px;
+}
+
+.assistantMsg strong {
+  font-weight: var(--fw-strong);
 }
 
 .draft {
@@ -178,6 +271,21 @@
   color: var(--signal-text);
   font-size: var(--fs-body-sm);
   margin: 0;
+}
+
+/* Same shape as .assistantMsg, not .draftErr — this sits in the message log
+   as a reply the assistant "said", not as a form-field-style status line. */
+.errorMsg {
+  align-self: flex-start;
+  margin: 0;
+  padding: 8px 12px;
+  max-width: 88%;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--signal-text);
+  background: var(--ground-2);
+  border: 1px solid var(--signal-text);
+  border-radius: var(--r-sm) var(--r-sm) var(--r-sm) 0;
 }
 
 .form {

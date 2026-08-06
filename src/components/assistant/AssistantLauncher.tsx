@@ -1,10 +1,50 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { ASSISTANT_ENABLED } from "@/lib/assistant/flag";
 import styles from "./AssistantLauncher.module.css";
 import { AssistantPanel } from "./AssistantPanel";
+
+/* round14-scope.md §2.4: measured with both mounted in one viewport for the
+   first time (A's layout.tsx seam had not landed before), the two overlap by
+   54x44px at 360 — the fab's mobile circle (bottom:84/left:12) sits inside
+   StickyBriefCTA's mobile panel (bottom:12, left/right:12). The ruling is
+   that the launcher yields: hidden while StickyBriefCTA is visible at mobile
+   widths.
+
+   This watches the DOM for StickyBriefCTA's own rendered presence rather
+   than re-deriving its SHOW_AFTER_PX/HIDE_NEAR_END thresholds here — a copied
+   threshold is exactly the defect class this codebase keeps hitting (a
+   second source of truth that drifts from the first), and "never move,
+   resize or restyle StickyBriefCTA" is easiest to honour by not touching its
+   file at all. Same technique ThemeToggle.tsx already uses for an external
+   DOM signal: useSyncExternalStore over a MutationObserver, no cooperation
+   required from the thing being watched. */
+const MOBILE_QUERY = "(max-width: 640px)";
+const STICKY_CTA_SELECTOR = '[aria-label="Contact CTA"]';
+
+function subscribeStickyCtaCollision(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.body, { childList: true, subtree: true });
+  const media = window.matchMedia(MOBILE_QUERY);
+  media.addEventListener("change", onChange);
+  return () => {
+    observer.disconnect();
+    media.removeEventListener("change", onChange);
+  };
+}
+
+function getStickyCtaCollisionSnapshot(): boolean {
+  return (
+    window.matchMedia(MOBILE_QUERY).matches &&
+    document.querySelector(STICKY_CTA_SELECTOR) !== null
+  );
+}
+
+function getServerStickyCtaCollisionSnapshot(): boolean {
+  return false;
+}
 
 /**
  * The deferred island's mount point. Flag off by default (context-round13-
@@ -19,8 +59,13 @@ import { AssistantPanel } from "./AssistantPanel";
  */
 export function AssistantLauncher() {
   const [open, setOpen] = useState(false);
+  const yieldToStickyCta = useSyncExternalStore(
+    subscribeStickyCtaCollision,
+    getStickyCtaCollisionSnapshot,
+    getServerStickyCtaCollisionSnapshot,
+  );
 
-  if (!ASSISTANT_ENABLED) return null;
+  if (!ASSISTANT_ENABLED || yieldToStickyCta) return null;
 
   return (
     <>
@@ -43,10 +88,20 @@ export function AssistantLauncher() {
         {open && (
           <motion.div
             key="assistant-panel-wrap"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 16 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
+            /* "%" is relative to the panel's OWN width, not the viewport —
+               deliberately, so this one value reads right at both sizes
+               .panel resolves to: a full self-width slide-in for the
+               desktop full-height drawer, and the same proportionate slide
+               for the mobile small popup, with no separate breakpoint
+               logic here. A 24px nudge read fine on the old small popup
+               but looked like the desktop drawer was simply appearing —
+               its full height exists from frame one regardless (only x/
+               opacity animate), so the slide needed real, visible travel
+               to read as an entrance rather than a materialisation. */
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
           >
             <AssistantPanel onClose={() => setOpen(false)} />
           </motion.div>
