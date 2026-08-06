@@ -148,12 +148,53 @@ async function probe(host, crawler) {
   }
 }
 
+/**
+ * ONE RETRY, and the retry REPORTS ITSELF.
+ *
+ * Round 17: three runs of this gate against the live zone, and one of them
+ * refused ChatGPT-User alone while the other two served all fifteen. That is a
+ * transient at the CDN, not a posture change — but with no retry it fails a
+ * CUTOVER gate on a single lost request, and a cutover gate that goes red for no
+ * reason is one somebody starts rerunning until it is green, which is the same
+ * thing as not having it.
+ *
+ * A blind retry would be worse than none: it would hide a genuinely intermittent
+ * block, which is exactly what a partially-configured zone looks like. So the
+ * second attempt is recorded on the result and printed, and the run says which
+ * crawlers needed one. Two refusals in a row still fails.
+ */
 for (const host of HOSTS) {
   for (const crawler of CRAWLERS) {
-    results.push(await probe(host, crawler));
+    let result = await probe(host, crawler);
+    /* Only the GATED host is retried. The placeholder is not serving to anyone
+       right now, so retrying its fifteen probes adds thirty seconds to a gate and
+       proves nothing the control user-agent has not already said. */
+    if (host.gated && !result.served) {
+      await new Promise((r) => setTimeout(r, 2_000));
+      const second = await probe(host, crawler);
+      result = second.served
+        ? { ...second, retried: true, firstStatus: result.status }
+        : { ...second, retried: true, firstStatus: result.status, bothFailed: true };
+    }
+    results.push(result);
     /* One request per user-agent, spaced. This is a probe, not a load test. */
     await new Promise((r) => setTimeout(r, 250));
   }
+}
+
+const retried = results.filter((r) => r.retried && r.served);
+if (retried.length > 0) {
+  console.log(
+    `\n  ${retried.length} probe(s) needed a second attempt and then succeeded:\n` +
+      retried
+        .map(
+          (r) =>
+            `    ${r.host} / ${r.token}: first attempt ${r.firstStatus || "no response"}, retry served`,
+        )
+        .join("\n") +
+      "\n  Reported rather than hidden: an intermittent refusal is what a\n" +
+      "  partially-configured zone looks like, and it is worth watching across runs.",
+  );
 }
 
 if (JSON_OUT) {
