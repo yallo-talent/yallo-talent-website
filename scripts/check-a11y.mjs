@@ -4,6 +4,22 @@
  * floor. Canon's accessibility floor is WCAG 2.2 AA on every surface in both
  * themes independently, so this runs each route four times.
  *
+ * DEFAULT RUN (the PR gate): one live URL per distinct rendering unit —
+ * every shell the design system defines, plus every bespoke page that
+ * composes none — derived from the live sitemap via
+ * scripts/lib/rendering-units.mjs, never a hand-picked list. This is NOT
+ * every published URL: two industry pages on the same L1PageShell are one
+ * unit, and this visits one of them. It is every unit at least once, which
+ * is what the design-system floor actually requires — a defect in a shell
+ * shows up on any page that composes it. Registered in
+ * check-gate-coverage.mjs, which computes the identical sample and confirms
+ * it against the shell list, so this file cannot silently under-claim.
+ *
+ * EXHAUSTIVE RUN (--exhaustive): every published URL, not one per unit.
+ * Roughly 29 minutes across four theme/width combinations — too slow for a
+ * PR gate, so it runs on the same daily cron as check:phase8
+ * (.github/workflows/a11y-exhaustive.yml), never on the PR trigger.
+ *
  * Runs axe's "experimental" tag alongside the WCAG tags. A WCAG tag alone
  * does not enable a rule axe ships disabled by default — that gap is exactly
  * how WCAG 2.5.3 Label in Name sat unfound on the brand link for six rounds.
@@ -11,24 +27,36 @@
  * Lighthouse is deliberately NOT here: it needs the real host, and a score
  * measured against a dev server would be a number with no meaning.
  *
- *   node scripts/check-a11y.mjs [--routes /,/ai-talent] [--base http://…]
+ *   node scripts/check-a11y.mjs [--routes /,/ai-talent] [--exhaustive] [--base http://…]
+ *
+ * `--routes` overrides the derivation entirely, for ad hoc local runs.
  *
  * Exits non-zero on any serious or critical violation. Moderate and minor are
  * reported but do not fail — they are the backlog, not the gate.
  */
 import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "@playwright/test";
+import { fetchPublishedPaths } from "./lib/published-paths.mjs";
+import { sampleOnePerShell } from "./lib/rendering-units.mjs";
 
 const arg = (n, d) => {
   const i = process.argv.indexOf(`--${n}`);
   return i > -1 ? process.argv[i + 1] : d;
 };
+const flag = (n) => process.argv.includes(`--${n}`);
 
 const base = arg("base", "http://localhost:3000");
-const routes = arg(
-  "routes",
-  "/,/ai-talent,/platforms/microsoft,/contract,/case-studies,/industries/retail",
-).split(",");
+
+const explicitRoutes = arg("routes", null);
+const exhaustive = flag("exhaustive");
+
+let routes;
+if (explicitRoutes) {
+  routes = explicitRoutes.split(",");
+} else {
+  const live = await fetchPublishedPaths(base);
+  routes = exhaustive ? live : sampleOnePerShell(live);
+}
 
 /**
  * Exemptions, each with the clause that grants it. WCAG 1.4.3 does not apply to

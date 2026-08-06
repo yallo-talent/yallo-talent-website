@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { AssistantMessage } from "@/lib/assistant/schema";
+import { engagementLabel, regionLabel } from "@/lib/briefLabels";
 import type { BriefFormValues } from "@/lib/schemas";
 import styles from "./AssistantPanel.module.css";
+import { renderAssistantText } from "./renderAssistantText";
 
 type Status = "idle" | "sending" | "error";
 type BriefStatus = "idle" | "sending" | "sent" | "error";
@@ -36,7 +38,6 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const transcriptId = useRef(newId());
-  const liveRegionRef = useRef<HTMLDivElement>(null);
 
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [input, setInput] = useState("");
@@ -182,12 +183,18 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
       className={styles.panel}
     >
       <header className={styles.header}>
-        <div>
+        <div className={styles.headerText}>
           <p className={styles.eyebrow}>Yallo Talent assistant</p>
+          {/* Single line, and true to what actually happens today: no
+              transcript store exists yet (context-round13-chatbot.md §6
+              requires 12-month retention once the flag is live for real
+              traffic, but that layer isn't built — round 13's relay logged
+              it as the pilot-gate blocker). Claiming retention that isn't
+              happening would be the false statement; saying it isn't saved
+              is the accurate one until that layer ships, at which point
+              this line updates to match, not the other way round. */}
           <p className={styles.disclosure}>
-            This conversation is recorded and kept for 12 months. It answers
-            from this site's own published content and serves clients only — see{" "}
-            <a href="/privacy">/privacy</a>.
+            Not saved. Details at <a href="/privacy">/privacy</a>.
           </p>
         </div>
         <button
@@ -207,23 +214,25 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
             answer from the site and can put together a brief as we go.
           </p>
         )}
-        {messages.map((m) => (
-          <p
-            key={m.id}
-            className={m.role === "user" ? styles.userMsg : styles.assistantMsg}
-          >
-            {m.content}
-          </p>
-        ))}
+        {messages.map((m) =>
+          m.role === "user" ? (
+            <p key={m.id} className={styles.userMsg}>
+              {m.content}
+            </p>
+          ) : (
+            <div key={m.id} className={styles.assistantMsg}>
+              {renderAssistantText(m.content)}
+            </div>
+          ),
+        )}
         {status === "sending" && (
           <p className={styles.assistantMsg} aria-hidden="true">
             …
           </p>
         )}
-      </div>
-
-      <div ref={liveRegionRef} className={styles.srOnly} aria-live="polite">
-        {status === "error" && error}
+        {status === "error" && error && (
+          <p className={styles.errorMsg}>{error}</p>
+        )}
       </div>
 
       {draft && (
@@ -248,11 +257,11 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
             </div>
             <div>
               <dt>Region</dt>
-              <dd>{draft.region}</dd>
+              <dd>{regionLabel(draft.region)}</dd>
             </div>
             <div>
               <dt>Engagement</dt>
-              <dd>{draft.engagement}</dd>
+              <dd>{engagementLabel(draft.engagement)}</dd>
             </div>
           </dl>
           {briefStatus === "sent" || briefStatus === "error" ? (

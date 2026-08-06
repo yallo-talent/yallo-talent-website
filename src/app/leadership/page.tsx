@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
 import { teamIndex } from "@/data/team";
+import { leadershipPersonJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -34,6 +35,14 @@ const philosophy = [
 export default function LeadershipPage() {
   return (
     <div className={styles.page}>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Person JSON-LD is built server-side from src/data/team/index.ts, four fields only (src/lib/jsonld.ts leadershipPersonJsonLd) — no user input
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(leadershipPersonJsonLd()),
+        }}
+      />
+
       {/* HERO */}
       <section className={`${styles.hero} band-dark`}>
         <div className={styles.heroBg} aria-hidden="true">
@@ -79,7 +88,11 @@ export default function LeadershipPage() {
             </p>
             <div className={styles.cardGrid3}>
               {teamIndex.map((member) => (
-                <article key={member.slug} className={styles.card}>
+                <article
+                  key={member.slug}
+                  id={member.slug}
+                  className={styles.card}
+                >
                   <h3 className={styles.cardTitle}>{member.name}</h3>
                   <p className={styles.cardCopy}>{member.role}</p>
                   {member.bio && (

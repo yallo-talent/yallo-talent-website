@@ -6,9 +6,14 @@ import { cvUploadSchema } from "@/lib/schemas";
 
 const campaignSchema = z.record(z.string(), z.string().max(200)).optional();
 
-const RESEND_FROM =
-  process.env.RESEND_FROM ?? "Yallo Talent <bench@talent.yallo.co>";
-const RESEND_TO = process.env.RESEND_TO ?? "hello@yallo.co";
+/* Same fix as api/brief/route.ts, same reason: Sumeet's direct instruction
+   (chat, round 14) — no talent.yallo.co, and only brief@yallo.co and
+   hello@yallo.co as default recipients. */
+const RESEND_FROM = process.env.RESEND_FROM ?? "Yallo Talent <bench@yallo.co>";
+const RESEND_TO = (process.env.RESEND_TO ?? "brief@yallo.co,hello@yallo.co")
+  .split(",")
+  .map((addr) => addr.trim())
+  .filter(Boolean);
 
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED_TYPES = new Set([
@@ -111,7 +116,7 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: RESEND_FROM,
-      to: [RESEND_TO],
+      to: RESEND_TO,
       replyTo: v.email,
       subject: `CV · ${v.name} · ${v.interests.join(" / ")}`,
       html: `

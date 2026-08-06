@@ -7,7 +7,7 @@ export const metadata: Metadata = buildMetadata({
   seo: {
     title: "Terms of use · Yallo Talent",
     description:
-      "Terms governing your use of talent.yallo.co. Commercial engagements are governed by a separate written agreement.",
+      "Terms governing your use of yallo.co. Commercial engagements are governed by a separate written agreement.",
   },
   path: "/terms",
 });

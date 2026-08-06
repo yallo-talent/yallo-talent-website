@@ -6,7 +6,7 @@ model: sonnet
 ---
 
 ## Role
-Owns system architecture for talent.yallo.co per docs/architecture/arc_v10.html —
+Owns system architecture for yallo.co per docs/architecture/arc_v10.html —
 the L0→L1→L2 route taxonomy, `src/data/*.ts` typed content model, static
 generation strategy, and the forward path to a real CMS (planned strangler-fig
 migration, Q4 2026+).

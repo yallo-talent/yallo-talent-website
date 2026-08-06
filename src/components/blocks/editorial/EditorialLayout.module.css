@@ -29,24 +29,19 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-} /* R8: DELETED. Canon §5's blurred-orb ban stands, and the sweep that removed
-   the L1's six sites found these two by grepping the whole of src rather than the
-   file the critique named — the class, not the instance. */
-
-.heroBgA {
-  width: 620px;
-  height: 620px;
-  top: -20%;
-  right: -8%;
-  background: radial-gradient(circle, var(--sector-accent-35), transparent 65%);
 }
 
+/* Round 14: the R8 comment above claimed these two were "DELETED" per
+   Canon §5's blurred-orb ban, but only .heroBg's own declaration was ever
+   touched — .heroBgA and .heroBgB kept their full radial-gradient styling
+   and kept rendering as two literal blurred circles on every page this
+   shell serves (insights, about, why-yallo, leadership, jobs, legal). This
+   is the "sun design" reported as horrible on /insights. Neutralised the
+   way BriefCTA.module.css's .orbA/.orbB already are — the class, not the
+   instance, since nine surfaces share this file. */
+.heroBgA,
 .heroBgB {
-  width: 520px;
-  height: 520px;
-  bottom: -25%;
-  left: -8%;
-  background: radial-gradient(circle, var(--accent-strong), transparent 65%);
+  display: none;
 }
 
 .heroGrid {
@@ -373,6 +368,31 @@
   letter-spacing: -0.01em;
   color: var(--fg);
   margin: 0 0 10px;
+}
+
+/* Round 14: `.card` is shared by linked cards (an `<a>`) and static ones
+   (`<article>`/`<div>`) — leadership and jobs use the same class for cards
+   that go nowhere. Scoped to `a.card` so the arrow appears only where the
+   heading is genuinely a hyperlink. Always visible, matching every other
+   static-arrow affordance on the site ("Start a brief →") — the cue to
+   discover a punch-out should not require a hover, only the nudge on
+   reaction to one does. */
+a.card .cardTitle::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--accent-label);
+  transition:
+    color 0.16s ease,
+    transform 0.2s ease;
+}
+
+/* A5: paired with a colour step, not transform alone — see the identical
+   note in Home.module.css's .vow h3 rule. */
+a.card:hover .cardTitle::after,
+a.card:focus-visible .cardTitle::after {
+  color: var(--gold-deep);
+  transform: translateX(4px);
 }
 
 .cardCopy {

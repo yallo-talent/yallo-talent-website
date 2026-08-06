@@ -3,12 +3,12 @@ import type { LegalPageData } from "@/components/blocks/editorial/LegalPageShell
 export const privacyData: LegalPageData = {
   title: "Privacy notice",
   lastUpdated: "2026-07-27",
-  lede: "How Yallo Talent collects, uses and protects personal data. This notice applies to candidates, clients and visitors to talent.yallo.co.",
+  lede: "How Yallo Talent collects, uses and protects personal data. This notice applies to candidates, clients and visitors to yallo.co.",
   sections: [
     {
       heading: "Who we are",
       body: [
-        "Yallo Talent is the enterprise workforce line of Yallo Group. We're the data controller for personal data collected through talent.yallo.co and through our recruitment and delivery operations across the UK, Middle East and India.",
+        "Yallo Talent is the enterprise workforce line of Yallo Group. We're the data controller for personal data collected through yallo.co and through our recruitment and delivery operations across the UK, Middle East and India.",
         "You can reach the Yallo privacy team at privacy@yallo.co for any question about how we handle your data.",
       ],
     },
@@ -62,7 +62,7 @@ export const privacyData: LegalPageData = {
     {
       heading: "Cookies",
       body: [
-        "See our separate Cookies notice for details on how we use cookies on talent.yallo.co.",
+        "See our separate Cookies notice for details on how we use cookies on yallo.co.",
       ],
     },
   ],

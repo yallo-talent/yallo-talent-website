@@ -22,7 +22,13 @@ export const metadata: Metadata = buildMetadata({
 const assistantSection = {
   heading: "The site assistant",
   body: [
-    "talent.yallo.co offers an in-page assistant that answers questions from this site's own published content and can help put together a brief. Conversations are recorded and kept for 12 months, then deleted. If a conversation results in a brief, the brief itself persists as a commercial record in the same way a brief sent through our contact form does.",
+    /* Domain fixed (talent.yallo.co → yallo.co) and the retention claim
+       corrected to match reality, same finding and same fix as the
+       assistant panel's own disclosure line (AssistantPanel.tsx): no
+       transcript store exists yet, so nothing is recorded for 12 months
+       today — round 13's own relay logged that gap. Update this line
+       again once that store ships, not before. */
+    "yallo.co offers an in-page assistant that answers questions from this site's own published content and can help put together a brief. Conversations are not saved once you close the assistant. If a conversation results in a brief, the brief itself persists as a commercial record in the same way a brief sent through our contact form does.",
     "The assistant serves prospective clients only. It does not collect anything beyond what our brief form already collects, and it never asks for payment details, passwords or identity documents.",
   ],
 };

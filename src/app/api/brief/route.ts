@@ -4,9 +4,22 @@ import { z } from "zod";
 import { recordDelivery, recordSubmission } from "@/lib/db/submissions";
 import { briefFormSchema } from "@/lib/schemas";
 
-const RESEND_FROM =
-  process.env.RESEND_FROM ?? "Yallo Talent <brief@talent.yallo.co>";
-const RESEND_TO = process.env.RESEND_TO ?? "hello@yallo.co";
+/* Sumeet, direct instruction (chat, round 14): no talent.yallo.co — yallo.co
+   itself becomes Yallo Talent's domain, there is no permanent subdomain.
+   The old default here was the one place still asserting the subdomain as
+   a real sender address. FROM reuses brief@yallo.co (one of the two
+   addresses Sumeet named) rather than inventing an unapproved third one. */
+const RESEND_FROM = process.env.RESEND_FROM ?? "Yallo Talent <brief@yallo.co>";
+
+/* Both, not either — Sumeet named exactly these two, and the previous
+   default only ever sent to one address (`to: [RESEND_TO]`, a single-
+   element array) even though round13-chatbot.md §8 already said both
+   aliases should receive it. Comma-separated so a future env override
+   can still name more than one recipient without a second code change. */
+const RESEND_TO = (process.env.RESEND_TO ?? "brief@yallo.co,hello@yallo.co")
+  .split(",")
+  .map((addr) => addr.trim())
+  .filter(Boolean);
 
 const campaignSchema = z.record(z.string(), z.string().max(200)).optional();
 
@@ -94,7 +107,7 @@ export async function POST(request: Request) {
     const resend = new Resend(apiKey);
     const { error } = await resend.emails.send({
       from: RESEND_FROM,
-      to: [RESEND_TO],
+      to: RESEND_TO,
       replyTo: v.email,
       subject,
       html,

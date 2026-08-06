@@ -72,17 +72,13 @@ export const platforms: PlatformAxis[] = [
     name: taxonomyLabels("blue-yonder").label,
     slug: "blue-yonder",
     modules: "Luminate · WMS · planning",
-    /* NAME text, like Informatica below, and not blue-yonder.png.
-       Two separate findings meet here. The entry pointed at sap.svg, because the
-       two were adjacent in this array and the wrong literal got carried over,
-       publishing SAP's mark under Blue Yonder's name: a false vendor
-       association, round 7 §4.3. Correcting the path alone would have swapped
-       that for a different defect, because blue-yonder.png measures as an opaque
-       plate at 100% ink with no alpha, so the register's invert paints a solid
-       black bar. Canon §8 allows a keyed silhouette or the name, and this file
-       cannot be the first. One transparent monochrome asset reverses this line,
-       round 7 close-out §4.1. */
-    mark: null,
+    /* Round 14: a real source (BlueYonder.png) replaced the opaque plate this
+       comment used to describe. scripts/build-logos.mjs now has a `platforms`
+       family and keys it through the same gate every client mark passes —
+       1344x191, 31.8% ink, 0.2% padding, no box-lockup or filled-plate reason
+       to decline. Measured clean by check-marks.mjs on the axis surface
+       alongside the other six. */
+    mark: "/logos/platforms/blue-yonder.png",
     published: true,
   },
   {
@@ -104,14 +100,21 @@ export const platforms: PlatformAxis[] = [
        as a hand-copied label, so session A makes this derive from the registry
        the way sectorNavEntries already does; this flag is the data half.
 
-       `mark` stays null and that half of the old comment still holds: the pack
-       has no Informatica platform artwork. The informatica.png under
-       public/logos/clients is the CLIENT mark, a different thing, and it ships
-       at consentOnFile false per canon section 3. */
+       Round 14: the "no platform artwork" half is now Sumeet's call reversed
+       — a real source arrived (Informatica-icon.png, the standalone flag
+       mark, not the client rail's icon+wordmark lockup) and keys cleanly
+       through the same gate every client mark passes. Deliberately a
+       DIFFERENT slug ("informatica-icon") from the client family's
+       "informatica", even though both now trace to the same company's
+       mark — manifest.json is keyed by slug alone across all three families,
+       and reusing "informatica" here would silently collide with the client
+       rail's own (now-unused) measurement.
+       consentOnFile in content/clients.yaml went back to false the same
+       round: Informatica no longer appears on the client rail. */
     name: taxonomyLabels("informatica").label,
     slug: "informatica",
     modules: "MDM · data quality · integration",
-    mark: null,
+    mark: "/logos/platforms/informatica-icon.png",
     published: true,
   },
 ];

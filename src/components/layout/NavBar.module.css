@@ -580,6 +580,20 @@
   gap: 8px;
 }
 
+.themeToggleDesktop {
+  display: inline-flex;
+}
+
+/* Matches the breakpoint .primary collapses at, below — same rule, kept
+   local to the control it hides rather than added to that block, so this
+   query does not silently absorb whatever gets appended after it (the
+   359px block's own comment names exactly that failure mode). */
+@media (max-width: 1024px) {
+  .themeToggleDesktop {
+    display: none;
+  }
+}
+
 /* --accent-mark (gold), not --accent (gold-deep). Ink on gold-deep measures
    4.38:1 at 13px bold — a real AA miss on the site's primary conversion
    control, and one the token gate could not see because the pair is only formed
@@ -663,6 +677,17 @@
 }
 
 .mobileLink {
+  padding: 10px 0;
+  color: var(--fg);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  border-bottom: 1px solid var(--border);
+}
+
+.mobileThemeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 10px 0;
   color: var(--fg);
   font-size: var(--fs-body-sm);

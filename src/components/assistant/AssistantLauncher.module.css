@@ -1,22 +1,29 @@
 /* Opposite corner from StickyBriefCTA (src/components/layout/StickyBriefCTA
-   fixes bottom:20/right:20), so the two floating affordances never occupy
-   the same space on desktop. Below 640px, StickyBriefCTA widens to span
-   left:12–right:12, so the launcher lifts above it rather than sitting
-   behind it — cheap to do from this side alone, but real simultaneous
-   visibility is worth a visual check once A's layout.tsx mount lands. */
+   fixes bottom:20/left:20 as of round 14's corner swap — Sumeet's direct
+   instruction, chat, round 14: placement only, StickyBriefCTA's own
+   show/hide/dismiss behaviour is untouched), so the two floating
+   affordances never occupy the same space on desktop. Below 640px,
+   StickyBriefCTA is already full-width (left:12–right:12) regardless of
+   which desktop corner it anchors to, and the launcher's own bottom:84
+   lift is not enough on its own: round14-scope.md §2.4 measured a real
+   54x44px overlap at 360 once both were visible in one viewport.
+   AssistantLauncher.tsx hides the launcher outright at this width whenever
+   StickyBriefCTA is present in the DOM, so this rule still keeps them
+   apart visually the rest of the time (desktop, and the moment before/
+   after StickyBriefCTA is on screen). */
 .fab {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
   z-index: 41;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 16px 12px 12px;
+  padding: 12px 12px 12px 16px;
   background: var(--ground-2);
   color: var(--fg);
   border: 1px solid var(--boundary);
-  border-radius: 0 var(--r-md) 0 0;
+  border-radius: var(--r-md) 0 0 0;
   font-family: var(--font-body);
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-medium);
@@ -49,7 +56,7 @@
 @media (max-width: 640px) {
   .fab {
     bottom: 84px;
-    left: 12px;
+    right: 12px;
     padding: 12px;
     border-radius: 50%;
   }

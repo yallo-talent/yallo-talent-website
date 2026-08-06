@@ -39,7 +39,7 @@ const quickLinks = [
    wouldn't be quietly wrong within a month. One line to add back once that
    host is real. */
 const yalloFamily = [
-  { label: "Yallo Talent", href: "https://talent.yallo.co" },
+  { label: "Yallo Talent", href: "https://yallo.co" },
   { label: "saasinator AI", href: "https://saasinator.ai" },
 ];
 

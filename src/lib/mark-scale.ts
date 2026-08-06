@@ -185,19 +185,30 @@ export function markScales(
 
   /* Coarse then fine, so the search is deterministic and cheap. The range
      covers every box this site has: nothing renders a mark under 4px or over
-     140px, and a 0.05px final step is below the device pixel. */
+     140px, and a 0.05px final step is below the device pixel.
+
+     Round 14: a set with room to spare has a whole PLATEAU of equally-optimal
+     R, not one point — measured on the platform axis, r=18 through r=30 all
+     land on 0.0000 worst deviation, because nothing is clamped until the cap
+     bites just past 30. The strict "< best.worst" comparison below used to
+     keep the FIRST r it met, which is the smallest and therefore the
+     smallest rendered marks the objective is indifferent between. That read
+     as "the icons are too tiny" while the gate stayed green, because the
+     gate only ever measured deviation, never size. Ties now keep the LARGER
+     r — free size, not a different trade-off, since by definition nothing
+     in the tied band changed the worst deviation. */
   let best = solve(4);
   let bestR = 4;
   for (let r = 4; r <= 140; r += 1) {
     const attempt = solve(r);
-    if (attempt.worst < best.worst - 1e-9) {
+    if (attempt.worst < best.worst + 1e-9) {
       best = attempt;
       bestR = r;
     }
   }
   for (let r = Math.max(4, bestR - 1); r <= bestR + 1; r += 0.05) {
     const attempt = solve(r);
-    if (attempt.worst < best.worst - 1e-9) best = attempt;
+    if (attempt.worst < best.worst + 1e-9) best = attempt;
   }
 
   for (const row of best.rows) out.set(row.slug, row);

@@ -225,9 +225,9 @@ export const primaryNav: NavGroup[] = [
     ],
     featured: {
       eyebrow: "Featured case",
-      title: "S/4HANA for Al Tayer Group",
-      copy: "Wipro was appointed strategic system integrator and came to us for the SAP specialists.",
-      href: "/case-studies/enabling-sap-s-4hana-transformation-for-al-tayer-group",
+      title: "Engineering a custom planning platform",
+      copy: "Alshaya's planning operations across multiple brands needed lower cost of ownership and more in-house control.",
+      href: "/case-studies/engineering-a-custom-planning-platform",
       ctaLabel: "Read the case study →",
     },
   },

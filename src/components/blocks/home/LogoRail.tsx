@@ -1,5 +1,6 @@
 import { logoRail } from "@/data/home/hero";
 import { type Client, getConsentedClients, hasLogoAsset } from "@/lib/clients";
+import { markScales } from "@/lib/mark-scale";
 import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
 import { RailViewport } from "./RailViewport";
@@ -42,11 +43,35 @@ export function LogoRail() {
     ...getConsentedClients("integrators"),
   ].filter((c) => hasLogoAsset(c.logo));
 
+  /* The whole rail's mark set, so every mark is normalised against the same
+     median. Ink-area normalisation is a property of the set: a mark has no
+     correct size until you know what it sits beside. */
+  const set = clients
+    .map((c) => c.logo)
+    .filter((logo): logo is string => Boolean(logo));
+
+  /* Round 14: the viewport's own height used to come free from `.logo`'s
+     68px cell — fine until a padded asset's full image box (Wipro, 56.4%
+     padding, solves to 94px here) needed more room than the cell and
+     `overflow: hidden` clipped real ink off the bottom. Deriving the
+     viewport's height from the same computation that sizes every mark means
+     a future padded asset is automatically safe rather than a magic number
+     someone has to remember to raise. */
+  const maxMarkHeight = Math.max(
+    68,
+    ...[...markScales(set, "rail").values()].map((s) => s.height),
+  );
+
   return (
-    <section className={styles.rail} aria-label="Clients and integrators">
-      <div className={styles.wrap}>
-        <p className={styles.railLabel}>{logoRail.mergedLabel}</p>
-      </div>
+    <section
+      className={styles.rail}
+      aria-label="Clients and integrators"
+      style={{ "--rail-max-h": `${maxMarkHeight}px` } as React.CSSProperties}
+    >
+      {/* Round 14: no `.wrap` here — the label is full-width, left-aligned to
+          the page edge via its own padding, matching the edge-to-edge track
+          beneath it rather than the narrower centred content column. */}
+      <p className={styles.railLabel}>{logoRail.mergedLabel}</p>
       {/* Two identical tracks: the loop translates by exactly half its width, so
           the seam never shows. The second is aria-hidden decoration. */}
       <RailViewport>

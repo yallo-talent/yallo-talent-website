@@ -594,7 +594,10 @@
   background: var(--ground-2);
   border-top: 1px solid var(--hairline);
   border-bottom: 1px solid var(--hairline);
-  padding: clamp(28px, 3.5vw, 44px) 0;
+  /* Round 14: cut from clamp(28,3.5vw,44) — the rail was reading as more
+     whitespace than proof. The marks themselves (.logo, 68px) are untouched;
+     this is the air around them, not the legibility floor. */
+  padding: clamp(16px, 2vw, 26px) 0;
   overflow: hidden;
 }
 
@@ -604,8 +607,14 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-3);
-  margin-bottom: 18px;
+  margin: 0 0 14px;
+  padding-left: 20px;
   max-width: 56ch;
+  /* Round 14, corrected: the standard --pad gutter indented the label well
+     past where the edge-to-edge track below it actually starts, so caption
+     and content disagreed on where the edge was. 20px is breathing room
+     against the true viewport edge, not the content column's gutter —
+     the track has no gutter to match. */
 }
 
 .railGroup + .railGroup {
@@ -629,6 +638,16 @@
 .railViewport {
   position: relative;
   overflow: hidden;
+  /* Round 14: `min-height` from `--rail-max-h` (LogoRail.tsx, derived from
+     markScales against the same "rail" surface every mark solves against),
+     not the `.logo` cell's flat 68px. `overflow-x: hidden` paired with
+     `overflow-y: visible` looks like the fix for a padded asset overflowing
+     the cell, but per the CSS overflow spec a browser forces the visible
+     axis to compute as `auto` whenever the other axis is not visible — so
+     it still clips. Sizing the box tall enough that nothing overflows
+     vertically in the first place is the version that actually works, and
+     it is why `overflow: hidden` reverted to both axes here. */
+  min-height: var(--rail-max-h, 68px);
   /* Soft-edge the loop so marks enter and leave a fade, not a hard cut.
      A mask reads alpha only, so currentColor serves as "fully opaque" and the
      rule needs no colour value of its own. */
@@ -1467,6 +1486,33 @@
 
 .vow h3:has(.moduleLink) {
   max-width: none;
+}
+
+/* Round 14: a bare `<Link>` inside `.vow h3` — intelligence, the blueprint
+   index, /ai-talent — carried no visual cue that the heading was
+   clickable at all. `.moduleLink` anchors already carry their own arrow
+   (the flex row + ArrowGlyph rule below), so this is scoped to skip them
+   and dress only the plain case. Always visible, matching "Start a brief →"
+   and every other static-arrow affordance on the site — a punch-out's
+   hyperlink cue should not require a hover to discover, only to react to
+   (the translateX nudge below still carries the hover moment). */
+.vow h3 > a:not(.moduleLink)::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 8px;
+  color: var(--accent-label);
+  transition:
+    color 0.16s ease,
+    transform 0.2s ease;
+}
+
+/* A5: a hover rule that changes only transform leaves nothing for a
+   reduced-motion visitor, who has it zeroed globally. The colour step to
+   --gold-deep is the real cue; the nudge is the flourish on top of it. */
+.vow h3 > a:not(.moduleLink):hover::after,
+.vow h3 > a:not(.moduleLink):focus-visible::after {
+  color: var(--gold-deep);
+  transform: translateX(4px);
 }
 
 .vowBadge {

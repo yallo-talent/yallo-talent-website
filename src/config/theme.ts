@@ -7,9 +7,12 @@
  * a component.
  *
  * Set NEXT_PUBLIC_DEFAULT_THEME=dark at build time to flip the site default.
- * A returning visitor's stored choice always wins over this, and a first-time
- * visitor's `prefers-color-scheme` wins too; this is the fallback when neither
- * signal exists.
+ * A returning visitor's stored choice (the in-page toggle) always wins over
+ * this. `prefers-color-scheme` does NOT — Sumeet's explicit call, round 14:
+ * every first-time visitor sees the site default regardless of their OS
+ * setting, and reaches for the toggle themselves if they want dark. This is a
+ * deliberate departure from the previous behaviour, which read the OS
+ * preference ahead of DEFAULT_THEME.
  */
 
 export type Theme = "light" | "dark";
@@ -26,8 +29,12 @@ export const DEFAULT_THEME: Theme = configured === "dark" ? "dark" : "light";
 
 /**
  * Runs before first paint, inlined into <head>. Resolves the theme from
- * localStorage, then `prefers-color-scheme`, then DEFAULT_THEME, and stamps it
- * on <html> so there is no flash of the wrong register.
+ * localStorage, else DEFAULT_THEME, and stamps it on <html> so there is no
+ * flash of the wrong register.
+ *
+ * Deliberately does NOT consult `prefers-color-scheme` — see the module
+ * comment above. A visitor's OS setting no longer overrides the site default;
+ * only their own stored choice, made via the in-page toggle, does.
  *
  * Kept as a string rather than a module because it must execute synchronously
  * ahead of hydration.
@@ -36,7 +43,7 @@ export const themeInitScript = `
 (function(){try{
   var k=${JSON.stringify(THEME_STORAGE_KEY)},d=${JSON.stringify(DEFAULT_THEME)};
   var s=localStorage.getItem(k);
-  var t=(s==='light'||s==='dark')?s:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':(window.matchMedia('(prefers-color-scheme: light)').matches?'light':d));
+  var t=(s==='light'||s==='dark')?s:d;
   document.documentElement.setAttribute('data-theme',t);
 }catch(e){}})();
 `.trim();

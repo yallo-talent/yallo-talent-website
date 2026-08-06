@@ -1,0 +1,35 @@
+name: Accessibility gate, exhaustive
+on:
+  schedule:
+    # Daily, offset from phase8. Every published URL across four
+    # theme/width combinations measures at ~29 minutes — too slow for a PR
+    # gate, so it runs on a cadence and is watched, not on every push.
+    # context-round14-scope.md §2.2. The PR gate (check:a11y, no flag)
+    # covers every rendering unit on each push; this covers every URL.
+    - cron: "5 7 * * *"
+  workflow_dispatch: {}
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build (production)
+        run: pnpm build
+
+      - name: Start (production server)
+        run: |
+          PORT=3101 pnpm start &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:3101 && break
+            sleep 1
+          done
+
+      - name: Accessibility audit, every published URL
+        run: node scripts/check-a11y.mjs --base http://localhost:3101 --exhaustive
