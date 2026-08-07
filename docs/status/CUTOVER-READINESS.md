@@ -492,6 +492,24 @@ inputs because the live half cannot be made to emit one on demand.
 | Retention | Unchanged. Origin is a column on the transcript and dies with it |
 | `/privacy` | One clause added, **logged for Sumeet's veto** per R-A9 |
 
+### CI on final HEAD
+
+`main` at **`769e671`**. Run **31218670243**, watched to conclusion:
+**completed / success**. Every step green, including the accessibility step that
+failed four consecutive runs in round 20, and the two steps this round adds
+(`check:published-manifest`, `check:redirects`).
+
+### Branch protection — the precondition is now real, the claim still is not
+
+Read via the API: `main` requires the **`checks`** context
+(`required_status_checks.contexts: ["checks"]`, app 15368), `strict: false`,
+`enforce_admins: false`.
+
+**A cockpit publish still has not been watched reaching `main` unattended.**
+Exercising it means signing into `/admin` with the admin password, which this
+session does not do. §8 of this report is unchanged on that point, and it is
+the first of Sumeet's manual actions.
+
 ### Runbook cross-reference
 
 Cutover is Sumeet-executed against **`CUTOVER-RUNBOOK.md`**.

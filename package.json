@@ -97,7 +97,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/turndown": "^5.0.6",
-    "canvas": "^3.2.3",
     "cheerio": "^1.2.0",
     "chrome-launcher": "^1.2.1",
     "eslint": "^9",
