@@ -22,8 +22,8 @@
 # string it carried, per context-round7-close.md §2.3.
 
 order:
-  - oracle-hyperion-financial-management-hfm-implementation # Majid Al Futtaim
   - enabling-sap-s-4hana-transformation-for-al-tayer-group # Al Tayer Group
+  - oracle-hyperion-financial-management-hfm-implementation # Majid Al Futtaim
   - enabling-supply-chain-transformation-through-targeted-delivery-expertise # Chalhoub Group
   - enabling-azure-data-platform-delivery-at-enterprise-scale # Alshaya Group
   - building-a-scalable-arabic-speaking-offshore-it-hub-for-al-othaim-markets # Al Othaim Markets
