@@ -41,7 +41,24 @@ const PANES = [
   "/admin/briefs",
   "/admin/case-studies",
   "/admin/conversations",
+  "/admin/articles",
 ];
+
+/**
+ * The conversation DETAIL template, which has no fixed URL.
+ *
+ * Round 20 §3.1 moved the full transcript one click below the list, so there is
+ * now a rendering unit whose address is a transcript id. It cannot be written
+ * into PANES: the id depends on what the database holds, and a hardcoded one
+ * would 404 on every machine but the one it was copied from.
+ *
+ * So it is DISCOVERED — the first row's link on /admin/conversations — and when
+ * the list is empty the run REPORTS that the template went unvisited rather than
+ * passing quietly. An empty database is a legitimate state and a gate that
+ * cannot tell it apart from a broken template is the failure this repository
+ * keeps rediscovering.
+ */
+const DETAIL_FROM = "/admin/conversations";
 const WIDTHS = [1280, 360];
 const THEMES = ["light", "dark"];
 
@@ -58,6 +75,8 @@ if (!EMAIL || !PASSWORD) {
 const blocking = [];
 const advisory = [];
 let panesMeasured = 0;
+/** Contexts in which the conversation-detail template had no row to render. */
+let detailUnvisited = 0;
 
 /**
  * Signs in once per context and leaves the session cookie on it.
@@ -191,7 +210,35 @@ for (const theme of THEMES) {
       continue;
     }
 
-    for (const pane of PANES) {
+    /* Resolved per context because a context is a signed-in session and the
+       list cannot be read without one. Appended to the pane list so the detail
+       template goes through exactly the same axe, type and contrast passes as
+       every other. */
+    const panes = [...PANES];
+    let detail = null;
+    {
+      const probe = await ctx.newPage();
+      try {
+        await probe.goto(`${BASE}${DETAIL_FROM}`, {
+          waitUntil: "networkidle",
+          timeout: 45000,
+        });
+        detail = await probe.evaluate(() => {
+          const a = document.querySelector(
+            'a[href^="/admin/conversations/"]',
+          );
+          return a ? a.getAttribute("href") : null;
+        });
+      } catch {
+        /* Reported below as un-visited rather than thrown: a probe failure and
+           an empty list produce the same null, and both are worth saying. */
+      }
+      await probe.close();
+      if (detail) panes.push(detail);
+      else detailUnvisited += 1;
+    }
+
+    for (const pane of panes) {
       const page = await ctx.newPage();
       try {
         const res = await page.goto(`${BASE}${pane}`, {
@@ -283,7 +330,10 @@ for (const theme of THEMES) {
 
 await browser.close();
 
-const expected = PANES.length * WIDTHS.length * THEMES.length;
+/* PANES plus, in each context that found one, the discovered detail URL. */
+const contexts = WIDTHS.length * THEMES.length;
+const expected =
+  PANES.length * contexts + (contexts - detailUnvisited);
 if (panesMeasured < expected) {
   blocking.push(
     `Only ${panesMeasured} of ${expected} pane renders were measured. A partial run is not\n` +
@@ -304,6 +354,12 @@ if (blocking.length) {
 
 console.log(
   `\ncheck:admin-render passed\n` +
-    `  ${PANES.length} pane(s) x ${THEMES.length} theme(s) x ${WIDTHS.length} width(s) = ${panesMeasured} render(s), signed in\n` +
-    `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n`,
+    `  ${PANES.length} pane(s) x ${THEMES.length} theme(s) x ${WIDTHS.length} width(s), ` +
+    `${panesMeasured} render(s) in total, signed in\n` +
+    `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n` +
+    (detailUnvisited
+      ? `  THE CONVERSATION DETAIL TEMPLATE WAS NOT VISITED in ${detailUnvisited} of ${contexts}\n` +
+        `  context(s): the list was empty, so there was no transcript to open. That is a\n` +
+        `  legitimate state of the database and it is reported rather than passed over.\n`
+      : `  the conversation detail template was reached in all ${contexts} context(s)\n`),
 );
