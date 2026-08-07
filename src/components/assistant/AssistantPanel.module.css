@@ -29,8 +29,8 @@
    rather than a second hand-picked breakpoint for the same "is this
    mobile" question AssistantLauncher.tsx's own MOBILE_QUERY already
    answers. Docked flush to the edge rather than floating with a margin,
-   which is why the radius drops to 0 here — a flush-edge drawer has no
-   corner to round. No backdrop by design: the rest of the page stays
+   so three of its four corners are off-screen and only the bottom-left
+   one is the drawer's to shape. No backdrop by design: the rest of the page stays
    fully interactive alongside it, so closing is Escape or the header's
    own button, never an outside click, because there is nothing behind
    the panel that would need to catch one. */
@@ -47,7 +47,12 @@
     bottom: 0;
     width: min(420px, 100vw);
     max-height: none;
-    border-radius: 0;
+    /* The one corner a docked drawer has. Bottom-left, at the panel grade —
+       the same single-corner cut the system uses everywhere else, and the same
+       token the floating variant above takes for its own free corner. The
+       drawer's `overflow: hidden` clips the composer's ground into it, so the
+       radius reads on the surface rather than only on the border. */
+    border-radius: 0 0 0 var(--r);
     border-top: none;
     border-right: none;
     border-bottom: none;
@@ -318,6 +323,30 @@
   gap: 8px;
   padding: 12px 16px;
   border-top: 1px solid var(--hairline);
+}
+
+/* The composer clears the drawer's corner.
+
+   Only the docked variant has a bottom-left radius, and at the panel grade that
+   arc reaches 56px up and 56px in — far enough to cut the corner off the input,
+   which sits 17px from the left edge and was 12px off the bottom. `overflow:
+   hidden` on the panel meant the field was genuinely clipped, not merely close.
+
+   Solved on the BOTTOM padding alone, not the left. The panel's horizontal
+   rhythm is 16px and the header, the message list and this row all share it;
+   insetting the composer to clear the arc sideways would step it out of line
+   with everything above it for the whole height of the drawer. Bottom padding
+   costs nothing but the space it adds.
+
+   The arithmetic, so the next change to either number can check itself: with the
+   corner's centre at (56, 56) from the panel's bottom-left, a point (x, y) is
+   inside the painted area when (56-x)^2 + (56-y)^2 <= 56^2. At x = 17 that needs
+   y >= 16.8. 22 takes it with margin, and the same expression says any radius up
+   to 49px would have needed no change at all. */
+@media (min-width: 641px) {
+  .form {
+    padding-bottom: 22px;
+  }
 }
 
 .input {
