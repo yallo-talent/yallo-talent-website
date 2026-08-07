@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import styles from "./Research.module.css";
 
 /**
@@ -68,11 +69,20 @@ export function ResearchGate({ asset }: { asset: string }) {
         <p className={styles.gateStatus}>
           Thank you. The full synthesis is ready.
         </p>
+        {/* The payoff of the whole surface, and it was wearing `gateStatus` —
+            the class for the little grey sentence under the form. It rendered
+            as body text with nothing to say it could be clicked. `gateDownload`
+            is the design system's link control: underline plus accent, a real
+            focus ring, and enough padding to clear the 24px target floor.
+
+            Still a plain anchor rather than the Button component: this points
+            at a static file and wants the browser's download behaviour, not a
+            client-side navigation. */}
         {/* biome-ignore lint/a11y/noAutofocus: the form this replaced has just
             been removed from the page, so focus would otherwise fall to the
             document body and a screen-reader user would not be told that the
             thing they asked for had arrived. */}
-        <a autoFocus className={styles.gateStatus} href={href} download>
+        <a autoFocus className={styles.gateDownload} href={href} download>
           Download the cross-market synthesis (PDF)
         </a>
         <p className={styles.gateNote}>
@@ -118,13 +128,15 @@ export function ResearchGate({ asset }: { asset: string }) {
           required
         />
       </label>
-      <button
-        className="btn btn-primary"
-        type="submit"
-        disabled={state === "sending"}
-      >
+      {/* The ratified button treatment, via the component that carries it.
+          This read as plain body text because it asked for `btn btn-primary`
+          and NEITHER CLASS EXISTS anywhere in the repository — the site's
+          buttons are the Button component's own module classes, so the markup
+          was styling itself with two names that resolve to nothing and the
+          browser's default control was all that showed. */}
+      <Button variant="primary" type="submit" disabled={state === "sending"}>
         {state === "sending" ? "Sending…" : "Get the synthesis"}
-      </button>
+      </Button>
       <p
         className={`${styles.gateStatus} ${state === "error" ? styles.gateError : ""}`}
         id={statusId}

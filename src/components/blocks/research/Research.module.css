@@ -268,14 +268,35 @@
    the glyph on the text's baseline row and stops it wrapping onto a line of its
    own; the gap is the only thing separating them, so no space character has to
    survive JSX formatting. */
+/* Round 21 §2.4: the arrow was doing all the work. Everything above was layout
+   — inline-flex, alignment, a gap — and nothing said "link", so the text
+   painted in its paragraph's colour with no underline and the rendered gate
+   read it, correctly, as prose with a glyph after it. The treatment now matches
+   every other link on these surfaces. */
 .nextLink {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  color: var(--accent-label);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
+.nextLink:hover {
+  text-decoration-thickness: 2px;
+}
+
+.nextLink:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/* The glyph is a mark, not a word: an underline running under it reads as a
+   typo rather than as part of the link. */
 .nextLink svg {
   flex: none;
+  text-decoration: none;
 }
 
 /* ── The gate ───────────────────────────────────────────────────────────── */
@@ -330,6 +351,65 @@
 
 .gateError {
   color: var(--signal-text);
+}
+
+/*
+ * THE SURFACE RULE — round 21 §2.4, and the reason this is a rule rather than
+ * nine edits.
+ *
+ * Sumeet named two controls that rendered as body text. The rendered gate found
+ * seven more on the same pages, all of them the same shape: an anchor with no
+ * class, inheriting its parent's colour, no underline, nothing to say it could
+ * be clicked. `a:not([class])` is precisely "a link nobody styled", so this
+ * catches the ones written next week as well as the ones written already.
+ *
+ * Applied by src/app/intelligence/layout.tsx over the whole family.
+ */
+.surface a:not([class]) {
+  color: var(--accent-label);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.surface a:not([class]):hover {
+  text-decoration-thickness: 2px;
+}
+
+.surface a:not([class]):focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/*
+ * The link control — round 21 §2.4.
+ *
+ * The post-gate download link used .gateStatus, the class for the grey
+ * sentence under the form, so the one thing a reader gave an email address for
+ * rendered as body text with no affordance at all. Underline plus accent is the
+ * design system's link treatment; the padding is not decoration but WCAG 2.5.8,
+ * which wants 24px of target, and inline text alone does not give it.
+ */
+.gateDownload {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 2px;
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  line-height: 1.5;
+  color: var(--accent-label);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.gateDownload:hover {
+  text-decoration-color: var(--accent-line);
+}
+
+.gateDownload:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
 }
 
 .gateNote {

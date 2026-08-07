@@ -381,7 +381,154 @@ for (const path of PAGES) {
 }
 }
 
+/* ---------------------------------------------------------------------------
+   RULE 5. Every interactive element on the intelligence and research surfaces
+   is styled as a control — round 21 §2.4.
+
+   THE THIRD TIME THIS CLASS SHIPPED. Assistant links first, then the two on
+   this surface: the post-gate download link wore the class for the grey
+   sentence under the form, and the "Get the synthesis" submit asked for
+   `btn btn-primary`, two class names that exist nowhere in the repository. Both
+   rendered as body text. Nothing could see it, because affordance is a painted
+   fact and every gate here reads either source or structure.
+
+   The test is deliberately conservative: an element fails only if it is
+   indistinguishable from the prose around it — no underline, no border, no
+   background of its own, no colour difference from its own container, and too
+   small to be reading as a card. One of those five is enough to pass, so a
+   block card link whose affordance is the card is not a false positive.
+
+   THE THREE GATE STATES. The download link only exists after a successful
+   submission, so the states are driven here rather than described: the form as
+   it loads, the submit mid-flight, and the surface after success. The API is
+   stubbed at the network so the gate needs no database, no mail provider and no
+   captured lead, and so the "done" state is reachable identically on every
+   machine that runs it.
+   --------------------------------------------------------------------------- */
+
+/** The surfaces §2.4 governs. */
+const DELIVERY_SURFACES = [
+  "/intelligence",
+  "/intelligence/research",
+  "/intelligence/research/corridor",
+];
+
+const AFFORDANCE = () => {
+  const opaque = (c) => c && c !== "transparent" && !c.endsWith(", 0)");
+  const out = [];
+  const main = document.querySelector("main");
+  if (!main) return out;
+  for (const el of main.querySelectorAll("a[href], button")) {
+    const r = el.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) continue;
+    const s = getComputedStyle(el);
+    if (s.display === "none" || s.visibility === "hidden") continue;
+
+    const parent = el.parentElement;
+    const ps = parent ? getComputedStyle(parent) : null;
+
+    const underlined = s.textDecorationLine.includes("underline");
+    const bordered = ["Top", "Right", "Bottom", "Left"].some(
+      (side) =>
+        Number.parseFloat(s[`border${side}Width`]) > 0 &&
+        s[`border${side}Style`] !== "none",
+    );
+    const filled = opaque(s.backgroundColor);
+    const recoloured = ps ? s.color !== ps.color : false;
+    /* Big enough that the reader is looking at a card, not a run of prose. */
+    const isCard = r.height >= 56;
+
+    if (!(underlined || bordered || filled || recoloured || isCard)) {
+      out.push(
+        `${el.tagName.toLowerCase()} "${(el.textContent ?? "").trim().slice(0, 48)}"`,
+      );
+    }
+  }
+  return out;
+};
+
+for (const path of DELIVERY_SURFACES) {
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  try {
+    await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
+    const bare = await page.evaluate(AFFORDANCE);
+    for (const el of bare) {
+      failures.push(
+        `${path}  ${el} renders with no control affordance — no underline, ` +
+          "border, fill or colour of its own. It reads as body text.",
+      );
+    }
+  } finally {
+    await page.close();
+  }
+}
+
+/* The gate form's three states, on the one surface that carries it. */
+{
+  const path = "/intelligence/research/corridor";
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  try {
+    await page.route("**/api/research", (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          ok: true,
+          href: "/downloads/yallo-talent-corridor-research.pdf",
+        }),
+      }),
+    );
+    await page.goto(`${BASE}${path}`, { waitUntil: "domcontentloaded" });
+
+    const submit = page.getByRole("button", { name: /get the synthesis/i });
+    await submit.waitFor({ state: "visible", timeout: 15000 });
+
+    for (const el of await page.evaluate(AFFORDANCE)) {
+      failures.push(`${path} [gate: pre-submit]  ${el} reads as body text.`);
+    }
+
+    await page.getByLabel("Name").fill("Gate Check");
+    await page.getByLabel("Company").fill("Yallo");
+    await page.getByLabel("Work email").fill("gate@example.com");
+    await submit.click();
+
+    const download = page.getByRole("link", { name: /download the/i });
+    await download.waitFor({ state: "visible", timeout: 15000 });
+
+    for (const el of await page.evaluate(AFFORDANCE)) {
+      failures.push(`${path} [gate: post-submit]  ${el} reads as body text.`);
+    }
+
+    /* The download link is the surface's whole payoff, so it is asserted by
+       name as well as by the sweep: a focus ring, and a target that clears
+       SC 2.5.8's 24px. */
+    const probe = await download.evaluate((el) => {
+      el.focus();
+      const s = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      return {
+        outlineWidth: Number.parseFloat(s.outlineWidth) || 0,
+        height: r.height,
+        underlined: s.textDecorationLine.includes("underline"),
+      };
+    });
+    if (!probe.underlined)
+      failures.push(`${path} [gate]  the download link is not underlined.`);
+    if (probe.height < 24)
+      failures.push(
+        `${path} [gate]  the download link's target is ${probe.height.toFixed(0)}px, below SC 2.5.8's 24px.`,
+      );
+    if (probe.outlineWidth <= 0)
+      failures.push(
+        `${path} [gate]  the download link shows no focus ring when focused.`,
+      );
+  } finally {
+    await page.close();
+  }
+}
+
 await browser.close();
+
 
 /* The relative half of the styled assert, which can only run once every page in
    the run has been counted. */
