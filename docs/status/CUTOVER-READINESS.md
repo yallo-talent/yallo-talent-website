@@ -1,5 +1,8 @@
 # Cutover readiness — yallo.co
 
+**Re-measured 8 August 2026, round 21. Gate table in §1a; round 20's table is
+kept below it as §1b for comparison.**
+
 **Measured 7 August 2026, round 20. HEAD `15c6b99`.**
 
 Every line below was measured this round, on a production build (`pnpm build`
@@ -11,7 +14,88 @@ This is the artefact the go-live decision is taken on.
 
 ---
 
-## 1. Build gates, with real exit codes
+## 1a. Round 21 gate table — every exit code below was watched
+
+Run 8 August 2026 against a production build (`pnpm build`, then `next start` on
+3115) at the round's final source state. Browser gates run serially, and
+`check:visual` runs LAST on its own server: it pulls the homepage through four
+viewports, which starves next/image's optimiser, and a starved key stays stuck
+for the lifetime of the process. Three gates in this round's first pass reported
+red for that reason alone and were green on a fresh server.
+
+| Gate | Exit | Note |
+|---|---|---|
+| `pnpm tsc --noEmit` | **0** | |
+| `pnpm biome check .` | **0** | what CI lints with |
+| `check:terms` | **0** | |
+| `check:orbs` | **0** | |
+| `check:contrast` | **0** | source tokens |
+| `check:taxonomy` | **0** | |
+| `check:cs-excerpts` (+ `--selftest`) | **0** | |
+| `check:type` | **0** | |
+| `check:prose` | **0** | |
+| `check:asset-case` | **0** | |
+| `check:published-manifest` | **0** | new this round |
+| `check:research-dataset` | **0** | |
+| `check:metrics` | **0** | |
+| `check:write-path` | **0** | |
+| `check:robots` (non-production) | **0** | |
+| `check:robots` (production branch) | **0** | own build, `NEXT_PUBLIC_SITE_URL=https://yallo.co`, `.next-robots`, deleted after |
+| `check:contrast-render` | **0** | |
+| `check:type-render` | **0** | **was red, fixed — see below** |
+| `check:a11y` | **0** | **was red, fixed — see below** |
+| `check:motion` | **0** | |
+| `check:interaction` | **0** | extended this round over the gate-form states |
+| `check:reflow` | **0** | |
+| `check:yallo-case` | **0** | |
+| `check:estate` | **0** | |
+| `check:marks` | **0** | |
+| `check:gate-coverage` | **0** | |
+| `check:no-redirects` | **0** | no internal link detours |
+| `check:redirects` | **0** | new this round, 301 probes |
+| `check:metrics-attribution` | **0** | |
+| `check:crawlers` | **0** | |
+| `check:cta-collision` | **0** | takes a base URL as argv, NOT `PORT` |
+| `check:nav-promise` | **0** | |
+| `check:admin-isolation` | **0** | |
+| `check:research-pdf` | **0** | now also asserts no site chrome |
+| `check:assistant-refusal` | **0** | live model, not deterministic — one exit 1 under load, green on re-run |
+| `check:assistant-grounding` | **0** | |
+| `check:assistant-links` | **0** | ran here; still absent from CI, see §6 |
+| `check:assistant-terms` | **0** | 7a holds |
+| `check:assistant-bundle` | **0** | |
+| `check:assistant-a11y` | **0** | |
+| `check:visual` | **0** | last, own server |
+| **`check:phase8`** | **1 — FAILS** | unchanged: Lighthouse Mobile 90+ misses 7 of 8, LCP misses 8 of 8. §6 |
+| **`npx eslint src scripts`** | **1 — FAILS** | unchanged; CI lints with Biome, which is green. §6 |
+
+### Two reds this round were real, and both were mine
+
+`check:type-render` and `check:a11y` both failed on `/intelligence/research/corridor`,
+and both had the same cause: the §2.4 fix put the `Button` component onto a
+gated route for the first time. It is used in exactly one place in this
+codebase — that submit — so nothing had ever rendered it where an enumerating
+gate would look.
+
+| Defect | Measured | Fix |
+|---|---|---|
+| Filled control at 14px | A4 puts buttons and nav at 15px; the component used `--fs-caption`. Failed at all four widths | `--fs-body-sm` (15.5px) |
+| Light-theme contrast | axe: serious, 1 node, `.Button-module__base`, at 1280 and 360. `--accent` resolves to the deep gold and fails AA against near-black | `--accent-mark` on `--ink`, the pairing every other primary CTA on the site already uses, plus a fill that deepens on hover so the cue survives `prefers-reduced-motion` (A5) |
+
+Neither was findable statically: the control rule needs the painted background
+to tell a button from a footer link, and the contrast pair only exists at render.
+
+### Two more were method faults, not defects, and are recorded so the next round does not repeat them
+
+- `check:cta-collision` takes its base URL as **argv**, not `PORT`. Invoked with
+  `PORT=3115` it silently targets 3100, gets `ERR_CONNECTION_REFUSED`, and reads
+  as a site regression.
+- `check:phase8` needs a production server on **3107** and exits **2** when
+  nothing answers. Exit 2 is "no server", not "gate failed".
+
+---
+
+## 1b. Build gates, round 20, with real exit codes
 
 Run against `http://localhost:3115` on a production build. Browser gates were run
 serially: concurrent Chromium starves the image optimiser and produces a load
@@ -315,6 +399,112 @@ nothing.
 
 ---
 
+## 6b. Round 21 additions
+
+### The redirect map — game plan §7, the last cutover blocker
+
+**Measured, not assumed, and it was partial.** About a third of §7's table was
+hand-written into `next.config.ts`'s `redirects()`; the rest existed only in the
+plan document, and nothing had ever compared the two. Asking the running server
+found three defects, each class-wide:
+
+| Defect | Measured | Now |
+|---|---|---|
+| Published legacy URLs took TWO hops | `/about-us/` → `/about-us` → `/about`. Next normalises the trailing slash with its own 308 before `redirects()` is consulted, and WordPress served every URL with one | One 301. `skipTrailingSlashRedirect` is set and `src/middleware.ts` canonicalises before it looks up |
+| Status was 308 | `permanent: true` emits 308 | 301, as §7 and round 21 §5 both specify |
+| Ten destinations 404'd | No insight article is published; three case-study slugs have no file | Destinations resolve through a generated published manifest: the article where it exists, the hub where it does not |
+
+The table lives in `src/data/redirects.mjs` and nowhere else. `src/middleware.ts`
+answers from it, `scripts/check-redirects.mjs` walks it, so the gate cannot
+drift from what the server does.
+
+**`check:redirects` — 301 probes, each entry checked bare and in its published
+trailing-slash form.** Red-proven twice, real exit 1 each: the middleware's
+legacy branch stubbed out (all 295 probes failed) and a destination mistyped
+(69 failed the destination-resolves assertion).
+
+**What the gate does not prove, stated because it was measured.** Editing a
+destination moves the expectation and the behaviour together, so it tests the
+MECHANISM, not the editorial question of whether `/about-us` *should* go to
+`/about`. Answering that means review against game plan §7, and the table is now
+one readable file for exactly that purpose.
+
+**One declared exception, walked rather than skipped.**
+`/industries/retail//` still resolves in two hops
+(`//` → `/industries/retail/` → `/industries/retail`). Next collapses duplicate
+slashes before any app code runs; `skipMiddlewareUrlNormalize` was measured on
+7 August and changes nothing here. It reaches the right page. Collapsing it to
+one hop needs a rule in front of the app at cutover. **Owner: Sumeet**, with the
+DNS change.
+
+### The research PDF — regeneration mechanism
+
+Unchanged in kind and it already satisfied §2.3: a dedicated print route
+(`/intelligence/research/corridor/print`) rendered headless by Playwright, which
+is already a devDependency.
+
+| §2.3 requirement | How |
+|---|---|
+| Deterministic at build time | `pnpm research:pdf` against `next start`; content comes from `src/data/research/**`, which is generated from the extract |
+| Embedded fonts | Chromium embeds the three faces into the PDF at print |
+| Vector charts | Plain inline SVG, no charting library, no canvas |
+| No third-party service | Playwright, local, offline |
+| Cannot ship stale | `check:research-pdf` compares a text fingerprint of the print surface against the committed manifest and fails when the pages have moved and the document has not |
+
+New this round: `scripts/render-pdf-pages.mjs` rasterises the PDF through pdf.js
+so the pages can be **read as images**. That is what §2.3 asks for and it is not
+optional — byte length, text fingerprint and heading count were all green on the
+document Sumeet rejected. `check:research-pdf` also now asserts the document
+carries no site chrome, red-proven by removing the reset: it named all five
+pieces, exit 1.
+
+### Assistant recalibration — measured, both ends
+
+`scripts/measure-assistant-length.mjs`, live model, same seven questions before
+and after:
+
+| Set | Before | After |
+|---|---|---|
+| Pointer questions (round 19's five) | 42-132 words, mean 73 | 35-193 words, mean 88 |
+| Complex (screening, multi-market) | 113-151 words, mean 132 | 194-244 words, mean 219 |
+| Separation | 1.8x | 2.5x |
+
+The two purest pointer questions got **shorter** (42→35, 46→58) while the two
+complex ones grew by about two thirds. That gap is the calibration; a flat rule
+shows no separation in either direction. The script reports rather than judges,
+deliberately: a pass/fail on reply length would be the flat rule again.
+
+Link labels: `linkLabel` is now required on every corpus entry, which is how all
+fourteen construction sites were found. `check:assistant-links` fails a rendered
+link labelled with a bare path, and the predicate carries a self-test on fixed
+inputs because the live half cannot be made to emit one on demand.
+
+### Page of origin — migration state
+
+| Item | State |
+|---|---|
+| Migration | `src/lib/db/migrations/0003_transcript_origin.sql`, additive, `add column if not exists` |
+| **Applied to a database** | **No.** Running it is a deploy step and belongs to the cutover, not to a build session. **Owner: Sumeet / Raphy at cutover** |
+| **Ordering — this one matters** | **Migration BEFORE or WITH the deploy.** Measured against the live database with the new code: a chat turn returns 200, the reply renders normally, and the insert fails with `column "origin_path" ... does not exist`. The error is caught and logged so a persistence failure never breaks a conversation, which means the visible symptom is nothing at all and the cost is every transcript written in the window. `add column if not exists` is additive, so running it first has no downside |
+| Panel | Sends `location.pathname`, captured in a ref at mount, so it records the page the conversation STARTED on |
+| Validation | Re-run server-side. Measured: pathname 200, omitted 200, absolute URL 422, query string 422, protocol-relative 422 |
+| Old rows | Null, never inferred. The cockpit renders them "before 8 August 2026" |
+| Retention | Unchanged. Origin is a column on the transcript and dies with it |
+| `/privacy` | One clause added, **logged for Sumeet's veto** per R-A9 |
+
+### Runbook cross-reference
+
+Cutover is Sumeet-executed against **`CUTOVER-RUNBOOK.md`**.
+
+**That file does not exist in this repository.** The whole tree was searched: the
+only file naming it is `docs/design/context-round21-scope.md`. It was not
+authored here because §7 closes scope and states that cutover items belong to
+the runbook rather than to this round. **Owner: Sumeet** — either it lives
+outside the repo, or it still needs writing, and the go-live decision rests on
+it either way.
+
+---
+
 ## 7. Out of scope, as ruled
 
 Phase 8 resumes post-cutover on field data · GitHub App migration · multi-user
@@ -329,7 +519,13 @@ job holding repository credentials is a direct push wearing a different hat.
 ## 8. What this report does not say
 
 It does not say the site is fast on its production host, because that has never
-been measured. It does not say a cockpit publish reaches `main` unattended,
-because one never has. It does not say `check:assistant-links` is protecting the
+been measured. It does not say `check:assistant-links` is protecting the
 assistant in CI, because it is not running there. Each of those is a specific
 gap with a specific owner above.
+
+Round 21 adds three more it does not say. It does not say the redirect map is
+editorially correct, only that the server applies it in one 301 hop to a
+destination that resolves — the difference is set out in §6b and is the reason
+the table is one readable file. It does not say the origin migration has run
+against any database, because it has not. And it does not say the runbook this
+cutover is executed against exists, because it is not in this repository.

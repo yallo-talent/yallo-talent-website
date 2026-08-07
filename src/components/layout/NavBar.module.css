@@ -337,7 +337,23 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 7px 10px 7px 0;
+  /* Padding on ALL four sides, and the negative margin is what makes that
+     possible without moving the text.
+
+     The left padding used to be 0 while the right was 10px, which is invisible
+     at rest because the border is transparent — and wrong the moment it is not.
+     On hover the border and ground appear hard against the first letter of the
+     label and of the support line, with breathing room on the right only.
+     Reported on /platforms/microsoft, and it was every item of every mega panel
+     rather than that one: this class is the item.
+
+     Padding alone would indent the labels 10px and break their alignment with
+     the column's eyebrow and rule, which sit at the same left edge. The
+     negative margin cancels that, so the text stays exactly where it was and
+     the hover box grows outward into the column gutter — symmetric with the
+     10px it already had on the right. */
+  padding: 8px 10px;
+  margin-left: -10px;
   border-radius: 0 0 0 var(--r-sm);
   border: 1px solid transparent;
   color: var(--fg);

@@ -3,10 +3,20 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  font-size: var(--fs-caption);
+  /* --fs-body-sm (15.5px), not --fs-caption (14px). A4 puts buttons and nav at
+     15px and card/meta text at 14px, and this is a button. It sat at 14px
+     unnoticed because until round 21 §2.4 this component rendered on no route
+     any enumerating gate visits — the research gate's submit is the first, and
+     check-rendered-type failed it at all four widths the moment it appeared.
+     The rule needs the painted background to tell a button from a footer link,
+     which is why no static check could have found it. */
+  font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   letter-spacing: -0.005em;
-  border-radius: 999px;
+  /* --r-pill IS 999px, so this is the same shape through the token rather than
+     around it. Pre-existing drift, corrected in passing because the file was
+     already open and the value is identical. */
+  border-radius: var(--r-pill);
   cursor: pointer;
   border: 1px solid transparent;
   transition:
@@ -17,14 +27,26 @@
   font-family: inherit;
 }
 
+/* The pairing the site actually ships, which is not the one this component had.
+
+   It used --accent on --black-950. In the light register --accent resolves to
+   the deep gold, a boundary-and-large-text value, and against near-black it
+   measures below AA: axe failed this exact node, serious, at 1280 and at 360,
+   the moment the component first rendered on a gated route (round 21 §2.4).
+   --accent-mark on --ink is what every other primary CTA on the site uses and
+   it clears AA comfortably.
+
+   The hover DEEPENS the fill rather than only lifting, which is A5's
+   requirement that a hover cue survive prefers-reduced-motion — the same
+   correction Home.module.css's .btnPrimary already carries. */
 .primary {
-  background: var(--accent);
-  color: var(--black-950);
+  background: var(--accent-mark);
+  color: var(--ink);
 }
 
 .primary:hover {
-  background: var(--accent-hover);
-  color: var(--black-950);
+  background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink));
+  color: var(--ink);
   transform: translateY(-1px);
 }
 
