@@ -92,7 +92,7 @@ export function EditStudyForm({
           place an operator meets the consent rule behind it. */}
       <label className={styles.field}>
         <span className={styles.fieldLabel}>
-          Client named publicly — written consent on file
+          Client named publicly, with written consent on file
         </span>
         <select
           className={styles.input}
@@ -117,7 +117,7 @@ export function EditStudyForm({
           defaultValue={published ? "true" : "false"}
         >
           <option value="true">Published</option>
-          <option value="false">Unpublished — never a deletion</option>
+          <option value="false">Unpublished, never a deletion</option>
         </select>
       </label>
 

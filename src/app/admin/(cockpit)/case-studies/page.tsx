@@ -164,7 +164,7 @@ async function setPublished(formData: FormData): Promise<void> {
   if (errors.length) {
     fail(
       `${slug} would not pass the build: ` +
-        errors.map((e) => `${e.field} — ${e.message}`).join(" · "),
+        errors.map((e) => `${e.field}: ${e.message}`).join(" · "),
     );
     return;
   }
