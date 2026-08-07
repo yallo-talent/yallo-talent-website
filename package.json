@@ -55,6 +55,7 @@
     "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs",
     "check:admin-isolation": "node scripts/check-admin-isolation.mjs",
     "check:admin-render": "node scripts/check-admin-render.mjs",
+    "check:write-path": "node scripts/check-write-path.mjs",
     "admin:hash": "node scripts/admin-password-hash.mjs"
   },
   "engines": {
