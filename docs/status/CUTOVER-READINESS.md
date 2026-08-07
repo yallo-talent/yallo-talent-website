@@ -107,6 +107,36 @@ browser gates a clean one** against the build that already exists. The retry was
 removed. On `8890f89` the a11y step passed, along with every browser gate after
 it.
 
+### Configuration, re-verified against the live API at final HEAD
+
+Checked at the close of the round, not only at its start, because a token or a
+setting that was true four hours ago is not evidence about now.
+
+| Check | Result |
+|---|---|
+| `ADMIN_GITHUB_TOKEN` non-empty | **yes**, 93 characters (length only; the value is never printed) |
+| `ADMIN_GITHUB_REPO` | `https://github.com/yallo-talent/yallo-talent-website`, normalises to `yallo-talent/yallo-talent-website` |
+| Matches `git remote -v` | **yes** — API returned 200, `full_name: yallo-talent/yallo-talent-website`, identical to the origin remote |
+| `allow_auto_merge` via the API | **true** |
+| `allow_squash_merge` | true · `default_branch`: `main` |
+| `delete_branch_on_merge` | false, so `admin/` branches accumulate. Harmless |
+
+**Branch protection on `main` now exists, and it does not yet do the job.** It
+returned 404 "Branch not protected" earlier in the round and returns a protection
+object at the close of it. But its required-status-checks list is **empty** —
+`contexts: []`, `checks: []`, `enforce_admins: false`. A rule that requires no
+check leaves the merge unblocked, so GitHub's auto-merge still has nothing to
+queue behind and will still refuse with `Pull request is in unstable status`.
+
+**The remaining step is one field:** add `checks` to that rule's required status
+checks. Leave "include administrators" off and direct pushes keep working.
+Writing branch protection is a repository security setting and was refused to the
+agent, so this is Sumeet's.
+
+Read the protection state with an admin-capable credential, not the cockpit
+token: `ADMIN_GITHUB_TOKEN` is fine-grained without Administration read, so it
+returns 403 on that endpoint, which reads as "protected" if taken at face value.
+
 ---
 
 ## 2. Parity checks
