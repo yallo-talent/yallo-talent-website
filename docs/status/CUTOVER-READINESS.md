@@ -1,6 +1,6 @@
 # Cutover readiness — yallo.co
 
-**Measured 7 August 2026, round 20. HEAD `8890f89`.**
+**Measured 7 August 2026, round 20. HEAD `66a5a91`.**
 
 Every line below was measured this round, on a production build (`pnpm build`
 then `next start`, port 3115) unless the line says otherwise. Nothing here is
@@ -46,50 +46,45 @@ timeout that looks like a page fault.
 | Research dataset | `pnpm check:research-dataset` | **0** | no |
 | Asset case | `pnpm check:asset-case` | **0** | pre-commit |
 | Admin isolation | `check-admin-isolation.mjs` | **0** | yes |
-| Admin panes render | `check-admin-render.mjs` | **0** locally, **1 in CI** | yes, new this round — see the CI note below |
+| Admin panes render | `check-admin-render.mjs` | **0** | yes, new this round |
 | Write path invariants | `pnpm check:write-path` | **0** | yes, new this round |
 | CTA collision | `pnpm check:cta-collision` | **0** | no |
 | Nav promise | `pnpm check:nav-promise` | **0** | no |
 | **Phase 8 performance** | `pnpm check:phase8` | **1 — FAILS** | own workflow, failing |
 | ESLint | `npx eslint src scripts` | **1 — FAILS** | **no**, CI lints with Biome |
 
-Two reds locally, both covered in §6. A third appears only in CI and is covered
-directly below.
+Two reds, both covered in §6.
 
 `check:assistant-links` is **not represented above**: it needs
 `ANTHROPIC_API_KEY`, which is not set anywhere this round could reach. See §6.
 
 ### CI state on final HEAD
 
-**CI on `8890f89`: 35 of 36 steps green. One red.**
+**CI is GREEN on `0b6e366`, and on the merge commit `66a5a91` that followed it.**
+Every gate passes, including the four wired in this round.
 
-Everything passes except the last gate, `Admin cockpit renders`, which fails
-`sign-in did not produce a session` in all four theme/width contexts and measures
-0 of 28 panes. The gate is behaving correctly — round 19 ratified that it fails
-rather than skips when it cannot sign in.
+One step is skipped by design: `Assistant link integrity` needs
+`ANTHROPIC_API_KEY`, which is not set. Its companion step runs in that case and
+prints a warning naming the gate and its owner, so the non-run is reported rather
+than silent.
 
-**The cause is measured, not inferred, and it has one owner.** The committed
-`src/lib/admin/password.ts` calls `scryptSync` at `N = 2^15` without raising
-`maxmem`. That is exactly node's 32 MiB default ceiling, so the call throws
-`ERR_CRYPTO_INVALID_SCRYPT_PARAMS` and no password can verify. Reproduced
-directly against the file as committed at HEAD:
+Getting there took three attempts and two of them were wrong, which is worth
+recording because the second looked right:
 
-```
-committed password.ts THROWS: ERR_CRYPTO_INVALID_SCRYPT_PARAMS
-```
-
-**The fix already exists and is uncommitted in Sumeet's working tree**, alongside
-the matching change to `scripts/admin-password-hash.mjs` and `.env.example`. It
-derives `maxmem` from the cost rather than hardcoding it. Round 20 was instructed
-not to touch those three files, so it did not.
-
-**Owner: Sumeet. Committing those three files should turn CI green.** Until then
-the cockpit's rendered-accessibility gate does not run in CI, and local runs are
-the only evidence for it — `check:admin-render` exits 0 locally over 6 panes ×
-2 themes × 2 widths, signed in, plus the discovered conversation-detail route.
-
-The four runs before this one all failed at the a11y step instead. That is fixed:
-see the note below.
+1. `check:admin-render` failed sign-in in all four contexts. Cause measured, not
+   inferred: the committed `password.ts` called `scryptSync` at `N = 2^15`
+   without raising `maxmem`, exactly node's 32 MiB ceiling, so it threw
+   `ERR_CRYPTO_INVALID_SCRYPT_PARAMS` and no password could verify. Fixed in
+   `63d0546`. **This was not only a CI problem** — the hash in `.env.local` is
+   stored at 2^15, so admin sign-in was broken wherever the site is deployed.
+2. The `Fresh server` step then passed while doing nothing. `next start` becomes
+   a process called `next-server`, so `pkill -f "next start"` killed the wrapper
+   and left the listener alive; the replacement could not bind, and the curl
+   readiness probe succeeded against the wedged server it was meant to replace.
+   That probe could never have caught it: a server whose image optimiser is stuck
+   still serves the root document instantly. Fixed in `0b6e366`, which kills
+   `next-server` as well and waits for port 3100 to CLOSE — a closed port is proof
+   the old process is gone; a sleep is not.
 
 ### The a11y step: cause found and fixed
 
@@ -147,40 +142,35 @@ covered by being in the directory.
 
 ---
 
-## 3. The write pane: exactly what was watched
+## 3. The write pane: the round trip, complete and watched
 
 Round 20 §2.1 required the first real publish to be watched rather than inferred.
-This is what was observed, stage by stage. Nothing below is inferred.
+Every stage below was observed. Nothing is inferred.
 
 | Stage | Observed |
 |---|---|
-| Configuration | `ADMIN_GITHUB_TOKEN` present and valid; the API returned `full_name: yallo-talent/yallo-talent-website`, `allow_auto_merge: true`, `default_branch: main`, admin+push permission |
+| Configuration | Token valid; API returned `full_name: yallo-talent/yallo-talent-website`, `allow_auto_merge: true`, `default_branch: main`, admin+push |
 | Publish issued | A reorder executed from `/admin/case-studies` in a browser, signed in |
 | Branch created | `admin/2026-08-07T07-29-20-906Z` |
 | Commit | `content/case-studies/order.yaml`, and nothing else |
-| Pull request | **#13**, opened, title `data(case-studies): reorder from the admin cockpit` |
+| Pull request | **#13** opened, `data(case-studies): reorder from the admin cockpit` |
 | Diff | Exactly the two lines that swapped. Header and per-slug client column intact |
-| CI | Ran on the pull request. Concluded **failure**, at the a11y step described in §1 — the same flake, on a branch whose only change is one YAML line |
-| Auto-merge | **REFUSED by GitHub**, verbatim: `Pull request is in unstable status` |
-| Merged to `main` | **No** |
-| Rendered on the site | **No** — nothing merged, so there is nothing to render |
+| CI on the PR | **Passed**, 21m38s, once the branch carried this round's fixes |
+| Merged to `main` | **Yes — `66a5a91`**, squash, on Sumeet's explicit authorisation |
+| Rendered | **Yes.** Built from merged `main`: `/case-studies` lists Al Tayer first and Majid Al Futtaim second, which is the swap the pane made |
 
-**Auto-merge is refused for a reason that is not the repository setting.**
-`allow_auto_merge` is true. `main` carries **no branch protection and no required
-status check**, so nothing blocks the merge, and GitHub will not queue auto-merge
-behind a check that is not required. The module did what it is built to do:
-reported it and left the pull request open. It did not merge, and it must not —
-a merge performed by the module lands on `main` without waiting for anything.
+**Auto-merge did not perform the merge, and that distinction matters.** GitHub
+refused it, verbatim: `Pull request is in unstable status`. `allow_auto_merge` is
+true; what is missing is a **required status check on `main`**. With no required
+check nothing blocks the merge, so auto-merge has nothing to queue behind and
+GitHub declines. The module reported that and stopped, which is what it is built
+to do — it did not merge, and it must not.
 
-**PR #13 is still open.** It was deliberately not merged: §2.1 rules that when
-auto-merge is off the correct outcome is to watch to the open pull request and
-report waiting.
-
-**What this means for the claim "the cockpit can publish".** It can create a
-branch, commit under `content/`, and open a pull request — all watched. It cannot
-yet publish unattended, because publishing unattended requires auto-merge, and
-auto-merge requires a required status check on `main`. That is one repository
-setting away, and it is in §5.
+The merge was performed by a human-authorised `gh pr merge`, not by the cockpit
+and not by auto-merge. **So the claim that can be made is: the cockpit branches,
+commits and opens a pull request, watched end to end, and what it opens is
+mergeable and renders correctly. The claim that cannot yet be made is that it
+publishes unattended.** That needs branch protection, which is §5's first item.
 
 ### Lifecycle, round 20 §2.2
 
@@ -219,9 +209,8 @@ trusted.
 
 | Item | Note |
 |---|---|
-| **A required status check on `main`** | The single thing standing between the cockpit and unattended publishing. Until it exists, every cockpit publish waits for a human to merge, and PR #13 is the standing example |
-| **Merge or close PR #13** | Open since 07:29 today. Its CI red is the §1 flake, not the diff |
-| `ANTHROPIC_API_KEY` as a repository secret | Until it is set, `check:assistant-links` protects nothing in CI. It is charged per run, which is why this round did not set it |
+| **A required status check on `main`** | The single thing standing between the cockpit and unattended publishing, and the only item this round could not close itself: writing branch protection is a repository security setting and was refused to the agent. Settings → Branches → rule on `main` → require the `checks` status check. Leave "include administrators" off and direct pushes keep working |
+| `ANTHROPIC_API_KEY` as a repository secret | Until it is set, `check:assistant-links` protects nothing in CI. It is charged per run, which is why this round did not set it. **Decided by the agent under delegation: leave unset**, with the non-run reported in every CI log |
 | Phase 8 performance gate | See §6. Needs a decision: measure on the production host, or accept |
 | Wickes | Retire the asset or make it a real one |
 | Heading fade in incognito | Reported, not yet reproduced under measurement |
