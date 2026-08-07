@@ -12,6 +12,12 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
+    # The `secrets` context is not available in a step-level `if:`, which is why
+    # the first attempt at this made the whole workflow invalid rather than
+    # merely wrong — GitHub reported "a workflow file issue" and ran nothing at
+    # all. Mapped to job-level env, which `if:` can read.
+    env:
+      HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -315,13 +321,13 @@ jobs:
       # against: the run says which gate did not execute and who can make it.
       # Remove the `if` to make it blocking once the secret lands.
       - name: Assistant link integrity (needs ANTHROPIC_API_KEY)
-        if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        if: env.HAS_ANTHROPIC_KEY == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/check-assistant-links.mjs http://localhost:3100
 
       - name: Assistant link integrity DID NOT RUN
-        if: ${{ secrets.ANTHROPIC_API_KEY == '' }}
+        if: env.HAS_ANTHROPIC_KEY != 'true'
         run: |
           echo "check:assistant-links did not run: ANTHROPIC_API_KEY is not set as a"
           echo "repository secret. Part B of that gate asks the real model real"
