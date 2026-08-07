@@ -1,0 +1,21 @@
+-- Page of origin for an assistant conversation — round 21 §4, Chat's ruling on
+-- the decision round 20 returned.
+--
+-- PATHNAME ONLY. The page on Yallo's own site where the panel was opened: no
+-- query string, no external referrer, nothing beyond the path. It is
+-- proportionate to what is already held (the transcript itself), it is what
+-- makes the shipped origin filter in the cockpit real, and it changes triage
+-- materially — a question asked from /platforms/sap is a different lead from
+-- the same question asked from /jobs.
+--
+-- NULLABLE, AND THE NULLS ARE THE POINT. Every row written before this
+-- migration has no origin and never will; backfilling a guess would be
+-- inventing data about a real visitor. The cockpit renders those as
+-- "before 8 August 2026" rather than as blank, so an empty column reads as a
+-- date rather than as a bug.
+--
+-- RETENTION IS UNCHANGED. Origin is a column on the transcript, so it lives and
+-- dies with it under the same window in src/lib/assistant/retention.json. There
+-- is no second store and no second schedule.
+alter table assistant_transcripts
+  add column if not exists origin_path text;

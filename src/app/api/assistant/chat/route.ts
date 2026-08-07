@@ -41,10 +41,11 @@ export async function POST(request: Request) {
       reply.type === "text"
         ? reply.text
         : `[brief_draft] ${JSON.stringify(reply.draft)}`;
-    recordTranscriptTurn(parsed.data.transcriptId, [
-      ...parsed.data.messages,
-      { role: "assistant", content: replyMessage },
-    ]).catch((err) => {
+    recordTranscriptTurn(
+      parsed.data.transcriptId,
+      [...parsed.data.messages, { role: "assistant", content: replyMessage }],
+      parsed.data.originPath,
+    ).catch((err) => {
       console.error("[assistant/chat] transcript persistence failed:", err);
     });
 

@@ -39,6 +39,22 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const transcriptId = useRef(newId());
+  /**
+   * The page of origin — round 21 §4. Captured ONCE, when the panel mounts,
+   * which is the conversation's start.
+   *
+   * A ref rather than a read at send time, and that is the whole behaviour: the
+   * panel survives client-side navigation, so reading `location.pathname` when
+   * a message is sent would record wherever the visitor had wandered to by
+   * then. The ruling is the page the conversation STARTED on, because that is
+   * the one that says what prompted it.
+   *
+   * Pathname only. No query string, no referrer, nothing else — the API
+   * re-validates that rather than trusting it.
+   */
+  const originPath = useRef(
+    typeof window === "undefined" ? undefined : window.location.pathname,
+  );
 
   const [messages, setMessages] = useState<DisplayMessage[]>([]);
   const [input, setInput] = useState("");
@@ -111,6 +127,7 @@ export function AssistantPanel({ onClose }: AssistantPanelProps) {
         body: JSON.stringify({
           messages: next.map(({ role, content }) => ({ role, content })),
           transcriptId: transcriptId.current,
+          originPath: originPath.current,
         }),
       });
       const body = await res.json();

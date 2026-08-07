@@ -42,8 +42,17 @@ export const retentionPeriod = months === 1 ? "1 month" : `${months} months`;
  * `src/app/api/assistant/chat/route.ts` — every turn is recorded whenever the
  * assistant can reply at all — so this states recording as a fact, not a
  * possibility.
+ *
+ * ROUND 21 §4 ADDS THE PAGE OF ORIGIN, and names it here because this is the
+ * sentence a visitor reads about what a recorded conversation contains. The
+ * capture is a pathname on this site and nothing else — no query string, no
+ * external referrer — and it lives and dies with the transcript under the same
+ * window stated in the rest of this sentence, so there is nothing further to
+ * disclose about how long it is kept. LOGGED FOR SUMEET'S VETO per R-A9: this
+ * is published copy on a legal page, shipped under the ruling rather than
+ * waiting on him, and it is named in relay v29 so he can strike it.
  */
-export const assistantRetentionSentence = `Conversations are recorded and kept for ${retentionPeriod}, then deleted.`;
+export const assistantRetentionSentence = `Conversations are recorded, including the page on our site where the conversation started, and kept for ${retentionPeriod}, then deleted.`;
 
 /**
  * The launcher panel's own one-line disclosure. Short by necessity: the rule

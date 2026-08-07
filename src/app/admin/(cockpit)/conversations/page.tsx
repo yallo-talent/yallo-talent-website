@@ -163,9 +163,11 @@ export default async function ConversationsPane({
           {/* Stated once, on the pane, rather than left for someone to infer
               from a column that is empty most of the time. */}
           <p className={styles.meta}>
-            Page of origin is recorded for {withOrigin} of {all.length}: it is
-            stored on the brief, not on the transcript, so a conversation that
-            did not produce a brief has none. It is never inferred.
+            Page of origin is recorded for {withOrigin} of {all.length}. Every
+            conversation started from 8 August 2026 carries the page the panel
+            was opened on, as a path with no query string. Conversations before
+            that date carry one only where they produced a brief; the rest read
+            &ldquo;before 8 August 2026&rdquo;. It is never inferred.
           </p>
 
           {rows.length === 0 ? (
@@ -186,8 +188,13 @@ export default async function ConversationsPane({
                       UTC
                     </span>
                     <span className={styles.meta}>{row.turns} turn(s)</span>
+                    {/* Round 21 §4: a null origin is a DATE, not a gap. Every
+                        conversation from 8 August 2026 carries the page it was
+                        opened on; the ones before it never will, and saying so
+                        is more useful than "not recorded", which reads as a
+                        fault in the capture rather than as its start date. */}
                     <span className={styles.meta}>
-                      {row.originPath ?? "origin not recorded"}
+                      {row.originPath ?? "before 8 August 2026"}
                     </span>
                     <span className={row.hasBrief ? styles.ok : styles.meta}>
                       {row.hasBrief ? "brief captured" : "no brief"}

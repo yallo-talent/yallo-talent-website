@@ -18,11 +18,22 @@ export { TRANSCRIPT_RETENTION_DAYS };
 export async function recordTranscriptTurn(
   transcriptId: string,
   messages: AssistantMessage[],
+  /**
+   * The page on Yallo's site where the panel was opened — round 21 §4.
+   * Pathname only, validated by `originPathSchema` before it gets here.
+   * Undefined for a client that did not send one; the column is nullable and
+   * the cockpit labels those rows rather than leaving them blank.
+   */
+  originPath?: string,
 ): Promise<void> {
   const client = sql();
   await client`
-    insert into assistant_transcripts (transcript_id, messages)
-    values (${transcriptId}, ${JSON.stringify(messages)}::jsonb)
+    insert into assistant_transcripts (transcript_id, messages, origin_path)
+    values (
+      ${transcriptId},
+      ${JSON.stringify(messages)}::jsonb,
+      ${originPath ?? null}
+    )
   `;
 }
 

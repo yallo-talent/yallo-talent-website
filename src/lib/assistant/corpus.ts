@@ -49,7 +49,6 @@ import type { ServicePageData } from "@/data/services/types";
 import { teamIndex } from "@/data/team";
 import { getAllCaseStudies, getPublishedInsights } from "@/lib/content";
 import { publishedPaths } from "@/lib/published-routes";
-import { SITE } from "@/lib/seo";
 
 export interface CorpusDocument {
   path: string;

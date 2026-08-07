@@ -71,16 +71,19 @@ export interface ConversationRow {
  * one string, so both are computed in Postgres and the transcripts stay in the
  * database until somebody opens one.
  *
- * PAGE OF ORIGIN IS PARTIAL, AND SAYS SO. §3.1 lists it as a summary field and a
- * filter, and `assistant_transcripts` has no column for it — the table is
- * `transcript_id`, `messages`, `created_at` and nothing else, and the panel
- * sends no path. The only origin the database holds is on `submissions`, so it
- * exists exactly for the conversations that produced a brief and is null for the
- * rest. Reported as null rather than guessed at, and the pane renders the
- * difference rather than showing a blank that reads as "the homepage". Closing
- * the gap means a migration plus a new field captured from every visitor's
- * browser, which changes what this site records about people who never submit
- * anything — Sumeet's call, not a lens's, and it is in the relay.
+ * PAGE OF ORIGIN IS NOW CAPTURED, and round 21 §4 is the ruling that closed the
+ * gap this comment used to describe. `assistant_transcripts.origin_path` holds
+ * the pathname the panel was opened on, sent by the panel at conversation start
+ * and validated as a pathname by `originPathSchema` before it is stored.
+ *
+ * The transcript's own column comes FIRST and the submission's referrer is the
+ * fallback, which matters for the conversations that predate the migration: a
+ * brief captured before 8 August 2026 still carries a referrer, so those rows
+ * keep the origin they always had rather than losing it to a newer null.
+ *
+ * Rows with neither stay NULL and are never inferred. The pane labels them
+ * "before 8 August 2026" rather than rendering a blank that reads as "the
+ * homepage".
  */
 export interface ConversationSummary {
   transcriptId: string;
@@ -89,7 +92,11 @@ export interface ConversationSummary {
   /** The visitor's first message, verbatim. Null if they never sent one. */
   opening: string | null;
   hasBrief: boolean;
-  /** Path of origin where a brief recorded one; null otherwise. Never inferred. */
+  /**
+   * The page the panel was opened on. Null for conversations that started
+   * before the round 21 §4 migration, and never inferred: the pane renders that
+   * null as a date rather than as a blank.
+   */
   originPath: string | null;
 }
 
@@ -97,11 +104,15 @@ export async function readConversationSummaries(
   limit = 500,
 ): Promise<ConversationSummary[]> {
   const client = sql();
-  /* On the coalesce below, and it is not the obvious order: `referrer` comes
-     FIRST. `origin_source` is the capture discriminator and its value is
-     "assistant" — a channel, not a page — while `referrer` holds the URL the
-     visitor was actually on. The other order renders "assistant" under a column
-     headed Page of origin, which is a wrong answer rather than a missing one.
+  /* On the coalesce below. The transcript's own origin_path comes FIRST: it is
+     the page the panel was opened on, captured directly since round 21 §4. The
+     submission referrer is the fallback and only reaches rows written before
+     that migration, which is exactly what it is for.
+
+     origin_source is deliberately NOT in this coalesce any more. Its value is
+     "assistant" — a channel, not a page — and it rendered under a column headed
+     Page of origin as a wrong answer rather than a missing one. With a real
+     column to read, the wrong answer has nothing left to justify it.
 
      Written here rather than inside the query, because a comment containing a
      backtick inside a tagged template literal closes the literal. That is how
@@ -118,7 +129,7 @@ export async function readConversationSummaries(
              limit 1
            ) as opening,
            s.id is not null as has_brief,
-           coalesce(s.referrer, s.origin_source) as origin
+           coalesce(t.origin_path, s.referrer) as origin
     from assistant_transcripts t
     left join lateral (
       select id, origin_source, referrer
