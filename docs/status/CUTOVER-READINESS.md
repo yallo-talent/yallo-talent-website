@@ -1,6 +1,6 @@
 # Cutover readiness — yallo.co
 
-**Measured 7 August 2026, round 20. HEAD `66a5a91`.**
+**Measured 7 August 2026, round 20. HEAD `15c6b99`.**
 
 Every line below was measured this round, on a production build (`pnpm build`
 then `next start`, port 3115) unless the line says otherwise. Nothing here is
@@ -60,13 +60,18 @@ Two reds, both covered in §6.
 
 ### CI state on final HEAD
 
-**CI is GREEN on `0b6e366`** — completed, success, every gate passing including
-the four wired in this round. That is the run that proves the tree.
+**CI is GREEN, watched to conclusion on five consecutive commits:** `0b6e366`,
+the merge commit `66a5a91`, `075e2bf`, `abc8e66` and `15c6b99`. Every gate
+passes, including the four wired in this round.
 
-The runs on the commits after it (`66a5a91`, and the documentation commits that
-follow) were still queued when this was written. They change no source, so the
-result should hold, but **"should hold" is not a measurement and this report does
-not trade in those. Confirm the colour on final HEAD before go-live.**
+One step is skipped by design: `Assistant link integrity` needs
+`ANTHROPIC_API_KEY`, which is not set. Its companion step runs in that case and
+prints a warning naming the gate and its owner, so the non-run is reported rather
+than silent. The only other skip is `Upload captures on failure`, which is
+conditional on failure and correctly did not fire.
+
+The single commit after `15c6b99` is the one recording this paragraph. It touches
+documentation only and no gate reads it.
 
 One step is skipped by design: `Assistant link integrity` needs
 `ANTHROPIC_API_KEY`, which is not set. Its companion step runs in that case and
