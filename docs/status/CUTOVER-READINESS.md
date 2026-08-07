@@ -494,8 +494,9 @@ inputs because the live half cannot be made to emit one on demand.
 
 ### CI on final HEAD
 
-`main` at **`769e671`**. Run **31218670243**, watched to conclusion:
-**completed / success**. Every step green, including the accessibility step that
+`main` at **`99d8b96`**. Two runs, both watched to conclusion, both
+**completed / success**: **31218670243** on `769e671` (the last source change)
+and **31220316932** on `99d8b96` (the docs commit that became final HEAD). Every step green, including the accessibility step that
 failed four consecutive runs in round 20, and the two steps this round adds
 (`check:published-manifest`, `check:redirects`).
 
