@@ -60,8 +60,13 @@ Two reds, both covered in §6.
 
 ### CI state on final HEAD
 
-**CI is GREEN on `0b6e366`, and on the merge commit `66a5a91` that followed it.**
-Every gate passes, including the four wired in this round.
+**CI is GREEN on `0b6e366`** — completed, success, every gate passing including
+the four wired in this round. That is the run that proves the tree.
+
+The runs on the commits after it (`66a5a91`, and the documentation commits that
+follow) were still queued when this was written. They change no source, so the
+result should hold, but **"should hold" is not a measurement and this report does
+not trade in those. Confirm the colour on final HEAD before go-live.**
 
 One step is skipped by design: `Assistant link integrity` needs
 `ANTHROPIC_API_KEY`, which is not set. Its companion step runs in that case and
