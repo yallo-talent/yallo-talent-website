@@ -128,6 +128,35 @@ jobs:
           done
           PORT=3100 pnpm check:visual
 
+      # A FRESH SERVER FOR THE BROWSER GATES, and this is a root-cause fix rather
+      # than a tolerance.
+      #
+      # Round 20: the a11y step below failed four runs in a row on `/`, its first
+      # route, with a 60s load timeout. It is not a regression — re-running the
+      # job unchanged on a commit that had already gone green failed identically.
+      # A retry was tried first and disproved it: the SECOND navigation timed out
+      # too, which means the server is not slow, it is wedged. next/image
+      # optimises on demand and a starved optimiser key stays stuck for the
+      # lifetime of the process, so every later request for that image waits for
+      # a lock that will never be released and `load` never fires.
+      #
+      # check:visual has by then pulled the homepage through four viewports on a
+      # two-core runner, which is where the starvation happens. A process cannot
+      # recover from it, so the fix is a new process: the server that served
+      # check:visual is retired and the browser gates below get a clean one.
+      # Costs one `next start` against a build that already exists.
+      - name: Fresh server for the browser gates
+        run: |
+          pkill -f "next start" || true
+          sleep 2
+          PORT=3100 pnpm start &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:3100 && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:3100 || {
+            echo "the replacement server never answered on 3100"; exit 1; }
+
       # Canon's accessibility floor is WCAG 2.2 AA on every surface in BOTH
       # themes independently, so axe runs each route twice per width. The token
       # contrast gate cannot see pairs that are only formed at render — an
