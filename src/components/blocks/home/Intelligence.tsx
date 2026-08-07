@@ -1,13 +1,17 @@
 import { intelligenceAssets, intelligenceCopy } from "@/data/home/intelligence";
+import { AssetCta } from "./AssetCta";
 import styles from "./Home.module.css";
 import { SectionHead } from "./SectionHead";
 
 /**
  * The Blueprint and the Atlas.
  *
- * Neither route is built yet, so both cards render non-interactive with a
- * visible state rather than a dead CTA. The gated card takes the inverted
- * corner — not an inverted ground, which would breach the Two Band Rule.
+ * Both destinations are published, so both cards link. That was not true when
+ * this section was written and the cards carried a hand-set `published: false`
+ * which nobody flipped when the routes shipped — see AssetCta, which derives the
+ * state from the published route set so the question cannot be answered wrongly
+ * again. The gated card takes the inverted corner — not an inverted ground,
+ * which would breach the Two Band Rule.
  */
 export function Intelligence() {
   return (
@@ -42,9 +46,7 @@ export function Intelligence() {
                 ))}
               </ul>
               <p className={styles.intelFoot}>
-                <span className={styles.unbuiltFlag}>
-                  {a.cta.label}, in preparation
-                </span>
+                <AssetCta label={a.cta.label} href={a.cta.href} />
               </p>
             </article>
           ))}

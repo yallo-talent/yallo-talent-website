@@ -1,4 +1,5 @@
 import { aiCopy, aiRoles } from "@/data/home/intelligence";
+import { AssetCta } from "./AssetCta";
 import styles from "./Home.module.css";
 import { SectionHead } from "./SectionHead";
 
@@ -35,9 +36,7 @@ export function AITalent() {
               </p>
             </div>
             <p className={styles.ctaRow}>
-              <span className={styles.unbuiltFlag}>
-                {aiCopy.cta.label}, in preparation
-              </span>
+              <AssetCta label={aiCopy.cta.label} href={aiCopy.cta.href} />
             </p>
           </div>
 
