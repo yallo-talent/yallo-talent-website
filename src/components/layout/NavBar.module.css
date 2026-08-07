@@ -55,6 +55,25 @@
   padding: 0 clamp(20px, 3vw, 40px);
 }
 
+/* THE ROW COMPRESSES; THE PAGE NEVER DOES.
+   A flex item defaults to `min-width: auto`, which is a floor at its content's
+   own width — so when the bar's contents exceed the content box, the items
+   refuse to shrink and the surplus is pushed out of the page instead. That is
+   the whole mechanism behind four rounds of +2px, +7px and +61px overflow at
+   360, and every previous fix was a subtraction somewhere (gap 10 to 8, CTA
+   padding 16 to 10, then to 8, the arrow glyph, the lockup step) chosen to make
+   the sum fit at the font metrics of the machine doing the measuring. It fit
+   locally with 3.4px to spare and CI's faces render the row 5.4px wider, which
+   is a coin toss dressed as a fix.
+
+   Declared on the children as a set rather than on `.brand` and `.actions` by
+   name: a fourth child added to this bar tomorrow inherits the behaviour, which
+   is the failure mode this repository keeps paying for. `.primary` already
+   carried it and was never the offender. */
+.bar > * {
+  min-width: 0;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
