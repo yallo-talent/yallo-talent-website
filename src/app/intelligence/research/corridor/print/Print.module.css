@@ -1,100 +1,233 @@
 /*
- * Print sheet for the generated PDF.
+ * The research document's print sheet.
  *
  * Deliberately its own stylesheet rather than the site's page chrome: the
- * output is an A4 document, not a screenshot of a web page, so it wants
- * document margins, a serif reading measure and no navigation. Colours are
- * still Layer 1 aliases — a PDF that invented its own palette would be the
- * same second-copy defect one layer down.
+ * output is an A4 document, not a screenshot of a web page. Colours are still
+ * Layer 1 aliases — a PDF that invented its own palette would be the same
+ * second-copy defect one layer down — with one addition, --document-paper,
+ * which exists because the screen's warm off-white ground prints as a grey
+ * wash across every sheet. That grey is most of why the previous output read
+ * as a screenshot.
  *
- * Printed by scripts/build-research-pdf.mjs via Playwright's page.pdf().
+ * THE PRINT TYPE SCALE IS ITS OWN, and it is DECLARED IN globals.css with the
+ * rest of the ramp, not here. The screen ramp is fluid, built for a viewport at
+ * arm's length; A4 is a fixed measure held closer, so the document needs its own
+ * steps — but canon §5 asks that every font-size resolve through the ramp, and a
+ * second ramp declared in a component stylesheet is a second thing to keep in
+ * step. See --fs-print-* in globals.css. The 13px floor governs both.
+ *
+ * Printed by scripts/build-research-pdf.mjs via Playwright's page.pdf(), which
+ * supplies the running footer (title, page number, yallo.co) in the page margin
+ * where it cannot collide with the prose.
  */
 
-.sheet {
-  max-width: 46rem;
-  margin: 0 auto;
-  padding: 28px;
-  background: var(--ground);
+.doc {
   color: var(--text);
+  background: var(--document-paper);
+  /* The page box comes from page.pdf()'s margins, so the sheet itself carries
+     none: a second margin here would print the document in a narrower column
+     than the running footer, which is precisely the misalignment that made the
+     footer look like an artefact rather than furniture. */
+  padding: 0;
+  max-width: none;
 }
 
+/* ---------------------------------------------------------------------------
+   Cover. §2.1: title, the petal signature, PetalPlate art keyed to the slug,
+   the source line, yallo.co. No body text.
+   --------------------------------------------------------------------------- */
+
 .cover {
-  border-bottom: 1px solid var(--boundary);
-  padding-bottom: 28px;
-  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  /* A4 less page.pdf()'s 18mm top and bottom margins. Fixing the height is
+     what makes the cover a COVER: it fills its sheet and nothing follows it
+     down the page. */
+  min-height: 241mm;
   break-after: page;
 }
 
-.brand {
+.coverArt {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 0.62;
+  overflow: hidden;
+  border-bottom: 2px solid var(--accent-line);
+}
+
+.coverArt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.coverBody {
+  padding-top: 30px;
+  flex: 1;
+}
+
+.coverBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-size: var(--fs-label);
+  font-size: var(--fs-print-label);
   font-weight: var(--fw-mono);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent-label);
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-.title {
+.coverMark {
+  flex: none;
+}
+
+.coverTitle {
   font-family: var(--font-display);
-  font-size: var(--fs-headline);
-  line-height: 1.12;
+  font-size: var(--fs-print-title);
+  line-height: 1.14;
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 20px;
+  margin: 0 0 20px;
   text-wrap: balance;
+  max-width: 34ch;
 }
 
-.standfirst {
-  font-size: var(--fs-lede);
+.coverStandfirst {
+  font-size: var(--fs-print-lede);
   line-height: 1.5;
   color: var(--text-2);
-  margin-bottom: 20px;
+  margin: 0;
+  max-width: 56ch;
   text-wrap: pretty;
 }
 
-.meta {
-  font-family: var(--font-mono);
-  font-size: var(--fs-label);
-  font-weight: var(--fw-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-3);
-  line-height: 1.6;
+.coverFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  border-top: 1px solid var(--boundary);
+  padding-top: 12px;
 }
 
-.block {
-  margin-bottom: 30px;
-  break-inside: avoid-page;
+.coverSource,
+.coverDomain {
+  font-family: var(--font-mono);
+  font-size: var(--fs-print-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   The document body.
+   --------------------------------------------------------------------------- */
+
+.opening,
+.chapter {
+  /* NOT break-inside: avoid-page. That was on every block before, and on a
+     chapter longer than a sheet it forces the whole thing onto the next page
+     and leaves most of the previous one empty — which is where the previous
+     output's half-blank pages came from. Orphan and widow control below does
+     the real job without wasting a third of the document. */
+  margin-bottom: 26px;
 }
 
 .h2 {
   font-family: var(--font-display);
-  font-size: var(--fs-title);
-  line-height: 1.2;
+  font-size: var(--fs-print-h2);
+  line-height: 1.24;
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 14px;
-  break-after: avoid-page;
+  margin: 0 0 12px;
   text-wrap: balance;
+  /* A heading never ends a sheet with its section starting on the next. */
+  break-after: avoid-page;
+  break-inside: avoid-page;
 }
 
 .p {
-  font-size: var(--fs-body-sm);
-  line-height: 1.62;
+  font-size: var(--fs-print-body);
+  line-height: 1.6;
   color: var(--text-2);
-  margin-bottom: 12px;
+  margin: 0 0 11px;
+  max-width: 72ch;
   text-wrap: pretty;
-  orphans: 2;
-  widows: 2;
+  orphans: 3;
+  widows: 3;
 }
 
-.foot {
+/* ---------------------------------------------------------------------------
+   Closing page. §2.1: the brief CTA, the four-city footprint, and §2.2's
+   colophon. The web page's footer navigation does not belong in a document.
+   --------------------------------------------------------------------------- */
+
+.closing {
+  break-before: page;
+  min-height: 241mm;
+  display: flex;
+  flex-direction: column;
+  padding-top: 26px;
+}
+
+.closingMark {
+  display: block;
+  margin-bottom: 28px;
+}
+
+.closingTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-print-h2);
+  line-height: 1.24;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 14px;
+  max-width: 30ch;
+}
+
+.closingLede {
+  font-size: var(--fs-print-body);
+  line-height: 1.6;
+  color: var(--text-2);
+  margin: 0 0 18px;
+  max-width: 60ch;
+}
+
+.closingCta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-print-lede);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.06em;
+  color: var(--accent-label);
+  margin: 0 0 auto;
+  padding-bottom: 30px;
+}
+
+.footprint {
+  font-family: var(--font-mono);
+  font-size: var(--fs-print-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
   border-top: 1px solid var(--boundary);
-  padding-top: 18px;
-  margin-top: 32px;
+  padding-top: 14px;
+  margin: 0 0 14px;
 }
 
-@media print {
-  .sheet {
-    padding: 0;
-  }
+/* Small type, no box, no capitals — §2.2's instruction, exactly. */
+.colophon {
+  font-size: var(--fs-print-meta);
+  line-height: 1.55;
+  color: var(--text-3);
+  margin: 0;
+  max-width: 74ch;
+}
+
+.colophonLead {
+  font-weight: 600;
+  color: var(--text-2);
 }

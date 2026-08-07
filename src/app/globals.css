@@ -25,6 +25,14 @@
   --paper-2: #f3f3f2;
   --paper-3: #e1e1e0;
 
+  /* The one true white, and it is for PAPER rather than for screens.
+     --paper above is a screen ground: a warm off-white that stops a large
+     bright field glaring. On A4 that same value prints as a flat grey wash
+     across every sheet and reads as a screenshot, which is exactly what the
+     generated research PDF looked like before round 21 §2. A printed document
+     sits on white because the medium is white. Used only by the print sheet. */
+  --document-paper: #ffffff;
+
   /* Ink. Never pure black. */
   --ink: #171718; /* 13.69:1 on paper-3 */
   --ink-2: #3b3b3d; /* 8.42:1  */
@@ -318,6 +326,24 @@
   --fs-caption: 14px; /* meta, footer links, card copy (A4 floor: meta 14) */
   --fs-data: 13px; /* mono: measured values, reference numbers */
   --fs-label: 13px; /* mono: eyebrows, axis labels. 13px is the hard floor */
+
+  /* ── The PRINT ramp. A4 only, and it lives here rather than in the print
+     stylesheet for the reason the rest of this block exists: a font-size that
+     does not resolve through the ramp is drift, and a second ramp declared
+     somewhere else is a second thing to keep in step.
+
+     Why print needs its own steps at all. The screen ramp is fluid, built for a
+     viewport at arm's length that can be any width. A4 is a fixed measure held
+     closer, and the display steps in particular are far too large on it — the
+     screen headline would take four lines of a 178mm column. These are static
+     because the paper is. The 13px floor still governs: --fs-print-meta and
+     --fs-print-label sit on it, and nothing here is below it. */
+  --fs-print-title: 36px; /* the cover title, and only the cover title */
+  --fs-print-h2: 24px; /* chapter headings */
+  --fs-print-lede: 18px; /* the cover standfirst, the closing CTA */
+  --fs-print-body: 15px; /* the document's reading size */
+  --fs-print-meta: 13px; /* the colophon and figure notes */
+  --fs-print-label: 13px; /* mono: the brand line, footprint, figure keys */
 
   /* Retired roles, aliased to the nearest surviving step so no usage breaks.
      --fs-data-sm and --fs-caption-sm are now GONE, not aliased: every consumer

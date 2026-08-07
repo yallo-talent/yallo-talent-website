@@ -42,6 +42,15 @@ const MANIFEST = resolve(ROOT, MANIFEST_PATH);
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3115";
 const PATH = "/intelligence/research/corridor/print";
 
+/** The running title goes into a raw HTML template, so it is escaped there. */
+function escapeHtml(s) {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 async function main() {
   mkdirSync(dirname(OUT), { recursive: true });
 
@@ -79,6 +88,26 @@ async function main() {
        See scripts/research-pdf-manifest.mjs. */
     const printText = await page.evaluate(EXTRACT_PRINT_TEXT);
 
+    /* RUNNING FURNITURE, in the page margin where prose cannot reach it.
+       context-round21-scope.md §2.1 requires the piece title, the page number
+       and yallo.co on each page, and requires that the previous output's
+       page-number-jammed-into-prose artefacts be impossible by construction.
+       Chromium composites these templates into the margin box, so the only way
+       they can collide with the text is if the margin is too small to hold
+       them — hence the 18mm bottom against ~9pt of furniture.
+
+       The templates are raw HTML handed to Chromium's PDF compositor, which
+       loads neither the page's stylesheet nor its fonts. They therefore carry
+       literal values rather than tokens: there is no cascade here to inherit
+       from. Kept to the document's own greys and faces by hand, in this one
+       place.
+
+       The title is READ OFF THE RENDERED PAGE rather than written here. It is
+       the same string the cover prints because it is literally that string, so
+       the furniture cannot come to disagree with the document it belongs to. */
+    const runningTitle = (await page.locator("h1").first().innerText()).trim();
+    const footerFont =
+      "font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace";
     await page.pdf({
       path: OUT,
       format: "A4",
@@ -87,9 +116,13 @@ async function main() {
       displayHeaderFooter: true,
       headerTemplate: "<span></span>",
       footerTemplate:
-        '<div style="width:100%;font-size:8px;color:#666;padding:0 16mm;display:flex;justify-content:space-between;">' +
-        "<span>Yallo Talent · yallo.co</span>" +
-        '<span class="pageNumber"></span>' +
+        `<div style="width:100%;${footerFont};font-size:8px;color:#5d5d60;` +
+        'padding:0 16mm;display:flex;justify-content:space-between;align-items:baseline;gap:12px;">' +
+        `<span style="flex:1 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(
+          runningTitle,
+        )}</span>` +
+        '<span style="flex:none;letter-spacing:0.1em;">yallo.co</span>' +
+        '<span style="flex:none;min-width:2em;text-align:right;" class="pageNumber"></span>' +
         "</div>",
     });
 

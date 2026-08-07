@@ -1,0 +1,168 @@
+/*
+ * The research document's figures.
+ *
+ * Every colour is a Layer 1 alias, as everywhere else — a document that
+ * invented its own palette would be the same second-copy defect the generated
+ * dataset exists to prevent, one layer down.
+ *
+ * The type here is deliberately the PRINT scale, not the screen scale: at A4 a
+ * 13px axis label is generous, and the A4 floor is a screen-reading floor.
+ * Sizes are held in the print sheet's own variables so the whole document
+ * moves together.
+ */
+
+.figure {
+  margin: 0 0 26px;
+  padding: 18px 20px 16px;
+  border: 1px solid var(--boundary);
+  background: var(--ground-2);
+  /* A figure that splits across a page break is unreadable: half the rows on
+     one sheet and the axis on another. */
+  break-inside: avoid-page;
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.family {
+  font-family: var(--font-mono);
+  font-size: var(--fs-print-label);
+  font-weight: var(--fw-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.what {
+  font-size: var(--fs-print-meta);
+  line-height: 1.4;
+  color: var(--text-3);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Zero carries more weight than the interior ticks: every row measures from it. */
+.axisZero {
+  stroke: var(--text-3);
+  stroke-width: 1;
+}
+
+.axisTick {
+  stroke: var(--boundary);
+  stroke-width: 1;
+}
+
+/* Mono for the two things that are DATA — the axis and the value — and the
+   body face for the skill NAME, which is a label and not a measurement. A4:
+   "IBM Plex Mono strictly for data labels". Everything sits at the 13px floor,
+   which the type gate enforces on this file like any other; the floor is not
+   relaxed for print, and at A4 13px is a comfortable chart label. */
+.tickLabel {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-mono);
+  font-size: var(--fs-print-label);
+  fill: var(--text-3);
+  letter-spacing: 0.06em;
+  text-anchor: middle;
+}
+
+/* The value is the figure the reader takes away, so it sits a step darker than
+   the axis it is measured against. */
+.valueLabel {
+  font-family: var(--font-mono);
+  font-weight: var(--fw-mono);
+  font-size: var(--fs-print-label);
+  fill: var(--text-2);
+  letter-spacing: 0.02em;
+}
+
+.rowLabel {
+  font-family: var(--font-body);
+  font-size: var(--fs-print-meta);
+  fill: var(--text-2);
+}
+
+/* The connector carries the meaning — the gap between two markets — so it is
+   drawn as a rule rather than as a bar, which would imply a magnitude from
+   zero for something that is a difference. */
+.connector {
+  stroke: var(--boundary-strong, var(--boundary));
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* A RING, not a filled disc, and this is load-bearing rather than decorative.
+   Several rows have the two markets within a third of a point of each other,
+   so the marks land on top of one another. Filled, whichever is drawn second
+   erases the first and the row shows one series — which is what the rendered
+   pages showed, in both drawing orders. An unfilled ring drawn over the Gulf
+   disc reads as both: the gold shows through the middle. */
+.dotUk {
+  fill: none;
+  stroke: var(--text-2);
+  stroke-width: 2;
+}
+
+.dotGulf {
+  fill: var(--accent-line);
+  stroke: var(--accent-line);
+  stroke-width: 2;
+}
+
+/* The keys sit on one line and never wrap mid-name: a legend that breaks
+   "United Kingdom" across two lines reads as a layout accident, which is what
+   the first rendered pages showed. The sentence explaining the pair lives on
+   the note line below instead of being crammed in beside the swatches. */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: var(--fs-print-meta);
+  line-height: 1.4;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* The swatches mirror the marks exactly: the UK key is a ring because the UK
+   mark is a ring, which is what lets the two read apart where they coincide. */
+.keyUk {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+  background: transparent;
+  border: 2px solid var(--text-2);
+}
+
+.keyGulf {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--accent-line);
+  border: 2px solid var(--accent-line);
+}
+
+.keyGap {
+  width: 10px;
+  flex: none;
+}
+
+.baseline {
+  margin-top: 8px;
+  font-size: var(--fs-print-meta);
+  line-height: 1.5;
+  color: var(--text-3);
+}

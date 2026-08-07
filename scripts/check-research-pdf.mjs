@@ -120,6 +120,38 @@ try {
     ]);
   }
 
+  /* THE DOCUMENT CONTAINS NO SITE CHROME — round 21 §2.1.
+     What shipped before this round had the navigation bar and the "Start a
+     brief" button printed on its cover, the assistant launcher floating over
+     the title, and its last two pages given over to the footer's link columns.
+     Every check above was green on it, because none of them looks at what is
+     on the page as opposed to how much of it there is.
+
+     The print surface removes chrome structurally (`body > *:not(main)`), so
+     this asserts the outcome of that rule rather than restating the rule: if a
+     future layout component lands somewhere the selector does not reach, the
+     count stops being zero and this fails. */
+  const chrome = await page.evaluate(() => {
+    const visible = (el) => {
+      const s = getComputedStyle(el);
+      return s.display !== "none" && s.visibility !== "hidden";
+    };
+    return [...document.body.children]
+      .filter((el) => el.tagName !== "MAIN" && visible(el))
+      .map((el) => `${el.tagName.toLowerCase()}: ${el.textContent.slice(0, 60)}`);
+  });
+
+  if (chrome.length > 0) {
+    fail([
+      `The print surface is rendering ${chrome.length} piece(s) of site chrome:`,
+      ...chrome.map((c) => `  ${c}`),
+      "",
+      "A document is not a screenshot of a web page. Nothing outside <main>",
+      "belongs in the printed PDF — not the nav, not the assistant launcher,",
+      "not the footer's link columns, all three of which shipped before round 21.",
+    ]);
+  }
+
   if (textFingerprint !== manifest.textFingerprint) {
     fail([
       "The print surface no longer matches the committed PDF.",
