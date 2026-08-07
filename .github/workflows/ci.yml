@@ -147,8 +147,28 @@ jobs:
       # Costs one `next start` against a build that already exists.
       - name: Fresh server for the browser gates
         run: |
+          # `next start` becomes a process called `next-server`, so pkill on the
+          # start command kills the wrapper and leaves the thing that is actually
+          # listening. That is exactly what happened first time round: the wedged
+          # server survived, the replacement could not bind, and the curl below
+          # passed against the old one. A readiness probe that a wedged server
+          # satisfies is not a readiness probe — the root document is served
+          # instantly by a server whose IMAGE optimiser is stuck.
+          pkill -f "next-server" || true
           pkill -f "next start" || true
-          sleep 2
+
+          # Wait for the PORT to close. That, not a sleep, is the proof the old
+          # process is gone. bash's /dev/tcp avoids needing lsof or nc.
+          for i in $(seq 1 30); do
+            (exec 3<>/dev/tcp/127.0.0.1/3100) 2>/dev/null || break
+            exec 3>&- 2>/dev/null || true
+            sleep 1
+          done
+          if (exec 3<>/dev/tcp/127.0.0.1/3100) 2>/dev/null; then
+            echo "3100 is still held after 30s, so the wedged server is still up"
+            exit 1
+          fi
+
           PORT=3100 pnpm start &
           for i in $(seq 1 40); do
             curl -sf -o /dev/null http://localhost:3100 && break
