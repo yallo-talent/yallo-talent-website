@@ -200,15 +200,50 @@ export interface PublishDeps {
   now?: () => Date;
 }
 
+/**
+ * `owner/name`, from whichever shape of the same address was configured.
+ *
+ * ROUND 20, MEASURED AT GROUND. `ADMIN_GITHUB_REPO` held
+ * `https://github.com/yallo-talent/yallo-talent-website` — the address a person
+ * copies out of a browser, and out of `git remote -v`, which is where the round
+ * 19 step list told Sumeet to take it from. The old test accepted `owner/name`
+ * and nothing else, so the first real publish would have failed on the
+ * configuration rather than on anything about the write path, and the error
+ * would have named a variable that was in fact set correctly.
+ *
+ * Three shapes, all of them unambiguous readings of one repository, all
+ * normalised rather than guessed at: the bare slug, an https URL on github.com,
+ * and the scp-style SSH remote. `.git` is stripped because both remote forms
+ * carry it. Anything else is still refused by name — a host that is not
+ * github.com is a different service, and this module will not send a token to
+ * one it was not pointed at.
+ */
+export function repoSlugFrom(raw: string): string {
+  const value = raw.trim().replace(/\/+$/, "");
+  const strip = (s: string) => s.replace(/\.git$/, "");
+
+  const bare = /^([^/\s:]+)\/([^/\s:]+)$/.exec(strip(value));
+  if (bare) return `${bare[1]}/${bare[2]}`;
+
+  const https = /^https?:\/\/(?:www\.)?github\.com\/([^/\s]+)\/([^/\s]+)$/.exec(
+    strip(value),
+  );
+  if (https) return `${https[1]}/${https[2]}`;
+
+  const ssh = /^git@github\.com:([^/\s]+)\/([^/\s]+)$/.exec(strip(value));
+  if (ssh) return `${ssh[1]}/${ssh[2]}`;
+
+  throw new WritePathError(
+    `ADMIN_GITHUB_REPO is ${value === "" ? "empty" : `"${value}"`}, which does ` +
+      "not name a GitHub repository. Accepted: owner/name, " +
+      "https://github.com/owner/name, or git@github.com:owner/name. This module " +
+      "does not know which repository it is allowed to write to, and it will " +
+      "not guess one.",
+  );
+}
+
 function repoSlug(deps: PublishDeps): string {
-  const repo = deps.repo ?? process.env.ADMIN_GITHUB_REPO ?? "";
-  if (!/^[^/\s]+\/[^/\s]+$/.test(repo)) {
-    throw new WritePathError(
-      "ADMIN_GITHUB_REPO is not set to owner/name, so this module does not know " +
-        "which repository it is allowed to write to. It will not guess one.",
-    );
-  }
-  return repo;
+  return repoSlugFrom(deps.repo ?? process.env.ADMIN_GITHUB_REPO ?? "");
 }
 
 /* ------------------------------------------------------------ the write path */
