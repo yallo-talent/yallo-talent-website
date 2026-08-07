@@ -76,15 +76,61 @@ function assertPatternsStillMatchSource(failures) {
 }
 
 /** Every href renderAssistantText would draw from this reply text. */
-function renderedHrefs(text) {
-  const hrefs = [];
+function renderedLinks(text) {
+  const links = [];
   for (const block of text.trim().split(/\n\s*\n/)) {
     for (const part of block.split(INLINE)) {
       const m = part.match(LINK);
-      if (m) hrefs.push(m[2]);
+      if (m) links.push({ label: m[1], href: m[2] });
     }
   }
-  return hrefs;
+  return links;
+}
+
+/**
+ * A label that is a bare path — round 21 §3.1.
+ *
+ * Sumeet saw a homepage citation render as a bare `/` in a live conversation.
+ * The cause was in `linkifyCitations`: its citation pattern required a
+ * lowercase letter after the slash, so the root path matched nothing and was
+ * left as a stray character in the prose. The fix is there; this is what stops
+ * the class returning, for the root or for any other path.
+ *
+ * A label is a path if it starts with a slash and carries no space. "the
+ * homepage" passes. "/" and "/managed-delivery" do not.
+ */
+/**
+ * The bare-path predicate, proved on known inputs before it is trusted.
+ *
+ * The live half of this gate cannot be made to produce a bare-path label on
+ * demand — the model writes what it writes — so a red-proof by defect
+ * reintroduction is not available for that assertion. This is the substitute
+ * the repo already uses elsewhere (check-case-study-excerpts --selftest): fix
+ * the inputs, assert the answers, and fail the gate if the predicate has
+ * stopped working. A blind predicate would otherwise report clean forever.
+ */
+function assertBarePathPredicateWorks(failures) {
+  const cases = [
+    ["/", true],
+    ["/managed-delivery", true],
+    ["  /insights  ", true],
+    ["the homepage", false],
+    ["Managed Delivery", false],
+    ["the /brief form", false],
+  ];
+  for (const [label, expected] of cases) {
+    if (isBarePathLabel(label) !== expected) {
+      failures.push(
+        `isBarePathLabel(${JSON.stringify(label)}) returned ${!expected}, expected ${expected}.\n` +
+          "      The bare-path check is broken, so the label assertion below proves nothing.",
+      );
+    }
+  }
+}
+
+function isBarePathLabel(label) {
+  const trimmed = label.trim();
+  return trimmed.startsWith("/") && !/\s/.test(trimmed);
 }
 
 /**
@@ -115,6 +161,7 @@ async function askOnce(prompt) {
 async function main() {
   const failures = [];
   assertPatternsStillMatchSource(failures);
+  assertBarePathPredicateWorks(failures);
 
   /* ------------------------------------ PART A: the published set is routable */
 
@@ -176,12 +223,20 @@ async function main() {
       });
       continue;
     }
-    const hrefs = renderedHrefs(body.reply.text);
-    if (hrefs.length === 0) {
+    const links = renderedLinks(body.reply.text);
+    if (links.length === 0) {
       repliesWithNoLink.push(prompt);
       continue;
     }
-    for (const href of hrefs) {
+    for (const { label, href } of links) {
+      if (isBarePathLabel(label)) {
+        failures.push(
+          `[${prompt}] rendered a link labelled ${JSON.stringify(label)} — a bare path,\n` +
+            "      not something a reader would write. Every corpus entry carries a\n" +
+            "      linkLabel; the homepage's is \"the homepage\".\n" +
+            `      Reply text: ${JSON.stringify(body.reply.text.slice(0, 400))}`,
+        );
+      }
       hrefsChecked += 1;
       /* A rendered href must be a site-relative path in the published set. The
          membership test catches a mangled target before the fetch does, and

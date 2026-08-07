@@ -57,15 +57,20 @@ export interface CorpusDocument {
   summary: string;
   facts: string[];
   /**
-   * A short display name for this page, for surfaces that link to it (the
-   * assistant's own citation links, client.ts's `linkifyCitations`) rather
-   * than describe it. Falls back to `title` when absent, which is fine for
-   * every family whose `title` is already short (platforms, modules,
-   * AI-talent families, case studies, insights, leadership, the static
-   * pages). Set explicitly only where `title` is a hero headline, not a
-   * name — home and the four L1 families below.
+   * The human name of this page, for surfaces that LINK to it (the assistant's
+   * citation links, client.ts's `linkifyCitations`) rather than describe it.
+   *
+   * REQUIRED — round 21 §3.1. It used to be optional, falling back to `title`,
+   * on the reasoning that most families' titles are already short names. That
+   * held for most of them and hid the case where it did not: an entry whose
+   * title is a hero headline, or absent, ends up labelled with something no
+   * reader would write, and there was nothing to stop a new family being added
+   * with no label at all. Requiring it makes "what does a link to this page say"
+   * a question every entry has to answer when it is written.
+   *
+   * `check:assistant-links` fails a rendered link whose label is a bare path.
    */
-  linkLabel?: string;
+  linkLabel: string;
 }
 
 const industryDataBySlug: Record<string, L1PageData> = {
@@ -146,6 +151,7 @@ function buildPlatformDocs(published: Set<string>): CorpusDocument[] {
     docs.push({
       path,
       title: authored ? `${authored.name} contractors` : slug,
+      linkLabel: authored ? authored.name : slug,
       summary: authored
         ? `Modules staffed: ${authored.modules.map((m) => m.name).join(", ")}.`
         : `Platform desk for ${slug}.`,
@@ -162,6 +168,7 @@ function buildPlatformDocs(published: Set<string>): CorpusDocument[] {
     docs.push({
       path,
       title: authored.name,
+      linkLabel: authored.name,
       summary: `Roles Yallo places into ${authored.name}: ${authored.roles.slice(0, 6).join(", ")}.`,
       facts: authored.roles,
     });
@@ -176,6 +183,7 @@ function buildAiTalentDocs(published: Set<string>): CorpusDocument[] {
     .map(([path, family]) => ({
       path,
       title: family.name,
+      linkLabel: family.name,
       summary: family.hero,
       facts: [family.whatItDoes, ...family.screenFor.slice(0, 3)],
     }));
@@ -204,6 +212,7 @@ function buildBlueprintDocs(published: Set<string>): CorpusDocument[] {
     .map(([path, archetype]) => ({
       path,
       title: archetype.name,
+      linkLabel: archetype.name,
       summary: archetype.hero,
       facts: archetype.streams
         .slice(0, 6)
@@ -272,6 +281,7 @@ function buildCaseStudyDocs(published: Set<string>): CorpusDocument[] {
       return {
         path: `/case-studies/${fm.slug}`,
         title: fm.title,
+        linkLabel: fm.title,
         summary: fm.excerpt ?? fm.summary,
         facts: [
           `Client: ${clientName}`,
@@ -292,6 +302,7 @@ function buildInsightDocs(published: Set<string>): CorpusDocument[] {
     .map((entry) => ({
       path: `/insights/${entry.frontmatter.slug}`,
       title: entry.frontmatter.title,
+      linkLabel: entry.frontmatter.title,
       summary: entry.frontmatter.summary,
       facts: [
         `Category: ${entry.frontmatter.category}`,
@@ -315,6 +326,7 @@ function buildLeadershipDoc(published: Set<string>): CorpusDocument | null {
   return {
     path: "/leadership",
     title: "Leadership",
+    linkLabel: "the leadership team",
     summary: "Yallo Talent's leadership team, named for public credibility.",
     facts: teamIndex.map((m) =>
       [m.name, m.role, m.linkedin, m.bio].filter(Boolean).join(" · "),
@@ -327,7 +339,10 @@ function buildHomeDoc(published: Set<string>): CorpusDocument | null {
   return {
     path: "/",
     title: `${homeHero.headline.lead} ${homeHero.headline.emphasis}`,
-    linkLabel: SITE.name,
+    /* "the homepage", not the brand name — round 21 §3.1. A citation reads
+       "...which is on the homepage", and "...which is on Yallo Talent" is not a
+       sentence about a page. */
+    linkLabel: "the homepage",
     summary: homeHero.lede,
     facts: [`Pillars: ${homeHero.pillars.join(", ")}`],
   };
@@ -343,6 +358,7 @@ const STATIC_DOCS: CorpusDocument[] = [
   {
     path: "/privacy",
     title: "Privacy notice",
+    linkLabel: "the privacy notice",
     summary:
       "How Yallo Talent collects, uses and protects personal data for candidates, clients and visitors.",
     facts: [],
@@ -350,6 +366,7 @@ const STATIC_DOCS: CorpusDocument[] = [
   {
     path: "/terms",
     title: "Terms of use",
+    linkLabel: "the terms of use",
     summary:
       "The terms governing use of yallo.co. Engagements are governed by a separate written agreement.",
     facts: [],
@@ -357,12 +374,14 @@ const STATIC_DOCS: CorpusDocument[] = [
   {
     path: "/cookies",
     title: "Cookies notice",
+    linkLabel: "the cookies notice",
     summary: "How Yallo Talent uses cookies and browser storage on yallo.co.",
     facts: [],
   },
   {
     path: "/why-yallo",
     title: "Why Yallo",
+    linkLabel: "Why Yallo",
     summary:
       "Yallo Talent's founding story and operating philosophy, including Sumeet Goenka's enterprise IT background at Richemont, Landmark Group and Alshaya EMEA.",
     facts: [],
@@ -370,6 +389,7 @@ const STATIC_DOCS: CorpusDocument[] = [
   {
     path: "/about",
     title: "About Yallo Talent",
+    linkLabel: "About Yallo Talent",
     summary:
       "Who Yallo Talent is, the markets it serves and named clients who have consented to be listed.",
     facts: [],
@@ -377,12 +397,14 @@ const STATIC_DOCS: CorpusDocument[] = [
   {
     path: "/intelligence",
     title: "Intelligence",
+    linkLabel: "the intelligence hub",
     summary: "Yallo Talent's research and programme-staffing intelligence hub.",
     facts: [],
   },
   {
     path: "/jobs",
     title: "Jobs",
+    linkLabel: "the jobs board",
     summary:
       "Yallo Talent's live roles, hosted on Volcanic. This assistant serves clients only and does not discuss candidates or vacancies.",
     facts: [],

@@ -10,7 +10,20 @@ import type { BriefFormValues } from "@/lib/schemas";
    across the src/lib <-> scripts/ boundary — the existing check-assistant-*
    gates are plain Node scripts that don't resolve the `@/` path alias, so
    nothing under scripts/ imports src/lib today. */
-const CITATION_PATTERN = /(?<=^|[\s("'])\/[a-z][a-z0-9/-]*/g;
+/**
+ * A path the model wrote as plain text, which becomes a link.
+ *
+ * THE ROOT PATH IS THE ALTERNATION, and it is the round 21 §3.1 defect. The
+ * pattern required a lowercase letter after the slash, so a citation of the
+ * homepage — a bare `/` — matched nothing and rendered as a stray slash in the
+ * middle of a sentence. That is what Sumeet saw.
+ *
+ * The empty branch only matches where the slash is followed by a terminator, so
+ * `and/or` and a date are untouched: the lookbehind already requires the slash
+ * to start a token, and the lookahead requires it to end one.
+ */
+const CITATION_PATTERN =
+  /(?<=^|[\s("'])\/(?:[a-z][a-z0-9/-]*|(?=[\s.,;:!?)"']|$))/g;
 
 /** A markdown link the MODEL wrote, which this function must not re-wrap. */
 const MARKDOWN_LINK = /\[([^\]]*)\]\(([^)]*)\)/g;
