@@ -3,6 +3,12 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Round 20 §4.3. Without this there is no way to re-run CI against an unchanged
+  # tree, and that is not a convenience: it is the only way to tell a regression
+  # apart from a flake. Round 20 spent three runs believing the a11y step had
+  # been broken by a commit, and settled it by re-running the job on the last
+  # green commit and watching it fail identically.
+  workflow_dispatch: {}
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -260,6 +266,69 @@ jobs:
       # skipping silently; it is exercised where they exist.
       - name: Admin cockpit isolation (six assertions, one anonymous read)
         run: node scripts/check-admin-isolation.mjs http://localhost:3100
+
+      # Round 20 §4.3. The cockpit's write path, proven against the real module
+      # with only the network boundary substituted: nothing escapes content/,
+      # nothing lands on the default branch, auto-merge is reported rather than
+      # simulated, and a reorder preserves order.yaml's header and its per-slug
+      # client column. Needs no server and no credential, which is why it sits
+      # here rather than inside the block above.
+      - name: Write path invariants (reorder, edit, unpublish)
+        run: pnpm check:write-path
+
+      # Round 19 §2.2's class guard. Reports the prose figures rather than
+      # failing on them — the 42 occurrences are Sumeet's under R-A9 — and fails
+      # when a published figure drifts from the dataset that sources it.
+      - name: Metrics agree with the dataset that sources them
+        run: pnpm check:metrics
+
+      # Round 20 §4.3, with THROWAWAY credentials held as repository secrets and
+      # used nowhere else. The panes redirect an anonymous caller, so there is
+      # nothing to measure without a session; this gate fails rather than
+      # skipping when the secrets are absent, which is deliberate (round 19
+      # ratified it) and is why the server below is started with a hash
+      # generated from the same throwaway password.
+      - name: Admin cockpit renders (axe + A4 type floors, signed in)
+        env:
+          ADMIN_TEST_EMAIL: ${{ secrets.ADMIN_TEST_EMAIL }}
+          ADMIN_TEST_PASSWORD: ${{ secrets.ADMIN_TEST_PASSWORD }}
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_TEST_EMAIL }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+        run: |
+          PORT=3101 pnpm start &
+          for i in $(seq 1 40); do
+            curl -sf -o /dev/null http://localhost:3101 && break
+            sleep 1
+          done
+          node scripts/check-admin-render.mjs http://localhost:3101
+
+      # Round 19 §3.2's gate, and the one CI cannot fully run yet. Part A — every
+      # path llms.txt enumerates returns 200 — needs nothing. Part B asks the
+      # real model real questions and extracts the hrefs it renders, which is the
+      # half that caught the 404 Sumeet clicked, and it needs ANTHROPIC_API_KEY.
+      #
+      # That secret was NOT part of round 20 §7.5's ratification, which covered
+      # the throwaway admin pair only, and it is a paid key charged per run. So
+      # this step runs when the secret exists and REPORTS ITSELF ABSENT when it
+      # does not. A reported non-run is not the silent skip round 19 ruled
+      # against: the run says which gate did not execute and who can make it.
+      # Remove the `if` to make it blocking once the secret lands.
+      - name: Assistant link integrity (needs ANTHROPIC_API_KEY)
+        if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/check-assistant-links.mjs http://localhost:3100
+
+      - name: Assistant link integrity DID NOT RUN
+        if: ${{ secrets.ANTHROPIC_API_KEY == '' }}
+        run: |
+          echo "check:assistant-links did not run: ANTHROPIC_API_KEY is not set as a"
+          echo "repository secret. Part B of that gate asks the real model real"
+          echo "questions, which is the half that catches a rendered href going"
+          echo "nowhere. Owner: Sumeet. Until it is set, this gate protects nothing"
+          echo "in CI and the cutover-readiness report says so."
+          echo "::warning title=check:assistant-links did not run::ANTHROPIC_API_KEY is not set"
 
       - name: Upload captures on failure
         if: failure()

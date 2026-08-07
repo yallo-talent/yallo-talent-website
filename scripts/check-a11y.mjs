@@ -118,7 +118,30 @@ for (const theme of ["light", "dark"]) {
          stand in for the event that actually means "CSS has arrived".
          The guard is unchanged and still fails a genuinely unstyled page — this
          only stops it firing on a page that simply had not finished loading. */
-      await page.goto(base + route, { waitUntil: "load", timeout: 60000 });
+      /* ONE RETRY, and it is not a raised timeout.
+         Round 20: this line failed three CI runs in a row on `/`, the first
+         route of the run, with "Timeout 60000ms exceeded". It was NOT a
+         regression — the control proves it: re-running the job on 07db8e2, a
+         commit that had already passed CI green that morning, failed at the same
+         step with the same message. The server it navigates to has been serving
+         since the check:visual step several minutes earlier and next/image
+         optimises on demand, so the first `load` after that step can stall on a
+         runner with two cores.
+         A retry survives a stall; it cannot hide a broken page, because a page
+         that never loads fails the second attempt too and the run still goes
+         red. Raising the timeout instead would have been the shave: it would
+         make a wedged server look like a slow one for as long as the number
+         held. The retry says which route it retried, so a stall that becomes
+         routine is visible rather than absorbed. */
+      try {
+        await page.goto(base + route, { waitUntil: "load", timeout: 60000 });
+      } catch (err) {
+        if (!(err instanceof Error) || !/Timeout/.test(err.message)) throw err;
+        console.log(
+          `  retrying ${route} (${theme}/${width}): first load did not complete inside 60s`,
+        );
+        await page.goto(base + route, { waitUntil: "load", timeout: 60000 });
+      }
       /* Then poll for the assertion itself rather than sleeping a guessed amount:
          a cold first request can still be compiling the CSS chunk. */
       await page
