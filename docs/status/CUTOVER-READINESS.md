@@ -1,6 +1,6 @@
 # Cutover readiness — yallo.co
 
-**Measured 7 August 2026, round 20. HEAD `722a15e`.**
+**Measured 7 August 2026, round 20. HEAD `8890f89`.**
 
 Every line below was measured this round, on a production build (`pnpm build`
 then `next start`, port 3115) unless the line says otherwise. Nothing here is
@@ -46,41 +46,71 @@ timeout that looks like a page fault.
 | Research dataset | `pnpm check:research-dataset` | **0** | no |
 | Asset case | `pnpm check:asset-case` | **0** | pre-commit |
 | Admin isolation | `check-admin-isolation.mjs` | **0** | yes |
-| Admin panes render | `check-admin-render.mjs` | **0** | yes, new this round |
+| Admin panes render | `check-admin-render.mjs` | **0** locally, **1 in CI** | yes, new this round — see the CI note below |
 | Write path invariants | `pnpm check:write-path` | **0** | yes, new this round |
 | CTA collision | `pnpm check:cta-collision` | **0** | no |
 | Nav promise | `pnpm check:nav-promise` | **0** | no |
 | **Phase 8 performance** | `pnpm check:phase8` | **1 — FAILS** | own workflow, failing |
 | ESLint | `npx eslint src scripts` | **1 — FAILS** | **no**, CI lints with Biome |
 
-Two reds. Both are covered in §6.
+Two reds locally, both covered in §6. A third appears only in CI and is covered
+directly below.
 
 `check:assistant-links` is **not represented above**: it needs
 `ANTHROPIC_API_KEY`, which is not set anywhere this round could reach. See §6.
 
 ### CI state on final HEAD
 
-CI on `722a15e` was **running when this report was written**. The run before it,
-`1f910c8`, did not execute at all: the conditional guarding the assistant-links
-step read the `secrets` context from a step-level `if:`, which is not one of the
-places that context is available, so GitHub rejected the whole workflow file.
-That is fixed in `722a15e` and is why this line says "running" rather than a
-colour. **Confirm the CI colour on `722a15e` before go-live.**
+**CI on `8890f89`: 35 of 36 steps green. One red.**
 
-### A known CI flake, isolated by control
+Everything passes except the last gate, `Admin cockpit renders`, which fails
+`sign-in did not produce a session` in all four theme/width contexts and measures
+0 of 28 panes. The gate is behaving correctly — round 19 ratified that it fails
+rather than skips when it cannot sign in.
 
-The `Accessibility (axe, both themes, 1280 and 360)` step failed three CI runs in
-a row on `/` with `page.goto: Timeout 60000ms exceeded`. It is **not** a
-regression from this round's commits, and that is measured rather than assumed:
-re-running the same job on `07db8e2` — a commit that had already passed CI green
-that morning, unchanged — failed identically. The server it navigates to has been
-serving since the `check:visual` step and `next/image` optimises on demand, so the
-first `load` after that step can stall on a two-core runner.
+**The cause is measured, not inferred, and it has one owner.** The committed
+`src/lib/admin/password.ts` calls `scryptSync` at `N = 2^15` without raising
+`maxmem`. That is exactly node's 32 MiB default ceiling, so the call throws
+`ERR_CRYPTO_INVALID_SCRYPT_PARAMS` and no password can verify. Reproduced
+directly against the file as committed at HEAD:
 
-`check-a11y.mjs` now retries that navigation once and names the route it retried.
-A retry cannot hide a broken page — one that never loads fails the second attempt
-and the run still goes red — whereas a raised timeout would have made a wedged
-server look like a slow one.
+```
+committed password.ts THROWS: ERR_CRYPTO_INVALID_SCRYPT_PARAMS
+```
+
+**The fix already exists and is uncommitted in Sumeet's working tree**, alongside
+the matching change to `scripts/admin-password-hash.mjs` and `.env.example`. It
+derives `maxmem` from the cost rather than hardcoding it. Round 20 was instructed
+not to touch those three files, so it did not.
+
+**Owner: Sumeet. Committing those three files should turn CI green.** Until then
+the cockpit's rendered-accessibility gate does not run in CI, and local runs are
+the only evidence for it — `check:admin-render` exits 0 locally over 6 panes ×
+2 themes × 2 widths, signed in, plus the discovered conversation-detail route.
+
+The four runs before this one all failed at the a11y step instead. That is fixed:
+see the note below.
+
+### The a11y step: cause found and fixed
+
+The `Accessibility (axe, both themes, 1280 and 360)` step failed **four** CI runs
+across three commits, always on `/`, always `page.goto: Timeout 60000ms exceeded`.
+
+It was never a regression, and that is measured: re-running the job unchanged on
+`07db8e2` — already green that morning — failed identically.
+
+A retry was tried first and **disproved by the next run**: the second navigation
+timed out too. A server that fails twice at 60s is not slow, it is wedged.
+`next/image` optimises on demand and a starved optimiser key stays stuck for the
+lifetime of the process, so later requests for that image wait on a lock nothing
+releases and `load` never fires. `check:visual` pulls the homepage through four
+viewports on a two-core runner immediately before, and a11y's first route is that
+same homepage.
+
+A process cannot recover from it, so CI now **retires that server and gives the
+browser gates a clean one** against the build that already exists. The retry was
+removed. On `8890f89` the a11y step passed, along with every browser gate after
+it.
 
 ---
 
