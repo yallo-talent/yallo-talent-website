@@ -138,11 +138,43 @@ for (const theme of ["light", "dark"]) {
       const w = await page.evaluate(() => {
         const inner = window.innerWidth;
         const offenders = [];
+
+        /**
+         * CLIPPED SUBTREES ARE NOT OFFENDERS, round 19 §5.4.
+         *
+         * The round 18 diagnostic ran on the runner and named `.railTrack` at
+         * w=5550, 4873px past the viewport. That is the logo marquee, it is
+         * SUPPOSED to be wider than the screen, and its container clips it —
+         * which is why the page overflows by 2px and not by 4873. Ranking by
+         * absolute right edge put a correctly clipped element at the top of the
+         * list and left the two pixels that actually overflow unnamed. A
+         * diagnostic that reports the widest box rather than the contributing
+         * one sends the next round at the wrong layer, which is the failure
+         * this whole diagnostic was added to end.
+         *
+         * An element cannot contribute to the document's scrollWidth if any
+         * ancestor clips horizontally at a point it does not itself pass.
+         */
+        const clippedAway = (el) => {
+          const right = el.getBoundingClientRect().right + window.scrollX;
+          for (let n = el.parentElement; n; n = n.parentElement) {
+            const cs = getComputedStyle(n);
+            const ox = cs.overflowX;
+            if (ox !== "hidden" && ox !== "clip" && ox !== "auto" && ox !== "scroll") {
+              continue;
+            }
+            const edge = n.getBoundingClientRect().right + window.scrollX;
+            if (right > edge + 0.5) return true;
+          }
+          return false;
+        };
+
         for (const el of document.querySelectorAll("*")) {
           const r = el.getBoundingClientRect();
           const right = r.right + window.scrollX;
           if (right <= inner + 0.5) continue;
           if (r.width === 0 || r.height === 0) continue;
+          if (clippedAway(el)) continue;
           const cs = getComputedStyle(el);
           offenders.push({
             tag: el.tagName.toLowerCase(),
