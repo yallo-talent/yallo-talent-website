@@ -54,6 +54,7 @@
     "check:asset-case": "node scripts/check-asset-case.mjs",
     "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs",
     "check:admin-isolation": "node scripts/check-admin-isolation.mjs",
+    "check:admin-render": "node scripts/check-admin-render.mjs",
     "admin:hash": "node scripts/admin-password-hash.mjs"
   },
   "engines": {
