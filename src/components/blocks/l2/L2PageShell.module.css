@@ -37,6 +37,30 @@
   justify-content: flex-end;
   isolation: isolate;
   padding: 100px 0 0;
+
+  /* The accent grade steps from LINE to LABEL inside this hero.
+
+     --accent-line is the >=3:1 grade, calibrated on the darkest field stop for
+     large text and boundaries. .heroEmphasis is large text — 62px/600 — so the
+     grade is the right one on bare ground, and it is not what this hero has:
+     a photographic plate and its overlay paint under the title, and measured on
+     rendered pixels the worst glyph pixel sat at 2.75:1 against a 3:1 floor.
+     --accent-label is the same hue one step down in luminance, already declared
+     in every theme context, and measures 3.99:1 on that same worst pixel.
+
+     Declared as a context token on the hero rather than as a colour on
+     .heroEmphasis, so a second emphasis span added to this hero inherits the
+     corrected grade instead of repeating the defect.
+
+     Scoped to the hero deliberately. .overviewEm one section down reads the same
+     token over the shared ambient wash and is NOT part of this fix:
+     check:contrast-render reports no failure against it on either theme, and
+     widening the swap to .amb-wash would move border-color, outline and gradient
+     stops in every wash band on the site — --accent-line is read by 43 rules and
+     only 14 of them are a colour.
+     Dark theme is unaffected either way — --accent-line and --accent-label are
+     both --gold there, so this rule resolves to a no-op. */
+  --accent-line: var(--accent-label);
 }
 
 .heroImageWrap {

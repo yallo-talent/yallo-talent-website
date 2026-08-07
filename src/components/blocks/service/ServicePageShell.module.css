@@ -24,6 +24,28 @@
   overflow: hidden;
   padding: clamp(96px, 12vw, 160px) 0 clamp(60px, 8vw, 96px);
   background: var(--ground);
+
+  /* The subtle text step, at its WASH grade, because a wash paints under this
+     hero.
+
+     globals.css carries this swap already, on `.amb-wash` — the class that both
+     paints the shared ambient gradient and steps --text-3 down to the grade
+     calibrated for reading through it. This shell paints its own ambient
+     instead, so it never inherited the second half of that class and its subtle
+     text stayed on the bare-ground grade. Measured on rendered pixels, light:
+     the eyebrow at 4.45:1 and the audience list at 4.34:1 against a 4.5 floor.
+     After: 5.20:1 and 5.07:1.
+
+     Three aliases, not one. --fg-subtle and --wa40 are declared as var(--text-3)
+     at :root, so their values are computed THERE and inherited; redeclaring
+     --text-3 alone does not reach them. Same trap globals.css records twice, and
+     the reason both offenders here read --fg-subtle rather than --text-3.
+
+     The wash itself is untouched. This darkens ink inside one hero and changes
+     no gradient, alpha or hue. */
+  --text-3: var(--text-3-wash);
+  --fg-subtle: var(--text-3-wash);
+  --wa40: var(--text-3-wash);
 }
 
 .heroWrap {
