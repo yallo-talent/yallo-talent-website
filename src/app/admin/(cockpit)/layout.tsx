@@ -59,6 +59,7 @@ export default async function AdminLayout({
           <Link href={ADMIN_ROUTES.briefs}>Briefs</Link>
           <Link href={ADMIN_ROUTES.conversations}>Conversations</Link>
           <Link href={ADMIN_ROUTES.caseStudies}>Case studies</Link>
+          <Link href={ADMIN_ROUTES.articles}>Articles</Link>
         </nav>
         <form
           action={async () => {

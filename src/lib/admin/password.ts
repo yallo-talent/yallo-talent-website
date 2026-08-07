@@ -24,9 +24,19 @@ const SCRYPT_COST = 2 ** 15;
 const KEY_LENGTH = 64;
 const PREFIX = "scrypt";
 
+/* scrypt needs 128 * N * r bytes, which at N=2^15 and the default r=8 is exactly
+   32 MiB — precisely node's default maxmem ceiling, so the call throws
+   ERR_CRYPTO_INVALID_SCRYPT_PARAMS unless the limit is raised. Derived from the
+   cost rather than hardcoded so that raising SCRYPT_COST, or verifying a hash
+   stored at a higher cost, cannot reintroduce the same failure. */
+const scryptMaxmem = (cost: number): number => 128 * cost * 8 * 2;
+
 export function hashPassword(password: string): string {
   const salt = randomBytes(16);
-  const key = scryptSync(password, salt, KEY_LENGTH, { N: SCRYPT_COST });
+  const key = scryptSync(password, salt, KEY_LENGTH, {
+    N: SCRYPT_COST,
+    maxmem: scryptMaxmem(SCRYPT_COST),
+  });
   return [PREFIX, SCRYPT_COST, salt.toString("hex"), key.toString("hex")].join(
     "$",
   );
@@ -54,6 +64,9 @@ export function verifyPassword(password: string, stored: string): boolean {
   }
   if (salt.length === 0 || expected.length !== KEY_LENGTH) return false;
 
-  const actual = scryptSync(password, salt, KEY_LENGTH, { N: cost });
+  const actual = scryptSync(password, salt, KEY_LENGTH, {
+    N: cost,
+    maxmem: scryptMaxmem(cost),
+  });
   return timingSafeEqual(actual, expected);
 }

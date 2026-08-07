@@ -88,6 +88,17 @@
   margin: 0 0 8px;
 }
 
+/* One step down from .h1, on the same ramp. The case-studies pane carries two
+   lists now — the publishes and the studies — and two unlabelled lists on one
+   page is a pane that reads as one list with a strange middle. */
+.h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  letter-spacing: -0.01em;
+  margin: 32px 0 8px;
+}
+
 .lede {
   margin: 0 0 clamp(20px, 3vw, 32px);
   max-width: 68ch;
@@ -289,4 +300,50 @@
   font-size: var(--fs-caption);
   line-height: 1.55;
   color: var(--text-3);
+}
+
+/* --------------------------------------------------------------------------
+   The conversations filter bar (round 20 §3.1).
+
+   Scoped to `.filters` rather than restyling `.field`, `.input` and `.submit`
+   globally: those three are the sign-in form's, where a field is a full-width
+   block with 18px above it and the button is a full-width primary. A filter row
+   wants the opposite of all three, and the two forms are the only forms this
+   cockpit has — so the row overrides them inside itself and the sign-in page is
+   untouched.
+
+   No JavaScript anywhere in it. The form is a GET, so the filter lives in the
+   URL and is linkable, back-button-correct and reload-safe.
+   -------------------------------------------------------------------------- */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+  margin: 24px 0 8px;
+  padding: 16px;
+  border: 1px solid var(--hairline);
+  background: var(--ground-2);
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.filters .field {
+  margin-top: 0;
+}
+
+.filters .input {
+  width: auto;
+  min-width: 150px;
+}
+
+.filters .submit {
+  margin-top: 0;
+  width: auto;
+  padding: 0 18px;
+  /* A link styled as the button beside it needs the line box centred by hand;
+     `min-height` alone leaves an anchor's text on the baseline. */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }

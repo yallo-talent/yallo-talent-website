@@ -1,7 +1,21 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import {
+  parseStudyFile,
+  validateDraft,
+  writeScalar,
+} from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
-import { ORDER_PATH, publishOrder } from "@/lib/admin/publish";
+import {
+  ORDER_PATH,
+  publishOrder,
+  publishStudy,
+  readPublishes,
+  studyPath,
+} from "@/lib/admin/publish";
 import { caseStudyOrder, orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import styles from "../../Admin.module.css";
@@ -17,11 +31,19 @@ import styles from "../../Admin.module.css";
  * to `main` is worse than no write path, and a PR that waits for its checks is
  * the shape that satisfies it.
  *
- * NOT YET EXERCISED AGAINST GITHUB. `ADMIN_GITHUB_TOKEN` is blank as of round
- * 19, so the action reports that and does nothing. Its invariants are proven by
- * scripts/check-write-path.mjs with the network boundary substituted, which is a
- * smaller claim than "it commits" and is the only one anyone may make until a
- * commit has been watched landing.
+ * EXERCISED AGAINST GITHUB, round 20, and watched. One reorder published from
+ * this pane created branch `admin/2026-08-07T07-29-20-906Z`, committed
+ * content/case-studies/order.yaml to it and opened pull request #13, whose diff
+ * is the two lines that swapped and nothing else. CI ran on it.
+ *
+ * AUTO-MERGE WAS REFUSED, and the refusal is the useful part. `allow_auto_merge`
+ * is true on the repository; GitHub still declined with "Pull request is in
+ * unstable status", because `main` carries no branch protection and no required
+ * status check, so nothing blocks the merge and there is nothing for auto-merge
+ * to wait on. The module did what round 17 §2.3 requires — reported it and left
+ * the pull request open — and a human merges it. Until a required check exists
+ * on `main`, "auto-merge lands it once CI passes" is not a claim this pane can
+ * make, and it no longer makes it.
  *
  * WHAT IS LISTED, and in what order. `orderedCaseStudies()` — the same function
  * the homepage rail and /case-studies render from, so this pane cannot show an
@@ -70,7 +92,18 @@ async function reorder(formData: FormData): Promise<void> {
   }
   current.splice(to, 0, ...current.splice(from, 1));
 
-  const result = await publishOrder(current);
+  /* The file as it stands, so the rewrite keeps its header and its per-slug
+     client column. Read here rather than inside publishOrder because that module
+     is the GitHub boundary and reads no filesystem: check-write-path substitutes
+     its network calls and would otherwise need a fixture directory too. */
+  let previous: string | undefined;
+  try {
+    previous = readFileSync(join(process.cwd(), ORDER_PATH), "utf8");
+  } catch {
+    /* Absent is legitimate — the default header is written for a new file. */
+  }
+
+  const result = await publishOrder(current, { previous });
   if (!result.ok) {
     redirect(
       `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(result.error)}`,
@@ -79,8 +112,79 @@ async function reorder(formData: FormData): Promise<void> {
   revalidatePath(ADMIN_ROUTES.caseStudies);
   redirect(
     `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${direction}`)}` +
-      `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}`,
+      `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}` +
+      (result.autoMergeError
+        ? `&why=${encodeURIComponent(result.autoMergeError)}`
+        : ""),
   );
+}
+
+/**
+ * Publish or unpublish one study, through the same pull request path.
+ *
+ * NEVER A DELETION. `published: false` is the whole operation: round 17 §3
+ * forbids a delete path from the cockpit outright, and an unpublished study is
+ * one whose page stops being linked, not one whose evidence stops existing. The
+ * study keeps its file, its position in order.yaml and its history, and the pane
+ * still lists it — behind the published ones, labelled.
+ *
+ * The draft is VALIDATED BEFORE THE PULL REQUEST OPENS, against the build's own
+ * schema. Unpublishing cannot itself make a study invalid, but a study that was
+ * already invalid on disk would open a pull request CI is certain to fail, and
+ * §2.2's requirement is that the happy path cannot do that.
+ */
+async function setPublished(formData: FormData): Promise<void> {
+  "use server";
+  const slug = String(formData.get("slug") ?? "");
+  const next = String(formData.get("next") ?? "") === "true";
+
+  const fail = (message: string) =>
+    redirect(`${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(message)}`);
+
+  let source: string;
+  try {
+    source = readFileSync(join(process.cwd(), studyPath(slug)), "utf8");
+  } catch {
+    fail(
+      `No file at ${studyPath(slug)}, so there is nothing to publish or unpublish.`,
+    );
+    return;
+  }
+
+  let written: string;
+  try {
+    written = writeScalar(source, "published", next);
+  } catch (err) {
+    fail((err as Error).message);
+    return;
+  }
+
+  const draft = parseStudyFile(slug, written);
+  const errors = validateDraft(draft);
+  if (errors.length) {
+    fail(
+      `${slug} would not pass the build: ` +
+        errors.map((e) => `${e.field}: ${e.message}`).join(" · "),
+    );
+    return;
+  }
+
+  const result = await publishStudy(
+    slug,
+    written,
+    next ? `publish ${slug}` : `unpublish ${slug}`,
+  );
+  if (!result.ok) fail(result.error);
+  else {
+    revalidatePath(ADMIN_ROUTES.caseStudies);
+    redirect(
+      `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${next ? "published" : "unpublished"}`)}` +
+        `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}` +
+        (result.autoMergeError
+          ? `&why=${encodeURIComponent(result.autoMergeError)}`
+          : ""),
+    );
+  }
 }
 
 export default async function CaseStudiesPane({
@@ -91,9 +195,11 @@ export default async function CaseStudiesPane({
     err?: string;
     pr?: string;
     open?: string;
+    why?: string;
   }>;
 }) {
-  const { moved, err, pr, open } = await searchParams;
+  const { moved, err, pr, open, why } = await searchParams;
+  const publishes = await readPublishes();
   const all = getAllCaseStudies();
   const studies = orderedCaseStudies(all);
   const publishedSlugs = new Set(studies.map((s) => s.frontmatter.slug));
@@ -108,8 +214,9 @@ export default async function CaseStudiesPane({
         Everything in <code>content/case-studies/</code>, in the published order
         from <code>order.yaml</code>: the same order the homepage rail and{" "}
         <code>/case-studies</code> render. Moving a study opens a pull request
-        against <code>order.yaml</code> with auto-merge on, so CI runs before it
-        publishes. Nothing here writes <code>main</code> directly.
+        against <code>order.yaml</code> and asks GitHub to auto-merge it, so CI
+        runs before it publishes. Nothing here writes <code>main</code>{" "}
+        directly, and nothing here merges.
       </p>
 
       <p className={styles.count}>
@@ -121,11 +228,79 @@ export default async function CaseStudiesPane({
         <p className={open === "waiting" ? styles.bad : styles.ok}>
           Pull request #{pr} opened.{" "}
           {open === "waiting"
-            ? "Auto-merge could not be enabled on this repository, so it is waiting for you to merge it after CI passes. Nothing was merged from here."
+            ? "Auto-merge was refused, so it is waiting for you to merge it after CI passes. Nothing was merged from here."
             : "Auto-merge is on, so it publishes once CI passes."}
+          {/* GitHub's own words, not a paraphrase. Round 20 watched the first
+              real publish report "auto-merge could not be enabled on this
+              repository" while `allow_auto_merge` was in fact true — the
+              refusal was "Pull request is in unstable status", which is a
+              statement about this PR and about `main` carrying no required
+              check, not about the repository setting. A message that names the
+              wrong cause sends whoever reads it to the wrong settings page. */}
+          {why ? (
+            <span className={styles.meta}> GitHub said: {why}</span>
+          ) : null}
         </p>
       ) : null}
       {moved ? <p className={styles.ok}>Moved {moved}.</p> : null}
+
+      {/* §2.2's fourth requirement: every publish this cockpit opened, and where
+          it got to. Read from GitHub when the pane renders — a local record of
+          "publishes I started" drifts the moment a human merges or closes one,
+          and "did it land" is the only question worth asking. No polling; the
+          refresh is a link, because a spinner that re-fetches every two seconds
+          is a worse answer to "has CI finished" than a link that says so. */}
+      <h2 className={styles.h2}>Publishes</h2>
+      {publishes.ok ? (
+        publishes.publishes.length === 0 ? (
+          <p className={styles.empty}>
+            No pull request has been opened from this cockpit yet.
+          </p>
+        ) : (
+          <ul className={styles.rows}>
+            {publishes.publishes.map((p) => (
+              <li key={p.number} className={styles.row}>
+                <div className={styles.rowHead}>
+                  <span className={styles.meta}>#{p.number}</span>
+                  <p className={styles.rowTitle}>
+                    <a href={p.url} rel="noreferrer">
+                      {p.title}
+                    </a>
+                  </p>
+                  <span className={p.merged ? styles.ok : styles.meta}>
+                    {p.merged ? "merged" : p.state}
+                  </span>
+                  <span
+                    className={
+                      p.checks === "success"
+                        ? styles.ok
+                        : p.checks === "failure"
+                          ? styles.bad
+                          : styles.meta
+                    }
+                  >
+                    {p.checks === null
+                      ? "checks not reported"
+                      : p.checks === "failure" && p.failingCheck
+                        ? `failed: ${p.failingCheck}`
+                        : `checks ${p.checks}`}
+                  </span>
+                </div>
+                <p className={styles.meta}>{p.branch}</p>
+              </li>
+            ))}
+          </ul>
+        )
+      ) : (
+        <p className={styles.empty}>
+          Could not read pull requests: {publishes.error}
+        </p>
+      )}
+      <p className={styles.meta}>
+        <Link href={ADMIN_ROUTES.caseStudies}>Refresh publish status</Link>
+      </p>
+
+      <h2 className={styles.h2}>Studies</h2>
       <ul className={styles.rows}>
         {[...studies, ...unpublished].map((study, i) => (
           <li key={study.frontmatter.slug} className={styles.row}>
@@ -155,6 +330,29 @@ export default async function CaseStudiesPane({
               ) : null}
             </div>
             <p className={styles.meta}>{study.frontmatter.slug}</p>
+            <p className={styles.meta}>
+              <Link
+                href={`${ADMIN_ROUTES.caseStudies}/${study.frontmatter.slug}`}
+              >
+                Edit this study
+              </Link>
+            </p>
+            {/* Publish state is a property of the study, so the control is on
+                every row — including the unpublished ones, which is the only
+                way a draft can be brought back without editing the file. */}
+            <form action={setPublished}>
+              <input type="hidden" name="slug" value={study.frontmatter.slug} />
+              <input
+                type="hidden"
+                name="next"
+                value={study.frontmatter.published === false ? "true" : "false"}
+              />
+              <button className={styles.submit} type="submit">
+                {study.frontmatter.published === false
+                  ? "Publish"
+                  : "Unpublish"}
+              </button>
+            </form>
             {i < studies.length ? (
               <form action={reorder}>
                 <input

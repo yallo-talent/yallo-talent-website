@@ -27,9 +27,19 @@ const SCRYPT_COST = 2 ** 15;
 const KEY_LENGTH = 64;
 const PREFIX = "scrypt";
 
+/* scrypt needs 128 * N * r bytes, which at N=2^15 and the default r=8 is exactly
+   32 MiB — precisely node's default maxmem ceiling, so the call throws
+   ERR_CRYPTO_INVALID_SCRYPT_PARAMS unless the limit is raised. Derived from the
+   cost rather than hardcoded so that raising SCRYPT_COST, or verifying a hash
+   stored at a higher cost, cannot reintroduce the same failure. */
+const scryptMaxmem = (cost) => 128 * cost * 8 * 2;
+
 function hashPassword(password) {
   const salt = randomBytes(16);
-  const key = scryptSync(password, salt, KEY_LENGTH, { N: SCRYPT_COST });
+  const key = scryptSync(password, salt, KEY_LENGTH, {
+    N: SCRYPT_COST,
+    maxmem: scryptMaxmem(SCRYPT_COST),
+  });
   return [PREFIX, SCRYPT_COST, salt.toString("hex"), key.toString("hex")].join(
     "$",
   );
@@ -83,7 +93,13 @@ if (password.length < 12) {
   process.exit(1);
 }
 
+/* The `$` separators are printed backslash-escaped because @next/env expands
+   `$name` references when it reads .env.local, so an unescaped hash arrives at
+   verifyPassword truncated to "scrypt" — a correct password then fails with a
+   bare CredentialsSignin and nothing pointing at the env file. Quoting the value
+   does not help; @next/env expands inside single and double quotes alike. */
 console.log(
-  "\nAdd this line to .env.local. It is a hash, not the password:\n\n" +
-    `ADMIN_PASSWORD_HASH=${hashPassword(password)}\n`,
+  "\nAdd this line to .env.local exactly as printed — the backslashes are\n" +
+    "required, and it is a hash, not the password:\n\n" +
+    `ADMIN_PASSWORD_HASH=${hashPassword(password).replaceAll("$", "\\$")}\n`,
 );

@@ -8,7 +8,13 @@
 import { metricValue } from "@/data/metrics.generated";
 
 export const hero = {
-  eyebrow: "Enterprise platform talent · Middle East · Europe · India",
+  /* Two markets in the eyebrow, not three. Sumeet's instruction, 7 August: the
+     third entry took the line to two rows at the hero's measure, and an eyebrow
+     that wraps stops reading as one label. THIS LINE ONLY — India's positioning
+     is unchanged everywhere else it appears, including the four-entity strip
+     below, the footer and the corridor copy. Dropping it here is a typographic
+     decision about one line, not a positioning one. */
+  eyebrow: "Enterprise platform talent · Middle East · Europe",
   /** Split so the italic gold emphasis can carry the argument. "Enterprise"
       is carried by the eyebrow directly above — repeating it cost the H1 two
       extra lines and pushed the primary CTA below the fold at 1280×800. */
