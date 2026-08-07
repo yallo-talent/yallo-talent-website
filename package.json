@@ -46,6 +46,8 @@
     "check:cta-collision": "node scripts/check-cta-collision.mjs",
     "research:dataset": "node scripts/build-research-dataset.mjs",
     "check:research-dataset": "node scripts/build-research-dataset.mjs --check",
+    "metrics": "node scripts/build-metrics.mjs",
+    "check:metrics": "node scripts/build-metrics.mjs --check",
     "research:pdf": "node scripts/build-research-pdf.mjs",
     "check:research-pdf": "node scripts/check-research-pdf.mjs",
     "check:asset-case": "node scripts/check-asset-case.mjs",

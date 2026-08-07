@@ -5,7 +5,13 @@
  * Pillar four is Managed Delivery. The word this replaced never appears in
  * public copy; see scripts/check-terminology.mjs for the rule. The white-label-behind-an-SI mode is real but is not
  * published.
+ *
+ * The two card metrics come from content/metrics.yaml via the generated
+ * client-safe module, round 19 §5.1. They were typed here ("72h", "50+") and
+ * the quarterly refresh could not reach them; this file feeds a client
+ * component, so it could not read the server-only src/data/metrics.ts.
  */
+import { metricValue } from "@/data/metrics.generated";
 
 export interface EngagementModel {
   num: string;
@@ -33,7 +39,10 @@ export const engagementModels: EngagementModel[] = [
       "Time and materials or fixed bid",
     ],
     href: "/contract",
-    metric: { value: "72h", label: "Brief to shortlist" },
+    metric: {
+      value: metricValue("Brief to shortlist"),
+      label: "Brief to shortlist",
+    },
   },
   {
     num: "02",
@@ -90,7 +99,10 @@ export const engagementModels: EngagementModel[] = [
       "Six to nine months typical",
     ],
     href: "/managed-delivery",
-    metric: { value: "50+", label: "Programmes staffed" },
+    metric: {
+      value: metricValue("Programmes staffed"),
+      label: "Programmes staffed",
+    },
   },
 ];
 

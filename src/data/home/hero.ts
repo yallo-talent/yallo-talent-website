@@ -5,6 +5,7 @@
  * claim, and India is framed as Global Capability Centre staffing for
  * multinationals — a demand market, never a supply or delivery function.
  */
+import { metricValue } from "@/data/metrics.generated";
 
 export const hero = {
   eyebrow: "Enterprise platform talent · Middle East · Europe · India",
@@ -74,10 +75,17 @@ export const instrument = {
     name: "17 screened out",
     meta: "Reasons attached to the shortlist",
   },
+  /* Values from content/metrics.yaml via the generated client-safe module, round
+     19 §5.1 — these three were typed here ("72h", "2:1", "80%") and the
+     quarterly refresh could not reach them. The LABELS stay local and stay
+     short: this strip sits inside the instrument panel where the canonical
+     "Brief to shortlist" and "Contracts renewed" do not fit. The lookup key is
+     the canonical label, so a refresh that renames a metric fails the build here
+     rather than silently publishing a stale number. */
   footer: [
-    { value: "72h", label: "To shortlist" },
-    { value: "2:1", label: "CVs per interview" },
-    { value: "80%", label: "Renewed" },
+    { value: metricValue("Brief to shortlist"), label: "To shortlist" },
+    { value: metricValue("CVs per interview"), label: "CVs per interview" },
+    { value: metricValue("Contracts renewed"), label: "Renewed" },
   ],
 } as const;
 

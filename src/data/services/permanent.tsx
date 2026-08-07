@@ -1,3 +1,4 @@
+import { metricValue } from "@/data/metrics.generated";
 import { layersIcon, shieldIcon, usersIcon } from "./icons";
 import type { ServicePageData } from "./types";
 
@@ -7,7 +8,7 @@ export const permanentData: ServicePageData = {
   title: "Build your permanent bench",
   emphasis: "with specialists placed to stay.",
   lede: "For the programme-critical roles you need long-term: specialist-vetted, retention-minded, and matched to the delivery outcomes your team is on the hook for.",
-  heroStat: { n: "2:1", l: "CV-to-interview ratio" },
+  heroStat: { n: metricValue("CVs per interview"), l: "CV-to-interview ratio" },
   primaryCta: { label: "Discuss a permanent hire", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine:
@@ -52,7 +53,7 @@ export const permanentData: ServicePageData = {
     {
       title: "Shortlist delivered",
       copy: "3–5 candidates worth interviewing, each with detailed reasoning, not a CV dump.",
-      tag: "72h",
+      tag: metricValue("Brief to shortlist"),
     },
     {
       title: "Interview, offer, onboard",

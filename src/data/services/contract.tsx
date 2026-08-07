@@ -1,3 +1,4 @@
+import { metricValue } from "@/data/metrics.generated";
 import { boltIcon, clockIcon, shieldIcon } from "./icons";
 import type { ServicePageData } from "./types";
 
@@ -7,7 +8,7 @@ export const contractData: ServicePageData = {
   title: "Get contract specialists",
   emphasis: "shortlisted in 72 hours.",
   lede: "When your programme has a delivery gap or a peak, get specialist-screened contract talent: mobilised faster than a permanent hire, screened to the same bar.",
-  heroStat: { n: "72h", l: "brief to shortlist" },
+  heroStat: { n: metricValue("Brief to shortlist"), l: "brief to shortlist" },
   primaryCta: { label: "Send us a brief", href: "/brief" },
   secondaryCta: { label: "How it works", href: "/#how" },
   trustLine:
@@ -53,7 +54,7 @@ export const contractData: ServicePageData = {
     {
       title: "Shortlist delivered",
       copy: "3–5 specialist-screened candidates in your inbox, each with reasoning on why they're a fit for your programme.",
-      tag: "72h",
+      tag: metricValue("Brief to shortlist"),
     },
     {
       title: "Interview, offer, onboard",

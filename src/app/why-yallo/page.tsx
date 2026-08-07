@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { metricValue } from "@/data/metrics.generated";
 import {
   ENTITY_CITIES_COMMA,
   ENTITY_COUNT,
@@ -20,12 +21,12 @@ export const metadata: Metadata = buildMetadata({
 
 const differentiators = [
   {
-    stat: "72h",
+    stat: metricValue("Brief to shortlist"),
     title: "Brief to shortlist: always",
     copy: "Not sometimes. Not for easy roles. Every calibrated brief returns a shortlist inside 72 hours. It's how we're set up to operate.",
   },
   {
-    stat: "2:1",
+    stat: metricValue("CVs per interview"),
     title: "CV-to-interview ratio",
     copy: "For every candidate you interview, we've screened two more out. You review fits, not filler. Your hiring managers get their time back.",
   },
