@@ -81,8 +81,12 @@ export interface IntelligenceAsset {
   copy: string;
   points: string[];
   cta: { label: string; href: string };
-  /** Both routes are unbuilt; cards render non-interactive. */
-  published: boolean;
+  /* There is no `published` flag here any more, and its absence is the fix. It
+     was seeded `false` with the comment "Both routes are unbuilt" and stayed
+     false after both routes shipped, so the homepage advertised two live,
+     indexed, sitemapped assets as being in preparation. A boolean restating
+     something the route tree already knows has exactly one failure mode and it
+     took it. `AssetCta` reads `publishedPaths()` instead. */
   /**
    * Takes the inverted *corner* (top-right) rather than the default
    * bottom-left, so the pair is distinguishable in silhouette. Not an inverted
@@ -104,7 +108,6 @@ export const intelligenceAssets: IntelligenceAsset[] = [
       "The roles that always get under-scoped",
     ],
     cta: { label: "Request the Blueprint", href: "/intelligence" },
-    published: false,
     invertCorner: true,
   },
   {
@@ -117,7 +120,6 @@ export const intelligenceAssets: IntelligenceAsset[] = [
       "No email required",
     ],
     cta: { label: "Read the Atlas", href: "/ai-talent" },
-    published: false,
   },
 ];
 
