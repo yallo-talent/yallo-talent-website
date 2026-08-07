@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "check:terms": "node scripts/check-terminology.mjs",
     "check:contrast": "node scripts/check-contrast.mjs",
+    "check:contrast-render": "node scripts/check-rendered-contrast.mjs",
     "check:type": "node scripts/check-type-scale.mjs --strict",
     "check:a11y": "node scripts/check-a11y.mjs",
     "check:motion": "node scripts/check-motion.mjs",
