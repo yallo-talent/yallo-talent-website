@@ -16,6 +16,7 @@ export const ADMIN_ROUTES = {
   briefs: `${ADMIN_BASE}/briefs`,
   conversations: `${ADMIN_BASE}/conversations`,
   caseStudies: `${ADMIN_BASE}/case-studies`,
+  articles: `${ADMIN_BASE}/articles`,
 } as const;
 
 /**
@@ -27,5 +28,10 @@ export const ADMIN_ROUTES = {
 export const ADMIN_CAPABILITIES = {
   briefs: ["read"],
   conversations: ["read"],
-  caseStudies: ["read", "create", "reorder"],
+  caseStudies: ["read", "create", "reorder", "edit", "unpublish"],
+  /* Round 20 §3.2. The pane exists and states where articles live; it does
+     nothing, and the empty list is the enforcement of that rather than a note
+     saying so. Unpublishing a case study is `published: false` through the same
+     pull request path — never a file deletion, and never a delete from here. */
+  articles: [],
 } as const;

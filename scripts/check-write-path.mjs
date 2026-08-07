@@ -90,6 +90,9 @@ const {
   assertNotDefaultBranch,
   serialiseOrder,
   publishOrder,
+  publishStudy,
+  studyPath,
+  repoSlugFrom,
   ORDER_PATH,
 } = publishModule;
 
@@ -303,6 +306,144 @@ try {
 if (dupRejected) ok("refuses a duplicate slug rather than quietly de-duplicating");
 else bad("ACCEPTED a duplicate slug", "case-study-order.ts throws on it at build time.");
 
+/* ------------- 4c. a reorder preserves the file's prose and its annotations */
+
+/* ROUND 20, and the invariant this gate was extended for FIRST — proved red
+   before it was trusted. Run against the pre-round-20 `serialiseOrder(slugs)`,
+   which emitted a fixed header and bare slugs, this block fails on both counts:
+   the round 7 provenance note is gone and every client comment with it. The
+   published order.yaml carries 22 lines of prose and a client name on each of
+   its ten entries, and a reorder is exactly the operation that used to delete
+   all of it. Reversible in position; not reversible in prose. */
+{
+  const previous = [
+    "# A header that must survive.",
+    "# Second line of it.",
+    "",
+    "order:",
+    "  - alpha # Client A",
+    "  - beta # Client B",
+    "  - gamma",
+    "",
+  ].join("\n");
+  const rewritten = serialiseOrder(["beta", "alpha", "gamma"], previous);
+
+  if (rewritten.includes("# A header that must survive.") &&
+      rewritten.includes("# Second line of it."))
+    ok("a reorder keeps the file's existing header");
+  else
+    bad(
+      "a reorder DISCARDED the header",
+      "order.yaml opens with the provenance of four removed studies; a rewrite\n" +
+        "      that drops it loses the only record of why they went.",
+    );
+
+  if (/-\s*alpha\s+# Client A/.test(rewritten) &&
+      /-\s*beta\s+# Client B/.test(rewritten))
+    ok("a reorder keeps each entry's trailing comment with the entry that moved");
+  else
+    bad(
+      "a reorder DROPPED the per-slug comments",
+      rewritten,
+    );
+
+  const order = parseYaml(rewritten)?.order;
+  if (Array.isArray(order) && order.join(",") === "beta,alpha,gamma")
+    ok("the preserved comments do not change what the file parses to");
+  else bad("comment preservation corrupted the parsed order", rewritten);
+
+  /* And with no previous file, the default header is still emitted — a new
+     repository must not get an order.yaml with no explanation in it. */
+  const fresh = serialiseOrder(["alpha"], undefined);
+  if (fresh.startsWith("# The published order"))
+    ok("a file that does not exist yet still gets the default header");
+  else bad("a fresh order.yaml came out with no header", fresh.slice(0, 120));
+}
+
+/* ------------------ 5. edit and unpublish take the same path, under content/ */
+
+/* Round 20 §2.2 extends the pane from reorder to full lifecycle. Both new
+   operations are commits like any other, so what has to hold is that they route
+   through `publish` — one namespaced branch, one pull request, no merge — and
+   that the path they write is the study's own file and nothing else. */
+for (const [label, autoMerge] of [["auto-merge on", true], ["auto-merge off", false]]) {
+  const gh = fakeGithub({ autoMerge });
+  const res = await publishStudy(
+    "a-study",
+    "---\ntitle: x\n---\nbody\n",
+    "edit a-study",
+    { githubFetch: gh.fetch, token: "t", repo: "yallo-talent/yallo-talent-website", now: () => new Date("2026-08-07T00:00:00Z") },
+  );
+  if (!res.ok) {
+    bad(`publishStudy failed (${label})`, res.error);
+    continue;
+  }
+  const puts = gh.log.filter((l) => l.startsWith("PUT ") && l.includes("/contents/"));
+  const wrong = puts.filter((l) => !l.includes(`/contents/${studyPath("a-study")}`));
+  if (puts.length === 1 && wrong.length === 0)
+    ok(`an edit writes ${studyPath("a-study")} and nothing else (${label})`);
+  else bad(`an edit wrote ${puts.length} file(s) (${label})`, puts.join("\n      "));
+
+  if (res.branch.startsWith("admin/"))
+    ok(`an edit lands on a namespaced branch, never main (${label})`);
+  else bad(`an edit created branch ${res.branch} (${label})`, "It must be under admin/.");
+
+  const merges = gh.log.filter((l) => /\/merge\b/.test(l));
+  if (merges.length === 0) ok(`an edit performs no merge call (${label})`);
+  else bad(`an edit called merge (${label})`, merges.join("\n      "));
+}
+
+/* An edit cannot be talked into writing outside content/, by the same guard the
+   reorder uses. The slug is the only caller-controlled part of the path. */
+{
+  const gh = fakeGithub({ autoMerge: true });
+  const res = await publishStudy(
+    "../../../etc/passwd",
+    "x",
+    "traversal",
+    { githubFetch: gh.fetch, token: "t", repo: "yallo-talent/yallo-talent-website" },
+  );
+  const wrote = gh.log.some((l) => l.startsWith("PUT ") && l.includes("/contents/"));
+  if (!res.ok && !wrote)
+    ok("a traversing slug is refused before anything is written");
+  else bad("a traversing slug reached the commit path", JSON.stringify(res));
+}
+
+/* ------------------------------ 6. the repository address, in three shapes */
+
+/* Round 20 ground: ADMIN_GITHUB_REPO held the full https URL, which the old
+   owner/name test rejected — so the first real publish would have failed on the
+   configuration and blamed a variable that was set correctly. */
+for (const [input, why] of [
+  ["yallo-talent/yallo-talent-website", "the bare slug"],
+  ["https://github.com/yallo-talent/yallo-talent-website", "an https remote"],
+  ["https://github.com/yallo-talent/yallo-talent-website.git", "an https remote with .git"],
+  ["git@github.com:yallo-talent/yallo-talent-website.git", "an ssh remote"],
+]) {
+  let got = null;
+  try {
+    got = repoSlugFrom(input);
+  } catch (err) {
+    got = `THREW: ${err.message}`;
+  }
+  if (got === "yallo-talent/yallo-talent-website") ok(`normalises ${why}`);
+  else bad(`did not normalise ${why}`, String(got));
+}
+for (const [input, why] of [
+  ["", "an empty value"],
+  ["https://gitlab.com/owner/name", "a host that is not github.com"],
+  ["owner", "a bare name with no owner"],
+]) {
+  let threw = false;
+  try {
+    repoSlugFrom(input);
+  } catch {
+    threw = true;
+  }
+  if (threw) ok(`refuses ${why}`);
+  else bad(`ACCEPTED ${why}`, "A token does not go to a repository this module was not pointed at.");
+}
+
 /* ------------------------- the absent token is reported, not worked around */
 
 const noToken = await publishOrder(SLUGS, {
@@ -329,5 +470,8 @@ console.log(
     `  ${passes.length} assertion(s) against the real ${SOURCE}, network boundary substituted\n` +
     `  ${MUST_REJECT.length} path shapes rejected, 3 accepted, default branch and un-namespaced branch refused\n` +
     `  auto-merge on and OFF both exercised; with it off the PR is left open and no merge call is made\n` +
-    `  This does NOT assert that a commit has landed. No commit has: ADMIN_GITHUB_TOKEN is blank.\n`,
+    `  reorder, edit and unpublish all route through one pull request and perform no merge\n` +
+    `  a reorder preserves the file's header and every per-slug comment\n` +
+    `  This does NOT assert that a commit has landed. Round 20 watched one land as far as\n` +
+    `  an open pull request (#13); that is a claim about a run, not about this module.\n`,
 );

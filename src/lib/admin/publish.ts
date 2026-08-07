@@ -27,11 +27,18 @@ import "server-only";
  *      it would restore the fourteen-integers-by-hand defect that
  *      src/lib/case-study-order.ts was built to remove.
  *
- * NOT YET EXECUTED AGAINST GITHUB. As of round 19 `ADMIN_GITHUB_TOKEN` is a blank
- * assignment in `.env.local`, so no commit has been watched landing and this
- * module must not be described as working. Its invariants are proven by
- * scripts/check-write-path.mjs against this module with `githubFetch` replaced;
- * that is a different claim and a smaller one, and the relay says so.
+ * EXECUTED AGAINST GITHUB, round 20. A reorder published from the pane created
+ * `admin/2026-08-07T07-29-20-906Z`, committed order.yaml to it and opened pull
+ * request #13; the diff was the two lines that swapped. Requirement 3 was then
+ * exercised for real rather than in a fixture: GitHub refused auto-merge with
+ * "Pull request is in unstable status" — `allow_auto_merge` is on, but `main`
+ * has no required status check, so the merge is not blocked by anything and
+ * there is nothing to queue behind. This module reported that and stopped, which
+ * is what it is for.
+ *
+ * `scripts/check-write-path.mjs` still proves the invariants against this module
+ * with `githubFetch` replaced. That remains a different and smaller claim than
+ * "a commit landed", and the two are not interchangeable.
  */
 
 const CONTENT_ROOT = "content/";
@@ -139,15 +146,66 @@ export function assertNotDefaultBranch(
   return branch;
 }
 
+/** Used only when order.yaml does not exist yet. See `serialiseOrder`. */
+const DEFAULT_ORDER_HEADER = [
+  "# The published order of the case studies. One editorial decision, one file.",
+  "#",
+  "# Written by the admin cockpit's reorder action. Editing it by hand is fine;",
+  "# the cockpit reads this file before it writes it, so a hand edit is not lost.",
+  "#",
+  "# Two rules, both enforced in src/lib/case-study-order.ts:",
+  "#   - A slug named here that resolves to no case study FAILS THE BUILD.",
+  "#   - A published study not named here still publishes, appended behind these",
+  "#     in date order, newest first.",
+  "",
+];
+
+/**
+ * The prose and the per-slug annotations already in the file.
+ *
+ * ROUND 20. The shipped `order.yaml` opens with 22 lines recording why four
+ * studies were removed in round 7 and which one returns in round 8, and each of
+ * its ten entries carries the client's name as a trailing comment — the only
+ * place a reader can see whose study sits at which position without opening ten
+ * files. A serialiser that emits a fixed header destroys all of it on the first
+ * reorder, and the reorder is the thing this pane exists to do. Reversible in
+ * position, not in prose: moving a study back does not bring the comments back.
+ *
+ * So the writer READS before it writes. It is the same discipline the reorder
+ * action already follows for the order itself — the current order comes from the
+ * file, never from the form — extended to the rest of the file's content.
+ */
+function splitExistingOrder(previous: string): {
+  header: string[];
+  notes: Map<string, string>;
+} {
+  const lines = previous.split("\n");
+  const at = lines.findIndex((line) => line.trimEnd() === "order:");
+  if (at === -1) return { header: DEFAULT_ORDER_HEADER, notes: new Map() };
+
+  const notes = new Map<string, string>();
+  for (const line of lines.slice(at + 1)) {
+    const entry = /^\s*-\s+(\S+)\s*(#.*)?$/.exec(line);
+    if (entry?.[1] && entry[2]) notes.set(entry[1], entry[2]);
+  }
+  return { header: lines.slice(0, at), notes };
+}
+
 /**
  * order.yaml, serialised.
  *
- * Emits the same `order:` list shape `caseStudyOrder()` parses, with a header
- * saying where the file came from. Duplicates are a hard error rather than a
- * silent de-duplication: two of one slug means the caller's reorder is wrong,
- * and writing a quietly corrected file hides that from whoever sent it.
+ * Emits the same `order:` list shape `caseStudyOrder()` parses. Duplicates are a
+ * hard error rather than a silent de-duplication: two of one slug means the
+ * caller's reorder is wrong, and writing a quietly corrected file hides that
+ * from whoever sent it.
+ *
+ * `previous` is the file as it stands. Given it, the header and every trailing
+ * comment survive the rewrite and the diff is exactly the lines that moved.
+ * Without it the default header is used, which is the right behaviour for a file
+ * that does not exist yet and the wrong one for every other case — so the caller
+ * that has the file passes it.
  */
-export function serialiseOrder(slugs: string[]): string {
+export function serialiseOrder(slugs: string[], previous?: string): string {
   const seen = new Set<string>();
   for (const slug of slugs) {
     if (typeof slug !== "string" || slug.trim() === "") {
@@ -161,19 +219,18 @@ export function serialiseOrder(slugs: string[]): string {
     }
     seen.add(slug);
   }
+
+  const { header, notes } = previous
+    ? splitExistingOrder(previous)
+    : { header: DEFAULT_ORDER_HEADER, notes: new Map<string, string>() };
+
   return [
-    "# The published order of the case studies. One editorial decision, one file.",
-    "#",
-    "# Written by the admin cockpit's reorder action. Editing it by hand is fine;",
-    "# the cockpit reads this file before it writes it, so a hand edit is not lost.",
-    "#",
-    "# Two rules, both enforced in src/lib/case-study-order.ts:",
-    "#   - A slug named here that resolves to no case study FAILS THE BUILD.",
-    "#   - A published study not named here still publishes, appended behind these",
-    "#     in date order, newest first.",
-    "",
+    ...header,
     "order:",
-    ...slugs.map((slug) => `  - ${slug}`),
+    ...slugs.map((slug) => {
+      const note = notes.get(slug);
+      return note ? `  - ${slug} ${note}` : `  - ${slug}`;
+    }),
     "",
   ].join("\n");
 }
@@ -405,14 +462,173 @@ export async function publish(
   }
 }
 
+export const STUDY_DIR = "content/case-studies";
+
+/** The repository path of one study. Validated by `assertContentPath` downstream. */
+export function studyPath(slug: string): string {
+  return `${STUDY_DIR}/${slug}.mdx`;
+}
+
+/**
+ * An edited study, through the same pull request path as everything else.
+ *
+ * `source` is the WHOLE file as it should be after the edit — frontmatter fence
+ * and body — produced by src/lib/admin/case-study-draft.ts's surgical writers so
+ * the diff is the lines that changed and not a re-serialisation of the document.
+ * This module does not parse or assemble MDX: it commits bytes, and keeping the
+ * two apart is what lets check-write-path prove the commit path without a
+ * content fixture and lets the draft module be validated without a network.
+ */
+export async function publishStudy(
+  slug: string,
+  source: string,
+  reason: string,
+  deps: PublishDeps = {},
+): Promise<PublishResult> {
+  return publish(
+    {
+      message: `data(case-studies): ${reason}`,
+      reason: `${reason}. Only \`${studyPath(slug)}\` changes.`,
+      files: [{ path: studyPath(slug), content: source }],
+    },
+    deps,
+  );
+}
+
+/* ------------------------------------------------------ what happened after */
+
+export interface PublishState {
+  number: number;
+  title: string;
+  url: string;
+  branch: string;
+  /** open · merged · closed, as GitHub reports it. */
+  state: string;
+  merged: boolean;
+  /** null while no check has reported; otherwise success · failure · pending. */
+  checks: string | null;
+  /** Named only when a check has concluded unsuccessfully. */
+  failingCheck: string | null;
+  createdAt: string;
+}
+
+/**
+ * The publishes this cockpit has opened, and where each one got to. Round 20
+ * §2.2's fourth requirement.
+ *
+ * READ FROM GITHUB, never from a local record. A table of "publishes I started"
+ * written by this process would drift from the truth the moment a human merged
+ * or closed one, and the question the pane has to answer is "did it land", which
+ * only GitHub can answer. Restricted to the `admin/` branch prefix, so a human's
+ * own pull request never appears here as something the cockpit did.
+ *
+ * NO POLLING. This is read when the pane renders, and the pane has a refresh
+ * link. §2.2 rules out polling theatre explicitly, and a spinner that re-fetches
+ * every two seconds is a worse answer to "has CI finished" than a link that says
+ * what it will do.
+ */
+export async function readPublishes(
+  limit = 10,
+  deps: PublishDeps = {},
+): Promise<
+  { ok: true; publishes: PublishState[] } | { ok: false; error: string }
+> {
+  const call = deps.githubFetch ?? realFetch;
+  const token = deps.token ?? process.env.ADMIN_GITHUB_TOKEN ?? "";
+  if (token === "") {
+    return { ok: false, error: "ADMIN_GITHUB_TOKEN is not set." };
+  }
+  let repo: string;
+  try {
+    repo = repoSlug(deps);
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+  const headers = {
+    accept: "application/vnd.github+json",
+    authorization: `Bearer ${token}`,
+    "x-github-api-version": "2022-11-28",
+  };
+
+  try {
+    const res = await call(
+      `${API}/repos/${repo}/pulls?state=all&sort=created&direction=desc&per_page=30`,
+      { headers },
+    );
+    if (!res.ok) throw new Error(`GET /pulls returned ${res.status}`);
+    const list = (await res.json()) as Array<{
+      number: number;
+      title: string;
+      html_url: string;
+      state: string;
+      merged_at: string | null;
+      created_at: string;
+      head: { ref: string; sha: string };
+    }>;
+
+    const mine = list
+      .filter((pr) => pr.head?.ref?.startsWith(BRANCH_PREFIX))
+      .slice(0, limit);
+
+    const publishes: PublishState[] = [];
+    for (const pr of mine) {
+      let checks: string | null = null;
+      let failingCheck: string | null = null;
+      try {
+        const cr = await call(
+          `${API}/repos/${repo}/commits/${pr.head.sha}/check-runs`,
+          { headers },
+        );
+        if (cr.ok) {
+          const body = (await cr.json()) as {
+            check_runs?: Array<{
+              name: string;
+              status: string;
+              conclusion: string | null;
+            }>;
+          };
+          const runs = body.check_runs ?? [];
+          if (runs.length === 0) checks = null;
+          else if (runs.some((r) => r.status !== "completed"))
+            checks = "pending";
+          else {
+            const bad = runs.find(
+              (r) => r.conclusion !== "success" && r.conclusion !== "neutral",
+            );
+            checks = bad ? "failure" : "success";
+            failingCheck = bad ? bad.name : null;
+          }
+        }
+      } catch {
+        /* A check-runs read that fails leaves `checks` null, which the pane
+           renders as "not reported" rather than as a pass. */
+      }
+      publishes.push({
+        number: pr.number,
+        title: pr.title,
+        url: pr.html_url,
+        branch: pr.head.ref,
+        state: pr.state,
+        merged: pr.merged_at !== null,
+        checks,
+        failingCheck,
+        createdAt: pr.created_at,
+      });
+    }
+    return { ok: true, publishes };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+}
+
 /** Reordering, the one write operation the case-studies pane exposes. */
 export async function publishOrder(
   slugs: string[],
-  deps: PublishDeps = {},
+  deps: PublishDeps & { previous?: string } = {},
 ): Promise<PublishResult> {
   let content: string;
   try {
-    content = serialiseOrder(slugs);
+    content = serialiseOrder(slugs, deps.previous);
   } catch (err) {
     return { ok: false, error: (err as Error).message };
   }
