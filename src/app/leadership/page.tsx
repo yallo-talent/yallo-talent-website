@@ -83,9 +83,10 @@ export default function LeadershipPage() {
             <h2 className={styles.sectionH}>
               Five people leading Yallo Talent.
             </h2>
-            <p className={styles.sectionLede}>
-              Name, role and a link to their profile.
-            </p>
+            {/* No lede here. The one that stood ("Name, role and a link to
+                their profile.") described the interface, which house rules ban,
+                and §4.3 removed it without replacement: the H2 carries the
+                section. Do not add a sentence that counts the cards below. */}
             <div className={styles.cardGrid3}>
               {teamIndex.map((member) => (
                 <article

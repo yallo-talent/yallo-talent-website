@@ -1,14 +1,16 @@
 /**
  * The leadership roster — ratified 3 August 2026, context-round11-scope.md §2.
  *
- * Five real people, named for public credibility. §2.1 is the hard constraint
- * on this file and outranks the instruction to add bios: Sumeet did not supply
- * bios for the other four, so `bio` is absent for them — never an empty
- * string, never a placeholder. Do not add tenure, past employer or capability
- * claims for any entry but Sumeet's, and his is assembled only from sentences
- * already published elsewhere on this site (the Richemont / Landmark Group /
- * Alshaya EMEA history on /why-yallo and /leadership's own hero copy) — no
- * fact appears here that a reader could not already find published.
+ * Five real people, named for public credibility.
+ *
+ * BIOS, ratified 7 August 2026, context-round19-scope.md §4.2. Every sentence
+ * below was supplied or ratified by Sumeet on that date. That ruling supersedes
+ * two earlier constraints on this file, and it supersedes them for exactly
+ * these five entries and nothing else: §2.1's "no bio for anyone but Sumeet",
+ * and round 18 §3's "no biography for any real named person". The text ships
+ * VERBATIM — its typography may not be "improved", and no fact may be added to
+ * it, generalised from it, or derived from a name pattern. A new person, a
+ * changed role or an extra sentence needs its own ratification, not this one.
  *
  * No `image` field: canon bans photography sitewide, PetalPlate is the only
  * imagery system, and team portraits are an unratified canon amendment
@@ -30,9 +32,10 @@ export const teamIndex: TeamMember[] = [
     slug: "sumeet-goenka",
     name: "Sumeet Goenka",
     role: "Founder & CEO",
-    /* No LinkedIn URL supplied this round (§2 table). Absent rather than
-       invented from a name pattern. */
-    bio: "Enterprise IT operator at Richemont, retail transformation lead at Landmark Group and programme director at Alshaya EMEA, before founding Yallo Talent. The operators who shipped those programmes are the ones who review every shortlist today.",
+    /* Supplied by Sumeet, 7 August 2026, closing round 19 §7 item 1. Exactly as
+       given, never derived from the name pattern the other four happen to share. */
+    linkedin: "https://www.linkedin.com/in/sumeetgoenka/",
+    bio: "Before founding Yallo, he was Group Chief Architect, SVP at Richemont, Chief Enterprise Architect at Landmark Group and Head of Enterprise Architecture at Alshaya EMEA, with earlier roles across Microsoft, Deloitte, Burberry, Vodafone and Oracle, spanning the UK, Europe, Middle East and APAC. The IT leader who delivered those complex transformations for 23+ years now builds your talent backbone today.",
   },
   {
     slug: "chandrasekharkolar",
@@ -42,8 +45,10 @@ export const teamIndex: TeamMember[] = [
        a different transliteration of the same name — flagged, not
        reconciled, per §2.3. Do not derive one from the other. */
     name: "Chandrashekhar Kolar",
-    role: "Head of Managed Delivery",
+    /* "from Head to Director", Sumeet's instruction of 7 August 2026, §4.1. */
+    role: "Director of Managed Delivery",
     linkedin: "https://www.linkedin.com/in/chandrasekharkolar/",
+    bio: "Twenty years in enterprise solution architecture and programme delivery across TCS, ITC Infotech, Oracle, EPAM and Landmark Group, with deep retail, loyalty and customer-data work in the Middle East. Based in Dubai, he has taken complex platform programmes from architecture through to go-live, and now owns Yallo's fixed-scope Managed Delivery engagements end to end.",
   },
   {
     slug: "niharika-patir",
@@ -53,17 +58,20 @@ export const teamIndex: TeamMember[] = [
        project (§2.3). */
     role: "Head of Talent Operations",
     linkedin: "https://www.linkedin.com/in/patirniharika/",
+    bio: "Fourteen years in recruitment across corporate and agency environments, with a Masters in Human Resources and Organisational Development from the Delhi School of Economics. From Bengaluru, she runs the screening and delivery operation behind every shortlist, owning the client's experience from brief to onboarding.",
   },
   {
     slug: "raphy-varghese",
     name: "Raphy Varghese",
     role: "Head of Marketing & Growth",
     linkedin: "https://www.linkedin.com/in/vargheseraphy/",
+    bio: "An engineer by training, he leads marketing, growth and the web platforms Yallo's businesses run on. From Bengaluru, he builds the route that brings enterprise platform buyers to Yallo, and keeps it short from first contact to brief.",
   },
   {
     slug: "kritika-poddar",
     name: "Kritika Poddar",
     role: "Head of Finance & PMO",
     linkedin: "https://www.linkedin.com/in/kritikapo/",
+    bio: "She runs finance, commercial governance and the PMO across Yallo Talent's contract and delivery book. Every engagement's commercials, from rate card to invoice, run through her office.",
   },
 ];
