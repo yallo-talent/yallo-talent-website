@@ -34,8 +34,19 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
     if (link) {
       const [, label, href] = link;
       return (
-        // biome-ignore lint/suspicious/noArrayIndexKey: same fixed-content split as above.
-        <a key={`${keyPrefix}-${i}`} href={href}>
+        /* A new tab, on Sumeet's ruling of 7 August (round 19 §3.1): the panel
+           holds the whole conversation in React state, so a same-tab navigation
+           to a cited page destroys it, and a visitor who wanted to glance at the
+           page loses everything they had told the assistant. `rel` is not
+           optional alongside `target="_blank"` — without `noopener` the opened
+           page can reach back through `window.opener`. */
+        <a
+          // biome-ignore lint/suspicious/noArrayIndexKey: same fixed-content split as above.
+          key={`${keyPrefix}-${i}`}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {label}
         </a>
       );

@@ -39,6 +39,7 @@
     "db:read-submissions": "node scripts/db-read-submissions.mjs",
     "check:assistant-refusal": "node scripts/check-assistant-refusal.mjs",
     "check:assistant-grounding": "node scripts/check-assistant-grounding.mjs",
+    "check:assistant-links": "node scripts/check-assistant-links.mjs",
     "check:assistant-terms": "node scripts/check-assistant-terms.mjs",
     "check:assistant-bundle": "node scripts/check-assistant-bundle.mjs",
     "check:assistant-a11y": "node scripts/check-assistant-a11y.mjs",

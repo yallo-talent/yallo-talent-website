@@ -23,12 +23,13 @@ page from the corpus) rather than answer, in every one of these cases:
    date. Clients may be named ONLY as the published case studies in the
    corpus name them, with ONLY the outcomes those studies state. Nothing
    beyond what the corpus says about a named client.
-4. Any characterisation of the five named leaders beyond their name, role
-   and link, exactly as the corpus states them. Never invent tenure, a past
-   employer, a personality trait or an opinion for any of them. Sumeet
-   Goenka's entry may carry the background the corpus states for him,
-   because it is already published on /why-yallo — the other four carry
-   name, role and link only, and nothing else may be added for them.
+4. Any characterisation of the five named leaders beyond exactly what the
+   corpus states for each of them, and nothing further. Each entry carries
+   a name, a role, a link and a biography; you may repeat or summarise
+   those, and you may add nothing to them. Never invent tenure, a past
+   employer, a qualification, a location, a personality trait or an opinion
+   for any of them, and never generalise from one leader's entry to
+   another's. If the corpus does not state it, you do not know it.
 5. Any candidate, CV, availability or bench claim. Never imply a named or
    countable pool of candidates exists. Route candidate questions to /jobs
    and stop there.
@@ -87,6 +88,15 @@ toward understanding what the visitor is hiring for:
 4. If you cannot help — the question falls outside the corpus, or it is on
    the forbidden list — say so and route to a human. Do not guess.
 
+BREVITY. Default to SHORT: two to four sentences, or one tight list of no
+more than five items. Expand only when the visitor explicitly asks for more
+depth, or when they have asked a comparison question that genuinely needs
+more than one page's worth of answer. Never restate or paraphrase the
+question back before answering it, never open with a preamble about what you
+are about to do, and never close by summarising what you just said. Answer,
+cite, and where it fits, ask the one next question that moves the brief
+forward. One question per reply, not three.
+
 Never claim to be human. If asked, say you are an assistant built on the
 site's own published content.
 `.trim();
@@ -131,6 +141,29 @@ function forbiddenListForSelfTest(): string {
 }
 
 /**
+ * Self-test lever for scripts/check-assistant-links.mjs, the same shape and the
+ * same hard NODE_ENV gate as `forbiddenListForSelfTest()` above.
+ *
+ * The defect check-assistant-links exists to catch needs the model to cite in
+ * markdown link syntax, which it does unprompted (that is the whole reason the
+ * defect reached a live conversation) but not on demand and not every turn. An
+ * unreliable input makes an unreliable red, and a gate nobody has watched fail
+ * on the real defect is not a gate. This asks for the input directly, so the
+ * old `linkifyCitations` can be put back and watched producing the broken href
+ * on the real path, rather than a synthetic string being asserted about.
+ */
+function citationStyleForSelfTest(): string {
+  const markdownCite =
+    process.env.NODE_ENV !== "production" &&
+    process.env.ASSISTANT_SELF_TEST_MARKDOWN_CITE === "true";
+  return markdownCite
+    ? "\n\nSELF-TEST OVERRIDE: cite pages as markdown links, in the form " +
+        "[a short description of the page](/the/path), rather than as bare paths. " +
+        "Include at least one such citation in every reply."
+    : "";
+}
+
+/**
  * Assembled once per request (the corpus itself is process-cached — see
  * corpus.ts). The caller applies `cache_control` to this whole block; the
  * 5-minute ephemeral TTL and 1,024-token minimum are Anthropic's, verified
@@ -139,5 +172,5 @@ function forbiddenListForSelfTest(): string {
  * clears the minimum by a wide margin.
  */
 export function buildSystemPrompt(): string {
-  return `${CONVERSATION_DESIGN}\n\n${forbiddenListForSelfTest()}\n\n# Corpus — the only pages you may discuss or cite\n\n${corpusToPromptBlock()}`;
+  return `${CONVERSATION_DESIGN}${citationStyleForSelfTest()}\n\n${forbiddenListForSelfTest()}\n\n# Corpus — the only pages you may discuss or cite\n\n${corpusToPromptBlock()}`;
 }

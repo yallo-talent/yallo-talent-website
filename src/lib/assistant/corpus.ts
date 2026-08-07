@@ -228,7 +228,15 @@ function buildResearchDocs(published: Set<string>): CorpusDocument[] {
     .map(([path, piece]) => ({
       path,
       title: piece.title,
-      shortName: piece.cardTitle,
+      /* `linkLabel`, not `shortName`. This field was written as `shortName` and
+         nothing consumed it: the interface has no such property, and TypeScript
+         does not excess-property-check a `.map()` callback's inferred return, so
+         it compiled and did nothing for as long as it existed. Every research
+         citation therefore linked under the piece's full headline. Round 19's
+         red-proof run of check:assistant-links caught it in the output, e.g.
+         "[The corridor runs both ways: enterprise platform talent across the UK,
+         Saudi Arabia and the UAE]" as a link label mid-sentence. */
+      linkLabel: piece.cardTitle,
       summary: piece.standfirst,
       facts: [
         piece.conclusion,
@@ -243,7 +251,7 @@ function buildResearchDocs(published: Set<string>): CorpusDocument[] {
         {
           path: synthesisPath,
           title: synthesisTitle,
-          shortName: "the cross-market synthesis",
+          linkLabel: "the cross-market synthesis",
           summary: synthesisStandfirst,
           facts: synthesisSummary,
         },
@@ -293,11 +301,14 @@ function buildInsightDocs(published: Set<string>): CorpusDocument[] {
 }
 
 /**
- * The five named leaders, strictly name/role/link. §5's forbidden list bans
- * characterisation beyond that for four of them — `bio` is only ever present
- * on Sumeet's own entry (already published on /why-yallo), so passing the
- * field straight through, absent or not, is the enforcement: nothing is added
- * here that `teamIndex` does not already carry.
+ * The five named leaders, strictly the fields `teamIndex` carries: name, role,
+ * link, bio. All five carry a ratified bio as of round 19 §4.2, which is why
+ * the forbidden list's rule 4 now reads "exactly what the corpus states, and
+ * nothing further" rather than naming Sumeet as the one exception. The
+ * enforcement is unchanged and is the point: this function adds nothing to
+ * `teamIndex`, so the assistant can say no more about a real person than the
+ * data layer does, and a bio that is not ratified into `teamIndex` cannot
+ * reach a conversation.
  */
 function buildLeadershipDoc(published: Set<string>): CorpusDocument | null {
   if (!published.has("/leadership")) return null;

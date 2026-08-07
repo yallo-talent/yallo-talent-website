@@ -201,6 +201,31 @@
   font-weight: var(--fw-strong);
 }
 
+/* Round 19 §3.1. Until now only `.disclosure a` was styled, so a cited page
+   inside a message body inherited body colour and body decoration: it was a
+   link that looked like a sentence, and Sumeet reported exactly that. Colour
+   ALONE would not fix it (SC 1.4.1 — colour is not the only means of conveying
+   information), so the underline is the primary signal and the accent is the
+   secondary one. --accent-label is the accent token Layer 1 declares at 4.5:1
+   or better, and it is the one that holds in both themes; the composite is
+   measured against .assistantMsg's own --ground-2 by check-rendered-contrast,
+   not assumed from the token's declared ratio. */
+.assistantMsg a {
+  color: var(--accent-label);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.assistantMsg a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Matches .input:focus-visible, which is this panel's established standard. */
+.assistantMsg a:focus-visible {
+  outline: 2px solid var(--boundary);
+  outline-offset: 1px;
+}
+
 .draft {
   margin: 0 16px 12px;
   padding: 12px;

@@ -12,6 +12,9 @@ import type { BriefFormValues } from "@/lib/schemas";
    nothing under scripts/ imports src/lib today. */
 const CITATION_PATTERN = /(?<=^|[\s("'])\/[a-z][a-z0-9/-]*/g;
 
+/** A markdown link the MODEL wrote, which this function must not re-wrap. */
+const MARKDOWN_LINK = /\[([^\]]*)\]\(([^)]*)\)/g;
+
 /**
  * Turns a bare citation ("see /platforms/sap") into a real markdown link
  * with the page's own title, using the same corpus the model was grounded
@@ -19,15 +22,56 @@ const CITATION_PATTERN = /(?<=^|[\s("'])\/[a-z][a-z0-9/-]*/g;
  * actually recognises get linked; anything else (a citation the model got
  * wrong, or plain text that merely looks like a path) is left as-is rather
  * than linked to a guess.
+ *
+ * WHY THIS SPLITS THE TEXT FIRST, round 19 §3.2. The prompt asks the model to
+ * cite in plain text, and a plain `.replace()` over the whole reply is correct
+ * for exactly as long as it does. Sonnet writes markdown unprompted, and when
+ * it wrote `[our Managed Delivery page](/managed-delivery)` the citation
+ * pattern matched the path INSIDE the target it had already written, because
+ * `(` is in its lookbehind class. The result was
+ * `[our Managed Delivery page]([Managed Delivery](/managed-delivery))`, which
+ * renderAssistantText draws as `<a href="[Managed Delivery](/managed-delivery">`
+ * — a relative URL, so clicking it left the site's own route table and served a
+ * 404, taking the panel's React state with it. That is the defect Sumeet hit.
+ *
+ * check-assistant-grounding was green throughout, because it extracts path
+ * TOKENS from the reply text and the token it extracted was the real, published
+ * `/managed-delivery`. The gate was asserting something true about a string
+ * nobody renders. check-assistant-links now asserts the rendered href instead.
+ *
+ * So: markdown links the model wrote are handled as links, not as text. Their
+ * target is checked against the corpus and the link is UNWRAPPED to plain text
+ * when it is not a corpus path — a link the corpus cannot vouch for is the one
+ * thing this module has always refused to emit, and a target the model invented
+ * is exactly that case.
  */
 function linkifyCitations(text: string): string {
   const titleByPath = new Map(
     buildAssistantCorpus().map((doc) => [doc.path, doc.linkLabel ?? doc.title]),
   );
-  return text.replace(CITATION_PATTERN, (path) => {
-    const title = titleByPath.get(path);
-    return title ? `[${title}](${path})` : path;
-  });
+
+  const linkPlain = (plain: string): string =>
+    plain.replace(CITATION_PATTERN, (path) => {
+      const title = titleByPath.get(path);
+      return title ? `[${title}](${path})` : path;
+    });
+
+  let out = "";
+  let cursor = 0;
+  MARKDOWN_LINK.lastIndex = 0;
+  for (
+    let match = MARKDOWN_LINK.exec(text);
+    match !== null;
+    match = MARKDOWN_LINK.exec(text)
+  ) {
+    const [whole, label, target] = match;
+    out += linkPlain(text.slice(cursor, match.index));
+    /* The label is prose and may legitimately name a path; it is never a link
+       target, so it is left exactly as the model wrote it. */
+    out += titleByPath.has(target) ? whole : `${label} (${target})`;
+    cursor = match.index + whole.length;
+  }
+  return out + linkPlain(text.slice(cursor));
 }
 
 /**
