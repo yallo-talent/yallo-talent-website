@@ -76,6 +76,14 @@ jobs:
       - name: Type scale
         run: pnpm check:type
 
+      # Round 21 §5. The legacy redirect map points at articles by slug, and an
+      # entry naming an unpublished article sends a 301 into a 404 — which hands
+      # the old URL's authority to a dead page. The map resolves its destinations
+      # through this manifest instead, so publishing an article is the whole
+      # action. This fails when the manifest and the content tree disagree.
+      - name: Published manifest matches the content tree
+        run: pnpm check:published-manifest
+
       - name: Build
         run: pnpm build
 
@@ -266,6 +274,25 @@ jobs:
       # destination, then reverting.
       - name: No internal link resolves through a redirect
         run: node scripts/check-no-redirect-hops.mjs http://localhost:3100
+
+      # Round 21 §5, the cutover blocker's gate, and the mirror image of the
+      # step above: that one proves the LIVE estate does not detour, this one
+      # proves the LEGACY estate arrives. Game plan §7's map, walked against the
+      # running server — 301, right destination, one hop, and a destination that
+      # actually resolves — with each entry probed bare AND in the trailing-slash
+      # form WordPress published, which is the form that was broken.
+      #
+      # It found three things on first run, none of them theoretical: every
+      # legacy URL took two hops (Next normalises the trailing slash before
+      # `redirects()` is consulted, so the map moved to the middleware), the
+      # status was 308 where §7 specifies 301, and ten destinations 404'd
+      # because the articles behind them are not published.
+      #
+      # Proved red twice, real exit 1 each: the middleware's legacy branch
+      # stubbed out (all 295 probes failed) and a destination mistyped (69 failed
+      # on the destination-resolves assertion).
+      - name: Legacy URLs reach their target in one 301 hop
+        run: node scripts/check-redirects.mjs http://localhost:3100
 
       # Round 17 §2.2: the four published figures never appear without one dated
       # attribution, and every surface carries the SAME one. Proved red on real

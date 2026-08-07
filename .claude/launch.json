@@ -14,6 +14,12 @@
       "port": 3115
     },
     {
+      "name": "round-dev",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "pnpm dev -p 3115"],
+      "port": 3115
+    },
+    {
       "name": "session-a",
       "runtimeExecutable": "sh",
       "runtimeArgs": ["-c", "NEXT_DIST_DIR=.next-a pnpm dev -p 3001"],

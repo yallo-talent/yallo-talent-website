@@ -1,6 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { canonicalPath, legacyLookup, resolveWith } from "@/data/redirects.mjs";
 import { ADMIN_BASE } from "@/lib/admin/config";
 import { isProductionHost } from "@/lib/seo";
+
+/**
+ * Built once per process, not per request: the table is ~250 entries and the
+ * per-request cost is a Map lookup.
+ */
+const LEGACY = legacyLookup();
 
 /**
  * Header-level crawler lockdown, environment-driven, same switch as
@@ -14,6 +21,47 @@ import { isProductionHost } from "@/lib/seo";
  * placeholder host cannot go indexable by a page forgetting to opt in.
  */
 export function middleware(request: NextRequest) {
+  const { pathname, search } = request.nextUrl;
+
+  /**
+   * THE LEGACY MAP, APPLIED HERE AND NOT IN next.config.ts — deliberately, and
+   * this is the round 21 finding.
+   *
+   * The map used to live in `redirects()`. Measured on 7 Aug 2026, every legacy
+   * URL in its published form took TWO hops: WordPress served everything with a
+   * trailing slash, and Next normalises the slash with its own 308 BEFORE any
+   * entry in `redirects()` is consulted. `/about-us/` went to `/about-us`, and
+   * only then to `/about`. Middleware sits after that normalisation too, so the
+   * only way to answer a published legacy URL in one hop is to switch the
+   * normalisation off (`skipTrailingSlashRedirect` in next.config.ts) and own it
+   * here — canonicalise the path first, then look it up, then answer once.
+   *
+   * A chain costs retrieval eligibility with the real-time crawlers, not just
+   * crawl budget (discoverability scope §8), and the whole point of the map is
+   * that the authority arrives.
+   *
+   * 301, not Next's 308: game plan §7 and round 21 §5 both specify 301, and
+   * these are indexed GET pages moving once, at cutover.
+   */
+  const legacy = resolveWith(LEGACY, pathname, search);
+  if (legacy) {
+    return NextResponse.redirect(new URL(legacy, request.url), 301);
+  }
+
+  /**
+   * Trailing-slash and double-slash canonicalisation, which Next is no longer
+   * doing for us. 308 here, not 301: this rule applies to every route including
+   * the API surface, and 308 preserves the request method where 301 rewrites it
+   * to GET. That is exactly why Next's own normalisation is a 308.
+   */
+  const canonical = canonicalPath(pathname);
+  if (canonical !== pathname) {
+    return NextResponse.redirect(
+      new URL(`${canonical}${search}`, request.url),
+      308,
+    );
+  }
+
   const response = NextResponse.next();
   /**
    * The admin cockpit is noindex on EVERY host, production included, and that is
