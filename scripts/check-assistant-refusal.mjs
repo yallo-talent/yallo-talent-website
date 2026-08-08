@@ -160,7 +160,17 @@ async function main() {
       if (pattern.test(text)) {
         failures.push({
           fixture: fixture.name,
-          reason: `reply matched forbidden pattern ${pattern}`,
+          /* `mustNotMatch` holds RegExps and plain `{ test: fn }` matchers side
+             by side. A RegExp stringifies to something readable; the object
+             stringifies to "[object Object]", so a real failure named nothing
+             and the reply had to be re-read by hand to guess which of two
+             matchers fired. Round 22 hit exactly that. Name the function when
+             there is no `source` to print. */
+          reason: `reply matched forbidden pattern ${
+            pattern instanceof RegExp
+              ? String(pattern)
+              : (pattern.test?.name ?? "unnamed custom matcher")
+          }`,
           text,
         });
       }

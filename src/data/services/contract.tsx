@@ -104,7 +104,7 @@ export const contractData: ServicePageData = {
   faqs: [
     {
       q: "How quickly can you actually mobilise a contractor?",
-      a: "For most enterprise stacks (SAP, Oracle, Microsoft, Salesforce, Blue Yonder, Workday) we return a shortlist within 72 hours of the calibration call. Once you interview and select, we handle rate negotiation, contract issuance, and coordinate notice periods: most contractors are on-site within one to two weeks.",
+      a: "For most enterprise estates (SAP, Oracle, Salesforce, Microsoft, Azure, AWS, GCP, data platforms, AI talent and the open-source stack) we return a shortlist within 72 hours of the calibration call. Once you interview and select, we handle rest of the logistics: most contractors are on-site within one to two weeks.",
     },
     {
       q: "What screening do you do before I see a CV?",
@@ -115,12 +115,12 @@ export const contractData: ServicePageData = {
       a: "Active benches across the UK, the Middle East (UAE and Saudi Arabia primarily), and India (Bengaluru, Pune, Mumbai). We can also place remote contractors into your programme where the engagement model supports it.",
     },
     {
-      q: "How do you handle rate cards and margins?",
-      a: "Transparent day rate on your invoice, with our margin disclosed up-front. No inflation between candidate rate and client rate. You see the whole stack.",
+      q: "How do you handle rate cards?",
+      a: "One rate card, agreed before we start, and one day rate on your invoice. The card is banded by experience level, skill set, assessed quality and onsite or offshore location, and it moves with supply and demand for the skill you are hiring. The rate you agree is the rate you are invoiced.",
     },
     {
       q: "What if the contractor doesn't work out?",
-      a: "We stand behind every placement. If a contractor isn't performing, we run a replacement search on the same 72-hour SLA at no additional fee.",
+      a: "We stand behind every placement. If a contractor isn't performing, we give you replacement as quickly as possible without any additional fee.",
     },
     {
       q: "Do you handle IR35 for UK placements?",

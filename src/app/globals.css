@@ -223,6 +223,19 @@
   --id-healthcare-d: var(--amb-teal-d);
   --id-telco-l: var(--amb-violet-l);
   --id-telco-d: var(--amb-violet-d);
+  /* Education, the seventh sector, wired on report from Sumeet and then
+     measured: `/industries/education` declared `data-identity="education"` and
+     nothing answered it, so `--id` resolved empty and the page fell back to the
+     positional six-hue rhythm this block exists to replace. Three hues across
+     its sections — indigo, teal and plum — against one on every other industry.
+     Same omission as /ai-talent's, one taxonomy along.
+     Mulberry, on the reasoning the ai-talent row states: it is the only hue no
+     other INDUSTRY holds, the other six taking plum, indigo, claret, harbour,
+     teal and violet. It is /ai-talent's and Informatica's too, and reuse across
+     taxonomies is what this palette runs on, since a visitor is inside one
+     family at a time. */
+  --id-education-l: var(--amb-mulberry-l);
+  --id-education-d: var(--amb-mulberry-d);
 
   --amb-plum-d: #b45c8e;
   --amb-violet-d: #7a6fb8;
@@ -1197,6 +1210,12 @@ button {
 :root[data-theme="dark"] [data-identity="ai-talent"] {
   --id: var(--id-ai-talent-d);
 }
+:root[data-theme] [data-identity="education"] {
+  --id: var(--id-education-l);
+}
+:root[data-theme="dark"] [data-identity="education"] {
+  --id: var(--id-education-d);
+}
 
 .amb-1 {
   --amb: var(--amb-1);
@@ -1295,6 +1314,10 @@ button {
 :root[data-theme] [data-identity="ai-talent"] .band-dark,
 :root[data-theme] [data-identity="ai-talent"].band-dark {
   --amb: var(--id-ai-talent-d);
+}
+:root[data-theme] [data-identity="education"] .band-dark,
+:root[data-theme] [data-identity="education"].band-dark {
+  --amb: var(--id-education-d);
 }
 
 .amb-2 {

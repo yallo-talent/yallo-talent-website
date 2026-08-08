@@ -332,10 +332,15 @@ function standaloneEntries() {
     "Nearest talent equivalent. TS/EA consulting is out of scope for Yallo Talent.",
   );
   add("/tsa-as-a-service", "/managed-delivery", "Typo variant published live.");
+  /* Round 22 §1 reverses round 21 §5. Game plan §8 row 7 names /intelligence
+     explicitly; the §7 table row saying /insights was the contradicting entry,
+     and the wrong one was propagated. Editorially the same answer: legacy white
+     papers are documents, the live document family sits under /intelligence,
+     and /insights is an empty hub at cutover. */
   add(
     "/white-papers",
-    "/insights",
-    "Folds into the knowledge hub, per game plan §7 and round 21 §5.",
+    "/intelligence",
+    "The legacy document family lands on the live one, per game plan §8 row 7.",
   );
   add(
     "/leadership-team",

@@ -360,6 +360,71 @@ for (const slug of indexSlugs) {
 notes.push(`${indexSlugs.length} disciplines in the index, all resolvable.`);
 
 /* ---------------------------------------------------------------------------
+   Rule 4a2. Every sector that renders `data-identity` has an identity row.
+
+   Reported by Sumeet on 8 August 2026 and then measured: `/industries/education`
+   declared `data-identity="education"` and globals.css answered nothing, so
+   `--id` resolved EMPTY and the page fell back to the positional six-hue rhythm
+   that the identity block exists to replace. Three hues across its sections
+   (indigo, teal, plum) where every other industry carries one. Silent, because
+   an unresolved custom property is not an error anywhere: not in the build, not
+   in TypeScript, not in any gate. It renders, in the wrong colours.
+
+   This is the same omission /ai-talent had one taxonomy along, which is why it
+   is checked rather than fixed and forgotten. Four sites have to exist for a
+   slug to hold one hue, and the fault is any one of them missing:
+
+     --id-<slug>-l / -d          the token pair
+     [data-identity="<slug>"]    the light rule and the dark rule
+     ... .band-dark              the permanently-dark override
+
+   Derived from `sectorRegistry`, which is the canonical list, so adding a
+   sector adds its assertions.
+   --------------------------------------------------------------------------- */
+const globalsSrc = readFileSync(join("src", "app", "globals.css"), "utf8");
+const registrySectorSrc = readFileSync(
+  join("src", "data", "l1", "registry.ts"),
+  "utf8",
+);
+const sectorBlock = registrySectorSrc.slice(
+  registrySectorSrc.indexOf("export const sectorRegistry"),
+);
+const sectorSlugs = [
+  ...sectorBlock.matchAll(/^\s{2}([a-z][a-z-]*):\s*\w+Data,/gm),
+].map((m) => m[1]);
+
+if (sectorSlugs.length === 0) {
+  failures.push(
+    "scripts/check-taxonomy.mjs  parsed zero sectors out of src/data/l1/registry.ts.\n" +
+      "      The shape it reads has moved. A gate that enumerates nothing passes for the wrong reason.",
+  );
+}
+
+for (const slug of sectorSlugs) {
+  const required = [
+    [`--id-${slug}-l:`, "light token"],
+    [`--id-${slug}-d:`, "dark token"],
+    [`:root[data-theme] [data-identity="${slug}"] {`, "light identity rule"],
+    [
+      `:root[data-theme="dark"] [data-identity="${slug}"] {`,
+      "dark identity rule",
+    ],
+    [`[data-identity="${slug}"].band-dark`, "band-dark override"],
+  ];
+  const missing = required
+    .filter(([needle]) => !globalsSrc.includes(needle))
+    .map(([, label]) => label);
+  if (missing.length > 0) {
+    failures.push(
+      `src/app/globals.css  sector "${slug}" is missing its ${missing.join(", ")}.\n` +
+        `      /industries/${slug} sets data-identity="${slug}"; with any of these absent --id resolves\n` +
+        `      empty and the page falls back to a different hue per section instead of one.`,
+    );
+  }
+}
+notes.push(`${sectorSlugs.length} sectors, each pinned to one identity hue.`);
+
+/* ---------------------------------------------------------------------------
    Rule 4b. A case-study slug in scripts/ must come from order.yaml, not a
    hand-typed literal.
 

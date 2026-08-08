@@ -29,7 +29,7 @@ const values = [
   },
   {
     title: "Transparent economics",
-    copy: "Day rate on the invoice, margin disclosed. No hidden layers between the specialist and your programme.",
+    copy: "One rate card, banded by experience, skill set, quality and location. The rate you agree is the rate you are invoiced, with no layers added between the specialist and your programme.",
   },
 ];
 

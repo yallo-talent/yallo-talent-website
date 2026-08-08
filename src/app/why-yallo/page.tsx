@@ -127,10 +127,15 @@ const comparison = [
     axis: "Commercial transparency",
     volume: "The margin sits between the candidate's rate and your invoice.",
     consultancy: "A blended day rate, with the mix inside it.",
-    /* Published: /contract's FAQ, "transparent day rate on your invoice, with our
-       margin disclosed up-front", and commitment.ts's "Published rate card". */
+    /* Published: /contract's FAQ, "one rate card, agreed before we start, and one
+       day rate on your invoice", and commitment.ts's "Published rate card".
+       Corrected on Sumeet's instruction, 8 August 2026: the site claimed the
+       margin was disclosed up front and it is not. What is true is the rate card
+       itself, banded and agreed before the work starts. The row still separates,
+       because the volume column's spread is negotiated case by case and this one
+       is not. */
     yallo:
-      "Day rate on your invoice, margin disclosed up front, against a published rate card.",
+      "A rate card agreed up front, banded by experience, skill set, quality and location, and one day rate on your invoice.",
   },
   {
     axis: "When a placement does not work",

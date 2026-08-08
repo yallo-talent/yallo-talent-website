@@ -1,7 +1,7 @@
 # Cutover readiness — yallo.co
 
-**Re-measured 8 August 2026, round 21. Gate table in §1a; round 20's table is
-kept below it as §1b for comparison.**
+**Re-measured 8 August 2026, round 22. Gate table in §1; round 21's is kept as
+§1a and round 20's as §1b, for comparison.**
 
 **Measured 7 August 2026, round 20. HEAD `15c6b99`.**
 
@@ -11,6 +11,82 @@ aspiration, and nothing here is inherited from an earlier round's report. Where
 something was not measured, it says so rather than being omitted.
 
 This is the artefact the go-live decision is taken on.
+
+---
+
+## 1. Round 22 gate table — every exit code below was watched
+
+Run 8 August 2026 against a production build (`pnpm build`, then `next start` on
+3115) at the round's final source state, after the last file was touched. All 38
+`check:*` gates plus typecheck and both linters. Browser gates run serially, and
+`check:visual` runs LAST on its own fresh server.
+
+**36 of 38 gates green. Three non-zero exits, none of them a defect in the site,
+and each named with its owner below.**
+
+| Gate | Exit | Note |
+|---|---|---|
+| `pnpm tsc --noEmit` | **0** | |
+| `pnpm biome check .` | **0** | what CI lints with |
+| `check:terms` | **0** | |
+| `check:contrast` | **0** | source tokens |
+| `check:contrast-render` | **0** | **14 routes** x 2 themes, 524 text runs — `/insights` added this round |
+| `check:type` | **0** | |
+| `check:type-render` | **0** | |
+| `check:a11y` | **0** | |
+| `check:motion` | **0** | reduced motion honoured on every animated route |
+| `check:orbs` | **0** | |
+| `check:interaction` | **0** | |
+| `check:reflow` | **0** | 174 routes x 2 themes at 320 and 360px, no horizontal overflow |
+| `check:taxonomy` | **0** | **new rule 4a2 this round**, 7 sectors each pinned to one identity hue |
+| `check:yallo-case` | **0** | |
+| `check:estate` | **0** | |
+| `check:marks` | **0** | |
+| `check:crawlers` | **0** | |
+| `check:robots` | **0** | |
+| `check:cs-excerpts` | **0** | |
+| `check:prose` | **0** | |
+| `check:gate-coverage` | **0** | |
+| `check:no-redirects` | **0** | |
+| `check:redirects` | **0** | includes the `/white-papers` row changed this round |
+| `check:nav-promise` | **0** | |
+| `check:assistant-grounding` | **0** | |
+| `check:assistant-links` | **0** | ran here; still absent from CI, see §6 |
+| `check:assistant-terms` | **0** | |
+| `check:assistant-bundle` | **0** | |
+| `check:assistant-a11y` | **0** | |
+| `check:cta-collision` | **0** | |
+| `check:research-dataset` | **0** | |
+| `check:metrics` | **0** | |
+| `check:research-pdf` | **0** | |
+| `check:asset-case` | **0** | |
+| `check:metrics-attribution` | **0** | |
+| `check:admin-isolation` | **0** | |
+| `check:write-path` | **0** | |
+| `check:published-manifest` | **0** | |
+| `check:visual` | **0** | last, own fresh server |
+| `check:assistant-refusal` | **1 then 0** | live model, non-deterministic, as round 21 recorded. First run: one fixture, `competitor comparison`, tripped the affirmative-guarantee matcher. Re-run: all 7 fixtures held. Reported with the caveat rather than as a clean pass |
+| **`check:admin-render`** | **1 — CANNOT RUN** | Needs `ADMIN_TEST_EMAIL` and `ADMIN_TEST_PASSWORD`. Every cockpit pane redirects an anonymous caller to sign-in, and the gate fails rather than skips by design. No session enters a credential, so this is **blocked, not failing**. **Owner: Sumeet** — it is the same gate as the Phase 0.3 watched publish and closes with it |
+| **`check:phase8`** | **1 — FAILS** | Unchanged in kind. Lighthouse Mobile 90+ misses **6 of 8** (was 7 of 8), LCP misses 8 of 8, CLS and TBT pass 8 of 8. Ruled post-cutover on field data, runbook Phase 3.7. **Owner: Sumeet**. §6 |
+| **`npx eslint src scripts`** | **1 — FAILS** | Unchanged and pre-existing; CI lints with Biome, which is 0. §6 |
+
+### Two invocation faults cost time this round, and they are the mirror of round 21's
+
+Round 21 recorded that `check:cta-collision` takes its base URL as **argv** and
+silently targets 3100 when given `PORT`. The inverse is also true and was learned
+the hard way: **`check:motion` and `check:reflow` read `PORT` only.** Given
+`BASE_URL` or a positional URL they ignore both, target 3000, get
+`ERR_CONNECTION_REFUSED`, and read as site regressions. Both were green at
+`PORT=3115`. The conventions are per-gate and there are at least four of them:
+`PORT`, `BASE_URL`, positional argv, and `--base`.
+
+A second method fault, worth more than the first: **killing a gate loop's child
+processes does not kill the loop.** A first pass was stopped with `pkill` on the
+gate processes, the shell loop marched on to the next gate, and two suites then
+ran concurrently against one server. That produced three reds
+(`check:motion`, `check:reflow`, `check:admin-render`) which are exactly the
+starvation signature round 20 documented. The recorded table above is a single
+clean pass on a fresh server.
 
 ---
 
@@ -344,6 +420,10 @@ trusted.
 | The 42 prose figures | R-A9: these are Sumeet's. `check:metrics` reports them, never rewrites them |
 | Credential-backup directory deletion | Outstanding |
 | Go-live date | Outstanding |
+| **One watched auto-merge publish** (round 22) | Runbook Phase 0.3. Sign in at `/admin`, reorder two case studies, publish, watch the PR open and merge itself, reorder back. Requires the admin password, so no session can do it. Closing this also closes `check:admin-render`, which needs `ADMIN_TEST_EMAIL` and `ADMIN_TEST_PASSWORD` for the same reason |
+| **The Cloudflare double-slash edge rule** (round 22) | Runbook Phase 2 step 4b, verified at Phase 3 step 1. `/industries/retail//` takes two hops in the app and cannot take one: Next collapses duplicate slashes before app code runs. It reaches the right page meanwhile |
+| `/eor` FAQ margin wording | Round 22 corrected three margin-disclosure claims and left this one, because it discloses a **fee** rather than a margin. One line in `src/data/services/eor.tsx` if you read it differently |
+| Vendor balance across the site | Your note that the site over-indexes on application vendors and under-represents data, digital, cloud and open source. `/contract`'s FAQ 01 was changed on your instruction; the sweep across other surfaces is unscoped |
 
 ### Raphy (game plan §12)
 
@@ -429,6 +509,24 @@ MECHANISM, not the editorial question of whether `/about-us` *should* go to
 `/about`. Answering that means review against game plan §7, and the table is now
 one readable file for exactly that purpose.
 
+**One destination changed in round 22, and it is the editorial question above
+being answered rather than the mechanism moving.** `/white-papers` and
+`/white-papers/` now land on **`/intelligence`**, not `/insights`. Game plan §8
+row 7 names `/intelligence` explicitly; the §7 table row saying `/insights` was
+the contradicting entry, and round 21 propagated the wrong one. Legacy white
+papers are documents and the live document family sits under `/intelligence`,
+where `/insights` has no published article at cutover. Measured after the change,
+on a production build at port 3115:
+
+| Legacy URL | Status | Location | Target status |
+|---|---|---|---|
+| `/white-papers` | 301 | `/intelligence` | 200 |
+| `/white-papers/` | 301 | `/intelligence` | 200 |
+
+One hop each. `check:redirects` re-run at exit **0** across all 301 probes, each
+walked bare and in its published trailing-slash form. Nothing else in the table
+changed.
+
 **One declared exception, walked rather than skipped.**
 `/industries/retail//` still resolves in two hops
 (`//` → `/industries/retail/` → `/industries/retail`). Next collapses duplicate
@@ -513,14 +611,101 @@ the first of Sumeet's manual actions.
 
 ### Runbook cross-reference
 
-Cutover is Sumeet-executed against **`CUTOVER-RUNBOOK.md`**.
+Cutover is Sumeet-executed against **`docs/status/CUTOVER-RUNBOOK.md`**.
 
-**That file does not exist in this repository.** The whole tree was searched: the
-only file naming it is `docs/design/context-round21-scope.md`. It was not
-authored here because §7 closes scope and states that cutover items belong to
-the runbook rather than to this round. **Owner: Sumeet** — either it lives
-outside the repo, or it still needs writing, and the go-live decision rests on
-it either way.
+**Round 22: the file is now in the repository and the cross-reference resolves.**
+v1.1, authored Chat-side and saved by Sumeet, committed at this round's ground
+(`b05ef74`). Round 21 recorded its absence as an open item with Sumeet as owner;
+that item is closed. Phase 0.10 of the runbook names the database migration,
+Phase 2 step 4b names the Cloudflare double-slash rule, and Phase 3 step 1 names
+`/white-papers/` landing on `/intelligence` — all three now match what this
+report measures below.
+
+---
+
+## 6c. Round 22 — closure before cutover
+
+Four items, measured 8 August 2026 on a production build (`pnpm build`, then
+`next start` on 3115). Two things round 21 recorded as not-done are now done, and
+this section is where the earlier claims are reversed rather than quietly left
+standing.
+
+### The origin migration has run against the live database
+
+`0003_transcript_origin.sql` applied with `pnpm db:migrate`, exit **0**,
+`Applied 1 migration(s).` Verified in three steps rather than one, because
+"the migration ran" and "the column carries data" are different claims:
+
+| Claim | How it was checked | Result |
+|---|---|---|
+| The column exists | `information_schema.columns` on `assistant_transcripts` | `origin_path`, `text`, nullable **YES** |
+| The migration is recorded | `select * from _migrations` | `0003_transcript_origin.sql`, applied 2026-08-08 |
+| A panel conversation writes it | Panel opened on `/platforms/sap` on the production build, one question asked, reply received, then the newest row read back | `origin_path` = **`/platforms/sap`** |
+
+Pre-migration rows read `null`, which is the design: 161 of 162 rows have no
+origin and never will, and the cockpit renders those as "before 8 August 2026"
+rather than as blank. The single row carrying an origin is the verification
+conversation described above, not a visitor.
+
+**The silent-loss window is closed.** Round 21 measured the failure mode as a
+transcript write that drops its origin when the code expects a column the
+database does not have. The column now exists ahead of the deploy rather than
+behind it. The runbook's standing rule is unchanged and Phase 0.10 still carries
+it: migrations run before or with the deploy, never after.
+
+### The empty knowledge hub
+
+Measured before anything was written. With all 21 legacy insight articles
+unpublished, `getPublishedInsights()` returns zero and `/insights` rendered
+exactly **two** sections: the hero, then the brief CTA. Nothing was broken. But
+the hero promises "articles, research and white papers", none followed, and there
+was no route from the page to the research that does exist.
+
+Shipped: one paragraph and one link, in a third section between the two, gated on
+`all.length === 0` so it removes itself the moment an article publishes. No
+placeholder cards, no coming-soon device, no invented article stubs.
+
+`/insights` was on no contrast guard's list, so it joined
+`check-rendered-contrast`'s routes in the same change. Measured there rather than
+argued about: **14 routes x 2 themes, 524 text runs, exit 0**, up from 13 routes
+and 512 runs. Every run on the new section clears AA in both themes.
+
+### Two adjacent defects, reported by Sumeet mid-round and fixed
+
+Both were measured before being diagnosed, and both were classes rather than
+instances.
+
+| Defect | Measured | Fix |
+|---|---|---|
+| `/industries/education` rendered mixed colours across its sections | The page sets `data-identity="education"` and `globals.css` answered nothing, so `--id` resolved **empty** and the page fell back to the positional six-hue rhythm the identity block exists to replace: **three** hues across its sections (indigo, teal, plum) against one on every other industry | The four missing rows in `globals.css`: the `--id-education-l/-d` token pair, the light and dark identity rules, and the `.band-dark` override. Mulberry, on the reasoning the `/ai-talent` row already states: the only hue no other industry holds. Re-measured: **one** hue, `#8e62ad` light and `#aa7cc4` dark, with `/industries/retail` unchanged |
+| The site claimed the margin was disclosed up front, and it is not | Three claim sites: `/contract`'s rate-card FAQ, `/about`'s "Transparent economics" card, and `/why-yallo`'s commercial-transparency comparison row | Rewritten to what is true: one rate card agreed before the work starts, banded by experience level, skill set, assessed quality and onsite or offshore location, and moving with supply and demand for the skill. The `/why-yallo` row still separates, because the volume column's spread is negotiated case by case and this one is not |
+
+The identity omission is now gated. `check:taxonomy` rule 4a2 derives the sector
+list from `sectorRegistry` and asserts all five sites exist for each of the
+seven, so the next sector cannot ship hueless. Red-proven by deleting
+`education`'s light identity rule: exit **1**, naming the missing row; exit **0**
+restored. An unresolved custom property is an error nowhere else, not in the
+build, not in TypeScript, not in any other gate.
+
+**One margin claim was left standing, and it is named here rather than changed.**
+`/eor`'s FAQ says "Monthly service fee per employee, disclosed up-front... no
+margin hidden inside the CTC." That discloses a **fee**, not a margin, and
+nothing Sumeet stated contradicts it. **Owner: Sumeet** — it is one line in
+`src/data/services/eor.tsx` if he reads it differently.
+
+**A broader observation, recorded for the next round, not acted on.** Sumeet's
+note that the site over-indexes on application vendors and under-represents data,
+digital, cloud and open source is a positioning sweep across many surfaces, not a
+copy tweak. `/contract`'s FAQ 01 was changed on his instruction this round; the
+same file's SEO description and the equivalent lists on other service pages were
+not. **Owner: Sumeet** to scope.
+
+### The two items that stay manual
+
+| Item | Why it cannot be done here | Owner |
+|---|---|---|
+| One watched auto-merge publish | It requires signing into `/admin` with the admin password. No session enters a credential, throwaway or not. Runbook Phase 0.3 | **Sumeet** |
+| The double-slash edge rule | `/industries/retail//` resolves in two hops and cannot resolve in one inside the app: Next collapses duplicate slashes before any app code runs. It reaches the right page. Runbook Phase 2 step 4b sets the Cloudflare rule; Phase 3 step 1 verifies it | **Sumeet**, with the DNS change |
 
 ---
 
@@ -542,9 +727,17 @@ been measured. It does not say `check:assistant-links` is protecting the
 assistant in CI, because it is not running there. Each of those is a specific
 gap with a specific owner above.
 
-Round 21 adds three more it does not say. It does not say the redirect map is
+Round 21 adds one more it does not say. It does not say the redirect map is
 editorially correct, only that the server applies it in one 301 hop to a
 destination that resolves — the difference is set out in §6b and is the reason
-the table is one readable file. It does not say the origin migration has run
-against any database, because it has not. And it does not say the runbook this
-cutover is executed against exists, because it is not in this repository.
+the table is one readable file.
+
+Round 21's other two are now closed and the claims reversed, in §6c: the origin
+migration **has** run against the live database, and the runbook **is** in this
+repository.
+
+Round 22 adds two of its own. It does not say the site is fast on its production
+host, which §6 already owned and Phase 3.7 of the runbook still carries. And it
+does not say the double-slash URL resolves in one hop, because in the app it does
+not and cannot: that is an edge rule at cutover, **owner Sumeet**, named in §6b
+and in runbook Phase 2 step 4b.

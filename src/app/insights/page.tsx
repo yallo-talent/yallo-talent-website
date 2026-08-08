@@ -66,6 +66,36 @@ export default function InsightsHub() {
         </section>
       )}
 
+      {/* The quiet hub state, round 22 §4. Measured before it was written: with
+          every legacy insight unpublished, this page rendered exactly two
+          sections, hero then brief CTA, so a visitor read a promise of
+          "articles, research and white papers" and was handed a contact form.
+          Nothing was broken; there was simply no route from here to the
+          research that does exist. One paragraph and one link close that.
+
+          Gated on `all.length === 0`, not on a flag: the moment a single
+          article publishes, the featured card answers the hero and this block
+          removes itself. No placeholder cards and no coming-soon device, per
+          the same ruling. */}
+      {all.length === 0 && (
+        <section className={styles.section}>
+          <div className={styles.wrap}>
+            <div className={styles.sectionInner}>
+              <span className={styles.sectionEyebrow}>Published research</span>
+              <p className={styles.sectionLede}>
+                Insight articles are being prepared. The research already
+                published sits under Intelligence: five platform talent families
+                across the UK, Saudi Arabia and the UAE, each one stating a
+                staffing conclusion rather than reproducing a table.
+              </p>
+              <Link href="/intelligence/research" className={styles.ctaGhost}>
+                Read the talent research
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* The whole legacy insight family is unpublished pending Talent-speak
           conversion, so this list can legitimately be empty. Render nothing
           rather than a heading with a void under it — the same rule the

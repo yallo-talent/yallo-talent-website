@@ -62,6 +62,14 @@ const ROUTES = [
   "/why-yallo",
   "/leadership",
   "/brief",
+  /* Round 22 §4. The knowledge hub was on no contrast guard's list, and the
+     quiet empty state added this round puts a ghost-pill link on a plain
+     `.section` rather than inside a band-dark plate — the one arrangement of
+     .ctaGhost the rest of the site never uses. Hand measurement through the
+     preview pane read it at 1.00:1 and would not reproduce; a real headless
+     browser is the instrument that settles it, so the route joins the list
+     rather than the reading being argued about. */
+  "/insights",
 ];
 
 const THEMES = ["light", "dark"];
