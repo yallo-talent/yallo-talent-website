@@ -1,0 +1,3 @@
+Round 23 fast-lane probe. Content-only, opened to prove the CI content lane
+and reverted in the same session. If this file is still here, the revert did
+not happen and it should be deleted.

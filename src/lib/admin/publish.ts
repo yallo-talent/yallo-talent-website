@@ -673,7 +673,13 @@ export async function publishArticle(
 ): Promise<PublishResult> {
   return publish(
     {
-      message: `content(insights): ${reason}`,
+      /* `data(...)`, not `content(...)`. commitlint's type-enum on this
+         repository is [feat, fix, chore, data, style, perf, docs, test,
+         refactor, ci] and has no `content` type, so every article pull request
+         this pane opened would have carried a commit message the project's own
+         convention rejects. Found by opening a real throwaway pull request,
+         which is exactly what round 23 §5 asks that step to be for. */
+      message: `data(insights): ${reason}`,
       reason: `${reason}. Only \`${articleFilePath(slug)}\` changes.`,
       files: [{ path: articleFilePath(slug), content: source }],
     },
