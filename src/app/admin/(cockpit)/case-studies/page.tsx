@@ -19,6 +19,7 @@ import {
 import { caseStudyOrder, orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import styles from "../../Admin.module.css";
+import { RowTitle } from "../../RowTitle";
 
 /**
  * Pane 3, Case studies. Read, and REORDER, which is the write path.
@@ -262,11 +263,11 @@ export default async function CaseStudiesPane({
               <li key={p.number} className={styles.row}>
                 <div className={styles.rowHead}>
                   <span className={styles.meta}>#{p.number}</span>
-                  <p className={styles.rowTitle}>
+                  <RowTitle level={3} className={styles.rowTitle}>
                     <a href={p.url} rel="noreferrer">
                       {p.title}
                     </a>
-                  </p>
+                  </RowTitle>
                   <span className={p.merged ? styles.ok : styles.meta}>
                     {p.merged ? "merged" : p.state}
                   </span>
@@ -308,7 +309,9 @@ export default async function CaseStudiesPane({
               <span className={styles.meta}>
                 {i < studies.length ? i + 1 : "unranked"}
               </span>
-              <p className={styles.rowTitle}>{study.frontmatter.title}</p>
+              <RowTitle level={3} className={styles.rowTitle}>
+                {study.frontmatter.title}
+              </RowTitle>
               <span className={styles.meta}>{study.frontmatter.date}</span>
               <span className={styles.meta}>{study.frontmatter.region}</span>
               {study.frontmatter.engagement ? (
