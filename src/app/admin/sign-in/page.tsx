@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { AuthError } from "next-auth";
 import { adminConfigStatus, auth, signIn } from "@/lib/admin/auth";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import styles from "../Admin.module.css";
@@ -61,11 +62,31 @@ export default async function SignInPage({
             /* redirectTo rather than a manual redirect: Auth.js sets the session
                cookie on its own response, and redirecting ourselves afterwards
                races that. */
-            await signIn("credentials", {
-              email: String(formData.get("email") ?? ""),
-              password: String(formData.get("password") ?? ""),
-              redirectTo: ADMIN_ROUTES.briefs,
-            });
+            /* The catch is load-bearing, and its absence was a live 500.
+               Measured on the production host: a wrong password made Auth.js v5
+               throw `CredentialsSignin`, nothing caught it, Next rendered the
+               error boundary, and the visitor got a 500 page with digest
+               2464541465 instead of "that email and password did not match".
+               The message below this form already existed and was simply never
+               reachable, because nothing ever set `?error=`.
+
+               `redirect()` must stay OUTSIDE the catch. Auth.js signals its own
+               success redirect by throwing NEXT_REDIRECT, so catching
+               everything and redirecting here would swallow the successful
+               sign-in as well. Only AuthError is handled; everything else is
+               re-thrown untouched. */
+            try {
+              await signIn("credentials", {
+                email: String(formData.get("email") ?? ""),
+                password: String(formData.get("password") ?? ""),
+                redirectTo: ADMIN_ROUTES.briefs,
+              });
+            } catch (err) {
+              if (err instanceof AuthError) {
+                redirect(`${ADMIN_ROUTES.signIn}?error=CredentialsSignin`);
+              }
+              throw err;
+            }
           }}
         >
           <label className={styles.field} htmlFor="admin-email">
