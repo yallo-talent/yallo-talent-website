@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
-import { verifyPassword } from "@/lib/admin/password";
+import { isStoredHashWellFormed, verifyPassword } from "@/lib/admin/password";
 
 /**
  * Auth.js v5, one admin identity, server-side session.
@@ -93,5 +93,15 @@ export function adminConfigStatus(): {
   ]
     .filter(([, value]) => !value)
     .map(([name]) => name as string);
+
+  /* Presence was not enough, and the gap cost a live cutover afternoon. A hash
+     that is set but does not PARSE reported ready, the sign-in page showed no
+     warning, and a correct password came back as a bare CredentialsSignin. The
+     shape check carries no password and reveals nothing about the secret; it
+     only says whether the stored string could ever match anything. */
+  if (ADMIN_PASSWORD_HASH && !isStoredHashWellFormed(ADMIN_PASSWORD_HASH)) {
+    missing.push("ADMIN_PASSWORD_HASH (set, but malformed and cannot match)");
+  }
+
   return { ready: missing.length === 0, missing };
 }

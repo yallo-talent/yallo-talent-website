@@ -47,8 +47,36 @@ export function hashPassword(password: string): string {
  * than throwing, so a mistyped environment variable is a failed sign-in and not
  * a 500 that tells an anonymous caller the deployment is misconfigured.
  */
+/**
+ * One hash, two hosting conventions, opposite escaping rules.
+ *
+ * `pnpm admin:hash` prints the `$` separators backslash-escaped, and it has to:
+ * `@next/env` expands `$name` when it reads `.env.local`, so an unescaped hash
+ * arrives here truncated. But a platform environment variable — DigitalOcean's
+ * App Platform UI, and any other dashboard that stores a literal string — does
+ * no expansion at all, so the same printed line arrives with the backslashes
+ * intact. `split("$")` then yields four parts whose first is `scrypt\` rather
+ * than `scrypt`, the prefix check fails, and a CORRECT password is rejected.
+ *
+ * Measured on the production host, 8 August 2026: exactly that, presenting as a
+ * bare CredentialsSignin with nothing pointing at the environment. Accepting
+ * both forms is the fix, because the alternative is a foot-gun that fires once
+ * per deployment target and fails silently every time.
+ */
+const unescapeSeparators = (stored: string): string =>
+  stored.replaceAll("\\$", "$");
+
+/** Whether a stored hash parses at all. Shape only; no password involved. */
+export function isStoredHashWellFormed(stored: string): boolean {
+  const parts = unescapeSeparators(stored).split("$");
+  if (parts.length !== 4 || parts[0] !== PREFIX) return false;
+  const cost = Number.parseInt(parts[1], 10);
+  if (!Number.isSafeInteger(cost) || cost < 2 ** 14) return false;
+  return /^[0-9a-f]+$/i.test(parts[2]) && /^[0-9a-f]+$/i.test(parts[3]);
+}
+
 export function verifyPassword(password: string, stored: string): boolean {
-  const parts = stored.split("$");
+  const parts = unescapeSeparators(stored).split("$");
   if (parts.length !== 4 || parts[0] !== PREFIX) return false;
 
   const cost = Number.parseInt(parts[1], 10);
