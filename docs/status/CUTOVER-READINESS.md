@@ -409,7 +409,7 @@ trusted.
 
 | Item | Note |
 |---|---|
-| **A required status check on `main`** | The single thing standing between the cockpit and unattended publishing, and the only item this round could not close itself: writing branch protection is a repository security setting and was refused to the agent. Settings → Branches → rule on `main` → require the `checks` status check. Leave "include administrators" off and direct pushes keep working |
+| ~~A required status check on `main`~~ **DONE** | Re-read via the API on 8 August 2026, round 22: `required_status_checks.contexts: ["checks"]`, `strict: false`, `enforce_admins: false`, `allow_force_pushes: false`. This row was stale — round 21 recorded the same API read in §6b and this table was not updated with it. Nothing outstanding. What remains is *watching* one publish flow through it, the row below |
 | `ANTHROPIC_API_KEY` as a repository secret | Until it is set, `check:assistant-links` protects nothing in CI. It is charged per run, which is why this round did not set it. **Decided by the agent under delegation: leave unset**, with the non-run reported in every CI log |
 | Phase 8 performance gate | See §6. Needs a decision: measure on the production host, or accept |
 | Wickes | Retire the asset or make it a real one |
