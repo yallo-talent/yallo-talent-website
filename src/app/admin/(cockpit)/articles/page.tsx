@@ -1,3 +1,4 @@
+import { requirePane } from "@/lib/admin/guard";
 import styles from "../../Admin.module.css";
 
 /**
@@ -18,7 +19,8 @@ import styles from "../../Admin.module.css";
  */
 export const dynamic = "force-dynamic";
 
-export default function ArticlesPane() {
+export default async function ArticlesPane() {
+  await requirePane("articles");
   return (
     <>
       <h1 className={styles.h1}>Articles</h1>

@@ -347,3 +347,68 @@
   justify-content: center;
   text-decoration: none;
 }
+
+/* Who is signed in, and as what. Round 23: with three roles the cockpit looks
+   different to different people, and "why can I not see briefs" is a question
+   the bar should answer without anyone having to ask it. */
+.whoami {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.roleTag {
+  padding: 2px 8px;
+  border: 1px solid var(--hairline);
+  /* The petal, not a pill: chips carry the radius on the bottom-left corner
+     alone (DESIGN.md, the One Marker Rule). --r-pill exists but a fully rounded
+     chip is the generic form this design system deliberately does not use. */
+  border-radius: 0 0 0 var(--r-sm);
+  color: var(--text-2);
+}
+
+/* The per-row controls in the Users pane. Each is its own form, because each
+   posts a different server action, so they are laid out rather than grouped. */
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 8px;
+}
+
+/* SC 2.5.8 again: 24px in both axes, which 8px of block padding on a caption
+   line clears. Matched to .signOut rather than sharing a block with it, for the
+   same reason .nav a and .signOut have one block each — at equal specificity in
+   a CSS module the later block silently wins. */
+.rowButton {
+  padding: 4px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: transparent;
+  color: var(--text-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rowButton:hover {
+  border-color: var(--text-1);
+}
+
+.rowNote {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.createForm {
+  max-width: 42ch;
+}

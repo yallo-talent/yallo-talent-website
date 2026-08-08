@@ -9,6 +9,7 @@ import {
   writeScalar,
 } from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { assertPane, requirePane } from "@/lib/admin/guard";
 import {
   ORDER_PATH,
   publishOrder,
@@ -75,6 +76,7 @@ export const dynamic = "force-dynamic";
  */
 async function reorder(formData: FormData): Promise<void> {
   "use server";
+  await assertPane("caseStudies");
   const slug = String(formData.get("slug") ?? "");
   const direction = String(formData.get("direction") ?? "");
 
@@ -136,6 +138,7 @@ async function reorder(formData: FormData): Promise<void> {
  */
 async function setPublished(formData: FormData): Promise<void> {
   "use server";
+  await assertPane("caseStudies");
   const slug = String(formData.get("slug") ?? "");
   const next = String(formData.get("next") ?? "") === "true";
 
@@ -199,6 +202,7 @@ export default async function CaseStudiesPane({
     why?: string;
   }>;
 }) {
+  await requirePane("caseStudies");
   const { moved, err, pr, open, why } = await searchParams;
   const publishes = await readPublishes();
   const all = getAllCaseStudies();

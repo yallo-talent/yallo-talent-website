@@ -42,6 +42,7 @@ const PANES = [
   "/admin/case-studies",
   "/admin/conversations",
   "/admin/articles",
+  "/admin/users",
 ];
 
 /**
@@ -87,12 +88,12 @@ let detailUnvisited = 0;
  * defect this gate is looking for. A SECOND failure is reported, because a
  * credential that never works is exactly what it should catch.
  */
-async function signIn(ctx) {
+async function signIn(ctx, email = EMAIL, password = PASSWORD) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     const page = await ctx.newPage();
     await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
-    await page.fill('input[name="email"]', EMAIL);
-    await page.fill('input[name="password"]', PASSWORD);
+    await page.fill('input[name="email"]', email);
+    await page.fill('input[name="password"]', password);
     await Promise.all([
       page.waitForLoadState("networkidle"),
       page.click('button[type="submit"]'),
@@ -328,7 +329,6 @@ for (const theme of THEMES) {
   }
 }
 
-await browser.close();
 
 /* PANES plus, in each context that found one, the discovered detail URL. */
 const contexts = WIDTHS.length * THEMES.length;
@@ -346,6 +346,146 @@ if (advisory.length) {
   for (const a of advisory.sort()) console.log(`  ${a}`);
 }
 
+/* ------------------------------------------------------- the panes by role */
+
+/**
+ * Every pane rendered under every role that is allowed to open it.
+ *
+ * WHY THIS IS SEPARATE FROM THE SWEEP ABOVE. That sweep signs in with the
+ * ENVIRONMENT credential, which maps to admin, and it is the assertion that the
+ * break-glass identity still works — round 23 §3 calls that the rule that must
+ * never regress, because losing it locks the owner out of the live cockpit. This
+ * pass is the other half: a pane can render perfectly for an admin and throw for
+ * an editor, because the editor's session carries a different role and the pane
+ * reads it. Neither pass substitutes for the other.
+ *
+ * ONE THEME AND ONE WIDTH, deliberately. The axe, type and contrast sweep across
+ * four combinations already happened above and does not depend on who is signed
+ * in. What depends on the role is whether the pane renders AT ALL and whether
+ * what it renders is accessible, so this pass runs axe once per pane per role
+ * rather than four times.
+ *
+ * THE FIXTURE ACCOUNTS ARE THIS GATE'S OWN. Created here, removed in the finally
+ * block, and swept afterwards so a killed run leaves nothing in a live table.
+ */
+const ROLE_PANES = {
+  editor: ["/admin", "/admin/case-studies", "/admin/articles"],
+  ops: ["/admin", "/admin/briefs"],
+};
+
+let rolePanesMeasured = 0;
+const rolesExercised = [];
+
+if (!process.env.DATABASE_URL) {
+  advisory.push(
+    "role render NOT exercised: DATABASE_URL is not set, so no fixture account could\n" +
+      "      be created. Reported rather than skipped silently.",
+  );
+} else {
+  const { execFileSync } = await import("node:child_process");
+  const { dirname, join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const HERE = dirname(fileURLToPath(import.meta.url));
+  const fixtureScript = join(HERE, "admin-fixture-user.mjs");
+  const created = [];
+
+  try {
+    for (const [role, panes] of Object.entries(ROLE_PANES)) {
+      const fixture = JSON.parse(
+        execFileSync(process.execPath, [fixtureScript, "create", role], {
+          encoding: "utf8",
+          env: process.env,
+        }).trim(),
+      );
+      created.push(fixture.email);
+
+      const ctx = await browser.newContext({
+        viewport: { width: 1280, height: 900 },
+        colorScheme: "light",
+        reducedMotion: "reduce",
+      });
+
+      if (!(await signIn(ctx, fixture.email, fixture.password))) {
+        blocking.push(
+          `A ${role} fixture account could not sign in, so no pane was measured for that role.`,
+        );
+        await ctx.close();
+        continue;
+      }
+      rolesExercised.push(role);
+
+      for (const pane of panes) {
+        const page = await ctx.newPage();
+        try {
+          const res = await page.goto(`${BASE}${pane}`, {
+            waitUntil: "networkidle",
+            timeout: 45000,
+          });
+          if (!res || res.status() !== 200) {
+            blocking.push(
+              `${pane} as ${role}: responded ${res ? res.status() : "no response"}.`,
+            );
+            await page.close();
+            continue;
+          }
+          if (page.url().includes("/admin/sign-in")) {
+            blocking.push(
+              `${pane} as ${role}: redirected to sign-in despite a session.`,
+            );
+            await page.close();
+            continue;
+          }
+          rolePanesMeasured += 1;
+
+          const { violations } = await new AxeBuilder({ page })
+            .withTags([
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa",
+              "experimental",
+            ])
+            .analyze();
+          for (const v of violations) {
+            const target = v.nodes[0]?.target.join(" ") ?? "?";
+            const line = `${pane} as ${role}  [${v.impact}] ${v.id}: ${v.help}\n      ${target}`;
+            if (v.impact === "serious" || v.impact === "critical")
+              blocking.push(line);
+            else advisory.push(line);
+          }
+
+          const roleTypes = await page.evaluate(TYPE_ROLES);
+          for (const t of roleTypes.sans)
+            blocking.push(`${pane} as ${role}  sans text below A4's 14px floor — ${t}`);
+          for (const c of roleTypes.control)
+            blocking.push(`${pane} as ${role}  filled control below A4's 15px role — ${c}`);
+        } catch (err) {
+          blocking.push(`${pane} as ${role}: ${err.message}`);
+        }
+        await page.close();
+      }
+      await ctx.close();
+    }
+  } finally {
+    for (const email of created) {
+      execFileSync(process.execPath, [fixtureScript, "remove", email], {
+        encoding: "utf8",
+        env: process.env,
+      });
+    }
+    execFileSync(process.execPath, [fixtureScript, "sweep"], {
+      encoding: "utf8",
+      env: process.env,
+    });
+  }
+}
+
+
+/* Closed here rather than after the env sweep: the role pass below opens its
+   own contexts on this same browser. */
+await browser.close();
+
 if (blocking.length) {
   console.error(`\ncheck:admin-render FAILED with ${blocking.length} problem(s):\n`);
   for (const b of blocking.sort()) console.error(`  ${b}\n`);
@@ -354,6 +494,11 @@ if (blocking.length) {
 
 console.log(
   `\ncheck:admin-render passed\n` +
+    `  ${
+      rolesExercised.length
+        ? `${rolePanesMeasured} pane render(s) under ${rolesExercised.join(" and ")}, fixture accounts removed`
+        : "role render not exercised (no DATABASE_URL)"
+    }\n` +
     `  ${PANES.length} pane(s) x ${THEMES.length} theme(s) x ${WIDTHS.length} width(s), ` +
     `${panesMeasured} render(s) in total, signed in\n` +
     `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n` +

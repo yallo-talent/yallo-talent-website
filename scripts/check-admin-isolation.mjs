@@ -23,6 +23,15 @@
  *      NEXT_PUBLIC_ prefix, so Next.js will not inline them — this checks the
  *      served JavaScript rather than trusting that, because the cost of being
  *      wrong is the write token.
+ *   7. ROLE REACH, round 23 §3. A signed-in editor must not reach
+ *      /admin/conversations or /admin/users, and a signed-in ops must reach
+ *      neither those nor the content panes. This is the assertion that stops the
+ *      cockpit's own accounts becoming the leak: /privacy publishes that ONE
+ *      named administrator can read assistant conversations, so an editor who
+ *      can open that pane breaks a published promise, not an internal
+ *      preference. It runs only when DATABASE_URL is set, because it creates a
+ *      fixture account and removes it again; where it cannot run it says so
+ *      rather than passing quietly.
  *
  * Also asserted: an ANONYMOUS request to each pane must not return pane content.
  * The layout guard makes that true by construction; a gate makes it true after
@@ -42,6 +51,8 @@ const policy = JSON.parse(
 );
 const ADMIN_BASE = policy.adminBase;
 const failures = [];
+let roleReachRan = true;
+const roleReachCounts = {};
 
 /** Routes the cockpit actually serves, derived from the app tree rather than
     listed here — a hand-kept list is how a new pane escapes every assertion. */
@@ -312,6 +323,123 @@ if (present.length === 0) {
   }
 }
 
+/* --------------------------------------------------------------- role reach */
+
+/**
+ * Signs a fixture account in and records which panes it can actually open.
+ *
+ * REACHED means the final URL is still the pane. Every guard in the cockpit
+ * refuses by REDIRECTING (to sign-in when there is no session, to the role's own
+ * landing page when there is one), so "did the URL survive" is the same question
+ * as "was this allowed" and needs no assumption about status codes.
+ *
+ * The fixture rows are created and destroyed by scripts/admin-fixture-user.mjs.
+ * Nothing here writes a real account, and the finally block removes what it made
+ * even when an assertion throws.
+ */
+const ROLE_EXPECTATIONS = {
+  editor: {
+    reach: [`${ADMIN_BASE}/case-studies`, `${ADMIN_BASE}/articles`],
+    denied: [
+      `${ADMIN_BASE}/conversations`,
+      `${ADMIN_BASE}/users`,
+      `${ADMIN_BASE}/briefs`,
+    ],
+  },
+  ops: {
+    reach: [`${ADMIN_BASE}/briefs`],
+    denied: [
+      `${ADMIN_BASE}/conversations`,
+      `${ADMIN_BASE}/users`,
+      `${ADMIN_BASE}/case-studies`,
+      `${ADMIN_BASE}/articles`,
+    ],
+  },
+};
+
+if (!process.env.DATABASE_URL) {
+  console.warn(
+    "\n  role reach NOT exercised: DATABASE_URL is not set, so no fixture account\n" +
+      "  could be created. This is reported rather than skipped silently.\n",
+  );
+  roleReachRan = false;
+} else {
+  const { chromium } = await import("@playwright/test");
+  const { execFileSync } = await import("node:child_process");
+
+  const created = [];
+  const browser = await chromium.launch();
+  try {
+    for (const [role, expect] of Object.entries(ROLE_EXPECTATIONS)) {
+      const line = execFileSync(
+        process.execPath,
+        [join(ROOT, "scripts/admin-fixture-user.mjs"), "create", role],
+        { encoding: "utf8", env: process.env },
+      ).trim();
+      const fixture = JSON.parse(line);
+      created.push(fixture.email);
+
+      const ctx = await browser.newContext();
+      const page = await ctx.newPage();
+      await page.goto(`${BASE}${ADMIN_BASE}/sign-in`, {
+        waitUntil: "networkidle",
+      });
+      await page.fill('input[name="email"]', fixture.email);
+      await page.fill('input[name="password"]', fixture.password);
+      await Promise.all([
+        page.waitForLoadState("networkidle"),
+        page.click('button[type="submit"]'),
+      ]);
+      await page.waitForTimeout(900);
+
+      if (new URL(page.url()).pathname.startsWith(`${ADMIN_BASE}/sign-in`)) {
+        failures.push(
+          `A ${role} fixture account could not sign in at all, so role reach was never measured.`,
+        );
+        await ctx.close();
+        continue;
+      }
+
+      for (const pane of expect.denied) {
+        await page.goto(`${BASE}${pane}`, { waitUntil: "networkidle" });
+        if (new URL(page.url()).pathname === pane) {
+          failures.push(
+            `A signed-in ${role} REACHED ${pane}, which only a narrower set of roles may open.`,
+          );
+        }
+      }
+      for (const pane of expect.reach) {
+        await page.goto(`${BASE}${pane}`, { waitUntil: "networkidle" });
+        if (new URL(page.url()).pathname !== pane) {
+          failures.push(
+            `A signed-in ${role} could NOT reach ${pane}, which that role is supposed to open. ` +
+              "An over-tight guard is a broken account, and it fails this gate too.",
+          );
+        }
+      }
+      roleReachCounts[role] =
+        expect.reach.length + expect.denied.length;
+      await ctx.close();
+    }
+  } finally {
+    await browser.close();
+    /* Removes what this run created, then sweeps, so a run killed halfway
+       through a previous invocation cannot leave a row in a live table. */
+    for (const email of created) {
+      execFileSync(
+        process.execPath,
+        [join(ROOT, "scripts/admin-fixture-user.mjs"), "remove", email],
+        { encoding: "utf8", env: process.env },
+      );
+    }
+    execFileSync(
+      process.execPath,
+      [join(ROOT, "scripts/admin-fixture-user.mjs"), "sweep"],
+      { encoding: "utf8", env: process.env },
+    );
+  }
+}
+
 /* ------------------------------------------------------------------ verdict */
 
 if (failures.length > 0) {
@@ -329,5 +457,10 @@ console.log(
     `  disallowed as ${adminDisallow} in every robots.txt group, noindex header on every route\n` +
     `  named in no file under ${CORPUS_TREES.join(", ")}, so the assistant corpus cannot describe it\n` +
     `  linked from none of the ${routes.length} published pages\n` +
-    `  ${present.length > 0 ? `${present.length} secret value(s) absent from the served client bundle` : "client-bundle check not exercised (no secrets set here)"}\n`,
+    `  ${present.length > 0 ? `${present.length} secret value(s) absent from the served client bundle` : "client-bundle check not exercised (no secrets set here)"}\n` +
+    `  ${
+      roleReachRan
+        ? `role reach asserted for ${Object.keys(roleReachCounts).join(" and ")}: ${Object.values(roleReachCounts).reduce((a, b) => a + b, 0)} pane visit(s), fixture accounts removed`
+        : "role reach NOT exercised (no DATABASE_URL)"
+    }\n`,
 );

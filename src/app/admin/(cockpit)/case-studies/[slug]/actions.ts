@@ -13,6 +13,7 @@ import {
   writeScalar,
 } from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { assertPane } from "@/lib/admin/guard";
 import { publishStudy, studyPath } from "@/lib/admin/publish";
 
 /**
@@ -42,6 +43,7 @@ export async function saveStudy(
   _previous: SaveResult,
   formData: FormData,
 ): Promise<SaveResult> {
+  await assertPane("caseStudies");
   const slug = String(formData.get("slug") ?? "");
 
   let source: string;

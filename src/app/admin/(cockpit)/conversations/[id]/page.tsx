@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { requirePane } from "@/lib/admin/guard";
 import { readConversation } from "@/lib/admin/reads";
 import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
 import styles from "../../../Admin.module.css";
@@ -23,6 +24,7 @@ export default async function ConversationDetail({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  await requirePane("conversations");
   const { id } = await params;
   const transcriptId = decodeURIComponent(id);
 

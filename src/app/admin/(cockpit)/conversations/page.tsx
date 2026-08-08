@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { requirePane } from "@/lib/admin/guard";
 import {
   type ConversationSummary,
   readConversationSummaries,
@@ -71,6 +72,7 @@ export default async function ConversationsPane({
 }: {
   searchParams: Promise<Filters>;
 }) {
+  await requirePane("conversations");
   const filters = await searchParams;
 
   let all: ConversationSummary[] = [];
