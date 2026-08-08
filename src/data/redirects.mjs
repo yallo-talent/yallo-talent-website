@@ -370,6 +370,78 @@ function standaloneEntries() {
     "Two legacy paths served one page.",
   );
 
+  /* --- The 18 vanity short URLs, rescued from the Caddyfile. --------------
+     These lived ONLY in /etc/caddy/Caddyfile on the WordPress droplet, as
+     `redir /retail /industries/retail/ 301` and seventeen siblings. They are
+     short marketing URLs, the kind that go on a slide or in an email
+     signature, and nothing in this repository knew about them. The droplet
+     leaves the request path at cutover, so without these rows all eighteen
+     would 404 on the new site the moment DNS moves.
+
+     TARGETS ARE THE CURRENT SLUGS, NOT THE CADDYFILE'S. Three of the
+     Caddyfile's destinations are stale and one is a typo:
+       /capabilities/data        -> data-analytics
+       /capabilities/digital     -> devops-platform-engineering
+       /capabilities/innovation  -> /ai-talent
+       /platforms/blueyonder     -> blue-yonder
+     The legacy capability slugs `data-ai`, `digital-devops` and
+     `emerging-technologies` are already entries in this map and already
+     resolve to the three destinations above, so naming them here would spend
+     a second hop to reach the same page. One hop is the whole point, so these
+     rows name the FINAL destination, verified 200 on the built app. */
+  add("/retail", "/industries/retail", "Vanity short URL, Caddyfile.");
+  add(
+    "/manufacturing",
+    "/industries/manufacturing",
+    "Vanity short URL, Caddyfile.",
+  );
+  add("/finance", "/industries/finance", "Vanity short URL, Caddyfile.");
+  add("/government", "/industries/government", "Vanity short URL, Caddyfile.");
+  add("/healthcare", "/industries/healthcare", "Vanity short URL, Caddyfile.");
+  add("/telco", "/industries/telco", "Vanity short URL, Caddyfile.");
+
+  add("/sap", "/platforms/sap", "Vanity short URL, Caddyfile.");
+  add("/oracle", "/platforms/oracle", "Vanity short URL, Caddyfile.");
+  add("/microsoft", "/platforms/microsoft", "Vanity short URL, Caddyfile.");
+  add("/salesforce", "/platforms/salesforce", "Vanity short URL, Caddyfile.");
+  add(
+    "/blueyonder",
+    "/platforms/blue-yonder",
+    "Vanity short URL, Caddyfile. The Caddyfile's own target is the stale unhyphenated slug.",
+  );
+  add("/workday", "/platforms/workday", "Vanity short URL, Caddyfile.");
+
+  add(
+    "/data",
+    "/capabilities/data-analytics",
+    "Vanity short URL, Caddyfile. Its target /capabilities/data is retired.",
+  );
+  add(
+    "/digital",
+    "/capabilities/devops-platform-engineering",
+    "Vanity short URL, Caddyfile. Its target /capabilities/digital is retired.",
+  );
+  add(
+    "/cloud",
+    "/capabilities/cloud-infrastructure",
+    "Vanity short URL, Caddyfile.",
+  );
+  add(
+    "/integration",
+    "/capabilities/integration-middleware",
+    "Vanity short URL, Caddyfile.",
+  );
+  add(
+    "/innovation",
+    "/ai-talent",
+    "Vanity short URL, Caddyfile. Innovation has no discipline of its own; the map already sends emerging-technologies here.",
+  );
+  add(
+    "/cybersecurity",
+    "/capabilities/cybersecurity",
+    "Vanity short URL, Caddyfile.",
+  );
+
   /* The double-slash retail defect is NOT an entry here, and cannot be: see
      DOUBLE_SLASH_DEFECT below. Its canonical form `/industries/retail` is a
      live route, so nothing in this table needs to claim it. */
