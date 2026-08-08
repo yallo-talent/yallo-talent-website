@@ -19,7 +19,6 @@ export const PUBLISHED_CASE_STUDIES = [
   "enabling-sap-s-4hana-transformation-for-al-tayer-group",
   "enabling-supply-chain-transformation-through-targeted-delivery-expertise",
   "engineering-a-custom-planning-platform",
-  "optimising-enterprise-it-delivery-through-a-unified-partner-model",
   "oracle-hyperion-financial-management-hfm-implementation",
   "unlocking-cost-efficiency-across-multi-platform-enterprise-it-landscape",
 ];
