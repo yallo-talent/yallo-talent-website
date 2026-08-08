@@ -38,7 +38,7 @@ export type Signed = { email: string; name: string; role: Role };
 export async function requireSession(): Promise<Signed> {
   const session = await auth();
   const user = session?.user;
-  if (!user || !user.role) redirect(ADMIN_ROUTES.signIn);
+  if (!user?.role) redirect(ADMIN_ROUTES.signIn);
   return {
     email: user.email ?? "",
     name: user.name ?? "",
