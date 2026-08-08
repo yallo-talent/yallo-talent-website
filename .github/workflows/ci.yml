@@ -10,7 +10,90 @@ on:
   # green commit and watching it fail identically.
   workflow_dispatch: {}
 jobs:
-  checks:
+  # ---------------------------------------------------------------------------
+  # Which lane this run takes, round 23 §5.
+  #
+  # A pull request that only edits content/** does not need the browser gates,
+  # the build, the visual pass or the assistant suite: none of them can be
+  # changed by an MDX file. Those runs take the content lane, which is minutes
+  # rather than twenty two. Anything under src/, scripts/, config or a workflow
+  # takes the full suite, because those CAN change how content renders.
+  #
+  # THE DECISION IS MADE FROM THE DIFF, not from a `paths:` filter on the
+  # workflow. A `paths:` filter would SKIP the workflow, and a skipped required
+  # check never reports, so auto-merge would queue for ever. Both lanes below
+  # converge on the `checks` job, which is the required context and the only one.
+  # ---------------------------------------------------------------------------
+  scope:
+    runs-on: ubuntu-latest
+    outputs:
+      content_only: ${{ steps.decide.outputs.content_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - id: decide
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${BASE_SHA:-}" ]; then
+            echo "Not a pull request, so the full suite runs."
+            echo "content_only=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          CHANGED=$(git diff --name-only "$BASE_SHA"...HEAD)
+          echo "Changed files:"; echo "$CHANGED"
+          # An empty diff takes the full suite: it is the safe direction, and it
+          # is also what a re-run against an unchanged tree should do.
+          if [ -z "$CHANGED" ]; then
+            echo "content_only=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          if echo "$CHANGED" | grep -qvE '^content/'; then
+            echo "Something outside content/ changed, so the full suite runs."
+            echo "content_only=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Only content/ changed, so the content lane runs."
+            echo "content_only=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # The content lane. Static gates only: nothing here starts a browser or a
+  # server, which is the whole reason it is fast.
+  # ---------------------------------------------------------------------------
+  content:
+    needs: scope
+    if: needs.scope.outputs.content_only == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm biome check .
+      - name: Terminology
+        run: pnpm check:terms
+      - name: Case study excerpts
+        run: pnpm check:cs-excerpts
+      - name: Prose rules
+        run: pnpm check:prose
+      - name: Published manifest is current
+        run: pnpm check:published-manifest
+      - name: Write path invariants
+        run: pnpm check:write-path
+      - name: Taxonomy
+        run: pnpm check:taxonomy
+      - name: Redirect table, static half
+        run: node -e "import('./src/data/redirects.mjs').then(m => { const n = m.redirectProbes().length; if (!n) { console.error('The redirect table produced no probes.'); process.exit(1); } console.log(n + ' redirect probe(s) derive from the table.'); })"
+      - name: Article validation rules
+        run: pnpm exec playwright test e2e/article-validation.spec.ts
+
+  full:
+    needs: scope
+    if: needs.scope.outputs.content_only != 'true'
     runs-on: ubuntu-latest
     # The `secrets` context is not available in a step-level `if:`, which is why
     # the first attempt at this made the whole workflow invalid rather than
@@ -419,3 +502,37 @@ jobs:
           name: visual-captures
           path: test-results/visual
           if-no-files-found: ignore
+
+  # ---------------------------------------------------------------------------
+  # THE REQUIRED CONTEXT. Branch protection lists exactly ["checks"], verified
+  # by API on 9 August 2026, and this job is that name on both lanes.
+  #
+  # `if: always()` because the lane that did not run is SKIPPED, and a skipped
+  # dependency would otherwise skip this job too, leaving the required check
+  #never reported and auto-merge queued for ever. A skipped lane is a pass; a
+  # failed or cancelled one is not.
+  # ---------------------------------------------------------------------------
+  checks:
+    needs: [scope, content, full]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Both lanes converge here
+        env:
+          SCOPE: ${{ needs.scope.result }}
+          CONTENT: ${{ needs.content.result }}
+          FULL: ${{ needs.full.result }}
+        run: |
+          set -euo pipefail
+          echo "scope=$SCOPE content=$CONTENT full=$FULL"
+          for r in "$SCOPE" "$CONTENT" "$FULL"; do
+            case "$r" in
+              success|skipped) ;;
+              *) echo "A required lane reported '$r'."; exit 1 ;;
+            esac
+          done
+          if [ "$CONTENT" = "skipped" ] && [ "$FULL" = "skipped" ]; then
+            echo "Neither lane ran, which means the scope job did not decide."
+            exit 1
+          fi
+          echo "CI is green."
