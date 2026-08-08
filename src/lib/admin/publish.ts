@@ -641,3 +641,42 @@ export async function publishOrder(
     deps,
   );
 }
+
+/* ---------------------------------------------------------------- articles */
+
+export const ARTICLE_DIR = "content/insights";
+
+/** The repository path of one article. Validated by `assertContentPath`. */
+export function articleFilePath(slug: string): string {
+  return `${ARTICLE_DIR}/${slug}.mdx`;
+}
+
+/**
+ * An article, through the same pull request path as everything else.
+ *
+ * Identical in shape to `publishStudy` and deliberately not merged with it: the
+ * commit `type` differs (`content:` rather than `data:`) because the two travel
+ * different CI paths, and a single function taking a type parameter would make
+ * the call site the place that decides which. One function per content kind
+ * keeps that decision here, where it is read alongside the path it writes.
+ *
+ * PER-ARTICLE PULL REQUESTS ARE CORRECT, round 23 §4: each article is one
+ * editorial act, so batching them would put two unrelated decisions behind one
+ * review. That is the opposite of the ordering case, where nine moves are one
+ * decision and nine pull requests were the defect.
+ */
+export async function publishArticle(
+  slug: string,
+  source: string,
+  reason: string,
+  deps: PublishDeps = {},
+): Promise<PublishResult> {
+  return publish(
+    {
+      message: `content(insights): ${reason}`,
+      reason: `${reason}. Only \`${articleFilePath(slug)}\` changes.`,
+      files: [{ path: articleFilePath(slug), content: source }],
+    },
+    deps,
+  );
+}

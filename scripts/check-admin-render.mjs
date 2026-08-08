@@ -60,6 +60,20 @@ const PANES = [
  * keeps rediscovering.
  */
 const DETAIL_FROM = "/admin/conversations";
+
+/**
+ * The ARTICLE detail template, discovered the same way and for the same reason.
+ *
+ * Round 23 added /admin/articles/[slug]. Its address is an article slug, so it
+ * cannot be written into PANES either: the list depends on what is in
+ * content/insights/, and a hardcoded slug would 404 the day that article is
+ * renamed. Discovered from the first row's Edit link, and reported as unvisited
+ * rather than passed over when the list is empty.
+ *
+ * AGENTS.md: a new page template joins every enumerating guard in the commit
+ * that introduces it. This is that.
+ */
+const ARTICLE_DETAIL_FROM = "/admin/articles";
 const WIDTHS = [1280, 360];
 const THEMES = ["light", "dark"];
 
@@ -216,20 +230,21 @@ for (const theme of THEMES) {
        template goes through exactly the same axe, type and contrast passes as
        every other. */
     const panes = [...PANES];
-    let detail = null;
-    {
+    for (const [listPath, hrefPrefix] of [
+      [DETAIL_FROM, "/admin/conversations/"],
+      [ARTICLE_DETAIL_FROM, "/admin/articles/"],
+    ]) {
+      let detail = null;
       const probe = await ctx.newPage();
       try {
-        await probe.goto(`${BASE}${DETAIL_FROM}`, {
+        await probe.goto(`${BASE}${listPath}`, {
           waitUntil: "networkidle",
           timeout: 45000,
         });
-        detail = await probe.evaluate(() => {
-          const a = document.querySelector(
-            'a[href^="/admin/conversations/"]',
-          );
+        detail = await probe.evaluate((prefix) => {
+          const a = document.querySelector(`a[href^="${prefix}"]`);
           return a ? a.getAttribute("href") : null;
-        });
+        }, hrefPrefix);
       } catch {
         /* Reported below as un-visited rather than thrown: a probe failure and
            an empty list produce the same null, and both are worth saying. */
@@ -333,7 +348,7 @@ for (const theme of THEMES) {
 /* PANES plus, in each context that found one, the discovered detail URL. */
 const contexts = WIDTHS.length * THEMES.length;
 const expected =
-  PANES.length * contexts + (contexts - detailUnvisited);
+  PANES.length * contexts + (contexts * 2 - detailUnvisited);
 if (panesMeasured < expected) {
   blocking.push(
     `Only ${panesMeasured} of ${expected} pane renders were measured. A partial run is not\n` +
@@ -503,8 +518,8 @@ console.log(
     `${panesMeasured} render(s) in total, signed in\n` +
     `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n` +
     (detailUnvisited
-      ? `  THE CONVERSATION DETAIL TEMPLATE WAS NOT VISITED in ${detailUnvisited} of ${contexts}\n` +
+      ? `  A DETAIL TEMPLATE (conversation or article) WAS NOT VISITED ${detailUnvisited} time(s) across ${contexts}\n` +
         `  context(s): the list was empty, so there was no transcript to open. That is a\n` +
         `  legitimate state of the database and it is reported rather than passed over.\n`
-      : `  the conversation detail template was reached in all ${contexts} context(s)\n`),
+      : `  both detail templates, conversation and article, were reached in all ${contexts} context(s)\n`),
 );
