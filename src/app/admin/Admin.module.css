@@ -412,3 +412,20 @@
 .createForm {
   max-width: 42ch;
 }
+
+/* The staged-order banner. Round 23 §5 requires an abandoned staged state to be
+   plainly visible rather than a quiet difference between what this pane shows
+   and what the site serves, so it is a bordered block above the list and not a
+   line of small print. */
+.stagedBanner {
+  margin-block: 16px;
+  padding: 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.stagedBanner p {
+  margin: 0 0 12px;
+  font-size: var(--fs-body-sm);
+}
