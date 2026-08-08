@@ -63,7 +63,7 @@ export default async function UsersPane({
       {error ? <p className={styles.error}>{error}</p> : null}
 
       {q.password ? (
-        <div className={styles.error}>
+        <div className={styles.notice}>
           <p>
             <strong>
               {q.created

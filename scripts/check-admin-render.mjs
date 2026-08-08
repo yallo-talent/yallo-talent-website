@@ -105,17 +105,29 @@ let detailUnvisited = 0;
 async function signIn(ctx, email = EMAIL, password = PASSWORD) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     const page = await ctx.newPage();
-    await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
-    await page.fill('input[name="email"]', email);
-    await page.fill('input[name="password"]', password);
-    await Promise.all([
-      page.waitForLoadState("networkidle"),
-      page.click('button[type="submit"]'),
-    ]);
-    await page.waitForTimeout(attempt * 800);
-    const signedIn = !page.url().includes("/admin/sign-in");
-    await page.close();
-    if (signedIn) return true;
+    /* The retry this function documents never actually ran: `page.fill` threw
+       straight out of the loop, so a cold-start miss was a hard failure with a
+       Playwright stack instead of a second attempt. Measured in round 23, where
+       exactly that turned a passing gate into an uncaught TimeoutError. */
+    try {
+      await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
+      await page.fill('input[name="email"]', email);
+      await page.fill('input[name="password"]', password);
+      await Promise.all([
+        page.waitForLoadState("networkidle"),
+        page.click('button[type="submit"]'),
+      ]);
+      await page.waitForTimeout(attempt * 800);
+      const signedIn = !page.url().includes("/admin/sign-in");
+      await page.close();
+      if (signedIn) return true;
+    } catch (err) {
+      await page.close().catch(() => {});
+      if (attempt === 2) {
+        console.error(`\n  sign-in threw twice: ${err.message}\n`);
+        return false;
+      }
+    }
   }
   return false;
 }
@@ -323,6 +335,48 @@ for (const theme of THEMES) {
         for (const i of incomplete.filter((x) => x.id === "color-contrast")) {
           advisory.push(
             `${pane} ${theme}/${width}: axe abstained on color-contrast for ${i.nodes.length} node(s), unresolved.`,
+          );
+        }
+
+        /* SC 2.5.8 target size, and horizontal overflow.
+           Both added in round 23, and both because axe reported NEITHER while
+           both were live: /admin/briefs pushed 173px past a 360px viewport on
+           one unbreakable metadata token, and standalone links across every
+           pane were 15 to 17px tall against this project's own 24px
+           commitment. A gate that only runs axe is a gate that believes axe's
+           coverage is the standard's coverage. */
+        const geometry = await page.evaluate(() => {
+          const doc = document.documentElement;
+          const small = [];
+          for (const el of Array.from(
+            document.querySelectorAll("a,button,input,select,textarea"),
+          )) {
+            const b = el.getBoundingClientRect();
+            if (b.width === 0 && b.height === 0) continue;
+            /* The standard exempts a link inline in a sentence. A link that is
+               the only child of its paragraph is a control, not prose, and that
+               is the same boundary the stylesheet draws. */
+            const inlineInProse =
+              el.tagName === "A" &&
+              el.parentElement?.tagName === "P" &&
+              el.parentElement.childElementCount > 1;
+            if (inlineInProse) continue;
+            if (b.height < 24 || b.width < 24) {
+              small.push(
+                `<${el.tagName.toLowerCase()}> "${(el.textContent ?? "").trim().slice(0, 30)}" is ${Math.round(b.width)}x${Math.round(b.height)}`,
+              );
+            }
+          }
+          return { overflow: doc.scrollWidth - doc.clientWidth, small };
+        });
+        if (geometry.overflow > 0) {
+          blocking.push(
+            `${pane} ${theme}/${width}  scrolls sideways by ${geometry.overflow}px. SC 1.4.10: content reflows, it does not push the page.`,
+          );
+        }
+        for (const target of geometry.small) {
+          blocking.push(
+            `${pane} ${theme}/${width}  target below SC 2.5.8's 24px — ${target}`,
           );
         }
 
