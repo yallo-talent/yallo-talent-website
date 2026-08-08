@@ -127,7 +127,7 @@ through so nobody re-runs it.**
 | 0.6 | `/jobs` decision | Decision 2.4 |
 | 0.7 | Search Console baseline | GSC (`yallo.co` property) → Performance → export last 3 months of top pages and queries. **This is what proves the migration held.** Ten minutes, and it cannot be taken retrospectively |
 | 0.8 | One production sign-in | `/admin` on the DO preview: sign in once, open every pane |
-| 0.9 | Placeholder still noindex | `curl -s https://<do-preview-host>/robots.txt` shows `Disallow: /`. Confirms the env flip has not leaked early |
+| 0.9 | Placeholder still noindex | `curl -s https://yallo-talent-ohog5.ondigitalocean.app/robots.txt` shows `Disallow: /`. Confirms the env flip has not leaked early |
 | ~~0.10~~ | ~~Database migration~~ | **DONE, round 22.** Applied to the live database, column verified, and a panel conversation verified end to end writing `origin_path`. Do not re-run. The standing rule survives: migrations run before or with the deploy, never after |
 | **0.11** | **Phase 8 measurement, if Chat rules "measure first"** | PageSpeed Insights mobile against the DO preview host. Record the numbers in readiness. New, from decision 2.1 |
 
@@ -141,7 +141,7 @@ which is expected.
 
 1. Cloudflare → `yallo.co` zone → DNS. **Screenshot the current WordPress records
    first. That screenshot is the rollback.**
-2. Apex `yallo.co`: CNAME → `<app>.ondigitalocean.app`, proxy **ON**. Same for `www`.
+2. Apex `yallo.co`: CNAME → `yallo-talent-ohog5.ondigitalocean.app`, proxy **ON**. Same for `www`.
 3. SSL/TLS mode: **Full (strict)**.
 4. `talent.yallo.co`: Redirect Rule → 301 to `https://yallo.co`, preserving path.
    The placeholder retires and nothing 404s.
@@ -151,9 +151,10 @@ which is expected.
    do:** Next collapses duplicate slashes before any app code runs, so it takes
    two hops in-app. It reaches the right page meanwhile. Only the edge can make
    it one hop.
-6. **The env flip.** Confirm `SITE_URL=https://yallo.co` is live in DO, then load
+6. **The env flip.** Confirm **`NEXT_PUBLIC_SITE_URL=https://yallo.co`** is live
+   in DO at scope `RUN_AND_BUILD_TIME` and its rebuild has gone green, then load
    `https://yallo.co/robots.txt` — it must now serve the full three-family allow
-   policy, not `Disallow: /`.
+   policy, not `Disallow: /`. **This is not `SITE_URL`**; see §4.
 
 ### Phase 3 — verification, within the first hour
 
@@ -187,16 +188,88 @@ investigate any top-50 URL that drops out.
 
 From runbook Phase 0.5, reproduced so Chat can hand it over as one block:
 
-`SITE_URL=https://yallo.co` — **this is the switch.** Robots policy, sitemaps,
-canonicals and noindex all key off it · `AUTH_SECRET` · `ADMIN_EMAIL` ·
-`ADMIN_PASSWORD_HASH` · `ADMIN_GITHUB_TOKEN` ·
+**`NEXT_PUBLIC_SITE_URL=https://yallo.co`** — **this is the switch.** Robots
+policy, sitemaps, canonicals and noindex all key off it · `AUTH_SECRET` ·
+`ADMIN_EMAIL` · `ADMIN_PASSWORD_HASH` · `ADMIN_GITHUB_TOKEN` ·
 `ADMIN_GITHUB_REPO=yallo-talent/yallo-talent-website` · `DATABASE_URL` ·
 `RESEND_API_KEY` plus any `RESEND_*` the brief form names · `ANTHROPIC_API_KEY`
-(**required** — the assistant calls the API at runtime and the panel fails
+(**required**, the assistant calls the API at runtime and the panel fails
 without it) · leave `NEXT_PUBLIC_ASSISTANT_ENABLED` unset, it defaults true and
 only the exact string `"false"` disables.
 
 Mark every secret encrypted. DO redeploys after an env change; wait for green.
+
+### Correction, 8 August 2026 — the switch variable was named wrongly
+
+**v1.1 of the runbook and the first version of this handover both said
+`SITE_URL`. Nothing in the codebase reads that name.** Measured by grep across
+`src`, `scripts` and `next.config.ts`: the only occurrences were in those two
+documents, and I propagated the error from the runbook rather than checking it.
+Both are now corrected. The name is **`NEXT_PUBLIC_SITE_URL`**.
+
+Chat should treat this as the highest-risk single line in the cutover, because
+**it fails silently.** Wrong name and the build succeeds, the site serves, and
+`yallo.co` goes live noindexed with canonicals pointing at
+`http://localhost:3000`. Nothing errors and nothing warns.
+
+| Property | Requirement | Failure mode |
+|---|---|---|
+| Name | `NEXT_PUBLIC_SITE_URL` | A bare `SITE_URL` is read by nothing |
+| Timing | **Build time**, inlined by Next at `pnpm build` | In DO the scope must be **`RUN_AND_BUILD_TIME`**, not `RUN_TIME`. At run time only, the build never sees it |
+| Value | `https://yallo.co` exactly | `src/lib/seo.ts:18` is strict equality against `productionUrl` in `src/lib/robots-policy.json`. A trailing slash or `www` evaluates false |
+
+Changing it needs a **rebuild**, not a restart, so the flip is not instant.
+Verify by output, never by the dashboard: `robots.txt` must carry `Allow: /`, the
+named crawlers, and a `Sitemap:` line. `pnpm check:robots` asserts exactly that
+and reads the same variable the build consumed.
+
+---
+
+## 4b. The DigitalOcean app, investigated and part-corrected 8 August 2026
+
+Added after the first version of this handover, which said nothing about the host.
+Chat cannot command a cutover without it.
+
+**The app was misconfigured and could not have served current `main`.** Found by
+read-only inspection, then two fields corrected on Sumeet's explicit instruction.
+
+| | |
+|---|---|
+| App | `yallo-talent`, ID `4bfc47a0-89de-479c-91cc-cc7e36b383bf`, region `lon` |
+| Ingress | `https://yallo-talent-ohog5.ondigitalocean.app` |
+| Repo, before | `yallogroup/talent.yallo.co` — the pre-transfer path. The repo had been moved to the `yallo-talent` org and renamed, so DO's per-org GitHub App authorisation no longer reached it |
+| Consequence | `deploy_on_push: true` had not fired since **29 July**. The live build was commit `09ebcf5`, **514 commits behind**, generating 51 static pages against current `main`'s 425 |
+| Repo, now | `yallo-talent/yallo-talent-website`, branch `main`, `deploy_on_push: true`. **DigitalOcean accepted the path**, which is the real proof the GitHub App install works, and then built from it |
+| Instance, before | `apps-s-1vcpu-0.5gb`, 512 MiB, $5/month |
+| Instance, now | `basic-s`, 2 GiB, 1 shared CPU, **$20/month**, basic tier. Chosen against a measured local peak RSS of 1.01 GiB for a single build process |
+| Deployment | `c518fdfe-ce74-48c1-b234-73dd6dfebc2a`, cause `app spec updated`, phase **ACTIVE 6/6**, commit `6aac5dc`. Built 425/425 static pages with no OOM on 9 workers |
+| Env vars | **still zero, deliberately.** Sumeet's, in the dashboard |
+| Domains | **still none, deliberately.** Sumeet's, Phase 1 |
+
+**A side effect that closed a live exposure.** Before the redeploy the app was
+publicly serving `Allow: /` with no noindex, i.e. an indexable 514-commit-stale
+copy of the site competing with `yallo.co` as duplicate content, including the
+margin-disclosure copy corrected this morning. Because `NEXT_PUBLIC_SITE_URL` is
+unset, the new build correctly takes the non-production branch and now serves
+`Disallow: /` for `*` and every named crawler. **Runbook Phase 0.9 therefore
+passes as written.**
+
+**Two things Chat must fold into its instruction:**
+
+1. **The ordering trap on the switch variable.** The moment `NEXT_PUBLIC_SITE_URL`
+   is set, this preview host flips to the full allow policy and becomes
+   indexable while still on the `ondigitalocean.app` hostname. Set it as late as
+   the runbook has it, in Phase 0.5 immediately before the flip, or accept a
+   window in which the preview is crawlable.
+2. **`deploy_on_push` is repaired but unproven.** The deployment above was
+   triggered by the spec update, not by a git push. **The next commit to `main`
+   is what proves the webhook fires.** Until one does, treat unattended
+   cockpit publishing as unverified end to end, which is the same evidence gap
+   Phase 0.3 exists to close.
+
+Still outstanding on the host, all Sumeet's: the env block (§4), the two domains
+(Phase 1), and a decision on whether `basic-s` is the size to run on in
+production as opposed to merely build on.
 
 ---
 

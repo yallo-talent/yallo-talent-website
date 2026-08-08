@@ -1,7 +1,12 @@
 # yallo.co Cutover Runbook — executed by Sumeet
 
-**v1.1 · 8 August 2026 · GTM.01.** Companion to `docs/status/CUTOVER-READINESS.md`.
+**v1.2 · 8 August 2026 · GTM.01.** Companion to `docs/status/CUTOVER-READINESS.md`.
 v1.1 folds in relay v29: migration ordering, the double-slash edge rule, `/white-papers` → `/intelligence`, and the now-testable auto-merge watch.
+**v1.2 corrects one factual error in v1.1 and closes one item.** The env switch is
+`NEXT_PUBLIC_SITE_URL`, not `SITE_URL`; v1.1 named a variable nothing in the
+codebase reads, and it is the one step in this procedure that fails silently. See
+the note under Env. Phase 0.10, the database migration, is done: round 22 applied
+it to the live database and verified it end to end.
 Target: yallo.co serves the Next.js build on DigitalOcean behind Cloudflare, replacing WordPress. Rollback at every step until Phase 4.
 
 Amendment to game plan §12: Sumeet executes the cutover personally. Raphy dependencies reduce to three access items, named in Phase 0.
@@ -21,13 +26,50 @@ Amendment to game plan §12: Sumeet executes the cutover personally. Raphy depen
 | 0.7 | Search Console baseline exported | Google Search Console (yallo.co property) → Performance → export last 3 months of top pages and queries. Ten minutes; this is what proves the migration held |
 | 0.8 | One production sign-in | `/admin` on the DO preview URL: sign in once, open all panes |
 | 0.9 | Placeholder still noindex | `curl -s https://<do-preview-host>/robots.txt` shows `Disallow: /` — the env flip has not leaked early |
-| 0.10 | Database migration applied | Round 22 runs `0003_transcript_origin.sql` (additive, idempotent). Standing rule for every future release: **migrations run before or with the deploy, never after** — v29 measured the after-case as silent transcript loss |
+| ~~0.10~~ | ~~Database migration applied~~ **DONE** | Round 22 applied `0003_transcript_origin.sql` to the live database: `pnpm db:migrate` exit 0, column verified in `information_schema`, and a panel conversation on `/platforms/sap` verified end to end writing `origin_path`. **Do not re-run.** The standing rule survives for every future release: **migrations run before or with the deploy, never after** — v29 measured the after-case as silent transcript loss |
 
 ### Env — DigitalOcean production variables
 
-`SITE_URL=https://yallo.co` (this is the switch: robots policy, sitemaps, canonicals and noindex all key off it) · `AUTH_SECRET` · `ADMIN_EMAIL` · `ADMIN_PASSWORD_HASH` · `ADMIN_GITHUB_TOKEN` · `ADMIN_GITHUB_REPO=yallo-talent/yallo-talent-website` · `DATABASE_URL` · `RESEND_API_KEY` (plus any `RESEND_*` the brief form names) · `ANTHROPIC_API_KEY` (the assistant ships ON and calls the API at runtime — without this the panel fails on the live site) · leave `NEXT_PUBLIC_ASSISTANT_ENABLED` unset (defaults true; only the exact string "false" disables).
+**`NEXT_PUBLIC_SITE_URL=https://yallo.co`** (this is the switch: robots policy,
+sitemaps, canonicals and noindex all key off it) · `AUTH_SECRET` · `ADMIN_EMAIL` ·
+`ADMIN_PASSWORD_HASH` · `ADMIN_GITHUB_TOKEN` ·
+`ADMIN_GITHUB_REPO=yallo-talent/yallo-talent-website` · `DATABASE_URL` ·
+`RESEND_API_KEY` (plus any `RESEND_*` the brief form names) · `ANTHROPIC_API_KEY`
+(the assistant ships ON and calls the API at runtime, and without this the panel
+fails on the live site) · leave `NEXT_PUBLIC_ASSISTANT_ENABLED` unset (defaults
+true; only the exact string "false" disables).
 
-Mark every secret as encrypted in the DO UI. After changing env vars, DO redeploys — wait for the deploy to go green before proceeding.
+Mark every secret as encrypted in the DO UI. After changing env vars, DO
+redeploys: wait for the deploy to go green before proceeding.
+
+#### The switch variable, corrected 8 August 2026 — read this before setting it
+
+**v1.1 of this runbook named `SITE_URL`. Nothing in the codebase reads that
+name.** Measured by grep across `src`, `scripts` and `next.config.ts`: the only
+occurrences of a bare `SITE_URL` were in this document. The correct name is
+**`NEXT_PUBLIC_SITE_URL`**, which is what `src/lib/seo.ts` and `.env.example`
+both use.
+
+This is the one step in the whole cutover that **fails silently**. Set the wrong
+name and the build succeeds, the site serves, and `yallo.co` goes live with
+`Disallow: /` to every crawler while every canonical points at
+`http://localhost:3000`. Nothing errors.
+
+Three properties of this variable, each of which can defeat it on its own:
+
+| Property | Requirement | What happens otherwise |
+|---|---|---|
+| **Name** | `NEXT_PUBLIC_SITE_URL` | A bare `SITE_URL` is read by nothing |
+| **Timing** | **Build time.** The `NEXT_PUBLIC_` prefix means Next inlines the value into the bundle at `pnpm build` | Set at run time only, the build never sees it. In DigitalOcean the env var's scope must be **`RUN_AND_BUILD_TIME`**, not `RUN_TIME` |
+| **Exact value** | `https://yallo.co`, no trailing slash, no `www` | `src/lib/seo.ts:18` is strict equality against `productionUrl` in `src/lib/robots-policy.json`. `https://yallo.co/` and `https://www.yallo.co` both evaluate false |
+
+Because it is inlined at build time, **changing this value needs a rebuild, not a
+restart.** DO rebuilds automatically on an env change, which is why the flip is
+not instantaneous: wait for the deploy to go green before checking `robots.txt`.
+
+Verify it took effect by the output, never by the dashboard: `robots.txt` must
+carry `Allow: /` plus the named crawlers and a `Sitemap:` line. `pnpm check:robots`
+asserts exactly this and reads the same variable the build consumed.
 
 ---
 
@@ -44,7 +86,7 @@ Mark every secret as encrypted in the DO UI. After changing env vars, DO redeplo
 4. `talent.yallo.co`: Cloudflare → Rules → Redirect Rules → new rule: hostname equals `talent.yallo.co` → 301 to `https://yallo.co` preserving path. The placeholder host retires; nothing 404s.
 4b. **The double-slash rule** (v29 §6.1): same Redirect Rules screen → custom filter expression `http.request.uri.path eq "/industries/retail//"` → static 301 to `https://yallo.co/industries/retail`. Next.js cannot answer this in one hop; the edge can.
 5. In DigitalOcean, the two domains move from Pending to active with certificates. Usually under 15 minutes behind Cloudflare.
-6. **The env flip:** confirm `SITE_URL=https://yallo.co` is live in the DO env (set in Phase 0). Load `https://yallo.co/robots.txt` — it must now serve the full three-family allow policy, not `Disallow: /`.
+6. **The env flip:** confirm **`NEXT_PUBLIC_SITE_URL=https://yallo.co`** is live in the DO env, at scope `RUN_AND_BUILD_TIME`, and that the rebuild it triggered has gone green (set in Phase 0; see the corrected note under Env above, and note this is NOT `SITE_URL`). Load `https://yallo.co/robots.txt` — it must now serve the full three-family allow policy, not `Disallow: /`. If it still shows `Disallow: /`, the variable name, its scope, or a trailing slash is the cause, in that order of likelihood.
 
 **Rollback at this phase:** restore the screenshotted DNS records. Cloudflare-proxied changes propagate in minutes. WordPress is untouched until Phase 4.
 
