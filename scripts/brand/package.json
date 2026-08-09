@@ -1,0 +1,9 @@
+{
+  "name": "yallo-brand-pipeline",
+  "private": true,
+  "type": "module",
+  "description": "Local, non-shipping deps for the brand asset pipeline. Kept out of the site's dependency tree on purpose: nothing here runs at request time, and npm resolves this directory as its own project rather than walking up into the pnpm root.",
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}
