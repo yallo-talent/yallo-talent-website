@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RowTitle } from "@/app/admin/RowTitle";
 import { requirePane } from "@/lib/admin/guard";
 import { allCaseStudies } from "@/lib/db/content";
@@ -87,7 +88,12 @@ export default async function CaseStudiesPane({
                     {study.status}
                   </span>
                   <RowTitle level={3} className={styles.rowTitle}>
-                    {study.cardTitle ?? study.title}
+                    {/* R-25b.3: the way in to the three taxonomy dropdowns, so
+                        the nine imported studies can be given real values from
+                        a browser. No session assigns them. */}
+                    <Link href={`/admin/case-studies/${study.id}`}>
+                      {study.cardTitle ?? study.title}
+                    </Link>
                   </RowTitle>
                   <span className={styles.meta}>
                     {study.clientPublic ? study.client : "client not named"}

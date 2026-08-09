@@ -74,6 +74,25 @@ const DETAIL_FROM = "/admin/conversations";
  * that introduces it. This is that.
  */
 const ARTICLE_DETAIL_FROM = "/admin/articles";
+
+/**
+ * The CASE-STUDY detail template, added by round 25b in the commit that
+ * introduces it, per the same AGENTS.md rule.
+ *
+ * It is the same editor surface as the article one with a different category
+ * list and different structured fields, and "the same component" is exactly
+ * the reasoning that lets a defect reach one and not the other — a caller's
+ * className outranking a component's own rules has bitten this estate before.
+ * So it is visited in its own right rather than assumed to follow.
+ */
+const CASE_STUDY_DETAIL_FROM = "/admin/case-studies";
+
+/** Every detail template, and the list its address is discovered from. */
+const DETAIL_TEMPLATES = [
+  [DETAIL_FROM, "/admin/conversations/"],
+  [ARTICLE_DETAIL_FROM, "/admin/articles/"],
+  [CASE_STUDY_DETAIL_FROM, "/admin/case-studies/"],
+];
 const WIDTHS = [1280, 360];
 const THEMES = ["light", "dark"];
 
@@ -242,10 +261,7 @@ for (const theme of THEMES) {
        template goes through exactly the same axe, type and contrast passes as
        every other. */
     const panes = [...PANES];
-    for (const [listPath, hrefPrefix] of [
-      [DETAIL_FROM, "/admin/conversations/"],
-      [ARTICLE_DETAIL_FROM, "/admin/articles/"],
-    ]) {
+    for (const [listPath, hrefPrefix] of DETAIL_TEMPLATES) {
       let detail = null;
       const probe = await ctx.newPage();
       try {
@@ -572,8 +588,12 @@ console.log(
     `${panesMeasured} render(s) in total, signed in\n` +
     `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n` +
     (detailUnvisited
-      ? `  A DETAIL TEMPLATE (conversation or article) WAS NOT VISITED ${detailUnvisited} time(s) across ${contexts}\n` +
+      ? `  A DETAIL TEMPLATE (conversation, article or case study) WAS NOT VISITED ${detailUnvisited} time(s) across ${contexts}\n` +
         `  context(s): the list was empty, so there was no transcript to open. That is a\n` +
         `  legitimate state of the database and it is reported rather than passed over.\n`
-      : `  both detail templates, conversation and article, were reached in all ${contexts} context(s)\n`),
+      : /* Counted, not named. The list read "both ... conversation and article"
+           and there are three of them since round 25b added the case-study
+           editor — a summary that names its members goes stale the next time
+           one is added, which is exactly what happened. */
+        `  all ${DETAIL_TEMPLATES.length} detail template(s) were reached in all ${contexts} context(s)\n`),
 );

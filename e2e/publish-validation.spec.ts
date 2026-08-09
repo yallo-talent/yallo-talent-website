@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
 import {
+  ARTICLE_CATEGORIES,
+  CASE_STUDY_CATEGORIES,
+} from "../src/lib/admin/categories.mjs";
+import {
   BUDGETS,
   FIXED_BYLINE,
   type PublishCandidate,
@@ -47,6 +51,11 @@ function candidate(over: Partial<PublishCandidate> = {}): PublishCandidate {
     metaTitle: "A fixture for the publish validator",
     metaDescription:
       "A meta description written for this test and nowhere else.",
+    /* Rule 9 is per content type, so the default fixture is an article
+       carrying an article category. Without it every other case below would
+       start reporting a rule-9 error alongside the one it is about. */
+    contentType: "article",
+    category: "Market intelligence",
     body: markdownToTiptap("A plain sentence with nothing in it to refuse.\n"),
     sources: [],
     industry: ["retail"],
@@ -236,5 +245,53 @@ test.describe("the closed node set, which is not one of the eight", () => {
     );
     expect(found.map((e) => e.rule)).toContain(0);
     expect(found.find((e) => e.rule === 0)?.message).toContain("iframe");
+  });
+});
+
+test.describe("rule 9 — the category is on the list for THIS content type (R-25b.2)", () => {
+  test("refuses an article with no category at all", () => {
+    const found = errors({ category: "" });
+    expect(found.map((e) => e.rule)).toContain(9);
+    expect(found.find((e) => e.rule === 9)?.message).toContain(
+      "Market intelligence",
+    );
+  });
+
+  test("accepts an article carrying one of the five editorial types", () => {
+    for (const category of ARTICLE_CATEGORIES) {
+      expect(rules({ category })).not.toContain(9);
+    }
+  });
+
+  test("refuses an article filed under an ENGAGEMENT PILLAR", () => {
+    /* The failure this rule exists for, and the reason it is per type rather
+       than one shared list: "EOR" is a real value on this site, so a single
+       list would accept it here and file the article under a heading no
+       /insights surface renders. */
+    const found = errors({ category: "EOR" });
+    expect(found.map((e) => e.rule)).toContain(9);
+    expect(found.find((e) => e.rule === 9)?.message).toContain("article");
+  });
+
+  test("accepts a case study carrying its engagement pillar", () => {
+    for (const category of CASE_STUDY_CATEGORIES) {
+      expect(rules({ contentType: "case_study", category })).not.toContain(9);
+    }
+  });
+
+  test("refuses a case study filed under an EDITORIAL TYPE", () => {
+    const found = errors({
+      contentType: "case_study",
+      category: "Market intelligence",
+    });
+    expect(found.map((e) => e.rule)).toContain(9);
+    expect(found.find((e) => e.rule === 9)?.message).toContain("case study");
+  });
+
+  test("refuses a category that is on neither list", () => {
+    expect(rules({ category: "Thought leadership" })).toContain(9);
+    expect(
+      rules({ contentType: "case_study", category: "Thought leadership" }),
+    ).toContain(9);
   });
 });

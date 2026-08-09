@@ -405,7 +405,13 @@
   border: 1px solid var(--rule-strong);
   border-radius: 0 0 0 var(--r-sm);
   background: transparent;
-  color: var(--text-1);
+  /* `--text`, and it used to say `--text-1`, which is not a token on this
+     estate — the ladder is --text / --text-2 / --text-3. An undefined custom
+     property makes the declaration invalid at computed-value time, so the
+     colour fell back to inherit and the hover below resolved to `initial`,
+     which is currentColor: the cockpit's primary action button had no colour
+     of its own and a hover that changed nothing. Found by check:css-vars. */
+  color: var(--text);
   font-family: var(--font-mono);
   font-size: var(--fs-data);
   letter-spacing: 0.12em;
@@ -414,7 +420,7 @@
 }
 
 .rowButton:hover {
-  border-color: var(--text-1);
+  border-color: var(--text);
 }
 
 .rowNote {

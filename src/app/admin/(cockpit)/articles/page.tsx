@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RowTitle } from "@/app/admin/RowTitle";
 import { FIXED_BYLINE } from "@/lib/admin/content-validation";
 import { requirePane } from "@/lib/admin/guard";
@@ -14,11 +15,10 @@ import { createArticleAction, setStatusAction } from "./actions";
  * build, live in seconds. The eight A2 rules refuse the publish rather than a
  * CI run refusing the merge, and they name the field and the fault.
  *
- * WHAT IS NOT HERE YET, said plainly rather than implied by an absent button.
- * The TipTap writing surface is round 25 item 4 and is not in this commit. This
- * pane lists, reserves a slug and moves a piece between draft and published. A
- * writer cannot compose a body here yet, and saying so is better than offering
- * a control that would lose their work.
+ * THE WRITING SURFACE EXISTS NOW. Round 25 said plainly that it did not, and
+ * that saying so was better than offering a control that would lose a writer's
+ * work. Round 25b built it: the title of every row opens the editor at
+ * /admin/articles/[id].
  *
  * THE BYLINE IS NOT A FIELD. Canon §8: "Yallo Talent" is applied by the system,
  * and there is nothing on this pane to type a person's name into.
@@ -90,7 +90,12 @@ export default async function ArticlesPane({
                     {article.status}
                   </span>
                   <RowTitle level={3} className={styles.rowTitle}>
-                    {article.title}
+                    {/* The title IS the way in. A separate "Edit" button beside
+                        it would be a second control for the one thing a person
+                        opens this list to do. */}
+                    <Link href={`/admin/articles/${article.id}`}>
+                      {article.title}
+                    </Link>
                   </RowTitle>
                   <span className={styles.meta}>
                     {article.updatedAt.slice(0, 10)}
@@ -122,9 +127,9 @@ export default async function ArticlesPane({
       <h2 className={styles.h2}>New article</h2>
       <p className={styles.note}>
         Creates a draft and reserves its slug. Creating is never the same act as
-        publishing: canon A2 puts eight rules between the two, and a create path
+        publishing: canon A2 puts nine rules between the two, and a create path
         that skipped them would be the old pull-request bypass in a different
-        costume. The writing surface arrives with round 25 item 4.
+        costume. Open the draft by its title to write it.
       </p>
       <form action={createArticleAction} className={styles.createForm}>
         <label className={styles.field} htmlFor="article-title">

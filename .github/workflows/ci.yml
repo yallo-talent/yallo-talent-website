@@ -213,6 +213,37 @@ jobs:
       - name: Contrast
         run: pnpm check:contrast
 
+      # Round 25b. Every custom property a stylesheet READS must be one some
+      # stylesheet WRITES. An undefined one does not fall back to the cascade:
+      # the declaration is invalid at computed-value time and an inherited
+      # property resolves to INHERIT, so the surface renders at whatever it
+      # inherited and nothing anywhere says so.
+      #
+      # It found two real defects the moment it was written. `.prose h2` in the
+      # article template read `--fs-section-h`, which is defined nowhere, so
+      # every section heading in a published article would have rendered at
+      # body size — latent only because no article is published yet. And the
+      # cockpit's row button read `--text-1`, which is not on the ladder, so
+      # the site's publish button had no colour of its own and a hover that
+      # changed nothing.
+      #
+      # Proved red by putting `--fs-section-h` back: exit 1, one finding, and
+      # the comment on the line above it correctly ignored.
+      - name: Custom properties resolve (check:css-vars)
+        run: pnpm check:css-vars
+
+      # R-25b.1's rule, after three instances of one mistake. The job-level
+      # credential is read-only; a step that writes must say so for itself, and
+      # a step that does not write must not be handed the ability. The writing
+      # scripts are DERIVED from what they contain rather than listed, because
+      # a hand-written list is precisely what failed three times.
+      #
+      # Proved red in both directions: with the render gate's step-level secret
+      # removed it named that step, which is the defect CI had just found; with
+      # the secret added to a step that writes nothing it named that too.
+      - name: CI's writing steps are the only ones with a writing credential
+        run: pnpm check:ci-secrets
+
       # Stops one taxonomy's names resolving into another's, and a copy of the
       # label map surviving outside the index. Round 10: proved to fail by
       # writing "Data & AI" into a discipline data file and watching it flag
@@ -574,8 +605,31 @@ jobs:
       # skipping when the secrets are absent, which is deliberate (round 19
       # ratified it) and is why the server below is started with a hash
       # generated from the same throwaway password.
-      - name: Admin cockpit renders (axe + A4 type floors, signed in)
+      # R-25b.1: the THIRD writer in this job, and the third found one CI run
+      # at a time. It signs a fixture account in per role and sweeps them
+      # afterwards, which is a write to `users` — CI said "permission denied
+      # for table users" and failed on the sweep. Three instances of one
+      # mistake is a missing rule, so `check:ci-secrets` is now that rule and
+      # derives the writing scripts rather than trusting a list.
+      # ROUND 25b ADDS THE EDITOR GATE TO THIS STEP rather than to one of its
+      # own, and the reason is the server. It is started here with `&`, and a
+      # background process from one step is not something to rely on in the
+      # next — the runner's shells are separate and nothing promises the
+      # process outlives the step that spawned it. One step, one server, both
+      # gates against it.
+      #
+      # Design §4's bar is "a writer never wanting to draft somewhere else
+      # first", and every clause of it is a BEHAVIOUR: the slash menu opens, a
+      # block inserts from the keyboard, autosave reaches the database, the
+      # saved state says so, the preview renders the same words through the
+      # same renderer the published page uses, Escape leaves full screen. A
+      # screenshot proves none of it, and an editor that renders while silently
+      # losing work is the failure round 25 refused to ship a half-built
+      # control for. check-editor's fixtures are one draft row and one account,
+      # both removed before it exits, including on failure.
+      - name: Admin cockpit renders, and the editor works (signed in)
         env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           ADMIN_TEST_EMAIL: ${{ secrets.ADMIN_TEST_EMAIL }}
           ADMIN_TEST_PASSWORD: ${{ secrets.ADMIN_TEST_PASSWORD }}
           ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
@@ -588,6 +642,7 @@ jobs:
             sleep 1
           done
           node scripts/check-admin-render.mjs http://localhost:3101
+          node scripts/check-editor.mjs http://localhost:3101
 
       # Round 19 §3.2's gate, and the one CI cannot fully run yet. Part A — every
       # path llms.txt enumerates returns 200 — needs nothing. Part B asks the
