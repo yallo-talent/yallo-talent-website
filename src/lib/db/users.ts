@@ -29,7 +29,7 @@ type UserWithHash = UserRow & { passwordHash: string };
 
 const normalise = (email: string): string => email.trim().toLowerCase();
 
-/* A row whose role is not one of the three is a row the check constraint should
+/* A row whose role is not one of the four is a row the check constraint should
    have refused. If one exists anyway — a hand-edited database, a future role
    removed from the code but not the data — it is treated as no user at all
    rather than coerced to something that might grant more than intended. */
@@ -99,9 +99,10 @@ export async function getUser(id: string): Promise<UserRow | null> {
  * would let the table be emptied of admins on the reasoning that the environment
  * still has one, and the environment is exactly what a bad deploy takes away.
  */
-export async function enabledAdminCount(): Promise<number> {
+export async function enabledManagerCount(): Promise<number> {
   const rows = (await sql()`
-    select count(*)::int as n from users where role = 'admin' and disabled = false
+    select count(*)::int as n from users
+     where role in ('owner', 'admin') and disabled = false
   `) as Array<Record<string, unknown>>;
   return Number(rows[0]?.n ?? 0);
 }

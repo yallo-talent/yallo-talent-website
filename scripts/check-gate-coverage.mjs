@@ -27,6 +27,7 @@
 
 import { readFileSync } from "node:fs";
 import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
+
 import {
   routeTemplates,
   sampleOnePerShell,
@@ -35,6 +36,11 @@ import {
 } from "./lib/rendering-units.mjs";
 
 const BASE = process.argv[2] ?? "http://localhost:3001";
+
+/* Resolved once at start-up rather than inside the per-gate reader, which is a
+   plain function. Round 25 made the sample a server read, because the order it
+   comes from is a database column now rather than order.yaml. */
+const SAMPLE_SLUG = await sampleCaseStudySlug(BASE);
 
 /** Every enumerating gate, and the binding it declares its list under. */
 const GATES = [
@@ -139,9 +145,10 @@ const listOf = (gate) => {
   // literal — which the regex above cannot see, being a template expression,
   // not a string. Resolved here rather than reverted, so coverage still sees
   // it without reintroducing the drift it was written to remove.
-  const derived = [...m[1].matchAll(/`\/case-studies\/\$\{sampleCaseStudySlug\(\)\}`/g)].map(
-    () => `/case-studies/${sampleCaseStudySlug()}`,
-  );
+  const sample = SAMPLE_SLUG;
+  const derived = [
+    ...m[1].matchAll(/`\/case-studies\/\$\{await sampleCaseStudySlug\([A-Z]*\)\}`/g),
+  ].map(() => `/case-studies/${sample}`);
   return [...quoted, ...derived];
 };
 

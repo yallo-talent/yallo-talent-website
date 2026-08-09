@@ -15,8 +15,11 @@ import { findUserForSignIn } from "@/lib/db/users";
  * that. The `users` table (migration 0004) is now consulted first.
  *
  * THE ENV PAIR IS THE RULE THAT MUST NEVER REGRESS. `ADMIN_EMAIL` and
- * `ADMIN_PASSWORD_HASH` still sign in, still map to admin, and are checked when
- * no row matches the address. The failure this guards against is concrete:
+ * `ADMIN_PASSWORD_HASH` still sign in and are checked when no row matches the
+ * address. Round 25 §3: THEY MAP TO `owner`, not to `admin`. Break-glass exists
+ * for the failure nobody chose, and an owner is the only role that can restore
+ * another owner — a break-glass session that could not do that would arrive with
+ * exactly the wrong power in exactly the situation it is for. The failure this guards against is concrete:
  * locking the owner out of the live cockpit overnight because a table, a
  * migration or a connection string went wrong. A database that is the only door
  * is a database outage that is a lockout. check:admin-render signs in with this
@@ -117,10 +120,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!emailMatches || !passwordMatches) return null;
         return {
-          id: "admin",
+          id: "owner",
           email: ADMIN_EMAIL as string,
-          name: "Admin",
-          role: "admin" satisfies Role,
+          name: "Owner",
+          role: "owner" satisfies Role,
         };
       },
     }),

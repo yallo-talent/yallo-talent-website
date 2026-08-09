@@ -28,7 +28,10 @@ import { Pool } from "@neondatabase/serverless";
 const FIXTURE_PREFIX = "gate-fixture+";
 const FIXTURE_DOMAIN = "@yallo.invalid";
 
-const ROLES = ["admin", "editor", "ops"];
+/* Four since canon A4. `owner` is creatable as a fixture because the gate has
+   to prove an owner reaches what only an owner reaches; the fixture is deleted
+   in the same run, and no pane can create one without an owner session. */
+const ROLES = ["owner", "admin", "editor", "ops"];
 
 /* The same parameters as src/lib/admin/password.ts, restated for the same reason
    every check-* script restates its constants: this is a plain Node script that

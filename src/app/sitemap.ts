@@ -65,9 +65,9 @@ function weightOf(path: string): {
   return { changeFrequency: "weekly", priority: 0.8 };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  return publishedPaths().map((path) => ({
+  return (await publishedPaths()).map((path) => ({
     url: `${SITE.url}${path}`,
     lastModified: now,
     ...weightOf(path),

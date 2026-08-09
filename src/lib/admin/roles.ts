@@ -11,18 +11,26 @@ import { ADMIN_ROUTES } from "@/lib/admin/config";
  * line here is unreachable rather than open — see `rolesFor`, which has no
  * permissive default.
  *
- * THE /privacy CONSTRAINT IS LOAD-BEARING. The published privacy notice says one
- * named administrator can read assistant conversations. That is a promise to
- * visitors, not an internal preference, so `conversations` is admin-only in every
- * phase and no role may be added to that line without the notice changing first.
- * `/privacy` copy is Sumeet's and is not edited by any session.
+ * FOUR ROLES SINCE CANON A4, ratified 9 August 2026. `owner` is new and sits
+ * above `admin`; `admin` now reaches conversations and briefs, which is a
+ * WIDENING of who can read a visitor's conversation with the assistant.
+ *
+ * THE /privacy CONSTRAINT IS STILL LOAD-BEARING, and it did not disappear when
+ * it widened, it changed shape. The published notice used to say one named
+ * administrator could read assistant conversations; it now says a small, named
+ * group of Yallo Talent administrators can. That is the sentence the
+ * `conversations` line below has to keep true, so `owner` and `admin` are on it
+ * and nothing else goes on it without the notice changing FIRST. The order is
+ * not a formality: round 25 §3 required the wording live before this widening
+ * shipped, because a notice that lags the code is a false statement to a
+ * visitor about their own data. It shipped one commit earlier, in item 1.
  *
  * BRIEFS SPLIT READ FROM WRITE. Ops follows leads up, so ops reads briefs. There
  * is no brief-write path in the cockpit today; the capability is named anyway, so
  * that when one arrives it arrives against an existing admin-only entry rather
  * than inheriting the read rule by accident.
  */
-export const ROLES = ["admin", "editor", "ops"] as const;
+export const ROLES = ["owner", "admin", "editor", "ops"] as const;
 
 export type Role = (typeof ROLES)[number];
 
@@ -34,8 +42,10 @@ export function isRole(value: unknown): value is Role {
 
 /** What each role is, in the words the Users pane shows. */
 export const ROLE_DESCRIPTIONS: Record<Role, string> = {
+  owner:
+    "Everything, and cannot be disabled or demoted by anyone, including another owner.",
   admin: "Everything: all panes, conversations, briefs and accounts.",
-  editor: "Articles and case studies only, through the pull request path.",
+  editor: "Articles and case studies. No briefs, conversations or accounts.",
   ops: "Briefs, read only.",
 };
 
@@ -50,13 +60,13 @@ export const PANES = [
 export type Pane = (typeof PANES)[number];
 
 const PANE_ROLES: Record<Pane, readonly Role[]> = {
-  /* Admin and ops. Ops exists to follow leads up. */
-  briefs: ["admin", "ops"],
-  /* Admin only, and this line is the /privacy promise in code. */
-  conversations: ["admin"],
-  caseStudies: ["admin", "editor"],
-  articles: ["admin", "editor"],
-  users: ["admin"],
+  /* Ops exists to follow leads up. */
+  briefs: ["owner", "admin", "ops"],
+  /* Two roles, and this line is the /privacy promise in code. */
+  conversations: ["owner", "admin"],
+  caseStudies: ["owner", "admin", "editor"],
+  articles: ["owner", "admin", "editor"],
+  users: ["owner", "admin"],
 };
 
 /**
@@ -66,8 +76,16 @@ const PANE_ROLES: Record<Pane, readonly Role[]> = {
 const CAPABILITY_ROLES = {
   /* No such path exists yet. Named now so the first one is written against an
      admin-only rule instead of inheriting briefs' read rule. */
-  briefsWrite: ["admin"],
-  usersManage: ["admin"],
+  briefsWrite: ["owner", "admin"],
+  usersManage: ["owner", "admin"],
+  /* ONLY AN OWNER MAY MAKE AN OWNER, and this is a delegated decision rather
+     than a line of canon, logged in relay v34 for Sumeet's veto. Canon A4 says
+     an owner cannot be demoted or disabled by anyone. If an admin could also
+     CREATE one, an admin could mint an account that nobody can ever take back,
+     which turns "undemotable" from a protection into an escalation route.
+     Reserving the assignment to an owner keeps the protection and closes the
+     route. */
+  ownerAssign: ["owner"],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type Capability = keyof typeof CAPABILITY_ROLES;
@@ -89,6 +107,38 @@ export function canDo(
     role != null &&
     (CAPABILITY_ROLES[capability] as readonly Role[]).includes(role)
   );
+}
+
+/**
+ * Whether `actor` may change `target`'s role or disabled flag.
+ *
+ * THE OWNER IS UNTOUCHABLE BY EVERYONE, INCLUDING AN OWNER. Canon A4 says
+ * neither an admin nor an owner may demote or disable the owner, and the literal
+ * reading is the safe one: an owner who demotes their own account is the lockout
+ * the break-glass credential exists to survive, offered by the pane rather than
+ * arrived at by accident. Round 23 already refused to let the last enabled admin
+ * disable itself for the same reason; this is that rule with the exception
+ * removed.
+ *
+ * SEPARATE FROM `canDo('usersManage')` ON PURPOSE. Managing accounts and
+ * managing THIS account are different questions, and folding the second into the
+ * first is how a target-blind capability check grants more than it means.
+ */
+export function canManageAccount(
+  actor: Role | null | undefined,
+  target: Role,
+): boolean {
+  if (!canDo(actor, "usersManage")) return false;
+  return target !== "owner";
+}
+
+/** Whether `actor` may hand out the role `next`. */
+export function canAssignRole(
+  actor: Role | null | undefined,
+  next: Role,
+): boolean {
+  if (!canDo(actor, "usersManage")) return false;
+  return next === "owner" ? canDo(actor, "ownerAssign") : true;
 }
 
 /** Pane -> its route, so the nav and the guards agree on both halves. */

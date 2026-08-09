@@ -1,495 +1,144 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
-import { revalidatePath } from "next/cache";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import {
-  parseStudyFile,
-  validateDraft,
-  writeScalar,
-} from "@/lib/admin/case-study-draft";
-import { ADMIN_ROUTES } from "@/lib/admin/config";
-import { assertPane, requirePane } from "@/lib/admin/guard";
-import {
-  ORDER_PATH,
-  publishOrder,
-  publishStudy,
-  readPublishes,
-  studyPath,
-} from "@/lib/admin/publish";
-import {
-  clearStagedOrder,
-  committedOrder,
-  movedOrder,
-  readStagedOrder,
-  writeStagedOrder,
-} from "@/lib/admin/staged-order";
-import { orderedCaseStudies } from "@/lib/case-study-order";
-import { getAllCaseStudies } from "@/lib/content";
+import { RowTitle } from "@/app/admin/RowTitle";
+import { requirePane } from "@/lib/admin/guard";
+import { allCaseStudies } from "@/lib/db/content";
 import styles from "../../Admin.module.css";
-import { RowTitle } from "../../RowTitle";
+import { setStatusAction } from "../articles/actions";
+import { moveAction } from "./actions";
 
 /**
- * Pane 3, Case studies. Read, and REORDER, which is the write path.
+ * Case studies. Owner, admin and editor, per canon A4's role map.
  *
- * Reordering does not write the repository from this process. It calls
- * `publishOrder`, which opens a pull request against `content/case-studies/
- * order.yaml` and asks GitHub to auto-merge it, so CI runs before anything
- * publishes. There is no direct-push path and there is no merge performed here:
- * round 17 §2.3's stop condition is that a half-built write path which commits
- * to `main` is worse than no write path, and a PR that waits for its checks is
- * the shape that satisfies it.
+ * THE STAGED ORDER IS GONE, AND THAT IS THE POINT. Round 23 staged a reorder in
+ * a cookie, showed a banner explaining that what you were looking at was not
+ * what the site served, and shipped the change as a pull request that GitHub
+ * auto-merged. Canon A2 removed the pull request, so the cookie has nothing to
+ * stage FOR: a move writes the `position` column in one transaction and the
+ * homepage rail and `/case-studies` read it on the next request. What this pane
+ * shows is what the site serves, which is what the banner existed to apologise
+ * for not being.
  *
- * EXERCISED AGAINST GITHUB, round 20, and watched. One reorder published from
- * this pane created branch `admin/2026-08-07T07-29-20-906Z`, committed
- * content/case-studies/order.yaml to it and opened pull request #13, whose diff
- * is the two lines that swapped and nothing else. CI ran on it.
- *
- * AUTO-MERGE WAS REFUSED, and the refusal is the useful part. `allow_auto_merge`
- * is true on the repository; GitHub still declined with "Pull request is in
- * unstable status", because `main` carries no branch protection and no required
- * status check, so nothing blocks the merge and there is nothing for auto-merge
- * to wait on. The module did what round 17 §2.3 requires — reported it and left
- * the pull request open — and a human merges it. Until a required check exists
- * on `main`, "auto-merge lands it once CI passes" is not a claim this pane can
- * make, and it no longer makes it.
- *
- * WHAT IS LISTED, and in what order. `orderedCaseStudies()` — the same function
- * the homepage rail and /case-studies render from, so this pane cannot show an
- * order the site does not publish. content/case-studies/order.yaml is the single
- * editorial source; a study not named there appends in date order behind those
- * that are.
- *
- * `clientPublic` is surfaced on every row because it is the field with a
- * consent rule behind it: false until written consent to name the client and use
- * their logo is on file. Showing it as a state rather than hiding it means the
- * cockpit can be used to audit consent, not only to author.
- *
- * UNPUBLISHED studies are listed too, behind the published ones.
- * `orderedCaseStudies()` drops them, correctly — `published: false` is a
- * statement about the study, not about its position — but a cockpit that shows
- * only what is live cannot answer "where did that draft go", which is precisely
- * the question a file-based CMS with no index invites.
+ * ORDERING IS UP AND DOWN HERE, DRAG AND DROP IN 25b. The column, the single
+ * transaction and both read paths are in place; what is missing is the pointer
+ * affordance over the top of them. An up/down control is also the keyboard route
+ * that a drag-and-drop surface has to provide anyway, so it is not scaffolding
+ * to be thrown away.
  */
 export const dynamic = "force-dynamic";
-
-/**
- * Move one study one place, and open a pull request for it.
- *
- * The new order is computed from `caseStudyOrder()` READ FRESH, never from
- * anything the form carries. A form that posts the whole intended order would
- * silently overwrite an edit someone made to order.yaml between the page render
- * and the click, and this file is edited by hand as well as by this pane.
- */
-async function stageMove(formData: FormData): Promise<void> {
-  "use server";
-  await assertPane("caseStudies");
-  const slug = String(formData.get("slug") ?? "");
-  const direction =
-    String(formData.get("direction") ?? "") === "up" ? "up" : "down";
-
-  const staged = await readStagedOrder();
-  const current = staged ? staged.slugs : committedOrder();
-  const next = movedOrder(current, slug, direction);
-  if (!next) {
-    redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(`"${slug}" cannot move ${direction} from where it is. It is either at the end of the order or not named in ${ORDER_PATH}.`)}`,
-    );
-  }
-
-  await writeStagedOrder(next);
-  revalidatePath(ADMIN_ROUTES.caseStudies);
-  redirect(
-    `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${direction}`)}`,
-  );
-}
-
-/** Throws the staged order away. The pane offers this beside the banner. */
-async function discardStaged(): Promise<void> {
-  "use server";
-  await assertPane("caseStudies");
-  await clearStagedOrder();
-  revalidatePath(ADMIN_ROUTES.caseStudies);
-  redirect(`${ADMIN_ROUTES.caseStudies}?discarded=1`);
-}
-
-/**
- * The staged order, published as ONE pull request.
- *
- * This is the whole point of round 23 §5. The per-move pull request path is
- * gone: a rerank is one editorial decision, so it is one commit and one review.
- * PRs #14 to #18 were the same nine-move rerank arriving as five pull requests
- * against one stale base, and whichever merged first would have encoded one
- * move rather than the order.
- *
- * The diff is computed here, against the file as it stands, not against
- * anything the form carried. A form that posted the intended order would
- * overwrite an edit made to order.yaml between the page render and the click,
- * and this file is edited by hand as well as by this pane.
- */
-async function publishStagedOrder(): Promise<void> {
-  "use server";
-  await assertPane("caseStudies");
-
-  const staged = await readStagedOrder();
-  if (!staged) {
-    redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent("There is no staged order to publish, or the one there was no longer matches the studies on disk.")}`,
-    );
-  }
-  if (staged.moved === 0) {
-    redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent("The staged order is identical to the published one, so there is nothing to open a pull request for.")}`,
-    );
-  }
-
-  /* The file as it stands, so the rewrite keeps its header and its per-slug
-     client column. Read here rather than inside publishOrder because that module
-     is the GitHub boundary and reads no filesystem: check-write-path substitutes
-     its network calls and would otherwise need a fixture directory too. */
-  let previous: string | undefined;
-  try {
-    previous = readFileSync(join(process.cwd(), ORDER_PATH), "utf8");
-  } catch {
-    /* Absent is legitimate, the default header is written for a new file. */
-  }
-
-  const result = await publishOrder(staged.slugs, { previous });
-  if (!result.ok) {
-    redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(result.error)}`,
-    );
-  }
-
-  /* Cleared only after the pull request exists. A failed publish that threw the
-     staged order away would lose the rerank and give no way to retry it. */
-  await clearStagedOrder();
-  revalidatePath(ADMIN_ROUTES.caseStudies);
-  redirect(
-    `${ADMIN_ROUTES.caseStudies}?published=${staged.moved}` +
-      `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}` +
-      (result.autoMergeError
-        ? `&why=${encodeURIComponent(result.autoMergeError)}`
-        : ""),
-  );
-}
-
-/**
- * Publish or unpublish one study, through the same pull request path.
- *
- * NEVER A DELETION. `published: false` is the whole operation: round 17 §3
- * forbids a delete path from the cockpit outright, and an unpublished study is
- * one whose page stops being linked, not one whose evidence stops existing. The
- * study keeps its file, its position in order.yaml and its history, and the pane
- * still lists it — behind the published ones, labelled.
- *
- * The draft is VALIDATED BEFORE THE PULL REQUEST OPENS, against the build's own
- * schema. Unpublishing cannot itself make a study invalid, but a study that was
- * already invalid on disk would open a pull request CI is certain to fail, and
- * §2.2's requirement is that the happy path cannot do that.
- */
-async function setPublished(formData: FormData): Promise<void> {
-  "use server";
-  await assertPane("caseStudies");
-  const slug = String(formData.get("slug") ?? "");
-  const next = String(formData.get("next") ?? "") === "true";
-
-  const fail = (message: string) =>
-    redirect(`${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(message)}`);
-
-  let source: string;
-  try {
-    source = readFileSync(join(process.cwd(), studyPath(slug)), "utf8");
-  } catch {
-    fail(
-      `No file at ${studyPath(slug)}, so there is nothing to publish or unpublish.`,
-    );
-    return;
-  }
-
-  let written: string;
-  try {
-    written = writeScalar(source, "published", next);
-  } catch (err) {
-    fail((err as Error).message);
-    return;
-  }
-
-  const draft = parseStudyFile(slug, written);
-  const errors = validateDraft(draft);
-  if (errors.length) {
-    fail(
-      `${slug} would not pass the build: ` +
-        errors.map((e) => `${e.field}: ${e.message}`).join(" · "),
-    );
-    return;
-  }
-
-  const result = await publishStudy(
-    slug,
-    written,
-    next ? `publish ${slug}` : `unpublish ${slug}`,
-  );
-  if (!result.ok) fail(result.error);
-  else {
-    revalidatePath(ADMIN_ROUTES.caseStudies);
-    redirect(
-      `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${next ? "published" : "unpublished"}`)}` +
-        `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}` +
-        (result.autoMergeError
-          ? `&why=${encodeURIComponent(result.autoMergeError)}`
-          : ""),
-    );
-  }
-}
 
 export default async function CaseStudiesPane({
   searchParams,
 }: {
   searchParams: Promise<{
-    moved?: string;
     err?: string;
-    pr?: string;
-    open?: string;
-    why?: string;
+    moved?: string;
     published?: string;
-    discarded?: string;
+    draft?: string;
   }>;
 }) {
   await requirePane("caseStudies");
-  /* The staged order wins the render when there is one, so the rows show what
-     will be published rather than what currently is. The banner below says so
-     in words; a list that quietly showed staged positions with no marking would
-     be the optimistic UI lying. */
-  const staged = await readStagedOrder();
-  const { moved, err, pr, open, why, published, discarded } =
-    await searchParams;
-  const publishes = await readPublishes();
-  const all = getAllCaseStudies();
-  const committed = orderedCaseStudies(all);
-  const studies = staged
-    ? staged.slugs
-        .map((slug) => committed.find((c) => c.frontmatter.slug === slug))
-        .filter((c): c is (typeof committed)[number] => c !== undefined)
-    : committed;
-  const publishedSlugs = new Set(studies.map((s) => s.frontmatter.slug));
-  const unpublished = all.filter(
-    (s) => !publishedSlugs.has(s.frontmatter.slug),
-  );
+  const q = await searchParams;
+
+  let studies: Awaited<ReturnType<typeof allCaseStudies>> = [];
+  let error: string | null = null;
+  try {
+    studies = await allCaseStudies();
+  } catch (err) {
+    error = (err as Error).message;
+  }
+
+  const published = studies.filter((s) => s.status === "published");
 
   return (
     <>
       <h1 className={styles.h1}>Case studies</h1>
       <p className={styles.lede}>
-        Everything in <code>content/case-studies/</code>, in the published order
-        from <code>order.yaml</code>: the same order the homepage rail and{" "}
-        <code>/case-studies</code> render. Moving a study STAGES the change
-        here; nothing leaves this pane until you publish the order, and then it
-        leaves as one pull request that GitHub auto-merges once CI is green.
-        Nothing here writes <code>main</code> directly, and nothing here merges.
+        Case studies live in the database. The order below is the order the
+        homepage rail and <code>/case-studies</code> render, and moving one
+        writes it in a single transaction. Nothing is staged, nothing opens a
+        pull request, and nothing here deletes.
       </p>
 
-      <p className={styles.count}>
-        {studies.length} published · {unpublished.length} unpublished
-      </p>
-
-      {staged ? (
-        <div className={styles.stagedBanner}>
-          <p>
-            <strong>This order is staged, not published.</strong> {staged.moved}{" "}
-            position{staged.moved === 1 ? "" : "s"} differ from what is live.
-            The list below shows the staged order, so it is not what visitors
-            see yet. It survives a refresh and expires after twelve hours.
-          </p>
-          <div className={styles.rowActions}>
-            <form action={publishStagedOrder}>
-              <button className={styles.submit} type="submit">
-                Publish order, one pull request
-              </button>
-            </form>
-            <form action={discardStaged}>
-              <button className={styles.rowButton} type="submit">
-                Discard staged order
-              </button>
-            </form>
-          </div>
-        </div>
+      {q.err ? <p className={styles.error}>{q.err}</p> : null}
+      {error ? <p className={styles.error}>{error}</p> : null}
+      {q.moved ? <p className={styles.ok}>Order saved. {q.moved}</p> : null}
+      {q.published ? (
+        <p className={styles.ok}>/case-studies/{q.published} is live now.</p>
       ) : null}
-
-      {discarded ? (
+      {q.draft ? (
         <p className={styles.ok}>
-          Staged order discarded. The list below is what is published.
-        </p>
-      ) : null}
-      {published ? (
-        <p className={styles.ok}>
-          {published} position{published === "1" ? "" : "s"} published as one
-          pull request.
+          /case-studies/{q.draft} is back to draft and is no longer served.
         </p>
       ) : null}
 
-      {err ? <p className={styles.error}>{err}</p> : null}
-      {pr ? (
-        <p className={open === "waiting" ? styles.bad : styles.ok}>
-          Pull request #{pr} opened.{" "}
-          {open === "waiting"
-            ? "Auto-merge was refused, so it is waiting for you to merge it after CI passes. Nothing was merged from here."
-            : "Auto-merge is on, so it publishes once CI passes."}
-          {/* GitHub's own words, not a paraphrase. Round 20 watched the first
-              real publish report "auto-merge could not be enabled on this
-              repository" while `allow_auto_merge` was in fact true — the
-              refusal was "Pull request is in unstable status", which is a
-              statement about this PR and about `main` carrying no required
-              check, not about the repository setting. A message that names the
-              wrong cause sends whoever reads it to the wrong settings page. */}
-          {why ? (
-            <span className={styles.meta}> GitHub said: {why}</span>
-          ) : null}
-        </p>
-      ) : null}
-      {moved ? <p className={styles.ok}>Moved {moved}.</p> : null}
-
-      {/* §2.2's fourth requirement: every publish this cockpit opened, and where
-          it got to. Read from GitHub when the pane renders — a local record of
-          "publishes I started" drifts the moment a human merges or closes one,
-          and "did it land" is the only question worth asking. No polling; the
-          refresh is a link, because a spinner that re-fetches every two seconds
-          is a worse answer to "has CI finished" than a link that says so. */}
-      <h2 className={styles.h2}>Publishes</h2>
-      {publishes.ok ? (
-        publishes.publishes.length === 0 ? (
-          <p className={styles.empty}>
-            No pull request has been opened from this cockpit yet.
-          </p>
-        ) : (
-          <ul className={styles.rows}>
-            {publishes.publishes.map((p) => (
-              <li key={p.number} className={styles.row}>
+      <h2 className={styles.h2}>
+        {studies.length} stud{studies.length === 1 ? "y" : "ies"},{" "}
+        {published.length} published
+      </h2>
+      {studies.length === 0 ? (
+        <p className={styles.empty}>No case studies yet.</p>
+      ) : (
+        <ul className={styles.rows}>
+          {studies.map((study, i) => {
+            const isPublished = study.status === "published";
+            return (
+              <li key={study.id} className={styles.row}>
                 <div className={styles.rowHead}>
-                  <span className={styles.meta}>#{p.number}</span>
-                  <RowTitle level={3} className={styles.rowTitle}>
-                    <a href={p.url} rel="noreferrer">
-                      {p.title}
-                    </a>
-                  </RowTitle>
-                  <span className={p.merged ? styles.ok : styles.meta}>
-                    {p.merged ? "merged" : p.state}
+                  <span className={isPublished ? styles.ok : styles.meta}>
+                    {study.status}
                   </span>
-                  <span
-                    className={
-                      p.checks === "success"
-                        ? styles.ok
-                        : p.checks === "failure"
-                          ? styles.bad
-                          : styles.meta
-                    }
-                  >
-                    {p.checks === null
-                      ? "checks not reported"
-                      : p.checks === "failure" && p.failingCheck
-                        ? `failed: ${p.failingCheck}`
-                        : `checks ${p.checks}`}
+                  <RowTitle level={3} className={styles.rowTitle}>
+                    {study.cardTitle ?? study.title}
+                  </RowTitle>
+                  <span className={styles.meta}>
+                    {study.clientPublic ? study.client : "client not named"}
+                  </span>
+                  <span className={styles.meta}>
+                    {[study.platformLabel, study.region]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </span>
                 </div>
-                <p className={styles.meta}>{p.branch}</p>
+                <div className={styles.rowActions}>
+                  <form action={moveAction}>
+                    <input type="hidden" name="slug" value={study.slug} />
+                    <input type="hidden" name="direction" value="up" />
+                    <button
+                      className={styles.rowButton}
+                      disabled={i === 0}
+                      type="submit"
+                    >
+                      Move up
+                    </button>
+                  </form>
+                  <form action={moveAction}>
+                    <input type="hidden" name="slug" value={study.slug} />
+                    <input type="hidden" name="direction" value="down" />
+                    <button
+                      className={styles.rowButton}
+                      disabled={i === studies.length - 1}
+                      type="submit"
+                    >
+                      Move down
+                    </button>
+                  </form>
+                  <form action={setStatusAction}>
+                    <input type="hidden" name="type" value="case_study" />
+                    <input type="hidden" name="id" value={study.id} />
+                    <input
+                      type="hidden"
+                      name="next"
+                      value={isPublished ? "draft" : "published"}
+                    />
+                    <button className={styles.rowButton} type="submit">
+                      {isPublished ? "Take back to draft" : "Publish"}
+                    </button>
+                  </form>
+                </div>
               </li>
-            ))}
-          </ul>
-        )
-      ) : (
-        <p className={styles.empty}>
-          Could not read pull requests: {publishes.error}
-        </p>
+            );
+          })}
+        </ul>
       )}
-      <p className={styles.meta}>
-        <Link href={ADMIN_ROUTES.caseStudies}>Refresh publish status</Link>
-      </p>
-
-      <h2 className={styles.h2}>Studies</h2>
-      <ul className={styles.rows}>
-        {[...studies, ...unpublished].map((study, i) => (
-          <li key={study.frontmatter.slug} className={styles.row}>
-            <div className={styles.rowHead}>
-              <span className={styles.meta}>
-                {i < studies.length ? i + 1 : "unranked"}
-              </span>
-              <RowTitle level={3} className={styles.rowTitle}>
-                {study.frontmatter.title}
-              </RowTitle>
-              <span className={styles.meta}>{study.frontmatter.date}</span>
-              <span className={styles.meta}>{study.frontmatter.region}</span>
-              {study.frontmatter.engagement ? (
-                <span className={styles.meta}>
-                  {study.frontmatter.engagement}
-                </span>
-              ) : null}
-              <span
-                className={
-                  study.frontmatter.clientPublic ? styles.ok : styles.bad
-                }
-              >
-                {study.frontmatter.clientPublic
-                  ? `client named: ${study.frontmatter.client}`
-                  : "client not named"}
-              </span>
-              {study.frontmatter.published === false ? (
-                <span className={styles.bad}>unpublished</span>
-              ) : null}
-            </div>
-            <p className={styles.meta}>{study.frontmatter.slug}</p>
-            <p className={styles.meta}>
-              <Link
-                href={`${ADMIN_ROUTES.caseStudies}/${study.frontmatter.slug}`}
-              >
-                Edit this study
-              </Link>
-            </p>
-            {/* Publish state is a property of the study, so the control is on
-                every row — including the unpublished ones, which is the only
-                way a draft can be brought back without editing the file. */}
-            <form action={setPublished}>
-              <input type="hidden" name="slug" value={study.frontmatter.slug} />
-              <input
-                type="hidden"
-                name="next"
-                value={study.frontmatter.published === false ? "true" : "false"}
-              />
-              <button className={styles.submit} type="submit">
-                {study.frontmatter.published === false
-                  ? "Publish"
-                  : "Unpublish"}
-              </button>
-            </form>
-            {i < studies.length ? (
-              <form action={stageMove}>
-                <input
-                  type="hidden"
-                  name="slug"
-                  value={study.frontmatter.slug}
-                />
-                <button
-                  className={styles.submit}
-                  type="submit"
-                  name="direction"
-                  value="up"
-                  disabled={i === 0}
-                >
-                  Move up
-                </button>
-                <button
-                  className={styles.submit}
-                  type="submit"
-                  name="direction"
-                  value="down"
-                  disabled={i === studies.length - 1}
-                >
-                  Move down
-                </button>
-              </form>
-            ) : null}
-          </li>
-        ))}
-      </ul>
     </>
   );
 }

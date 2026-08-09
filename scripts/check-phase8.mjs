@@ -76,7 +76,7 @@ const ROUTES = [
   "/capabilities/data-analytics",
   "/industries/retail",
   "/industries/retail/customer-experience",
-  `/case-studies/${sampleCaseStudySlug()}`,
+  `/case-studies/${await sampleCaseStudySlug(BASE)}`,
   "/brief",
 ];
 

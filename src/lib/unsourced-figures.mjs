@@ -59,10 +59,27 @@ export function unsourcedFigures(body, sources) {
   ];
 
   for (const pattern of patterns) {
-    for (const [match] of prose.matchAll(pattern)) {
+    for (const m of prose.matchAll(pattern)) {
+      const match = m[0];
       const figure = match.trim();
       /* A four-digit number that is a plausible year is not a claim. */
       if (/^(19|20)\d{2}$/.test(figure)) continue;
+      /* NOR IS A NUMBER THAT IS PART OF A PRODUCT'S NAME, and this is canon §2's
+         occurrence-by-occurrence method rather than a hole in the rule.
+
+         Found on the first run of this detector over the real published corpus,
+         which only became possible when round 25 repointed it at the database:
+         "an upcoming Microsoft Dynamics 365 transformation" in the Al Othaim
+         study reported 365 as an unsourced figure. It is a product Microsoft
+         named, in a sentence about a programme, and it is not ours to rename any
+         more than "Journey Builder" is. The list is exhaustive and each entry is
+         a real product this site names; a number that is not immediately
+         preceded by one of these words is still a claim. */
+      const before = prose
+        .slice(Math.max(0, m.index - 24), m.index)
+        .toLowerCase();
+      if (/\b(?:dynamics|office|microsoft|windows|copilot)\s*$/.test(before))
+        continue;
       if (claims.includes(figure)) continue;
       /* The digits alone, so "63%" is covered by a claim written "63 per cent". */
       const digits = figure.replace(/[^0-9.]/g, "");

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
-import { getPublishedInsights } from "@/lib/content";
+import { publishedArticleEntries } from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -13,8 +13,8 @@ export const metadata: Metadata = buildMetadata({
   path: "/insights",
 });
 
-export default function InsightsHub() {
-  const all = getPublishedInsights();
+export default async function InsightsHub() {
+  const all = await publishedArticleEntries();
   const [featured, ...rest] = all;
 
   return (

@@ -76,27 +76,38 @@ jobs:
         run: pnpm biome check .
       - name: Terminology
         run: pnpm check:terms
-      - name: Case study excerpts
-        run: pnpm check:cs-excerpts
+      # RETIRED IN ROUND 25, each with its reason, because canon A1 moved
+      # articles and case studies out of content/** entirely:
+      #   check:cs-excerpts        walked content/case-studies; the excerpt
+      #                            budget is a database column check now.
+      #   check:published-manifest existed so the content lane could prove it had
+      #                            not changed a published route. There is no
+      #                            content lane path to a published route any
+      #                            more: publishing is a row write.
+      #   check:write-path         asserted the pull-request invariants of a
+      #                            pull-request path that A2 removed.
+      #   check:prose              asserted `.prose` was wired to MDXRemote on
+      #                            /insights/[slug]. It is wired to TiptapBody
+      #                            now and the assertion moved with it.
       - name: Prose rules
         run: pnpm check:prose
-      - name: Published manifest is current
-        run: pnpm check:published-manifest
-      # Canon §6, as a gate: no figure in a PUBLISHED insight without a matching
-      # `sources` entry. Drafts are exempt. The self-test runs first and writes a
-      # real fixture article that fails, so a checker that has gone blind cannot
-      # pass by finding nothing — which matters more here than anywhere, because
-      # every insight on the tree is a draft and the real corpus is a trivial pass.
-      - name: Sources on published insights (self-test, then the real corpus)
+      # Canon §6 as a nightly sweep, repointed at the database rather than
+      # retired: publish-time enforcement only ever sees the moment of
+      # publishing, and a figure can become unsourced afterwards. The self-test
+      # inserts a row that MUST fail, asserts it does and deletes it, so a
+      # detector that has gone blind cannot pass by finding nothing.
+      - name: Sources on published content (self-test, then the real corpus)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-sources.mjs --selftest
-      - name: Write path invariants
-        run: pnpm check:write-path
       - name: Taxonomy
         run: pnpm check:taxonomy
       - name: Redirect table, static half
         run: node -e "import('./src/data/redirects.mjs').then(m => { const n = m.redirectProbes().length; if (!n) { console.error('The redirect table produced no probes.'); process.exit(1); } console.log(n + ' redirect probe(s) derive from the table.'); })"
-      - name: Article validation rules
-        run: pnpm exec playwright test e2e/article-validation.spec.ts
+      - name: The eight publish refusals (canon A2)
+        run: pnpm exec playwright test e2e/publish-validation.spec.ts
+      - name: The four role guards (canon A4)
+        run: pnpm exec playwright test e2e/roles.spec.ts
 
   full:
     needs: scope
@@ -108,6 +119,24 @@ jobs:
     # all. Mapped to job-level env, which `if:` can read.
     env:
       HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+      # ROUND 25, AND IT IS NOT OPTIONAL ANY MORE. Canon A1 put articles and
+      # case studies in the database, so `/`, `/case-studies`, `/insights`,
+      # `sitemap.xml` and `llms.txt` all read it while they prerender. The first
+      # run of this branch failed here and said so in one line:
+      # "Error occurred prerendering page /llms.txt ... DATABASE_URL is not set".
+      #
+      # WHY AT JOB LEVEL RATHER THAN ON THE BUILD STEP. Every browser gate after
+      # the build judges the pages the build produced. A build with content and
+      # gates without it would have them measuring an empty homepage rail and an
+      # empty index, reporting green having checked nothing — which is the
+      # vacuous pass this round was told not to leave anywhere.
+      #
+      # THE BLAST RADIUS, STATED. This is the live database. The public routes
+      # only read from it. The one write any CI step makes is check:sources'
+      # self-test fixture, which it inserts and deletes inside the same run, and
+      # that step already had this secret before this line existed. Read access
+      # for the build is strictly smaller than the write CI already performs.
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -121,6 +150,19 @@ jobs:
 
       - name: Types
         run: pnpm tsc --noEmit
+
+      # R-25.3, ratified. eslint was installed and configured and ran in no lane,
+      # so its one error sat open across three rounds while biome reported clean.
+      # It joins the FULL lane only: biome is what the content lane needs to be
+      # fast, and eslint's value here is the Next-specific rules biome does not
+      # have. Scoped to src and scripts rather than the repository, because
+      # `pnpm lint` with no path also lints whatever build directory happens to
+      # be on disk and reports its output as findings.
+      #
+      # The retire-eslint question stays open for Sumeet. This stops the drift;
+      # it does not settle whether two linters earn their keep.
+      - name: eslint (Next rules biome does not carry)
+        run: npx eslint src scripts
 
       # Canon §7. Banned for commercial reasons, not stylistic ones — "GCC"
       # collides with Global Capability Centre in Yallo's own India business.
@@ -151,28 +193,18 @@ jobs:
       - name: Taxonomy
         run: pnpm check:taxonomy
 
-      # An excerpt is compression of the body, never a new fact. Round 10:
-      # --selftest proves the gate catches a fixture excerpt naming a client
-      # its body never mentions, run here before the real corpus so a broken
-      # checker cannot pass by going blind.
-      - name: Case-study excerpts (self-test, then the real corpus)
-        run: |
-          node scripts/check-case-study-excerpts.mjs --selftest
-          pnpm check:cs-excerpts
-
       # Relay v2.0 §3.1. Nothing renders below 12px, and uppercase mono labels
       # carry at least 0.12em tracking. The 11px eyebrow was the case flagged
       # as unreadable, and it appeared on every page.
       - name: Type scale
         run: pnpm check:type
 
-      # Round 21 §5. The legacy redirect map points at articles by slug, and an
-      # entry naming an unpublished article sends a 301 into a 404 — which hands
-      # the old URL's authority to a dead page. The map resolves its destinations
-      # through this manifest instead, so publishing an article is the whole
-      # action. This fails when the manifest and the content tree disagree.
-      - name: Published manifest matches the content tree
-        run: pnpm check:published-manifest
+      # Round 21 §5's manifest is RETIRED in round 25, and the rule it protected
+      # is not. A legacy URL must not 301 into a 404, and a file in git listing
+      # which rows are published cannot stay true when a publish takes seconds
+      # and needs no commit. The map points article URLs at the hub and names the
+      # studies that were deleted; `check:redirects` below is what proves it,
+      # and it is what caught both defects in that change.
 
       # Round 24 §4. Canon §6 as a gate rather than a habit: a figure in the body
       # of a PUBLISHED insight must have a matching `sources` entry. It runs in
@@ -180,8 +212,16 @@ jobs:
       # article is edited, the full lane when the detector itself changes. The
       # detector is one module, src/lib/unsourced-figures.mjs, shared with the
       # Articles pane so the two cannot disagree about what a figure is.
-      - name: Sources on published insights (self-test, then the real corpus)
+      - name: Sources on published content (self-test, then the real corpus)
         run: node scripts/check-sources.mjs --selftest
+
+      # Canon A4's /privacy clause is RATIFIED WORDING and carries "twelve
+      # months" as a literal, which is the one place round 15's derivation
+      # cannot reach. This asserts the configured window still resolves to
+      # twelve months and that the sentence is still on the page verbatim.
+      # Both limbs red-proven on 9 Aug 2026, exit 1 each.
+      - name: Privacy retention agrees with the ratified wording
+        run: pnpm check:privacy-retention
 
       - name: Build
         run: pnpm build
@@ -252,7 +292,21 @@ jobs:
       # recover from it, so the fix is a new process: the server that served
       # check:visual is retired and the browser gates below get a clean one.
       # Costs one `next start` against a build that already exists.
+      # THE SHARED SERVER GETS THE ADMIN PAIR since round 25, and the reason is
+      # the isolation gate below rather than convenience. Its role-reach half
+      # signs a fixture account in against THIS server, and the cockpit refuses
+      # to offer a sign-in it cannot complete: with no AUTH_SECRET the submit
+      # button renders disabled, which is correct behaviour and an unclickable
+      # button to a gate. Setting the pair on the gate's own step cannot help,
+      # because the server was started before it.
+      #
+      # The same throwaway pair the render gate already uses. It signs nothing
+      # in by itself; it is what makes the sign-in form operable at all.
       - name: Fresh server for the browser gates
+        env:
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_TEST_EMAIL }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
         run: |
           # `next start` becomes a process called `next-server`, so pkill on the
           # start command kills the wrapper and leaves the thing that is actually
@@ -445,6 +499,14 @@ jobs:
       #
       # The client-bundle assertion needs the real secrets and says so rather than
       # skipping silently; it is exercised where they exist.
+      # ROUND 25 GAVE THIS STEP ITS SECRETS, and it is a gate coming ALIVE
+      # rather than a gate being appeased. Its role-reach half creates a fixture
+      # account per role, signs it in and asserts what each one reaches; it has
+      # been printing "role reach NOT exercised: DATABASE_URL is not set" in
+      # every CI run it has ever had. Wiring the database at job level switched
+      # it on, and it then failed on a DISABLED sign-in button, because the
+      # cockpit refuses to offer a sign-in it cannot complete and this step had
+      # no AUTH_SECRET. The same throwaway pair the render gate already uses.
       - name: Admin cockpit isolation (six assertions, one anonymous read)
         run: node scripts/check-admin-isolation.mjs http://localhost:3100
 
@@ -454,8 +516,6 @@ jobs:
       # simulated, and a reorder preserves order.yaml's header and its per-slug
       # client column. Needs no server and no credential, which is why it sits
       # here rather than inside the block above.
-      - name: Write path invariants (reorder, edit, unpublish)
-        run: pnpm check:write-path
 
       # Round 19 §2.2's class guard. Reports the prose figures rather than
       # failing on them — the 42 occurrences are Sumeet's under R-A9 — and fails

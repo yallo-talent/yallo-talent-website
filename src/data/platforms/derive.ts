@@ -340,8 +340,12 @@ export function getPlatformModule(
 ): { platform: PlatformCoverage; module: PlatformModule } | null {
   const platform = getPlatformCoverage(platformSlug);
   if (!platform) return null;
-  const module = platform.modules.find((m) => m.slug === moduleSlug);
-  return module ? { platform, module } : null;
+  /* `found`, not `module`. R-25.2: `module` is a reserved binding in a Next
+     module scope and @next/next/no-assign-module-variable is an ERROR rather
+     than a warning, because assigning it can break the bundler's own module
+     wrapper. The returned property keeps its name; only the local changes. */
+  const found = platform.modules.find((m) => m.slug === moduleSlug);
+  return found ? { platform, module: found } : null;
 }
 
 /** Every platform/module pair with a page, for generateStaticParams. */

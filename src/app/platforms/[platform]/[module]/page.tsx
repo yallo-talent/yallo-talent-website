@@ -7,7 +7,7 @@ import {
   getPlatformModule,
   publishedModuleParams,
 } from "@/data/platforms/derive";
-import { getAllCaseStudies } from "@/lib/content";
+import { publishedCaseStudies } from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
 
 /**
@@ -73,17 +73,20 @@ export default async function PlatformModulePage({
      at all, which is the honest state; SAP keeps its one genuinely
      "SAP S/4HANA"-tagged study. */
   const suite = hit.platform.name.toLowerCase();
-  const studies = getAllCaseStudies()
-    .filter((c) => (c.frontmatter.platform ?? "").toLowerCase().includes(suite))
+  /* `platform_label` is the free-text descriptor the study publishes, not the
+     platform taxonomy — the substring match is unchanged from the frontmatter
+     field it replaced, so which studies appear here is unchanged too. */
+  const studies = (await publishedCaseStudies())
+    .filter((c) => (c.platformLabel ?? "").toLowerCase().includes(suite))
     .slice(0, 3)
     .map((c) => ({
-      slug: c.frontmatter.slug,
-      title: c.frontmatter.title,
+      slug: c.slug,
+      title: c.title,
       /* clientPublic gates the NAME, not the study. The schema says outright
          "False where the published page does not name the client. Never
          guessed." */
-      client: c.frontmatter.clientPublic ? c.frontmatter.client : null,
-      platform: c.frontmatter.platform ?? null,
+      client: c.clientPublic ? c.client : null,
+      platform: c.platformLabel ?? null,
     }));
 
   return (

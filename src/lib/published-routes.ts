@@ -11,11 +11,7 @@ import {
 } from "@/data/platforms/derive";
 import { RESEARCH_BASE, researchSlugs } from "@/data/research";
 import { SYNTHESIS_SLUG } from "@/data/research/synthesis";
-import {
-  getAllCaseStudySlugs,
-  getAllInsightSlugs,
-  getInsight,
-} from "@/lib/content";
+import { publishedArticles, publishedCaseStudies } from "@/lib/db/content";
 
 const sectorL2Registry: Record<string, L1PageData> = {
   retail: retailData,
@@ -34,7 +30,42 @@ const sectorL2Registry: Record<string, L1PageData> = {
  * so sitemap.ts, the OG route and llms.txt cannot enumerate different route
  * sets.
  */
-export function publishedPaths(): string[] {
+export async function publishedPaths(): Promise<string[]> {
+  /* ROUND 25: these three families come from the database, so the sitemap,
+     llms.txt and the assistant corpus all change the moment a publish lands
+     rather than at the next deploy. Published rows only — a draft has no URL,
+     and listing one would put a 404 in the sitemap. The archives follow the
+     articles: an archive is a view of published rows, so it appears when the
+     rows do and disappears when they stop clearing the threshold. */
+  const [articles, studies, taxonomies] = await Promise.all([
+    publishedArticles(),
+    publishedCaseStudies(),
+    Promise.all(
+      (["industry", "platform", "discipline"] as const).map(async (kind) => {
+        const slugs = await publishedTaxonomySlugs(kind);
+        return slugs.map((slug) => `/insights/${kind}/${slug}`);
+      }),
+    ),
+  ]);
+  return [
+    ...structuralPaths(),
+    ...articles.map((a) => `/insights/${a.slug}`),
+    ...studies.map((c) => `/case-studies/${c.slug}`),
+    ...taxonomies.flat(),
+  ];
+}
+
+/**
+ * Every published path the REPOSITORY owns — the whole estate except the two
+ * content families that moved to the database under canon A1.
+ *
+ * WHY THE SPLIT EXISTS. It is synchronous and needs no connection string, so a
+ * build can enumerate it: the OG card generator prerenders against this, and CI
+ * builds this repository without a database. `publishedPaths()` is still the one
+ * enumeration for the sitemap, llms.txt and the assistant corpus — this is its
+ * first half, not a second list.
+ */
+export function structuralPaths(): string[] {
   const staticRoutes = [
     "/",
     "/brief",
@@ -103,26 +134,6 @@ export function publishedPaths(): string[] {
     ...researchSlugs.map((slug) => `${RESEARCH_BASE}/${slug}`),
   ];
 
-  const insightRoutes = getAllInsightSlugs()
-    .filter((slug) => {
-      try {
-        return getInsight(slug).frontmatter.published !== false;
-      } catch {
-        return false;
-      }
-    })
-    .map((slug) => `/insights/${slug}`);
-
-  const caseStudyRoutes = getAllCaseStudySlugs().map(
-    (slug) => `/case-studies/${slug}`,
-  );
-
-  const taxonomyRoutes = (
-    ["industry", "platform", "discipline"] as const
-  ).flatMap((kind) =>
-    publishedTaxonomySlugs(kind).map((slug) => `/insights/${kind}/${slug}`),
-  );
-
   return [
     ...staticRoutes,
     ...industryRoutes,
@@ -133,8 +144,5 @@ export function publishedPaths(): string[] {
     ...blueprintRoutes,
     ...capabilityRoutes,
     ...researchRoutes,
-    ...insightRoutes,
-    ...caseStudyRoutes,
-    ...taxonomyRoutes,
   ];
 }

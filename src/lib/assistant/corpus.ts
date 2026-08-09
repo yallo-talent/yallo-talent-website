@@ -47,7 +47,7 @@ import { managedDeliveryData } from "@/data/services/managed-delivery";
 import { permanentData } from "@/data/services/permanent";
 import type { ServicePageData } from "@/data/services/types";
 import { teamIndex } from "@/data/team";
-import { getAllCaseStudies, getPublishedInsights } from "@/lib/content";
+import { publishedArticles, publishedCaseStudies } from "@/lib/db/content";
 import { publishedPaths } from "@/lib/published-routes";
 
 export interface CorpusDocument {
@@ -269,11 +269,19 @@ function buildResearchDocs(published: Set<string>): CorpusDocument[] {
   return [...pieces, ...synthesis];
 }
 
-function buildCaseStudyDocs(published: Set<string>): CorpusDocument[] {
-  return getAllCaseStudies()
-    .filter((entry) => published.has(`/case-studies/${entry.frontmatter.slug}`))
-    .map((entry) => {
-      const fm = entry.frontmatter;
+async function buildCaseStudyDocs(
+  published: Set<string>,
+): Promise<CorpusDocument[]> {
+  return (await publishedCaseStudies())
+    .filter((row) => published.has(`/case-studies/${row.slug}`))
+    .map((row) => {
+      const fm = {
+        ...row,
+        client: row.client,
+        clientPublic: row.clientPublic,
+        platform: row.platformLabel ?? "",
+        region: row.region ?? "",
+      };
       const clientName = fm.clientPublic
         ? fm.client
         : "an enterprise client (not named)";
@@ -295,17 +303,19 @@ function buildCaseStudyDocs(published: Set<string>): CorpusDocument[] {
     });
 }
 
-function buildInsightDocs(published: Set<string>): CorpusDocument[] {
-  return getPublishedInsights()
-    .filter((entry) => published.has(`/insights/${entry.frontmatter.slug}`))
-    .map((entry) => ({
-      path: `/insights/${entry.frontmatter.slug}`,
-      title: entry.frontmatter.title,
-      linkLabel: entry.frontmatter.title,
-      summary: entry.frontmatter.summary,
+async function buildInsightDocs(
+  published: Set<string>,
+): Promise<CorpusDocument[]> {
+  return (await publishedArticles())
+    .filter((row) => published.has(`/insights/${row.slug}`))
+    .map((row) => ({
+      path: `/insights/${row.slug}`,
+      title: row.title,
+      linkLabel: row.title,
+      summary: row.summary,
       facts: [
-        `Category: ${entry.frontmatter.category}`,
-        `Published: ${entry.frontmatter.date}`,
+        `Category: ${row.category}`,
+        `Published: ${(row.publishedAt ?? row.updatedAt).slice(0, 10)}`,
       ],
     }));
 }
@@ -418,10 +428,10 @@ let cached: CorpusDocument[] | null = null;
  * process). Filtered to `publishedPaths()` twice over: once per family
  * above, and once here as a final backstop.
  */
-export function buildAssistantCorpus(): CorpusDocument[] {
+export async function buildAssistantCorpus(): Promise<CorpusDocument[]> {
   if (cached) return cached;
 
-  const published = new Set(publishedPaths());
+  const published = new Set(await publishedPaths());
 
   const docs = [
     buildHomeDoc(published),
@@ -434,8 +444,8 @@ export function buildAssistantCorpus(): CorpusDocument[] {
     ...buildServiceDocs(published),
     ...buildBlueprintDocs(published),
     ...buildResearchDocs(published),
-    ...buildCaseStudyDocs(published),
-    ...buildInsightDocs(published),
+    ...(await buildCaseStudyDocs(published)),
+    ...(await buildInsightDocs(published)),
   ].filter(
     (doc): doc is CorpusDocument => doc !== null && published.has(doc.path),
   );
