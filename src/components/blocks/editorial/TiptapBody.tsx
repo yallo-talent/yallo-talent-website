@@ -139,19 +139,21 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
       const tight = node.attrs?.tight !== false;
       return (
         <ul key={key}>
-          {/* biome-ignore-start lint/suspicious/noArrayIndexKey: a ProseMirror
-              list item has no identity beyond its position — the document IS an
-              ordered tree — so the index is not a stand-in for a key, it is the
-              key. React's warning is about reordering a list of entities; these
-              are not entities. */}
-          {(node.content ?? []).map((li, i) => (
-            <ListItem
-              key={`${key}-${i}`}
-              keyPrefix={`${key}-${i}`}
-              node={li}
-              tight={tight}
-            />
-          ))}
+          {(node.content ?? []).map((li, i) => {
+            /* A ProseMirror list item has no identity beyond where it sits: the
+               document IS an ordered tree, and two items with the same text are
+               two items. So the position is the key rather than a stand-in for
+               one, and there is nothing else to derive it from. */
+            const itemKey = `${key}-${i}`;
+            return (
+              <ListItem
+                key={itemKey}
+                keyPrefix={itemKey}
+                node={li}
+                tight={tight}
+              />
+            );
+          })}
         </ul>
       );
     }
@@ -162,19 +164,21 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
         typeof node.attrs?.start === "number" ? node.attrs.start : 1;
       return (
         <ol key={key} start={start === 1 ? undefined : start}>
-          {/* biome-ignore-start lint/suspicious/noArrayIndexKey: a ProseMirror
-              list item has no identity beyond its position — the document IS an
-              ordered tree — so the index is not a stand-in for a key, it is the
-              key. React's warning is about reordering a list of entities; these
-              are not entities. */}
-          {(node.content ?? []).map((li, i) => (
-            <ListItem
-              key={`${key}-${i}`}
-              keyPrefix={`${key}-${i}`}
-              node={li}
-              tight={tight}
-            />
-          ))}
+          {(node.content ?? []).map((li, i) => {
+            /* A ProseMirror list item has no identity beyond where it sits: the
+               document IS an ordered tree, and two items with the same text are
+               two items. So the position is the key rather than a stand-in for
+               one, and there is nothing else to derive it from. */
+            const itemKey = `${key}-${i}`;
+            return (
+              <ListItem
+                key={itemKey}
+                keyPrefix={itemKey}
+                node={li}
+                tight={tight}
+              />
+            );
+          })}
         </ol>
       );
     }
