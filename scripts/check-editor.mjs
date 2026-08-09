@@ -24,6 +24,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { neon } from "@neondatabase/serverless";
 import { chromium } from "@playwright/test";
+import { signInTo } from "./lib/admin-sign-in.mjs";
 import { ciFixtureSlug } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.argv[2] ?? "http://localhost:3115";
@@ -89,18 +90,24 @@ try {
   articleId = String(inserted[0].id);
 
   browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1400, height: 1000 } });
+  const context = await browser.newContext({ viewport: { width: 1400, height: 1000 } });
 
-  /* ── Sign in ───────────────────────────────────────────────────────────── */
-  await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "domcontentloaded" });
-  await page.fill('input[name="email"]', fixture.email);
-  await page.fill('input[name="password"]', fixture.password);
-  await page.locator('form button[type="submit"]').last().click();
-  await page.waitForLoadState("networkidle");
-  if (page.url().includes("/admin/sign-in")) {
+  /* ── Sign in ───────────────────────────────────────────────────────────────
+     R-26.2: a readiness probe before the first POST, and a wait on the outcome
+     rather than on a clock. Both live in one module now, because this gate and
+     check:admin-render each had their own and each raced a cold server. */
+  if (
+    !(await signInTo(context, {
+      base: BASE,
+      email: fixture.email,
+      password: fixture.password,
+      onNote: (message) => bad(message),
+    }))
+  ) {
     bad("the fixture account could not sign in, so nothing below was measured");
     throw new Error("sign-in failed");
   }
+  const page = await context.newPage();
   ok("signed in");
 
   /* ── The editor loads ──────────────────────────────────────────────────── */
