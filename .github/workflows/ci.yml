@@ -183,6 +183,14 @@ jobs:
       - name: Sources on published insights (self-test, then the real corpus)
         run: node scripts/check-sources.mjs --selftest
 
+      # Canon A4's /privacy clause is RATIFIED WORDING and carries "twelve
+      # months" as a literal, which is the one place round 15's derivation
+      # cannot reach. This asserts the configured window still resolves to
+      # twelve months and that the sentence is still on the page verbatim.
+      # Both limbs red-proven on 9 Aug 2026, exit 1 each.
+      - name: Privacy retention agrees with the ratified wording
+        run: pnpm check:privacy-retention
+
       - name: Build
         run: pnpm build
 

@@ -32,13 +32,26 @@ const assistantSection = {
        derives from the same number the purge enforces, so this page and
        `src/lib/db/transcripts.ts` cannot drift apart again. */
     `yallo.co offers an in-page assistant that answers questions from this site's own published content and can help put together a brief. ${assistantRetentionSentence} If a conversation results in a brief, the brief itself persists as a commercial record in the same way a brief sent through our contact form does.`,
-    /* ROUND 17, §2.3, and it is a factual statement about data handling rather
-       than a positioning choice. Retention answers "how long is this kept"; it
-       does not answer "who can read it", and to a visitor those are different
-       statements. One named administrator at Yallo can open a recorded
-       conversation, so that is said plainly rather than left to be inferred
-       from the existence of a retention period. */
-    "Recorded conversations can be read by one named administrator at Yallo, and by nobody else. They are not used to train any model, are not shared with any third party beyond the infrastructure that stores them, and are deleted on the schedule above whether or not they have been read.",
+    /* ROUND 25, item 1. THIS SENTENCE IS RATIFIED AND IS PUBLISHED EXACTLY AS
+       RATIFIED — canon A4, folded into canon §8 in the same commit. Not
+       improved, not softened, not extended, and not reworded to match the
+       voice of the paragraph above it.
+
+       WHAT IT REPLACES AND WHY. Round 17 published "one named administrator at
+       Yallo, and by nobody else". Canon A4 makes `admin` a role that reaches
+       conversations and puts `owner` above it, so two accounts can read what
+       one could, and the old sentence became a false statement to a visitor
+       about their own data the moment that shipped. Round 25 §3 therefore
+       requires this wording LIVE BEFORE the role widening, never after it.
+
+       "TWELVE MONTHS" IS A LITERAL HERE, and round 15 built
+       `assistantRetentionSentence` precisely so no second sentence could drift
+       from `retention.json`. A ratified sentence cannot be derived without
+       ceasing to be the ratified sentence, so the drift is closed the other
+       way: `scripts/check-privacy-retention.mjs` fails if the configured
+       window stops resolving to twelve months, and the fix is then Sumeet's
+       to re-ratify rather than a session's to reword. */
+    "Conversations with the site assistant are stored for up to twelve months and can be read by a small, named group of Yallo Talent administrators for the purpose of responding to enquiries and improving the service. They are not used for any other purpose, are not sold, and are not shared with third parties.",
     "The assistant serves prospective clients only. It does not collect anything beyond what our brief form already collects, and it never asks for payment details, passwords or identity documents.",
   ],
 };
