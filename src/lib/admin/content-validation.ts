@@ -6,36 +6,40 @@ import {
 import { categoriesFor } from "@/lib/admin/categories.mjs";
 import { bannedVocabulary, rateFigures } from "@/lib/banned-vocabulary.mjs";
 import { disallowedNodes } from "@/lib/tiptap/schema.mjs";
-import { docToText, images, links } from "@/lib/tiptap/text.mjs";
+import { docToText, embeds, images, links } from "@/lib/tiptap/text.mjs";
 import { unsourcedFigures } from "@/lib/unsourced-figures.mjs";
 
 /**
- * The eight refusals canon A2 moves out of continuous integration and into the
- * publish action.
+ * Every editorial rule this site holds, as findings rather than refusals.
  *
- * WHAT CHANGED AND WHY IT HAD TO. Round 23 built a pull-request publishing path
- * whose quality bar was CI. R-C2 removed the pull request, so the bar moved
- * here, and it has to be AT LEAST AS STRICT — a rule that used to block a merge
- * and now blocks nothing is a rule that has been repealed by accident.
+ * WHAT THESE ARE NOW. Round 23 built a pull-request publishing path whose
+ * quality bar was CI; canon A2 removed the pull request and moved the bar into
+ * the publish action, where all nine rules refused. R-26.1 removes the refusal
+ * and keeps the rules: they run live and inline while the writer types, each
+ * naming the exact text it is about, and the publish sheet lists whatever is
+ * outstanding before a single confirm. See `BLOCKING_RULES` for the ruling and
+ * for what replaces the refusal.
  *
- * SAVING A DRAFT IS NEVER BLOCKED. Every function below runs on the publish
- * transition only. A writer mid-sentence must not be arguing with a validator,
- * and a draft with a half-written figure is a draft, not a broken page.
+ * NOTHING HERE RUNS ONLY AT PUBLISH TIME ANY MORE. `LiveChecks` calls the same
+ * function on every keystroke, `publishedNotices` calls it nightly and on the
+ * pane over what is already live, and the publish sheet calls it once more at
+ * the moment of publishing. Three surfaces, one function, so they cannot
+ * disagree about what is wrong with a piece.
  *
- * EVERY REFUSAL NAMES THE FIELD AND THE FAULT. "Validation failed" is a message
+ * EVERY FINDING NAMES THE FIELD AND THE FAULT. "Validation failed" is a message
  * that sends an author to ask somebody; "the body carries 2 figures with no
  * matching source: 40%, AED 1.4 million" is a message they can act on without
- * leaving the editor.
+ * leaving the editor. That was true when they refused and it matters more now
+ * that they only advise.
  *
  * NOT `server-only`, deliberately. Every function here is pure over its inputs
- * and holds no secret, and marking it server-only would make it unreachable from
- * the spec that red-proves the eight refusals. A rule nobody can watch refusing
- * is worth less than a rule that could theoretically be imported by a client
- * component and never is.
+ * and holds no secret, and marking it server-only would make it unreachable
+ * from the client editor that has to run it per keystroke, and from the spec
+ * that red-proves each rule.
  *
- * ALL EIGHT ARE RED-PROVEN in `e2e/publish-validation.spec.ts`, each with a
- * fixture the test creates and removes. A validation that has never been
- * watched refusing is a validation nobody has any reason to believe in.
+ * ALL NINE ARE RED-PROVEN in `e2e/publish-validation.spec.ts`, each with a
+ * fixture the test creates and removes. A rule that has never been watched
+ * firing is a rule nobody has any reason to believe in.
  */
 
 export interface PublishError {
@@ -50,46 +54,57 @@ export interface PublishError {
 export type Severity = "block" | "warn";
 
 /**
- * THE TWO RULES THAT STILL REFUSE A PUBLISH — Sumeet's ruling, 9 August 2026,
- * amending canon A2.
+ * NO RULE REFUSES ANYTHING — R-26.1, Sumeet's ruling of 9 August 2026.
  *
- * Canon A2 made all nine refuse and canon §9 called them "never weakened". This
- * narrows that, and the reasoning is his: nine blocking rules made editing an
- * imported study a fight, they arrived at publish time as one wall of text with
- * no way to act on it from the editor, and most of them are judgements rather
- * than facts. Every rule still RUNS, live and inline while a writer types; what
- * changed is which ones stop the piece going out.
+ * THE HISTORY, because the set is empty and an empty set with no reason reads
+ * as an oversight. Canon A2 made all nine rules refuse a publish and canon §9
+ * called them "never weakened". Round 25c narrowed that to two on his ruling.
+ * R-26.1 supersedes both: every validation rule runs live and inline while the
+ * writer types, naming the exact text, as a warning; saving is never impeded
+ * and publishing is never refused by a validation rule. The publish sheet lists
+ * whatever is outstanding and publishes on a single confirm. That sheet is
+ * information, not a gate.
  *
- * These two stop it, and the line between them and the rest is what gets
- * PUBLISHED rather than how tidy it is:
+ * DETECTION IS UNCHANGED AND THAT IS THE WHOLE POINT. Every rule below still
+ * produces its finding, with the same message, naming the same text. What
+ * changed is only what a caller may DO with a finding, which is: show it. The
+ * assertions in `e2e/publish-validation.spec.ts` about what each rule FINDS are
+ * untouched; the ones about what refuses assert the warning surface instead.
  *
- *   Rule 1, an unsourced figure. Canon §9's first principle is that nothing is
- *   invented, and a number with no source is the exact shape of that.
- *   Rule 4, a rate or fee. Canon §7 keeps commercial terms off public pages
- *   entirely; publishing one is a commercial disclosure, not a typo.
+ * THE CONSEQUENCE, RECORDED RATHER THAN ARGUED. An unsourced figure or a rate
+ * can now reach the public site past a warning. The nightly re-validation sweep
+ * (`scripts/check-published-notices.mjs`) is the safety net that replaces the
+ * refusal, and its findings surface on the pane through `publishedNotices`.
  *
- * Everything else warns: a banned word, a dead internal link, a long meta
- * description, a missing taxonomy value, a missing alt text, a wrong category.
- * Each is worth fixing and none of them is worth refusing a publish over when
- * the person publishing can see the warning and disagree.
+ * THE SET IS KEPT, EMPTY, RATHER THAN DELETED. It is the one place the ruling
+ * is written down in code, and the spec asserts it is empty — so a future round
+ * that wants a rule to refuse again has to change this line deliberately and
+ * watch a test go red, rather than discover the concept was quietly removed.
  *
- * NOTHING HERE WEAKENS DETECTION. Every rule below still produces its finding
- * with the same message; `severityOf` decides only what a caller does with it.
+ * THE UNPUBLISH GUARD IS NOT A VALIDATION RULE and still refuses; see
+ * `unpublishRefusal`. Link integrity is not an editorial judgement.
  */
-export const BLOCKING_RULES: ReadonlySet<number> = new Set([1, 4]);
+export const BLOCKING_RULES: ReadonlySet<number> = new Set<number>();
 
 export function severityOf(rule: number): Severity {
   return BLOCKING_RULES.has(rule) ? "block" : "warn";
 }
 
-/** The findings that refuse a publish. */
+/**
+ * The findings that refuse a publish, which under R-26.1 is none of them.
+ *
+ * KEPT AS A FUNCTION rather than removed from the callers. A publish path that
+ * simply stopped consulting severity would be a publish path where reinstating
+ * a refusal means finding the call site again; this way the seam is still
+ * there, it returns empty, and the spec watches it return empty.
+ */
 export function blockingErrors(errors: PublishError[]): PublishError[] {
   return errors.filter((e) => severityOf(e.rule) === "block");
 }
 
-/** The findings a writer should see and may overrule. */
+/** The findings a writer sees, and may publish over. Under R-26.1, all of them. */
 export function warnings(errors: PublishError[]): PublishError[] {
-  return errors.filter((e) => severityOf(e.rule) === "warn");
+  return errors.filter((e) => severityOf(e.rule) !== "block");
 }
 
 /** Canon §8. Written by the system, never a form field, and never an input. */
@@ -222,7 +237,7 @@ export function validateForPublish(
       errors.push({
         rule: 5,
         field,
-        message: `${field} is ${n} characters; it needs at least ${budget.min}.`,
+        message: `${field} is ${n} characters, under the ${budget.min} this site writes to.`,
       });
     } else if (n > budget.max) {
       errors.push({
@@ -252,7 +267,7 @@ export function validateForPublish(
       rule: 6,
       field: "industry",
       message:
-        "At least one Industry, Platform or Discipline is needed to publish (canon A5). Without one the piece appears on no taxonomy page and no related rail can find it.",
+        "No Industry, Platform or Discipline is set (canon A5). Without one the piece appears on no taxonomy page and no related rail can find it, so nothing but its own URL leads a reader to it.",
     });
   }
 
@@ -265,6 +280,23 @@ export function validateForPublish(
       rule: 7,
       field: "body",
       message: `${missingAlt.length} image(s) have no alt text. Every image in a published body carries it; a decorative image is still an image somebody has to skip past.`,
+    });
+  }
+
+  /* 7, continued: an embed with no words beside it — A2A.
+     THE SAME RULE, NOT A TENTH. An image with no alt text and a video with no
+     caption are one fault: media that offers nothing to a reader who cannot or
+     will not consume it, and nothing to a crawler either. Numbering it 7 means
+     the next embed type the seam adds is covered by a rule that already exists,
+     rather than by a rule somebody has to remember to write. */
+  const uncaptioned = embeds(candidate.body).filter(
+    (embed) => String(embed.caption ?? "").trim() === "",
+  );
+  if (uncaptioned.length > 0) {
+    errors.push({
+      rule: 7,
+      field: "body",
+      message: `${uncaptioned.length} embed(s) carry no caption: ${[...new Set(uncaptioned.map((e) => e.type))].join(", ")}. The caption is what the page says to a reader who does not press play, and it is the frame's accessible name.`,
     });
   }
 
@@ -292,13 +324,13 @@ export function validateForPublish(
     errors.push({
       rule: 9,
       field: "category",
-      message: `A category is needed to publish. ${type === "case_study" ? "A case study carries its engagement pillar" : "An article carries one of the five editorial types"}: ${allowed.join(", ")}.`,
+      message: `No category is set. ${type === "case_study" ? "A case study carries its engagement pillar" : "An article carries one of the five editorial types"}: ${allowed.join(", ")}. Without one it files itself under a heading no surface renders.`,
     });
   } else if (!allowed.includes(category)) {
     errors.push({
       rule: 9,
       field: "category",
-      message: `"${category}" is not a category a ${type === "case_study" ? "case study" : "article"} may carry. The list is: ${allowed.join(", ")}. A piece filed outside it publishes to a heading no surface renders.`,
+      message: `"${category}" is not a category a ${type === "case_study" ? "case study" : "article"} carries. The list is: ${allowed.join(", ")}. A piece filed outside it goes to a heading no surface renders.`,
     });
   }
 
@@ -310,14 +342,23 @@ export function validateForPublish(
 /**
  * R-25b.4 — whether this status change would strand a legacy URL.
  *
+ * THE ONE THING THAT STILL REFUSES, AND IT IS NOT A VALIDATION RULE. R-26.1
+ * removed every editorial refusal; this stayed, because it is link integrity
+ * rather than editorial judgement. An unsourced figure is a piece of writing
+ * somebody may defend. A URL that 404s is not a matter of opinion, and the
+ * person clicking Unpublish has no way to see from the cockpit that an old
+ * address elsewhere on the web points here.
+ *
  * EXTRACTED FROM THE ACTION so it can be watched refusing and watched
  * permitting. The action is a public POST endpoint that needs a session and a
  * real row; a decision living inside it is a decision no test reaches, and
  * "red-proven both directions" was the ruling.
  *
- * Returns the message, or null. The message names the URLs rather than counting
- * them, because the person taking a study down needs to know which addresses
- * they are about to break.
+ * THE MESSAGE IS AN EXPLANATION WITH ONE ACTION IN IT — R-26.1's second clause.
+ * It says what would happen, names the addresses it would happen to, and gives
+ * the single step that resolves it. The URLs are listed rather than counted:
+ * the person taking a study down needs to know which addresses they are about
+ * to break, and a count sends them to ask somebody.
  */
 export function unpublishRefusal(
   contentType: "article" | "case_study",
@@ -329,5 +370,7 @@ export function unpublishRefusal(
   if (nextStatus === "published") return null;
   const legacy = legacySourcesFor(`/case-studies/${slug}`);
   if (legacy.length === 0) return null;
-  return `Not unpublished. ${legacy.length} legacy URL(s) still point at /case-studies/${slug} and would become a two-hop redirect into the hub: ${legacy.join(", ")}. Retire the redirect first, or leave the study published.`;
+  const addresses = legacy.join(", ");
+  const plural = legacy.length === 1;
+  return `Not unpublished, and here is why. /case-studies/${slug} is still the destination of ${legacy.length} older address${plural ? "" : "es"} on this site: ${addresses}. Taking the study down would leave ${plural ? "that address" : "those addresses"} pointing at a page that is no longer served, so anybody following an old link would arrive at the case-studies hub rather than the study they were sent to. The one action that resolves it: retire the redirect${plural ? "" : "s"} in src/data/redirects.mjs, then unpublish. Until then the study stays published.`;
 }

@@ -242,6 +242,40 @@
   color: var(--text-3-wash);
 }
 
+/* ── Embed, A2A ─────────────────────────────────────────────────────────── */
+
+/* The aspect ratio is held by the CONTAINER, not by the frame's attributes.
+   A 16:9 box reserved before the frame loads is the difference between a page
+   that settles and a page that jumps a reader's line of text down 400px when a
+   third-party document arrives. CLS is a gate on this estate. */
+.embed {
+  margin: 36px 0;
+}
+
+.embedFrame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
+}
+
+.embedIframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.embedCaption {
+  margin-top: 10px;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-3-wash);
+}
+
 /* ── Chart ──────────────────────────────────────────────────────────────── */
 
 .chart {

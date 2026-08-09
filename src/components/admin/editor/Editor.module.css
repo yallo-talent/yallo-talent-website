@@ -22,14 +22,17 @@
 /* Full-screen writing mode. A fixed layer over the cockpit rather than the
    Fullscreen API: the API takes the whole screen including the browser chrome,
    which is more than "let me see only my words" asks for, and it cannot be
-   left with the same Escape that every other overlay on this site uses. */
-.shellFull {
+   left with the same Escape that every other overlay on this site uses.
+
+   IT WRAPS THE RAIL TOO, since round 26. A layer over the canvas alone hid the
+   Saved pill and the Leave full screen button, so the only way out was a key
+   nobody had been told about. The point of the mode is to remove the cockpit's
+   nav, not the piece's own controls. */
+.fullScreenLayer {
   position: fixed;
   inset: 0;
   z-index: 60;
-  display: flex;
-  flex-direction: column;
-  padding: 20px clamp(16px, 5vw, 64px) 40px;
+  padding: 0 clamp(16px, 5vw, 64px) 40px;
   overflow-y: auto;
   background: var(--bg);
 }
@@ -561,60 +564,978 @@
   }
 }
 
-/* ── The fields form ────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   ROUND 26 — the lifecycle rail, the canvas, the toolbar and the drawer.
 
-.metaForm {
-  display: grid;
-  gap: 18px;
-  max-width: 720px;
-  margin-top: 8px;
-}
+   R-26.5 rules the register against Substack's composer: a clean full-width
+   writing canvas, Title and Subtitle as large placeholder fields, a persistent
+   top toolbar, a live Saved pill, and Preview plus one primary action in the
+   top right. Everything below is that, in this estate's tokens.
 
-.taxFieldset {
-  margin: 0;
-  padding: 14px 16px;
-  border: 1px solid var(--hairline);
-  border-radius: 0 0 0 var(--r-md);
-}
+   ZERO HARDCODED COLOUR, as everywhere: Layer 1 tokens and Layer 2c aliases.
+   ══════════════════════════════════════════════════════════════════════════ */
 
-.taxGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 8px 16px;
-  margin-top: 8px;
-}
+/* ── The lifecycle rail ─────────────────────────────────────────────────── */
 
-/* Checkboxes, not a multi-select. A native multi-select needs a modifier key
-   to pick a second value, which is a rule nobody is told and half of people do
-   not know — and every one of these fields legitimately takes more than one. */
-.taxOption {
+/* Sticky, so the state and the next action are on screen at the bottom of a
+   four-thousand-word article as well as at the top. The whole complaint this
+   round answers is a person not knowing what state a piece is in; a rail that
+   scrolls away answers it only for the first screenful. */
+.rail {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--bg);
+}
+
+.railLeft,
+.railRight {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.railBack {
   font-size: var(--fs-body-sm);
+  color: var(--text-3);
+  text-decoration: none;
+}
+
+.railBack:hover {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* THE WORD IS THE STATE. A tint alone would be a state only somebody who built
+   this can read, and no state at all to a screen reader. The tint is a second
+   channel over the word, never instead of it. */
+.statusPill {
+  padding: 4px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--text-2);
 }
 
-/* 24px, which is SC 2.5.8's floor, and it was 16px until the cockpit render
-   gate said so at 360: "target below SC 2.5.8's 24px — <input> is 16x16",
-   twenty-one times, once per taxonomy value. A 16px checkbox is the browser
-   default and the default is below the standard. The row is a flex line, so
-   the label text beside it does not enlarge the target — only the control
-   does. */
-.taxOption input {
-  width: 24px;
-  height: 24px;
-  flex: 0 0 auto;
-  accent-color: var(--accent-mark);
+.statusPill[data-status="published"] {
+  border-color: var(--positive-text);
+  color: var(--positive-text);
 }
 
-.taxOption input:focus-visible {
+.statusPill[data-status="archived"] {
+  color: var(--text-3-wash);
+}
+
+.savePill {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+.savePill[data-state="saved"] {
+  color: var(--positive-text);
+}
+
+.savePill[data-state="error"] {
+  color: var(--signal-text);
+}
+
+/* THE ONE PRIMARY ACTION. It is the only filled control on the surface, which
+   is the whole of how a person knows it is the next thing to do.
+
+   THE PAIR IS THE NAV'S OWN CTA PAIR, not a new one: `--accent-mark` under
+   `--ink` at `--fs-body-sm`. A first version used `--gold-ink` at 14px and
+   check:admin-render failed it twice over — a serious axe colour-contrast
+   finding in both themes at both widths, and A4's 15.5px floor for a filled
+   control. The estate already had a gold button that passes; copying it was
+   the fix, and inventing a second gold-on-gold pair was the defect. */
+.primaryAction {
+  padding: 8px 18px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--accent-mark);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-strong);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.primaryAction:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--accent-mark) 86%, var(--ink));
+  color: var(--ink);
+}
+
+.primaryAction:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 3px;
+}
+
+.primaryAction:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Below 720px the rail was four wrapped rows and most of a phone screen, with
+   the writing beginning under the fold. Full screen goes: it is a desktop idea,
+   and on a phone the browser is already full screen. The rest tightens and
+   stops being sticky, because a sticky element a third of the viewport tall is
+   worse than one that scrolls away. */
+@media (max-width: 720px) {
+  .rail {
+    position: static;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .railFullScreen {
+    display: none;
+  }
+
+  .railRight {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .toolbar {
+    position: static;
+  }
+}
+
+/* ── The overflow menu ──────────────────────────────────────────────────── */
+
+.menuWrap,
+.toolMenuWrap {
+  position: relative;
+}
+
+.menu,
+.toolMenu {
+  /* The SHARED properties only. `right` and `left` differ per menu and are set
+     once each below: stating them here as well left `.toolMenu` declared twice
+     with colliding values, which in a CSS module means the later block silently
+     wins and the earlier one is dead code. check:css-vars caught it. */
+  position: absolute;
+  top: calc(100% + 6px);
+  z-index: 40;
+  min-width: 280px;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 6px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface-raised);
+  box-shadow: 0 18px 40px var(--sh12);
+}
+
+.menu {
+  right: 0;
+}
+
+/* Under its trigger, which sits at the left of the toolbar rather than at the
+   right of the rail. */
+.toolMenu {
+  left: 0;
+}
+
+.menuForm {
+  display: block;
+}
+
+.menuItem,
+.toolMenuItem {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 0 0 0 var(--r-sm);
+  background: transparent;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.menuItem:hover,
+.toolMenuItem:hover {
+  background: var(--accent-wash);
+}
+
+.menuItem:focus-visible,
+.toolMenuItem:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: -2px;
+}
+
+.menuLabel,
+.toolMenuLabel {
+  display: block;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+.menuNote,
+.toolMenuNote {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+  color: var(--text-3);
+}
+
+/* ── The persistent toolbar ─────────────────────────────────────────────── */
+
+.toolbar {
+  position: sticky;
+  /* Under the rail, not over it. The rail is 0; this sits at its height, and
+     the two never overlap because both are in normal flow. */
+  top: 52px;
+  z-index: 25;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline);
+  background: var(--bg);
+}
+
+.toolGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Every group but the last carries a rule after it, so the toolbar reads as
+   four sets of related controls rather than fourteen buttons in a row. */
+.toolGroup:not(:last-child)::after {
+  content: "";
+  width: 1px;
+  height: 20px;
+  margin-left: 10px;
+  background: var(--hairline);
+}
+
+/* 32px minimum in both directions. SC 2.5.8's floor is 24; a toolbar is used
+   at speed and by a thumb, so this sits above it deliberately. */
+.toolButton,
+.toolButtonWide {
+  /* Padding differs per control and is set once each below, for the same
+     reason the menus' offsets are. */
+  min-width: 36px;
+  min-height: 32px;
+  border: 1px solid transparent;
+  border-radius: 0 0 0 var(--r-sm);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+}
+
+.toolButton {
+  padding: 5px 8px;
+}
+
+.toolButtonWide {
+  padding: 5px 12px;
+}
+
+.toolButton:hover,
+.toolButtonWide:hover {
+  background: var(--accent-wash);
+  color: var(--text);
+}
+
+.toolButton:focus-visible,
+.toolButtonWide:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+.toolButton[aria-pressed="true"],
+.toolButtonWide[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+  color: var(--text);
+}
+
+.toolButton:disabled,
+.toolButtonWide:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.toolSelectWrap {
+  display: block;
+}
+
+.toolSelect {
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text);
+}
+
+.toolSelect:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+/* Present to a screen reader, absent to the eye. The style control needs a
+   name and a visible label would double the width of the first group. */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ── The canvas head: Title, Subtitle, byline ───────────────────────────── */
+
+.canvasHead {
+  max-width: 72ch;
+  margin: 32px 0 8px;
+}
+
+/* The published title's face and weight, at the published measure. A title
+   typed at 15px in a form field is a title nobody can judge the length of.
+   `resize: none` and `overflow: hidden` because the height is driven by the
+   content, not by a drag handle or a scrollbar. */
+.titleField {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  resize: none;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: var(--fs-headline);
+  font-weight: var(--fw-strong);
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.titleField::placeholder {
+  color: var(--text-3-wash);
+}
+
+.titleField:focus-visible,
+.subtitleField:focus-visible {
+  outline: none;
+  /* The caret is the focus indicator inside a text field the size of a
+     headline; a ring around a full-width borderless input reads as a box that
+     has appeared rather than as focus. The rail and every button keep theirs. */
+}
+
+.subtitleField {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  resize: none;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: var(--fs-lede);
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+.subtitleField::placeholder {
+  color: var(--text-3-wash);
+}
+
+.canvasMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* The byline as the system applies it. A chip rather than a field, because
+   there is nothing here to type a person's name into (canon §8). */
+.bylineChip {
+  padding: 4px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-pill);
+  background: var(--ground-2);
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+}
+
+.canvasMetaNote {
+  flex: 1 1 220px;
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+}
+
+.headCounter {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3-wash);
+}
+
+.headCounter[data-over="true"] {
+  color: var(--signal-text);
+}
+
+/* ── The surface and the drawer ─────────────────────────────────────────── */
+
+.surface {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  align-items: start;
+}
+
+.surface[data-drawer-open="true"] {
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 32px;
+}
+
+@media (max-width: 1000px) {
+  .surface[data-drawer-open="true"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+
+.surfaceMain {
+  min-width: 0;
+}
+
+/* The drawer that replaced the metadata scroll — A2. Sticky at desktop so the
+   fields stay beside the paragraph they describe; in normal flow below 1000px,
+   where there is no beside. */
+.drawer {
+  position: sticky;
+  top: 96px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 18px 20px 24px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+@media (max-width: 1000px) {
+  .drawer {
+    position: static;
+    max-height: none;
+    margin-top: 28px;
+  }
+}
+
+.drawerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.drawerTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.drawerBody {
+  display: block;
+}
+
+.drawerForm {
+  display: block;
+}
+
+.drawerSection {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.drawerSection:last-child {
+  border-bottom: none;
+}
+
+.drawerSectionTitle {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.drawerField {
+  display: block;
+  margin-bottom: 16px;
+}
+
+.drawerLabel {
+  display: block;
+  margin-bottom: 5px;
+  /* A3: labels are Inter now. IBM Plex Mono retreats to identifiers, counters
+     and timestamps — the things that are literally data — because a form of
+     twelve mono uppercase labels reads as a terminal rather than as a
+     publication's own tool. */
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--text-2);
+}
+
+/* One height for every control in the drawer — A3. */
+.drawerInput {
+  display: block;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+textarea.drawerInput {
+  min-height: 72px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.drawerInput:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+.drawerNote {
+  display: block;
+  margin: 6px 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.drawerCode {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+}
+
+/* A3: the full-width gold slab is gone. A compact control at the foot of the
+   fields it saves. */
+.drawerSave {
+  padding: 8px 16px;
+  margin-top: 4px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-wash);
+  font-family: var(--font-body);
+  /* A4's floor for a filled control is 15.5px. This was 14 and the cockpit
+     render gate said so in both themes at both widths. */
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.drawerSave:hover {
+  background: var(--accent-mark);
+  color: var(--ink);
+}
+
+.drawerSave:focus-visible {
   outline: 2px solid var(--accent-line);
   outline-offset: 2px;
 }
 
-/* The character counter, design §6. It reports what is SAVED — the number a
-   search engine will read — and turns signal-coloured only when it is over. */
+/* ── Chips, in place of raw checkboxes — A3 ─────────────────────────────── */
+
+.chipSet {
+  margin: 0 0 16px;
+  padding: 0;
+  border: none;
+}
+
+.chipGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+/* The label IS the control's target, and the native checkbox inside it is what
+   a keyboard and a screen reader still reach. A chip drawn with a hidden input
+   and a click handler is a chip that only a mouse can operate. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 5px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+  cursor: pointer;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.chip:hover {
+  border-color: var(--accent-line);
+}
+
+/* The input is positioned rather than display:none, so it stays focusable and
+   stays in the accessibility tree; the chip around it draws the state. */
+.chipInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.chip:has(.chipInput:checked) {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+  color: var(--text);
+}
+
+.chip:has(.chipInput:focus-visible) {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.chipLabel {
+  display: inline-block;
+}
+
+/* A tick before the words, so "chosen" survives a monochrome screenshot and a
+   colour-blind reader. */
+.chip:has(.chipInput:checked) .chipLabel::before {
+  content: "✓ ";
+  color: var(--accent-label);
+}
+
+/* ── History as a timeline — A3 ─────────────────────────────────────────── */
+
+.timeline {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timelineRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding: 8px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.timelineWhen,
+.timelineSize {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+
+.timelineWho {
+  flex: 1 1 auto;
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+}
+
+.timelineActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.timelineLink {
+  padding: 4px 2px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.timelineLink:hover {
+  color: var(--accent-label);
+}
+
+.timelineLink:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/* ── Dialogs: the publish sheet and the image insert ────────────────────── */
+
+.dialog {
+  /* Centred explicitly. A dialog given a width and a max-height loses the UA
+     stylesheet's own centring in some engines and lands against the top-left
+     corner, which is where this first rendered. */
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(680px, calc(100vw - 32px));
+  max-height: min(80vh, 760px);
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface-raised);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: var(--ba60);
+}
+
+.dialogHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.dialogTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.dialogBody {
+  padding: 20px 22px;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+
+.dialogSection {
+  margin-bottom: 22px;
+}
+
+.dialogSection:last-child {
+  margin-bottom: 0;
+}
+
+.dialogSectionTitle {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  color: var(--text);
+}
+
+.dialogLede {
+  margin: 0 0 16px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.dialogUrl {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+}
+
+.dialogClean {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--positive-text);
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.dialogNote {
+  margin: 6px 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.dialogError {
+  margin: 6px 0 0;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--signal-text);
+}
+
+.dialogField {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.dialogLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--text-2);
+}
+
+.dialogInput {
+  display: block;
+  width: 100%;
+  min-height: 38px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+.dialogInput:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+.dialogFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 22px;
+  border-top: 1px solid var(--hairline);
+  background: var(--ground-2);
+}
+
+.sheetFindings {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sheetFinding {
+  padding: 10px 12px;
+  border-left: 2px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.sheetFindingField {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.sheetFindingText {
+  display: block;
+  margin-top: 3px;
+}
+
+/* ── The image library grid ─────────────────────────────────────────────── */
+
+.assetGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assetButton {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  cursor: pointer;
+  text-align: left;
+}
+
+.assetButton[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+
+.assetButton:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.assetThumb {
+  display: block;
+  width: 100%;
+  height: 84px;
+  object-fit: cover;
+}
+
+.assetName {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  /* --fs-data, not a smaller step: 13px is A4's hard mono floor and there is
+     nothing below it. An earlier draft referenced --fs-data-sm, which nothing
+     defines, and an undefined custom property does not fall back — the
+     declaration is invalid at computed-value time and the label would have
+     rendered at whatever it inherited. check:css-vars caught it. */
+  font-size: var(--fs-data);
+  color: var(--text-3);
+  overflow-wrap: anywhere;
+}
+
+/* ── The character counter, design §6 ───────────────────────────────────── */
+
 .counter {
   font-family: var(--font-mono);
   font-size: var(--fs-data);
@@ -623,18 +1544,14 @@
 }
 
 .counter[data-over="true"] {
-  color: var(--fn-signal-text-l);
+  color: var(--signal-text);
 }
 
-:root[data-theme="dark"] .counter[data-over="true"] {
-  color: var(--fn-signal-text-d);
-}
-
-/* ── The live checks (round 25c) ─────────────────────────────────────────────
-   Every publish rule, running against the document on screen rather than at
-   publish time. Two severities: `checkBlock` will stop the piece going out,
-   `checkWarn` will not. The distinction has to be legible without colour, so
-   each carries a word rather than only a border tint. */
+/* ── The live checks ────────────────────────────────────────────────────────
+   Every rule, running against the document on screen. R-26.1 removed the
+   severity split: there is no blocking class any more, because nothing blocks.
+   Each finding still names its field, because a finding a writer cannot locate
+   is a finding they cannot act on. */
 
 .checks {
   margin: 24px 0 0;
@@ -653,17 +1570,12 @@
   gap: 10px;
 }
 
-.checkBlock,
 .checkWarn {
   padding: 10px 12px;
   font-size: var(--fs-body-sm);
   line-height: 1.55;
   color: var(--text);
   border-left: 2px solid var(--hairline);
-}
-
-.checkBlock {
-  border-left-color: var(--accent-line);
 }
 
 .checkTag {

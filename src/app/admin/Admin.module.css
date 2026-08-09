@@ -543,3 +543,98 @@
   overflow-wrap: anywhere;
   user-select: all;
 }
+
+/* ── The notices strip — R-26.1's safety net on the pane ────────────────────
+   R-26.1 removed the publish refusal and recorded what it accepts: an
+   unsourced figure can now reach a reader past a warning. This is where the
+   re-validation of what is ALREADY LIVE comes back, and it is styled to be
+   read rather than dismissed: a signal-coloured edge, the count in the
+   heading, and every finding in full. */
+
+.notices {
+  margin: 20px 0 28px;
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--signal-text);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.noticesHead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.noticesLede {
+  margin: 8px 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.noticesList {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.noticeRow {
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.noticeHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+
+.noticeTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.noticeLive {
+  /* 24px minimum, SC 2.5.8. A 13px mono line is a 20px box, and
+     check:admin-render counted one per published piece with a finding — nine
+     studies, eighteen failures across two themes. The padding is what makes
+     the target legal; the text size is the estate's data step and stays. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--text-3);
+}
+
+.noticeFindings {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.noticeField {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}

@@ -68,6 +68,82 @@ export interface ImageAttrs {
   srcset: string;
 }
 
+/**
+ * The first embed, A2A.
+ *
+ * THE ID, NOT A URL, AND CERTAINLY NOT MARKUP. The renderer composes the frame
+ * address from this value, so nothing an author types can produce a frame
+ * pointing anywhere but YouTube's privacy-enhanced host. Storing a URL would
+ * mean validating a URL at render time, in a renderer whose entire premise is
+ * that it never has to trust what it is given.
+ *
+ * THE CAPTION IS THE TEXT ALTERNATIVE. A video with no words beside it is a
+ * hole in the page for anybody who cannot or will not play it, and for every
+ * crawler. It is required in the sense everything is required after R-26.1: the
+ * rules say so, in the editor, while the block is being filled in.
+ */
+export interface YoutubeAttrs {
+  videoId: string;
+  caption: string;
+}
+
+/** YouTube's own id shape: eleven characters of URL-safe base64. */
+const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/;
+
+/**
+ * The video id out of whatever an author pasted.
+ *
+ * WHY IT ACCEPTS URLS WHEN THE ATTRIBUTE IS AN ID. Because an author will paste
+ * a URL: that is what the browser's address bar gives them, and refusing it
+ * would be a field that rejects the only thing anybody has to hand. The parsing
+ * happens once, on the way IN, and what is stored is the id. Anything that is
+ * not recognisably one of YouTube's four address shapes returns null and the
+ * block stays empty rather than storing a value the renderer would then have to
+ * think about.
+ *
+ * Returns null rather than throwing: the author is mid-paste, not in error.
+ */
+export function youtubeId(input: string): string | null {
+  const raw = input.trim();
+  if (raw === "") return null;
+  if (YOUTUBE_ID.test(raw)) return raw;
+  let url: URL;
+  try {
+    url = new URL(raw.startsWith("http") ? raw : `https://${raw}`);
+  } catch {
+    return null;
+  }
+  const host = url.hostname.replace(/^www\./, "");
+  const candidates: (string | null)[] = [];
+  if (host === "youtu.be") {
+    candidates.push(url.pathname.slice(1));
+  } else if (host === "youtube.com" || host === "youtube-nocookie.com") {
+    candidates.push(url.searchParams.get("v"));
+    const path = url.pathname.split("/").filter(Boolean);
+    /* /embed/ID, /shorts/ID and /live/ID all put the id in the same place. */
+    if (path.length === 2 && ["embed", "shorts", "live"].includes(path[0])) {
+      candidates.push(path[1]);
+    }
+  }
+  for (const candidate of candidates) {
+    if (candidate && YOUTUBE_ID.test(candidate)) return candidate;
+  }
+  return null;
+}
+
+/**
+ * The frame address, composed rather than stored.
+ *
+ * `youtube-nocookie.com` per A2A: the privacy-enhanced host sets no tracking
+ * cookie until a visitor actually plays the video, which is the difference
+ * between embedding a video and embedding a tracker. `rel=0` keeps the
+ * end-of-video suggestions to the same channel rather than offering a reader
+ * somebody else's content on a Yallo Talent page.
+ */
+export function youtubeEmbedSrc(videoId: string): string {
+  return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0`;
+}
+
 export interface ChartRow {
   label: string;
   value: number;

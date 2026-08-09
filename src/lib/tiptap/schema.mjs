@@ -33,6 +33,17 @@ export const BLOCK_NODES = [
   "petalDivider",
   "image",
   "chart",
+  /* A2A, round 26. The first EMBED node, and the seam the content engine grows
+     on: audio, native video and a carousel are each a name here, an attribute
+     interface in blocks.ts, a case in renderBlock and a node in YalloNodes —
+     four additions, no migration of any stored body. Recorded in
+     spec/block-registry.md and in src/components/admin/editor/block-inserts.ts.
+
+     ONLY THE VIDEO ID IS STORED, never a URL and never markup. An allow-list
+     that accepted an embed URL would be an allow-list with a hole in it: the
+     renderer composes the address from the id, so there is no value an author
+     can type that reaches a reader as a frame pointing anywhere else. */
+  "youtube",
 ];
 
 /** Nodes that may appear inside a block. */

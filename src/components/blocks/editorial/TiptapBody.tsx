@@ -8,6 +8,9 @@ import {
   type KeyFigureAttrs,
   type PullQuoteAttrs,
   resolveDesk,
+  type YoutubeAttrs,
+  youtubeEmbedSrc,
+  youtubeId,
 } from "@/lib/tiptap/blocks";
 import { HEADING_LEVELS } from "@/lib/tiptap/schema.mjs";
 import styles from "./YalloBlocks.module.css";
@@ -345,6 +348,43 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
           />
           {caption === "" ? null : (
             <figcaption className={styles.figureCaption}>{caption}</figcaption>
+          )}
+        </figure>
+      );
+    }
+
+    /* ── The first embed, A2A ─────────────────────────────────────────────
+       NOTHING IS TRUSTED FROM THE NODE. The stored value is an eleven-character
+       id, re-checked here, and the address is composed from it — so no value an
+       author can type produces a frame pointing anywhere but YouTube's
+       privacy-enhanced host. That is what makes an embed compatible with an
+       allow-list renderer at all. */
+    case "youtube": {
+      const attrs = (node.attrs ?? {}) as Partial<YoutubeAttrs>;
+      const videoId = youtubeId(str(attrs.videoId));
+      if (videoId === null) return null;
+      const caption = str(attrs.caption).trim();
+      return (
+        <figure className={styles.embed} key={key}>
+          <div className={styles.embedFrame}>
+            <iframe
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className={styles.embedIframe}
+              /* Lazy per A2A. A video near the foot of a long article is a
+                 third-party document a reader may never scroll to, and loading
+                 it eagerly spends their connection on it regardless. */
+              loading="lazy"
+              /* The caption is the accessible name as well as the words under
+                 the frame. A frame titled "YouTube video player" tells a screen
+                 reader user which of the two embeds on the page this is only if
+                 there is exactly one. */
+              src={youtubeEmbedSrc(videoId)}
+              title={caption === "" ? "Embedded video" : caption}
+            />
+          </div>
+          {caption === "" ? null : (
+            <figcaption className={styles.embedCaption}>{caption}</figcaption>
           )}
         </figure>
       );

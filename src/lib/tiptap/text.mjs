@@ -60,13 +60,17 @@ export function docToText(doc) {
       case "keyFigure":
         blocks.push({ text: inline(n.content), list: null });
         break;
-      /* Rendered, but carrying no prose a reader reads as a sentence. */
+      /* Rendered, but carrying no prose a reader reads as a sentence. A
+         caption is a caption: it names the thing beside it rather than being
+         read as part of the article, which is why none of these contributes to
+         the word count or the reading time. */
       case "horizontalRule":
       case "petalDivider":
       case "image":
       case "chart":
       case "faq":
       case "relatedDesk":
+      case "youtube":
         break;
       default:
         break;
@@ -123,6 +127,28 @@ export function images(doc) {
   const out = [];
   const walk = (n) => {
     if (n.type === "image") out.push(n.attrs ?? {});
+    for (const c of n.content ?? []) walk(c);
+  };
+  walk(doc ?? {});
+  return out;
+}
+
+/**
+ * Every embed node, so a text alternative can be required of each.
+ *
+ * ONE FUNCTION FOR ALL EMBEDS, not one per type. The A2A seam says audio,
+ * native video and a carousel are additive; the rule that a piece of media
+ * carries something readable beside it applies to every one of them, and a
+ * per-type check is a rule that gets forgotten on the fourth type.
+ */
+export const EMBED_NODES = ["youtube"];
+
+export function embeds(doc) {
+  const out = [];
+  const walk = (n) => {
+    if (EMBED_NODES.includes(n.type)) {
+      out.push({ type: n.type, ...(n.attrs ?? {}) });
+    }
     for (const c of n.content ?? []) walk(c);
   };
   walk(doc ?? {});

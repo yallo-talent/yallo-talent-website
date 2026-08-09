@@ -9,7 +9,9 @@ import {
   changeSlugAction,
   restoreRevisionAction,
   saveBodyAction,
+  saveFrontAction,
   saveMetaAction,
+  setStatusAction,
 } from "../../articles/actions";
 
 /**
@@ -41,6 +43,9 @@ export default async function CaseStudyEditorRoute({
     restored?: string;
     moved?: string;
     warned?: string;
+    published?: string;
+    draft?: string;
+    archived?: string;
   }>;
 }) {
   await requirePane("caseStudies");
@@ -54,6 +59,17 @@ export default async function CaseStudyEditorRoute({
     await saveBodyAction("case_study", id, body);
   }
 
+  /* Bound on the server for the same reason `saveBody` is: the client holds a
+     callable, not an identifier it could change. The action re-checks the guard
+     regardless. */
+  async function saveFront(front: {
+    title: string;
+    summary: string;
+  }): Promise<void> {
+    "use server";
+    await saveFrontAction("case_study", id, front);
+  }
+
   return (
     <EditorPane
       categories={categoriesFor("case_study")}
@@ -64,7 +80,9 @@ export default async function CaseStudyEditorRoute({
       revisions={revisions}
       row={row}
       saveBody={saveBody}
+      saveFront={saveFront}
       saveMetaAction={saveMetaAction}
+      setStatusAction={setStatusAction}
       type="case_study"
     />
   );

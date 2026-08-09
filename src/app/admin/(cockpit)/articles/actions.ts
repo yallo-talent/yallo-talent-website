@@ -18,6 +18,7 @@ import {
   restoreRevision,
   saveBody,
   saveDraft,
+  saveFront,
   setStatus,
 } from "@/lib/db/content-write";
 import { publishedPaths } from "@/lib/published-routes";
@@ -28,13 +29,15 @@ import { publishedPaths } from "@/lib/published-routes";
  *
  * WHAT REPLACED WHAT. Round 23 sent every write out as a pull request that CI
  * validated and GitHub auto-merged. Canon A2 removed that: a publish now writes
- * one row and revalidates, and the rules CI held are held HERE, in
- * `validateForPublish`, which refuses. That is the whole trade, and the reason
- * the validation has to be at least as strict as the CI it replaced.
+ * one row and revalidates, and the rules CI held moved into
+ * `validateForPublish`.
  *
- * SAVING IS NEVER VALIDATED, PUBLISHING ALWAYS IS. Canon A2 again. The guard
- * runs on both, because a server action is a POST endpoint with a public URL and
- * having rendered the pane once authorises nothing later.
+ * NOTHING VALIDATES BY REFUSING — R-26.1. The rules run continuously in the
+ * editor, again on the publish sheet, and again nightly over what is already
+ * live; none of them stops a save or a publish. The guard still runs on every
+ * action below, because a server action is a POST endpoint with a public URL
+ * and having rendered the pane once authorises nothing later. Authorisation and
+ * editorial judgement are different things, and only one of them was relaxed.
  */
 
 function back(route: string, params: Record<string, string>): never {
@@ -106,7 +109,18 @@ export async function createArticleAction(formData: FormData): Promise<void> {
 }
 
 /**
- * Publish, or take back. The eight refusals live on the publish side only.
+ * Publish, or take back.
+ *
+ * NO VALIDATION RULE REFUSES ANY MORE — R-26.1. The rules still run, and what
+ * they find is carried back as a notice so the person who published knows what
+ * they published over; the publish sheet showed them the same list one click
+ * earlier. The single refusal left in this action is the unpublish guard, which
+ * is link integrity rather than editorial judgement.
+ *
+ * IT CAN RETURN TO THE EDITOR OR TO THE LIST. The list's row buttons want the
+ * list back; the editor's publish sheet wants the editor back, with the live URL
+ * on screen. One action either way, because two publish paths is two places for
+ * the rules to be consulted differently.
  */
 export async function setStatusAction(formData: FormData): Promise<void> {
   const type = String(formData.get("type") ?? "") as ContentType;
@@ -114,9 +128,16 @@ export async function setStatusAction(formData: FormData): Promise<void> {
     back(ADMIN_ROUTES.root, { err: "Unknown content type." });
   }
   const signed = await assertPane(PANE_FOR[type]);
-  const route = ROUTE_FOR[type];
 
   const id = String(formData.get("id") ?? "");
+  /* Not a URL from the form. A returnTo carrying an arbitrary path would be an
+     open redirect on an authenticated POST; this is a flag, and the two
+     destinations are composed here from values this module already owns. */
+  const route =
+    String(formData.get("returnTo") ?? "") === "editor" && id !== ""
+      ? `${ROUTE_FOR[type]}/${id}`
+      : ROUTE_FOR[type];
+
   const next = String(formData.get("next") ?? "");
   if (next !== "published" && next !== "draft" && next !== "archived") {
     back(route, { err: "Unknown status." });
@@ -154,22 +175,18 @@ export async function setStatusAction(formData: FormData): Promise<void> {
       },
       known,
     );
-    /* TWO RULES REFUSE, THE REST WARN — Sumeet's ruling of 9 August amending
-       canon A2. See `BLOCKING_RULES` for which two and why. The warnings are
-       not swallowed: they are live in the editor while the piece is being
-       written, and the publish carries them back as a notice so the person who
-       published knows what they published over. */
+    /* NOTHING REFUSES — R-26.1. `blockingErrors` is still consulted, and still
+       asserted to be empty, because a publish path that stopped consulting
+       severity at all is a publish path where reinstating a refusal means
+       finding this call site again. It returns nothing today, and the spec
+       watches it return nothing.
+
+       THE WARNINGS ARE NOT SWALLOWED. They were live in the editor while the
+       piece was being written and listed on the publish sheet one click ago;
+       they come back with the redirect so the person who published can see, on
+       the page they land on, what went out with it. */
     const blocking = blockingErrors(errors);
-    if (blocking.length > 0) {
-      /* Every refusal names the field and the fault. "Validation failed" is a
-         message that sends an author to ask somebody. */
-      back(route, {
-        err: `Not published. ${blocking.length} rule(s) refused it: ${blocking
-          .map((e) => `[${e.field}] ${e.message}`)
-          .join(" ")}`,
-      });
-    }
-    const warned = warnings(errors);
+    const warned = [...blocking, ...warnings(errors)];
     if (warned.length > 0) {
       await setStatus(type, id, next, signed);
       back(route, {
@@ -213,6 +230,38 @@ export async function saveBodyAction(
   revalidatePath(`${ROUTE_FOR[type]}/${id}`);
   revalidatePath(`/admin/preview/${type}/${id}`);
   return counts;
+}
+
+/**
+ * Autosave for the two fields that moved onto the canvas: the title and the
+ * subtitle, R-26.5.
+ *
+ * ONE VALUE, NOT A SECOND COPY. The subtitle IS the summary column. R-26.5 is
+ * explicit that it maps to the existing field with no duplicate storage, so the
+ * drawer no longer carries either of these two and `saveMetaAction` no longer
+ * writes them. Two forms that both own a column is how the metadata save came
+ * to be able to revert what somebody had just typed.
+ *
+ * SAME SHAPE AS `saveBodyAction` AND FOR THE SAME REASON. It is called from a
+ * debounce as the writer types, so it takes values rather than FormData and
+ * does not redirect: a redirect every few seconds would take the caret with it.
+ *
+ * IT WRITES TWO COLUMNS AND NOTHING ELSE. `saveDraft` would rewrite the whole
+ * row, including a body that the editor's own autosave may have moved on from
+ * in the meantime.
+ */
+export async function saveFrontAction(
+  type: ContentType,
+  id: string,
+  front: { title: string; summary: string },
+): Promise<void> {
+  if (type !== "article" && type !== "case_study") {
+    throw new Error("Unknown content type.");
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  await saveFront(type, id, front, signed);
+  revalidatePath(`${ROUTE_FOR[type]}/${id}`);
+  revalidatePath(`/admin/preview/${type}/${id}`);
 }
 
 /**
@@ -275,12 +324,16 @@ export async function restoreRevisionAction(formData: FormData): Promise<void> {
 }
 
 /**
- * The metadata form: everything on the piece that is not the body.
+ * The drawer's form: everything on the piece that is neither the body nor the
+ * two fields that live on the canvas.
  *
- * SEPARATE FROM THE BODY on purpose, and the same reason autosave is separate:
- * two writers of one row that overlap will overwrite each other, and here the
- * two writers are the same person in two halves of one screen. This one owns
- * the fields; autosave owns the body.
+ * THREE WRITERS, THREE DISJOINT SETS OF COLUMNS. Two writers of one column that
+ * overlap will overwrite each other, and here the writers are the same person
+ * in two halves of one screen. The body belongs to the editor's autosave; the
+ * title and the summary belong to the canvas's autosave since R-26.5 moved them
+ * there; everything else belongs here. This action reads all three of those
+ * columns from the stored row rather than from the form, so submitting the
+ * drawer can never revert a sentence typed a moment ago in the canvas.
  */
 export async function saveMetaAction(formData: FormData): Promise<void> {
   const type = String(formData.get("type") ?? "") as ContentType;
@@ -331,11 +384,14 @@ export async function saveMetaAction(formData: FormData): Promise<void> {
         type,
         id,
         slug,
-        title: String(formData.get("title") ?? "").trim(),
-        summary: String(formData.get("summary") ?? "").trim(),
+        /* NOT TAKEN FROM THIS FORM, and they are not in it. R-26.5 put the
+           title and the subtitle on the canvas, where they autosave; the
+           subtitle is this same summary column, stored once. */
+        title: row.title,
+        summary: row.summary,
         category: String(formData.get("category") ?? "").trim(),
-        /* The body is NOT taken from this form. It is the editor's, and a
-           metadata save that carried a stale copy of it would silently undo
+        /* The body is NOT taken from this form either. It is the editor's, and
+           a metadata save that carried a stale copy of it would silently undo
            whatever was typed since the page loaded. */
         body: row.body,
         industry: values("industry"),

@@ -54,17 +54,23 @@ export function MediaUpload() {
       });
       const payload = (await response.json()) as {
         error?: string;
-        asset?: { renditions?: unknown[] };
+        /* The editor's shape since A5, because the editor now inserts straight
+           from an upload. `srcSet` carries one entry per rendition, so the
+           count that used to come from `renditions` is read off it — the same
+           fact, from the field that exists. */
+        asset?: { objectKey?: string; srcSet?: string };
       };
       if (!response.ok) {
         setFailed(true);
         setMessage(payload.error ?? `Upload failed: HTTP ${response.status}.`);
         return;
       }
+      const renditions = (payload.asset?.srcSet ?? "")
+        .split(",")
+        .map((entry) => entry.trim())
+        .filter(Boolean).length;
       setFailed(false);
-      setMessage(
-        `Stored, with ${payload.asset?.renditions?.length ?? 0} rendition(s).`,
-      );
+      setMessage(`Stored, with ${renditions} rendition(s).`);
       formRef.current?.reset();
       /* The library is a server component reading the table this just wrote to,
          so it has to be asked again. */
