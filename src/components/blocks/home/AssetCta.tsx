@@ -26,7 +26,7 @@ import { ArrowGlyph } from "./icons";
  * `.unbuiltFlag` were for. It is now reached by the destination being absent
  * from the published set, which is the condition it always claimed to describe.
  */
-export function AssetCta({
+export async function AssetCta({
   label,
   href,
   className,
@@ -39,7 +39,7 @@ export function AssetCta({
      A href carrying a hash or a query is matched on its path so an anchor into
      a live page is not read as an unpublished route. */
   const path = href.split(/[?#]/)[0] ?? href;
-  const live = publishedPaths().includes(path);
+  const live = (await publishedPaths()).includes(path);
 
   if (!live) {
     return <span className={styles.unbuiltFlag}>{label}, in preparation</span>;

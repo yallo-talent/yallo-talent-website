@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { hashSeed } from "@/components/ui/petal-geometry";
 import { getOgPalette } from "@/lib/og-palette";
-import { publishedPaths } from "@/lib/published-routes";
+import { structuralPaths } from "@/lib/published-routes";
 
 /**
  * One 1200x630 OG card per published route, drawn at build time and
@@ -31,8 +31,14 @@ const WIDTH = 1200;
 const HEIGHT = 630;
 const CORNER_MARK = 168;
 
+/* STRUCTURAL PATHS ONLY. Canon A1 moved articles and case studies into the
+   database, and a build that enumerates them is a build that needs a connection
+   string — which CI does not have, and which would make a published article's
+   social card wait for a deploy. The content cards generate on first request
+   and cache, like their pages. Everything the repository still owns prerenders
+   exactly as before. */
 export function generateStaticParams() {
-  return publishedPaths().map((path) => ({
+  return structuralPaths().map((path) => ({
     slug: path === "/" ? [] : path.split("/").filter(Boolean),
   }));
 }

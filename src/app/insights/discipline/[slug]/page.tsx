@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
-import {
-  publishedTaxonomySlugs,
-  TaxonomyArchive,
-  taxonomyMetadata,
-} from "../../_taxonomy";
+import { TaxonomyArchive, taxonomyMetadata } from "../../_taxonomy";
 
 interface RouteParams {
   slug: string;
 }
 
+/* Nothing at build, for the reason the article routes give: canon A2 removed
+   the build from the publishing path, so an archive that crosses the
+   three-article threshold has to appear the moment it does. */
 export function generateStaticParams(): RouteParams[] {
-  return publishedTaxonomySlugs("discipline").map((slug) => ({ slug }));
+  return [];
 }
 
 interface PageProps {

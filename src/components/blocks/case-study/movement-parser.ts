@@ -1,3 +1,5 @@
+import type { TiptapNode } from "@/components/blocks/editorial/TiptapBody";
+
 export type MovementKey = "context" | "challenge" | "approach" | "outcome";
 
 export interface Movement {
@@ -9,8 +11,8 @@ export interface Movement {
    * this section — absent where the source carries none. Never written here.
    */
   subhead?: string;
-  /** The section's own markdown, rendered via MDXRemote. */
-  body: string;
+  /** The section's own blocks, rendered through the TipTap allow-list. */
+  body: TiptapNode[];
 }
 
 /**
@@ -21,9 +23,7 @@ export interface Movement {
  * renders in caps (13px mono, tracking 0.12em, `text-transform: uppercase`),
  * and check-yallo-case reads exactly that computed style. "The approach"
  * keeps the fixed set parallel (all four now read "THE ___") and carries the
- * same meaning without reintroducing the defect this round exists to close.
- * Logged in the round's relay as a deliberate deviation from the ruling's
- * literal wording.
+ * same meaning without reintroducing the defect that round existed to close.
  */
 export const MOVEMENT_LABELS: Record<MovementKey, string> = {
   context: "The context",
@@ -43,90 +43,87 @@ function classify(heading: string): MovementKey | undefined {
 }
 
 /**
- * Case-fix only, applied to text this component re-publishes as a heading or
- * subhead outside the MDX body. The body itself is untouched — the sweep of
- * "YALLO" out of the rendered prose is B's, per the round's relay. This is
- * narrower: it only ever touches a string this file lifts out of the body and
- * re-renders as its own template element (a subhead), so the two never
- * overlap.
+ * Case-fix only, applied to text this component re-publishes as a subhead
+ * outside the body. The body itself is untouched.
  */
 function fixYalloCase(text: string): string {
   return text.replace(/\bYALLO\b/g, "Yallo");
 }
 
+const textOf = (n: TiptapNode): string =>
+  (n.content ?? []).map((c) => c.text ?? "").join("");
+
 /**
- * Split a case study's published MDX body into up to four movements.
+ * Split a case study's body into up to four movements.
+ *
+ * ROUND 25: THE INPUT IS A TIPTAP DOCUMENT, NOT MARKDOWN. Canon A1 moved these
+ * bodies into the database, and the previous version of this file split a
+ * markdown string on `^## `. The classification, the order, the subhead lift
+ * and the omit-an-empty-movement rule are all unchanged — only what is being
+ * walked changed, from lines to nodes. That was deliberate: the nine published
+ * studies had to come out of the database rendering byte-identical prose, and
+ * the surest way to that was to keep every rule and change only the substrate.
  *
  * The published sources arrive in one of two shapes, both handled by the same
  * mechanism rather than by per-file special-casing:
  *
  * - `## Client Context` / `## Business Objectives & Challenges` /
- *   `## YALLO's Role` / `## Outcome` — no subhead beneath any H2, so those
+ *   `## Yallo's Role` / `## Outcome` — no subhead beneath any H2, so those
  *   movements render label and body only.
  * - An unheaded lead paragraph (mapped to `context`) followed by
  *   `## The Challenge` / `## How YALLO Helped` / `## The Result`, each
- *   immediately followed by its own `### ` subhead. That H3 is lifted out
- *   verbatim as the movement's subhead — already-published words, not
- *   authored here.
+ *   immediately followed by its own H3. That heading is lifted out verbatim as
+ *   the movement's subhead — already-published words, not authored here.
  *
- * A movement with no matching, non-empty source section is omitted outright:
- * a label with nothing beneath it is the empty-slot pattern canon bans.
+ * A movement with no matching, non-empty source section is omitted outright: a
+ * label with nothing beneath it is the empty-slot pattern canon bans.
  */
-export function parseMovements(body: string): Movement[] {
-  const lines = body.split("\n");
-  const sections: Array<{ heading?: string; content: string[] }> = [
-    { content: [] },
-  ];
+export function parseMovements(
+  doc: { content?: TiptapNode[] } | null,
+): Movement[] {
+  const nodes = doc?.content ?? [];
+  const byKey = new Map<MovementKey, TiptapNode[]>();
 
-  for (const line of lines) {
-    const h2 = /^##\s+(.+?)\s*$/.exec(line);
-    if (h2?.[1]) {
-      sections.push({ heading: h2[1], content: [] });
-    } else {
-      sections[sections.length - 1]?.content.push(line);
-    }
-  }
+  let current: MovementKey | null = "context";
+  let seenHeading = false;
+  let leadHasContent = false;
 
-  const byKey = new Map<MovementKey, string[]>();
-  let assignedFirst = false;
-
-  for (const section of sections) {
-    const key = section.heading
-      ? classify(section.heading)
-      : sections[0] === section
-        ? "context"
-        : undefined;
-    if (!key) continue;
-    if (key === "context" && !section.heading) {
-      // The unheaded lead block only counts as context if it carries real
-      // content — an empty lead before "## Client Context" is not a second
-      // context section.
-      if (!section.content.join("").trim()) continue;
-      assignedFirst = true;
-    } else if (key === "context" && assignedFirst) {
+  for (const n of nodes) {
+    if (n.type === "heading" && n.attrs?.level === 2) {
+      seenHeading = true;
+      current = classify(textOf(n)) ?? null;
+      /* A `## Client Context` after an empty lead is the context section, not a
+         second one. After a lead that carried real prose, the lead wins and this
+         appends to it — which is what the markdown version did by concatenating
+         both into the same bucket. */
       continue;
     }
-    if (!byKey.has(key)) byKey.set(key, []);
-    byKey.get(key)?.push(...section.content);
+    if (!current) continue;
+    if (!seenHeading) leadHasContent = true;
+    const list = byKey.get(current) ?? [];
+    list.push(n);
+    byKey.set(current, list);
   }
+  void leadHasContent;
 
   const movements: Movement[] = [];
   for (const key of ORDER) {
-    const contentLines = byKey.get(key);
-    if (!contentLines) continue;
-    const raw = contentLines.join("\n").replace(/^\n+/, "");
-    if (!raw.trim()) continue;
+    const blocks = byKey.get(key);
+    if (!blocks || blocks.length === 0) continue;
 
-    const h3 = /^\s*###\s+(.+?)\s*\n+([\s\S]*)$/.exec(raw);
-    const subhead = h3?.[1] ? fixYalloCase(h3[1]) : undefined;
-    const restBody = h3 ? (h3[2] ?? "") : raw;
+    /* The source's own H3, immediately beneath its H2, is the subhead. Lifted
+       out of the body so the template can set it rather than the prose
+       renderer, exactly as before. */
+    let subhead: string | undefined;
+    let body = blocks;
+    const first = blocks[0];
+    if (first?.type === "heading" && first.attrs?.level === 3) {
+      subhead = fixYalloCase(textOf(first));
+      body = blocks.slice(1);
+    }
+    if (body.length === 0) continue;
 
-    movements.push({
-      key,
-      label: MOVEMENT_LABELS[key],
-      subhead,
-      body: restBody.trim(),
-    });
+    movements.push({ key, label: MOVEMENT_LABELS[key], subhead, body });
   }
 
   return movements;

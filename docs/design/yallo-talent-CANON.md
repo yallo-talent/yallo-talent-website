@@ -56,6 +56,10 @@ This **supersedes and withdraws** the earlier ruling that made Artificial Intell
 
 **Amendment, 1 August 2026 — the two taxonomies may not resolve into each other.** The six specialist desks in §3 below and the seven disciplines above share labels: both contain a "Data & Analytics" and a "Cloud & Infrastructure". Relay v6.0 renamed the **desk** Data & Analytics to **Data & AI**; applied by string match, that rename also took the **discipline**, which then rendered as "Data & AI" thirteen times on its own L1 including in its `<title>`. The desk keeps its ratified name on the platform side, the discipline is Data & Analytics, and `scripts/check-taxonomy.mjs` now fails the build if either name resolves into the other taxonomy or if any surface re-declares a copy of the label maps. Two orphans of the `emerging-technologies` retirement were fixed in the same pass: DevOps & Platform Engineering wore the retired "Digital & DevOps" desk name, and Testing & Quality Engineering wore "Emerging" plus that retired discipline's entire blockchain-and-quantum tagline.
 
+**Amendment, 9 August 2026 (A5, ratified by Sumeet) — every article and case study carries taxonomy.** Each carries at least one value across the three pillars, and may carry one from each: **Industry**, **Platform**, **Discipline**. Values are read from the live taxonomy indexes and are never retyped, so a value that does not resolve is a value that cannot be published. A fourth field, **Category**, carries the editorial type and is a fixed list.
+
+Single-facet taxonomy views at `/insights/industry/{slug}`, `/insights/platform/{slug}` and `/insights/discipline/{slug}` are real, indexable landing pages, each with its own copy. Multi-facet filter combinations canonicalise to `/insights` and carry `noindex`. That is twenty-one genuine search surfaces without a faceted-crawl hole, and the line between the two halves is the whole of the rule.
+
 **Eight role families**, platform-specific data per Relay v2.0 §3.4, implemented in `roles.ts` — that file is the truth. Segments stay an in-page concept. Six specialist desks carry the screening proof: Architecture, Software Development, Cloud & Infrastructure, Packaged Software, Data & Analytics, Agile & DevOps.
 
 ## 4. Navigation (amended 30 Jul)
@@ -96,6 +100,10 @@ Within a page, section rhythm still varies by position (`.amb-1…6`), now withi
 
 **Banned in the visual system:** blurred orbs, stock photography and hotlinked imagery, gradient text outside A2's display-accent rule, hero carousels and carousel libraries, people-and-places imagery. Imagery is the deterministic PetalPlate system: gradient and geometric, generated from the page's own slug.
 
+**Imagery inside article and case-study bodies (amended 9 Aug 2026 — A3).** The imagery rule above is relaxed **inside article and case-study bodies only**. Permitted there: uploaded photography and illustration, data charts generated from typed values, and PetalPlate art. Every image carries alt text, and a caption wherever the image carries meaning rather than atmosphere.
+
+Unchanged everywhere else, and the boundary is the point: no stock photography and no hotlinked images on marketing surfaces, page furniture, heroes or navigation. PetalPlate remains the default and the fallback, and remains the source of every automatically generated social card.
+
 **Logo lockup (ratified 30 Jul):** flower mark, "Yallo" wordmark, **"TALENT" to the right of the wordmark, never beneath it** — header, footer, favicon derivations.
 
 **Motion:** `prefers-reduced-motion` honoured for every animation; auto-advancing elements pause on hover; zero CLS from motion; text remains the LCP element on the homepage. Honouring it takes **two** mechanisms, and both are mandatory: `MotionConfig reducedMotion="user"` for Framer, because a JS-driven inline transform cannot be overridden by any stylesheet rule; and `!important` on the universal reset, because the `*` selector has specificity 0 and loses to every component class that declares a `transition` shorthand. `prefers-reduced-transparency` is honoured wherever A3 glass appears. Guarded by `scripts/check-motion.mjs` with a motion-allowed control pass.
@@ -114,6 +122,13 @@ Within a page, section rhythm still varies by position (`.amb-1…6`), now withi
 - **No invented people, ever.** Practice leads are roles with real credentials. "The people who screen" stays deleted; the six desks carry the proof. The testimonial slot renders nothing until a real, permissioned, attributed quote exists.
 - **Case studies:** bodies are Yallo's own published words, verbatim. Excerpts are compression of the body only — never new facts. Titles carry a schema-enforced length budget.
 - **Authorship (ratified 30 Jul): house byline "Yallo Talent" on all articles and blogs. No individual names.** This supersedes the per-person attribution rule in the content authoring guide.
+- **Cockpit roles, and the privacy clause they oblige (amended 9 Aug 2026 — A4).** Four roles. **owner** reaches everything and cannot be disabled or demoted by any other account. **admin** reaches everything, including briefs and assistant conversations, and cannot demote or disable the owner. **editor** reaches articles, case studies and media only. **ops** reaches briefs only. An audit log recording who published, changed or archived what, and when, is required rather than deferred.
+
+  Because two accounts can now read a visitor's conversation with the assistant where one could before, `/privacy` carries this wording, **ratified for publication and not to be improved, softened or extended**:
+
+  > Conversations with the site assistant are stored for up to twelve months and can be read by a small, named group of Yallo Talent administrators for the purpose of responding to enquiries and improving the service. They are not used for any other purpose, are not sold, and are not shared with third parties.
+
+  The notice ships **before** the widening, never after it. A notice that lags the code is a false statement to a visitor about their own data.
 
 ## 9. Content operating rules
 
@@ -121,6 +136,19 @@ Within a page, section rhythm still varies by position (`.amb-1…6`), now withi
 - **Port-and-convert principle (ratified 30 Jul):** the legacy site was Talent + Delivery + Consulting; everything worth keeping ports, and everything that ports converts to Talent-speak. Legacy delivery outcome figures do not port without a client and record.
 - **Workstream split (ratified 30 Jul):** case studies are Sumeet-and-Chat scope, first-class in the build. Insight articles are descoped from this build entirely — all legacy-ported insights `published: false` — and transfer to Raphy's pod post-handover with a Chat-authored brief.
 - **IA modernisation (authorised 31 Jul — R5).** The legacy corpus IA is two to three years old, so it is the source for what Yallo *published*, not for what the market *is*. Per lead domain the module taxonomy is critiqued against the current market and the portion that has moved is amended — expected to be 20–30%. Every change lands in a logged was/now/why table for Sumeet's ratification. Module names must be **real market products**; an uncertain desk parks in `QUESTIONS.md` rather than shipping. This narrows, and does not repeal, the corpus-only rule: names still may not be invented, but a name may now come from the current market rather than only from the corpus.
+- **Source of truth for articles and case studies (amended 9 Aug 2026 — A1).** Articles and case studies are held in the application database, not in the repository. They are authored and published in the admin cockpit, and publishing takes effect immediately, without a deployment. The repository ceases to be the source of truth for these two types. It remains the source of truth for all structural content in `src/data/**`, for every page template, and for the design system. Version history for these two types is the cockpit's revision record rather than git history: every save writes a revision, and any revision can be previewed and restored. **Nothing is hard-deleted** — archive is the terminal state, so every URL that ever published can be resolved or redirected. The publishing mechanics in `yallo-talent-content-authoring-guide-v1.0.md` §§4 to 9 are superseded for these two types; that guide stands only for structural content.
+- **No pull request in a content path (amended 9 Aug 2026 — A2).** Publishing an article or a case study opens nothing, waits for nothing and merges nothing. The quality rules continuous integration used to enforce are enforced by the publish action itself, which refuses to publish content that breaks them. **Saving a draft is never blocked; publishing is.** The eight rules enforced at publish, each of which was a build gate or a standing rule before:
+
+  1. Every figure in the body carries a matching source entry.
+  2. No banned vocabulary per §2, with §2's occurrence-by-occurrence allow-list method retained.
+  3. Every internal link resolves to a real route.
+  4. No rate, fee or day-rate figure appears.
+  5. Title, summary and meta description sit within their length budgets.
+  6. Taxonomy values exist in the live taxonomy indexes.
+  7. Alt text is present on every image.
+  8. The byline is "Yallo Talent", applied by the system and never an author-editable field.
+
+  A nightly re-validation of everything published reports drift into the cockpit rather than failing anything silently. **What this cost is recorded here rather than rediscovered later:** three protections continuous integration used to give — figure sourcing, terminology and internal-link integrity — are rebuilt inside the application, and they are not optional. That is the price of daily publishing, and it was paid knowingly.
 - **The one rule above all:** never invent a person, quotation, client, metric, source, case study or date. Where something is missing, render nothing and name the gap. Enforced structurally by CI guards that are never weakened.
 - **R21 — a lede never states a count the page already displays.** "50 distinct
   roles across 18 product families" reads as generated text: a tally is what a
@@ -232,6 +260,22 @@ the backlog.
 | **R22** | **R15's divider clause is reversed: the lockup carries a short gold rule again.** Variant G ships. **The reversal is evidence-led, and the reason R15 was wrong is that it fixed the wrong element.** R15 removed the hairline on the argument that spacing and contrast should do the separating. Round 2 measured what that produced at 1440: TALENT rendered 70.2px wide against the wordmark's 58.3 — the qualifier outweighing the thing it qualifies — with a 13.5px gap after the wordmark against 7.5px before it, and in a second, washier colour. Empty space cannot both separate and bind, so the eye read a logo with a stray word beside it. A rule does both jobs at once. **R15's alignment limb is untouched and still stands.** | §5 lockup clause: the divider ban is struck. The rule is 1px `--accent-mark`, set on the suffix, with the gap before it and the padding after it near-symmetric so it leans very slightly toward the wordmark. |
 | **R22a** | **Variant F, live on main from 1 Aug until this ruling, was breaching §5.** F stacked TALENT beneath the wordmark; §5 (ratified 30 Jul) says **"to the right of the wordmark, never beneath it"**. It shipped in a round that was solving the width problem and never re-read the clause it was standing on. G restores compliance. **Recorded because the failure mode is the point: a variant can be chosen on a contact sheet, gate 9/9 and still breach ratified canon, because no gate reads canon.** | §5 lockup clause holds unchanged and is now satisfied again. A/B/C/D/E/F stay in `Lockup.module.css` as named variants for reproducibility; **F must not be re-defaulted without amending §5 first.** |
 | **R22b** | **The suffix's narrow register is bounded by A4, not by the layout.** G is the widest of the four treatments and overflowed the 360px header by 3px. Below 480 it pays with tracking (0.16em → 0.12em), the gap before the rule (10px → 8px) and the padding after it (11px → 9px) — **never font-size, which already sits on A4's 13px mono floor.** Tracking sits on A4's floor exactly, per Sumeet's ruling of 1 Aug. Code's first pass used 0.125em on the reasoning that `check-rendered-type` judges the painted ratio against 0.1195 and a floor value puts float noise in charge of the verdict; measured rather than reasoned about, `--fs-label` is a fixed 13px and not a clamp, so the product is exactly 1.56px and the ratio exactly 0.12 at every width the gate visits. **The floor is only a hazard where the font-size is fractional.** | §5 / A4: **type is never shrunk to solve a layout fault.** Third recorded instance of this attempt; the two prior ones broke the mono floor on eight routes and were reverted. |
+
+### A1–A5 — 9 August 2026, ratified by Sumeet
+
+The record of what was amended and why is `docs/design/canon-amendment-2026-08-09.md`, which stays in the repository. The clauses themselves are folded above: A1 and A2 into §9, A3 into §5, A4 into §8, A5 into §3.
+
+| # | Amendment | Supersedes |
+|---|---|---|
+| **A1** | Articles and case studies live in the application database; the cockpit's revision record replaces git history for them | the repository as source of truth for these two types, and the authoring guide's §§4–9 mechanics |
+| **A2** | No pull request in a content path; eight rules enforced by the publish action, which refuses rather than warns | the pull-request-and-CI publishing route for these two types |
+| **A3** | Imagery relaxed inside article and case-study bodies only | §5's imagery rule, for those bodies alone and nowhere else |
+| **A4** | Four roles — owner, admin, editor, ops — and the ratified `/privacy` wording | the three-role model and the one-named-administrator clause |
+| **A5** | Taxonomy mandatory on every article and case study; single-facet views indexable, multi-facet `noindex` | the untagged article and the unbounded filter view |
+
+**What A1 and A2 cost, stated plainly so nobody rediscovers it later.** Round 23 built a pull-request publishing path, staged ordering and a content CI lane. For articles and case studies those are superseded, and the three protections CI gave are rebuilt inside the application under A2. The gain is that a writer publishes in seconds without a deployment, which is what the site is for.
+
+---
 
 **G as shipped is captured in `docs/status/shots/r15g/`** — lockup and full
 header, both registers, at 1440 and 360.

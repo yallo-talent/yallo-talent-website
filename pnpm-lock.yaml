@@ -100,6 +100,9 @@ importers:
       lighthouse:
         specifier: 12.8.2
         version: 12.8.2
+      mdast-util-from-markdown:
+        specifier: ^2.0.3
+        version: 2.0.3
       pdfjs-dist:
         specifier: ^4.10.38
         version: 4.10.38

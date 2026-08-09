@@ -29,7 +29,6 @@
     "logos": "node scripts/build-logos.mjs && node scripts/measure-marks.mjs",
     "check:crawlers": "node scripts/check-crawler-access.mjs",
     "check:robots": "node scripts/check-robots-policy.mjs",
-    "check:cs-excerpts": "node scripts/check-case-study-excerpts.mjs",
     "check:prose": "node scripts/check-prose-rules.mjs",
     "check:gate-coverage": "node scripts/check-gate-coverage.mjs",
     "check:no-redirects": "node scripts/check-no-redirect-hops.mjs",
@@ -55,12 +54,10 @@
     "check:metrics-attribution": "node scripts/check-metrics-attribution.mjs",
     "check:admin-isolation": "node scripts/check-admin-isolation.mjs",
     "check:admin-render": "node scripts/check-admin-render.mjs",
-    "check:write-path": "node scripts/check-write-path.mjs",
     "admin:hash": "node scripts/admin-password-hash.mjs",
     "check:redirects": "node scripts/check-redirects.mjs",
     "check:sources": "node scripts/check-sources.mjs",
-    "published:manifest": "node scripts/build-published-manifest.mjs",
-    "check:published-manifest": "node scripts/build-published-manifest.mjs --check"
+    "check:privacy-retention": "node scripts/check-privacy-retention.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -104,6 +101,7 @@
     "eslint-config-next": "16.2.12",
     "husky": "^9.1.7",
     "lighthouse": "12.8.2",
+    "mdast-util-from-markdown": "^2.0.3",
     "pdfjs-dist": "^4.10.38",
     "tailwindcss": "^4",
     "turndown": "^7.2.4",

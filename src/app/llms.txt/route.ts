@@ -62,7 +62,7 @@ const SECTION_TITLES: Record<string, string> = {
 };
 
 export async function GET() {
-  const paths = publishedPaths();
+  const paths = await publishedPaths();
 
   const groups = new Map<string, string[]>();
   for (const path of paths) {

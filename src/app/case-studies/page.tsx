@@ -12,8 +12,7 @@ import {
   sectorFilterOptions,
 } from "@/components/blocks/case-study/taxonomy";
 import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
-import { orderedCaseStudies } from "@/lib/case-study-order";
-import { getAllCaseStudies } from "@/lib/content";
+import { orderedCaseStudyEntries } from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
@@ -25,10 +24,9 @@ export const metadata: Metadata = buildMetadata({
   path: "/case-studies",
 });
 
-export default function CaseStudiesHub() {
-  const all = getAllCaseStudies();
-  const ordered = orderedCaseStudies(all);
-  const frontmatters = all.map((e) => e.frontmatter);
+export default async function CaseStudiesHub() {
+  const ordered = await orderedCaseStudyEntries();
+  const frontmatters = ordered.map((e) => e.frontmatter);
 
   const cards: FilterableCard[] = ordered.map(({ frontmatter: fm }) => {
     const clientLabel = fm.clientPublic

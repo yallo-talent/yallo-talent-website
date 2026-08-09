@@ -22,6 +22,10 @@
  */
 import { readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { extname, join } from "node:path";
+import {
+  ABSTRACTION_ALLOWED,
+  ABSTRACTIONS,
+} from "../src/lib/banned-vocabulary.mjs";
 
 const FIX = process.argv.includes("--fix");
 const ROOTS = ["src", "content"];
@@ -120,27 +124,9 @@ const GCC_RESOLUTIONS = [
  * without false positives ("team shape", "the shape of the programme"), so it is
  * left to review rather than guessed at here.
  */
-const ABSTRACTIONS = [
-  "hold the risk",
-  "pipeline to insight",
-  "delivery cadence",
-  "where the process lives",
-  "run and reliability",
-  "seamless",
-  "robust",
-  "unlock",
-  "leverage",
-  "journey",
-  "landscape",
-  "tailored",
-  "best-in-class",
-  "world-class",
-  "cutting-edge",
-  "empower",
-  "streamline",
-  "holistic",
-  "ecosystem",
-];
+/* MOVED to src/lib/banned-vocabulary.mjs in round 25, for the reason round 24
+   moved the figure detector: the publish action is now a second consumer, and a
+   list maintained in two places is a list that is wrong in one of them. */
 
 /**
  * Occurrences where a banned abstraction is load-bearing rather than filler.
@@ -151,23 +137,7 @@ const ABSTRACTIONS = [
  *
  * Each entry needs a reason. An entry without one is drift.
  */
-const ABSTRACTION_ALLOWED = [
-  ["Journey Builder", "Salesforce Marketing Cloud product name — not ours to rename"],
-  ["Digital Journey Consultant", "a real role name Yallo places"],
-  ["SAP landscape", "SAP's own word for a system environment"],
-  ["SAP landscapes", "SAP's own word for a system environment"],
-  ["shopper journey", "standard retail CX vocabulary, and the buyer's own"],
-  ["Brand-to-basket journeys", "standard retail vocabulary for the channel path"],
-  ["segmentation, journeys and cross-channel", "standard CRM/CDP vocabulary"],
-  ["highest-leverage function", "specific and measurable, not filler"],
-  ["intelligent ecosystems", "part of a real published article title — a title is a fact"],
-  ["tailored to your specific situation", "legal wording on the terms page"],
-  ["platform ecosystem", "the one literal use of 'ecosystem' canon permits"],
-  [
-    "technology-landscape",
-    "substring of a real case-study URL slug (the Alshaya multi-vendor consolidation study) — a route, not prose, and not renamable to satisfy this lint",
-  ],
-];
+
 
 /**
  * The 72-hour claim. Canon §6 publishes exactly one: brief to SHORTLIST,

@@ -44,8 +44,9 @@ const MARKDOWN_LINK = /\[([^\]]*)\]\(([^)]*)\)/g;
  * `(` is in its lookbehind class. The result was
  * `[our Managed Delivery page]([Managed Delivery](/managed-delivery))`, which
  * renderAssistantText draws as `<a href="[Managed Delivery](/managed-delivery">`
- * — a relative URL, so clicking it left the site's own route table and served a
- * 404, taking the panel's React state with it. That is the defect Sumeet hit.
+ * which is a relative URL, so clicking it left the site's own route table and
+ * served a 404, taking the panel's React state with it. That is the defect
+ * Sumeet hit.
  *
  * check-assistant-grounding was green throughout, because it extracts path
  * TOKENS from the reply text and the token it extracted was the real, published
@@ -54,13 +55,16 @@ const MARKDOWN_LINK = /\[([^\]]*)\]\(([^)]*)\)/g;
  *
  * So: markdown links the model wrote are handled as links, not as text. Their
  * target is checked against the corpus and the link is UNWRAPPED to plain text
- * when it is not a corpus path — a link the corpus cannot vouch for is the one
- * thing this module has always refused to emit, and a target the model invented
- * is exactly that case.
+ * when it is not a corpus path, because a link the corpus cannot vouch for is
+ * the one thing this module has always refused to emit, and a target the model
+ * invented is exactly that case.
  */
-function linkifyCitations(text: string): string {
+async function linkifyCitations(text: string): Promise<string> {
   const titleByPath = new Map(
-    buildAssistantCorpus().map((doc) => [doc.path, doc.linkLabel ?? doc.title]),
+    (await buildAssistantCorpus()).map((doc) => [
+      doc.path,
+      doc.linkLabel ?? doc.title,
+    ]),
   );
 
   const linkPlain = (plain: string): string =>
@@ -182,7 +186,7 @@ export async function requestAssistantReply(
     system: [
       {
         type: "text",
-        text: buildSystemPrompt(),
+        text: await buildSystemPrompt(),
         cache_control: { type: "ephemeral" },
       },
     ],
@@ -201,5 +205,5 @@ export async function requestAssistantReply(
   if (textBlock?.type !== "text") {
     throw new Error("The model returned no text content.");
   }
-  return { type: "text", text: linkifyCitations(textBlock.text) };
+  return { type: "text", text: await linkifyCitations(textBlock.text) };
 }

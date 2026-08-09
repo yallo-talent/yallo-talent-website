@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
-import { getInsightsByTaxonomy, getTaxonomyIndex } from "@/lib/content";
+import {
+  articlesByTaxonomy,
+  taxonomyValuesWithArticles,
+} from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
 
 export type TaxonomyKind = "industry" | "platform" | "discipline";
@@ -16,15 +19,17 @@ const KIND_LABEL: Record<TaxonomyKind, string> = {
 /** Minimum published articles a taxonomy value needs before we render an archive page. */
 export const TAXONOMY_MIN_ARTICLES = 3;
 
-export function publishedTaxonomySlugs(kind: TaxonomyKind): string[] {
-  const index = getTaxonomyIndex(kind);
-  return [...index.entries()]
-    .filter(([, entries]) => entries.length >= TAXONOMY_MIN_ARTICLES)
-    .map(([slug]) => slug);
+export async function publishedTaxonomySlugs(
+  kind: TaxonomyKind,
+): Promise<string[]> {
+  return taxonomyValuesWithArticles(kind, TAXONOMY_MIN_ARTICLES);
 }
 
-export function taxonomyMetadata(kind: TaxonomyKind, slug: string): Metadata {
-  if (!publishedTaxonomySlugs(kind).includes(slug)) {
+export async function taxonomyMetadata(
+  kind: TaxonomyKind,
+  slug: string,
+): Promise<Metadata> {
+  if (!(await publishedTaxonomySlugs(kind)).includes(slug)) {
     return { title: `${KIND_LABEL[kind]} archive not found` };
   }
   const label = humanise(slug);
@@ -48,16 +53,16 @@ function humanise(slug: string): string {
     .join(" ");
 }
 
-export function TaxonomyArchive({
+export async function TaxonomyArchive({
   kind,
   slug,
 }: {
   kind: TaxonomyKind;
   slug: string;
 }) {
-  const validSlugs = publishedTaxonomySlugs(kind);
+  const validSlugs = await publishedTaxonomySlugs(kind);
   if (!validSlugs.includes(slug)) notFound();
-  const entries = getInsightsByTaxonomy(kind, slug);
+  const entries = await articlesByTaxonomy(kind, slug);
   const label = humanise(slug);
 
   return (

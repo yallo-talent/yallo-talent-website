@@ -337,7 +337,31 @@ if (present.length === 0) {
  * Nothing here writes a real account, and the finally block removes what it made
  * even when an assertion throws.
  */
+/* FOUR ROLES SINCE CANON A4, and `owner` earns a row rather than being assumed
+   to behave like `admin`: the whole point of the role is that it reaches
+   everything, and a table that only lists the narrow roles proves nothing about
+   the wide one. An empty `denied` is the assertion, not an omission. */
 const ROLE_EXPECTATIONS = {
+  owner: {
+    reach: [
+      `${ADMIN_BASE}/briefs`,
+      `${ADMIN_BASE}/conversations`,
+      `${ADMIN_BASE}/case-studies`,
+      `${ADMIN_BASE}/articles`,
+      `${ADMIN_BASE}/users`,
+    ],
+    denied: [],
+  },
+  admin: {
+    reach: [
+      `${ADMIN_BASE}/briefs`,
+      `${ADMIN_BASE}/conversations`,
+      `${ADMIN_BASE}/case-studies`,
+      `${ADMIN_BASE}/articles`,
+      `${ADMIN_BASE}/users`,
+    ],
+    denied: [],
+  },
   editor: {
     reach: [`${ADMIN_BASE}/case-studies`, `${ADMIN_BASE}/articles`],
     denied: [
