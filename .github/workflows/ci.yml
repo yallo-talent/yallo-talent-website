@@ -292,7 +292,21 @@ jobs:
       # recover from it, so the fix is a new process: the server that served
       # check:visual is retired and the browser gates below get a clean one.
       # Costs one `next start` against a build that already exists.
+      # THE SHARED SERVER GETS THE ADMIN PAIR since round 25, and the reason is
+      # the isolation gate below rather than convenience. Its role-reach half
+      # signs a fixture account in against THIS server, and the cockpit refuses
+      # to offer a sign-in it cannot complete: with no AUTH_SECRET the submit
+      # button renders disabled, which is correct behaviour and an unclickable
+      # button to a gate. Setting the pair on the gate's own step cannot help,
+      # because the server was started before it.
+      #
+      # The same throwaway pair the render gate already uses. It signs nothing
+      # in by itself; it is what makes the sign-in form operable at all.
       - name: Fresh server for the browser gates
+        env:
+          ADMIN_PASSWORD_HASH: ${{ secrets.ADMIN_PASSWORD_HASH }}
+          ADMIN_EMAIL: ${{ secrets.ADMIN_TEST_EMAIL }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
         run: |
           # `next start` becomes a process called `next-server`, so pkill on the
           # start command kills the wrapper and leaves the thing that is actually
@@ -485,6 +499,14 @@ jobs:
       #
       # The client-bundle assertion needs the real secrets and says so rather than
       # skipping silently; it is exercised where they exist.
+      # ROUND 25 GAVE THIS STEP ITS SECRETS, and it is a gate coming ALIVE
+      # rather than a gate being appeased. Its role-reach half creates a fixture
+      # account per role, signs it in and asserts what each one reaches; it has
+      # been printing "role reach NOT exercised: DATABASE_URL is not set" in
+      # every CI run it has ever had. Wiring the database at job level switched
+      # it on, and it then failed on a DISABLED sign-in button, because the
+      # cockpit refuses to offer a sign-in it cannot complete and this step had
+      # no AUTH_SECRET. The same throwaway pair the render gate already uses.
       - name: Admin cockpit isolation (six assertions, one anonymous read)
         run: node scripts/check-admin-isolation.mjs http://localhost:3100
 
