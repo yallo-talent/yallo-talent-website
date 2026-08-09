@@ -648,6 +648,14 @@ jobs:
       # losing work is the failure round 25 refused to ship a half-built
       # control for. check-editor's fixtures are one draft row and one account,
       # both removed before it exits, including on failure.
+      # ROUND 26 ADDS THE FUNNEL GATE TO THE SAME STEP, for the same reason the
+      # editor gate joined it: one step, one server, every signed-in gate
+      # against it. cockpit-v3 §11's clauses are behaviours too — a lead moves
+      # in one click, the filters survive the write, the clock stops when the
+      # lead is answered, an owner sticks, every change leaves an audit row, and
+      # the CSV is the view on screen. check-funnel's fixtures are one
+      # submission row with an endpoint no form writes, one sidecar row and one
+      # account, all removed before it exits including on failure.
       - name: Admin cockpit renders, and the editor works (signed in)
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
@@ -664,6 +672,32 @@ jobs:
           done
           node scripts/check-admin-render.mjs http://localhost:3101
           node scripts/check-editor.mjs http://localhost:3101
+          node scripts/check-funnel.mjs http://localhost:3101
+
+      # THE SIGNATURE GIF IS THE ONE THE GENERATOR PRODUCES — v36 open item 4,
+      # accepted as round 26 §4.1.
+      #
+      # The animated signature is a binary in public/ built from scripts/brand/.
+      # Nothing connected the two except somebody remembering to re-run the
+      # build, so a copy or colour change shipped as a source edit with a stale
+      # binary beside it — and nobody would notice, because the file renders
+      # perfectly. This rebuilds it and compares the BYTES: the encoder is
+      # deterministic over the same inputs, so nothing weaker catches a one-word
+      # change.
+      #
+      # IT NEEDS THE PINNED FONTS AND FAILS WITHOUT THEM. setup.sh fetches and
+      # instances them; the gate refuses to report clean when they are absent,
+      # because a green tick over an unmeasured asset is what this repository
+      # has filed against twice. fontTools and the local resvg install are what
+      # the two steps below are for; neither is a site dependency and neither
+      # ships.
+      - name: Brand pipeline toolchain
+        run: |
+          python3 -m pip install --quiet --break-system-packages fonttools || python3 -m pip install --quiet fonttools
+          cd scripts/brand && npm install --silent && bash setup.sh
+
+      - name: The committed signature GIF has not drifted (check:signature-gif)
+        run: pnpm check:signature-gif
 
       # Round 19 §3.2's gate, and the one CI cannot fully run yet. Part A — every
       # path llms.txt enumerates returns 200 — needs nothing. Part B asks the

@@ -1,7 +1,9 @@
 {
   "detector": {
     "ignoreRules": [],
-    "ignoreFiles": [],
+    "ignoreFiles": [
+      "public/signature.html"
+    ],
     "ignoreValues": [
       {
         "rule": "layout-transition",
