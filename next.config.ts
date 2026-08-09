@@ -33,6 +33,31 @@ const nextConfig: NextConfig = {
    * own build directory. Unset, behaviour is exactly as before.
    */
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  /**
+   * Cockpit media served through the Spaces CDN.
+   *
+   * ONE HOST, AND IT IS THE CDN, not the origin. `next/image` refuses any
+   * remote host it has not been told about, so this is what makes an uploaded
+   * image renderable at all. The origin
+   * `yallo-talent-media.lon1.digitaloceanspaces.com` is deliberately NOT listed:
+   * if both were allowed, a URL that bypassed the CDN would still render and
+   * nothing would ever surface that the cache was being missed.
+   *
+   * `pathname` is left open because the bucket's key space is the cockpit's to
+   * organise. The bucket is the boundary, and the access key behind the upload
+   * route is scoped to that bucket alone.
+   *
+   * Uploads are server-side through the app's own route, never browser-direct,
+   * so the bucket needs no CORS configuration for this to work.
+   */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "yallo-talent-media.lon1.cdn.digitaloceanspaces.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
