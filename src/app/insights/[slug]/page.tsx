@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { ContentRails } from "@/components/blocks/editorial/ContentRails";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
 import { TiptapBody } from "@/components/blocks/editorial/TiptapBody";
+import { contentGraph } from "@/lib/content-jsonld";
+import { breadcrumbFor, contentSeo } from "@/lib/content-seo";
 import {
   type ArticleEntry,
   allArticles,
   articleRowToFrontmatter,
   publishedArticle,
+  publishedArticles,
+  redirectFor,
 } from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
 
@@ -40,11 +45,11 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = await tryGetInsight(slug);
   if (!entry) return { title: "Insight not found" };
+  /* The row's OWN SEO fields, not the title and the summary. The cockpit has
+     offered meta title, meta description, canonical and OG image since round
+     25b and this route read none of them. */
   return buildMetadata({
-    seo: {
-      title: `${entry.frontmatter.title} · Yallo Talent`,
-      description: entry.frontmatter.summary,
-    },
+    seo: contentSeo(entry.row),
     path: `/insights/${slug}`,
   });
 }
@@ -53,16 +58,31 @@ export default async function InsightPage({ params }: PageProps) {
   const { slug } = await params;
   const entry = await tryGetInsight(slug);
   if (!entry) {
+    /* A SLUG THAT MOVED IS ANSWERED BEFORE ANYTHING ELSE. Design §6 writes a
+       redirect row when a published slug changes, and this is where it is
+       spent: a permanent redirect, so the authority the old URL earned
+       arrives at the new one rather than being spent on a 404. */
+    const moved = await redirectFor(`/insights/${slug}`);
+    if (moved) permanentRedirect(moved);
     /* Same rule as the case-study route: a slug that exists but is not
        published redirects to the hub, one that exists nowhere is a 404. */
     const known = (await allArticles()).some((a) => a.slug === slug);
     if (known) redirect("/insights");
     notFound();
   }
-  const { frontmatter, body } = entry;
+  const { frontmatter, body, row } = entry;
+  const trail = breadcrumbFor("article", row);
+  const related = await publishedArticles();
 
   return (
     <article className={styles.page}>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD built from typed row data in src/lib/content-jsonld.ts, serialised with JSON.stringify
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(contentGraph(row, "article", trail)),
+        }}
+      />
       <section className={styles.hero}>
         <div className={styles.heroBg} aria-hidden="true">
           <div className={styles.heroBgA} />
@@ -116,6 +136,13 @@ export default async function InsightPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      <ContentRails
+        candidates={related}
+        hubHref="/insights"
+        row={row}
+        subjectPathPrefix="/insights"
+      />
 
       <section className={styles.bottomCta}>
         <div className={styles.wrap}>

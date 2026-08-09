@@ -6,6 +6,7 @@ import {
   platformsIndex,
 } from "@/data/l1/index";
 import { BUDGETS, FIXED_BYLINE } from "@/lib/admin/content-validation";
+import { answerFirstNotes } from "@/lib/content-seo";
 import type { ArticleRow } from "@/lib/db/content";
 import type { ContentType } from "@/lib/db/content-write";
 import type { RevisionSummary } from "@/lib/db/revisions";
@@ -46,8 +47,14 @@ export interface EditorPaneProps {
   categories: readonly string[];
   saveMetaAction: (formData: FormData) => Promise<void>;
   restoreRevisionAction: (formData: FormData) => Promise<void>;
+  changeSlugAction: (formData: FormData) => Promise<void>;
   saveBody: (body: unknown) => Promise<void>;
-  notice?: { err?: string; saved?: string; restored?: string };
+  notice?: {
+    err?: string;
+    saved?: string;
+    restored?: string;
+    moved?: string;
+  };
 }
 
 export function EditorPane({
@@ -57,6 +64,7 @@ export function EditorPane({
   categories,
   saveMetaAction,
   restoreRevisionAction,
+  changeSlugAction,
   saveBody,
   notice,
 }: EditorPaneProps) {
@@ -64,6 +72,8 @@ export function EditorPane({
   const backRoute =
     type === "article" ? "/admin/articles" : "/admin/case-studies";
   const published = row.status === "published";
+  const frozen = row.firstPublishedAt !== null;
+  const answerFirst = answerFirstNotes(row);
 
   return (
     <>
@@ -89,6 +99,31 @@ export function EditorPane({
           That revision is now the body. The version it replaced was itself
           recorded, so this is undoable.
         </p>
+      ) : null}
+      {notice?.moved ? (
+        <p className={styles.ok}>
+          URL moved: <code>{notice.moved}</code>. The redirect is written and
+          permanent.
+        </p>
+      ) : null}
+
+      {/* THE ANSWER-FIRST SOFT CHECK — design §6, and soft is the ruling. It
+          warns and never refuses: the eight publish rules are mechanical, and
+          whether an opening paragraph states a claim is a judgement. A
+          validator that refuses on a judgement is one writers learn to defeat
+          rather than satisfy. */}
+      {answerFirst.length > 0 ? (
+        <div className={styles.warn}>
+          <p className={styles.warnHead}>
+            Answer first. This is a reading of the first screen, not a rule.
+            Publish anyway if you disagree.
+          </p>
+          <ul>
+            {answerFirst.map((note) => (
+              <li key={note.message}>{note.message}</li>
+            ))}
+          </ul>
+        </div>
       ) : null}
 
       <EditorClient
@@ -119,15 +154,27 @@ export function EditorPane({
 
         <label className={styles.field} htmlFor="f-slug">
           <span className={styles.fieldLabel}>Slug</span>
+          {/* FROZEN AT FIRST PUBLISH — design §6. Read-only rather than absent,
+              so the writer can still see and copy the URL; the action discards
+              whatever arrives here regardless, because a read-only input is a
+              hint to a browser and not a rule. Moving it is the separate,
+              deliberate act below, which writes the redirect. */}
           <input
             className={styles.input}
             defaultValue={row.slug}
             id="f-slug"
             name="slug"
             pattern="[a-z0-9]+(-[a-z0-9]+)*"
+            readOnly={frozen}
             required
             type="text"
           />
+          {frozen ? (
+            <span className={styles.note}>
+              Frozen since this piece first published. Changing a live URL is
+              the separate step below, which writes the redirect with it.
+            </span>
+          ) : null}
         </label>
 
         <label className={styles.field} htmlFor="f-summary">
@@ -223,10 +270,77 @@ export function EditorPane({
           />
         </label>
 
+        <label className={styles.field} htmlFor="f-canonical">
+          <span className={styles.fieldLabel}>Canonical URL</span>
+          <input
+            className={styles.input}
+            defaultValue={row.canonicalUrl ?? ""}
+            id="f-canonical"
+            name="canonicalUrl"
+            placeholder={`https://yallo.co${publicRoute}/${row.slug}`}
+            type="url"
+          />
+          <span className={styles.note}>
+            Left empty, the page is its own canonical, which is almost always
+            right. Fill it only when this piece is a copy of something that
+            lives elsewhere.
+          </span>
+        </label>
+
+        <label className={styles.field} htmlFor="f-og-image">
+          <span className={styles.fieldLabel}>Social card image</span>
+          <input
+            className={styles.input}
+            defaultValue={row.ogImageUrl ?? ""}
+            id="f-og-image"
+            name="ogImageUrl"
+            placeholder="Leave empty for the generated PetalPlate"
+            type="url"
+          />
+          <span className={styles.note}>
+            Left empty, the card is the PetalPlate drawn from this slug, which
+            is never blank and never wrong. An uploaded hero replaces it.
+          </span>
+        </label>
+
         <button className={styles.submit} type="submit">
           Save fields
         </button>
       </form>
+
+      {frozen ? (
+        <>
+          <h2 className={styles.h2}>Change the published URL</h2>
+          <p className={styles.note}>
+            This piece is live at{" "}
+            <code>
+              {publicRoute}/{row.slug}
+            </code>
+            . Moving it writes a permanent redirect from the old address in the
+            same transaction, so anything already pointing at it keeps working
+            and keeps its authority.
+          </p>
+          <form action={changeSlugAction} className={editor.metaForm}>
+            <input name="type" type="hidden" value={type} />
+            <input name="id" type="hidden" value={row.id} />
+            <label className={styles.field} htmlFor="f-new-slug">
+              <span className={styles.fieldLabel}>New slug</span>
+              <input
+                className={styles.input}
+                defaultValue={row.slug}
+                id="f-new-slug"
+                name="newSlug"
+                pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                required
+                type="text"
+              />
+            </label>
+            <button className={styles.submit} type="submit">
+              Move the URL and write the redirect
+            </button>
+          </form>
+        </>
+      ) : null}
 
       <h2 className={styles.h2}>
         History · {revisions.length} revision

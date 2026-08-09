@@ -28,6 +28,7 @@ import { sql } from "@/lib/db/client";
 export const CONTENT_TAGS = {
   articles: "content:articles",
   caseStudies: "content:case-studies",
+  redirects: "content:redirects",
 } as const;
 
 export type ContentStatus =
@@ -56,6 +57,14 @@ export interface ArticleRow {
   readingTimeMinutes: number;
   wordCount: number;
   publishedAt: string | null;
+  /**
+   * When this piece FIRST went live, which is what freezes the slug.
+   *
+   * Distinct from `publishedAt`, and the difference is the whole point: a piece
+   * taken back to draft and published again keeps its first date, so unpublishing
+   * is not a way to unfreeze a URL the world already has.
+   */
+  firstPublishedAt: string | null;
   updatedAt: string;
 }
 
@@ -98,6 +107,9 @@ function toArticle(r: Record<string, unknown>): ArticleRow {
     wordCount: Number(r.word_count ?? 0),
     publishedAt: r.published_at
       ? new Date(String(r.published_at)).toISOString()
+      : null,
+    firstPublishedAt: r.first_published_at
+      ? new Date(String(r.first_published_at)).toISOString()
       : null,
     updatedAt: new Date(String(r.updated_at ?? Date.now())).toISOString(),
   };
@@ -311,6 +323,39 @@ export async function caseStudyById(id: string): Promise<CaseStudyRow | null> {
   const rows = await sql()`select * from case_studies where id = ${id}`;
   const r = (rows as Record<string, unknown>[])[0];
   return r ? toCaseStudy(r) : null;
+}
+
+/**
+ * The redirect map a slug change writes, path to path.
+ *
+ * NOT IN THE MIDDLEWARE, and that is the decision. `src/data/redirects.mjs` is
+ * a compiled-in table the middleware answers from a Map with no I/O; this one
+ * lives in the database because content does, and putting it in the middleware
+ * would put a query on EVERY request to the site including the ones that hit
+ * nothing. It is consulted where it is actually needed — on the content routes,
+ * after a slug has already failed to resolve — so the cost falls on the 404 path
+ * and nowhere else.
+ *
+ * Cached under its own tag rather than the article tag: a slug change
+ * invalidates both, and an article publish has no reason to drop this.
+ */
+export const contentRedirects = unstable_cache(
+  async (): Promise<Map<string, string>> => {
+    const rows = await sql()`select from_path, to_path from content_redirects`;
+    return new Map(
+      (rows as Record<string, unknown>[]).map((r) => [
+        String(r.from_path),
+        String(r.to_path),
+      ]),
+    );
+  },
+  ["content-redirects"],
+  { tags: [CONTENT_TAGS.redirects] },
+);
+
+/** Where a retired content path now points, or null. */
+export async function redirectFor(path: string): Promise<string | null> {
+  return (await contentRedirects()).get(path) ?? null;
 }
 
 export type TaxonomyKind = "industry" | "platform" | "discipline";

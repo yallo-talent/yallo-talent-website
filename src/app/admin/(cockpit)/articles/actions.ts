@@ -8,6 +8,7 @@ import { assertPane } from "@/lib/admin/guard";
 import { articleById, caseStudyById } from "@/lib/db/content";
 import {
   type ContentType,
+  changeSlug,
   restoreRevision,
   saveBody,
   saveDraft,
@@ -76,6 +77,8 @@ export async function createArticleAction(formData: FormData): Promise<void> {
         sources: [],
         metaTitle: null,
         metaDescription: null,
+        canonicalUrl: null,
+        ogImageUrl: null,
       },
       signed,
     );
@@ -180,6 +183,46 @@ export async function saveBodyAction(
   return counts;
 }
 
+/**
+ * Move a published piece's URL, writing the redirect.
+ *
+ * A SEPARATE ACTION FROM THE FIELDS FORM, and deliberately a deliberate act.
+ * Design §6 freezes the slug at first publish and writes a redirect if it ever
+ * changes; both halves are true at once only if there is exactly one path that
+ * moves a URL and it always writes the redirect. Making it its own form also
+ * means nobody moves a live URL by tabbing through a field on their way to
+ * saving a meta description.
+ */
+export async function changeSlugAction(formData: FormData): Promise<void> {
+  const type = String(formData.get("type") ?? "") as ContentType;
+  if (type !== "article" && type !== "case_study") {
+    back(ADMIN_ROUTES.root, { err: "Unknown content type." });
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const id = String(formData.get("id") ?? "");
+  const next = String(formData.get("newSlug") ?? "").trim();
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(next)) {
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `"${next}" is not a slug. Lower case, numbers and single hyphens.`,
+    });
+  }
+  let moved: { from: string; to: string };
+  try {
+    moved = await changeSlug(type, id, next, signed);
+  } catch (err) {
+    const message = (err as Error).message ?? "";
+    if (message.includes("duplicate key") || message.includes("_slug_lower_")) {
+      back(`${ROUTE_FOR[type]}/${id}`, {
+        err: `There is already a piece at ${ROUTE_FOR[type] === ADMIN_ROUTES.articles ? "/insights" : "/case-studies"}/${next}.`,
+      });
+    }
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `The URL was not changed: ${message}`,
+    });
+  }
+  back(`${ROUTE_FOR[type]}/${id}`, { moved: `${moved.from} → ${moved.to}` });
+}
+
 /** Put a previous revision back. Itself recorded as a revision. */
 export async function restoreRevisionAction(formData: FormData): Promise<void> {
   const type = String(formData.get("type") ?? "") as ContentType;
@@ -224,7 +267,16 @@ export async function saveMetaAction(formData: FormData): Promise<void> {
       .map(String)
       .filter((v) => v !== "");
 
-  const slug = String(formData.get("slug") ?? "").trim();
+  /* THE SLUG FREEZES AT FIRST PUBLISH — design §6. A piece that has never
+     published has no URL anybody holds, so its slug is an ordinary field; once
+     it has, the URL is out in the world and moving it silently is how a link
+     somebody sent a client stops working. The field is read-only in the pane
+     from that moment, and this is the server half of that: whatever arrives in
+     the form is discarded in favour of what is stored. A disabled input is a
+     hint to a browser, not a rule, and this action is a public POST endpoint. */
+  const frozen = row.firstPublishedAt !== null;
+  const submitted = String(formData.get("slug") ?? "").trim();
+  const slug = frozen ? row.slug : submitted;
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
     back(`${ROUTE_FOR[type]}/${id}`, {
       err: `"${slug}" is not a slug. Lower case, numbers and single hyphens.`,
@@ -260,6 +312,8 @@ export async function saveMetaAction(formData: FormData): Promise<void> {
         sources: row.sources,
         metaTitle: meta("metaTitle"),
         metaDescription: meta("metaDescription"),
+        canonicalUrl: meta("canonicalUrl"),
+        ogImageUrl: meta("ogImageUrl"),
       },
       signed,
     );

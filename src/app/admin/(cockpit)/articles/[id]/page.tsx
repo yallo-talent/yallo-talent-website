@@ -5,6 +5,7 @@ import { requirePane } from "@/lib/admin/guard";
 import { articleById } from "@/lib/db/content";
 import { revisionsFor } from "@/lib/db/revisions";
 import {
+  changeSlugAction,
   restoreRevisionAction,
   saveBodyAction,
   saveMetaAction,
@@ -23,7 +24,12 @@ export default async function ArticleEditorRoute({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ err?: string; saved?: string; restored?: string }>;
+  searchParams: Promise<{
+    err?: string;
+    saved?: string;
+    restored?: string;
+    moved?: string;
+  }>;
 }) {
   await requirePane("articles");
   const { id } = await params;
@@ -43,6 +49,7 @@ export default async function ArticleEditorRoute({
     <EditorPane
       categories={categoriesFor("article")}
       notice={await searchParams}
+      changeSlugAction={changeSlugAction}
       restoreRevisionAction={restoreRevisionAction}
       revisions={revisions}
       row={row}
