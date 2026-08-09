@@ -18,7 +18,7 @@
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import sharp from "sharp";
-import { W, H, variants, renderVariant } from "./signature-banners.mjs";
+import { variants, renderVariant } from "./signature-banners.mjs";
 
 /* Sequence and timing, from the ratified context. Holds 3.5-4s, each fade
    400-600ms in 6-8 intermediate frames, loop roughly 12-14s. */

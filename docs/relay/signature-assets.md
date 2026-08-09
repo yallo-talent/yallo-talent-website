@@ -243,6 +243,20 @@ Neither can be affected by this round's changes: one signs into `/admin` and
 the other asks the model questions. Both will run in CI on the pull request in
 the usual way.
 
+**The list above is the CI that existed at this branch's fork point, and round
+25 has since changed it.** On `main`, `check:cs-excerpts`,
+`check:published-manifest` and `check:write-path` are gone as separate steps,
+`check:sources` now covers published content rather than insights, and four
+gates are new: the eight publish refusals, the four role guards, privacy
+retention wording, and `npx eslint src scripts`.
+
+Only the eslint one can reach this round's files, and it was run rather than
+reasoned about: **exit 0** on `scripts/brand`, and **exit 0** on the full
+`src scripts` surface of the merged tree. It also found a real defect in this
+round's own work, an unused `W, H` import in `signature-gif.mjs`, fixed in the
+commit that carries this correction. The other three read content, roles and
+privacy copy, none of which this branch touches.
+
 ---
 
 ## 7. HEAD and branch state
@@ -256,9 +270,25 @@ Branch `feat/email-signature-gif`, four commits on top of `main` at `811fe0d`:
 | `dbf4302` | `feat(brand): the signature copy source becomes a hosted page` |
 | HEAD | the commit adding this relay |
 
-`main` is untouched at `811fe0d`. `round25` is untouched at `4abe214`. Every
-commit staged explicit paths; `git add -A` was never used, and `tsconfig.json`
-was never touched, since no `next dev` ran in this round.
+Every commit staged explicit paths. `git add -A` was never used, and
+`tsconfig.json` was never touched, since no `next dev` ran in this round.
+
+**`main` moved during this round, and this branch does not contain the move.**
+Round 25 merged as PR #25 while the gate suite was running, taking `main` from
+`811fe0d` to `2baee19`. This branch forked at `811fe0d` and is one commit
+behind. Measured, not assumed:
+
+| Check | Result |
+|---|---|
+| Paths round 25 changed that this branch also changes | **none** |
+| `git merge-tree main feat/email-signature-gif` | clean, no conflict |
+| `npx eslint src scripts` on the merged tree | **exit 0**, 0 errors |
+| `tsc --noEmit` on the merged tree | **exit 0** |
+
+The merged tree was produced with a real `git merge --no-commit`, measured, and
+aborted; the branch is byte-for-byte as pushed. Nothing needs doing before the
+pull request: GitHub runs CI on the merge commit, so round 25's content is
+present when the checks run.
 
 **Not merged, not deployed, as instructed.** Sumeet merges and confirms
 production personally.
@@ -291,6 +321,14 @@ faults, neither reaching a commit.**
    was wrong, not the file. With the control passing, the real GIF animates.
    The lesson is the one already in this repository's memory in another form:
    a green or red result from an uncalibrated instrument is not a result.
+
+3. **This relay said `main` was untouched at `811fe0d`. It was wrong by the
+   time it was written.** Round 25 merged as PR #25 while the gate suite was
+   running, and `main` is at `2baee19`. The original claim was true when the
+   branch was cut and stale when committed, which is the ordinary way a
+   parallel round catches a relay out. Corrected in §7, with the consequences
+   measured rather than assumed, and the gate list in §6 annotated for the
+   same reason.
 
 Nothing else is retracted. No figure, date, name, title or quotation was
 invented anywhere in this round or in the assets.
