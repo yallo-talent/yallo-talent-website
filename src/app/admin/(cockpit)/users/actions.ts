@@ -5,10 +5,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import { assertCapability } from "@/lib/admin/guard";
-import { isRole } from "@/lib/admin/roles";
+import { canAssignRole, canManageAccount, isRole } from "@/lib/admin/roles";
 import {
   createUser,
-  enabledAdminCount,
+  enabledManagerCount,
   getUser,
   setDisabled,
   setPassword,
@@ -44,7 +44,7 @@ function back(params: Record<string, string>): never {
 const generatePassword = (): string => randomBytes(18).toString("base64url");
 
 export async function createUserAction(formData: FormData): Promise<void> {
-  await assertCapability("usersManage");
+  const signed = await assertCapability("usersManage");
 
   const email = String(formData.get("email") ?? "").trim();
   const name = String(formData.get("name") ?? "").trim();
@@ -55,7 +55,14 @@ export async function createUserAction(formData: FormData): Promise<void> {
     back({
       err: "A name is required: an account with no name is a row nobody can identify later.",
     });
-  if (!isRole(role)) back({ err: "That is not one of the three roles." });
+  if (!isRole(role)) back({ err: "That is not one of the four roles." });
+  /* ONLY AN OWNER MAY MAKE AN OWNER. Canon A4 makes an owner undemotable, so an
+     admin who could create one could mint an account nobody can take back. */
+  if (!canAssignRole(signed.role, role)) {
+    back({
+      err: "Only an owner can create another owner. An owner cannot be demoted or disabled by anyone, so an account that could hand that out would be handing out something it could never take back.",
+    });
+  }
 
   const password = generatePassword();
   try {
@@ -79,11 +86,16 @@ export async function createUserAction(formData: FormData): Promise<void> {
 }
 
 export async function resetPasswordAction(formData: FormData): Promise<void> {
-  await assertCapability("usersManage");
+  const signed = await assertCapability("usersManage");
 
   const id = String(formData.get("id") ?? "");
   const user = await getUser(id);
   if (!user) back({ err: "No such account." });
+  /* Resetting a password is taking an account over, so it is the same question
+     as demoting or disabling it: an owner's account is nobody else's to seize. */
+  if (!canManageAccount(signed.role, user.role)) {
+    back({ err: "The owner's account cannot be reset by another account." });
+  }
 
   const password = generatePassword();
   await setPassword(id, password);
@@ -112,8 +124,18 @@ export async function setDisabledAction(formData: FormData): Promise<void> {
    * `enabledAdminCount()` counts rows only, never the env identity — see the
    * note on that function for why.
    */
-  if (next && user.role === "admin" && !user.disabled) {
-    const remaining = await enabledAdminCount();
+  if (!canManageAccount(signed.role, user.role)) {
+    back({
+      err: "The owner cannot be disabled or demoted by anyone, including an owner. Canon A4.",
+    });
+  }
+
+  if (
+    next &&
+    (user.role === "admin" || user.role === "owner") &&
+    !user.disabled
+  ) {
+    const remaining = await enabledManagerCount();
     if (remaining <= 1) {
       const self = user.email.toLowerCase() === signed.email.toLowerCase();
       back({

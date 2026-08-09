@@ -1,6 +1,11 @@
 import { RowTitle } from "@/app/admin/RowTitle";
 import { requirePane } from "@/lib/admin/guard";
-import { ROLE_DESCRIPTIONS, ROLES } from "@/lib/admin/roles";
+import {
+  canAssignRole,
+  canManageAccount,
+  ROLE_DESCRIPTIONS,
+  ROLES,
+} from "@/lib/admin/roles";
 import { listUsers } from "@/lib/db/users";
 import styles from "../../Admin.module.css";
 import {
@@ -39,7 +44,7 @@ export default async function UsersPane({
     password?: string;
   }>;
 }) {
-  await requirePane("users");
+  const signed = await requirePane("users");
   const q = await searchParams;
 
   let rows: Awaited<ReturnType<typeof listUsers>> = [];
@@ -93,44 +98,60 @@ export default async function UsersPane({
       <h2 className={styles.h2}>Accounts</h2>
       {rows.length === 0 ? (
         <p className={styles.empty}>
-          No accounts yet. The environment credential still signs in as admin,
+          No accounts yet. The environment credential still signs in as owner,
           which is what it is for.
         </p>
       ) : (
         <ul className={styles.rows}>
-          {rows.map((user) => (
-            <li key={user.id} className={styles.row}>
-              <div className={styles.rowHead}>
-                <span className={styles.meta}>{user.role}</span>
-                <RowTitle level={3} className={styles.rowTitle}>
-                  {user.name}
-                </RowTitle>
-                <span className={styles.meta}>{user.email}</span>
-                <span className={user.disabled ? styles.meta : styles.ok}>
-                  {user.disabled ? "disabled" : "enabled"}
-                </span>
-              </div>
-              <div className={styles.rowActions}>
-                <form action={resetPasswordAction}>
-                  <input type="hidden" name="id" value={user.id} />
-                  <button className={styles.rowButton} type="submit">
-                    Reset password
-                  </button>
-                </form>
-                <form action={setDisabledAction}>
-                  <input type="hidden" name="id" value={user.id} />
-                  <input
-                    type="hidden"
-                    name="next"
-                    value={user.disabled ? "false" : "true"}
-                  />
-                  <button className={styles.rowButton} type="submit">
-                    {user.disabled ? "Enable" : "Disable"}
-                  </button>
-                </form>
-              </div>
-            </li>
-          ))}
+          {rows.map((user) => {
+            /* THE ACTIONS ARE NOT RENDERED AT ALL for an account this one may
+               not manage, and the guard in ./actions.ts refuses the same case
+               anyway. A hidden button is not access control; two layers is the
+               round-23 rule and it applies to the owner row like any other. */
+            const manageable = canManageAccount(signed.role, user.role);
+            return (
+              <li key={user.id} className={styles.row}>
+                <div className={styles.rowHead}>
+                  <span className={styles.meta}>{user.role}</span>
+                  <RowTitle level={3} className={styles.rowTitle}>
+                    {user.name}
+                  </RowTitle>
+                  <span className={styles.meta}>{user.email}</span>
+                  <span className={user.disabled ? styles.meta : styles.ok}>
+                    {user.disabled ? "disabled" : "enabled"}
+                  </span>
+                </div>
+                <div className={styles.rowActions}>
+                  {manageable ? (
+                    <>
+                      <form action={resetPasswordAction}>
+                        <input type="hidden" name="id" value={user.id} />
+                        <button className={styles.rowButton} type="submit">
+                          Reset password
+                        </button>
+                      </form>
+                      <form action={setDisabledAction}>
+                        <input type="hidden" name="id" value={user.id} />
+                        <input
+                          type="hidden"
+                          name="next"
+                          value={user.disabled ? "false" : "true"}
+                        />
+                        <button className={styles.rowButton} type="submit">
+                          {user.disabled ? "Enable" : "Disable"}
+                        </button>
+                      </form>
+                    </>
+                  ) : (
+                    <p className={styles.rowNote}>
+                      The owner cannot be disabled, demoted or reset by any
+                      account, including another owner. Canon A4.
+                    </p>
+                  )}
+                </div>
+              </li>
+            );
+          })}
         </ul>
       )}
 
@@ -160,11 +181,13 @@ export default async function UsersPane({
         <label className={styles.field} htmlFor="user-role">
           <span className={styles.fieldLabel}>Role</span>
           <select className={styles.input} id="user-role" name="role" required>
-            {ROLES.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
+            {ROLES.filter((role) => canAssignRole(signed.role, role)).map(
+              (role) => (
+                <option key={role} value={role}>
+                  {role}
+                </option>
+              ),
+            )}
           </select>
         </label>
         <button className={styles.submit} type="submit">

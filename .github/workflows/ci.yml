@@ -106,6 +106,8 @@ jobs:
         run: node -e "import('./src/data/redirects.mjs').then(m => { const n = m.redirectProbes().length; if (!n) { console.error('The redirect table produced no probes.'); process.exit(1); } console.log(n + ' redirect probe(s) derive from the table.'); })"
       - name: The eight publish refusals (canon A2)
         run: pnpm exec playwright test e2e/publish-validation.spec.ts
+      - name: The four role guards (canon A4)
+        run: pnpm exec playwright test e2e/roles.spec.ts
 
   full:
     needs: scope
@@ -117,6 +119,24 @@ jobs:
     # all. Mapped to job-level env, which `if:` can read.
     env:
       HAS_ANTHROPIC_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' }}
+      # ROUND 25, AND IT IS NOT OPTIONAL ANY MORE. Canon A1 put articles and
+      # case studies in the database, so `/`, `/case-studies`, `/insights`,
+      # `sitemap.xml` and `llms.txt` all read it while they prerender. The first
+      # run of this branch failed here and said so in one line:
+      # "Error occurred prerendering page /llms.txt ... DATABASE_URL is not set".
+      #
+      # WHY AT JOB LEVEL RATHER THAN ON THE BUILD STEP. Every browser gate after
+      # the build judges the pages the build produced. A build with content and
+      # gates without it would have them measuring an empty homepage rail and an
+      # empty index, reporting green having checked nothing — which is the
+      # vacuous pass this round was told not to leave anywhere.
+      #
+      # THE BLAST RADIUS, STATED. This is the live database. The public routes
+      # only read from it. The one write any CI step makes is check:sources'
+      # self-test fixture, which it inserts and deletes inside the same run, and
+      # that step already had this secret before this line existed. Read access
+      # for the build is strictly smaller than the write CI already performs.
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -193,8 +213,6 @@ jobs:
       # detector is one module, src/lib/unsourced-figures.mjs, shared with the
       # Articles pane so the two cannot disagree about what a figure is.
       - name: Sources on published content (self-test, then the real corpus)
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-sources.mjs --selftest
 
       # Canon A4's /privacy clause is RATIFIED WORDING and carries "twelve
