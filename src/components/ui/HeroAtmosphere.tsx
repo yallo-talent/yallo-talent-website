@@ -121,9 +121,17 @@ export function HeroAtmosphere({
             in gold: canon §5 keeps gold for markers, and a hero-sized gold form
             would be the largest gold object on the site. */}
         <g fill="var(--amb)">
-          {petals.map((p) => (
+          {petals.map((p, i) => (
             <path
-              key={`${p.x}-${p.y}-${p.size}`}
+              /* POSITION IS THE IDENTITY, not the geometry. Four petals are
+                 placed off a coarse grid from the page's seed, and two of them
+                 CAN land on the same x, y and size — `/insights` does exactly
+                 that, which React reported as two children with the key
+                 `570-300-530`. A duplicate key is not cosmetic: React may
+                 duplicate or omit one of the pair. There are always four, in a
+                 fixed order, so the index is the honest identity here. */
+              // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length ordered list, and the geometry is not unique — see above
+              key={i}
               d={petalPath(p.x, p.y, p.size, p.corner)}
               opacity={p.opacity}
             />
