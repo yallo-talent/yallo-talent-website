@@ -81,9 +81,9 @@ export function NoticesStrip({ notices }: { notices: Notice[] }) {
 export function LifecycleHelp({ noun }: { noun: string }) {
   return (
     <p className={styles.note}>
-      Every {noun} starts as a draft, which is on nobody's screen but yours;
-      publishing is a separate, deliberate act that takes one confirm and puts
-      it on the site within seconds. Nothing here is ever deleted, so
+      Every {noun} starts as a draft, which is on nobody&rsquo;s screen but
+      yours; publishing is a separate, deliberate act that takes one confirm and
+      puts it on the site within seconds. Nothing here is ever deleted, so
       unpublishing, archiving and moving a URL are all reversible, and every
       save leaves a revision you can restore.
     </p>

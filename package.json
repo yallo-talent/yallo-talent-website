@@ -61,6 +61,7 @@
     "check:css-vars": "node scripts/check-css-vars.mjs",
     "check:ci-secrets": "node scripts/check-ci-secrets.mjs",
     "check:editor": "node scripts/check-editor.mjs",
+    "check:funnel": "node scripts/check-funnel.mjs",
     "check:ci-reader-reach": "node scripts/check-ci-reader-reach.mjs",
     "check:published-counts": "node scripts/check-published-counts.mjs",
     "db:grant-ci-reader": "node scripts/db-grant-ci-reader.mjs"

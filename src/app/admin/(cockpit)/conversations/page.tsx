@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { ORIGIN_DATA_FROM } from "@/lib/admin/funnel";
 import { requirePane } from "@/lib/admin/guard";
 import {
   type ConversationSummary,
   readConversationSummaries,
 } from "@/lib/admin/reads";
 import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
+import { briefsByTranscript, originRollup } from "@/lib/db/funnel";
 import styles from "../../Admin.module.css";
 import { RowTitle } from "../../RowTitle";
 
@@ -76,9 +78,18 @@ export default async function ConversationsPane({
   const filters = await searchParams;
 
   let all: ConversationSummary[] = [];
+  let origins: Awaited<ReturnType<typeof originRollup>> = [];
+  let briefFor = new Map<string, { id: string; createdAt: string }>();
   let error: string | null = null;
   try {
     all = await readConversationSummaries();
+    /* cockpit-v3 §11: which pages start conversations, and how many of those
+       conversations produce a brief. Computed in Postgres — the question is a
+       count per path and the transcripts are the largest rows in the schema. */
+    origins = await originRollup();
+    /* The linkage back. A brief already knew its transcript id; this is the
+       other direction, in one query rather than one per row. */
+    briefFor = await briefsByTranscript();
   } catch (err) {
     error =
       err instanceof Error ? err.message : "Unknown error reading transcripts.";
@@ -163,6 +174,46 @@ export default async function ConversationsPane({
             {rows.length} of {all.length} conversation(s)
           </p>
 
+          {/* ── Which pages start conversations — cockpit-v3 §11 ────────── */}
+          <section aria-labelledby="origin-head" className={styles.originPanel}>
+            <h2 className={styles.h2} id="origin-head">
+              Where conversations start
+            </h2>
+            <p className={styles.note}>
+              Counted from the page the assistant panel was opened on, recorded
+              from {ORIGIN_DATA_FROM.split("-").reverse().join("/")} onward.
+              Conversations before that date are counted on their own line and
+              are NOT attributed to a page: the column did not exist, and
+              inferring one backwards would be reporting a gap in
+              instrumentation as a fact about visitors.
+            </p>
+            {origins.length === 0 ? (
+              <p className={styles.empty}>Nothing recorded yet.</p>
+            ) : (
+              <table className={styles.originTable}>
+                <thead>
+                  <tr>
+                    <th scope="col">Page</th>
+                    <th scope="col">Conversations</th>
+                    <th scope="col">Briefs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {origins.map((o) => (
+                    <tr key={o.path ?? "unrecorded"}>
+                      <th className={styles.originPath} scope="row">
+                        {o.path ??
+                          `Before ${ORIGIN_DATA_FROM}, page not recorded`}
+                      </th>
+                      <td>{o.conversations}</td>
+                      <td>{o.briefs}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </section>
+
           {/* Stated once, on the pane, rather than left for someone to infer
               from a column that is empty most of the time. */}
           <p className={styles.meta}>
@@ -199,9 +250,18 @@ export default async function ConversationsPane({
                     <span className={styles.meta}>
                       {row.originPath ?? "before 8 August 2026"}
                     </span>
-                    <span className={row.hasBrief ? styles.ok : styles.meta}>
-                      {row.hasBrief ? "brief captured" : "no brief"}
-                    </span>
+                    {/* The linkage both ways — cockpit-v3 §11. "brief
+                        captured" was a label; it is the way to the lead now. */}
+                    {briefFor.get(row.transcriptId) ? (
+                      <Link
+                        className={styles.ok}
+                        href={`${ADMIN_ROUTES.briefs}?state=all&lead=${briefFor.get(row.transcriptId)?.id}#lead-${briefFor.get(row.transcriptId)?.id}`}
+                      >
+                        brief captured
+                      </Link>
+                    ) : (
+                      <span className={styles.meta}>no brief</span>
+                    )}
                   </div>
                   <RowTitle level={2} className={styles.rowTitle}>
                     <Link
