@@ -94,6 +94,46 @@ export const TAXONOMY_KINDS: readonly TaxonomyKind[] = [
 ];
 
 /**
+ * The URL segment and the visible label for each pillar.
+ *
+ * THE THIRD PILLAR IS CALLED TWO THINGS, AND THAT IS DELIBERATE RATHER THAN A
+ * MESS. The database column, the TypeScript type and every internal reference
+ * say `discipline`, which is what canon A5 ratified and what round 25's schema
+ * shipped. Everything a visitor sees says **Capabilities**, which is what the
+ * nav column, the hub at `/capabilities` and the desk routes have said since
+ * long before this round — canon §4's "Disciplines" nav wording is the stale
+ * line, not the site.
+ *
+ * Sumeet ruled on 9 August 2026, during this round, that the public surface
+ * wins and the column stays: the rename is cheap now (no article is published,
+ * no article carries a taxonomy value, and zero `/insights/discipline/*` URLs
+ * are indexed) and a column rename would be a migration buying nothing a
+ * reader can see. This amends canon A5's route clause, which names
+ * `/insights/discipline/{slug}` literally, and is logged for his ratification.
+ *
+ * ONE DECLARATION. The segment is spelled here and nowhere else in TypeScript,
+ * so the route, the canonical, the revalidation and the sitemap cannot disagree
+ * about it. The plain-Node gates get their copy from
+ * `scripts/lib/taxonomy-slugs.mjs`, which says so in its own comment.
+ */
+export const TAXONOMY_SEGMENT: Record<TaxonomyKind, string> = {
+  industry: "industry",
+  platform: "platform",
+  discipline: "capabilities",
+};
+
+export const TAXONOMY_LABEL: Record<TaxonomyKind, string> = {
+  industry: "Industry",
+  platform: "Platform",
+  discipline: "Capabilities",
+};
+
+/** The public path of a single-facet landing page. */
+export function taxonomyLandingPath(kind: TaxonomyKind, slug: string): string {
+  return `/insights/${TAXONOMY_SEGMENT[kind]}/${slug}`;
+}
+
+/**
  * The desks a piece's taxonomy names, resolved against the live indexes.
  *
  * DESIGN §6: "automatic internal links to the desks named in the taxonomy

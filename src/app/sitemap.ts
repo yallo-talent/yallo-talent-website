@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BLUEPRINT_BASE } from "@/data/blueprint";
-import { publishedPaths } from "@/lib/published-routes";
+import { discoverablePaths } from "@/lib/published-routes";
 import { SITE } from "@/lib/seo";
 
 /**
@@ -9,7 +9,9 @@ import { SITE } from "@/lib/seo";
  * concerns — which routes exist, and how a sitemap should rank them — cannot
  * drift against each other the way two separate route lists would.
  */
-const TAXONOMY_KINDS = new Set(["industry", "platform", "discipline"]);
+/* The PUBLIC segments. `discipline` is the column name; `capabilities` is
+   what the URL says. */
+const TAXONOMY_KINDS = new Set(["industry", "platform", "capabilities"]);
 
 function weightOf(path: string): {
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
@@ -67,7 +69,7 @@ function weightOf(path: string): {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  return (await publishedPaths()).map((path) => ({
+  return (await discoverablePaths()).map((path) => ({
     url: `${SITE.url}${path}`,
     lastModified: now,
     ...weightOf(path),

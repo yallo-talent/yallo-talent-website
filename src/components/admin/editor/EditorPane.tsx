@@ -6,7 +6,6 @@ import {
   platformsIndex,
 } from "@/data/l1/index";
 import { BUDGETS, FIXED_BYLINE } from "@/lib/admin/content-validation";
-import { answerFirstNotes } from "@/lib/content-seo";
 import type { ArticleRow } from "@/lib/db/content";
 import type { ContentType } from "@/lib/db/content-write";
 import type { RevisionSummary } from "@/lib/db/revisions";
@@ -36,7 +35,10 @@ import { EditorClient } from "./EditorClient";
 const TAXONOMIES = [
   { name: "industry", label: "Industry", index: industriesIndex },
   { name: "platform", label: "Platform", index: platformsIndex },
-  { name: "discipline", label: "Discipline", index: capabilitiesIndex },
+  /* "Capabilities" is what the nav column, the hub and the desk routes have
+     always said; `discipline` is the column name. Sumeet ruled on the split
+     during round 25c. */
+  { name: "discipline", label: "Capabilities", index: capabilitiesIndex },
 ] as const;
 
 export interface EditorPaneProps {
@@ -49,11 +51,14 @@ export interface EditorPaneProps {
   restoreRevisionAction: (formData: FormData) => Promise<void>;
   changeSlugAction: (formData: FormData) => Promise<void>;
   saveBody: (body: unknown) => Promise<void>;
+  /** Every path the site serves, for the live link check. */
+  knownPaths: string[];
   notice?: {
     err?: string;
     saved?: string;
     restored?: string;
     moved?: string;
+    warned?: string;
   };
 }
 
@@ -66,6 +71,7 @@ export function EditorPane({
   restoreRevisionAction,
   changeSlugAction,
   saveBody,
+  knownPaths,
   notice,
 }: EditorPaneProps) {
   const publicRoute = type === "article" ? "/insights" : "/case-studies";
@@ -73,7 +79,6 @@ export function EditorPane({
     type === "article" ? "/admin/articles" : "/admin/case-studies";
   const published = row.status === "published";
   const frozen = row.firstPublishedAt !== null;
-  const answerFirst = answerFirstNotes(row);
 
   return (
     <>
@@ -107,26 +112,26 @@ export function EditorPane({
         </p>
       ) : null}
 
-      {/* THE ANSWER-FIRST SOFT CHECK — design §6, and soft is the ruling. It
-          warns and never refuses: the eight publish rules are mechanical, and
-          whether an opening paragraph states a claim is a judgement. A
-          validator that refuses on a judgement is one writers learn to defeat
-          rather than satisfy. */}
-      {answerFirst.length > 0 ? (
-        <div className={styles.warn}>
-          <p className={styles.warnHead}>
-            Answer first. This is a reading of the first screen, not a rule.
-            Publish anyway if you disagree.
-          </p>
-          <ul>
-            {answerFirst.map((note) => (
-              <li key={note.message}>{note.message}</li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {notice?.warned ? <p className={styles.warn}>{notice.warned}</p> : null}
 
+      {/* The answer-first check moved INTO the live panel below, with every
+          other rule. Design §6 asked for it as a soft check in the editor; two
+          advisory panels answering the same question in two places is two
+          places to look. */}
       <EditorClient
+        checks={{
+          category: row.category,
+          contentType: type,
+          discipline: row.discipline,
+          industry: row.industry,
+          knownPaths,
+          metaDescription: row.metaDescription,
+          metaTitle: row.metaTitle,
+          platform: row.platform,
+          sources: row.sources,
+          summary: row.summary,
+          title: row.title,
+        }}
         initialBody={row.body}
         previewPath={`/admin/preview/${type}/${row.id}`}
         previewReady

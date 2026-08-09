@@ -4,7 +4,8 @@ import { requirePane } from "@/lib/admin/guard";
 import { allCaseStudies } from "@/lib/db/content";
 import styles from "../../Admin.module.css";
 import { setStatusAction } from "../articles/actions";
-import { moveAction } from "./actions";
+import { moveAction, reorderAction } from "./actions";
+import { OrderList } from "./OrderList";
 
 /**
  * Case studies. Owner, admin and editor, per canon A4's role map.
@@ -70,6 +71,25 @@ export default async function CaseStudiesPane({
           /case-studies/{q.draft} is back to draft and is no longer served.
         </p>
       ) : null}
+
+      {studies.length > 1 && (
+        <>
+          <h2 className={styles.h2}>Order</h2>
+          <p className={styles.note}>
+            This is the order the homepage rail and /case-studies both read.
+            Drag to move a study, then save: the whole sequence is written in
+            one transaction, so a reordering cannot be interrupted halfway.
+          </p>
+          <OrderList
+            reorderAction={reorderAction}
+            rows={studies.map((s) => ({
+              slug: s.slug,
+              title: s.cardTitle ?? s.title,
+              status: s.status,
+            }))}
+          />
+        </>
+      )}
 
       <h2 className={styles.h2}>
         {studies.length} stud{studies.length === 1 ? "y" : "ies"},{" "}

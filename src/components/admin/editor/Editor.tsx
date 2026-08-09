@@ -1,5 +1,6 @@
 "use client";
 
+import Heading from "@tiptap/extension-heading";
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import type { Editor as TiptapEditor } from "@tiptap/react";
@@ -42,6 +43,42 @@ import { YALLO_NODES } from "./YalloNodes";
  * server route a reader would get, so it cannot disagree with the page.
  */
 
+/**
+ * The heading `level` default, moved from 1 to 2 — a data-loss fix, not a
+ * tidy-up.
+ *
+ * TipTap's Heading declares `level` with a default of 1, and
+ * `configure({ levels: [2, 3] })` narrows only what the COMMANDS offer, not the
+ * attribute. `getJSON()` omits any attribute equal to its default, so the
+ * instant a heading in this editor sat at level 1 it serialised with no `level`
+ * key at all. The stored body then carried a heading the publish action refuses
+ * ("heading level undefined") and the case-study template cannot split on,
+ * because `Movements` looks for level 2. Three published studies on yallo.co
+ * lost their section structure that way before it was found.
+ *
+ * `addGlobalAttributes` was tried first and DOES NOT WORK: a global attribute
+ * loses to the attribute the node already declares, so the composed schema kept
+ * the default of 1. That is in the spec as a control. The node is therefore
+ * extended and StarterKit's own is withheld, because two heading nodes in one
+ * schema is a crash. `@tiptap/extension-heading` becomes a direct dependency at
+ * the version StarterKit already installs, so nothing new is downloaded; it was
+ * only ever undeclared.
+ *
+ * The resulting schema default is asserted in `e2e/editor-schema.spec.ts`
+ * rather than assumed, because "configure narrows the attribute too" is
+ * precisely the assumption that produced the defect.
+ *
+ * IT IS NOT THE ONLY GUARD. `normaliseHeadings` coerces on the way into the
+ * database, because the editor is one writer of that column and the import is
+ * another; and TiptapBody falls back to 2 rather than 3, so the writer and the
+ * renderer agree about what a level-less heading is.
+ */
+const HeadingDefaultTwo = Heading.extend({
+  addAttributes() {
+    return { ...this.parent?.(), level: { default: 2 } };
+  },
+}).configure({ levels: [2, 3] });
+
 export type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
 
 export interface EditorProps {
@@ -53,6 +90,16 @@ export interface EditorProps {
   previewPath: string;
   /** Blocked when the row has never been saved, so there is nothing to preview. */
   previewReady: boolean;
+  /**
+   * Told the current document on every change, so the live checks can run
+   * against what is on screen rather than what was last saved.
+   *
+   * A CALLBACK RATHER THAN LIFTED STATE. ProseMirror owns the document, and
+   * making React the owner would mean a controlled editor: a re-render per
+   * keystroke and a caret that jumps. This reports outward and keeps ownership
+   * where it is.
+   */
+  onDocChange?: (body: unknown) => void;
 }
 
 const AUTOSAVE_MS = 1500;
@@ -70,6 +117,7 @@ export function Editor({
   onSave,
   previewPath,
   previewReady,
+  onDocChange,
 }: EditorProps) {
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -96,7 +144,10 @@ export function Editor({
         /* Down to the allow-list. H1 is the title field; strike, and the
            blocks StarterKit does not carry, are added or withheld here rather
            than left to its defaults. */
-        heading: { levels: [2, 3] },
+        /* Withheld: replaced by HeadingDefaultTwo above, whose only difference
+           is the attribute default. Two heading nodes in one schema is a
+           crash, so this cannot simply be configured alongside it. */
+        heading: false,
         link: false,
         /* The Yallo image node replaces StarterKit's, because alt text is a
            required field on this site and StarterKit's image does not know
@@ -106,6 +157,7 @@ export function Editor({
            is a narrower claim than "this object may be anything". */
         ...({ image: false } as Record<string, false>),
       }),
+      HeadingDefaultTwo,
       Link.configure({ openOnClick: false, autolink: false }),
       Placeholder.configure({
         placeholder: "Write, or press / for a block.",
@@ -120,6 +172,7 @@ export function Editor({
     (editor: TiptapEditor) => {
       const body = editor.getJSON();
       pending.current = body;
+      onDocChange?.(body);
       setCounts({
         words: wordCount(body),
         minutes: readingTimeMinutes(body),
@@ -142,7 +195,7 @@ export function Editor({
         }
       }, AUTOSAVE_MS);
     },
-    [onSave],
+    [onSave, onDocChange],
   );
 
   const editor = useEditor({

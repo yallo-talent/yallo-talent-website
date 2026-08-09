@@ -2,7 +2,9 @@ import "server-only";
 import { Pool } from "@neondatabase/serverless";
 import { revalidatePath, updateTag } from "next/cache";
 import type { Signed } from "@/lib/admin/guard";
+import { taxonomyLandingPath } from "@/lib/content-seo";
 import { CONTENT_TAGS } from "@/lib/db/content";
+import { normaliseHeadings } from "@/lib/tiptap/schema.mjs";
 import { readingTimeMinutes, wordCount } from "@/lib/tiptap/text.mjs";
 
 /**
@@ -72,10 +74,13 @@ function revalidateFor(type: ContentType, slug: string, taxonomy: string[][]) {
   revalidatePath("/sitemap.xml");
   revalidatePath("/llms.txt");
   if (type === "case_study") revalidatePath("/");
+  /* The PUBLIC segment, not the internal kind. The third pillar is `discipline`
+     in the column and `capabilities` in the URL, so revalidating by kind would
+     have refreshed a path that does not exist and left the live one stale. */
   const kinds = ["industry", "platform", "discipline"] as const;
   kinds.forEach((kind, i) => {
     for (const value of taxonomy[i] ?? []) {
-      revalidatePath(`/insights/${kind}/${value}`);
+      revalidatePath(taxonomyLandingPath(kind, value));
     }
   });
 }
@@ -117,14 +122,15 @@ export async function saveDraft(
     try {
       await client.query("begin");
       const table = TABLE[input.type];
-      const reading = readingTimeMinutes(input.body);
-      const words = wordCount(input.body);
+      const body = normaliseHeadings(input.body);
+      const reading = readingTimeMinutes(body);
+      const words = wordCount(body);
       const values = [
         input.slug,
         input.title,
         input.summary,
         input.category,
-        JSON.stringify(input.body),
+        JSON.stringify(body),
         input.industry,
         input.platform,
         input.discipline,
@@ -169,7 +175,7 @@ export async function saveDraft(
           id,
           input.title,
           input.summary,
-          JSON.stringify(input.body),
+          JSON.stringify(body),
           actor.name || actor.email,
         ],
       );
@@ -208,9 +214,12 @@ export async function saveDraft(
 export async function saveBody(
   type: ContentType,
   id: string,
-  body: unknown,
+  rawBody: unknown,
   actor: Signed,
 ): Promise<{ words: number; minutes: number }> {
+  /* THE ONE PLACE EVERY BODY PASSES THROUGH. See `normaliseHeadings` for what
+     it fixes and why the editor's own default is not enough on its own. */
+  const body = normaliseHeadings(rawBody);
   const words = wordCount(body);
   const minutes = readingTimeMinutes(body);
   const db = pool();

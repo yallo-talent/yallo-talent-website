@@ -3,7 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
-import { validateForPublish } from "@/lib/admin/content-validation";
+import {
+  blockingErrors,
+  validateForPublish,
+  warnings,
+} from "@/lib/admin/content-validation";
 import { assertPane } from "@/lib/admin/guard";
 import { articleById, caseStudyById } from "@/lib/db/content";
 import {
@@ -138,11 +142,27 @@ export async function setStatusAction(formData: FormData): Promise<void> {
       },
       known,
     );
-    if (errors.length > 0) {
+    /* TWO RULES REFUSE, THE REST WARN — Sumeet's ruling of 9 August amending
+       canon A2. See `BLOCKING_RULES` for which two and why. The warnings are
+       not swallowed: they are live in the editor while the piece is being
+       written, and the publish carries them back as a notice so the person who
+       published knows what they published over. */
+    const blocking = blockingErrors(errors);
+    if (blocking.length > 0) {
       /* Every refusal names the field and the fault. "Validation failed" is a
          message that sends an author to ask somebody. */
       back(route, {
-        err: `Not published. ${errors.length} rule(s) refused it: ${errors
+        err: `Not published. ${blocking.length} rule(s) refused it: ${blocking
+          .map((e) => `[${e.field}] ${e.message}`)
+          .join(" ")}`,
+      });
+    }
+    const warned = warnings(errors);
+    if (warned.length > 0) {
+      await setStatus(type, id, next, signed);
+      back(route, {
+        [next]: row.slug,
+        warned: `${warned.length} warning(s) published with it: ${warned
           .map((e) => `[${e.field}] ${e.message}`)
           .join(" ")}`,
       });

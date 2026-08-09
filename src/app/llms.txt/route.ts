@@ -1,4 +1,4 @@
-import { publishedPaths } from "@/lib/published-routes";
+import { discoverablePaths } from "@/lib/published-routes";
 import { SITE } from "@/lib/seo";
 
 /**
@@ -62,7 +62,7 @@ const SECTION_TITLES: Record<string, string> = {
 };
 
 export async function GET() {
-  const paths = await publishedPaths();
+  const paths = await discoverablePaths();
 
   const groups = new Map<string, string[]>();
   for (const path of paths) {

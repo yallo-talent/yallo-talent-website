@@ -4,6 +4,7 @@ import { categoriesFor } from "@/lib/admin/categories.mjs";
 import { requirePane } from "@/lib/admin/guard";
 import { caseStudyById } from "@/lib/db/content";
 import { revisionsFor } from "@/lib/db/revisions";
+import { publishedPaths } from "@/lib/published-routes";
 import {
   changeSlugAction,
   restoreRevisionAction,
@@ -39,6 +40,7 @@ export default async function CaseStudyEditorRoute({
     saved?: string;
     restored?: string;
     moved?: string;
+    warned?: string;
   }>;
 }) {
   await requirePane("caseStudies");
@@ -57,6 +59,7 @@ export default async function CaseStudyEditorRoute({
       categories={categoriesFor("case_study")}
       notice={await searchParams}
       changeSlugAction={changeSlugAction}
+      knownPaths={await publishedPaths()}
       restoreRevisionAction={restoreRevisionAction}
       revisions={revisions}
       row={row}

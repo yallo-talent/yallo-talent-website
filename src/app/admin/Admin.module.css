@@ -33,9 +33,16 @@
   text-transform: uppercase;
 }
 
+/* WRAPS, and it did not until round 25c added the sixth pane. Five text links
+   fitted a 360px viewport in one row and six did not: every cockpit route
+   reported 51px of horizontal overflow, which is SC 1.4.10, and the failure was
+   uniform across routes precisely because it was the shared chrome rather than
+   any pane. A toolbar of text links has no reason to be a single line at a
+   width it does not fit, and a seventh pane will now cost nothing. */
 .nav {
   display: flex;
-  gap: clamp(12px, 2vw, 24px);
+  flex-wrap: wrap;
+  gap: 6px clamp(12px, 2vw, 24px);
   margin-inline-end: auto;
   font-size: var(--fs-caption);
 }

@@ -14,7 +14,7 @@ interface RouteParams {
    when a third article publishes is a filtered view with a threshold. What
    varies is indexability, not existence — see `_taxonomy.tsx`. */
 export function generateStaticParams(): RouteParams[] {
-  return taxonomyLandingSlugs("platform").map((slug) => ({ slug }));
+  return taxonomyLandingSlugs("discipline").map((slug) => ({ slug }));
 }
 
 interface PageProps {
@@ -25,10 +25,10 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  return taxonomyMetadata("platform", slug);
+  return taxonomyMetadata("discipline", slug);
 }
 
-export default async function PlatformArchive({ params }: PageProps) {
+export default async function CapabilitiesArchive({ params }: PageProps) {
   const { slug } = await params;
-  return <TaxonomyArchive kind="platform" slug={slug} />;
+  return <TaxonomyArchive kind="discipline" slug={slug} />;
 }

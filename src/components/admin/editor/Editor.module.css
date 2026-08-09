@@ -629,3 +629,58 @@
 :root[data-theme="dark"] .counter[data-over="true"] {
   color: var(--fn-signal-text-d);
 }
+
+/* ── The live checks (round 25c) ─────────────────────────────────────────────
+   Every publish rule, running against the document on screen rather than at
+   publish time. Two severities: `checkBlock` will stop the piece going out,
+   `checkWarn` will not. The distinction has to be legible without colour, so
+   each carries a word rather than only a border tint. */
+
+.checks {
+  margin: 24px 0 0;
+  padding: clamp(16px, 2vw, 22px);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.checkList {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checkBlock,
+.checkWarn {
+  padding: 10px 12px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text);
+  border-left: 2px solid var(--hairline);
+}
+
+.checkBlock {
+  border-left-color: var(--accent-line);
+}
+
+.checkTag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.checkField {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}

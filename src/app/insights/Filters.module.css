@@ -1,0 +1,154 @@
+/*
+ * The /insights filter bar, design §5.
+ *
+ * ONE SURFACE, NOT A PATTERN. This bar exists because the insights library has
+ * three taxonomies, an editorial type and a text search, and a reader arriving
+ * from a desk page wants to narrow by the thing they came for. It is not a
+ * treatment to reach for on every list on the estate: the case-study index is
+ * nine curated items in a deliberate order, and putting a filter bar over that
+ * would be furniture rather than a control.
+ *
+ * GOLD OWNS THE ONE BUTTON. Canon §5: gold is the only colour that is ever
+ * interactive, and the accent grades are `--accent-line` for a rule and
+ * `--accent-label` for small text, both AA on their grounds. Nothing here names
+ * a hex; the identity hue never reaches a control.
+ *
+ * TOUCH TARGETS CLEAR 24px BY A MARGIN, per SC 2.5.8 — round 25b found the
+ * cockpit's taxonomy checkboxes at the browser default of 16px, which is the
+ * same mistake this file could have made with a compact select.
+ *
+ * THE PETAL OR SQUARE, NEVER SOFTNESS. DESIGN.md is explicit: three square
+ * corners and one radius, at five documented scales, and "border-radius is
+ * never applied for softness". A first draft of this file used 4px on the
+ * panel and the inputs and 999px on the button, which is three shapes the
+ * system does not have. The panel takes the small-card petal, the button takes
+ * the button petal, and the inputs are square. The 999px pill on `.ctaGhost`
+ * elsewhere in the editorial family is a shipped deviation and not a precedent
+ * to copy.
+ */
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.legend {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: var(--fw-medium);
+  color: var(--text-3);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px 18px;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.input {
+  /* 44px, not the 24px floor: these are the primary controls on the surface
+     and a reader is choosing between seven options in a row. */
+  min-height: 44px;
+  padding: 10px 12px;
+  width: 100%;
+  border: 1px solid var(--hairline);
+  background: var(--ground);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  transition: border-color 0.15s ease;
+}
+
+.input:hover {
+  border-color: var(--border-strong);
+}
+
+.input:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.apply {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px 22px;
+  border: 1px solid var(--accent-line);
+  border-radius: 0 0 0 var(--r-md);
+  background: transparent;
+  color: var(--accent-label);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.apply:hover {
+  background: var(--ground-2);
+  border-color: var(--accent-label);
+}
+
+.apply:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.clear {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px 8px;
+  color: var(--text-2);
+  font-size: var(--fs-body-sm);
+  /* A non-motion cue alongside the colour change, so the affordance survives
+     prefers-reduced-motion and a colour-blind reader — canon §5, A5. */
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--hairline);
+  transition:
+    color 0.15s ease,
+    text-decoration-color 0.15s ease;
+}
+
+.clear:hover {
+  color: var(--accent-label);
+  text-decoration-color: var(--accent-line);
+}
+
+.clear:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}

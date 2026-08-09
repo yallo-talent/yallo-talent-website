@@ -24,12 +24,33 @@ if (!url) {
 }
 const sql = neon(url);
 
-/** Slugs a text surface links to, under one route prefix. */
+/**
+ * Slugs a text surface links to DIRECTLY under one route prefix.
+ *
+ * THE NEGATIVE LOOKAHEAD IS LOAD-BEARING, and it was missing. Without it,
+ * `/insights/platform/sap` matched as an article slug called "platform": the
+ * pattern stopped at the second slash and reported a taxonomy segment as a
+ * published article. It went unnoticed because zero articles are published and
+ * the old three-article threshold meant zero taxonomy landings existed, so both
+ * sets were empty and agreed. Round 25c gives every taxonomy value a landing
+ * page, which would have turned a latent bug into three phantom "published"
+ * slugs on every run.
+ */
 function slugsIn(text, prefix) {
   const out = new Set();
-  for (const m of text.matchAll(new RegExp(`${prefix}/([a-z0-9-]+)`, "g"))) {
+  const pattern = new RegExp(`${prefix}/([a-z0-9-]+)(?![a-z0-9\\-/])`, "g");
+  for (const m of text.matchAll(pattern)) {
     out.add(m[1]);
   }
+  return out;
+}
+
+/** Every `/insights/{kind}/{slug}` a surface names. */
+function taxonomyLandingsIn(text) {
+  const out = new Set();
+  const pattern =
+    /\/insights\/(industry|platform|capabilities)\/([a-z0-9-]+)(?![a-z0-9\-/])/g;
+  for (const m of text.matchAll(pattern)) out.add(`${m[1]}/${m[2]}`);
   return out;
 }
 
@@ -71,6 +92,42 @@ compare("sitemap.xml", "/case-studies", slugsIn(sitemap, "/case-studies"), expec
 compare("sitemap.xml", "/insights", slugsIn(sitemap, "/insights"), expectArticles);
 compare("llms.txt", "/case-studies", slugsIn(llms, "/case-studies"), expectStudies);
 compare("llms.txt", "/insights", slugsIn(llms, "/insights"), expectArticles);
+
+/**
+ * The taxonomy landings, round 25c.
+ *
+ * All twenty-one routes exist whatever is published — canon A5 calls them real
+ * landing pages, and one that appears and vanishes with the publishing state is
+ * a filtered view with a threshold. What the discovery surfaces may name is the
+ * subset with at least one published article behind it: a landing page with
+ * nothing to read is a thin page, and twenty-one of them is a thin-content
+ * problem rather than twenty-one search surfaces.
+ */
+const taggedValues = new Set();
+/* Three explicit queries rather than one with the column name interpolated.
+   A column name is not a parameter, and building it by string concatenation is
+   the shape that becomes an injection the day the list stops being a literal. */
+for (const r of await sql`select distinct unnest(industry) as value from articles where status = 'published'`) {
+  taggedValues.add(`industry/${r.value}`);
+}
+for (const r of await sql`select distinct unnest(platform) as value from articles where status = 'published'`) {
+  taggedValues.add(`platform/${r.value}`);
+}
+for (const r of await sql`select distinct unnest(discipline) as value from articles where status = 'published'`) {
+  taggedValues.add(`capabilities/${r.value}`);
+}
+compare(
+  "sitemap.xml",
+  " taxonomy landings",
+  taxonomyLandingsIn(sitemap),
+  taggedValues,
+);
+compare(
+  "llms.txt",
+  " taxonomy landings",
+  taxonomyLandingsIn(llms),
+  taggedValues,
+);
 
 if (failures.length) {
   console.error(`\n${failures.length} surface(s) disagree with the published rows.`);
