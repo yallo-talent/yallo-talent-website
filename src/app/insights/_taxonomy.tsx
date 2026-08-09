@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import {
   capabilitiesIndex,
   industriesIndex,
@@ -109,11 +110,7 @@ export async function TaxonomyArchive({
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+        <HeroAtmosphere centred seed={`${kind}-${slug}`} />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />

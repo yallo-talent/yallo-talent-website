@@ -306,3 +306,28 @@ export function validateForPublish(
      severity for itself would be a second place the ruling lives. */
   return errors.map((e) => ({ ...e, severity: severityOf(e.rule) }));
 }
+
+/**
+ * R-25b.4 — whether this status change would strand a legacy URL.
+ *
+ * EXTRACTED FROM THE ACTION so it can be watched refusing and watched
+ * permitting. The action is a public POST endpoint that needs a session and a
+ * real row; a decision living inside it is a decision no test reaches, and
+ * "red-proven both directions" was the ruling.
+ *
+ * Returns the message, or null. The message names the URLs rather than counting
+ * them, because the person taking a study down needs to know which addresses
+ * they are about to break.
+ */
+export function unpublishRefusal(
+  contentType: "article" | "case_study",
+  nextStatus: string,
+  slug: string,
+  legacySourcesFor: (path: string) => string[],
+): string | null {
+  if (contentType !== "case_study") return null;
+  if (nextStatus === "published") return null;
+  const legacy = legacySourcesFor(`/case-studies/${slug}`);
+  if (legacy.length === 0) return null;
+  return `Not unpublished. ${legacy.length} legacy URL(s) still point at /case-studies/${slug} and would become a two-hop redirect into the hub: ${legacy.join(", ")}. Retire the redirect first, or leave the study published.`;
+}

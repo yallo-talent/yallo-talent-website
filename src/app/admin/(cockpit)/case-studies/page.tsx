@@ -111,7 +111,10 @@ export default async function CaseStudiesPane({
                     {/* R-25b.3: the way in to the three taxonomy dropdowns, so
                         the nine imported studies can be given real values from
                         a browser. No session assigns them. */}
-                    <Link href={`/admin/case-studies/${study.id}`}>
+                    <Link
+                      data-slug={study.slug}
+                      href={`/admin/case-studies/${study.id}`}
+                    >
                       {study.cardTitle ?? study.title}
                     </Link>
                   </RowTitle>

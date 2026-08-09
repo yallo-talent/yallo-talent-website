@@ -16,8 +16,16 @@
    per instance, because the composed-contrast check found two and grep found
    four more. */
 /* ============ HERO ============ */
+/* NO LONGER A DARK BAND — round 25c, Sumeet's observation.
+   These nine surfaces put their hero in a flat dark band while every L1,
+   sector and service hero uses the shared `HeroAtmosphere` petal field. The
+   two blurred orbs this shell used to draw were neutralised in round 14, so
+   what was left was a plain black rectangle with a grid over it, next to
+   neighbours carrying the signature. `HeroAtmosphere`'s own docstring says it
+   exists so "a service hero and an L1 hero are the same object"; this is the
+   editorial family joining them. The band-dark composition goes, so the hero
+   sits on paper and the ambient field reads. */
 .hero {
-  composes: band-dark from global;
   position: relative;
   isolation: isolate;
   overflow: hidden;

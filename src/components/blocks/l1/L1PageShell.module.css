@@ -605,9 +605,15 @@
 }
 
 /* ============ WHAT WE DELIVER ============ */
+/* TOP PADDING, which this had none of. The section opens a new band, and its
+   eyebrow sat flush against the boundary on every L1 — sector, platform and
+   capability alike — while `.expertise`, the next band down, opens on
+   clamp(48px, 6vw, 76px). Zero was not a considered tightening; it was the one
+   band in the shell with no opening space at all. Matched to the neighbour so
+   the page has one rhythm rather than a section that starts early. */
 .wwd {
   position: relative;
-  padding: 0 0 clamp(48px, 6vw, 72px);
+  padding: clamp(48px, 6vw, 72px) 0 clamp(48px, 6vw, 72px);
   isolation: isolate;
 }
 

@@ -4,6 +4,7 @@ import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { ContentRails } from "@/components/blocks/editorial/ContentRails";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
 import { TiptapBody } from "@/components/blocks/editorial/TiptapBody";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { contentGraph } from "@/lib/content-jsonld";
 import { breadcrumbFor, contentSeo } from "@/lib/content-seo";
 import {
@@ -84,11 +85,7 @@ export default async function InsightPage({ params }: PageProps) {
         }}
       />
       <section className={styles.hero}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+        <HeroAtmosphere centred seed={slug} />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />

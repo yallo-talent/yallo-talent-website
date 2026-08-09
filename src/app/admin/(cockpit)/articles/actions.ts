@@ -2,9 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { legacySourcesFor } from "@/data/redirects.mjs";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import {
   blockingErrors,
+  unpublishRefusal,
   validateForPublish,
   warnings,
 } from "@/lib/admin/content-validation";
@@ -123,6 +125,16 @@ export async function setStatusAction(formData: FormData): Promise<void> {
   const row =
     type === "article" ? await articleById(id) : await caseStudyById(id);
   if (!row) back(route, { err: "No such piece." });
+
+  /* R-25b.4: A CASE STUDY A LEGACY URL NAMES CANNOT BE TAKEN DOWN.
+     Unpublishing turns every legacy URL aimed at it into a two-hop chain —
+     the legacy path 301s to /case-studies/<slug>, which then redirects to the
+     hub because the row is no longer published. `check:redirects` notices on
+     the next full CI lane, and the window until then is long enough for a
+     person to open the URL. The refusal names the URL, because "a legacy URL
+     points here" is a message that sends somebody to ask. */
+  const stranded = unpublishRefusal(type, next, row.slug, legacySourcesFor);
+  if (stranded) back(route, { err: stranded });
 
   if (next === "published") {
     const known = new Set(await publishedPaths());

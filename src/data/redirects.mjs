@@ -819,3 +819,41 @@ export const DOUBLE_SLASH_DEFECT = {
   maxHops: 2,
   why: "Live double-slash defect. Next collapses duplicate slashes before any app code runs.",
 };
+
+/**
+ * The legacy URLs that point at a published path — R-25b.4.
+ *
+ * WHY THIS EXISTS. Taking a case study back to draft turns every legacy URL
+ * aimed at it into a two-hop chain: the legacy path 301s to
+ * `/case-studies/<slug>`, which then redirects to the hub because the row is no
+ * longer published. A chain costs retrieval eligibility with the real-time
+ * crawlers, not merely crawl budget, and the whole point of this map is that
+ * the authority arrives. `check:redirects` notices on the next full CI lane;
+ * the window between the unpublish and that run is the hole this closes, and a
+ * person can open the URL inside it.
+ *
+ * SO THE PUBLISH ACTION REFUSES, and the refusal names the URL rather than
+ * saying "a legacy URL points here": the person taking the study down needs to
+ * know which address they are about to break, and there is no second place to
+ * look it up from.
+ *
+ * DERIVED FROM THE MAP, never a hand-kept list. A second copy of which studies
+ * carry legacy traffic is a copy that stops being true the first time an entry
+ * is added.
+ *
+ * @param {string} path a live path, e.g. `/case-studies/some-slug`
+ * @returns {string[]} every legacy source that resolves to it, sorted
+ */
+export function legacySourcesFor(path) {
+  return (
+    redirectEntries()
+      .filter((entry) => entry.destination === path)
+      /* `probe` FIRST, and this is not cosmetic. The ported studies are
+       query-string entries whose `source` is `/` with a `has` condition on
+       `?case-study=<slug>`; naming the source alone would tell somebody their
+       homepage is about to break. `probe` is the whole legacy URL, which is
+       the thing they can paste into a browser. */
+      .map((entry) => entry.probe ?? entry.source)
+      .sort()
+  );
+}

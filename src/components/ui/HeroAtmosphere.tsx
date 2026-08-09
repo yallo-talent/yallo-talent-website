@@ -40,9 +40,19 @@ import { hashSeed, petalPath } from "./petal-geometry";
 export function HeroAtmosphere({
   seed,
   className,
+  centred = false,
 }: {
   seed: string;
   className?: string;
+  /**
+   * The host centres its hero text across the full measure.
+   *
+   * The scrim's horizontal pass clears towards the right, where a LEFT-aligned
+   * hero has only field. A centred one puts text there, so the pass is dropped
+   * and the vertical one kept. Measured rather than assumed: without this,
+   * /why-yallo read 2.24:1 and /leadership 1.83:1 against a 3:1 floor.
+   */
+  centred?: boolean;
 }) {
   const h = hashSeed(seed);
 
@@ -66,7 +76,7 @@ export function HeroAtmosphere({
 
   return (
     <div
-      className={`${styles.atmosphere} ${className ?? ""}`}
+      className={`${styles.atmosphere} ${centred ? styles.centred : ""} ${className ?? ""}`}
       aria-hidden="true"
     >
       <svg

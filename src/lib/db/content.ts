@@ -339,10 +339,20 @@ export async function caseStudyById(id: string): Promise<CaseStudyRow | null> {
  * Cached under its own tag rather than the article tag: a slug change
  * invalidates both, and an article publish has no reason to drop this.
  */
+/**
+ * A PLAIN OBJECT, NOT A `Map`, and the difference is not stylistic.
+ *
+ * `unstable_cache` serialises what it stores. A `Map` does not survive that: it
+ * comes back as `{}`, so `.get` is not a function and every call throws. It
+ * threw on the 500 that took a case-study page down the moment one was
+ * unpublished, which is the only path that reaches this — a published slug
+ * resolves before the lookup is consulted. A cache that returns a different
+ * TYPE than the function returned is the shape of defect worth writing down.
+ */
 export const contentRedirects = unstable_cache(
-  async (): Promise<Map<string, string>> => {
+  async (): Promise<Record<string, string>> => {
     const rows = await sql()`select from_path, to_path from content_redirects`;
-    return new Map(
+    return Object.fromEntries(
       (rows as Record<string, unknown>[]).map((r) => [
         String(r.from_path),
         String(r.to_path),
@@ -355,7 +365,10 @@ export const contentRedirects = unstable_cache(
 
 /** Where a retired content path now points, or null. */
 export async function redirectFor(path: string): Promise<string | null> {
-  return (await contentRedirects()).get(path) ?? null;
+  const map = await contentRedirects();
+  /* `Object.hasOwn`, not a bare index: a path called "constructor" would
+     otherwise resolve to a function off the prototype. */
+  return Object.hasOwn(map, path) ? map[path] : null;
 }
 
 export type TaxonomyKind = "industry" | "platform" | "discipline";

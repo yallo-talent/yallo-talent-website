@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { TAXONOMY_LABEL, TAXONOMY_SEGMENT } from "@/lib/content-seo";
 import { publishedArticles } from "@/lib/db/content";
 import { buildMetadata, SITE } from "@/lib/seo";
@@ -59,12 +60,8 @@ export default async function InsightsHub({ searchParams }: PageProps) {
 
   return (
     <div className={styles.page}>
-      <section className={`${styles.hero} band-dark`}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+      <section className={styles.hero}>
+        <HeroAtmosphere centred seed="insights" />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />

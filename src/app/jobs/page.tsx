@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CvUploadForm } from "@/components/blocks/CvUploadForm";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { desks } from "@/data/home/screen";
 import { buildMetadata } from "@/lib/seo";
 
@@ -18,12 +19,8 @@ export default function JobsPage() {
   return (
     <div className={styles.page}>
       {/* HERO */}
-      <section className={`${styles.hero} band-dark`}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+      <section className={styles.hero}>
+        <HeroAtmosphere centred seed="jobs" />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />

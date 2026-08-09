@@ -11,6 +11,7 @@ import {
   sectorChip,
   sectorFilterOptions,
 } from "@/components/blocks/case-study/taxonomy";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
 import { orderedCaseStudyEntries } from "@/lib/db/content";
 import { buildMetadata } from "@/lib/seo";
@@ -52,6 +53,7 @@ export default async function CaseStudiesHub() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
+        <HeroAtmosphere seed="case-studies" />
         <div className={styles.heroInner}>
           <span className={styles.eyebrow}>Case studies</span>
           <h1 className={styles.h1}>Programmes like yours, shipped on time.</h1>

@@ -53,6 +53,31 @@
     );
 }
 
+/* CENTRED HEROES CLEAR NOTHING HORIZONTALLY.
+   The horizontal pass above is tuned for a LEFT-aligned hero: near-opaque
+   across the text column and clearing to 38% towards the right, where only the
+   field is. The editorial shell centres its text and gives it the full 1180px,
+   so a long emphasis span runs straight into that cleared zone — measured on
+   /why-yallo at 2.24:1 and /leadership at 1.83:1 against a 3:1 floor the moment
+   this field replaced the flat dark band. The vertical pass is kept and the
+   horizontal one is dropped, which is the same shape the narrow-viewport rule
+   below already uses and for the same reason. */
+.centred .scrim {
+  /* 93/97/95, not 88/94/90. The first attempt took /why-yallo and /leadership
+     from 1.83:1 and 2.24:1 up past their floors but left the leadership lede at
+     4.42:1 against 4.5 — close enough to read as fixed and still red, which is
+     the reading `check:rendered-contrast` exists to refuse. Raised until the
+     measurement cleared rather than until it looked right. The field still
+     shows: the petals read at the edges and through the lower band, which is
+     what the geometry is for. */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--ground) 93%, transparent) 0%,
+    color-mix(in oklab, var(--ground) 97%, transparent) 45%,
+    color-mix(in oklab, var(--ground) 95%, transparent) 100%
+  );
+}
+
 /* Narrow viewports read the hero as a single column, so the horizontal clearing
    would put the field directly behind the last lines of the lede. Flat and
    near-opaque instead: the field still shows at the edges of the petal geometry

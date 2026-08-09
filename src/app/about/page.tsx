@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { eorCorridorProse } from "@/data/services/eor-countries";
 import { getConsentedClients } from "@/lib/clients";
 import { buildMetadata } from "@/lib/seo";
@@ -64,12 +65,8 @@ export default function AboutPage() {
   return (
     <div className={styles.page}>
       {/* HERO */}
-      <section className={`${styles.hero} band-dark`}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+      <section className={styles.hero}>
+        <HeroAtmosphere centred seed="about" />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />
