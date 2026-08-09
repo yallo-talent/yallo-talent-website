@@ -9,6 +9,27 @@ on:
   # been broken by a commit, and settled it by re-running the job on the last
   # green commit and watching it fail identically.
   workflow_dispatch: {}
+
+# ONE CI RUN AT A TIME PER REF, AND IT IS A CORRECTNESS RULE RATHER THAN A COST
+# ONE. Several gates in the full lane write fixtures to the LIVE database —
+# check:sources' self-test row, check-admin-isolation's fixture accounts, and
+# check:editor's draft article. There is one database by ruling, so two runs in
+# flight are two runs sharing those tables.
+#
+# That is not theoretical: it failed. Two pushes seconds apart put two runs
+# against production at once, check-editor created its draft in one of them, the
+# other run's check-admin-render discovered that row as the first link on
+# /admin/articles, and the first run deleted it mid-flight. The render gate
+# reported "/admin/articles/<uuid> dark/360: responded 404" — a real 404, from a
+# real race, on a row that had genuinely stopped existing.
+#
+# `cancel-in-progress: false` deliberately. Cancelling a run mid-fixture leaves
+# the fixture behind in production, which is the failure mode this is meant to
+# prevent. Queue instead.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   # ---------------------------------------------------------------------------
   # Which lane this run takes, round 23 §5.
