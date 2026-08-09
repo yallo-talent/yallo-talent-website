@@ -89,7 +89,7 @@ export function BriefForm() {
             <span className={styles.eyeDot} aria-hidden="true" />
             Send us a brief
           </div>
-          <h2 className={styles.h}>Tell us what you're hiring for.</h2>
+          <h2 className={styles.h}>Tell us what you&apos;re hiring for.</h2>
           <p className={styles.sub}>
             A short brief is all we need to run the calibration call and start
             the specialist-led screen. Shortlists back within 72 hours.

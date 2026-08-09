@@ -133,11 +133,12 @@ export default function InsightsHub() {
             <div className={styles.bottomGlow} aria-hidden="true" />
             <div className={styles.bottomInner}>
               <h2 className={styles.bottomH}>
-                Have a specific question we haven't covered?
+                Have a specific question we haven&apos;t covered?
               </h2>
               <p className={styles.bottomSub}>
                 Send a brief. One of our specialist team will pick it up
-                directly, usually with a useful angle you hadn't considered.
+                directly, usually with a useful angle you hadn&apos;t
+                considered.
               </p>
               <div className={styles.bottomActions}>
                 <Link href="/brief" className={styles.ctaPrimary}>
