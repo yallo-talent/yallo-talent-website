@@ -9,6 +9,7 @@ import {
   writeScalar,
 } from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { assertPane, requirePane } from "@/lib/admin/guard";
 import {
   ORDER_PATH,
   publishOrder,
@@ -16,9 +17,17 @@ import {
   readPublishes,
   studyPath,
 } from "@/lib/admin/publish";
-import { caseStudyOrder, orderedCaseStudies } from "@/lib/case-study-order";
+import {
+  clearStagedOrder,
+  committedOrder,
+  movedOrder,
+  readStagedOrder,
+  writeStagedOrder,
+} from "@/lib/admin/staged-order";
+import { orderedCaseStudies } from "@/lib/case-study-order";
 import { getAllCaseStudies } from "@/lib/content";
 import styles from "../../Admin.module.css";
+import { RowTitle } from "../../RowTitle";
 
 /**
  * Pane 3, Case studies. Read, and REORDER, which is the write path.
@@ -72,25 +81,67 @@ export const dynamic = "force-dynamic";
  * silently overwrite an edit someone made to order.yaml between the page render
  * and the click, and this file is edited by hand as well as by this pane.
  */
-async function reorder(formData: FormData): Promise<void> {
+async function stageMove(formData: FormData): Promise<void> {
   "use server";
+  await assertPane("caseStudies");
   const slug = String(formData.get("slug") ?? "");
-  const direction = String(formData.get("direction") ?? "");
+  const direction =
+    String(formData.get("direction") ?? "") === "up" ? "up" : "down";
 
-  const current = [...caseStudyOrder()];
-  const from = current.indexOf(slug);
-  if (from === -1) {
+  const staged = await readStagedOrder();
+  const current = staged ? staged.slugs : committedOrder();
+  const next = movedOrder(current, slug, direction);
+  if (!next) {
     redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(`"${slug}" is not named in ${ORDER_PATH}, so it has no position to move.`)}`,
+      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(`"${slug}" cannot move ${direction} from where it is. It is either at the end of the order or not named in ${ORDER_PATH}.`)}`,
     );
   }
-  const to = direction === "up" ? from - 1 : from + 1;
-  if (to < 0 || to >= current.length) {
+
+  await writeStagedOrder(next);
+  revalidatePath(ADMIN_ROUTES.caseStudies);
+  redirect(
+    `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${direction}`)}`,
+  );
+}
+
+/** Throws the staged order away. The pane offers this beside the banner. */
+async function discardStaged(): Promise<void> {
+  "use server";
+  await assertPane("caseStudies");
+  await clearStagedOrder();
+  revalidatePath(ADMIN_ROUTES.caseStudies);
+  redirect(`${ADMIN_ROUTES.caseStudies}?discarded=1`);
+}
+
+/**
+ * The staged order, published as ONE pull request.
+ *
+ * This is the whole point of round 23 §5. The per-move pull request path is
+ * gone: a rerank is one editorial decision, so it is one commit and one review.
+ * PRs #14 to #18 were the same nine-move rerank arriving as five pull requests
+ * against one stale base, and whichever merged first would have encoded one
+ * move rather than the order.
+ *
+ * The diff is computed here, against the file as it stands, not against
+ * anything the form carried. A form that posted the intended order would
+ * overwrite an edit made to order.yaml between the page render and the click,
+ * and this file is edited by hand as well as by this pane.
+ */
+async function publishStagedOrder(): Promise<void> {
+  "use server";
+  await assertPane("caseStudies");
+
+  const staged = await readStagedOrder();
+  if (!staged) {
     redirect(
-      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent("That study is already at the end of the order.")}`,
+      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent("There is no staged order to publish, or the one there was no longer matches the studies on disk.")}`,
     );
   }
-  current.splice(to, 0, ...current.splice(from, 1));
+  if (staged.moved === 0) {
+    redirect(
+      `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent("The staged order is identical to the published one, so there is nothing to open a pull request for.")}`,
+    );
+  }
 
   /* The file as it stands, so the rewrite keeps its header and its per-slug
      client column. Read here rather than inside publishOrder because that module
@@ -100,18 +151,22 @@ async function reorder(formData: FormData): Promise<void> {
   try {
     previous = readFileSync(join(process.cwd(), ORDER_PATH), "utf8");
   } catch {
-    /* Absent is legitimate — the default header is written for a new file. */
+    /* Absent is legitimate, the default header is written for a new file. */
   }
 
-  const result = await publishOrder(current, { previous });
+  const result = await publishOrder(staged.slugs, { previous });
   if (!result.ok) {
     redirect(
       `${ADMIN_ROUTES.caseStudies}?err=${encodeURIComponent(result.error)}`,
     );
   }
+
+  /* Cleared only after the pull request exists. A failed publish that threw the
+     staged order away would lose the rerank and give no way to retry it. */
+  await clearStagedOrder();
   revalidatePath(ADMIN_ROUTES.caseStudies);
   redirect(
-    `${ADMIN_ROUTES.caseStudies}?moved=${encodeURIComponent(`${slug} ${direction}`)}` +
+    `${ADMIN_ROUTES.caseStudies}?published=${staged.moved}` +
       `&pr=${result.prNumber}&open=${result.autoMergeEnabled ? "automerge" : "waiting"}` +
       (result.autoMergeError
         ? `&why=${encodeURIComponent(result.autoMergeError)}`
@@ -135,6 +190,7 @@ async function reorder(formData: FormData): Promise<void> {
  */
 async function setPublished(formData: FormData): Promise<void> {
   "use server";
+  await assertPane("caseStudies");
   const slug = String(formData.get("slug") ?? "");
   const next = String(formData.get("next") ?? "") === "true";
 
@@ -196,12 +252,26 @@ export default async function CaseStudiesPane({
     pr?: string;
     open?: string;
     why?: string;
+    published?: string;
+    discarded?: string;
   }>;
 }) {
-  const { moved, err, pr, open, why } = await searchParams;
+  await requirePane("caseStudies");
+  /* The staged order wins the render when there is one, so the rows show what
+     will be published rather than what currently is. The banner below says so
+     in words; a list that quietly showed staged positions with no marking would
+     be the optimistic UI lying. */
+  const staged = await readStagedOrder();
+  const { moved, err, pr, open, why, published, discarded } =
+    await searchParams;
   const publishes = await readPublishes();
   const all = getAllCaseStudies();
-  const studies = orderedCaseStudies(all);
+  const committed = orderedCaseStudies(all);
+  const studies = staged
+    ? staged.slugs
+        .map((slug) => committed.find((c) => c.frontmatter.slug === slug))
+        .filter((c): c is (typeof committed)[number] => c !== undefined)
+    : committed;
   const publishedSlugs = new Set(studies.map((s) => s.frontmatter.slug));
   const unpublished = all.filter(
     (s) => !publishedSlugs.has(s.frontmatter.slug),
@@ -213,15 +283,50 @@ export default async function CaseStudiesPane({
       <p className={styles.lede}>
         Everything in <code>content/case-studies/</code>, in the published order
         from <code>order.yaml</code>: the same order the homepage rail and{" "}
-        <code>/case-studies</code> render. Moving a study opens a pull request
-        against <code>order.yaml</code> and asks GitHub to auto-merge it, so CI
-        runs before it publishes. Nothing here writes <code>main</code>{" "}
-        directly, and nothing here merges.
+        <code>/case-studies</code> render. Moving a study STAGES the change
+        here; nothing leaves this pane until you publish the order, and then it
+        leaves as one pull request that GitHub auto-merges once CI is green.
+        Nothing here writes <code>main</code> directly, and nothing here merges.
       </p>
 
       <p className={styles.count}>
         {studies.length} published · {unpublished.length} unpublished
       </p>
+
+      {staged ? (
+        <div className={styles.stagedBanner}>
+          <p>
+            <strong>This order is staged, not published.</strong> {staged.moved}{" "}
+            position{staged.moved === 1 ? "" : "s"} differ from what is live.
+            The list below shows the staged order, so it is not what visitors
+            see yet. It survives a refresh and expires after twelve hours.
+          </p>
+          <div className={styles.rowActions}>
+            <form action={publishStagedOrder}>
+              <button className={styles.submit} type="submit">
+                Publish order, one pull request
+              </button>
+            </form>
+            <form action={discardStaged}>
+              <button className={styles.rowButton} type="submit">
+                Discard staged order
+              </button>
+            </form>
+          </div>
+        </div>
+      ) : null}
+
+      {discarded ? (
+        <p className={styles.ok}>
+          Staged order discarded. The list below is what is published.
+        </p>
+      ) : null}
+      {published ? (
+        <p className={styles.ok}>
+          {published} position{published === "1" ? "" : "s"} published as one
+          pull request.
+        </p>
+      ) : null}
 
       {err ? <p className={styles.error}>{err}</p> : null}
       {pr ? (
@@ -262,11 +367,11 @@ export default async function CaseStudiesPane({
               <li key={p.number} className={styles.row}>
                 <div className={styles.rowHead}>
                   <span className={styles.meta}>#{p.number}</span>
-                  <p className={styles.rowTitle}>
+                  <RowTitle level={3} className={styles.rowTitle}>
                     <a href={p.url} rel="noreferrer">
                       {p.title}
                     </a>
-                  </p>
+                  </RowTitle>
                   <span className={p.merged ? styles.ok : styles.meta}>
                     {p.merged ? "merged" : p.state}
                   </span>
@@ -308,7 +413,9 @@ export default async function CaseStudiesPane({
               <span className={styles.meta}>
                 {i < studies.length ? i + 1 : "unranked"}
               </span>
-              <p className={styles.rowTitle}>{study.frontmatter.title}</p>
+              <RowTitle level={3} className={styles.rowTitle}>
+                {study.frontmatter.title}
+              </RowTitle>
               <span className={styles.meta}>{study.frontmatter.date}</span>
               <span className={styles.meta}>{study.frontmatter.region}</span>
               {study.frontmatter.engagement ? (
@@ -354,7 +461,7 @@ export default async function CaseStudiesPane({
               </button>
             </form>
             {i < studies.length ? (
-              <form action={reorder}>
+              <form action={stageMove}>
                 <input
                   type="hidden"
                   name="slug"

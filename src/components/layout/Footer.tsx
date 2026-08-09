@@ -34,14 +34,18 @@ const quickLinks = [
   { label: "Jobs", href: "/jobs" },
 ];
 
-/* Yallo AI Academy is withdrawn, not deferred to a date or a "coming soon" —
-   round12-scope.md §4.4. It sits on a host that doesn't exist yet
-   (academy.yallo.co), so there is nothing to link to and no date that
-   wouldn't be quietly wrong within a month. One line to add back once that
-   host is real. */
+/* Yallo AI Academy was withdrawn in round 12 (§4.4) because academy.yallo.co
+   did not exist and a link to nothing is worse than no link. Sumeet reinstated
+   it in round 23: the host is now the Academy's address from first launch, per
+   the ratified domain architecture, and the group's own footer is where its
+   business lines are named. Measured 8 Aug 2026 at 18:48 GST the host answered
+   503; the ruling stands and the measurement is recorded in the relay rather
+   than hedged here, because a footer is not the place to publish a caveat about
+   an origin that is still being stood up. */
 const yalloFamily = [
   { label: "Yallo Talent", href: "https://yallo.co" },
   { label: "saasinator AI", href: "https://saasinator.ai" },
+  { label: "Yallo AI Academy", href: "https://academy.yallo.co" },
 ];
 
 const offices = [

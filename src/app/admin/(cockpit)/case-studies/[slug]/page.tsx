@@ -7,6 +7,7 @@ import {
   parseStudyFile,
 } from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { requirePane } from "@/lib/admin/guard";
 import { studyPath } from "@/lib/admin/publish";
 import styles from "../../../Admin.module.css";
 import { EditStudyForm } from "./EditStudyForm";
@@ -42,6 +43,7 @@ export default async function EditStudy({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await requirePane("caseStudies");
   const { slug } = await params;
 
   let source: string;

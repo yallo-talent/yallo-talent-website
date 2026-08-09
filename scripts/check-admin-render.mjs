@@ -42,6 +42,7 @@ const PANES = [
   "/admin/case-studies",
   "/admin/conversations",
   "/admin/articles",
+  "/admin/users",
 ];
 
 /**
@@ -59,6 +60,20 @@ const PANES = [
  * keeps rediscovering.
  */
 const DETAIL_FROM = "/admin/conversations";
+
+/**
+ * The ARTICLE detail template, discovered the same way and for the same reason.
+ *
+ * Round 23 added /admin/articles/[slug]. Its address is an article slug, so it
+ * cannot be written into PANES either: the list depends on what is in
+ * content/insights/, and a hardcoded slug would 404 the day that article is
+ * renamed. Discovered from the first row's Edit link, and reported as unvisited
+ * rather than passed over when the list is empty.
+ *
+ * AGENTS.md: a new page template joins every enumerating guard in the commit
+ * that introduces it. This is that.
+ */
+const ARTICLE_DETAIL_FROM = "/admin/articles";
 const WIDTHS = [1280, 360];
 const THEMES = ["light", "dark"];
 
@@ -87,20 +102,32 @@ let detailUnvisited = 0;
  * defect this gate is looking for. A SECOND failure is reported, because a
  * credential that never works is exactly what it should catch.
  */
-async function signIn(ctx) {
+async function signIn(ctx, email = EMAIL, password = PASSWORD) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     const page = await ctx.newPage();
-    await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
-    await page.fill('input[name="email"]', EMAIL);
-    await page.fill('input[name="password"]', PASSWORD);
-    await Promise.all([
-      page.waitForLoadState("networkidle"),
-      page.click('button[type="submit"]'),
-    ]);
-    await page.waitForTimeout(attempt * 800);
-    const signedIn = !page.url().includes("/admin/sign-in");
-    await page.close();
-    if (signedIn) return true;
+    /* The retry this function documents never actually ran: `page.fill` threw
+       straight out of the loop, so a cold-start miss was a hard failure with a
+       Playwright stack instead of a second attempt. Measured in round 23, where
+       exactly that turned a passing gate into an uncaught TimeoutError. */
+    try {
+      await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
+      await page.fill('input[name="email"]', email);
+      await page.fill('input[name="password"]', password);
+      await Promise.all([
+        page.waitForLoadState("networkidle"),
+        page.click('button[type="submit"]'),
+      ]);
+      await page.waitForTimeout(attempt * 800);
+      const signedIn = !page.url().includes("/admin/sign-in");
+      await page.close();
+      if (signedIn) return true;
+    } catch (err) {
+      await page.close().catch(() => {});
+      if (attempt === 2) {
+        console.error(`\n  sign-in threw twice: ${err.message}\n`);
+        return false;
+      }
+    }
   }
   return false;
 }
@@ -215,20 +242,21 @@ for (const theme of THEMES) {
        template goes through exactly the same axe, type and contrast passes as
        every other. */
     const panes = [...PANES];
-    let detail = null;
-    {
+    for (const [listPath, hrefPrefix] of [
+      [DETAIL_FROM, "/admin/conversations/"],
+      [ARTICLE_DETAIL_FROM, "/admin/articles/"],
+    ]) {
+      let detail = null;
       const probe = await ctx.newPage();
       try {
-        await probe.goto(`${BASE}${DETAIL_FROM}`, {
+        await probe.goto(`${BASE}${listPath}`, {
           waitUntil: "networkidle",
           timeout: 45000,
         });
-        detail = await probe.evaluate(() => {
-          const a = document.querySelector(
-            'a[href^="/admin/conversations/"]',
-          );
+        detail = await probe.evaluate((prefix) => {
+          const a = document.querySelector(`a[href^="${prefix}"]`);
           return a ? a.getAttribute("href") : null;
-        });
+        }, hrefPrefix);
       } catch {
         /* Reported below as un-visited rather than thrown: a probe failure and
            an empty list produce the same null, and both are worth saying. */
@@ -310,6 +338,48 @@ for (const theme of THEMES) {
           );
         }
 
+        /* SC 2.5.8 target size, and horizontal overflow.
+           Both added in round 23, and both because axe reported NEITHER while
+           both were live: /admin/briefs pushed 173px past a 360px viewport on
+           one unbreakable metadata token, and standalone links across every
+           pane were 15 to 17px tall against this project's own 24px
+           commitment. A gate that only runs axe is a gate that believes axe's
+           coverage is the standard's coverage. */
+        const geometry = await page.evaluate(() => {
+          const doc = document.documentElement;
+          const small = [];
+          for (const el of Array.from(
+            document.querySelectorAll("a,button,input,select,textarea"),
+          )) {
+            const b = el.getBoundingClientRect();
+            if (b.width === 0 && b.height === 0) continue;
+            /* The standard exempts a link inline in a sentence. A link that is
+               the only child of its paragraph is a control, not prose, and that
+               is the same boundary the stylesheet draws. */
+            const inlineInProse =
+              el.tagName === "A" &&
+              el.parentElement?.tagName === "P" &&
+              el.parentElement.childElementCount > 1;
+            if (inlineInProse) continue;
+            if (b.height < 24 || b.width < 24) {
+              small.push(
+                `<${el.tagName.toLowerCase()}> "${(el.textContent ?? "").trim().slice(0, 30)}" is ${Math.round(b.width)}x${Math.round(b.height)}`,
+              );
+            }
+          }
+          return { overflow: doc.scrollWidth - doc.clientWidth, small };
+        });
+        if (geometry.overflow > 0) {
+          blocking.push(
+            `${pane} ${theme}/${width}  scrolls sideways by ${geometry.overflow}px. SC 1.4.10: content reflows, it does not push the page.`,
+          );
+        }
+        for (const target of geometry.small) {
+          blocking.push(
+            `${pane} ${theme}/${width}  target below SC 2.5.8's 24px — ${target}`,
+          );
+        }
+
         const roles = await page.evaluate(TYPE_ROLES);
         for (const s of roles.sans)
           blocking.push(`${pane} ${theme}/${width}  sans text below A4's 14px floor — ${s}`);
@@ -328,12 +398,11 @@ for (const theme of THEMES) {
   }
 }
 
-await browser.close();
 
 /* PANES plus, in each context that found one, the discovered detail URL. */
 const contexts = WIDTHS.length * THEMES.length;
 const expected =
-  PANES.length * contexts + (contexts - detailUnvisited);
+  PANES.length * contexts + (contexts * 2 - detailUnvisited);
 if (panesMeasured < expected) {
   blocking.push(
     `Only ${panesMeasured} of ${expected} pane renders were measured. A partial run is not\n` +
@@ -346,6 +415,146 @@ if (advisory.length) {
   for (const a of advisory.sort()) console.log(`  ${a}`);
 }
 
+/* ------------------------------------------------------- the panes by role */
+
+/**
+ * Every pane rendered under every role that is allowed to open it.
+ *
+ * WHY THIS IS SEPARATE FROM THE SWEEP ABOVE. That sweep signs in with the
+ * ENVIRONMENT credential, which maps to admin, and it is the assertion that the
+ * break-glass identity still works — round 23 §3 calls that the rule that must
+ * never regress, because losing it locks the owner out of the live cockpit. This
+ * pass is the other half: a pane can render perfectly for an admin and throw for
+ * an editor, because the editor's session carries a different role and the pane
+ * reads it. Neither pass substitutes for the other.
+ *
+ * ONE THEME AND ONE WIDTH, deliberately. The axe, type and contrast sweep across
+ * four combinations already happened above and does not depend on who is signed
+ * in. What depends on the role is whether the pane renders AT ALL and whether
+ * what it renders is accessible, so this pass runs axe once per pane per role
+ * rather than four times.
+ *
+ * THE FIXTURE ACCOUNTS ARE THIS GATE'S OWN. Created here, removed in the finally
+ * block, and swept afterwards so a killed run leaves nothing in a live table.
+ */
+const ROLE_PANES = {
+  editor: ["/admin", "/admin/case-studies", "/admin/articles"],
+  ops: ["/admin", "/admin/briefs"],
+};
+
+let rolePanesMeasured = 0;
+const rolesExercised = [];
+
+if (!process.env.DATABASE_URL) {
+  advisory.push(
+    "role render NOT exercised: DATABASE_URL is not set, so no fixture account could\n" +
+      "      be created. Reported rather than skipped silently.",
+  );
+} else {
+  const { execFileSync } = await import("node:child_process");
+  const { dirname, join } = await import("node:path");
+  const { fileURLToPath } = await import("node:url");
+  const HERE = dirname(fileURLToPath(import.meta.url));
+  const fixtureScript = join(HERE, "admin-fixture-user.mjs");
+  const created = [];
+
+  try {
+    for (const [role, panes] of Object.entries(ROLE_PANES)) {
+      const fixture = JSON.parse(
+        execFileSync(process.execPath, [fixtureScript, "create", role], {
+          encoding: "utf8",
+          env: process.env,
+        }).trim(),
+      );
+      created.push(fixture.email);
+
+      const ctx = await browser.newContext({
+        viewport: { width: 1280, height: 900 },
+        colorScheme: "light",
+        reducedMotion: "reduce",
+      });
+
+      if (!(await signIn(ctx, fixture.email, fixture.password))) {
+        blocking.push(
+          `A ${role} fixture account could not sign in, so no pane was measured for that role.`,
+        );
+        await ctx.close();
+        continue;
+      }
+      rolesExercised.push(role);
+
+      for (const pane of panes) {
+        const page = await ctx.newPage();
+        try {
+          const res = await page.goto(`${BASE}${pane}`, {
+            waitUntil: "networkidle",
+            timeout: 45000,
+          });
+          if (!res || res.status() !== 200) {
+            blocking.push(
+              `${pane} as ${role}: responded ${res ? res.status() : "no response"}.`,
+            );
+            await page.close();
+            continue;
+          }
+          if (page.url().includes("/admin/sign-in")) {
+            blocking.push(
+              `${pane} as ${role}: redirected to sign-in despite a session.`,
+            );
+            await page.close();
+            continue;
+          }
+          rolePanesMeasured += 1;
+
+          const { violations } = await new AxeBuilder({ page })
+            .withTags([
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa",
+              "experimental",
+            ])
+            .analyze();
+          for (const v of violations) {
+            const target = v.nodes[0]?.target.join(" ") ?? "?";
+            const line = `${pane} as ${role}  [${v.impact}] ${v.id}: ${v.help}\n      ${target}`;
+            if (v.impact === "serious" || v.impact === "critical")
+              blocking.push(line);
+            else advisory.push(line);
+          }
+
+          const roleTypes = await page.evaluate(TYPE_ROLES);
+          for (const t of roleTypes.sans)
+            blocking.push(`${pane} as ${role}  sans text below A4's 14px floor — ${t}`);
+          for (const c of roleTypes.control)
+            blocking.push(`${pane} as ${role}  filled control below A4's 15px role — ${c}`);
+        } catch (err) {
+          blocking.push(`${pane} as ${role}: ${err.message}`);
+        }
+        await page.close();
+      }
+      await ctx.close();
+    }
+  } finally {
+    for (const email of created) {
+      execFileSync(process.execPath, [fixtureScript, "remove", email], {
+        encoding: "utf8",
+        env: process.env,
+      });
+    }
+    execFileSync(process.execPath, [fixtureScript, "sweep"], {
+      encoding: "utf8",
+      env: process.env,
+    });
+  }
+}
+
+
+/* Closed here rather than after the env sweep: the role pass below opens its
+   own contexts on this same browser. */
+await browser.close();
+
 if (blocking.length) {
   console.error(`\ncheck:admin-render FAILED with ${blocking.length} problem(s):\n`);
   for (const b of blocking.sort()) console.error(`  ${b}\n`);
@@ -354,12 +563,17 @@ if (blocking.length) {
 
 console.log(
   `\ncheck:admin-render passed\n` +
+    `  ${
+      rolesExercised.length
+        ? `${rolePanesMeasured} pane render(s) under ${rolesExercised.join(" and ")}, fixture accounts removed`
+        : "role render not exercised (no DATABASE_URL)"
+    }\n` +
     `  ${PANES.length} pane(s) x ${THEMES.length} theme(s) x ${WIDTHS.length} width(s), ` +
     `${panesMeasured} render(s) in total, signed in\n` +
     `  no serious or critical axe violation, and A4's 14px / 15px / 0.12em floors hold\n` +
     (detailUnvisited
-      ? `  THE CONVERSATION DETAIL TEMPLATE WAS NOT VISITED in ${detailUnvisited} of ${contexts}\n` +
+      ? `  A DETAIL TEMPLATE (conversation or article) WAS NOT VISITED ${detailUnvisited} time(s) across ${contexts}\n` +
         `  context(s): the list was empty, so there was no transcript to open. That is a\n` +
         `  legitimate state of the database and it is reported rather than passed over.\n`
-      : `  the conversation detail template was reached in all ${contexts} context(s)\n`),
+      : `  both detail templates, conversation and article, were reached in all ${contexts} context(s)\n`),
 );

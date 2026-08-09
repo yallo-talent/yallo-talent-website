@@ -145,6 +145,14 @@
   margin: 0;
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
+  /* THE measured fix. On /admin/briefs the row title is the submitter's email
+     address, which contains no space and therefore never wrapped: it pushed the
+     pane 173px past a 360px viewport, and the metadata after it in the flex row
+     went with it. Isolated by removing one rule at a time and re-measuring, so
+     this is the line that does the work rather than the line that looked like
+     it should. `anywhere` rather than `break-word` because only `anywhere`
+     counts toward min-content, which is what actually stops the push. */
+  overflow-wrap: anywhere;
 }
 
 .meta {
@@ -153,6 +161,12 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-3);
+  /* The same class as .rowTitle above, and stated as such rather than as a
+     second fix: row metadata is a transcript UUID, an endpoint path, a slug. It
+     is not what overflowed on the day this was measured, and it is the same
+     kind of unbreakable token, so it gets the same rule before it is the one
+     that does. */
+  overflow-wrap: anywhere;
 }
 
 /* Delivery outcome. The one thing this pane exists to make legible at a glance,
@@ -346,4 +360,142 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
+}
+
+/* Who is signed in, and as what. Round 23: with three roles the cockpit looks
+   different to different people, and "why can I not see briefs" is a question
+   the bar should answer without anyone having to ask it. */
+.whoami {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.roleTag {
+  padding: 2px 8px;
+  border: 1px solid var(--hairline);
+  /* The petal, not a pill: chips carry the radius on the bottom-left corner
+     alone (DESIGN.md, the One Marker Rule). --r-pill exists but a fully rounded
+     chip is the generic form this design system deliberately does not use. */
+  border-radius: 0 0 0 var(--r-sm);
+  color: var(--text-2);
+}
+
+/* The per-row controls in the Users pane. Each is its own form, because each
+   posts a different server action, so they are laid out rather than grouped. */
+.rowActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-start: 8px;
+}
+
+/* SC 2.5.8 again: 24px in both axes, which 8px of block padding on a caption
+   line clears. Matched to .signOut rather than sharing a block with it, for the
+   same reason .nav a and .signOut have one block each — at equal specificity in
+   a CSS module the later block silently wins. */
+.rowButton {
+  padding: 4px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: transparent;
+  color: var(--text-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rowButton:hover {
+  border-color: var(--text-1);
+}
+
+.rowNote {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.createForm {
+  max-width: 42ch;
+}
+
+/* The staged-order banner. Round 23 §5 requires an abandoned staged state to be
+   plainly visible rather than a quiet difference between what this pane shows
+   and what the site serves, so it is a bordered block above the list and not a
+   line of small print. */
+.stagedBanner {
+  margin-block: 16px;
+  padding: 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.stagedBanner p {
+  margin: 0 0 12px;
+  font-size: var(--fs-body-sm);
+}
+
+/* SC 2.5.8 for the panes, not just the toolbar.
+   The toolbar got its 24px floor in round 19 and the panes never did: measured
+   in round 23, the wordmark (103x17), "Edit this study" (140x17), "Refresh
+   publish status" (206x17) and every row-title link (x15) were all under it, on
+   every pane, in both widths. axe reported none of them, which is the usual
+   story with target-size.
+
+   SCOPED BY `:only-child`, deliberately. SC 2.5.8 exempts a link inline in a
+   sentence, and forcing inline-flex on one of those would break the line box it
+   sits in. A link that is the ONLY thing in its paragraph is not inline prose,
+   it is a control, and that distinction is exactly what the selector encodes.
+   No enumerated list of link classes, because an enumerated list is what the
+   next pane gets left off. */
+.wordmark a,
+.rowTitle a,
+.rowActions a,
+.main p > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+}
+
+/* An important, non-error notice: the generated password, shown once.
+   It was using `.error`, which is red, and a red box is how a person reads
+   "something went wrong" rather than "copy this now, it will not be shown
+   again". Same weight, different meaning, and meaning never rides on hue alone
+   here either — the copy says what it is. */
+.notice {
+  margin-block: 16px;
+  padding: 16px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+  font-size: var(--fs-body-sm);
+}
+
+.notice p {
+  margin: 0 0 12px;
+}
+
+.notice p:last-child {
+  margin-bottom: 0;
+}
+
+.notice code {
+  display: inline-block;
+  padding: 8px 12px;
+  background: var(--ground);
+  border: 1px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  /* A generated password is a random token with no spaces. It must wrap rather
+     than widen the pane, and it must be selectable as one unit. */
+  overflow-wrap: anywhere;
+  user-select: all;
 }

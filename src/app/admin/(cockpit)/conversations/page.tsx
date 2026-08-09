@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { requirePane } from "@/lib/admin/guard";
 import {
   type ConversationSummary,
   readConversationSummaries,
 } from "@/lib/admin/reads";
 import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
 import styles from "../../Admin.module.css";
+import { RowTitle } from "../../RowTitle";
 
 /**
  * Pane 2, Conversations. READ ONLY, and deliberately so (round 17 §3).
@@ -70,6 +72,7 @@ export default async function ConversationsPane({
 }: {
   searchParams: Promise<Filters>;
 }) {
+  await requirePane("conversations");
   const filters = await searchParams;
 
   let all: ConversationSummary[] = [];
@@ -200,13 +203,13 @@ export default async function ConversationsPane({
                       {row.hasBrief ? "brief captured" : "no brief"}
                     </span>
                   </div>
-                  <p className={styles.rowTitle}>
+                  <RowTitle level={2} className={styles.rowTitle}>
                     <Link
                       href={`${ADMIN_ROUTES.conversations}/${encodeURIComponent(row.transcriptId)}`}
                     >
                       {row.opening ?? "(the visitor sent no message)"}
                     </Link>
-                  </p>
+                  </RowTitle>
                   <p className={styles.meta}>{row.transcriptId}</p>
                 </li>
               ))}

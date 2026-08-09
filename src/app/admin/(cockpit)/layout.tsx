@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/lib/admin/auth";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { PANE_LABELS, PANE_ROUTES, panesFor } from "@/lib/admin/roles";
 import styles from "../Admin.module.css";
 
 /**
@@ -48,6 +49,14 @@ export default async function AdminLayout({
 }) {
   const session = await auth();
   if (!session?.user) redirect(ADMIN_ROUTES.signIn);
+  const role = session.user.role;
+
+  /* The nav is the LAST layer, never the only one. Every pane below re-checks
+     with requirePane, and every server action re-checks with assertPane, because
+     a link that is not rendered is still a URL that can be typed. Filtering here
+     is so that the cockpit shows a person their own job, not so that it stops
+     anyone doing someone else's. */
+  const panes = panesFor(role);
 
   return (
     <div className={styles.shell}>
@@ -56,11 +65,16 @@ export default async function AdminLayout({
           <Link href={ADMIN_ROUTES.root}>Yallo admin</Link>
         </p>
         <nav aria-label="Cockpit panes" className={styles.nav}>
-          <Link href={ADMIN_ROUTES.briefs}>Briefs</Link>
-          <Link href={ADMIN_ROUTES.conversations}>Conversations</Link>
-          <Link href={ADMIN_ROUTES.caseStudies}>Case studies</Link>
-          <Link href={ADMIN_ROUTES.articles}>Articles</Link>
+          {panes.map((pane) => (
+            <Link href={PANE_ROUTES[pane]} key={pane}>
+              {PANE_LABELS[pane]}
+            </Link>
+          ))}
         </nav>
+        <p className={styles.whoami}>
+          {session.user.email}
+          <span className={styles.roleTag}>{role ?? "no role"}</span>
+        </p>
         <form
           action={async () => {
             "use server";

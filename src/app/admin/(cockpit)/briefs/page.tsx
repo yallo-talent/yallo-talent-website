@@ -1,5 +1,7 @@
+import { requirePane } from "@/lib/admin/guard";
 import { readBriefs } from "@/lib/admin/reads";
 import styles from "../../Admin.module.css";
+import { RowTitle } from "../../RowTitle";
 
 /**
  * Pane 1, Briefs. READ ONLY, and there is no delete path anywhere in this tree
@@ -36,6 +38,7 @@ function deliveryLine(
 }
 
 export default async function BriefsPane() {
+  await requirePane("briefs");
   let rows: Awaited<ReturnType<typeof readBriefs>> = [];
   let error: string | null = null;
   try {
@@ -78,7 +81,9 @@ export default async function BriefsPane() {
               return (
                 <li key={row.id} className={styles.row}>
                   <div className={styles.rowHead}>
-                    <p className={styles.rowTitle}>{who}</p>
+                    <RowTitle level={2} className={styles.rowTitle}>
+                      {who}
+                    </RowTitle>
                     <span className={styles.meta}>{row.endpoint}</span>
                     {row.originSource ? (
                       <span className={styles.meta}>{row.originSource}</span>

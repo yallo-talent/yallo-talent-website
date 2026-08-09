@@ -17,6 +17,7 @@ export const ADMIN_ROUTES = {
   conversations: `${ADMIN_BASE}/conversations`,
   caseStudies: `${ADMIN_BASE}/case-studies`,
   articles: `${ADMIN_BASE}/articles`,
+  users: `${ADMIN_BASE}/users`,
 } as const;
 
 /**
