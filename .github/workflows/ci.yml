@@ -131,12 +131,24 @@ jobs:
       # empty index, reporting green having checked nothing — which is the
       # vacuous pass this round was told not to leave anywhere.
       #
-      # THE BLAST RADIUS, STATED. This is the live database. The public routes
-      # only read from it. The one write any CI step makes is check:sources'
-      # self-test fixture, which it inserts and deletes inside the same run, and
-      # that step already had this secret before this line existed. Read access
-      # for the build is strictly smaller than the write CI already performs.
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # THE BLAST RADIUS, CLOSED — R-25b.1. Round 25 stated the blast radius
+      # honestly and accepted it: the job held the production owner credential,
+      # which can write every content table and read every password hash, lead
+      # and conversation on the estate. Nothing in this job wants that. The
+      # credential here is now `ci_reader`, which has CONNECT and SELECT on the
+      # seven content tables and nothing else; `users`, `submissions` and
+      # `assistant_transcripts` are out of its reach entirely.
+      #
+      # TWO STEPS GENUINELY WRITE and both take the owner secret at STEP level,
+      # which is R-25b.1's own carve-out applied to both members of its class:
+      # check:sources' self-test inserts a row that must fail validation and
+      # deletes it, and check-admin-isolation's role-reach half creates a
+      # fixture account per role and removes it. Neither can borrow the other's
+      # reach, and every other step in this job now cannot write at all.
+      #
+      # Enforced rather than remembered: `check:ci-reader-reach` below asserts
+      # the property of whatever credential this resolves to.
+      DATABASE_URL: ${{ secrets.DATABASE_URL_CI_READER }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -144,6 +156,21 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: pnpm }
       - run: pnpm install --frozen-lockfile
+
+      # R-25b.1, and it runs FIRST because every step after it uses this
+      # credential. Asserts the property, not the provenance: the connection can
+      # read content, is refused every write, and cannot see users, submissions
+      # or assistant_transcripts. If somebody ever points this secret back at
+      # the owner string, this is what says so — watched red against the owner
+      # credential, six assertions, real exit 1, before it was wired.
+      #
+      # The write probes all match zero rows on purpose. Postgres checks the
+      # table privilege when it plans the statement, so `where false` still
+      # raises 42501 for a role without the grant while writing nothing for a
+      # role that has it. That is what makes the red-proof safe to run against
+      # production rather than theoretical.
+      - name: The CI credential can read content and write nothing (R-25b.1)
+        run: pnpm check:ci-reader-reach
 
       - name: Lint
         run: pnpm biome check .
@@ -507,7 +534,14 @@ jobs:
       # it on, and it then failed on a DISABLED sign-in button, because the
       # cockpit refuses to offer a sign-in it cannot complete and this step had
       # no AUTH_SECRET. The same throwaway pair the render gate already uses.
+      #
+      # R-25b.1: this is the second of the two steps that genuinely write, so it
+      # keeps the owner credential at step level while the rest of the job holds
+      # the read-only one. The fixture accounts it creates and removes are rows
+      # in `users`, which `ci_reader` cannot even read.
       - name: Admin cockpit isolation (six assertions, one anonymous read)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-admin-isolation.mjs http://localhost:3100
 
       # Round 20 §4.3. The cockpit's write path, proven against the real module

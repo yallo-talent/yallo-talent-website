@@ -57,7 +57,10 @@
     "admin:hash": "node scripts/admin-password-hash.mjs",
     "check:redirects": "node scripts/check-redirects.mjs",
     "check:sources": "node scripts/check-sources.mjs",
-    "check:privacy-retention": "node scripts/check-privacy-retention.mjs"
+    "check:privacy-retention": "node scripts/check-privacy-retention.mjs",
+    "check:ci-reader-reach": "node scripts/check-ci-reader-reach.mjs",
+    "check:published-counts": "node scripts/check-published-counts.mjs",
+    "db:grant-ci-reader": "node scripts/db-grant-ci-reader.mjs"
   },
   "engines": {
     "node": "22.x",
