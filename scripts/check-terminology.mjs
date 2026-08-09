@@ -480,6 +480,10 @@ function stripComments(src) {
   let i = 0;
   const n = src.length;
   let quote = "";
+  /* The last character that was not whitespace, which is the only way to tell
+     a regex literal from a division. `a / b` divides; `(/a/)`, `= /a/`,
+     `.replace(/a/, …)` and `return /a/` do not. */
+  let prevSignificant = "";
   while (i < n) {
     const ch = src[i];
     const nx = src[i + 1];
@@ -502,6 +506,39 @@ function stripComments(src) {
         i += 2;
         continue;
       }
+      /* R-25b.5. A REGEX LITERAL IS NOT A DIVISION AND ITS CONTENTS ARE NOT
+         CODE. Without this, `/won't/` put the scanner into a single-quoted
+         string that never closed, so every comment AFTER it went unstripped
+         and an em dash in one of them was reported as a copy defect. A scanner
+         with a known false-finding mode is a latent flake: the finding is real
+         to whoever reads it and the fix they make is to the wrong line.
+         The preceding significant character decides — after a value (an
+         identifier, a digit, a closing bracket) a slash divides; after an
+         operator, a comma, an opening bracket or nothing, it opens a regex. */
+      if (ch === "/" && !/[\w)\]]/.test(prevSignificant)) {
+        out += ch;
+        i++;
+        let inClass = false;
+        while (i < n && src[i] !== "\n") {
+          const c = src[i];
+          if (c === "\\") {
+            /* An escape consumes the next character whatever it is, which is
+               what stops `/\//` from ending at its middle slash. */
+            out += c + (src[i + 1] ?? "");
+            i += 2;
+            continue;
+          }
+          if (c === "[") inClass = true;
+          else if (c === "]") inClass = false;
+          out += c;
+          i++;
+          /* A slash inside a character class does not close the literal:
+             `/[/]/` is a valid regex matching one slash. */
+          if (c === "/" && !inClass) break;
+        }
+        prevSignificant = "/";
+        continue;
+      }
       if (ch === '"' || ch === "'" || ch === "`") {
         quote = ch;
         out += ch;
@@ -509,6 +546,7 @@ function stripComments(src) {
         continue;
       }
       out += ch;
+      if (!/\s/.test(ch)) prevSignificant = ch;
       i++;
       continue;
     }
@@ -520,6 +558,7 @@ function stripComments(src) {
     if (ch === quote) {
       quote = "";
       out += ch;
+      prevSignificant = ch;
       i++;
       continue;
     }

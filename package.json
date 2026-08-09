@@ -57,7 +57,13 @@
     "admin:hash": "node scripts/admin-password-hash.mjs",
     "check:redirects": "node scripts/check-redirects.mjs",
     "check:sources": "node scripts/check-sources.mjs",
-    "check:privacy-retention": "node scripts/check-privacy-retention.mjs"
+    "check:privacy-retention": "node scripts/check-privacy-retention.mjs",
+    "check:css-vars": "node scripts/check-css-vars.mjs",
+    "check:ci-secrets": "node scripts/check-ci-secrets.mjs",
+    "check:editor": "node scripts/check-editor.mjs",
+    "check:ci-reader-reach": "node scripts/check-ci-reader-reach.mjs",
+    "check:published-counts": "node scripts/check-published-counts.mjs",
+    "db:grant-ci-reader": "node scripts/db-grant-ci-reader.mjs"
   },
   "engines": {
     "node": "22.x",
@@ -72,6 +78,13 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.115.0",
     "@neondatabase/serverless": "^1.1.0",
+    "@tiptap/core": "^3.29.2",
+    "@tiptap/extension-link": "^3.29.2",
+    "@tiptap/extension-placeholder": "^3.29.2",
+    "@tiptap/pm": "^3.29.2",
+    "@tiptap/react": "^3.29.2",
+    "@tiptap/starter-kit": "^3.29.2",
+    "@tiptap/suggestion": "^3.29.2",
     "framer-motion": "12",
     "gray-matter": "^4.0.3",
     "next": "16.2.12",

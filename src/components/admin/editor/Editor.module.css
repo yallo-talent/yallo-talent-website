@@ -1,0 +1,631 @@
+/* ---------------------------------------------------------------------------
+   The writing surface, design §4.
+
+   "The editor surface itself gets the cockpit's design treatment: paper ground,
+   Newsreader for the title field, Inter for body, real contrast, generous
+   measure. It should look like the publication it produces."
+
+   So the reading column here is the reading column on `/insights/[slug]`: the
+   same 72ch measure, the same display face on headings, the same body size. A
+   writer composing at 14px in a 100% wide textarea is composing for a surface
+   that does not exist, and every line-length judgement they make is wrong.
+
+   ZERO HARDCODED COLOUR. Layer 1 tokens and Layer 2c aliases only, so the
+   cockpit follows the register the rest of the estate is in.
+   -------------------------------------------------------------------------- */
+
+.shell {
+  position: relative;
+  margin-top: 24px;
+}
+
+/* Full-screen writing mode. A fixed layer over the cockpit rather than the
+   Fullscreen API: the API takes the whole screen including the browser chrome,
+   which is more than "let me see only my words" asks for, and it cannot be
+   left with the same Escape that every other overlay on this site uses. */
+.shellFull {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: 20px clamp(16px, 5vw, 64px) 40px;
+  overflow-y: auto;
+  background: var(--bg);
+}
+
+/* ── The bar ────────────────────────────────────────────────────────────── */
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.barGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* The saved state is always visible and never a transient toast. A toast that
+   has faded cannot answer "did that save?", which is the question the
+   indicator exists for. */
+.saveState {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+.saveState[data-state="saved"] {
+  color: var(--fn-positive-text-l);
+}
+
+:root[data-theme="dark"] .saveState[data-state="saved"] {
+  color: var(--fn-positive-text-d);
+}
+
+.saveState[data-state="error"] {
+  color: var(--fn-signal-text-l);
+}
+
+:root[data-theme="dark"] .saveState[data-state="error"] {
+  color: var(--fn-signal-text-d);
+}
+
+.counts {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--text-3-wash);
+}
+
+/* The shared block carries only what is SHARED. Padding and size differ per
+   control and are set once each below — stating them here as well left
+   `.blockAdd` declared twice with colliding values, which in a CSS module
+   means the later block silently wins and the earlier one is dead code.
+   check:type caught it. */
+.barButton,
+.previewToggle,
+.bubbleButton,
+.blockRemove,
+.blockAdd {
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 160ms ease;
+}
+
+.barButton {
+  padding: 7px 14px;
+}
+
+.barButton:hover,
+.previewToggle:hover,
+.bubbleButton:hover,
+.blockRemove:hover,
+.blockAdd:hover {
+  border-color: var(--accent-line);
+}
+
+.barButton:focus-visible,
+.previewToggle:focus-visible,
+.bubbleButton:focus-visible,
+.blockRemove:focus-visible,
+.blockAdd:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 3px;
+}
+
+.barButton[aria-pressed="true"],
+.previewToggle[aria-pressed="true"],
+.bubbleButton[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+
+.saveError {
+  margin: 12px 0 0;
+  font-size: var(--fs-body-sm);
+  color: var(--fn-signal-text-l);
+}
+
+:root[data-theme="dark"] .saveError {
+  color: var(--fn-signal-text-d);
+}
+
+/* ── Panes ──────────────────────────────────────────────────────────────── */
+
+.panes {
+  display: block;
+}
+
+.panesSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .panesSplit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.writing {
+  position: relative;
+  padding: 28px 0 60px;
+}
+
+/* ── The reading column ─────────────────────────────────────────────────── */
+
+/* The same measure and the same faces as the published article. This is the
+   whole of "it should look like the publication it produces". */
+.prose {
+  max-width: 72ch;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+.prose:focus-visible {
+  outline: none;
+}
+
+/* The same step the published article template uses, deliberately: this column
+   is a preview of that column, and a heading that is one size here and another
+   there makes every line-length judgement a writer makes wrong. */
+.prose h2 {
+  margin: 40px 0 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: var(--fw-strong);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+.prose h3 {
+  margin: 28px 0 10px;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.prose p {
+  margin: 0 0 16px;
+}
+
+.prose ul,
+.prose ol {
+  margin: 0 0 18px;
+  padding-left: 22px;
+}
+
+.prose li {
+  margin-bottom: 8px;
+}
+
+.prose blockquote {
+  margin: 0 0 18px;
+  padding: 2px 0 2px 20px;
+  border-left: 2px solid var(--border-strong);
+  font-style: italic;
+  color: var(--fg-muted);
+}
+
+.prose hr {
+  margin: 32px 0;
+  border: none;
+  border-top: 1px solid var(--hairline);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+}
+
+.prose pre {
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  overflow-x: auto;
+  background: var(--surface);
+}
+
+.prose a {
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* The placeholder, which is the only thing an empty document says. */
+.prose p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: var(--text-3-wash);
+}
+
+/* ── Blocks in the editor ───────────────────────────────────────────────── */
+
+/* A block reads as a region with a name and a way out. The alternative — a
+   block that looks exactly like its published self — leaves nowhere to put the
+   fields and no way to tell you are inside one. */
+.block {
+  margin: 28px 0;
+  /* NO ACCENT SIDE-TAB. A thick coloured border down one edge of a card is
+     decoration standing in for hierarchy, and this block does not need it: the
+     petal corner says "card" and the mono uppercase name in --accent-label
+     already carries the accent and says WHICH block it is. Two accents for one
+     idea is one too many. */
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  padding: 14px 18px 18px;
+  background: var(--surface);
+}
+
+.blockHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.blockName {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.blockNote {
+  flex: 1 1 auto;
+  font-size: var(--fs-caption);
+  color: var(--text-3-wash);
+}
+
+.blockRemove,
+.blockAdd {
+  padding: 4px 10px;
+}
+
+.blockField {
+  display: block;
+  margin-top: 12px;
+}
+
+.blockFieldLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+.blockRequired {
+  color: var(--fn-signal-text-l);
+}
+
+:root[data-theme="dark"] .blockRequired {
+  color: var(--fn-signal-text-d);
+}
+
+.blockInput,
+.blockTextarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+.blockTextarea {
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.blockInput:focus-visible,
+.blockTextarea:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+.blockQuoteText {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.blockFigureLabel {
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.blockImage {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+.faqPair,
+.chartRowFields {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.petalPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.petalMark {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-mark);
+}
+
+/* ── Selection toolbar ──────────────────────────────────────────────────── */
+
+.bubble {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface-raised);
+}
+
+.bubbleButton {
+  padding: 5px 10px;
+}
+
+.bubbleLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 4px;
+}
+
+.bubbleLinkLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+.bubbleLinkInput {
+  width: 220px;
+  padding: 5px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text);
+}
+
+/* ── Slash menu ─────────────────────────────────────────────────────────── */
+
+.slash {
+  position: fixed;
+  z-index: 70;
+  width: 300px;
+  max-height: 320px;
+  overflow-y: auto;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface-raised);
+}
+
+.slashList {
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+}
+
+/* The option IS the row. It was a button inside an `li[role=option]`, which
+   is a control inside a thing that is selected rather than focused. */
+.slashItem,
+.slashItemActive {
+  display: block;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 0 0 0 var(--r-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.slashItemActive {
+  background: var(--accent-wash);
+}
+
+.slashItem:focus-visible,
+.slashItemActive:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: -2px;
+}
+
+.slashTitle {
+  display: block;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+}
+
+.slashHint {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--fs-caption);
+  line-height: 1.4;
+  color: var(--text-3-wash);
+}
+
+/* ── Preview ────────────────────────────────────────────────────────────── */
+
+.preview {
+  position: sticky;
+  top: 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.previewBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.previewLabel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+.previewControls {
+  display: flex;
+  gap: 6px;
+}
+
+.previewToggle {
+  padding: 4px 10px;
+}
+
+/* The frame is shown at its true CSS width and scaled to fit, so the 360
+   register is measured at 360 rather than merely narrowed. A frame squeezed
+   into the pane would report the wrong breakpoint. */
+.previewFrameWrap {
+  overflow: auto;
+  max-height: 78vh;
+}
+
+.previewFrame {
+  display: block;
+  height: 1400px;
+  border: none;
+  background: var(--bg);
+}
+
+.previewEmpty {
+  margin: 0;
+  padding: 24px 16px;
+  font-size: var(--fs-body-sm);
+  color: var(--text-3-wash);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barButton,
+  .previewToggle,
+  .bubbleButton,
+  .blockRemove,
+  .blockAdd,
+  .desk {
+    transition: none;
+  }
+}
+
+/* ── The fields form ────────────────────────────────────────────────────── */
+
+.metaForm {
+  display: grid;
+  gap: 18px;
+  max-width: 720px;
+  margin-top: 8px;
+}
+
+.taxFieldset {
+  margin: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+}
+
+.taxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+
+/* Checkboxes, not a multi-select. A native multi-select needs a modifier key
+   to pick a second value, which is a rule nobody is told and half of people do
+   not know — and every one of these fields legitimately takes more than one. */
+.taxOption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+/* 24px, which is SC 2.5.8's floor, and it was 16px until the cockpit render
+   gate said so at 360: "target below SC 2.5.8's 24px — <input> is 16x16",
+   twenty-one times, once per taxonomy value. A 16px checkbox is the browser
+   default and the default is below the standard. The row is a flex line, so
+   the label text beside it does not enlarge the target — only the control
+   does. */
+.taxOption input {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  accent-color: var(--accent-mark);
+}
+
+.taxOption input:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/* The character counter, design §6. It reports what is SAVED — the number a
+   search engine will read — and turns signal-coloured only when it is over. */
+.counter {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3-wash);
+}
+
+.counter[data-over="true"] {
+  color: var(--fn-signal-text-l);
+}
+
+:root[data-theme="dark"] .counter[data-over="true"] {
+  color: var(--fn-signal-text-d);
+}

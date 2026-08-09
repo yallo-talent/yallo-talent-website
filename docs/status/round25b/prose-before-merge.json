@@ -1,0 +1,147 @@
+{
+  "base": "https://yallo.co",
+  "studies": {
+    "engineering-a-custom-planning-platform": {
+      "h1": "Engineering a Custom Planning Platform",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Alshaya Group is one of the region’s largest retail operators, managing complex planning operations across multiple brands, geographies, and high-volume retail environments.",
+        "As Alshaya continued to scale its retail portfolio, its planning landscape needed to support increasing complexity, faster enhancement cycles, and long-term flexibility. Key challenges included managing total cost of ownership, enabling faster rollout of new capabilities across business units, and establishing stronger ownership over the planning technology roadmap.",
+        "Yallo partnered with Alshaya to design and deliver a modern, custom-built planning platform, providing enterprise architecture leadership, dedicated engineering capacity, and end-to-end delivery support in close collaboration with internal business and technology teams.\n\nDesigned a scalable, cloud-ready enterprise architecture supporting Forecasting, Allocation, and Replenishment workflows\nDeployed a dedicated cross-functional engineering team, including full-stack, data, and UX specialists\nWorked in an agile, co-creation model with Alshaya stakeholders to align functional requirements, data models, and user experience\nDelivered the first phase of the platform at enterprise scale, meeting agreed performance and quality benchmarks\nEstablished a phased transition approach to ensure continuity and minimise operational risk",
+        "Significant reduction in total cost of ownership through increased platform ownership and flexibility\nStrong internal adoption across business and technology teams\nClear, co-created roadmap defined to scale the platform across the wider retail portfolio"
+      ]
+    },
+    "oracle-hyperion-financial-management-hfm-implementation": {
+      "h1": "Oracle Hyperion Financial Management (HFM) Implementation",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Majid Al Futtaim (MAF) is a leading diversified conglomerate operating across retail, real estate, leisure, and entertainment, with complex financial consolidation and reporting requirements across multiple geographies and entities.",
+        "As part of its finance transformation roadmap, MAF aimed to strengthen governance, predictability, and delivery outcomes for its Oracle Hyperion Financial Management (HFM) implementation to support accurate group-wide reporting and compliance. Their key challenges were managing scale, complexity, and delivery alignment in a group-wide HFM programme",
+        "Yallo partnered with MAF to provide specialised Hyperion expertise, delivery leadership, and additional execution capacity, working closely with internal teams and existing implementation partners.\n\nDeployed senior HFM solution architecture and specialist functional/technical consultants\nAligned the solution design with MAF’s consolidation and reporting requirements\nCollaborated with finance, IT, and business stakeholders to resolve dependencies and accelerate progress\nIntroduced structured governance, phased delivery, and improved delivery transparency",
+        "Successful first-phase go-live enabling accurate and timely financial consolidation\nImproved delivery predictability, governance, and programme visibility\nClear roadmap established for subsequent phases\nStrengthened long-term partnership for future finance transformation initiatives"
+      ]
+    },
+    "enabling-sap-s-4hana-transformation-for-al-tayer-group": {
+      "h1": "Enabling SAP S/4HANA Transformation for Al Tayer Group",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Al Tayer Group, a leading UAE-based conglomerate, embarked on a large-scale SAP S/4HANA transformation programme to modernise its enterprise systems. Wipro was appointed as the strategic System Integrator (SI) responsible for delivering the programme, requiring deep SAP expertise.",
+        "To meet aggressive programme timelines, Wipro needed immediate access to highly specialised SAP S/4HANA talent capable of operating in a complex, client-facing environment. Key challenges included\n\nUrgent demand for niche SAP skills across SAP CAR, GRC, SAC, SD, MM, FICO, and Group Reporting\nRequirement for onsite deployment, combining technical depth with strong stakeholder engagement\nEnsuring delivery continuity and quality was essential to keeping the transformation on track.",
+        "Yallo partnered closely with Wipro to strengthen delivery capability for the Al Tayer programme by providing targeted, high-quality SAP talent.",
+        "Rapidly deploying niche SAP S/4HANA consultants aligned to project requirements\nEnsuring all resources met technical, delivery, and client engagement expectations\nActively quality-managing delivery performance through regular coordination.\nMaintaining continuous feedback loops to ensure team effectiveness."
+      ]
+    },
+    "enabling-supply-chain-transformation-through-targeted-delivery-expertise": {
+      "h1": "Enabling Supply Chain Transformation Through Targeted Delivery Expertise",
+      "labels": [
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Chalhoub Group is a leading luxury retail and distribution group in the Middle East, operating complex supply chain environments that support multiple brands, markets, and growth initiatives.\n\nAs part of ongoing supply chain transformation initiatives, Chalhoub Group needed to quickly onboard experienced Supply Chain Architects and Business Analysts. The roles were critical to bridging strategy and execution, but the niche skill requirements and market conditions made timely hiring challenging, impacting project momentum.",
+        "Yallo partnered with Chalhoub Group to provide rapid, high-quality talent aligned to both technical requirements and organisational culture, enabling key initiatives to move forward without further delay.\n\nIdentified and deployed experienced supply chain architects and business analysts within weeks\nLeveraged a hybrid delivery model combining UK-based remote expertise with onsite presence in the UAE\nEnsured strong alignment with Chalhoub Group’s technical, domain, and cultural expectations\nProvided a streamlined recruitment process to minimise disruption to ongoing programmes",
+        "Critical roles filled within weeks, restoring project momentum\nHigh-quality consultants integrated quickly and delivered value from day one\nImproved confidence in delivery timelines for supply chain initiatives\nExpanded partnership as Chalhoub Group engaged Yallo for additional talent and support needs"
+      ]
+    },
+    "building-a-scalable-arabic-speaking-offshore-it-hub-for-al-othaim-markets": {
+      "h1": "Building a Scalable Arabic-Speaking Offshore IT Hub for Al Othaim Markets",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Al Othaim Markets, one of Saudi Arabia’s leading retail groups, set out to insource key IT capabilities by establishing an offshore delivery centre in Cairo to support current and future technology programmes.",
+        "The objective was to rapidly build an Arabic-speaking IT team while keeping costs low and maintaining delivery quality. Key challenges included:\n\nBroad skill requirements across front-end and back-end development, ERP, integration, data analytics, testing, and project management\nTight budgets combined with aggressive hiring timelines\nSetting up a new offshore geography without compromising quality or speed",
+        "Yallo partnered with Al Othaim to design and execute a rapid talent ramp-up strategy in Cairo.\n\nBuilt a scalable Arabic-speaking talent pipeline\nDelivered multi-skilled IT resources across all required domains\nAccelerated hiring while maintaining strict quality and cost controls",
+        "Successful establishment of the Cairo offshore delivery centre\nInsourcing targets achieved within budget\nImproved cost efficiency and greater control over IT delivery\nYallo established as a preferred talent partner for future initiatives, including an upcoming Microsoft Dynamics 365 transformation"
+      ]
+    },
+    "defining-a-target-operating-model-for-sephora-middle-easts-digital-carve-out": {
+      "h1": "Defining a Target Operating Model for Sephora Middle East’s Digital Carve-Out",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Sephora Middle East, with operations across the UAE and France, was experiencing rapid digital growth. To stay closer to customers and local market needs, leadership initiated a carve-out of ecommerce, CRM, digital, and data analytics capabilities from Sephora’s central IT organisation in Paris.",
+        "The objective was to define an Operating Model that enabled regional autonomy while remaining aligned with global architecture and governance. Key challenges included.\n\nNeed for local ownership of digital and data platforms to support a booming business Misalignment between Digital vs IT ways of working\nUnclear decision rights between Middle East teams and Paris HQ.\nLarge consulting firms lacking depth across both enterprise IT and modern digital operating models.\nSephora required a boutique advisory partner with hands-on expertise across both worlds.",
+        "Yallo was engaged to define a pragmatic, future-ready operating model by:\n\nConducting in-depth interviews with Digital and IT teams, led by the Sephora CFO and Digital/IT Directors\nAssessing current operating models across Middle East and Paris HQ\nIdentifying gaps between existing constraints and future ambitions\nDesigning a 9-pillar Digital & IT Target Operating Model, tailored to Sephora Middle East’s unique context",
+        "Clear alignment between Digital and IT teams on ways of working and delivery ownership\nDefined architecture blueprints and RACI models for central vs regional responsibilities\nStrong alignment between SAP, Digital, and Data landscapes.\nHigh appreciation from Sephora leadership for clarity, and speed"
+      ]
+    },
+    "enabling-azure-data-platform-delivery-at-enterprise-scale": {
+      "h1": "Enabling Azure Data Platform Delivery at Enterprise Scale",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Alshaya Group is a large international retail enterprise undertaking a major data modernisation initiative to support analytics, scalability, and long-term digital transformation.",
+        "To support its data strategy, Alshaya Group needed to rapidly build delivery capacity for a strategic Azure data platform. Key challenges included onboarding experienced Azure data engineering talent at speed, ensuring architectural robustness, and retaining flexibility to scale delivery resources in line with project phases.",
+        "Yallo partnered with Alshaya Group to enable end-to-end delivery of the Azure data platform by combining enterprise architecture leadership with agile, scalable engineering capability.\n\nAssembled a dedicated team of experienced Azure data engineers aligned to delivery requirements\nProvided enterprise architecture oversight to ensure a scalable, cloud-native data platform\nEnabled rapid onboarding so engineers contributed from day one\nSupported flexible team scaling to match programme milestones and evolving needs",
+        "Delivery timelines met through fast mobilisation of specialist capability\nRobust Azure data architecture established to support current and future workloads\nOptimised cost and resource utilisation through scalable team structures\nExpanded engagement as Yallo continued supporting subsequent phases of the data platform initiative"
+      ]
+    },
+    "unlocking-cost-efficiency-across-multi-platform-enterprise-it-landscape": {
+      "h1": "Unlocking Cost Efficiency across Multi-Platform Enterprise IT landscape",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Majid Al Futtaim (MAF) is one of the Middle East’s largest diversified enterprises, operating a broad portfolio of enterprise systems supporting finance, procurement, cloud, and customer operations.",
+        "To support ongoing business and technology initiatives, MAF aimed to improve cost efficiency, delivery quality, and governance across its Time & Materials (T&M) support model. Reliance on multiple vendors across platforms such as SAP, Oracle, Hyperion, Azure, Salesforce, and Microsoft led to rising costs, inconsistent consultant quality, slow onboarding, and fragmented accountability.",
+        "Yallo partnered with MAF as a unified delivery partner, consolidating cross-platform talent delivery into a single, governed model that improved execution quality and predictability.\n\nConsolidated multi-vendor support into a single delivery model covering ERP, cloud, finance, procurement, and CRM platforms\nDeployed project-aligned teams to ensure continuity, accountability, and consistent delivery standards\nImplemented a hybrid onsite and remote delivery approach to balance cost and responsiveness\nEnabled predictable onboarding through a scalable and reliable delivery framework",
+        "Improved cost efficiency across enterprise technology support\nMore consistent consultant quality and delivery reliability\nFaster onboarding and improved resource predictability\nSimplified vendor management with clearer ownership and governance"
+      ]
+    },
+    "driving-consistent-it-delivery-across-a-complex-retail-technology-landscape": {
+      "h1": "Driving Consistent IT Delivery Across a Complex Retail Technology Landscape",
+      "labels": [
+        "THE CONTEXT",
+        "THE CHALLENGE",
+        "THE APPROACH",
+        "THE OUTCOME"
+      ],
+      "subheads": [],
+      "bodies": [
+        "Alshaya Group is one of the Middle East’s largest retail organisations, operating a highly complex technology landscape supporting enterprise applications, cloud platforms, digital channels, and core retail systems.",
+        "As Alshaya scaled its technology initiatives, it sought to improve cost efficiency, delivery quality, and control across its Time & Materials (T&M) model. Managing multiple vendors across platforms such as Oracle Retail, Oracle Fusion, Oracle EPM, Azure, custom development, and integration technologies led to rising costs, inconsistent consultant quality, delayed onboarding, and fragmented accountability.",
+        "Yallo partnered with Alshaya as a unified delivery partner, consolidating talent supply across platforms while improving quality, predictability, and delivery governance.\n\nConsolidated multi-vendor support into a single, cross-platform delivery model\nBuilt stable, project-aligned teams across ERP, cloud, development, testing, and integration\nDeployed thoroughly vetted consultants aligned to technical and cultural requirements\nImplemented a hybrid onsite and remote delivery approach to optimise cost and speed",
+        "Reduced T&M costs through improved pricing consistency and delivery efficiency\nHigher and more consistent consultant quality across technology domains\nFaster onboarding and improved delivery continuity\nSimplified vendor management with stronger accountability\nRecognition as a preferred delivery partner with continued expansion"
+      ]
+    }
+  }
+}

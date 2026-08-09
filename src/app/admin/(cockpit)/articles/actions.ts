@@ -1,11 +1,18 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import { validateForPublish } from "@/lib/admin/content-validation";
 import { assertPane } from "@/lib/admin/guard";
 import { articleById, caseStudyById } from "@/lib/db/content";
-import { type ContentType, saveDraft, setStatus } from "@/lib/db/content-write";
+import {
+  type ContentType,
+  restoreRevision,
+  saveBody,
+  saveDraft,
+  setStatus,
+} from "@/lib/db/content-write";
 import { publishedPaths } from "@/lib/published-routes";
 
 /**
@@ -114,6 +121,8 @@ export async function setStatusAction(formData: FormData): Promise<void> {
     const known = new Set(await publishedPaths());
     const errors = validateForPublish(
       {
+        contentType: type,
+        category: row.category,
         title: row.title,
         summary: row.summary,
         metaTitle: row.metaTitle,
@@ -139,4 +148,125 @@ export async function setStatusAction(formData: FormData): Promise<void> {
 
   await setStatus(type, id, next, signed);
   back(route, { [next]: row.slug });
+}
+
+/**
+ * Autosave. Writes the body, and nothing else.
+ *
+ * NOT A FORM ACTION. The editor calls it directly with the TipTap document, so
+ * there is no FormData to unpack and no redirect afterwards — a redirect every
+ * few seconds would take the writer's caret with it. It returns the computed
+ * counts so the surface reports what the database now holds rather than what
+ * the client believed it sent.
+ *
+ * THE GUARD RUNS ON EVERY CALL. A server action is a POST endpoint with a
+ * public URL; having rendered the editor once authorises nothing later.
+ */
+export async function saveBodyAction(
+  type: ContentType,
+  id: string,
+  body: unknown,
+): Promise<{ words: number; minutes: number }> {
+  if (type !== "article" && type !== "case_study") {
+    throw new Error("Unknown content type.");
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const counts = await saveBody(type, id, body, signed);
+  /* The preview iframe is a separate document reading the same row, so the
+     editor route's own cache has to be invalidated or the preview reloads
+     into whatever was there before. */
+  revalidatePath(`${ROUTE_FOR[type]}/${id}`);
+  revalidatePath(`/admin/preview/${type}/${id}`);
+  return counts;
+}
+
+/** Put a previous revision back. Itself recorded as a revision. */
+export async function restoreRevisionAction(formData: FormData): Promise<void> {
+  const type = String(formData.get("type") ?? "") as ContentType;
+  if (type !== "article" && type !== "case_study") {
+    back(ADMIN_ROUTES.root, { err: "Unknown content type." });
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const id = String(formData.get("id") ?? "");
+  const revisionId = String(formData.get("revisionId") ?? "");
+  try {
+    await restoreRevision(type, id, revisionId, signed);
+  } catch (err) {
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `Not restored: ${(err as Error).message}`,
+    });
+  }
+  back(`${ROUTE_FOR[type]}/${id}`, { restored: "1" });
+}
+
+/**
+ * The metadata form: everything on the piece that is not the body.
+ *
+ * SEPARATE FROM THE BODY on purpose, and the same reason autosave is separate:
+ * two writers of one row that overlap will overwrite each other, and here the
+ * two writers are the same person in two halves of one screen. This one owns
+ * the fields; autosave owns the body.
+ */
+export async function saveMetaAction(formData: FormData): Promise<void> {
+  const type = String(formData.get("type") ?? "") as ContentType;
+  if (type !== "article" && type !== "case_study") {
+    back(ADMIN_ROUTES.root, { err: "Unknown content type." });
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const id = String(formData.get("id") ?? "");
+  const row =
+    type === "article" ? await articleById(id) : await caseStudyById(id);
+  if (!row) back(ROUTE_FOR[type], { err: "No such piece." });
+
+  const values = (name: string): string[] =>
+    formData
+      .getAll(name)
+      .map(String)
+      .filter((v) => v !== "");
+
+  const slug = String(formData.get("slug") ?? "").trim();
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `"${slug}" is not a slug. Lower case, numbers and single hyphens.`,
+    });
+  }
+
+  const meta = (name: string): string | null => {
+    const raw = formData.get(name);
+    if (raw === null) return null;
+    const value = String(raw).trim();
+    /* Null means "derive it" and empty string means "the author cleared it".
+       0005_content.sql made the columns nullable for exactly this distinction,
+       and collapsing the two here would throw it away. */
+    return value === "" ? null : value;
+  };
+
+  try {
+    await saveDraft(
+      {
+        type,
+        id,
+        slug,
+        title: String(formData.get("title") ?? "").trim(),
+        summary: String(formData.get("summary") ?? "").trim(),
+        category: String(formData.get("category") ?? "").trim(),
+        /* The body is NOT taken from this form. It is the editor's, and a
+           metadata save that carried a stale copy of it would silently undo
+           whatever was typed since the page loaded. */
+        body: row.body,
+        industry: values("industry"),
+        platform: values("platform"),
+        discipline: values("discipline"),
+        sources: row.sources,
+        metaTitle: meta("metaTitle"),
+        metaDescription: meta("metaDescription"),
+      },
+      signed,
+    );
+  } catch (err) {
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `Not saved: ${(err as Error).message}`,
+    });
+  }
+  back(`${ROUTE_FOR[type]}/${id}`, { saved: "1" });
 }

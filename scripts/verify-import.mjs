@@ -23,27 +23,10 @@
  */
 
 import { chromium } from "@playwright/test";
+import { prose, slugsFromIndex } from "./lib/case-study-prose.mjs";
 
 const LOCAL = process.argv[2] ?? "http://localhost:3115";
 const PROD = process.argv[3] ?? "https://yallo.co";
-
-/** The three slots `Movements` renders, and nothing else on the page. */
-async function prose(page, base, slug) {
-  const res = await page.goto(`${base}/case-studies/${slug}`, {
-    waitUntil: "domcontentloaded",
-  });
-  if (!res?.ok()) return { error: `HTTP ${res?.status() ?? "none"}` };
-  return page.evaluate(() => {
-    const texts = (sel) =>
-      [...document.querySelectorAll(sel)].map((e) => e.innerText.trim());
-    return {
-      h1: document.querySelector("h1")?.innerText.trim() ?? "",
-      labels: texts('[class*="movementLabel"]'),
-      subheads: texts('[class*="movementSubhead"]'),
-      bodies: texts('[class*="movementBody"]'),
-    };
-  });
-}
 
 function diff(name, a, b) {
   if (Array.isArray(a) || Array.isArray(b)) {
@@ -70,11 +53,7 @@ if (slugs.length === 0) {
   /* Taken from the local index rather than typed here: the point is to check
      every study the new build publishes, including one the order file does not
      name. */
-  const res = await fetch(`${LOCAL}/case-studies`);
-  const html = await res.text();
-  for (const m of html.matchAll(/\/case-studies\/([a-z0-9-]+)/g)) {
-    if (!slugs.includes(m[1])) slugs.push(m[1]);
-  }
+  slugs.push(...(await slugsFromIndex(LOCAL)));
 }
 
 const browser = await chromium.launch();

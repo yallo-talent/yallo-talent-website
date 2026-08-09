@@ -1,0 +1,331 @@
+/* ---------------------------------------------------------------------------
+   The seven Yallo blocks, design §4.
+
+   These sit INSIDE `.prose`, which already sets the measure, the paragraph
+   rhythm and the list markers. Nothing here restates any of that; each block
+   states only what makes it that block, so a change to the reading column
+   moves them all.
+
+   ZERO HARDCODED COLOUR. Every value is a Layer 1 token or a Layer 2c alias, so
+   both themes come free and `check-colours` stays quiet. The two blocks that
+   carry a number — the key figure and the chart — use the accent family rather
+   than a functional hue: `--fn-*` is reserved for data SERIES meaning
+   (scarcity, availability, renewal), and a single editorial figure is not a
+   series.
+
+   NO BLURRED ORBS, no `filter: blur()`, per the DESIGN.md anti-reference and
+   `check:orbs`.
+   -------------------------------------------------------------------------- */
+
+/* ── Pull quote ─────────────────────────────────────────────────────────── */
+
+.pullQuote {
+  margin: 36px 0;
+  padding: 0 0 0 24px;
+  border-left: 3px solid var(--accent-line);
+}
+
+.pullQuoteText {
+  margin: 0;
+  padding: 0;
+  border: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-style: normal;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.pullQuoteBy {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3-wash);
+}
+
+/* ── Key figure ─────────────────────────────────────────────────────────── */
+
+.keyFigure {
+  margin: 36px 0;
+  padding: 24px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
+}
+
+.keyFigureNumber {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-numeral);
+  font-weight: var(--fw-strong);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.keyFigureLabel {
+  margin: 10px 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* The source line is never optional and never quiet enough to miss: canon §6
+   is the rule this site does not bend, and a figure whose attribution reads as
+   decoration is a figure presented as a first-party claim. */
+.keyFigureSource {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.04em;
+  color: var(--text-3-wash);
+}
+
+/* ── FAQ ────────────────────────────────────────────────────────────────── */
+
+.faq {
+  margin: 36px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--hairline);
+}
+
+/* `<summary>` is the disclosure control, so it carries the whole hit area and
+   a real focus ring. The default marker is replaced rather than hidden: a
+   disclosure with no visible state cue is one a person cannot read at rest. */
+.faqQuestion {
+  position: relative;
+  padding: 16px 32px 16px 0;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  line-height: 1.45;
+  color: var(--text);
+  cursor: pointer;
+  list-style: none;
+}
+
+.faqQuestion::-webkit-details-marker {
+  display: none;
+}
+
+.faqQuestion::after {
+  content: "+";
+  position: absolute;
+  right: 4px;
+  top: 16px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  color: var(--accent-label);
+}
+
+.faqItem[open] .faqQuestion::after {
+  content: "\2212"; /* minus */
+}
+
+.faqQuestion:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.faqAnswer {
+  margin: 0;
+  padding: 0 0 18px;
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ── Related desk ───────────────────────────────────────────────────────── */
+
+.desk {
+  display: block;
+  margin: 28px 0;
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  text-decoration: none;
+  background: var(--surface);
+  transition: border-color 160ms ease;
+}
+
+.desk:hover,
+.desk:focus-visible {
+  border-color: var(--accent-line);
+}
+
+.desk:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.deskLabel {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.deskTagline {
+  display: block;
+  margin-top: 4px;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-2);
+}
+
+/* ── PetalPlate divider ─────────────────────────────────────────────────── */
+
+.petal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 44px 0;
+}
+
+/* The house mark reduced to its quietest form: ONE PETAL between two hairlines
+   — three square corners and one radius, which is the structural signature
+   DESIGN.md reserves radius for. A decorative divider, so the whole thing is
+   aria-hidden. The first draft rounded two opposite corners into a lozenge,
+   which is radius applied for softness and is the one thing that section
+   forbids. */
+.petalMark {
+  position: relative;
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--accent-mark);
+}
+
+.petalMark::before,
+.petalMark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 64px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+.petalMark::before {
+  right: calc(100% + 14px);
+}
+
+.petalMark::after {
+  left: calc(100% + 14px);
+}
+
+/* ── Image ──────────────────────────────────────────────────────────────── */
+
+.figure {
+  margin: 36px 0;
+}
+
+.figureImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figureCaption {
+  margin-top: 10px;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: var(--text-3-wash);
+}
+
+/* ── Chart ──────────────────────────────────────────────────────────────── */
+
+.chart {
+  margin: 36px 0;
+  padding: 22px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
+}
+
+.chartTitle {
+  margin: 0 0 16px;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.chartTable {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.chartRow + .chartRow > * {
+  padding-top: 10px;
+}
+
+.chartLabel {
+  width: 34%;
+  padding-right: 14px;
+  text-align: left;
+  vertical-align: middle;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-body);
+  line-height: 1.4;
+  color: var(--text-2);
+}
+
+/* The bar is drawn over a row of the table rather than instead of it, so the
+   numbers are the content and the width is decoration. A screen reader reads
+   the label and the value; a sighted reader also sees the comparison. */
+.chartCell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  vertical-align: middle;
+}
+
+.chartBar {
+  display: block;
+  height: 14px;
+  min-width: 2px;
+  border-radius: 0 0 0 var(--r-micro);
+  background: var(--accent-mark);
+}
+
+.chartValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.chartSource {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.04em;
+  color: var(--text-3-wash);
+}
+
+@media (max-width: 560px) {
+  .keyFigure,
+  .chart {
+    padding: 18px;
+  }
+
+  .petalMark::before,
+  .petalMark::after {
+    width: 40px;
+  }
+}

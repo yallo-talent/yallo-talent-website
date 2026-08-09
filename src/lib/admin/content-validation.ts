@@ -3,6 +3,7 @@ import {
   industriesIndex,
   platformsIndex,
 } from "@/data/l1/index";
+import { categoriesFor } from "@/lib/admin/categories.mjs";
 import { bannedVocabulary, rateFigures } from "@/lib/banned-vocabulary.mjs";
 import { disallowedNodes } from "@/lib/tiptap/schema.mjs";
 import { docToText, images, links } from "@/lib/tiptap/text.mjs";
@@ -66,7 +67,18 @@ const KNOWN = {
 } as const;
 
 export interface PublishCandidate {
+  /**
+   * Which table this row belongs to — R-25b.2's rule 9 needs it.
+   *
+   * Optional, and it defaults to `article`, because every existing caller of
+   * this function predates rule 9 and a required field would have made the
+   * eight into a compile error rather than a nine. The two callers that matter
+   * both pass it.
+   */
+  contentType?: "article" | "case_study";
   title: string;
+  /** R-25b.2's rule 9 reads it; every other rule ignores it. */
+  category?: string;
   summary: string;
   metaTitle?: string | null;
   metaDescription?: string | null;
@@ -216,6 +228,30 @@ export function validateForPublish(
       rule: 8,
       field: "author",
       message: `The byline is fixed at "${FIXED_BYLINE}" (canon §8) and is applied by the system. Nothing in this cockpit attributes writing to a named person.`,
+    });
+  }
+
+  /* 9. The category is on the list for THIS content type — R-25b.2.
+     Two lists, not one: an article carries one of the design's five editorial
+     types, a case study carries the engagement pillar its card already
+     displays. A study filed under "Market intelligence" would appear under a
+     heading no case-study surface has, and an article filed under "EOR" would
+     claim an engagement model rather than a subject. Both are silent: the
+     piece publishes and simply files itself nowhere a reader looks. */
+  const type = candidate.contentType ?? "article";
+  const allowed = categoriesFor(type) as string[];
+  const category = (candidate.category ?? "").trim();
+  if (category === "") {
+    errors.push({
+      rule: 9,
+      field: "category",
+      message: `A category is needed to publish. ${type === "case_study" ? "A case study carries its engagement pillar" : "An article carries one of the five editorial types"}: ${allowed.join(", ")}.`,
+    });
+  } else if (!allowed.includes(category)) {
+    errors.push({
+      rule: 9,
+      field: "category",
+      message: `"${category}" is not a category a ${type === "case_study" ? "case study" : "article"} may carry. The list is: ${allowed.join(", ")}. A piece filed outside it publishes to a heading no surface renders.`,
     });
   }
 

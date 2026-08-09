@@ -1,0 +1,120 @@
+full	Admin cockpit renders (axe + A4 type floors, signed in)	﻿2026-08-09T13:10:08.1824151Z ##[group]Run PORT=3101 pnpm start &
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1824874Z ^[[36;1mPORT=3101 pnpm start &^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1825889Z ^[[36;1mfor i in $(seq 1 40); do^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1826541Z ^[[36;1m  curl -sf -o /dev/null http://localhost:3101 && break^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1827207Z ^[[36;1m  sleep 1^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1827622Z ^[[36;1mdone^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1828213Z ^[[36;1mnode scripts/check-admin-render.mjs http://localhost:3101^[[0m
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1887355Z shell: /usr/bin/bash -e {0}
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1887795Z env:
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1888148Z   HAS_ANTHROPIC_KEY: false
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1889830Z   DATABASE_URL: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1890174Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1890566Z   ADMIN_TEST_EMAIL: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1890870Z   ADMIN_TEST_PASSWORD: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1891744Z   ADMIN_PASSWORD_HASH: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1892192Z   ADMIN_EMAIL: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1892611Z   AUTH_SECRET: ***
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.1892845Z ##[endgroup]
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.5141626Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.5142988Z > yallo-talent-website@0.1.0 start /home/runner/work/yallo-talent-website/yallo-talent-website
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.5144020Z > next start
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.5144276Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.7606044Z ▲ Next.js 16.2.12
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.7658877Z - Local:         http://localhost:3101
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.7659726Z - Network:       http://10.1.0.214:3101
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.7660610Z ✓ Ready in 143ms
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8891076Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8892165Z ────────────────────────────────────────────────────────────────────────
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8892965Z   NON-PRODUCTION SERVER, PRODUCTION TARGETS
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8893320Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8893607Z   LIVE  DATABASE_URL     submissions persist to the real database
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8894609Z   off   RESEND_API_KEY   unset — persisted, not delivered
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8895569Z   off   RESEND_TO        unset — mail goes to the default business aliases
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8896091Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8896742Z   There is one database by ruling. A test brief is a real row. If you
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8897623Z   are about to submit a form, mean it — or point RESEND_TO at your own
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8898137Z   address in .env.local first.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8899079Z ────────────────────────────────────────────────────────────────────────
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:10:08.8899407Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9741242Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9744268Z 32 advisory item(s):
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9745910Z   /admin dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9747373Z   /admin dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9748732Z   /admin light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9750104Z   /admin light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9751611Z   /admin/articles dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9753247Z   /admin/articles dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9755566Z   /admin/articles light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9757190Z   /admin/articles light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9758751Z   /admin/briefs dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9760282Z   /admin/briefs dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9761860Z   /admin/briefs light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9763439Z   /admin/briefs light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9765012Z   /admin/case-studies dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9766942Z   /admin/case-studies dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9768890Z   /admin/case-studies light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9770418Z   /admin/case-studies light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9772012Z   /admin/conversations dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9773657Z   /admin/conversations dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9775587Z   /admin/conversations light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9777170Z   /admin/conversations light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9778832Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9780612Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9782391Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9784453Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9786311Z   /admin/sign-in dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9787574Z   /admin/sign-in dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9788835Z   /admin/sign-in light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9790095Z   /admin/sign-in light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9791347Z   /admin/users dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9792621Z   /admin/users dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9793945Z   /admin/users light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:43.9795739Z   /admin/users light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:44.5365135Z permission denied for table users
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0116948Z permission denied for table users
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0208200Z node:internal/errors:983
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0209060Z   const err = new Error(message);
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0212227Z               ^
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0212667Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0214044Z Error: Command failed: /opt/hostedtoolcache/node/22.23.1/x64/bin/node /home/runner/work/yallo-talent-website/yallo-talent-website/scripts/admin-fixture-user.mjs sweep
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0215837Z permission denied for table users
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0216187Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0216505Z     at genericNodeError (node:internal/errors:983:15)
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0217161Z     at wrappedFn (node:internal/errors:537:14)
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0217840Z     at checkExecSyncError (node:child_process:916:11)
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0218833Z     at execFileSync (node:child_process:952:15)
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0219880Z     at file:///home/runner/work/yallo-talent-website/yallo-talent-website/scripts/check-admin-render.mjs:546:5 {
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0220784Z   status: 1,
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0221139Z   signal: null,
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0221679Z   output: [ null, '', 'permission denied for table users\n' ],
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0222251Z   pid: 18664,
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0222601Z   stdout: '',
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0223053Z   stderr: 'permission denied for table users\n'
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0223555Z }
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0223734Z 
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:45.0223885Z Node.js v22.23.1
+full	Admin cockpit renders (axe + A4 type floors, signed in)	2026-08-09T13:11:50.0639131Z ##[error]Process completed with exit code 1.
+checks	Both lanes converge here	﻿2026-08-09T13:11:57.5860444Z ##[group]Run set -euo pipefail
+checks	Both lanes converge here	2026-08-09T13:11:57.5861820Z ^[[36;1mset -euo pipefail^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5862551Z ^[[36;1mecho "scope=$SCOPE content=$CONTENT full=$FULL"^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5863438Z ^[[36;1mfor r in "$SCOPE" "$CONTENT" "$FULL"; do^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5864322Z ^[[36;1m  case "$r" in^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5864982Z ^[[36;1m    success|skipped) ;;^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5865730Z ^[[36;1m    *) echo "A required lane reported '$r'."; exit 1 ;;^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5866447Z ^[[36;1m  esac^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5867000Z ^[[36;1mdone^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5867653Z ^[[36;1mif [ "$CONTENT" = "skipped" ] && [ "$FULL" = "skipped" ]; then^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5868613Z ^[[36;1m  echo "Neither lane ran, which means the scope job did not decide."^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5869501Z ^[[36;1m  exit 1^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5870019Z ^[[36;1mfi^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.5870563Z ^[[36;1mecho "CI is green."^[[0m
+checks	Both lanes converge here	2026-08-09T13:11:57.6823843Z shell: /usr/bin/bash -e {0}
+checks	Both lanes converge here	2026-08-09T13:11:57.6824732Z env:
+checks	Both lanes converge here	2026-08-09T13:11:57.6825220Z   SCOPE: success
+checks	Both lanes converge here	2026-08-09T13:11:57.6825674Z   CONTENT: skipped
+checks	Both lanes converge here	2026-08-09T13:11:57.6826129Z   FULL: failure
+checks	Both lanes converge here	2026-08-09T13:11:57.6826566Z ##[endgroup]
+checks	Both lanes converge here	2026-08-09T13:11:57.7036822Z scope=success content=skipped full=failure
+checks	Both lanes converge here	2026-08-09T13:11:57.7038178Z A required lane reported 'failure'.
+checks	Both lanes converge here	2026-08-09T13:11:57.7065689Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,40 @@
+full	Admin cockpit isolation (six assertions, one anonymous read)	﻿2026-08-09T13:54:18.1233254Z ##[group]Run node scripts/check-admin-isolation.mjs http://localhost:3100
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1233845Z ^[[36;1mnode scripts/check-admin-isolation.mjs http://localhost:3100^[[0m
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1278046Z shell: /usr/bin/bash -e {0}
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1278325Z env:
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1278541Z   HAS_ANTHROPIC_KEY: false
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1279488Z   DATABASE_URL: ***
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1279808Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.1280128Z ##[endgroup]
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.9555946Z   note: no admin secrets are set in this environment, so the client-bundle
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.9557884Z   leak assertion cannot run. It is not being skipped silently — run this gate
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:18.9558933Z   with the real environment to exercise it.
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2149612Z 
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2152167Z check:admin-isolation FAILED with 1 problem(s):
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2152776Z 
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2153449Z   A owner fixture account could not sign in at all, so role reach was never measured.
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2154242Z 
+full	Admin cockpit isolation (six assertions, one anonymous read)	2026-08-09T13:54:49.2281352Z ##[error]Process completed with exit code 1.
+checks	Both lanes converge here	﻿2026-08-09T13:54:57.7091150Z ##[group]Run set -euo pipefail
+checks	Both lanes converge here	2026-08-09T13:54:57.7092571Z ^[[36;1mset -euo pipefail^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7093716Z ^[[36;1mecho "scope=$SCOPE content=$CONTENT full=$FULL"^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7095168Z ^[[36;1mfor r in "$SCOPE" "$CONTENT" "$FULL"; do^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7096534Z ^[[36;1m  case "$r" in^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7097514Z ^[[36;1m    success|skipped) ;;^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7099185Z ^[[36;1m    *) echo "A required lane reported '$r'."; exit 1 ;;^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7100454Z ^[[36;1m  esac^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7101329Z ^[[36;1mdone^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7102457Z ^[[36;1mif [ "$CONTENT" = "skipped" ] && [ "$FULL" = "skipped" ]; then^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7104193Z ^[[36;1m  echo "Neither lane ran, which means the scope job did not decide."^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7105711Z ^[[36;1m  exit 1^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7106623Z ^[[36;1mfi^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7107567Z ^[[36;1mecho "CI is green."^[[0m
+checks	Both lanes converge here	2026-08-09T13:54:57.7719938Z shell: /usr/bin/bash -e {0}
+checks	Both lanes converge here	2026-08-09T13:54:57.7720919Z env:
+checks	Both lanes converge here	2026-08-09T13:54:57.7721491Z   SCOPE: success
+checks	Both lanes converge here	2026-08-09T13:54:57.7722037Z   CONTENT: skipped
+checks	Both lanes converge here	2026-08-09T13:54:57.7722629Z   FULL: failure
+checks	Both lanes converge here	2026-08-09T13:54:57.7723149Z ##[endgroup]
+checks	Both lanes converge here	2026-08-09T13:54:57.7922233Z scope=success content=skipped full=failure
+checks	Both lanes converge here	2026-08-09T13:54:57.7922982Z A required lane reported 'failure'.
+checks	Both lanes converge here	2026-08-09T13:54:57.7941749Z ##[error]Process completed with exit code 1.

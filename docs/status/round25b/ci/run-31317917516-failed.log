@@ -1,0 +1,124 @@
+full	Admin cockpit renders, and the editor works (signed in)	﻿2026-08-09T14:35:28.1939785Z ##[group]Run PORT=3101 pnpm start &
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1940149Z ^[[36;1mPORT=3101 pnpm start &^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1940439Z ^[[36;1mfor i in $(seq 1 40); do^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1941127Z ^[[36;1m  curl -sf -o /dev/null http://localhost:3101 && break^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1941571Z ^[[36;1m  sleep 1^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1941811Z ^[[36;1mdone^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1942148Z ^[[36;1mnode scripts/check-admin-render.mjs http://localhost:3101^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1942624Z ^[[36;1mnode scripts/check-editor.mjs http://localhost:3101^[[0m
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1987369Z shell: /usr/bin/bash -e {0}
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1987666Z env:
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1987914Z   HAS_ANTHROPIC_KEY: false
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1988958Z   DATABASE_URL: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1989287Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1989676Z   ADMIN_TEST_EMAIL: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1989980Z   ADMIN_TEST_PASSWORD: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1991239Z   ADMIN_PASSWORD_HASH: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1991562Z   ADMIN_EMAIL: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1991931Z   AUTH_SECRET: ***
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.1992164Z ##[endgroup]
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.5151941Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.5153446Z > yallo-talent-website@0.1.0 start /home/runner/work/yallo-talent-website/yallo-talent-website
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.5154407Z > next start
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.5154652Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.7578892Z ▲ Next.js 16.2.12
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.7580286Z - Local:         http://localhost:3101
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.7581364Z - Network:       http://10.1.0.153:3101
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.7584415Z ✓ Ready in 143ms
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8790442Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8791854Z ────────────────────────────────────────────────────────────────────────
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8792796Z   NON-PRODUCTION SERVER, PRODUCTION TARGETS
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8793173Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8793559Z   LIVE  DATABASE_URL     submissions persist to the real database
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8794464Z   off   RESEND_API_KEY   unset — persisted, not delivered
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8795394Z   off   RESEND_TO        unset — mail goes to the default business aliases
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8795911Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8796295Z   There is one database by ruling. A test brief is a real row. If you
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8797248Z   are about to submit a form, mean it — or point RESEND_TO at your own
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8797943Z   address in .env.local first.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8798804Z ────────────────────────────────────────────────────────────────────────
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:35:28.8799229Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4732479Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4733483Z 46 advisory item(s):
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4735182Z   /admin dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4736864Z   /admin dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4738007Z   /admin light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4739053Z   /admin light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4740124Z   /admin/articles dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4741541Z   /admin/articles dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4742801Z   /admin/articles light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4744069Z   /admin/articles light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4745772Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4747014Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4748019Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4749942Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4751799Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4752906Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4754652Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4755895Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4756988Z   /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4758363Z   /admin/briefs dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4759446Z   /admin/briefs dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4760529Z   /admin/briefs light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4761834Z   /admin/briefs light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4762979Z   /admin/case-studies dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4764138Z   /admin/case-studies dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4765297Z   /admin/case-studies light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4766491Z   /admin/case-studies light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4768136Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4769368Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4770431Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4773037Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4774382Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4775496Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4777542Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4778734Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4779764Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4782213Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4783553Z       .tiptap
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4784570Z   /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4785967Z   /admin/conversations dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4787520Z   /admin/conversations dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4788816Z   /admin/conversations light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4790123Z   /admin/conversations light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4791744Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4793403Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4795220Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4797025Z   /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4798716Z   /admin/sign-in dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4799898Z   /admin/sign-in dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4801270Z   /admin/sign-in light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4802541Z   /admin/sign-in light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4803829Z   /admin/users dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4804987Z   /admin/users dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4806136Z   /admin/users light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:25.4807268Z   /admin/users light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:41.9604907Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:41.9605908Z check:admin-render FAILED with 1 problem(s):
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:41.9606381Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:41.9606899Z   /admin/articles/1c699b68-a5d4-453a-a1f7-f271d9515cf7 dark/360: responded 404.
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:41.9607495Z 
+full	Admin cockpit renders, and the editor works (signed in)	2026-08-09T14:37:46.9976826Z ##[error]Process completed with exit code 1.
+checks	Both lanes converge here	﻿2026-08-09T14:37:53.8013385Z ##[group]Run set -euo pipefail
+checks	Both lanes converge here	2026-08-09T14:37:53.8014615Z ^[[36;1mset -euo pipefail^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8015798Z ^[[36;1mecho "scope=$SCOPE content=$CONTENT full=$FULL"^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8017542Z ^[[36;1mfor r in "$SCOPE" "$CONTENT" "$FULL"; do^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8018909Z ^[[36;1m  case "$r" in^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8020039Z ^[[36;1m    success|skipped) ;;^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8021262Z ^[[36;1m    *) echo "A required lane reported '$r'."; exit 1 ;;^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8022520Z ^[[36;1m  esac^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8023471Z ^[[36;1mdone^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8024541Z ^[[36;1mif [ "$CONTENT" = "skipped" ] && [ "$FULL" = "skipped" ]; then^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8026326Z ^[[36;1m  echo "Neither lane ran, which means the scope job did not decide."^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8028274Z ^[[36;1m  exit 1^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8029186Z ^[[36;1mfi^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8030141Z ^[[36;1mecho "CI is green."^[[0m
+checks	Both lanes converge here	2026-08-09T14:37:53.8765490Z shell: /usr/bin/bash -e {0}
+checks	Both lanes converge here	2026-08-09T14:37:53.8767528Z env:
+checks	Both lanes converge here	2026-08-09T14:37:53.8768726Z   SCOPE: success
+checks	Both lanes converge here	2026-08-09T14:37:53.8769902Z   CONTENT: skipped
+checks	Both lanes converge here	2026-08-09T14:37:53.8770926Z   FULL: failure
+checks	Both lanes converge here	2026-08-09T14:37:53.8772052Z ##[endgroup]
+checks	Both lanes converge here	2026-08-09T14:37:53.9300758Z scope=success content=skipped full=failure
+checks	Both lanes converge here	2026-08-09T14:37:53.9301497Z A required lane reported 'failure'.
+checks	Both lanes converge here	2026-08-09T14:37:53.9321213Z ##[error]Process completed with exit code 1.

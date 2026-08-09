@@ -414,10 +414,20 @@ a.card:focus-visible .cardTitle::after {
   max-width: 72ch;
 }
 
+/* `--fs-title`, and it used to say `--fs-section-h`, which is defined nowhere.
+   An undefined custom property makes the declaration invalid at computed-value
+   time, and font-size then falls back to INHERIT rather than to the global
+   `h2` rule — so an article's section headings were rendering at body size
+   with no rule anywhere saying so. Nothing had caught it because there are no
+   published articles yet: the defect was waiting for the first one.
+   `--fs-title` is the documented "card and panel headings" step, which is the
+   right weight inside a 72ch reading column; `--fs-headline` is the page-level
+   step and would read as a banner mid-article. `check:css-vars` is what makes
+   the next one of these fail loudly. */
 .prose h2 {
   margin: 40px 0 12px;
   font-family: var(--font-display);
-  font-size: var(--fs-section-h);
+  font-size: var(--fs-title);
   font-weight: var(--fw-strong);
   line-height: 1.2;
   color: var(--text);

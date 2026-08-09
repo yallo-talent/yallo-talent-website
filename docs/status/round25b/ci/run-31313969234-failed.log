@@ -1,0 +1,55 @@
+full	Sources on published content (self-test, then the real corpus)	﻿2026-08-09T12:43:48.2190677Z ##[group]Run node scripts/check-sources.mjs --selftest
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2191039Z ^[[36;1mnode scripts/check-sources.mjs --selftest^[[0m
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2215695Z shell: /usr/bin/bash -e {0}
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2215914Z env:
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2216116Z   HAS_ANTHROPIC_KEY: false
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2216800Z   DATABASE_URL: ***
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2217017Z   PNPM_HOME: /home/runner/setup-pnpm/node_modules/.bin
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:48.2217249Z ##[endgroup]
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4165152Z error: permission denied for table articles
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4165952Z     at file:///home/runner/work/yallo-talent-website/yallo-talent-website/node_modules/.pnpm/@neondatabase+serverless@1.1.0/node_modules/@neondatabase/serverless/index.mjs:1087:33
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4166587Z     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4167137Z     at async runSelfTest (file:///home/runner/work/yallo-talent-website/yallo-talent-website/scripts/check-sources.mjs:106:3)
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4167760Z     at async file:///home/runner/work/yallo-talent-website/yallo-talent-website/scripts/check-sources.mjs:159:42 {
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168112Z   length: 96,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168281Z   severity: 'ERROR',
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168448Z   code: '42501',
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168611Z   detail: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168769Z   hint: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4168940Z   position: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4169142Z   internalPosition: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4169338Z   internalQuery: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4169520Z   where: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4169684Z   schema: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4169852Z   table: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4170017Z   column: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4170181Z   dataType: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4170359Z   constraint: undefined,
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4170967Z   file: 'aclchk.c',
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4171136Z   line: '2793',
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4171318Z   routine: 'aclcheck_error'
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4171499Z }
+full	Sources on published content (self-test, then the real corpus)	2026-08-09T12:43:49.4203497Z ##[error]Process completed with exit code 1.
+checks	Both lanes converge here	﻿2026-08-09T12:43:54.9123111Z ##[group]Run set -euo pipefail
+checks	Both lanes converge here	2026-08-09T12:43:54.9124678Z ^[[36;1mset -euo pipefail^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9125764Z ^[[36;1mecho "scope=$SCOPE content=$CONTENT full=$FULL"^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9127064Z ^[[36;1mfor r in "$SCOPE" "$CONTENT" "$FULL"; do^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9128382Z ^[[36;1m  case "$r" in^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9129385Z ^[[36;1m    success|skipped) ;;^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9130535Z ^[[36;1m    *) echo "A required lane reported '$r'."; exit 1 ;;^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9131649Z ^[[36;1m  esac^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9132502Z ^[[36;1mdone^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9133766Z ^[[36;1mif [ "$CONTENT" = "skipped" ] && [ "$FULL" = "skipped" ]; then^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9135348Z ^[[36;1m  echo "Neither lane ran, which means the scope job did not decide."^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9136623Z ^[[36;1m  exit 1^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9137403Z ^[[36;1mfi^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9138308Z ^[[36;1mecho "CI is green."^[[0m
+checks	Both lanes converge here	2026-08-09T12:43:54.9805003Z shell: /usr/bin/bash -e {0}
+checks	Both lanes converge here	2026-08-09T12:43:54.9805855Z env:
+checks	Both lanes converge here	2026-08-09T12:43:54.9806341Z   SCOPE: success
+checks	Both lanes converge here	2026-08-09T12:43:54.9806801Z   CONTENT: skipped
+checks	Both lanes converge here	2026-08-09T12:43:54.9807254Z   FULL: failure
+checks	Both lanes converge here	2026-08-09T12:43:54.9807694Z ##[endgroup]
+checks	Both lanes converge here	2026-08-09T12:43:55.0032408Z scope=success content=skipped full=failure
+checks	Both lanes converge here	2026-08-09T12:43:55.0033454Z A required lane reported 'failure'.
+checks	Both lanes converge here	2026-08-09T12:43:55.0070140Z ##[error]Process completed with exit code 1.

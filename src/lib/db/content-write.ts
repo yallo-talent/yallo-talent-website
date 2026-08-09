@@ -183,6 +183,162 @@ export async function saveDraft(
   }
 }
 
+/**
+ * Save only the body, which is what autosave does every few seconds.
+ *
+ * SEPARATE FROM `saveDraft` BECAUSE IT MUST NOT TOUCH ANYTHING ELSE. The
+ * editor holds the body; the metadata form holds the title, the summary and
+ * the taxonomy. An autosave that wrote the whole row would race the person
+ * typing in the other form and win, silently reverting whatever they had not
+ * yet submitted. So this writes one column, plus the two that are COMPUTED
+ * from it and must never disagree with it.
+ *
+ * IT STILL WRITES A REVISION. That is the whole promise of "no work is ever
+ * lost": if an autosave left no revision, the history would record only the
+ * saves somebody remembered to make by hand.
+ */
+export async function saveBody(
+  type: ContentType,
+  id: string,
+  body: unknown,
+  actor: Signed,
+): Promise<{ words: number; minutes: number }> {
+  const words = wordCount(body);
+  const minutes = readingTimeMinutes(body);
+  const db = pool();
+  try {
+    const client = await db.connect();
+    try {
+      await client.query("begin");
+      const table = TABLE[type];
+      const res = await client.query(
+        `update ${table}
+            set body = $1, word_count = $2, reading_time_minutes = $3,
+                updated_at = now()
+          where id = $4
+        returning title, summary, status, slug, industry, platform, discipline`,
+        [JSON.stringify(body), words, minutes, id],
+      );
+      if (res.rowCount === 0) throw new Error("No such piece.");
+      const row = res.rows[0];
+      await client.query(
+        `insert into content_revisions
+           (content_type, content_id, title, summary, body, author_name)
+         values ($1,$2,$3,$4,$5,$6)`,
+        [
+          type,
+          id,
+          row.title,
+          row.summary,
+          JSON.stringify(body),
+          actor.name || actor.email,
+        ],
+      );
+      await client.query("commit");
+      /* A PUBLISHED piece that is edited is a LIVE page that is edited, so the
+         reader-facing surfaces have to follow it. A draft reaches no reader,
+         and revalidating on every autosave of one would be a cache stampede
+         for nobody's benefit. */
+      if (row.status === "published") {
+        revalidateFor(type, String(row.slug), [
+          row.industry ?? [],
+          row.platform ?? [],
+          row.discipline ?? [],
+        ]);
+      }
+      return { words, minutes };
+    } catch (err) {
+      await client.query("rollback");
+      throw err;
+    } finally {
+      client.release();
+    }
+  } finally {
+    await db.end();
+  }
+}
+
+/**
+ * Restore a revision's body onto the live row.
+ *
+ * THE RESTORE IS ITSELF A REVISION. The body being replaced is written to
+ * `content_revisions` by the same insert every save makes, so restoring is
+ * undoable by restoring again. A restore that overwrote without recording
+ * would be the one destructive act in a schema whose first principle is that
+ * nothing is ever hard deleted.
+ */
+export async function restoreRevision(
+  type: ContentType,
+  id: string,
+  revisionId: string,
+  actor: Signed,
+): Promise<void> {
+  const db = pool();
+  try {
+    const client = await db.connect();
+    try {
+      await client.query("begin");
+      const table = TABLE[type];
+      /* The revision is re-read INSIDE the transaction and matched on its
+         subject. A revision id arrives from a form, and one fetched by id
+         alone would let a person restore another piece's body onto this row. */
+      const rev = await client.query(
+        `select body from content_revisions
+          where id = $1 and content_type = $2 and content_id = $3`,
+        [revisionId, type, id],
+      );
+      if (rev.rowCount === 0)
+        throw new Error("No such revision for this piece.");
+      const body = rev.rows[0].body;
+      const words = wordCount(body);
+      const minutes = readingTimeMinutes(body);
+      const res = await client.query(
+        `update ${table}
+            set body = $1, word_count = $2, reading_time_minutes = $3,
+                updated_at = now()
+          where id = $4
+        returning title, summary, status, slug, industry, platform, discipline`,
+        [JSON.stringify(body), words, minutes, id],
+      );
+      if (res.rowCount === 0) throw new Error("No such piece.");
+      const row = res.rows[0];
+      await client.query(
+        `insert into content_revisions
+           (content_type, content_id, title, summary, body, author_name)
+         values ($1,$2,$3,$4,$5,$6)`,
+        [
+          type,
+          id,
+          row.title,
+          row.summary,
+          JSON.stringify(body),
+          actor.name || actor.email,
+        ],
+      );
+      await client.query(
+        `insert into content_audit (content_type, content_id, action, actor_email, actor_role, detail)
+         values ($1,$2,'restore',$3,$4,$5)`,
+        [type, id, actor.email, actor.role, JSON.stringify({ revisionId })],
+      );
+      await client.query("commit");
+      if (row.status === "published") {
+        revalidateFor(type, String(row.slug), [
+          row.industry ?? [],
+          row.platform ?? [],
+          row.discipline ?? [],
+        ]);
+      }
+    } catch (err) {
+      await client.query("rollback");
+      throw err;
+    } finally {
+      client.release();
+    }
+  } finally {
+    await db.end();
+  }
+}
+
 /** Move a row's status, write the revision-adjacent audit row, revalidate. */
 export async function setStatus(
   type: ContentType,
