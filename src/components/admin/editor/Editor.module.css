@@ -268,8 +268,12 @@
    fields and no way to tell you are inside one. */
 .block {
   margin: 28px 0;
+  /* NO ACCENT SIDE-TAB. A thick coloured border down one edge of a card is
+     decoration standing in for hierarchy, and this block does not need it: the
+     petal corner says "card" and the mono uppercase name in --accent-label
+     already carries the accent and says WHICH block it is. Two accents for one
+     idea is one too many. */
   border: 1px solid var(--hairline);
-  border-left: 3px solid var(--accent-line);
   border-radius: 0 0 0 var(--r-md);
   padding: 14px 18px 18px;
   background: var(--surface);
