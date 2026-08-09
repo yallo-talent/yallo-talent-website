@@ -1,0 +1,8 @@
+# The pipeline's inputs are fetched, not stored. Both directories are rebuilt by
+# `bash setup.sh` and `npm install @resvg/resvg-js` from a clean checkout, and
+# the repository's own /node_modules rule is root-anchored so it does not reach
+# here. Without this file a render run leaves 2.5MB of font binaries and a
+# native resvg build staged for the next `git add`.
+fonts/
+node_modules/
+package-lock.json
