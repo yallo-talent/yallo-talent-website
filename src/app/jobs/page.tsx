@@ -35,7 +35,7 @@ export default function JobsPage() {
           </h1>
           <p className={styles.heroLede}>
             Yallo places enterprise IT specialists onto real delivery programmes
-            across UK, Middle East and India. Send your CV. We'll match you
+            across UK, Middle East and India. Send your CV. We&apos;ll match you
             where your depth genuinely fits.
           </p>
           <div className={styles.heroCtas}>
@@ -56,12 +56,12 @@ export default function JobsPage() {
           <div className={styles.sectionInner}>
             <span className={styles.sectionEyebrow}>Why work through us</span>
             <h2 className={styles.sectionH}>
-              We don't spam-submit you to five roles.
+              We don&apos;t spam-submit you to five roles.
             </h2>
             <p className={styles.sectionLede}>
               We talk to you once, work out what you actually want your next
-              engagement to look like, and only submit you where we're confident
-              you're the fit.
+              engagement to look like, and only submit you where we&apos;re
+              confident you&apos;re the fit.
             </p>
             <div className={styles.cardGrid3}>
               <article className={styles.card}>
@@ -74,15 +74,15 @@ export default function JobsPage() {
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Depth over volume</h3>
                 <p className={styles.cardCopy}>
-                  We put you forward for two roles you'd actually want, not
-                  twenty you don't.
+                  We put you forward for two roles you&apos;d actually want, not
+                  twenty you don&apos;t.
                 </p>
               </article>
               <article className={styles.card}>
                 <h3 className={styles.cardTitle}>Regional coverage</h3>
                 <p className={styles.cardCopy}>
                   The UK, UAE, Saudi Arabia and India, with visa cover and
-                  payroll support if the role sits in a market you're not
+                  payroll support if the role sits in a market you&apos;re not
                   resident in.
                 </p>
               </article>
@@ -98,10 +98,10 @@ export default function JobsPage() {
             <span className={styles.sectionEyebrow}>Where we screen</span>
             <h2 className={styles.sectionH}>Six specialist desks, one CV.</h2>
             <p className={styles.sectionLede}>
-              We don't publish a live jobs board yet. Send your CV once and an
-              specialist on the relevant desk screens it against the enterprise
-              programmes we're actively staffing across the UK, Middle East and
-              India.
+              We don&apos;t publish a live jobs board yet. Send your CV once and
+              an specialist on the relevant desk screens it against the
+              enterprise programmes we&apos;re actively staffing across the UK,
+              Middle East and India.
             </p>
             <div className={styles.cardGrid3}>
               {desks.map((desk) => (

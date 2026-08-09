@@ -58,6 +58,7 @@
     "check:write-path": "node scripts/check-write-path.mjs",
     "admin:hash": "node scripts/admin-password-hash.mjs",
     "check:redirects": "node scripts/check-redirects.mjs",
+    "check:sources": "node scripts/check-sources.mjs",
     "published:manifest": "node scripts/build-published-manifest.mjs",
     "check:published-manifest": "node scripts/build-published-manifest.mjs --check"
   },

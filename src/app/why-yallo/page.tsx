@@ -215,8 +215,8 @@ export default function WhyYalloPage() {
               Four numbers behind every shortlist.
             </h2>
             <p className={styles.sectionLede}>
-              This is our operating rhythm, not marketing. If we don't hit
-              these, the model isn't working.
+              This is our operating rhythm, not marketing. If we don&apos;t hit
+              these, the model isn&apos;t working.
             </p>
             <div className={styles.cardGrid2}>
               {differentiators.map((d) => (

@@ -5,6 +5,7 @@ import {
   platformsIndex,
 } from "@/data/l1/index";
 import { insightFrontmatterSchema } from "@/lib/content-schema";
+import { unsourcedFigures } from "@/lib/unsourced-figures.mjs";
 
 /**
  * Articles, as the cockpit sees them before they become a pull request.
@@ -103,55 +104,17 @@ const KNOWN_SLUGS = {
 /**
  * Figures in the body that no `sources` entry accounts for.
  *
- * WHAT THIS IS AND IS NOT. Round 23 §4 asks for it and calls it "the build's own
- * rule". It is not one yet: measured on this tree, `sources` is `optional()` in
- * `insightFrontmatterSchema` and no gate cross-checks figures against it. This
- * function therefore INTRODUCES the rule at the authoring surface, which is
- * where it is cheapest to satisfy, and the relay says so.
+ * ROUND 23 INTRODUCED THIS RULE HERE, at the authoring surface, and said so:
+ * `sources` was `optional()` in `insightFrontmatterSchema` and no gate
+ * cross-checked figures against it. Round 24 §4 makes it a build gate too, over
+ * published insights only.
  *
- * DELIBERATELY NARROW. It matches figures that read as claims — percentages,
- * multipliers, currency amounts, and bare numbers of three digits or more — and
- * ignores years, list ordinals, ISO dates and anything already inside a code
- * fence or a link target. A rule that flags "2026" or "3 things" is a rule
- * authors learn to click past, and a warning nobody reads is worse than none.
+ * THE IMPLEMENTATION MOVED, THE RULE DID NOT. It now lives in
+ * `src/lib/unsourced-figures.mjs` so the pane and `scripts/check-sources.mjs`
+ * share one detector rather than each carrying a copy to drift from. Re-exported
+ * here because this module is where the pane's rules are read.
  */
-export function unsourcedFigures(
-  body: string,
-  sources: Array<{ claim?: string; source?: string }> | undefined,
-): string[] {
-  /* Code fences and inline code hold configuration and command output, not
-     claims about the world. Link targets hold ids. Neither is prose. */
-  const prose = body
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`[^`]*`/g, " ")
-    .replace(/\]\([^)]*\)/g, "] ");
-
-  const claims = (sources ?? [])
-    .map((s) => `${s.claim ?? ""} ${s.source ?? ""}`)
-    .join(" ");
-
-  const found = new Set<string>();
-  const patterns = [
-    /\b\d+(?:\.\d+)?\s?%/g, // 63%, 12.5 %
-    /\b\d+(?:\.\d+)?x\b/gi, // 3x, 1.4x
-    /[$£€]\s?\d[\d,.]*\s?(?:k|m|bn|billion|million)?/gi, // $1.2m
-    /\b\d[\d,]{2,}\b/g, // 1,000 and 250 upwards
-  ];
-
-  for (const pattern of patterns) {
-    for (const [match] of prose.matchAll(pattern)) {
-      const figure = match.trim();
-      /* A four-digit number that is a plausible year is not a claim. */
-      if (/^(19|20)\d{2}$/.test(figure)) continue;
-      if (claims.includes(figure)) continue;
-      /* The digits alone, so "63%" is covered by a claim written "63 per cent". */
-      const digits = figure.replace(/[^0-9.]/g, "");
-      if (digits && claims.includes(digits)) continue;
-      found.add(figure);
-    }
-  }
-  return [...found];
-}
+export { unsourcedFigures };
 
 /**
  * Everything that must be true before a pull request may open.

@@ -118,7 +118,7 @@ export default async function SignInPage({
 
         <p className={styles.note}>
           This surface is absent from the sitemap, from llms.txt and from the
-          assistant's corpus, disallowed in robots.txt, and linked from no
+          assistant&apos;s corpus, disallowed in robots.txt, and linked from no
           published page. A gate asserts each of those.
         </p>
       </div>

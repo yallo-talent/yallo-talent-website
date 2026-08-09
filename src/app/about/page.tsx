@@ -80,8 +80,8 @@ export default function AboutPage() {
             <span className={styles.emphasis}>enterprise specialists.</span>
           </h1>
           <p className={styles.heroLede}>
-            We're not a recruitment agency. Yallo Talent is specialist-led, a
-            small, region-deep team of specialists who have shipped enterprise
+            We&apos;re not a recruitment agency. Yallo Talent is specialist-led,
+            a small, region-deep team of specialists who have shipped enterprise
             programmes themselves, now screening every shortlist that lands in
             your inbox.
           </p>
@@ -150,7 +150,7 @@ export default function AboutPage() {
             <h2 className={styles.sectionH}>The Yallo standard.</h2>
             <p className={styles.sectionLede}>
               Applied to every brief, every screening call and every placement,
-              or the placement doesn't happen.
+              or the placement doesn&apos;t happen.
             </p>
             <div className={styles.cardGrid2}>
               {values.map((v) => (
@@ -238,7 +238,7 @@ export default function AboutPage() {
         <div className={styles.wrap}>
           <div className={styles.sectionInner}>
             <span className={styles.sectionEyebrow}>Clients</span>
-            <h2 className={styles.sectionH}>Who we've worked with.</h2>
+            <h2 className={styles.sectionH}>Who we&apos;ve worked with.</h2>
             {hasClients ? (
               <>
                 {enterpriseClients.length > 0 && (
@@ -286,8 +286,8 @@ export default function AboutPage() {
             <div className={styles.bottomInner}>
               <h2 className={styles.bottomH}>Ready to see how we work?</h2>
               <p className={styles.bottomSub}>
-                Send us a brief. You'll have a calibrated shortlist inside 72
-                hours.
+                Send us a brief. You&apos;ll have a calibrated shortlist inside
+                72 hours.
               </p>
               <div className={styles.bottomActions}>
                 <Link href="/brief" className={styles.ctaPrimary}>

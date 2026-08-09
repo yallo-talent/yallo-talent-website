@@ -106,7 +106,7 @@ export function CvUploadForm() {
           <p className={styles.sub}>
             We match specialist-screened contractors to enterprise programmes
             across the Middle East, Europe and India. Send your CV and mark the
-            areas you work in. We'll be in touch when there's a fit.
+            areas you work in. We&apos;ll be in touch when there&apos;s a fit.
           </p>
         </div>
 
