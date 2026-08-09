@@ -4,7 +4,9 @@ import { categoriesFor } from "@/lib/admin/categories.mjs";
 import { requirePane } from "@/lib/admin/guard";
 import { articleById } from "@/lib/db/content";
 import { revisionsFor } from "@/lib/db/revisions";
+import { publishedPaths } from "@/lib/published-routes";
 import {
+  changeSlugAction,
   restoreRevisionAction,
   saveBodyAction,
   saveMetaAction,
@@ -23,7 +25,13 @@ export default async function ArticleEditorRoute({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ err?: string; saved?: string; restored?: string }>;
+  searchParams: Promise<{
+    err?: string;
+    saved?: string;
+    restored?: string;
+    moved?: string;
+    warned?: string;
+  }>;
 }) {
   await requirePane("articles");
   const { id } = await params;
@@ -43,6 +51,8 @@ export default async function ArticleEditorRoute({
     <EditorPane
       categories={categoriesFor("article")}
       notice={await searchParams}
+      changeSlugAction={changeSlugAction}
+      knownPaths={await publishedPaths()}
       restoreRevisionAction={restoreRevisionAction}
       revisions={revisions}
       row={row}

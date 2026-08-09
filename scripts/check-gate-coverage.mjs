@@ -27,6 +27,7 @@
 
 import { readFileSync } from "node:fs";
 import { sampleCaseStudySlug } from "./lib/case-study-sample.mjs";
+import { fetchPublishedPaths } from "./lib/published-paths.mjs";
 
 import {
   routeTemplates,
@@ -87,9 +88,15 @@ const templates = routeTemplates();
 
 let live = [];
 try {
-  const xml = await fetch(`${BASE}/sitemap.xml`).then((r) => r.text());
-  live = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
-    new URL(m[1]).pathname.replace(/\/$/, "") || "/",
+  /* THE SHARED DERIVATION, not a second copy of it. This read the sitemap
+     directly, which was the same thing until round 25c split "in the sitemap"
+     from "has a live URL": the twenty-one taxonomy landing pages all render and
+     only the ones with a published article are listed. Reading the sitemap here
+     reported four live templates as having no URL, which is precisely the
+     "unreachable, so nothing can visit them" verdict that lets a template go
+     ungated. */
+  live = (await fetchPublishedPaths(BASE)).map(
+    (path) => path.replace(/\/$/, "") || "/",
   );
 } catch {
   console.error(

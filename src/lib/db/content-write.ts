@@ -2,7 +2,9 @@ import "server-only";
 import { Pool } from "@neondatabase/serverless";
 import { revalidatePath, updateTag } from "next/cache";
 import type { Signed } from "@/lib/admin/guard";
+import { taxonomyLandingPath } from "@/lib/content-seo";
 import { CONTENT_TAGS } from "@/lib/db/content";
+import { normaliseHeadings } from "@/lib/tiptap/schema.mjs";
 import { readingTimeMinutes, wordCount } from "@/lib/tiptap/text.mjs";
 
 /**
@@ -72,10 +74,13 @@ function revalidateFor(type: ContentType, slug: string, taxonomy: string[][]) {
   revalidatePath("/sitemap.xml");
   revalidatePath("/llms.txt");
   if (type === "case_study") revalidatePath("/");
+  /* The PUBLIC segment, not the internal kind. The third pillar is `discipline`
+     in the column and `capabilities` in the URL, so revalidating by kind would
+     have refreshed a path that does not exist and left the live one stale. */
   const kinds = ["industry", "platform", "discipline"] as const;
   kinds.forEach((kind, i) => {
     for (const value of taxonomy[i] ?? []) {
-      revalidatePath(`/insights/${kind}/${value}`);
+      revalidatePath(taxonomyLandingPath(kind, value));
     }
   });
 }
@@ -94,6 +99,10 @@ export interface SaveInput {
   sources: unknown;
   metaTitle: string | null;
   metaDescription: string | null;
+  /* The other half of design §6's first-class SEO fields. Same null-versus-
+     empty-string contract as the two above: null means "derive it". */
+  canonicalUrl: string | null;
+  ogImageUrl: string | null;
 }
 
 /**
@@ -113,20 +122,23 @@ export async function saveDraft(
     try {
       await client.query("begin");
       const table = TABLE[input.type];
-      const reading = readingTimeMinutes(input.body);
-      const words = wordCount(input.body);
+      const body = normaliseHeadings(input.body);
+      const reading = readingTimeMinutes(body);
+      const words = wordCount(body);
       const values = [
         input.slug,
         input.title,
         input.summary,
         input.category,
-        JSON.stringify(input.body),
+        JSON.stringify(body),
         input.industry,
         input.platform,
         input.discipline,
         JSON.stringify(input.sources ?? []),
         input.metaTitle,
         input.metaDescription,
+        input.canonicalUrl,
+        input.ogImageUrl,
         reading,
         words,
       ];
@@ -136,17 +148,19 @@ export async function saveDraft(
           `update ${table} set slug=$1, title=$2, summary=$3, category=$4, body=$5,
              industry=$6, platform=$7, discipline=$8, sources=$9,
              meta_title=$10, meta_description=$11,
-             reading_time_minutes=$12, word_count=$13,
+             canonical_url=$12, og_image_url=$13,
+             reading_time_minutes=$14, word_count=$15,
              updated_at=now(), updated_by=null
-           where id=$14`,
+           where id=$16`,
           [...values, id],
         );
       } else {
         const res = await client.query(
           `insert into ${table}
              (slug, title, summary, category, body, industry, platform, discipline,
-              sources, meta_title, meta_description, reading_time_minutes, word_count, status)
-           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'draft')
+              sources, meta_title, meta_description, canonical_url, og_image_url,
+              reading_time_minutes, word_count, status)
+           values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,'draft')
            returning id`,
           values,
         );
@@ -161,7 +175,7 @@ export async function saveDraft(
           id,
           input.title,
           input.summary,
-          JSON.stringify(input.body),
+          JSON.stringify(body),
           actor.name || actor.email,
         ],
       );
@@ -200,9 +214,12 @@ export async function saveDraft(
 export async function saveBody(
   type: ContentType,
   id: string,
-  body: unknown,
+  rawBody: unknown,
   actor: Signed,
 ): Promise<{ words: number; minutes: number }> {
+  /* THE ONE PLACE EVERY BODY PASSES THROUGH. See `normaliseHeadings` for what
+     it fixes and why the editor's own default is not enough on its own. */
+  const body = normaliseHeadings(rawBody);
   const words = wordCount(body);
   const minutes = readingTimeMinutes(body);
   const db = pool();
@@ -376,6 +393,112 @@ export async function setStatus(
         row.discipline ?? [],
       ]);
       return { slug: String(row.slug) };
+    } catch (err) {
+      await client.query("rollback");
+      throw err;
+    } finally {
+      client.release();
+    }
+  } finally {
+    await db.end();
+  }
+}
+
+/**
+ * Change a published piece's slug, writing the redirect in the same
+ * transaction — design §6's "slug editable before first publish, frozen after,
+ * with an automatic redirect row written if it ever changes".
+ *
+ * THE FREEZE AND THE REDIRECT ARE ONE MECHANISM, NOT TWO. The ordinary fields
+ * form cannot move a slug once `first_published_at` is set — `saveDraft` is
+ * given the stored slug instead — so the only way a published URL moves is
+ * through here, and the only way through here writes the redirect. A freeze
+ * with a second unguarded write path is not a freeze, and a redirect that a
+ * caller has to remember to write is a redirect that will be forgotten once.
+ *
+ * ONE TRANSACTION. A slug that moved without its redirect is a live URL that
+ * 404s, and the window between two statements is exactly long enough for a
+ * crawler to find it. The old path is written to `content_redirects` and the
+ * row is updated together, or neither happens.
+ *
+ * A SLUG THAT COMES BACK CLEANS UP AFTER ITSELF. Moving a to b then b back to a
+ * would otherwise leave a → b pointing at a page that is now at a: a loop. The
+ * delete of any row pointing AT the new path runs inside the same transaction,
+ * and it is the one delete in this module — of a redirect, never of content.
+ */
+export async function changeSlug(
+  type: ContentType,
+  id: string,
+  nextSlug: string,
+  actor: Signed,
+): Promise<{ from: string; to: string }> {
+  const db = pool();
+  try {
+    const client = await db.connect();
+    try {
+      await client.query("begin");
+      const table = TABLE[type];
+      const current = await client.query(
+        `select slug, first_published_at from ${table} where id = $1`,
+        [id],
+      );
+      if (current.rowCount === 0) throw new Error("No such piece.");
+      const oldSlug = String(current.rows[0].slug);
+      if (oldSlug === nextSlug) {
+        await client.query("rollback");
+        return {
+          from: `${ROUTE[type]}/${oldSlug}`,
+          to: `${ROUTE[type]}/${oldSlug}`,
+        };
+      }
+      const res = await client.query(
+        `update ${table} set slug = $1, updated_at = now() where id = $2
+         returning industry, platform, discipline`,
+        [nextSlug, id],
+      );
+      const fromPath = `${ROUTE[type]}/${oldSlug}`;
+      const toPath = `${ROUTE[type]}/${nextSlug}`;
+
+      /* Only a piece that has published has a URL anybody could have. A slug
+         moved before first publish leaves no redirect, because there is
+         nothing out there pointing at the old one. */
+      if (current.rows[0].first_published_at) {
+        await client.query("delete from content_redirects where to_path = $1", [
+          toPath,
+        ]);
+        /* An earlier redirect INTO the old path now has a stale target, so it
+           is repointed rather than left to two-hop. */
+        await client.query(
+          "update content_redirects set to_path = $1 where to_path = $2",
+          [toPath, fromPath],
+        );
+        await client.query(
+          `insert into content_redirects (from_path, to_path) values ($1,$2)
+           on conflict (from_path) do update set to_path = excluded.to_path`,
+          [fromPath, toPath],
+        );
+      }
+      await client.query(
+        `insert into content_audit (content_type, content_id, action, actor_email, actor_role, detail)
+         values ($1,$2,'slug',$3,$4,$5)`,
+        [
+          type,
+          id,
+          actor.email,
+          actor.role,
+          JSON.stringify({ from: fromPath, to: toPath }),
+        ],
+      );
+      await client.query("commit");
+      const row = res.rows[0];
+      updateTag(CONTENT_TAGS.redirects);
+      revalidatePath(fromPath);
+      revalidateFor(type, nextSlug, [
+        row.industry ?? [],
+        row.platform ?? [],
+        row.discipline ?? [],
+      ]);
+      return { from: fromPath, to: toPath };
     } catch (err) {
       await client.query("rollback");
       throw err;

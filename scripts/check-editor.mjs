@@ -24,6 +24,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { neon } from "@neondatabase/serverless";
 import { chromium } from "@playwright/test";
+import { ciFixtureSlug } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.argv[2] ?? "http://localhost:3115";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -34,7 +35,9 @@ if (!process.env.DATABASE_URL) {
 }
 const sql = neon(process.env.DATABASE_URL);
 
-const SLUG = `gate-editor-fixture-${Date.now().toString(36)}`;
+/* R-25c.1: the reserved prefix, so `check-admin-render`'s row discovery can
+   exclude this row rather than race it. */
+const SLUG = ciFixtureSlug("editor");
 const failures = [];
 const ok = (what) => console.log(`  OK    ${what}`);
 const bad = (what, detail) => {

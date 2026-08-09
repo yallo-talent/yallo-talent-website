@@ -17,6 +17,7 @@ export const ADMIN_ROUTES = {
   conversations: `${ADMIN_BASE}/conversations`,
   caseStudies: `${ADMIN_BASE}/case-studies`,
   articles: `${ADMIN_BASE}/articles`,
+  media: `${ADMIN_BASE}/media`,
   users: `${ADMIN_BASE}/users`,
 } as const;
 
@@ -35,4 +36,8 @@ export const ADMIN_CAPABILITIES = {
      saying so. Unpublishing a case study is `published: false` through the same
      pull request path — never a file deletion, and never a delete from here. */
   articles: [],
+  /* Upload and archive. NOT delete: design §9 refuses deletion of anything in
+     use, and this schema has no delete path at all — archive is terminal for
+     an asset exactly as it is for a piece of content. */
+  media: ["read", "upload", "archive"],
 } as const;

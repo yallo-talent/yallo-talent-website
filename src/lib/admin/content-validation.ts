@@ -43,6 +43,53 @@ export interface PublishError {
   rule: number;
   field: string;
   message: string;
+  /** Set by `severityOf`; callers read this rather than re-deciding. */
+  severity?: Severity;
+}
+
+export type Severity = "block" | "warn";
+
+/**
+ * THE TWO RULES THAT STILL REFUSE A PUBLISH — Sumeet's ruling, 9 August 2026,
+ * amending canon A2.
+ *
+ * Canon A2 made all nine refuse and canon §9 called them "never weakened". This
+ * narrows that, and the reasoning is his: nine blocking rules made editing an
+ * imported study a fight, they arrived at publish time as one wall of text with
+ * no way to act on it from the editor, and most of them are judgements rather
+ * than facts. Every rule still RUNS, live and inline while a writer types; what
+ * changed is which ones stop the piece going out.
+ *
+ * These two stop it, and the line between them and the rest is what gets
+ * PUBLISHED rather than how tidy it is:
+ *
+ *   Rule 1, an unsourced figure. Canon §9's first principle is that nothing is
+ *   invented, and a number with no source is the exact shape of that.
+ *   Rule 4, a rate or fee. Canon §7 keeps commercial terms off public pages
+ *   entirely; publishing one is a commercial disclosure, not a typo.
+ *
+ * Everything else warns: a banned word, a dead internal link, a long meta
+ * description, a missing taxonomy value, a missing alt text, a wrong category.
+ * Each is worth fixing and none of them is worth refusing a publish over when
+ * the person publishing can see the warning and disagree.
+ *
+ * NOTHING HERE WEAKENS DETECTION. Every rule below still produces its finding
+ * with the same message; `severityOf` decides only what a caller does with it.
+ */
+export const BLOCKING_RULES: ReadonlySet<number> = new Set([1, 4]);
+
+export function severityOf(rule: number): Severity {
+  return BLOCKING_RULES.has(rule) ? "block" : "warn";
+}
+
+/** The findings that refuse a publish. */
+export function blockingErrors(errors: PublishError[]): PublishError[] {
+  return errors.filter((e) => severityOf(e.rule) === "block");
+}
+
+/** The findings a writer should see and may overrule. */
+export function warnings(errors: PublishError[]): PublishError[] {
+  return errors.filter((e) => severityOf(e.rule) === "warn");
 }
 
 /** Canon §8. Written by the system, never a form field, and never an input. */
@@ -255,5 +302,32 @@ export function validateForPublish(
     });
   }
 
-  return errors;
+  /* Stamped once, here, rather than at each call site: a caller that decided
+     severity for itself would be a second place the ruling lives. */
+  return errors.map((e) => ({ ...e, severity: severityOf(e.rule) }));
+}
+
+/**
+ * R-25b.4 — whether this status change would strand a legacy URL.
+ *
+ * EXTRACTED FROM THE ACTION so it can be watched refusing and watched
+ * permitting. The action is a public POST endpoint that needs a session and a
+ * real row; a decision living inside it is a decision no test reaches, and
+ * "red-proven both directions" was the ruling.
+ *
+ * Returns the message, or null. The message names the URLs rather than counting
+ * them, because the person taking a study down needs to know which addresses
+ * they are about to break.
+ */
+export function unpublishRefusal(
+  contentType: "article" | "case_study",
+  nextStatus: string,
+  slug: string,
+  legacySourcesFor: (path: string) => string[],
+): string | null {
+  if (contentType !== "case_study") return null;
+  if (nextStatus === "published") return null;
+  const legacy = legacySourcesFor(`/case-studies/${slug}`);
+  if (legacy.length === 0) return null;
+  return `Not unpublished. ${legacy.length} legacy URL(s) still point at /case-studies/${slug} and would become a two-hop redirect into the hub: ${legacy.join(", ")}. Retire the redirect first, or leave the study published.`;
 }

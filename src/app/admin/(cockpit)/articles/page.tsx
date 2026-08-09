@@ -93,7 +93,10 @@ export default async function ArticlesPane({
                     {/* The title IS the way in. A separate "Edit" button beside
                         it would be a second control for the one thing a person
                         opens this list to do. */}
-                    <Link href={`/admin/articles/${article.id}`}>
+                    <Link
+                      data-slug={article.slug}
+                      href={`/admin/articles/${article.id}`}
+                    >
                       {article.title}
                     </Link>
                   </RowTitle>

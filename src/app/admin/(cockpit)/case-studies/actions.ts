@@ -47,3 +47,44 @@ export async function moveAction(formData: FormData): Promise<void> {
   await reorderCaseStudies(next, signed);
   back({ moved: `${slug} is now position ${to + 1} of ${next.length}.` });
 }
+
+/**
+ * The drag-and-drop affordance's write, design §8.
+ *
+ * THE SAME WRITE PATH AS `moveAction`, which is the point: `reorderCaseStudies`
+ * rewrites the whole sequence in one transaction, so a drag that moves one row
+ * three places and a button that moves it one are the same act with a different
+ * input. Nothing about the ordering changes because the affordance did.
+ *
+ * THE SUBMITTED ORDER IS CHECKED AGAINST WHAT EXISTS, not trusted. A dropped
+ * list arrives as a form field, so it can name a slug that is not a study, omit
+ * one, or repeat one. Any of those would write positions for a sequence nobody
+ * saw. A permutation of exactly the current set is the only acceptable input,
+ * and anything else is refused with what was wrong rather than partially
+ * applied.
+ */
+export async function reorderAction(formData: FormData): Promise<void> {
+  const signed = await assertPane("caseStudies");
+
+  const submitted = String(formData.get("order") ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s !== "");
+  const current = (await allCaseStudies()).map((s) => s.slug);
+
+  const same =
+    submitted.length === current.length &&
+    new Set(submitted).size === submitted.length &&
+    submitted.every((slug) => current.includes(slug));
+  if (!same) {
+    back({
+      err: `That order does not match the ${current.length} studies on this pane, so nothing was written. Reload and try again.`,
+    });
+  }
+  if (submitted.every((slug, i) => slug === current[i])) {
+    back({ moved: "Nothing moved." });
+  }
+
+  await reorderCaseStudies(submitted, signed);
+  back({ moved: `${submitted.length} studies reordered in one save.` });
+}

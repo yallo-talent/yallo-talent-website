@@ -13,11 +13,24 @@
   padding: 0 clamp(20px, 5vw, 48px);
 }
 
+/* The shared petal field sits behind this hero from round 25c, so it needs the
+   containing block and the clip the L1 and editorial heroes already have.
+   `isolation` keeps the field's own stacking below the text without giving the
+   text a z-index it would then have to defend. */
 .hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: clamp(96px, 12vw, 152px) 0 clamp(48px, 6vw, 72px);
 }
 
+/* ABOVE THE FIELD. `HeroAtmosphere` is `position: absolute; z-index: 0` and its
+   own docstring says the host positions the content above it — which the
+   editorial shell does and this one did not, so adding the field here painted
+   its scrim straight over the headline. */
 .heroInner {
+  position: relative;
+  z-index: 1;
   max-width: 1180px;
   margin: 0 auto;
   padding: 0 clamp(20px, 5vw, 48px);

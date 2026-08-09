@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import styles from "@/components/blocks/editorial/EditorialLayout.module.css";
+import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { teamIndex } from "@/data/team";
 import { leadershipPersonJsonLd } from "@/lib/jsonld";
 import { buildMetadata } from "@/lib/seo";
@@ -44,12 +45,8 @@ export default function LeadershipPage() {
       />
 
       {/* HERO */}
-      <section className={`${styles.hero} band-dark`}>
-        <div className={styles.heroBg} aria-hidden="true">
-          <div className={styles.heroBgA} />
-          <div className={styles.heroBgB} />
-          <div className={styles.heroGrid} />
-        </div>
+      <section className={styles.hero}>
+        <HeroAtmosphere centred seed="leadership" />
         <div className={styles.heroInner}>
           <div className={styles.eyebrow}>
             <span className={styles.eyebrowDot} aria-hidden="true" />

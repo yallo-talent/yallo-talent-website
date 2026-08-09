@@ -2,12 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { legacySourcesFor } from "@/data/redirects.mjs";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
-import { validateForPublish } from "@/lib/admin/content-validation";
+import {
+  blockingErrors,
+  unpublishRefusal,
+  validateForPublish,
+  warnings,
+} from "@/lib/admin/content-validation";
 import { assertPane } from "@/lib/admin/guard";
 import { articleById, caseStudyById } from "@/lib/db/content";
 import {
   type ContentType,
+  changeSlug,
   restoreRevision,
   saveBody,
   saveDraft,
@@ -76,6 +83,8 @@ export async function createArticleAction(formData: FormData): Promise<void> {
         sources: [],
         metaTitle: null,
         metaDescription: null,
+        canonicalUrl: null,
+        ogImageUrl: null,
       },
       signed,
     );
@@ -117,6 +126,16 @@ export async function setStatusAction(formData: FormData): Promise<void> {
     type === "article" ? await articleById(id) : await caseStudyById(id);
   if (!row) back(route, { err: "No such piece." });
 
+  /* R-25b.4: A CASE STUDY A LEGACY URL NAMES CANNOT BE TAKEN DOWN.
+     Unpublishing turns every legacy URL aimed at it into a two-hop chain —
+     the legacy path 301s to /case-studies/<slug>, which then redirects to the
+     hub because the row is no longer published. `check:redirects` notices on
+     the next full CI lane, and the window until then is long enough for a
+     person to open the URL. The refusal names the URL, because "a legacy URL
+     points here" is a message that sends somebody to ask. */
+  const stranded = unpublishRefusal(type, next, row.slug, legacySourcesFor);
+  if (stranded) back(route, { err: stranded });
+
   if (next === "published") {
     const known = new Set(await publishedPaths());
     const errors = validateForPublish(
@@ -135,11 +154,27 @@ export async function setStatusAction(formData: FormData): Promise<void> {
       },
       known,
     );
-    if (errors.length > 0) {
+    /* TWO RULES REFUSE, THE REST WARN — Sumeet's ruling of 9 August amending
+       canon A2. See `BLOCKING_RULES` for which two and why. The warnings are
+       not swallowed: they are live in the editor while the piece is being
+       written, and the publish carries them back as a notice so the person who
+       published knows what they published over. */
+    const blocking = blockingErrors(errors);
+    if (blocking.length > 0) {
       /* Every refusal names the field and the fault. "Validation failed" is a
          message that sends an author to ask somebody. */
       back(route, {
-        err: `Not published. ${errors.length} rule(s) refused it: ${errors
+        err: `Not published. ${blocking.length} rule(s) refused it: ${blocking
+          .map((e) => `[${e.field}] ${e.message}`)
+          .join(" ")}`,
+      });
+    }
+    const warned = warnings(errors);
+    if (warned.length > 0) {
+      await setStatus(type, id, next, signed);
+      back(route, {
+        [next]: row.slug,
+        warned: `${warned.length} warning(s) published with it: ${warned
           .map((e) => `[${e.field}] ${e.message}`)
           .join(" ")}`,
       });
@@ -178,6 +213,46 @@ export async function saveBodyAction(
   revalidatePath(`${ROUTE_FOR[type]}/${id}`);
   revalidatePath(`/admin/preview/${type}/${id}`);
   return counts;
+}
+
+/**
+ * Move a published piece's URL, writing the redirect.
+ *
+ * A SEPARATE ACTION FROM THE FIELDS FORM, and deliberately a deliberate act.
+ * Design §6 freezes the slug at first publish and writes a redirect if it ever
+ * changes; both halves are true at once only if there is exactly one path that
+ * moves a URL and it always writes the redirect. Making it its own form also
+ * means nobody moves a live URL by tabbing through a field on their way to
+ * saving a meta description.
+ */
+export async function changeSlugAction(formData: FormData): Promise<void> {
+  const type = String(formData.get("type") ?? "") as ContentType;
+  if (type !== "article" && type !== "case_study") {
+    back(ADMIN_ROUTES.root, { err: "Unknown content type." });
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const id = String(formData.get("id") ?? "");
+  const next = String(formData.get("newSlug") ?? "").trim();
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(next)) {
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `"${next}" is not a slug. Lower case, numbers and single hyphens.`,
+    });
+  }
+  let moved: { from: string; to: string };
+  try {
+    moved = await changeSlug(type, id, next, signed);
+  } catch (err) {
+    const message = (err as Error).message ?? "";
+    if (message.includes("duplicate key") || message.includes("_slug_lower_")) {
+      back(`${ROUTE_FOR[type]}/${id}`, {
+        err: `There is already a piece at ${ROUTE_FOR[type] === ADMIN_ROUTES.articles ? "/insights" : "/case-studies"}/${next}.`,
+      });
+    }
+    back(`${ROUTE_FOR[type]}/${id}`, {
+      err: `The URL was not changed: ${message}`,
+    });
+  }
+  back(`${ROUTE_FOR[type]}/${id}`, { moved: `${moved.from} → ${moved.to}` });
 }
 
 /** Put a previous revision back. Itself recorded as a revision. */
@@ -224,7 +299,16 @@ export async function saveMetaAction(formData: FormData): Promise<void> {
       .map(String)
       .filter((v) => v !== "");
 
-  const slug = String(formData.get("slug") ?? "").trim();
+  /* THE SLUG FREEZES AT FIRST PUBLISH — design §6. A piece that has never
+     published has no URL anybody holds, so its slug is an ordinary field; once
+     it has, the URL is out in the world and moving it silently is how a link
+     somebody sent a client stops working. The field is read-only in the pane
+     from that moment, and this is the server half of that: whatever arrives in
+     the form is discarded in favour of what is stored. A disabled input is a
+     hint to a browser, not a rule, and this action is a public POST endpoint. */
+  const frozen = row.firstPublishedAt !== null;
+  const submitted = String(formData.get("slug") ?? "").trim();
+  const slug = frozen ? row.slug : submitted;
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
     back(`${ROUTE_FOR[type]}/${id}`, {
       err: `"${slug}" is not a slug. Lower case, numbers and single hyphens.`,
@@ -260,6 +344,8 @@ export async function saveMetaAction(formData: FormData): Promise<void> {
         sources: row.sources,
         metaTitle: meta("metaTitle"),
         metaDescription: meta("metaDescription"),
+        canonicalUrl: meta("canonicalUrl"),
+        ogImageUrl: meta("ogImageUrl"),
       },
       signed,
     );

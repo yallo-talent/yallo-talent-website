@@ -35,7 +35,10 @@ import { EditorClient } from "./EditorClient";
 const TAXONOMIES = [
   { name: "industry", label: "Industry", index: industriesIndex },
   { name: "platform", label: "Platform", index: platformsIndex },
-  { name: "discipline", label: "Discipline", index: capabilitiesIndex },
+  /* "Capabilities" is what the nav column, the hub and the desk routes have
+     always said; `discipline` is the column name. Sumeet ruled on the split
+     during round 25c. */
+  { name: "discipline", label: "Capabilities", index: capabilitiesIndex },
 ] as const;
 
 export interface EditorPaneProps {
@@ -46,8 +49,17 @@ export interface EditorPaneProps {
   categories: readonly string[];
   saveMetaAction: (formData: FormData) => Promise<void>;
   restoreRevisionAction: (formData: FormData) => Promise<void>;
+  changeSlugAction: (formData: FormData) => Promise<void>;
   saveBody: (body: unknown) => Promise<void>;
-  notice?: { err?: string; saved?: string; restored?: string };
+  /** Every path the site serves, for the live link check. */
+  knownPaths: string[];
+  notice?: {
+    err?: string;
+    saved?: string;
+    restored?: string;
+    moved?: string;
+    warned?: string;
+  };
 }
 
 export function EditorPane({
@@ -57,13 +69,16 @@ export function EditorPane({
   categories,
   saveMetaAction,
   restoreRevisionAction,
+  changeSlugAction,
   saveBody,
+  knownPaths,
   notice,
 }: EditorPaneProps) {
   const publicRoute = type === "article" ? "/insights" : "/case-studies";
   const backRoute =
     type === "article" ? "/admin/articles" : "/admin/case-studies";
   const published = row.status === "published";
+  const frozen = row.firstPublishedAt !== null;
 
   return (
     <>
@@ -90,8 +105,33 @@ export function EditorPane({
           recorded, so this is undoable.
         </p>
       ) : null}
+      {notice?.moved ? (
+        <p className={styles.ok}>
+          URL moved: <code>{notice.moved}</code>. The redirect is written and
+          permanent.
+        </p>
+      ) : null}
 
+      {notice?.warned ? <p className={styles.warn}>{notice.warned}</p> : null}
+
+      {/* The answer-first check moved INTO the live panel below, with every
+          other rule. Design §6 asked for it as a soft check in the editor; two
+          advisory panels answering the same question in two places is two
+          places to look. */}
       <EditorClient
+        checks={{
+          category: row.category,
+          contentType: type,
+          discipline: row.discipline,
+          industry: row.industry,
+          knownPaths,
+          metaDescription: row.metaDescription,
+          metaTitle: row.metaTitle,
+          platform: row.platform,
+          sources: row.sources,
+          summary: row.summary,
+          title: row.title,
+        }}
         initialBody={row.body}
         previewPath={`/admin/preview/${type}/${row.id}`}
         previewReady
@@ -119,15 +159,27 @@ export function EditorPane({
 
         <label className={styles.field} htmlFor="f-slug">
           <span className={styles.fieldLabel}>Slug</span>
+          {/* FROZEN AT FIRST PUBLISH — design §6. Read-only rather than absent,
+              so the writer can still see and copy the URL; the action discards
+              whatever arrives here regardless, because a read-only input is a
+              hint to a browser and not a rule. Moving it is the separate,
+              deliberate act below, which writes the redirect. */}
           <input
             className={styles.input}
             defaultValue={row.slug}
             id="f-slug"
             name="slug"
             pattern="[a-z0-9]+(-[a-z0-9]+)*"
+            readOnly={frozen}
             required
             type="text"
           />
+          {frozen ? (
+            <span className={styles.note}>
+              Frozen since this piece first published. Changing a live URL is
+              the separate step below, which writes the redirect with it.
+            </span>
+          ) : null}
         </label>
 
         <label className={styles.field} htmlFor="f-summary">
@@ -223,10 +275,77 @@ export function EditorPane({
           />
         </label>
 
+        <label className={styles.field} htmlFor="f-canonical">
+          <span className={styles.fieldLabel}>Canonical URL</span>
+          <input
+            className={styles.input}
+            defaultValue={row.canonicalUrl ?? ""}
+            id="f-canonical"
+            name="canonicalUrl"
+            placeholder={`https://yallo.co${publicRoute}/${row.slug}`}
+            type="url"
+          />
+          <span className={styles.note}>
+            Left empty, the page is its own canonical, which is almost always
+            right. Fill it only when this piece is a copy of something that
+            lives elsewhere.
+          </span>
+        </label>
+
+        <label className={styles.field} htmlFor="f-og-image">
+          <span className={styles.fieldLabel}>Social card image</span>
+          <input
+            className={styles.input}
+            defaultValue={row.ogImageUrl ?? ""}
+            id="f-og-image"
+            name="ogImageUrl"
+            placeholder="Leave empty for the generated PetalPlate"
+            type="url"
+          />
+          <span className={styles.note}>
+            Left empty, the card is the PetalPlate drawn from this slug, which
+            is never blank and never wrong. An uploaded hero replaces it.
+          </span>
+        </label>
+
         <button className={styles.submit} type="submit">
           Save fields
         </button>
       </form>
+
+      {frozen ? (
+        <>
+          <h2 className={styles.h2}>Change the published URL</h2>
+          <p className={styles.note}>
+            This piece is live at{" "}
+            <code>
+              {publicRoute}/{row.slug}
+            </code>
+            . Moving it writes a permanent redirect from the old address in the
+            same transaction, so anything already pointing at it keeps working
+            and keeps its authority.
+          </p>
+          <form action={changeSlugAction} className={editor.metaForm}>
+            <input name="type" type="hidden" value={type} />
+            <input name="id" type="hidden" value={row.id} />
+            <label className={styles.field} htmlFor="f-new-slug">
+              <span className={styles.fieldLabel}>New slug</span>
+              <input
+                className={styles.input}
+                defaultValue={row.slug}
+                id="f-new-slug"
+                name="newSlug"
+                pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                required
+                type="text"
+              />
+            </label>
+            <button className={styles.submit} type="submit">
+              Move the URL and write the redirect
+            </button>
+          </form>
+        </>
+      ) : null}
 
       <h2 className={styles.h2}>
         History · {revisions.length} revision

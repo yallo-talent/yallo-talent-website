@@ -45,7 +45,8 @@ export const ROLE_DESCRIPTIONS: Record<Role, string> = {
   owner:
     "Everything, and cannot be disabled or demoted by anyone, including another owner.",
   admin: "Everything: all panes, conversations, briefs and accounts.",
-  editor: "Articles and case studies. No briefs, conversations or accounts.",
+  editor:
+    "Articles, case studies and media. No briefs, conversations or accounts.",
   ops: "Briefs, read only.",
 };
 
@@ -54,6 +55,7 @@ export const PANES = [
   "conversations",
   "caseStudies",
   "articles",
+  "media",
   "users",
 ] as const;
 
@@ -66,6 +68,11 @@ const PANE_ROLES: Record<Pane, readonly Role[]> = {
   conversations: ["owner", "admin"],
   caseStudies: ["owner", "admin", "editor"],
   articles: ["owner", "admin", "editor"],
+  /* Canon A4: "editor reaches articles, case studies and media only". Media
+     sits with the two content panes because it is what those two are made of;
+     an editor who can write an article and cannot upload the image in it has
+     an article they cannot finish. */
+  media: ["owner", "admin", "editor"],
   users: ["owner", "admin"],
 };
 
@@ -147,6 +154,7 @@ export const PANE_ROUTES: Record<Pane, string> = {
   conversations: ADMIN_ROUTES.conversations,
   caseStudies: ADMIN_ROUTES.caseStudies,
   articles: ADMIN_ROUTES.articles,
+  media: ADMIN_ROUTES.media,
   users: ADMIN_ROUTES.users,
 };
 
@@ -155,6 +163,7 @@ export const PANE_LABELS: Record<Pane, string> = {
   conversations: "Conversations",
   caseStudies: "Case studies",
   articles: "Articles",
+  media: "Media",
   users: "Users",
 };
 

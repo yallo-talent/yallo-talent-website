@@ -30,6 +30,7 @@
  */
 import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "@playwright/test";
+import { CI_FIXTURE_PREFIX } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3115";
 const EMAIL = process.env.ADMIN_TEST_EMAIL ?? "";
@@ -269,10 +270,25 @@ for (const theme of THEMES) {
           waitUntil: "networkidle",
           timeout: 45000,
         });
-        detail = await probe.evaluate((prefix) => {
-          const a = document.querySelector(`a[href^="${prefix}"]`);
-          return a ? a.getAttribute("href") : null;
-        }, hrefPrefix);
+        /* R-25c.1: NEVER a CI fixture row. `check:editor` writes a real draft
+           article to the live database and removes it when it finishes; two
+           runs in flight meant this discovery could pick up the other run's
+           fixture and then render it after it had been deleted. The 404 was
+           real. Excluding the reserved prefix means the two gates cannot see
+           each other's rows at all, which is a stronger property than making
+           them take turns. */
+        detail = await probe.evaluate(
+          ({ prefix, fixture }) => {
+            const links = Array.from(
+              document.querySelectorAll(`a[href^="${prefix}"]`),
+            );
+            const real = links.find(
+              (a) => !(a.getAttribute("data-slug") ?? "").startsWith(fixture),
+            );
+            return real ? real.getAttribute("href") : null;
+          },
+          { prefix: hrefPrefix, fixture: CI_FIXTURE_PREFIX },
+        );
       } catch {
         /* Reported below as un-visited rather than thrown: a probe failure and
            an empty list produce the same null, and both are worth saying. */

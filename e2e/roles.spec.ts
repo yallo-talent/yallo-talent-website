@@ -31,10 +31,36 @@ import {
 /** The whole access matrix, written out rather than derived from the thing it
     is checking. A test that computes its own expectation from the code under
     test asserts only that the code agrees with itself. */
+/**
+ * The matrix is written out BY HAND, deliberately, and that is the whole value
+ * of this file: deriving it from `PANE_ROLES` would assert that the table
+ * equals itself. It is canon A4 transcribed, so a change to the code has to be
+ * met by a change here, made by somebody reading the canon.
+ *
+ * `media` joined it in round 25c. Canon A4: "editor reaches articles, case
+ * studies and media only". The pane was added and this matrix was not, so three
+ * assertions went red claiming owner, admin and editor are refused a pane they
+ * reach — the enumerating-guard rule in AGENTS.md, caught by the guard it
+ * exists to protect.
+ */
 const MATRIX: Record<Role, Pane[]> = {
-  owner: ["briefs", "conversations", "caseStudies", "articles", "users"],
-  admin: ["briefs", "conversations", "caseStudies", "articles", "users"],
-  editor: ["caseStudies", "articles"],
+  owner: [
+    "briefs",
+    "conversations",
+    "caseStudies",
+    "articles",
+    "media",
+    "users",
+  ],
+  admin: [
+    "briefs",
+    "conversations",
+    "caseStudies",
+    "articles",
+    "media",
+    "users",
+  ],
+  editor: ["caseStudies", "articles", "media"],
   ops: ["briefs"],
 };
 

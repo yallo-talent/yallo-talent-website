@@ -4,7 +4,8 @@ import { requirePane } from "@/lib/admin/guard";
 import { allCaseStudies } from "@/lib/db/content";
 import styles from "../../Admin.module.css";
 import { setStatusAction } from "../articles/actions";
-import { moveAction } from "./actions";
+import { moveAction, reorderAction } from "./actions";
+import { OrderList } from "./OrderList";
 
 /**
  * Case studies. Owner, admin and editor, per canon A4's role map.
@@ -71,6 +72,25 @@ export default async function CaseStudiesPane({
         </p>
       ) : null}
 
+      {studies.length > 1 && (
+        <>
+          <h2 className={styles.h2}>Order</h2>
+          <p className={styles.note}>
+            This is the order the homepage rail and /case-studies both read.
+            Drag to move a study, then save: the whole sequence is written in
+            one transaction, so a reordering cannot be interrupted halfway.
+          </p>
+          <OrderList
+            reorderAction={reorderAction}
+            rows={studies.map((s) => ({
+              slug: s.slug,
+              title: s.cardTitle ?? s.title,
+              status: s.status,
+            }))}
+          />
+        </>
+      )}
+
       <h2 className={styles.h2}>
         {studies.length} stud{studies.length === 1 ? "y" : "ies"},{" "}
         {published.length} published
@@ -91,7 +111,10 @@ export default async function CaseStudiesPane({
                     {/* R-25b.3: the way in to the three taxonomy dropdowns, so
                         the nine imported studies can be given real values from
                         a browser. No session assigns them. */}
-                    <Link href={`/admin/case-studies/${study.id}`}>
+                    <Link
+                      data-slug={study.slug}
+                      href={`/admin/case-studies/${study.id}`}
+                    >
                       {study.cardTitle ?? study.title}
                     </Link>
                   </RowTitle>

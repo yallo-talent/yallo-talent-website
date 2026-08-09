@@ -86,6 +86,48 @@ export function disallowedNodes(doc) {
   return found;
 }
 
+/**
+ * Coerce every heading to a level this schema allows, in place of nothing.
+ *
+ * WHY A WRITE-TIME NORMALISER EXISTS AT ALL. TipTap serialises an attribute
+ * equal to its default by OMITTING it, and its Heading defaults `level` to 1 —
+ * which this site does not allow in a body, because H1 is the title. So a
+ * heading that ended up at level 1 in the editor arrived here with no `level`
+ * key, `disallowedNodes` refused the publish with "heading level undefined",
+ * and the case-study template's movement split — which looks for level 2 —
+ * found nothing and collapsed the page's structure. Three published studies
+ * were corrupted this way before it was found.
+ *
+ * THE EDITOR'S DEFAULT IS ALSO FIXED, and this is still not redundant. The
+ * editor is one writer of this column; the import is another, and a third will
+ * arrive. A rule enforced only in the surface that happens to be open today is
+ * a rule that holds until somebody writes a script.
+ *
+ * IT COERCES RATHER THAN REFUSES, because saving a draft is never blocked
+ * (canon A2) and a level is structure rather than words: nothing a writer typed
+ * is changed, and the alternative is storing a body no template can draw.
+ *
+ * @param {unknown} doc
+ * @returns {unknown} the same document with every heading level in HEADING_LEVELS
+ */
+export function normaliseHeadings(doc) {
+  const walk = (n) => {
+    if (!n || typeof n !== "object") return n;
+    const node = /** @type {any} */ (n);
+    const next = { ...node };
+    if (node.type === "heading") {
+      const level = node.attrs?.level;
+      next.attrs = {
+        ...node.attrs,
+        level: HEADING_LEVELS.includes(level) ? level : HEADING_LEVELS[0],
+      };
+    }
+    if (Array.isArray(node.content)) next.content = node.content.map(walk);
+    return next;
+  };
+  return walk(doc);
+}
+
 /** An empty document, the shape a new draft starts from. */
 export const EMPTY_DOC = { type: "doc", content: [] };
 

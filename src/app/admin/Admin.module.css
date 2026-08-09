@@ -33,9 +33,16 @@
   text-transform: uppercase;
 }
 
+/* WRAPS, and it did not until round 25c added the sixth pane. Five text links
+   fitted a 360px viewport in one row and six did not: every cockpit route
+   reported 51px of horizontal overflow, which is SC 1.4.10, and the failure was
+   uniform across routes precisely because it was the shared chrome rather than
+   any pane. A toolbar of text links has no reason to be a single line at a
+   width it does not fit, and a seventh pane will now cost nothing. */
 .nav {
   display: flex;
-  gap: clamp(12px, 2vw, 24px);
+  flex-wrap: wrap;
+  gap: 6px clamp(12px, 2vw, 24px);
   margin-inline-end: auto;
   font-size: var(--fs-caption);
 }
@@ -313,6 +320,37 @@
   margin: 18px 0 0;
   font-size: var(--fs-caption);
   line-height: 1.55;
+  color: var(--text-3);
+}
+
+/* The answer-first soft check (design §6). Deliberately NOT `.error`: that
+   border is `--accent-line` and reads as a refusal, and this refuses nothing.
+   A dashed hairline is the same device `.empty` uses for "something to look
+   at, nothing to fix". */
+.warn {
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border: 1px dashed var(--hairline);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.warn ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+}
+
+.warn li + li {
+  margin-top: 6px;
+}
+
+.warnHead {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--text-3);
 }
 

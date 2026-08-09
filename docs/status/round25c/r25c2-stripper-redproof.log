@@ -1,0 +1,38 @@
+R-25c.2 — the stripper red-proof, against the input v34 actually saw
+
+Recovered from git history, not manufactured. src/lib/assistant/client.ts
+carries CITATION_PATTERN, a regex literal containing BOTH quote characters:
+
+25:const CITATION_PATTERN =
+26-  /(?<=^|[\s("'])\/(?:[a-z][a-z0-9/-]*|(?=[\s.,;:!?)"']|$))/g;
+27-
+--
+
+The old stripper classified every / as a comment opener or an ordinary
+character, so that literal put it into a single-quoted string state it
+never left, and no later comment was stripped.
+
+OLD stripper = scripts/check-terminology.mjs at 3116113^
+NEW stripper = the same file after 3116113 (R-25b.5)
+
+client-001e463.ts        em dashes in source:   4 | survive OLD:   2 | survive NEW:   2
+client-0dd4f26.ts        em dashes in source:   1 | survive OLD:   0 | survive NEW:   0
+client-2baee19.ts        em dashes in source:   2 | survive OLD:   0 | survive NEW:   0
+client-7c8cb0b.ts        em dashes in source:   4 | survive OLD:   2 | survive NEW:   0  <<< STRIPPERS DISAGREE
+      OLD falsely keeps -> 47: * — a relative URL, so clicking it left the site's own route table and served 
+      OLD falsely keeps -> 57: * when it is not a corpus path — a link the corpus cannot vouch for is the one
+client-be16a33.ts        em dashes in source:   3 | survive OLD:   2 | survive NEW:   0  <<< STRIPPERS DISAGREE
+      OLD falsely keeps -> 34: * — a relative URL, so clicking it left the site's own route table and served 
+      OLD falsely keeps -> 44: * when it is not a corpus path — a link the corpus cannot vouch for is the one
+client-cb0761c.ts        em dashes in source:   6 | survive OLD:   5 | survive NEW:   2  <<< STRIPPERS DISAGREE
+      OLD falsely keeps -> 18: * in — never a second, hand-maintained title list. Only paths the corpus
+      OLD falsely keeps -> 34: * One model, Sonnet 5, no router — context-round13-chatbot.md §3, ratified
+      OLD falsely keeps -> 45: * reached brief shape — the client then shows the draft back for explicit
+
+Leg 3 — a real em dash in COPY is still reported by the new stripper:
+=== client-001e463.ts — what the NEW stripper still reports (must be real copy, not comments):
+    25 "Call this once, only when the conversation has reached brief shape: you know the role, region, enga
+    73 "ANTHROPIC_API_KEY is not set — the assistant cannot reach the model.",
+=== client-cb0761c.ts — what the NEW stripper still reports (must be real copy, not comments):
+    52 "Call this once, only when the conversation has reached brief shape: you know the role, region, enga
+    100 "ANTHROPIC_API_KEY is not set — the assistant cannot reach the model.",

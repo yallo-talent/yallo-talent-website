@@ -1,0 +1,101 @@
+
+48 advisory item(s):
+  /admin dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users light/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+
+check:admin-render FAILED with 20 problem(s):
+
+  /admin dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/articles dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/articles light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/briefs dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/briefs light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/case-studies dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/case-studies light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/conversations dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/conversations light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/sign-in dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/sign-in light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/users dark/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+
+  /admin/users light/360  scrolls sideways by 51px. SC 1.4.10: content reflows, it does not push the page.
+

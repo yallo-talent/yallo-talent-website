@@ -54,6 +54,18 @@ export interface ImageAttrs {
   caption: string;
   width: number | null;
   height: number | null;
+  /**
+   * The rendition set, carried on the node rather than looked up at render
+   * time.
+   *
+   * WHY IT IS DENORMALISED. The public renderer draws a body with no database
+   * of its own to consult, and a per-image lookup on every article render would
+   * be a query per image for a value that cannot change: a rendition's key
+   * carries its width, and a re-upload gets new keys. Empty for every image
+   * inserted by hand or imported before the library existed, and the renderer
+   * simply omits the attribute in that case.
+   */
+  srcset: string;
 }
 
 export interface ChartRow {
@@ -107,7 +119,13 @@ export function resolveDesk(attrs: Partial<RelatedDeskAttrs>): Desk | null {
   const entry = INDEX[kind].find((e) => e.slug === attrs.slug);
   if (!entry) return null;
   return {
-    href: `${DESK_ROUTE[kind]}/${entry.slug}`,
+    /* `entry.href` FIRST, and this is not a nicety. One index entry carries a
+       canonical route that is not `/{category}/{slug}`: AI Talent lives at
+       `/ai-talent`, and `/capabilities/ai-talent` 301s to it. Composing the
+       route from the category alone put a redirect hop on the one discipline
+       carrying paid marketing spend — the exact defect `L1IndexEntry.href`
+       exists to prevent, honoured by the nav and the hub and not by this. */
+    href: entry.href ?? `${DESK_ROUTE[kind]}/${entry.slug}`,
     label: entry.label,
     tagline: entry.tagline,
   };

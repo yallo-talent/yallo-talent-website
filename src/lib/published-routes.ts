@@ -1,4 +1,7 @@
-import { publishedTaxonomySlugs } from "@/app/insights/_taxonomy";
+import {
+  indexableTaxonomySlugs,
+  taxonomyLandingSlugs,
+} from "@/app/insights/_taxonomy";
 import { aiRoleFamilySlugs } from "@/data/ai-talent";
 import { BLUEPRINT_BASE, blueprintSlugs } from "@/data/blueprint";
 import { capabilityRegistry } from "@/data/capabilities";
@@ -11,6 +14,7 @@ import {
 } from "@/data/platforms/derive";
 import { RESEARCH_BASE, researchSlugs } from "@/data/research";
 import { SYNTHESIS_SLUG } from "@/data/research/synthesis";
+import { TAXONOMY_SEGMENT, taxonomyLandingPath } from "@/lib/content-seo";
 import { publishedArticles, publishedCaseStudies } from "@/lib/db/content";
 
 const sectorL2Registry: Record<string, L1PageData> = {
@@ -31,28 +35,62 @@ const sectorL2Registry: Record<string, L1PageData> = {
  * sets.
  */
 export async function publishedPaths(): Promise<string[]> {
-  /* ROUND 25: these three families come from the database, so the sitemap,
+  /* ROUND 25: these two families come from the database, so the sitemap,
      llms.txt and the assistant corpus all change the moment a publish lands
      rather than at the next deploy. Published rows only — a draft has no URL,
-     and listing one would put a 404 in the sitemap. The archives follow the
-     articles: an archive is a view of published rows, so it appears when the
-     rows do and disappears when they stop clearing the threshold. */
-  const [articles, studies, taxonomies] = await Promise.all([
+     and listing one would put a 404 in the sitemap.
+
+     ROUND 25c: the taxonomy landings moved OUT of here and into
+     `structuralPaths`, because they no longer depend on what is published. All
+     twenty-one exist whatever the database holds, which is what makes an
+     internal link to one safe to write — publish rule 3 reads this set, and a
+     route that came and went with the publishing state would have made that
+     rule's answer depend on the week. Which of them a CRAWLER should be sent to
+     is a different question, answered by `discoverablePaths`. */
+  const [articles, studies] = await Promise.all([
     publishedArticles(),
     publishedCaseStudies(),
-    Promise.all(
-      (["industry", "platform", "discipline"] as const).map(async (kind) => {
-        const slugs = await publishedTaxonomySlugs(kind);
-        return slugs.map((slug) => `/insights/${kind}/${slug}`);
-      }),
-    ),
   ]);
   return [
     ...structuralPaths(),
     ...articles.map((a) => `/insights/${a.slug}`),
     ...studies.map((c) => `/case-studies/${c.slug}`),
-    ...taxonomies.flat(),
   ];
+}
+
+/**
+ * The paths the discovery surfaces name: `publishedPaths` minus the taxonomy
+ * landings that have nothing published behind them.
+ *
+ * THE SPLIT IS BETWEEN "EXISTS" AND "WORTH CRAWLING", and conflating the two is
+ * what the old three-article threshold did. A landing page with no article is a
+ * real page a reader can reach from a desk link and a thin one to put in a
+ * sitemap; it renders, it carries `noindex`, and it is absent from here. The
+ * moment one article publishes it appears in both, with no deploy.
+ */
+export async function discoverablePaths(): Promise<string[]> {
+  const [paths, indexable] = await Promise.all([
+    publishedPaths(),
+    Promise.all(
+      (["industry", "platform", "discipline"] as const).map(async (kind) => {
+        const slugs = await indexableTaxonomySlugs(kind);
+        return slugs.map((slug) => taxonomyLandingPath(kind, slug));
+      }),
+    ),
+  ]);
+  const keep = new Set(indexable.flat());
+  return paths.filter((path) => !isTaxonomyLanding(path) || keep.has(path));
+}
+
+const TAXONOMY_SEGMENTS = new Set(Object.values(TAXONOMY_SEGMENT));
+
+function isTaxonomyLanding(path: string): boolean {
+  const segs = path.split("/").filter(Boolean);
+  return (
+    segs.length === 3 &&
+    segs[0] === "insights" &&
+    TAXONOMY_SEGMENTS.has(segs[1] ?? "")
+  );
 }
 
 /**
@@ -123,6 +161,15 @@ export function structuralPaths(): string[] {
     (slug) => `/capabilities/${slug}`,
   );
 
+  /* The twenty-one single-facet landings, canon A5. Repo-owned and synchronous:
+     they are derived from the taxonomy indexes, not from what is published, so
+     they belong here rather than in the database half. */
+  const taxonomyLandingRoutes = (
+    ["industry", "platform", "discipline"] as const
+  ).flatMap((kind) =>
+    taxonomyLandingSlugs(kind).map((slug) => taxonomyLandingPath(kind, slug)),
+  );
+
   /* The five pieces, the index and the synthesis. The synthesis's PRINT
      surface is deliberately absent: it is the build input the PDF is
      generated from, not a page, and listing it here would put it in
@@ -143,6 +190,7 @@ export function structuralPaths(): string[] {
     ...aiTalentRoutes,
     ...blueprintRoutes,
     ...capabilityRoutes,
+    ...taxonomyLandingRoutes,
     ...researchRoutes,
   ];
 }

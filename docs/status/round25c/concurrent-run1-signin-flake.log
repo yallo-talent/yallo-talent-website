@@ -1,0 +1,60 @@
+
+  sign-in threw twice: page.fill: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator('input[name="email"]')
+
+
+
+36 advisory item(s):
+  /admin dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/articles/f10c3ff1-02d2-4078-b50e-0526f86bfcfe light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/briefs light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360  [minor] focus-order-semantics: Elements in the focus order should have an appropriate role
+      .tiptap
+  /admin/case-studies/f890e291-b73a-439b-a641-4d2917486665 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/conversations/fb3f0212-d6f2-4747-bf63-e026c16cc896 light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/sign-in light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users dark/1280: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users dark/360: axe abstained on color-contrast for 1 node(s), unresolved.
+  /admin/users light/360: axe abstained on color-contrast for 1 node(s), unresolved.
+
+check:admin-render FAILED with 2 problem(s):
+
+  Only 30 of 36 pane renders were measured. A partial run is not
+      evidence about the panes it never reached.
+
+  light/1280: sign-in did not produce a session, so no pane was measured.
+      The server must be running with an ADMIN_PASSWORD_HASH generated from
+      ADMIN_TEST_PASSWORD.
+

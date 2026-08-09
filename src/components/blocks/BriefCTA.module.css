@@ -124,8 +124,17 @@
 }
 
 .accent {
-  background: var(--gradient-accent);
+  /* NO `background` HERE. It used to carry `var(--gradient-accent)` with the
+     three `background-clip: text` declarations that made the gradient paint
+     THROUGH the letterforms. Round 8's "gradient text removed" pass deleted the
+     clip and left the paint, so what shipped was a solid gold rectangle behind
+     the words — a highlighter block, on two surfaces, for two rounds. The blank
+     line the removal left behind is still visible in the history.
 
+     Solid gold is the right end state either way: canon A2 permits a gradient
+     emphasis span only when it is gold-anchored AND AA-safe at its LIGHTEST
+     stop, and it requires a solid-colour fallback regardless. That fallback is
+     this colour, so the span now simply is it. */
   color: var(--accent-line);
 }
 

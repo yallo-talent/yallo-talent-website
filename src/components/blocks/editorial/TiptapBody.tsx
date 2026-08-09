@@ -138,9 +138,14 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
       return <p key={key}>{renderInline(node.content, key)}</p>;
 
     case "heading": {
+      /* HEADING_LEVELS[0], which is 2, not [1] which is 3. A level-less
+         heading is a heading that lost its level, and the level it lost is
+         overwhelmingly 2: that is what the import wrote, what the editor now
+         defaults to and what `Movements` splits a case study on. Falling back
+         to 3 made the renderer disagree with the writer about the same node. */
       const level = HEADING_LEVELS.includes(node.attrs?.level as number)
         ? (node.attrs?.level as number)
-        : HEADING_LEVELS[1];
+        : HEADING_LEVELS[0];
       const Tag = (level === 2 ? "h2" : "h3") as "h2" | "h3";
       return <Tag key={key}>{renderInline(node.content, key)}</Tag>;
     }
@@ -327,7 +332,15 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
             className={styles.figureImg}
             height={attrs.height ?? undefined}
             loading="lazy"
+            /* `sizes` is the measure, not a guess: `.prose` is 72ch, which
+               resolves to roughly 780px, and below that the figure is the
+               viewport. Without it a browser assumes 100vw and downloads the
+               widest rendition on a phone, which is the resizing spent
+               backwards. Both attributes are omitted together when a body
+               carries an image inserted before the library existed. */
+            sizes={attrs.srcset ? "(max-width: 820px) 100vw, 780px" : undefined}
             src={src}
+            srcSet={attrs.srcset || undefined}
             width={attrs.width ?? undefined}
           />
           {caption === "" ? null : (

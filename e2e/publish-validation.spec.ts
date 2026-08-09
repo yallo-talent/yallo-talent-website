@@ -4,10 +4,13 @@ import {
   CASE_STUDY_CATEGORIES,
 } from "../src/lib/admin/categories.mjs";
 import {
+  BLOCKING_RULES,
   BUDGETS,
+  blockingErrors,
   FIXED_BYLINE,
   type PublishCandidate,
   validateForPublish,
+  warnings,
 } from "../src/lib/admin/content-validation";
 import { markdownToTiptap } from "../src/lib/tiptap/from-markdown.mjs";
 
@@ -293,5 +296,111 @@ test.describe("rule 9 — the category is on the list for THIS content type (R-2
     expect(
       rules({ contentType: "case_study", category: "Thought leadership" }),
     ).toContain(9);
+  });
+});
+
+/**
+ * THE SEVERITY SPLIT — Sumeet's ruling of 9 August 2026, amending canon A2.
+ *
+ * Canon A2 made all nine rules refuse. This narrows it to two, on his ruling:
+ * an unsourced figure and a rate or fee still stop a publish, because both are
+ * about what reaches a reader; everything else warns, because the person
+ * publishing can see the warning and disagree with it.
+ *
+ * DETECTION IS UNCHANGED, and the twenty-nine assertions above are the proof of
+ * that — every rule still produces its finding with the same message. What
+ * follows asserts only what a caller is told to DO with each finding, in both
+ * directions: the two that block, and a sample of those that must not.
+ */
+test.describe("severity — which rules stop a publish", () => {
+  test("an unsourced figure blocks", () => {
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        body: markdownToTiptap("Utilisation reached 62% across the programme."),
+        sources: [],
+      },
+      KNOWN_PATHS,
+    );
+    expect(blockingErrors(errors).map((e) => e.rule)).toContain(1);
+  });
+
+  test("a rate figure blocks", () => {
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        body: markdownToTiptap(
+          "Specialists were placed at AED 2,000 per day on that programme.",
+        ),
+      },
+      KNOWN_PATHS,
+    );
+    expect(blockingErrors(errors).map((e) => e.rule)).toContain(4);
+  });
+
+  test("banned vocabulary warns and does NOT block", () => {
+    /* This is the one Sumeet hit while editing an imported study: inherited
+       prose carrying a canon §2 term stopped a publish that had nothing else
+       wrong with it. */
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        body: markdownToTiptap(
+          "The planning landscape needed to support increasing demand.",
+        ),
+      },
+      KNOWN_PATHS,
+    );
+    expect(errors.map((e) => e.rule)).toContain(2);
+    expect(blockingErrors(errors).map((e) => e.rule)).not.toContain(2);
+    expect(warnings(errors).map((e) => e.rule)).toContain(2);
+  });
+
+  test("a node the template cannot render warns and does NOT block", () => {
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        body: { type: "doc", content: [{ type: "heading", content: [] }] },
+      },
+      KNOWN_PATHS,
+    );
+    expect(errors.map((e) => e.rule)).toContain(0);
+    expect(blockingErrors(errors).map((e) => e.rule)).not.toContain(0);
+  });
+
+  test("a dead internal link warns and does NOT block", () => {
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        body: markdownToTiptap("See [the desk](/not-a-real-route)."),
+      },
+      KNOWN_PATHS,
+    );
+    expect(errors.map((e) => e.rule)).toContain(3);
+    expect(blockingErrors(errors).map((e) => e.rule)).not.toContain(3);
+  });
+
+  test("every finding carries a severity, and only two rules are blocking", () => {
+    expect([...BLOCKING_RULES].sort()).toEqual([1, 4]);
+    const errors = validateForPublish(
+      {
+        ...candidate(),
+        industry: [],
+        platform: [],
+        discipline: [],
+        category: "",
+      },
+      KNOWN_PATHS,
+    );
+    expect(errors.length).toBeGreaterThan(0);
+    for (const e of errors) {
+      expect(["block", "warn"]).toContain(e.severity);
+    }
+  });
+
+  test("a clean piece blocks on nothing", () => {
+    expect(
+      blockingErrors(validateForPublish(candidate(), KNOWN_PATHS)),
+    ).toEqual([]);
   });
 });

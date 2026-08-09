@@ -4,7 +4,9 @@ import { categoriesFor } from "@/lib/admin/categories.mjs";
 import { requirePane } from "@/lib/admin/guard";
 import { caseStudyById } from "@/lib/db/content";
 import { revisionsFor } from "@/lib/db/revisions";
+import { publishedPaths } from "@/lib/published-routes";
 import {
+  changeSlugAction,
   restoreRevisionAction,
   saveBodyAction,
   saveMetaAction,
@@ -33,7 +35,13 @@ export default async function CaseStudyEditorRoute({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ err?: string; saved?: string; restored?: string }>;
+  searchParams: Promise<{
+    err?: string;
+    saved?: string;
+    restored?: string;
+    moved?: string;
+    warned?: string;
+  }>;
 }) {
   await requirePane("caseStudies");
   const { id } = await params;
@@ -50,6 +58,8 @@ export default async function CaseStudyEditorRoute({
     <EditorPane
       categories={categoriesFor("case_study")}
       notice={await searchParams}
+      changeSlugAction={changeSlugAction}
+      knownPaths={await publishedPaths()}
       restoreRevisionAction={restoreRevisionAction}
       revisions={revisions}
       row={row}

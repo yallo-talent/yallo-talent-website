@@ -1,0 +1,36 @@
+R-25b.6 — the dev-droplet cloud firewall
+
+Visibility tested first, as the ruling requires:
+  yallo-web-dev   473723796  178.62.82.59  lon1  active   <- in this team
+  yallo-web-prod  473723897  138.68.140.42 lon1  active   <- NOT touched
+
+BEFORE (no firewall existed):
+  http://178.62.82.59/    308   reachable directly, bypassing Cloudflare
+  https://dev.yallo.co/   301   through Cloudflare
+
+Firewall fdc70367-c3a3-4f2f-95f4-0c0532cb2856 'yallo-web-dev-cloudflare-only',
+attached to 473723796 only. 22 Cloudflare CIDRs (15 v4 + 7 v6), fetched from
+cloudflare.com/ips-v4 and ips-v6 at the time of creation.
+
+RULE SET, read back from the API:
+  name: yallo-web-dev-cloudflare-only | status: succeeded | droplets: [473723796]
+  IN  icmp  ports=0     sources= 2 OPEN TO ALL
+  IN  tcp   ports=22    sources= 2 OPEN TO ALL
+  IN  tcp   ports=80    sources=22 Cloudflare only
+  IN  tcp   ports=443   sources=22 Cloudflare only
+  OUT icmp  ports=0    
+  OUT tcp   ports=0    
+  OUT udp   ports=0    
+
+PORT 22 IS RESTATED, NOT OMITTED. A DigitalOcean cloud firewall is
+default-deny inbound once attached, so leaving 22 out of the rule set would
+have CLOSED it. The ruling says untouched, so its current reachability is
+restated exactly. Same reasoning for outbound, which is allowed in full.
+
+AFTER, measured from this machine (a non-Cloudflare address):
+  http://178.62.82.59/    no answer   (was 308)
+  https://178.62.82.59/   no answer
+  https://dev.yallo.co/   301 -> https://yallo.co/   still works through Cloudflare
+  tcp/22                  reachable, unchanged
+
+Reversible by detaching: doctl compute firewall delete fdc70367-c3a3-4f2f-95f4-0c0532cb2856

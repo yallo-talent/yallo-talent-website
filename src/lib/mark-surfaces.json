@@ -20,15 +20,15 @@
     "maxInkWidth": 300,
     "tolerance": 0.36,
     "measured": 0.344,
-    "note": "Round 14: Sephora's real logo replaced its declined placeholder (8.06% ink — a thin S-mark and a wide wordmark over mostly empty box, the lowest density in the set by far) and immediately became the new hard case, worse than Richemont's long-standing 12.8%. Richemont at 14.45:1 still sits on the 15px ink floor; Sephora's low density needs the opposite — a much bigger box to reach the median at all, and it is still 34.4% short. The floor stays at 15 for the reason it always has: a legibility floor, not a dial for a greener gate. Sumeet's call, same as before, now with a third name in it."
+    "note": "Round 14: Sephora's real logo replaced its declined placeholder (8.06% ink \u2014 a thin S-mark and a wide wordmark over mostly empty box, the lowest density in the set by far) and immediately became the new hard case, worse than Richemont's long-standing 12.8%. Richemont at 14.45:1 still sits on the 15px ink floor; Sephora's low density needs the opposite \u2014 a much bigger box to reach the median at all, and it is still 34.4% short. The floor stays at 15 for the reason it always has: a legibility floor, not a dial for a greener gate. Sumeet's call, same as before, now with a third name in it."
   },
   "card": {
-    "inkCap": 32,
+    "inkCap": 40,
     "inkFloor": 10,
     "maxInkWidth": 96,
     "tolerance": 0.23,
     "measured": 0.218,
-    "note": "Round 14: Sephora joined this set alongside the rail (same low-density mark, 8.06% ink) and the six-mark median can no longer sit within 2% of both it and majid-al-futtaim's 56:10 wordmark — the two pull in opposite directions. Loosened honestly rather than left at a number these six cannot actually satisfy; the previous 0.02 was measured against five marks that happened to agree."
+    "note": "Round 14: Sephora joined this set alongside the rail (same low-density mark, 8.06% ink) and the six-mark median can no longer sit within 2% of both it and majid-al-futtaim's 56:10 wordmark \u2014 the two pull in opposite directions. Loosened honestly rather than left at a number these six cannot actually satisfy; the previous 0.02 was measured against five marks that happened to agree. Round 25c: inkCap raised 32 to 40 to match the `entity` surface. The card marks read visibly smaller than the single mark on a case-study detail page, which is the same logo at a different size on two surfaces a reader moves between in one click. The cap is a CEILING and not the solved size, so this gives the solver room rather than choosing a height by hand; inkFloor is untouched, being Sumeet's legibility call rather than a dial."
   },
   "axis": {
     "inkCap": 34,
@@ -36,7 +36,7 @@
     "maxInkWidth": 120,
     "tolerance": 0.02,
     "measured": 0.003,
-    "note": "Round 14, two changes. First, and the actual fix: mark-scale.ts's search kept the FIRST reference height R that hit the best deviation, which on this surface is the SMALLEST of a whole plateau (R=18 through 30 all land on 0.0000) rather than a single optimum — so it was rendering the smallest of many equally-correct sizes. Ties now keep the larger R, free size at no deviation cost: Microsoft went 14px to 24px, SAP 9px to 16px, with the gate's own number improving 0.008 to 0.003. Second, inkCap raised 26 to 34 for headroom once Blue Yonder and Informatica joined the set, though the chosen R lands inside the old ceiling too — the plateau was already there."
+    "note": "Round 14, two changes. First, and the actual fix: mark-scale.ts's search kept the FIRST reference height R that hit the best deviation, which on this surface is the SMALLEST of a whole plateau (R=18 through 30 all land on 0.0000) rather than a single optimum \u2014 so it was rendering the smallest of many equally-correct sizes. Ties now keep the larger R, free size at no deviation cost: Microsoft went 14px to 24px, SAP 9px to 16px, with the gate's own number improving 0.008 to 0.003. Second, inkCap raised 26 to 34 for headroom once Blue Yonder and Informatica joined the set, though the chosen R lands inside the old ceiling too \u2014 the plateau was already there."
   },
   "entity": {
     "inkCap": 40,
