@@ -44,6 +44,13 @@ const PANES = [
   "/admin/case-studies",
   "/admin/conversations",
   "/admin/articles",
+  /* A4 names six panes and this was the missing one. `check:gate-coverage`
+     passed on it because check:admin-isolation VISITS /admin/media to assert
+     who may reach it — which is a different question from whether it obeys axe
+     and A4's type floors. Coverage by any gate is not coverage by the right
+     gate, and the pane a writer uploads every image from had never been
+     measured for contrast at 360. */
+  "/admin/media",
   "/admin/users",
 ];
 
