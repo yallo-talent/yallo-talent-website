@@ -1645,6 +1645,31 @@
   z-index: 1;
 }
 
+/* R-25.1's second instance, found by the widened occlusion assertion rather
+   than reported: the focus indicator sat on the 30x30 circle at 1182..1212,
+   inside the assistant launcher's 1077..1260, and at scrollY 3591 on
+   /industries/retail all nine sample points returned the launcher. The circle
+   was the only thing the ring could be drawn around.
+
+   The stretched ::after above already made the WHOLE CARD the pointer target,
+   so no touch user was ever stranded here; only the ring was. The fix is to
+   stop the ring disagreeing with the target it describes. A 285px card cannot
+   be contained by a 183px overlay, so the class closes with it, and a keyboard
+   user now sees the same region a pointer user aims at, which is what the
+   stretched link was for.
+
+   :has() rather than :focus-within, because .expCard must not light up when a
+   mouse click focuses the anchor — the global :focus-visible contract is what
+   the rest of the estate follows. */
+.expCardOpenLink:focus-visible {
+  outline: none;
+}
+
+.expCard:has(.expCardOpenLink:focus-visible) {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 3px;
+}
+
 .expCardOpenLink svg {
   width: 13px;
   height: 13px;

@@ -755,6 +755,33 @@
   background: var(--wa03);
 }
 
+/* R-25.1: below 640px the control moves to the rail's LEADING edge, because the
+   assistant launcher owns the trailing one.
+
+   Both were anchored at `right: 12px` from different files that never saw each
+   other, and the launcher is 54px wide against this control's 32px, so its
+   horizontal range fully CONTAINED this one: 324..378 against 346..378 at a
+   390px viewport. Whenever the rail scrolled into the launcher's band the
+   control was entirely behind it — the focus indicator invisible under SC
+   2.4.11, and worse in practice, because the launcher also took the tap. R7 put
+   this control here so the rail's loop would have a route for keyboard and
+   touch users; in that band it had neither.
+
+   Moving rather than raising, on Sumeet's ruling, and the reason is touch:
+   a higher z-index restores the focus ring and still leaves the launcher taking
+   the pointer event. The launcher does not move — it is canon A3 allow-listed
+   where it sits. Above 640px the launcher's own media query puts it at
+   bottom: 20px/right: 20px, clear of the rail entirely, so nothing changes
+   there. The corner radius mirrors with the control, the way StickyBriefCTA's
+   did when it swapped corners in round 14. */
+@media (max-width: 640px) {
+  .railPause {
+    right: auto;
+    left: 12px;
+    border-radius: 0 0 var(--r-xs) 0;
+  }
+}
+
 /* Sentence-case mono, deliberately: nine letterspaced-caps words is the
    hardest possible way to read a full sentence. */
 

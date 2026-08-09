@@ -313,6 +313,163 @@ for (const path of PAGES) {
     }
   }
 
+  /* ── 2b. Latent total occlusion, judged on geometry rather than on scroll ──
+     Round 24 found the FAB entirely covering the client rail's pause control at
+     390px, and the two probes above caught it only INTERMITTENTLY: both judge
+     the layout at whatever scroll offset they happen to produce, so they see the
+     defect only when the control is on screen AND inside the overlay's vertical
+     band. On this machine that never happened in five consecutive runs; on CI's
+     slower runner it did. The defect was constant the whole time. A gate whose
+     truth depends on scroll timing is a gate that will be re-run until it is
+     quiet, which is exactly the paper-over R-25.1 was ratified to prevent.
+
+     The class, stated without reference to scroll: a control in normal flow
+     sweeps the WHOLE viewport vertically as the page scrolls, so it will pass
+     through every fixed overlay's band sooner or later. If a fixed overlay's
+     horizontal range then fully CONTAINS that control's, the control has no
+     horizontal escape and is, at some scroll offset, entirely covered. That is
+     SC 2.4.11 for a keyboard user and lost pointer events for a touch user, and
+     it is decidable from one measurement at rest.
+
+     Two exclusions, both principled rather than convenient:
+
+     - A control pinned by a `fixed` or `sticky` ancestor does NOT sweep the
+       viewport; its vertical band is bounded. The header hamburger is the live
+       case — sticky at the top, 342..378, horizontally inside the launcher's
+       324..378, and it never meets the launcher, which sits at bottom:84. So for
+       those, require an actual vertical intersection as well.
+     - An overlay spanning essentially the whole viewport width contains every
+       control by construction and cannot be moved aside; that is a different
+       class with a different mitigation (reserved space, scroll-padding), and
+       the focus probe above is what judges it. StickyBriefCTA below 640px is
+       12..378 of 390 and is deliberately out of scope here. */
+  const contained = await page.evaluate(async () => {
+    const settle = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    /* `behavior: instant` explicitly. globals.css sets scroll-behavior: smooth,
+       and a plain scrollTo inside one evaluate animates: every rect read back in
+       the same task is the pre-scroll rect. Measured while writing this — the
+       first version reported "never on screen" for every control on the page. */
+    const go = async (y) => {
+      window.scrollTo({ top: y, behavior: "instant" });
+      await settle();
+    };
+    const visibleFixed = () =>
+      [...document.querySelectorAll("*")].filter((el) => {
+        const cs = getComputedStyle(el);
+        return (
+          cs.position === "fixed" &&
+          cs.visibility !== "hidden" &&
+          cs.display !== "none" &&
+          el.getBoundingClientRect().width > 0
+        );
+      });
+    const pinned = (el) => {
+      for (let n = el; n && n !== document.documentElement; n = n.parentElement) {
+        const p = getComputedStyle(n).position;
+        if (p === "fixed" || p === "sticky") return true;
+      }
+      return false;
+    };
+
+    /* The box that matters is the one a reader can hit and see the ring on, and
+       for a STRETCHED LINK those are not the anchor's own border box. The exp
+       cards put an `::after { position: absolute; inset: 0 }` on a 30x30 corner
+       circle so the whole 285px card is the target; measuring the circle would
+       report a card-sized control as trapped inside a 183px overlay. Detect the
+       pattern from the computed pseudo-element and use the positioned ancestor
+       it stretches to. The focus ring is moved to that same ancestor in
+       L1PageShell.module.css, so the two agree. */
+    const effectiveRect = (el) => {
+      const cs = getComputedStyle(el, "::after");
+      const stretched =
+        cs.content !== "none" &&
+        cs.position === "absolute" &&
+        ["top", "right", "bottom", "left"].every((s) => cs[s] === "0px");
+      const host = stretched ? el.offsetParent : null;
+      return (host ?? el).getBoundingClientRect();
+    };
+
+    await go(0);
+    const fixedAtRest = visibleFixed();
+    // Anything this wide is page furniture, not an edge-anchored control.
+    const overlays = fixedAtRest.filter(
+      (f) => f.getBoundingClientRect().width < innerWidth * 0.9,
+    );
+    if (!overlays.length) return [];
+
+    // Pair each contained control with the scroll offset that would put it
+    // wholly inside the overlay's band, and keep only the reachable ones.
+    const maxScroll = document.documentElement.scrollHeight - innerHeight;
+    const candidates = [];
+    for (const a of document.querySelectorAll("a[href], button")) {
+      const r = effectiveRect(a);
+      if (r.width < 4 || r.height < 4) continue;
+      if (fixedAtRest.some((f) => f === a || f.contains(a))) continue;
+      if (pinned(a)) continue;
+      for (const f of overlays) {
+        const g = f.getBoundingClientRect();
+        if (!(g.left <= r.left && g.right >= r.right)) continue;
+        if (r.height > g.height) continue; // taller than the band: partial only
+        const docTop = r.top + window.scrollY;
+        const lo = Math.ceil(docTop + r.height - g.bottom);
+        const hi = Math.floor(docTop - g.top);
+        const y = Math.min(Math.max(lo, 0), Math.min(hi, maxScroll));
+        if (y < lo || y > hi) continue; // the band is out of scroll range
+        candidates.push({
+          el: a,
+          overlay: f,
+          y,
+          control: (a.textContent ?? "").trim().slice(0, 24) || a.tagName,
+          cls: a.className?.toString?.().slice(0, 48) ?? "",
+          range: `${Math.round(r.left)}..${Math.round(r.right)}`,
+          orange: `${Math.round(g.left)}..${Math.round(g.right)}`,
+        });
+        break;
+      }
+    }
+
+    /* Then MEASURE at that offset rather than infer. An overlay may withdraw
+       before it ever meets the control — AssistantLauncher yields to the footer,
+       which is round 16's fix for exactly this collision with the footer's legal
+       links — and inferring occlusion from geometry alone reports that fix as a
+       defect. Nine sample points, the same test the focus probe applies. */
+    const out = [];
+    for (const c of candidates) {
+      await go(c.y);
+      const r = effectiveRect(c.el);
+      const cs = getComputedStyle(c.overlay);
+      if (cs.display === "none" || cs.visibility === "hidden") continue;
+      if (!c.overlay.isConnected) continue;
+      let covered = 0;
+      for (let x = 1; x <= 3; x++) {
+        for (let y2 = 1; y2 <= 3; y2++) {
+          const el = document.elementFromPoint(
+            r.x + (r.width * x) / 4,
+            r.y + (r.height * y2) / 4,
+          );
+          if (el && (el === c.overlay || c.overlay.contains(el))) covered++;
+        }
+      }
+      if (covered === 9) {
+        out.push({
+          control: c.control,
+          cls: c.cls,
+          range: c.range,
+          orange: c.orange,
+          y: c.y,
+          overlay: `${c.overlay.tagName}.${c.overlay.className?.toString?.().slice(0, 48) ?? ""}`,
+        });
+      }
+    }
+    await go(0);
+    return out;
+  });
+  for (const c of contained) {
+    failures.push(
+      `${path} @${viewport.width}  "${c.control}" [${c.cls}] at x ${c.range} is horizontally CONTAINED by fixed overlay ${c.overlay} at x ${c.orange}, and at scrollY ${c.y} it is ENTIRELY covered — SC 2.4.11`,
+    );
+  }
+
   // ── 3. A section's first heading must match its peers' level ─────────────
   await page.evaluate(() => window.scrollTo(0, 0));
   const outline = await page.evaluate(() => {
