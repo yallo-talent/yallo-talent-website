@@ -239,7 +239,18 @@ jobs:
       # article is edited, the full lane when the detector itself changes. The
       # detector is one module, src/lib/unsourced-figures.mjs, shared with the
       # Articles pane so the two cannot disagree about what a figure is.
+      #
+      # R-25b.1: THIS COPY NEEDED THE STEP-LEVEL SECRET TOO, and the first
+      # attempt at the swap missed it. The step exists in BOTH lanes; the
+      # content lane's copy had always carried its own `env`, the full lane's
+      # copy inherited the job's. Reading the content lane's copy and assuming
+      # it was the only one is exactly the class of mistake the estate keeps
+      # meeting — the list failed, not the rule. CI said so in one line:
+      # "permission denied for table articles", exit 1, which is the new role
+      # refusing a write, correctly.
       - name: Sources on published content (self-test, then the real corpus)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-sources.mjs --selftest
 
       # Canon A4's /privacy clause is RATIFIED WORDING and carries "twelve

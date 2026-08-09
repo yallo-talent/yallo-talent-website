@@ -6,12 +6,19 @@
  * one-time act and secrets are edited by people, so without this the estate
  * quietly returns to CI holding production write access and nothing says so.
  * This asserts the property rather than the provenance: it does not care what
- * the role is called, it cares that the connection can read content, cannot
- * write it, and cannot see the tables holding password hashes, leads or
- * conversations.
+ * the role is called, it cares that the connection reads everything the gates
+ * render and writes nothing at all.
+ *
+ * THE ACCOUNT PROBE IS THE ONE THAT MATTERS MOST. A credential that can insert
+ * into `users` can mint itself an owner and reach every pane in the cockpit,
+ * which is a larger prize than editing an article. It is asserted separately
+ * rather than folded into "no writes", so a relay can name it.
  *
  * BOTH DIRECTIONS. A gate that only checks the writes fail passes on a
- * connection string that is broken outright. So the read must succeed first.
+ * connection string that is broken outright. So the reads must succeed first,
+ * and they cover the tables behind the cockpit panes as well as the content
+ * the build prerenders: a role that cannot read those makes `check-admin-render`
+ * measure an error page instead of a pane.
  *
  * Run: DATABASE_URL=postgres://... node scripts/check-ci-reader-reach.mjs
  */
@@ -30,8 +37,15 @@ console.log(`Connected as ${who[0].current_user}.\n`);
 
 const failures = [];
 
-/** Must succeed: a credential that cannot read content makes every gate vacuous. */
-for (const table of ["articles", "case_studies", "content_redirects"]) {
+/** Must succeed: a credential that cannot read makes every gate vacuous. */
+for (const table of [
+  "articles",
+  "case_studies",
+  "content_redirects",
+  "users",
+  "submissions",
+  "assistant_transcripts",
+]) {
   try {
     await sql.query(`select count(*) from public.${table}`);
     console.log(`  OK      can read ${table}`);
@@ -59,6 +73,11 @@ const writes = [
   ],
   ["update case_studies", "update public.case_studies set title = title where false"],
   ["delete from articles", "delete from public.articles where false"],
+  [
+    "insert into users (an owner account)",
+    "insert into public.users (email, name, role, password_hash) select 'ci-reach-probe@invalid', 'probe', 'owner', 'x' where false",
+  ],
+  ["delete from submissions", "delete from public.submissions where false"],
 ];
 for (const [label, statement] of writes) {
   try {
@@ -70,21 +89,12 @@ for (const [label, statement] of writes) {
   }
 }
 
-/** Must be refused: the tables holding hashes, leads and conversations. */
-for (const table of ["users", "submissions", "assistant_transcripts"]) {
-  try {
-    await sql.query(`select count(*) from public.${table}`);
-    failures.push(`can read ${table}`);
-    console.log(`  FAIL    can read ${table} — hashes, leads or conversations are in CI's reach`);
-  } catch (e) {
-    console.log(`  OK      cannot read ${table} (${e.code ?? "error"})`);
-  }
-}
-
 if (failures.length) {
   console.error(
     `\n${failures.length} assertion(s) failed. The CI credential is not the read-only role R-25b.1 requires:\n  ${failures.join("\n  ")}\n\nRe-run scripts/db-grant-ci-reader.mjs and reset the DATABASE_URL_CI_READER secret.`,
   );
   process.exit(1);
 }
-console.log("\nThe CI credential reads content, writes nothing, and cannot see users, submissions or transcripts.");
+console.log(
+  "\nThe CI credential reads what the gates render and writes nothing: not content, not leads, and not an account for itself.",
+);
