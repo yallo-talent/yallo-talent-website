@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { clientDisplayNameFor, clientLogoFor } from "@/data/home/client-logos";
 import { evidenceCopy, testimonial } from "@/data/home/intelligence";
-import { orderedCaseStudies } from "@/lib/case-study-order";
-import { getAllCaseStudies } from "@/lib/content";
+import { orderedCaseStudyEntries } from "@/lib/db/content";
 import { CaseRail } from "./CaseRail";
 import styles from "./Home.module.css";
 import { ArrowGlyph } from "./icons";
@@ -16,12 +15,12 @@ import { SectionHead } from "./SectionHead";
  * Titles and bodies are Yallo's own published words, ported by
  * scripts/extract-case-studies.mjs. Nothing here is written or paraphrased.
  */
-export function Evidence() {
+export async function Evidence() {
   // Order is a deliberate editorial argument rather than a consequence of
   // publication dates, and it now lives in content/case-studies/order.yaml
   // rather than in a `featured` integer on each of fourteen files. The rail
   // carries every published study, in that order.
-  const studies = orderedCaseStudies(getAllCaseStudies()).map((s) => ({
+  const studies = (await orderedCaseStudyEntries()).map((s) => ({
     slug: `/case-studies/${s.frontmatter.slug}`,
     // Cards take the budgeted display line and the devendored excerpt where
     // they exist; the verbatim title and summary still own the detail page

@@ -76,27 +76,36 @@ jobs:
         run: pnpm biome check .
       - name: Terminology
         run: pnpm check:terms
-      - name: Case study excerpts
-        run: pnpm check:cs-excerpts
+      # RETIRED IN ROUND 25, each with its reason, because canon A1 moved
+      # articles and case studies out of content/** entirely:
+      #   check:cs-excerpts        walked content/case-studies; the excerpt
+      #                            budget is a database column check now.
+      #   check:published-manifest existed so the content lane could prove it had
+      #                            not changed a published route. There is no
+      #                            content lane path to a published route any
+      #                            more: publishing is a row write.
+      #   check:write-path         asserted the pull-request invariants of a
+      #                            pull-request path that A2 removed.
+      #   check:prose              asserted `.prose` was wired to MDXRemote on
+      #                            /insights/[slug]. It is wired to TiptapBody
+      #                            now and the assertion moved with it.
       - name: Prose rules
         run: pnpm check:prose
-      - name: Published manifest is current
-        run: pnpm check:published-manifest
-      # Canon §6, as a gate: no figure in a PUBLISHED insight without a matching
-      # `sources` entry. Drafts are exempt. The self-test runs first and writes a
-      # real fixture article that fails, so a checker that has gone blind cannot
-      # pass by finding nothing — which matters more here than anywhere, because
-      # every insight on the tree is a draft and the real corpus is a trivial pass.
-      - name: Sources on published insights (self-test, then the real corpus)
+      # Canon §6 as a nightly sweep, repointed at the database rather than
+      # retired: publish-time enforcement only ever sees the moment of
+      # publishing, and a figure can become unsourced afterwards. The self-test
+      # inserts a row that MUST fail, asserts it does and deletes it, so a
+      # detector that has gone blind cannot pass by finding nothing.
+      - name: Sources on published content (self-test, then the real corpus)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-sources.mjs --selftest
-      - name: Write path invariants
-        run: pnpm check:write-path
       - name: Taxonomy
         run: pnpm check:taxonomy
       - name: Redirect table, static half
         run: node -e "import('./src/data/redirects.mjs').then(m => { const n = m.redirectProbes().length; if (!n) { console.error('The redirect table produced no probes.'); process.exit(1); } console.log(n + ' redirect probe(s) derive from the table.'); })"
-      - name: Article validation rules
-        run: pnpm exec playwright test e2e/article-validation.spec.ts
+      - name: The eight publish refusals (canon A2)
+        run: pnpm exec playwright test e2e/publish-validation.spec.ts
 
   full:
     needs: scope
@@ -158,7 +167,6 @@ jobs:
       - name: Case-study excerpts (self-test, then the real corpus)
         run: |
           node scripts/check-case-study-excerpts.mjs --selftest
-          pnpm check:cs-excerpts
 
       # Relay v2.0 §3.1. Nothing renders below 12px, and uppercase mono labels
       # carry at least 0.12em tracking. The 11px eyebrow was the case flagged
@@ -180,7 +188,9 @@ jobs:
       # article is edited, the full lane when the detector itself changes. The
       # detector is one module, src/lib/unsourced-figures.mjs, shared with the
       # Articles pane so the two cannot disagree about what a figure is.
-      - name: Sources on published insights (self-test, then the real corpus)
+      - name: Sources on published content (self-test, then the real corpus)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: node scripts/check-sources.mjs --selftest
 
       # Canon A4's /privacy clause is RATIFIED WORDING and carries "twelve
@@ -462,8 +472,6 @@ jobs:
       # simulated, and a reorder preserves order.yaml's header and its per-slug
       # client column. Needs no server and no credential, which is why it sits
       # here rather than inside the block above.
-      - name: Write path invariants (reorder, edit, unpublish)
-        run: pnpm check:write-path
 
       # Round 19 §2.2's class guard. Reports the prose figures rather than
       # failing on them — the 42 occurrences are Sumeet's under R-A9 — and fails

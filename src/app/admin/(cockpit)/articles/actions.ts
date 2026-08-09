@@ -1,177 +1,142 @@
 "use server";
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { redirect } from "next/navigation";
-import {
-  articlePath,
-  newArticleSource,
-  parseArticleFile,
-  slugFromTitle,
-  validateArticleDraft,
-} from "@/lib/admin/article-draft";
-import { writeScalar } from "@/lib/admin/case-study-draft";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
+import { validateForPublish } from "@/lib/admin/content-validation";
 import { assertPane } from "@/lib/admin/guard";
-import { publishArticle } from "@/lib/admin/publish";
+import { articleById, caseStudyById } from "@/lib/db/content";
+import { type ContentType, saveDraft, setStatus } from "@/lib/db/content-write";
+import { publishedPaths } from "@/lib/published-routes";
 
 /**
- * The Articles pane's writes. Admin and editor, re-checked in every one.
+ * The Articles pane's writes, and the case-study pane's, in one module because
+ * they are the same three acts on two tables.
  *
- * NOTHING HERE WRITES THE WORKING TREE. Every action produces the whole file as
- * bytes and hands it to `publishArticle`, which opens a branch and a pull
- * request. The standing invariant is that nothing in the cockpit writes `main`
- * directly, and the way to keep it is to have no filesystem write path at all.
+ * WHAT REPLACED WHAT. Round 23 sent every write out as a pull request that CI
+ * validated and GitHub auto-merged. Canon A2 removed that: a publish now writes
+ * one row and revalidates, and the rules CI held are held HERE, in
+ * `validateForPublish`, which refuses. That is the whole trade, and the reason
+ * the validation has to be at least as strict as the CI it replaced.
  *
- * VALIDATION RUNS BEFORE THE PULL REQUEST OPENS, in every one of these. A pull
- * request CI is certain to fail blocks auto-merge and has to be closed by hand,
- * so the failure belongs in the form where it can still be fixed.
+ * SAVING IS NEVER VALIDATED, PUBLISHING ALWAYS IS. Canon A2 again. The guard
+ * runs on both, because a server action is a POST endpoint with a public URL and
+ * having rendered the pane once authorises nothing later.
  */
 
-function back(params: Record<string, string>): never {
-  redirect(
-    `${ADMIN_ROUTES.articles}?${new URLSearchParams(params).toString()}`,
-  );
+function back(route: string, params: Record<string, string>): never {
+  redirect(`${route}?${new URLSearchParams(params).toString()}`);
 }
 
-const readSource = (slug: string): string =>
-  readFileSync(join(process.cwd(), articlePath(slug)), "utf8");
+const ROUTE_FOR: Record<ContentType, string> = {
+  article: ADMIN_ROUTES.articles,
+  case_study: ADMIN_ROUTES.caseStudies,
+};
 
-/** Errors as one line, so the pane can show every one rather than the first. */
-const asMessage = (errors: { field: string; message: string }[]): string =>
-  errors.map((e) => `${e.field}: ${e.message}`).join(" · ");
+const PANE_FOR = {
+  article: "articles",
+  case_study: "caseStudies",
+} as const;
 
 export async function createArticleAction(formData: FormData): Promise<void> {
-  await assertPane("articles");
+  const signed = await assertPane("articles");
 
   const title = String(formData.get("title") ?? "").trim();
-  const category = String(formData.get("category") ?? "").trim();
-  const summary = String(formData.get("summary") ?? "").trim();
-  const date = String(formData.get("date") ?? "").trim();
-  const minutes = Number.parseInt(
-    String(formData.get("readingTimeMinutes") ?? ""),
-    10,
-  );
-
+  const slug = String(formData.get("slug") ?? "").trim();
   if (title === "")
-    back({ err: "A title is required; the slug is derived from it." });
-  const slug = slugFromTitle(title);
-  if (slug === "") {
-    back({
-      err: "That title reduces to an empty slug. It needs at least one letter or digit.",
+    back(ADMIN_ROUTES.articles, { err: "A title is required." });
+  if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
+    back(ADMIN_ROUTES.articles, {
+      err: `"${slug}" is not a slug. Lower case, numbers and single hyphens.`,
     });
   }
 
-  /* An existing file is never overwritten from here. The pull request would
-     silently replace someone's article with a template. */
+  /* A NEW ARTICLE IS ALWAYS A DRAFT, and this is not a parameter. Creating a
+     piece and publishing it must never be the same act: canon A2 puts eight
+     rules between a draft and a published page, and a create path that skipped
+     them would be the pull-request bypass in a different costume. */
   try {
-    readSource(slug);
-    back({
-      err: `${articlePath(slug)} already exists. Edit it instead, or choose a different title.`,
-    });
-  } catch {
-    /* Not found is the expected case and the only one that continues. */
-  }
-
-  const source = newArticleSource({
-    title,
-    slug,
-    date,
-    category,
-    summary,
-    readingTimeMinutes:
-      Number.isSafeInteger(minutes) && minutes > 0 ? minutes : 0,
-  });
-
-  const errors = validateArticleDraft(parseArticleFile(slug, source));
-  if (errors.length > 0) back({ err: asMessage(errors) });
-
-  const result = await publishArticle(
-    slug,
-    source,
-    `add "${title}", unpublished`,
-  );
-  if (!result.ok) back({ err: result.error });
-  back({ pr: String(result.prNumber), open: result.prUrl });
-}
-
-export async function setArticlePublishedAction(
-  formData: FormData,
-): Promise<void> {
-  await assertPane("articles");
-
-  const slug = String(formData.get("slug") ?? "");
-  const next = String(formData.get("next") ?? "") === "true";
-
-  let source: string;
-  try {
-    source = readSource(slug);
-  } catch {
-    back({
-      err: `No file at ${articlePath(slug)}, so there is nothing to change.`,
-    });
-  }
-
-  let written: string;
-  try {
-    written = writeScalar(source, "published", next);
-  } catch (err) {
-    back({ err: (err as Error).message });
-  }
-
-  /* Validated even for a one-boolean flip. Turning an article ON is exactly when
-     an existing defect in it stops being private, so this is the moment the
-     schema, the byline, the taxonomy slugs and the figures rule matter most. */
-  const errors = validateArticleDraft(parseArticleFile(slug, written));
-  if (errors.length > 0) back({ err: asMessage(errors) });
-
-  const result = await publishArticle(
-    slug,
-    written,
-    `${next ? "publish" : "unpublish"} ${slug}`,
-  );
-  if (!result.ok) back({ err: result.error });
-  back({ pr: String(result.prNumber), open: result.prUrl });
-}
-
-export async function saveArticleAction(formData: FormData): Promise<void> {
-  await assertPane("articles");
-
-  const slug = String(formData.get("slug") ?? "");
-  let source: string;
-  try {
-    source = readSource(slug);
-  } catch {
-    back({ err: `No file at ${articlePath(slug)}.` });
-  }
-
-  const body = String(formData.get("body") ?? "");
-  let written = source;
-  try {
-    for (const field of ["title", "date", "category"] as const) {
-      const raw = formData.get(field);
-      if (raw === null) continue;
-      written = writeScalar(written, field, String(raw).trim());
-    }
-    const minutes = Number.parseInt(
-      String(formData.get("readingTimeMinutes") ?? ""),
-      10,
+    await saveDraft(
+      {
+        type: "article",
+        slug,
+        title,
+        summary: "",
+        category: "",
+        body: { type: "doc", content: [] },
+        industry: [],
+        platform: [],
+        discipline: [],
+        sources: [],
+        metaTitle: null,
+        metaDescription: null,
+      },
+      signed,
     );
-    if (Number.isSafeInteger(minutes)) {
-      written = writeScalar(written, "readingTimeMinutes", minutes);
-    }
-    if (body.trim() !== "") {
-      const { writeBody } = await import("@/lib/admin/case-study-draft");
-      written = writeBody(written, body);
-    }
   } catch (err) {
-    back({ err: (err as Error).message });
+    const message = (err as Error).message ?? "";
+    if (
+      message.includes("articles_slug_lower_idx") ||
+      message.includes("duplicate key")
+    ) {
+      back(ADMIN_ROUTES.articles, {
+        err: `There is already an article at /insights/${slug}.`,
+      });
+    }
+    back(ADMIN_ROUTES.articles, {
+      err: `The draft was not created: ${message}`,
+    });
+  }
+  back(ADMIN_ROUTES.articles, { created: slug });
+}
+
+/**
+ * Publish, or take back. The eight refusals live on the publish side only.
+ */
+export async function setStatusAction(formData: FormData): Promise<void> {
+  const type = String(formData.get("type") ?? "") as ContentType;
+  if (type !== "article" && type !== "case_study") {
+    back(ADMIN_ROUTES.root, { err: "Unknown content type." });
+  }
+  const signed = await assertPane(PANE_FOR[type]);
+  const route = ROUTE_FOR[type];
+
+  const id = String(formData.get("id") ?? "");
+  const next = String(formData.get("next") ?? "");
+  if (next !== "published" && next !== "draft" && next !== "archived") {
+    back(route, { err: "Unknown status." });
   }
 
-  const errors = validateArticleDraft(parseArticleFile(slug, written));
-  if (errors.length > 0) back({ err: asMessage(errors) });
+  const row =
+    type === "article" ? await articleById(id) : await caseStudyById(id);
+  if (!row) back(route, { err: "No such piece." });
 
-  const result = await publishArticle(slug, written, `edit ${slug}`);
-  if (!result.ok) back({ err: result.error });
-  back({ pr: String(result.prNumber), open: result.prUrl });
+  if (next === "published") {
+    const known = new Set(await publishedPaths());
+    const errors = validateForPublish(
+      {
+        title: row.title,
+        summary: row.summary,
+        metaTitle: row.metaTitle,
+        metaDescription: row.metaDescription,
+        body: row.body,
+        sources: row.sources,
+        industry: row.industry,
+        platform: row.platform,
+        discipline: row.discipline,
+      },
+      known,
+    );
+    if (errors.length > 0) {
+      /* Every refusal names the field and the fault. "Validation failed" is a
+         message that sends an author to ask somebody. */
+      back(route, {
+        err: `Not published. ${errors.length} rule(s) refused it: ${errors
+          .map((e) => `[${e.field}] ${e.message}`)
+          .join(" ")}`,
+      });
+    }
+  }
+
+  await setStatus(type, id, next, signed);
+  back(route, { [next]: row.slug });
 }

@@ -112,8 +112,8 @@ Never claim to be human. If asked, say you are an assistant built on the
 site's own published content.
 `.trim();
 
-function corpusToPromptBlock(): string {
-  const docs = buildAssistantCorpus();
+async function corpusToPromptBlock(): Promise<string> {
+  const docs = await buildAssistantCorpus();
   return docs
     .map((doc) => {
       const facts = doc.facts.length
@@ -182,6 +182,6 @@ function citationStyleForSelfTest(): string {
  * August 2026 rather than assumed — a corpus this size (60-plus documents)
  * clears the minimum by a wide margin.
  */
-export function buildSystemPrompt(): string {
-  return `${CONVERSATION_DESIGN}${citationStyleForSelfTest()}\n\n${forbiddenListForSelfTest()}\n\n# Corpus — the only pages you may discuss or cite\n\n${corpusToPromptBlock()}`;
+export async function buildSystemPrompt(): Promise<string> {
+  return `${CONVERSATION_DESIGN}${citationStyleForSelfTest()}\n\n${forbiddenListForSelfTest()}\n\n# Corpus — the only pages you may discuss or cite\n\n${await corpusToPromptBlock()}`;
 }

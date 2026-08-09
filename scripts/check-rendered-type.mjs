@@ -86,7 +86,7 @@ const PAGES = [
      visited by no enumerating guard at all. The blueprint ARCHETYPE was listed
      and its index was not, and they are different components. */
   "/intelligence",
-  `/case-studies/${sampleCaseStudySlug()}`,
+  `/case-studies/${await sampleCaseStudySlug(BASE)}`,
   /* Added at the round 7 close, for the same reason the two above were: the
      detail template was listed and its LANDING HUB was not, and they are
      different components with their own CSS module. The detail page failed this

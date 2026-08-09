@@ -433,19 +433,25 @@ notes.push(`${sectorSlugs.length} sectors, each pinned to one identity hue.`);
    check-yallo-case.mjs each hand-copied one live slug as their "one page per
    template" sample. Retire that study and both gates 404 on the wrong thing
    instead of checking what they exist to check. Fixed by deriving the sample
-   from order.yaml (scripts/lib/case-study-sample.mjs); this rule is what stops
-   the next one from being typed back in by hand.
+   from one place; this rule is what stops the next one from being typed back
+   in by hand.
+
+   ROUND 25: THE RULE STAYS, THE ORACLE CHANGED. `order.yaml` is gone with the
+   rest of content/** under canon A1, so there is no list of live slugs to
+   compare against at lint time. There does not need to be: the defect is a
+   case-study slug TYPED into a gate, whatever it happens to name today, and
+   that is decidable from the shape of the string alone. Matching the shape is
+   also strictly stronger — it catches a hand-typed slug for a study that does
+   not exist yet, which the old list could not.
    --------------------------------------------------------------------------- */
-const orderYamlSlugs = parseYaml(
-  readFileSync(
-    join("content", "case-studies", "order.yaml"),
-    "utf8",
-  ),
-).order;
+/* A `/case-studies/<slug>` literal, or a bare slug long enough to be one. Four
+   hyphenated words is the floor: it clears ordinary identifiers and every real
+   study slug in the corpus is far longer. */
+const CASE_STUDY_SLUG_SHAPE =
+  /(?:\/case-studies\/)?\b[a-z0-9]+(?:-[a-z0-9]+){3,}\b/g;
 
 const SCRIPTS_ALLOWED = [
   "scripts/lib/case-study-sample.mjs", // the one place a slug is read, not typed
-  "scripts/check-case-study-excerpts.mjs", // walks content/case-studies itself, names none
   // A one-time port register from the legacy WordPress export, source slug to
   // canonical slug. It names every study because that IS its job, not a
   // gate's "one representative sample" that could silently drift.
@@ -462,9 +468,16 @@ for (const file of scriptFiles) {
   if (SCRIPTS_ALLOWED.includes(file)) continue;
   const src = readFileSync(file, "utf8");
   const lines = src.split("\n");
-  for (const slug of orderYamlSlugs) {
+  for (const line0 of [null]) {
+    void line0;
     lines.forEach((line, i) => {
-      if (line.includes(slug)) {
+      /* Only a literal inside a path, so a comment mentioning a study by name
+         is prose rather than a hand-copied slug a gate would then request. */
+      const hit = [...line.matchAll(CASE_STUDY_SLUG_SHAPE)].find((m) =>
+        m[0].startsWith("/case-studies/"),
+      );
+      const slug = hit?.[0];
+      if (slug) {
         failures.push(
           `${file}:${i + 1}  hand-copies case-study slug "${slug}". Import sampleCaseStudySlug() from scripts/lib/case-study-sample.mjs instead — a slug typed here outlives the study it names.`,
         );

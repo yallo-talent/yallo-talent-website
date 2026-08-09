@@ -69,7 +69,7 @@ const PAGES = await fetchPublishedPaths(BASE);
    exists, so sampleCaseStudySlug() only has to prove it agrees, not enumerate
    a second time. */
 if (!PAGES.some((p) => p.startsWith("/case-studies/"))) {
-  PAGES.push(`/case-studies/${sampleCaseStudySlug()}`);
+  PAGES.push(`/case-studies/${await sampleCaseStudySlug(BASE)}`);
 }
 
 const browser = await chromium.launch();
