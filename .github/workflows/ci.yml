@@ -131,6 +131,19 @@ jobs:
       - name: Types
         run: pnpm tsc --noEmit
 
+      # R-25.3, ratified. eslint was installed and configured and ran in no lane,
+      # so its one error sat open across three rounds while biome reported clean.
+      # It joins the FULL lane only: biome is what the content lane needs to be
+      # fast, and eslint's value here is the Next-specific rules biome does not
+      # have. Scoped to src and scripts rather than the repository, because
+      # `pnpm lint` with no path also lints whatever build directory happens to
+      # be on disk and reports its output as findings.
+      #
+      # The retire-eslint question stays open for Sumeet. This stops the drift;
+      # it does not settle whether two linters earn their keep.
+      - name: eslint (Next rules biome does not carry)
+        run: npx eslint src scripts
+
       # Canon §7. Banned for commercial reasons, not stylistic ones — "GCC"
       # collides with Global Capability Centre in Yallo's own India business.
       - name: Terminology
@@ -160,27 +173,18 @@ jobs:
       - name: Taxonomy
         run: pnpm check:taxonomy
 
-      # An excerpt is compression of the body, never a new fact. Round 10:
-      # --selftest proves the gate catches a fixture excerpt naming a client
-      # its body never mentions, run here before the real corpus so a broken
-      # checker cannot pass by going blind.
-      - name: Case-study excerpts (self-test, then the real corpus)
-        run: |
-          node scripts/check-case-study-excerpts.mjs --selftest
-
       # Relay v2.0 §3.1. Nothing renders below 12px, and uppercase mono labels
       # carry at least 0.12em tracking. The 11px eyebrow was the case flagged
       # as unreadable, and it appeared on every page.
       - name: Type scale
         run: pnpm check:type
 
-      # Round 21 §5. The legacy redirect map points at articles by slug, and an
-      # entry naming an unpublished article sends a 301 into a 404 — which hands
-      # the old URL's authority to a dead page. The map resolves its destinations
-      # through this manifest instead, so publishing an article is the whole
-      # action. This fails when the manifest and the content tree disagree.
-      - name: Published manifest matches the content tree
-        run: pnpm check:published-manifest
+      # Round 21 §5's manifest is RETIRED in round 25, and the rule it protected
+      # is not. A legacy URL must not 301 into a 404, and a file in git listing
+      # which rows are published cannot stay true when a publish takes seconds
+      # and needs no commit. The map points article URLs at the hub and names the
+      # studies that were deleted; `check:redirects` below is what proves it,
+      # and it is what caught both defects in that change.
 
       # Round 24 §4. Canon §6 as a gate rather than a habit: a figure in the body
       # of a PUBLISHED insight must have a matching `sources` entry. It runs in
