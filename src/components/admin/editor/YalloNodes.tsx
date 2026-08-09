@@ -7,7 +7,7 @@ import {
   NodeViewWrapper,
   ReactNodeViewRenderer,
 } from "@tiptap/react";
-import { useId } from "react";
+import { useId, useState } from "react";
 import {
   capabilitiesIndex,
   industriesIndex,
@@ -372,6 +372,94 @@ export const PetalDivider = Node.create({
 
 /* ── Image ──────────────────────────────────────────────────────────────── */
 
+/**
+ * The media library, offered inside the image block.
+ *
+ * WHY IT IS HERE RATHER THAN ONLY IN THE PANE. Without it the only way to place
+ * an uploaded image is to copy a URL from one screen and retype the alt text on
+ * another, so the alt text the library made mandatory becomes optional again in
+ * practice and nobody ever writes a `srcset` by hand. Choosing here carries the
+ * URL, the rendition set, the alt text, the caption and the intrinsic size
+ * across in one act.
+ *
+ * FETCHED ON DEMAND, not on mount. Most edits do not touch an image, and a
+ * request per editor load for a list nobody opens is a request nobody asked
+ * for.
+ */
+interface LibraryAsset {
+  id: string;
+  url: string;
+  alt: string;
+  caption: string | null;
+  width: number | null;
+  height: number | null;
+  objectKey: string;
+  srcSet: string;
+}
+
+function MediaPicker({ onPick }: { onPick: (asset: LibraryAsset) => void }) {
+  const [assets, setAssets] = useState<LibraryAsset[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function load() {
+    setError(null);
+    try {
+      const response = await fetch("/api/admin/media");
+      const payload = (await response.json()) as {
+        assets?: LibraryAsset[];
+        error?: string;
+      };
+      if (!response.ok) {
+        setError(payload.error ?? `HTTP ${response.status}`);
+        return;
+      }
+      setAssets(payload.assets ?? []);
+    } catch (err) {
+      setError((err as Error).message);
+    }
+  }
+
+  if (assets === null) {
+    return (
+      <div className={styles.blockField}>
+        <button className={styles.blockAdd} onClick={load} type="button">
+          Choose from the media library
+        </button>
+        {error ? <span className={styles.blockNote}>{error}</span> : null}
+      </div>
+    );
+  }
+
+  if (assets.length === 0) {
+    return (
+      <span className={styles.blockNote}>
+        The library is empty. Upload in the Media pane first.
+      </span>
+    );
+  }
+
+  return (
+    <div className={styles.blockField}>
+      <span className={styles.blockFieldLabel}>Media library</span>
+      <select
+        className={styles.blockInput}
+        defaultValue=""
+        onChange={(event) => {
+          const chosen = assets.find((a) => a.id === event.target.value);
+          if (chosen) onPick(chosen);
+        }}
+      >
+        <option value="">Choose an asset</option>
+        {assets.map((asset) => (
+          <option key={asset.id} value={asset.id}>
+            {asset.objectKey}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
 function ImageView({ node, updateAttributes, deleteNode }: NodeViewProps) {
   const src = String(node.attrs.src ?? "");
   const alt = String(node.attrs.alt ?? "");
@@ -386,10 +474,26 @@ function ImageView({ node, updateAttributes, deleteNode }: NodeViewProps) {
           // biome-ignore lint/performance/noImgElement: an uploaded asset at its intrinsic size, same reasoning as the public renderer
           <img alt={alt} className={styles.blockImage} src={src} />
         ) : null}
+        <MediaPicker
+          onPick={(asset) =>
+            updateAttributes({
+              src: asset.url,
+              srcset: asset.srcSet,
+              /* The alt text the library holds is the one somebody wrote while
+                 looking at the image. It is offered, not imposed: an author who
+                 has already written one for this placement keeps it. */
+              alt: alt.trim() === "" ? asset.alt : alt,
+              caption:
+                String(node.attrs.caption ?? "") || (asset.caption ?? ""),
+              width: asset.width,
+              height: asset.height,
+            })
+          }
+        />
         <AttrInput
           label="Image URL"
-          onChange={(next) => updateAttributes({ src: next })}
-          placeholder="Upload from the media library, then paste the URL"
+          onChange={(next) => updateAttributes({ src: next, srcset: "" })}
+          placeholder="Chosen from the library above, or pasted"
           required
           value={src}
         />
@@ -421,6 +525,11 @@ export const YalloImage = Node.create({
     caption: { default: "" },
     width: { default: null },
     height: { default: null },
+    /* The rendition set the library supplies. Empty for a hand-pasted URL and
+       for every image imported before the library existed, and the public
+       renderer omits both `srcset` and `sizes` in that case rather than
+       emitting an empty attribute. */
+    srcset: { default: "" },
   }),
   parseHTML: () => [{ tag: "img[src]" }],
   renderHTML: ({ HTMLAttributes }: RenderArgs) => [

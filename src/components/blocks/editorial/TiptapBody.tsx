@@ -327,7 +327,15 @@ export function renderBlock(node: TiptapNode, key: string): ReactNode {
             className={styles.figureImg}
             height={attrs.height ?? undefined}
             loading="lazy"
+            /* `sizes` is the measure, not a guess: `.prose` is 72ch, which
+               resolves to roughly 780px, and below that the figure is the
+               viewport. Without it a browser assumes 100vw and downloads the
+               widest rendition on a phone, which is the resizing spent
+               backwards. Both attributes are omitted together when a body
+               carries an image inserted before the library existed. */
+            sizes={attrs.srcset ? "(max-width: 820px) 100vw, 780px" : undefined}
             src={src}
+            srcSet={attrs.srcset || undefined}
             width={attrs.width ?? undefined}
           />
           {caption === "" ? null : (

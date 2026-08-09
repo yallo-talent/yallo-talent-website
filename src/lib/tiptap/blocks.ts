@@ -54,6 +54,18 @@ export interface ImageAttrs {
   caption: string;
   width: number | null;
   height: number | null;
+  /**
+   * The rendition set, carried on the node rather than looked up at render
+   * time.
+   *
+   * WHY IT IS DENORMALISED. The public renderer draws a body with no database
+   * of its own to consult, and a per-image lookup on every article render would
+   * be a query per image for a value that cannot change: a rendition's key
+   * carries its width, and a re-upload gets new keys. Empty for every image
+   * inserted by hand or imported before the library existed, and the renderer
+   * simply omits the attribute in that case.
+   */
+  srcset: string;
 }
 
 export interface ChartRow {
