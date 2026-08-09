@@ -82,6 +82,13 @@ jobs:
         run: pnpm check:prose
       - name: Published manifest is current
         run: pnpm check:published-manifest
+      # Canon §6, as a gate: no figure in a PUBLISHED insight without a matching
+      # `sources` entry. Drafts are exempt. The self-test runs first and writes a
+      # real fixture article that fails, so a checker that has gone blind cannot
+      # pass by finding nothing — which matters more here than anywhere, because
+      # every insight on the tree is a draft and the real corpus is a trivial pass.
+      - name: Sources on published insights (self-test, then the real corpus)
+        run: node scripts/check-sources.mjs --selftest
       - name: Write path invariants
         run: pnpm check:write-path
       - name: Taxonomy
@@ -166,6 +173,15 @@ jobs:
       # action. This fails when the manifest and the content tree disagree.
       - name: Published manifest matches the content tree
         run: pnpm check:published-manifest
+
+      # Round 24 §4. Canon §6 as a gate rather than a habit: a figure in the body
+      # of a PUBLISHED insight must have a matching `sources` entry. It runs in
+      # BOTH lanes because either can introduce one — the content lane when an
+      # article is edited, the full lane when the detector itself changes. The
+      # detector is one module, src/lib/unsourced-figures.mjs, shared with the
+      # Articles pane so the two cannot disagree about what a figure is.
+      - name: Sources on published insights (self-test, then the real corpus)
+        run: node scripts/check-sources.mjs --selftest
 
       - name: Build
         run: pnpm build
