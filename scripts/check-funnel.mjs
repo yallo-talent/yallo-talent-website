@@ -51,6 +51,8 @@ const bad = (what, detail) => {
 
 let browser;
 let fixtureEmail = null;
+/* R-27.1's ops account, removed in the same finally block as the owner one. */
+let opsEmail = null;
 let submissionId = null;
 
 async function cleanUp() {
@@ -64,15 +66,16 @@ async function cleanUp() {
     );
     await sql`delete from submissions where id = ${submissionId}`.catch(() => {});
   }
-  if (fixtureEmail) {
+  for (const email of [fixtureEmail, opsEmail]) {
+    if (!email) continue;
     try {
       execFileSync(
         "node",
-        [join(ROOT, "scripts/admin-fixture-user.mjs"), "remove", fixtureEmail],
+        [join(ROOT, "scripts/admin-fixture-user.mjs"), "remove", email],
         { encoding: "utf8" },
       );
     } catch {
-      console.error(`  NOTE  the fixture account ${fixtureEmail} was not removed.`);
+      console.error(`  NOTE  the fixture account ${email} was not removed.`);
     }
   }
 }
@@ -263,6 +266,120 @@ try {
       ok("the CSV downloads rather than rendering");
     }
   }
+
+  /* ── R-27.1: ops moves a lead, and reaches nothing else ────────────────── */
+  /**
+   * The role that the ruling widened, exercised as itself.
+   *
+   * WHY A SECOND FIXTURE ACCOUNT AND NOT A UNIT TEST. `e2e/roles.spec.ts`
+   * already asserts `canDo("ops", "briefsWrite")` and that is a fact about a
+   * lookup table. It is not evidence that an ops SESSION can move a lead: the
+   * pane reads the role, the server action re-checks it with `assertCapability`,
+   * and the export route asserts the pane — three places, and a table entry
+   * proves none of them. So an ops account signs in and does the thing.
+   *
+   * AND THE LIMITS THAT DID NOT MOVE, asserted in the same pass. Widening one
+   * capability is exactly when the neighbouring refusals need re-measuring,
+   * because the failure would be silent: nothing on the briefs pane would look
+   * different if content had quietly opened too.
+   */
+  const opsFixture = JSON.parse(
+    execFileSync(
+      "node",
+      [join(ROOT, "scripts/admin-fixture-user.mjs"), "create", "ops"],
+      { encoding: "utf8" },
+    )
+      .trim()
+      .split("\n")
+      .pop(),
+  );
+  opsEmail = opsFixture.email;
+  const opsCtx = await browser.newContext({
+    viewport: { width: 1400, height: 1000 },
+  });
+
+  if (
+    !(await signInTo(opsCtx, {
+      base: BASE,
+      email: opsFixture.email,
+      password: opsFixture.password,
+      onNote: (message) => bad(message),
+    }))
+  ) {
+    bad("the ops fixture account could not sign in, so R-27.1 was not exercised");
+  } else {
+    const opsPage = await opsCtx.newPage();
+    await opsPage.goto(`${BASE}/admin/briefs?state=all&source=ci-fixture`, {
+      waitUntil: "networkidle",
+    });
+    const opsCard = opsPage.locator("li", { hasText: "Gate Fixture" }).first();
+    const moveButton = opsCard.getByRole("button", {
+      name: "Qualified",
+      exact: true,
+    });
+    if ((await moveButton.count()) === 0) {
+      bad("ops is offered no pipeline control on the briefs pane");
+    } else {
+      await moveButton.click();
+      await opsPage
+        .waitForURL((u) => u.searchParams.has("moved"), { timeout: 20000 })
+        .catch(() => {});
+      const byOps = await sql`select state, updated_by from submission_funnel
+                               where submission_id = ${submissionId}`;
+      if (byOps[0]?.state !== "qualified") {
+        bad(
+          `ops did not move the lead: the state is "${byOps[0]?.state}" — R-27.1 widened briefsWrite to ops`,
+        );
+      } else if (byOps[0].updated_by !== opsFixture.email) {
+        bad(
+          `the write is attributed to ${byOps[0].updated_by}, not to the ops account that made it`,
+        );
+      } else {
+        ok(`ops moved the lead to "qualified", recorded against its own account`);
+      }
+
+      /* The capture row, again and specifically after an OPS write. */
+      const opsCapture = await sql`select endpoint from submissions
+                                    where id = ${submissionId}`;
+      if (opsCapture[0]?.endpoint !== "ci-fixture") {
+        bad("an ops funnel write altered the capture row");
+      } else {
+        ok("the capture row is still untouched after an ops write");
+      }
+    }
+
+    /**
+     * Everything ops must still be refused.
+     *
+     * REFUSED MEANS "DID NOT LAND THERE", NOT "GOT A 4XX". `requirePane`
+     * redirects a role that may not see a pane to its OWN landing pane, so a
+     * refused ops request for /admin/case-studies answers 200 — at
+     * /admin/briefs. The first version of this check read the status and
+     * reported four false failures on a correctly refusing build, which is the
+     * more dangerous mistake in the other direction: a status-only assertion
+     * would have passed a build that redirected everything to a 200 error page.
+     */
+    for (const [path, what] of [
+      ["/admin/case-studies", "case studies"],
+      ["/admin/articles", "articles"],
+      ["/admin/conversations", "assistant conversations"],
+      ["/admin/users", "accounts"],
+    ]) {
+      const probe = await opsCtx.newPage();
+      await probe.goto(`${BASE}${path}`, { waitUntil: "networkidle" });
+      const landed = new URL(probe.url()).pathname;
+      if (landed === path) {
+        bad(
+          `ops reached ${what} at ${path} — widening briefsWrite widened more than the pipeline`,
+        );
+      } else {
+        ok(`ops is still refused ${what} (sent to ${landed})`);
+      }
+      await probe.close();
+    }
+    await opsPage.close();
+  }
+  await opsCtx.close();
 
   /* ── An anonymous caller gets nothing ──────────────────────────────────── */
   const anon = await browser.newContext();

@@ -81,9 +81,25 @@ const PANE_ROLES: Record<Pane, readonly Role[]> = {
  * can reach a pane cannot necessarily do everything in it.
  */
 const CAPABILITY_ROLES = {
-  /* No such path exists yet. Named now so the first one is written against an
-     admin-only rule instead of inheriting briefs' read rule. */
-  briefsWrite: ["owner", "admin"],
+  /**
+   * OPS WRITES BRIEFS — R-27.1, Sumeet's ruling.
+   *
+   * Round 25 named this capability before any write path existed, so that the
+   * first one would arrive against an admin-only rule rather than inherit
+   * briefs' read rule by accident. Round 26 built the path — moving a lead
+   * through the pipeline, assigning an owner — and honoured that entry.
+   *
+   * The consequence was then asserted in `e2e/roles.spec.ts` and it read badly
+   * out loud: ops could see every lead and could not move one, which is the
+   * whole job of the role. That was the entry doing its job — it made widening
+   * the rule a deliberate act against a red test rather than a quiet edit here.
+   * This is that act.
+   *
+   * IT IS THE PIPELINE ONLY. `ops` still reaches no content, no conversations
+   * and no users, and the capture row itself is never edited from any pane.
+   * `check:funnel` asserts all four.
+   */
+  briefsWrite: ["owner", "admin", "ops"],
   usersManage: ["owner", "admin"],
   /* ONLY AN OWNER MAY MAKE AN OWNER, and this is a delegated decision rather
      than a line of canon, logged in relay v34 for Sumeet's veto. Canon A4 says
