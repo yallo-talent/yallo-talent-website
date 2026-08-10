@@ -8,6 +8,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { ReactNode, RefObject } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { toPlainDoc } from "@/lib/tiptap/schema.mjs";
 import { readingTimeMinutes, wordCount } from "@/lib/tiptap/text.mjs";
 import styles from "./Editor.module.css";
 import { SelectionToolbar } from "./SelectionToolbar";
@@ -224,7 +225,12 @@ export function Editor({
       },
     },
     onUpdate: ({ editor: e }) => {
-      const body = e.getJSON();
+      /* `toPlainDoc` HERE AND NOT ONLY ON THE SAVE PATH — R-27.5. This value
+         reaches a server action through `schedule`, and a null-prototype
+         `attrs` crossing that boundary is the 500 the helper documents. Doing
+         it once, where the document leaves ProseMirror, means no later reader
+         of this callback has to know. */
+      const body = toPlainDoc(e.getJSON());
       onDocChange?.(body);
       setCounts({ words: wordCount(body), minutes: readingTimeMinutes(body) });
       schedule(body);
@@ -249,7 +255,7 @@ export function Editor({
     if (!saveNowRef) return;
     saveNowRef.current = async () => {
       const current = editorRef.current;
-      if (current) schedule(current.getJSON());
+      if (current) schedule(toPlainDoc(current.getJSON()));
       await flush();
     };
     return () => {

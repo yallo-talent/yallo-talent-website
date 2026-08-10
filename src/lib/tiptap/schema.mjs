@@ -139,6 +139,43 @@ export function normaliseHeadings(doc) {
   return walk(doc);
 }
 
+/**
+ * The document as plain JSON objects, for the crossing into a server action.
+ *
+ * R-27.5, AND IT WAS A LIVE 500 ON EVERY PUBLISHED STUDY. ProseMirror builds a
+ * node's `attrs` with `Object.create(null)`, and `getJSON()` hands that same
+ * null-prototype object straight out. React's server-action reply serialiser
+ * only encodes a plain object: anything whose prototype is not
+ * `Object.prototype` becomes a TEMPORARY REFERENCE — the wire carried
+ * `"attrs":"$T"` — and the first server-side read of `attrs.level`, which is
+ * `normaliseHeadings` two lines into the save, threw "Cannot access level on
+ * the server. You cannot dot into a temporary client reference." Digest
+ * 2280395671 on the production host, and the banner Sumeet saw over the
+ * cockpit.
+ *
+ * WHY EVERY HEADING AND NOT SOME OF THEM. `Node.toJSON` emits `attrs` only when
+ * the node HAS attributes, so a document of bare paragraphs crosses cleanly and
+ * one with a single heading does not. Every imported study opens with an H2,
+ * which is why the defect looked like "published case studies are broken" — and
+ * why no fixture caught it: an empty draft is exactly the shape that works. It
+ * is not headings alone. `image`, `chart`, `youtube`, `keyFigure`, `faq` and a
+ * `link` mark all carry attributes, so the whole editor was one attribute away
+ * from this on every body.
+ *
+ * WHY A JSON ROUND-TRIP RATHER THAN A PROTOTYPE FIX PER NODE. The destination
+ * of this value is `JSON.stringify(body)` into a jsonb column, so JSON is
+ * already the contract and nothing survives the trip that the column would have
+ * kept. A per-node fix would be an allow-list of which attributes to rebuild,
+ * maintained beside the node registry, and wrong the first time a block is
+ * added — which is the failure mode this repository keeps paying for.
+ *
+ * @param {unknown} doc TipTap document JSON, straight from `getJSON()`
+ * @returns {unknown} the same document as plain objects and arrays
+ */
+export function toPlainDoc(doc) {
+  return JSON.parse(JSON.stringify(doc));
+}
+
 /** An empty document, the shape a new draft starts from. */
 export const EMPTY_DOC = { type: "doc", content: [] };
 

@@ -31,7 +31,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "@playwright/test";
 import { signInTo } from "./lib/admin-sign-in.mjs";
-import { CI_FIXTURE_PREFIX } from "./lib/ci-fixtures.mjs";
+import { CI_FIXTURE_PREFIX, ciFixtureSlug } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3115";
 const EMAIL = process.env.ADMIN_TEST_EMAIL ?? "";
@@ -430,11 +430,6 @@ if (panesMeasured < expected) {
   );
 }
 
-if (advisory.length) {
-  console.log(`\n${advisory.length} advisory item(s):`);
-  for (const a of advisory.sort()) console.log(`  ${a}`);
-}
-
 /* ------------------------------------------------------- the panes by role */
 
 /**
@@ -571,9 +566,182 @@ if (!process.env.DATABASE_URL) {
 }
 
 
+/* --------------------------------- the attribute-bearing body — R-27.5 */
+
+/**
+ * A body whose nodes CARRY ATTRIBUTES, saved through the server action.
+ *
+ * THE DEFECT THIS EXISTS FOR, measured on the production host as digest
+ * 2280395671. ProseMirror builds a node's `attrs` with `Object.create(null)`;
+ * React's server-action reply serialiser encodes only a plain object, so the
+ * autosave put `"attrs":"$T"` — a temporary reference — on the wire, and the
+ * first server-side read of `attrs.level` threw. Every published case study
+ * opens with an H2, so opening any of them and touching the body produced a
+ * banner over the cockpit. `src/lib/tiptap/schema.mjs`'s `toPlainDoc` is the
+ * fix.
+ *
+ * WHY THE EXISTING GATES WERE ALL GREEN, and this is the part worth keeping.
+ * `check:editor` inserts its fixture with the column default — an EMPTY doc —
+ * and types a plain sentence, which is a paragraph with no attributes. Every
+ * fixture in this repository was the one shape that works. The row discovery
+ * above visits a real published study, but it only RENDERS it, and rendering
+ * never crosses the boundary that broke. So the shape is a fixture now: a
+ * heading with a level, present before the editor opens, saved back through the
+ * action.
+ *
+ * IT ASSERTS THE DATABASE AND THE NETWORK, not the saved pill. The pill said
+ * "saving" and stopped; a gate that watched the indicator would have believed
+ * the write. What is asserted is that no response came back 4xx or 5xx and that
+ * the heading is still an OBJECT carrying its level when read back out.
+ */
+let attrsFixtureId = null;
+const ATTRS_MARKER = " A sentence the render gate appended.";
+
+if (!process.env.DATABASE_URL) {
+  advisory.push(
+    "R-27.5's attribute-bearing save NOT exercised: DATABASE_URL is not set, so no\n" +
+      "      fixture row could be created. Reported rather than skipped silently.",
+  );
+} else {
+  const { neon } = await import("@neondatabase/serverless");
+  const sql = neon(process.env.DATABASE_URL);
+  /* R-25c.1's reserved prefix, so the row discovery above excludes this row in a
+     concurrent run rather than racing it. */
+  const slug = ciFixtureSlug("attrs-body");
+  const fixtureBody = {
+    type: "doc",
+    content: [
+      {
+        type: "heading",
+        attrs: { level: 2 },
+        content: [{ type: "text", text: "A heading this gate wrote" }],
+      },
+      {
+        type: "paragraph",
+        content: [{ type: "text", text: "A paragraph carrying no attributes." }],
+      },
+    ],
+  };
+
+  try {
+    const inserted = await sql`
+      insert into case_studies (slug, title, summary, status, body)
+      values (${slug}, 'A fixture the admin-render gate made',
+              'A summary written for this gate and nowhere else.', 'draft',
+              ${JSON.stringify(fixtureBody)})
+      returning id`;
+    attrsFixtureId = String(inserted[0].id);
+
+    const ctx = await browser.newContext({
+      viewport: { width: 1400, height: 1000 },
+      colorScheme: "light",
+      reducedMotion: "reduce",
+    });
+
+    if (!(await signIn(ctx))) {
+      blocking.push(
+        "R-27.5: sign-in did not produce a session, so the attribute-bearing save was\n" +
+          "      never exercised.",
+      );
+    } else {
+      const page = await ctx.newPage();
+      const broken = [];
+      page.on("response", (r) => {
+        if (r.status() >= 400)
+          broken.push(`${r.status()} ${r.request().method()} ${r.url()}`);
+      });
+
+      await page.goto(`${BASE}/admin/case-studies/${attrsFixtureId}`, {
+        waitUntil: "networkidle",
+        timeout: 45000,
+      });
+
+      const editable = page.locator('[contenteditable="true"]').first();
+      if ((await editable.count()) === 0) {
+        blocking.push(
+          "R-27.5: the editor did not mount on the fixture row, so nothing was saved.",
+        );
+      } else {
+        await editable.click();
+        /* To the END of the document, so the typing lands in the paragraph and
+           the heading stays a heading — the node under test must survive the
+           edit, not be typed over. */
+        await page.keyboard.press("ControlOrMeta+End");
+        await page.keyboard.type(ATTRS_MARKER);
+        await page
+          .waitForFunction(
+            () =>
+              document.querySelector("output[data-state]")?.dataset.state ===
+              "saved",
+            { timeout: 20000 },
+          )
+          .catch(() => {});
+
+        const stored = await sql`
+          select body from case_studies where id = ${attrsFixtureId}`;
+        const doc = stored[0]?.body ?? {};
+        const heading = (doc.content ?? []).find((n) => n?.type === "heading");
+        const text = JSON.stringify(doc);
+
+        if (broken.length) {
+          blocking.push(
+            "R-27.5: saving a body whose nodes carry attributes failed on the wire —\n" +
+              broken.map((b) => `      ${b}`).join("\n"),
+          );
+        }
+        if (!heading || typeof heading.attrs !== "object") {
+          blocking.push(
+            `R-27.5: the heading's attrs did not survive the server action as an object — ${JSON.stringify(heading?.attrs)}.\n` +
+              "      This is the temporary-reference defect: a null-prototype attrs object\n" +
+              "      crosses as \"$T\" and every server-side read of it throws.",
+          );
+        } else if (heading.attrs.level !== 2) {
+          blocking.push(
+            `R-27.5: the heading came back at level ${JSON.stringify(heading.attrs.level)} rather than 2.`,
+          );
+        }
+        if (!text.includes(ATTRS_MARKER.trim())) {
+          blocking.push(
+            "R-27.5: the typed sentence never reached the row, so the save did not complete.",
+          );
+        }
+      }
+      await page.close();
+    }
+    await ctx.close();
+  } catch (err) {
+    blocking.push(
+      `R-27.5: the attribute-bearing save check threw rather than completing — ${err instanceof Error ? err.message : err}`,
+    );
+  } finally {
+    if (attrsFixtureId) {
+      await sql`delete from content_revisions where content_id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+      await sql`delete from content_audit where content_id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+      await sql`delete from case_studies where id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+    }
+  }
+}
+
 /* Closed here rather than after the env sweep: the role pass below opens its
    own contexts on this same browser. */
 await browser.close();
+
+/* PRINTED HERE, NOT BEFORE THE ROLE PASS. It used to run halfway up this file,
+   which meant every advisory the role pass and R-27.5's save check raise was
+   pushed onto a list nothing read again — including "NOT exercised, no
+   DATABASE_URL", the one line that tells an operator the run measured less than
+   it looks like it did. An abstention reported nowhere is the failure R10 names,
+   and this gate was committing it about its own two later passes. */
+if (advisory.length) {
+  console.log(`\n${advisory.length} advisory item(s):`);
+  for (const a of advisory.sort()) console.log(`  ${a}`);
+}
 
 if (blocking.length) {
   console.error(`\ncheck:admin-render FAILED with ${blocking.length} problem(s):\n`);
