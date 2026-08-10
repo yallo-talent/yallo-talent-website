@@ -1,0 +1,24 @@
+-- An index on the column the cockpit's origin filter reads — R-27.3(c).
+--
+-- WHY THIS MIGRATION AND NOT ANOTHER. It is deliberately the smallest real
+-- schema change available: one index, no column, no constraint, no data. Its job
+-- in this round is to be the FIRST migration to travel the out-of-band path
+-- AGENTS.md now states — applied against production before the branch merges,
+-- with the `_migrations` row verified before the pull request goes up. A rule
+-- proved with a migration that also matters is a rule tested twice at once, and
+-- one of the two failures would mask the other.
+--
+-- IT IS NOT ONLY CEREMONY. `/admin/conversations` filters transcripts by
+-- `origin_path`, and the table has an index on `transcript_id` and on
+-- `created_at` and none on the column the filter actually uses. At 247 rows the
+-- planner will sequentially scan it either way and the index buys nothing
+-- measurable today; it is written now because the retention window is the only
+-- thing keeping that table small, and the round after somebody widens the window
+-- is the wrong round to discover this.
+--
+-- `if not exists` because this migration is applied by hand against production
+-- BEFORE it merges, and then again by whoever runs `pnpm db:migrate` on a fresh
+-- database afterwards. A migration that cannot be applied twice cannot travel
+-- the path the rule describes.
+create index if not exists assistant_transcripts_origin_path_idx
+  on assistant_transcripts (origin_path);
