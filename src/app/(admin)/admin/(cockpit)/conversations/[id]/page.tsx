@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import styles from "@/components/admin/Admin.module.css";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import { requirePane } from "@/lib/admin/guard";
 import { readConversation } from "@/lib/admin/reads";
 import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
-import styles from "../../../Admin.module.css";
 
 /**
  * One conversation, in full. Round 20 §3.1's "one click deeper".

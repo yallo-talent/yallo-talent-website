@@ -1,4 +1,6 @@
 import Link from "next/link";
+import styles from "@/components/admin/Admin.module.css";
+import { RowTitle } from "@/components/admin/RowTitle";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import { ORIGIN_DATA_FROM } from "@/lib/admin/funnel";
 import { requirePane } from "@/lib/admin/guard";
@@ -8,8 +10,6 @@ import {
 } from "@/lib/admin/reads";
 import { TRANSCRIPT_RETENTION_DAYS } from "@/lib/assistant/retention";
 import { briefsByTranscript, originRollup } from "@/lib/db/funnel";
-import styles from "../../Admin.module.css";
-import { RowTitle } from "../../RowTitle";
 
 /**
  * Pane 2, Conversations. READ ONLY, and deliberately so (round 17 §3).

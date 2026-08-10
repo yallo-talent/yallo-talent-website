@@ -1,4 +1,6 @@
 import Link from "next/link";
+import styles from "@/components/admin/Admin.module.css";
+import { RowTitle } from "@/components/admin/RowTitle";
 import {
   ACTIONABLE_STATES,
   FUNNEL_DESCRIPTIONS,
@@ -14,8 +16,6 @@ import { type BriefRow, readBriefs } from "@/lib/admin/reads";
 import { canDo } from "@/lib/admin/roles";
 import { type FunnelRow, readFunnel } from "@/lib/db/funnel";
 import { listUsers } from "@/lib/db/users";
-import styles from "../../Admin.module.css";
-import { RowTitle } from "../../RowTitle";
 import { setFunnelAction } from "./actions";
 
 /**

@@ -31,7 +31,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "@playwright/test";
 import { signInTo } from "./lib/admin-sign-in.mjs";
-import { CI_FIXTURE_PREFIX } from "./lib/ci-fixtures.mjs";
+import { CI_FIXTURE_PREFIX, ciFixtureSlug } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3115";
 const EMAIL = process.env.ADMIN_TEST_EMAIL ?? "";
@@ -430,11 +430,6 @@ if (panesMeasured < expected) {
   );
 }
 
-if (advisory.length) {
-  console.log(`\n${advisory.length} advisory item(s):`);
-  for (const a of advisory.sort()) console.log(`  ${a}`);
-}
-
 /* ------------------------------------------------------- the panes by role */
 
 /**
@@ -571,9 +566,403 @@ if (!process.env.DATABASE_URL) {
 }
 
 
+/* --------------------------------- the attribute-bearing body — R-27.5 */
+
+/**
+ * A body whose nodes CARRY ATTRIBUTES, saved through the server action.
+ *
+ * THE DEFECT THIS EXISTS FOR, measured on the production host as digest
+ * 2280395671. ProseMirror builds a node's `attrs` with `Object.create(null)`;
+ * React's server-action reply serialiser encodes only a plain object, so the
+ * autosave put `"attrs":"$T"` — a temporary reference — on the wire, and the
+ * first server-side read of `attrs.level` threw. Every published case study
+ * opens with an H2, so opening any of them and touching the body produced a
+ * banner over the cockpit. `src/lib/tiptap/schema.mjs`'s `toPlainDoc` is the
+ * fix.
+ *
+ * WHY THE EXISTING GATES WERE ALL GREEN, and this is the part worth keeping.
+ * `check:editor` inserts its fixture with the column default — an EMPTY doc —
+ * and types a plain sentence, which is a paragraph with no attributes. Every
+ * fixture in this repository was the one shape that works. The row discovery
+ * above visits a real published study, but it only RENDERS it, and rendering
+ * never crosses the boundary that broke. So the shape is a fixture now: a
+ * heading with a level, present before the editor opens, saved back through the
+ * action.
+ *
+ * IT ASSERTS THE DATABASE AND THE NETWORK, not the saved pill. The pill said
+ * "saving" and stopped; a gate that watched the indicator would have believed
+ * the write. What is asserted is that no response came back 4xx or 5xx and that
+ * the heading is still an OBJECT carrying its level when read back out.
+ */
+let attrsFixtureId = null;
+const ATTRS_MARKER = " A sentence the render gate appended.";
+
+if (!process.env.DATABASE_URL) {
+  advisory.push(
+    "R-27.5's attribute-bearing save NOT exercised: DATABASE_URL is not set, so no\n" +
+      "      fixture row could be created. Reported rather than skipped silently.",
+  );
+} else {
+  const { neon } = await import("@neondatabase/serverless");
+  const sql = neon(process.env.DATABASE_URL);
+  /* R-25c.1's reserved prefix, so the row discovery above excludes this row in a
+     concurrent run rather than racing it. */
+  const slug = ciFixtureSlug("attrs-body");
+  const fixtureBody = {
+    type: "doc",
+    content: [
+      {
+        type: "heading",
+        attrs: { level: 2 },
+        content: [{ type: "text", text: "A heading this gate wrote" }],
+      },
+      {
+        type: "paragraph",
+        content: [{ type: "text", text: "A paragraph carrying no attributes." }],
+      },
+    ],
+  };
+
+  try {
+    const inserted = await sql`
+      insert into case_studies (slug, title, summary, status, body)
+      values (${slug}, 'A fixture the admin-render gate made',
+              'A summary written for this gate and nowhere else.', 'draft',
+              ${JSON.stringify(fixtureBody)})
+      returning id`;
+    attrsFixtureId = String(inserted[0].id);
+
+    /* BOTH THEMES, because R-27.6 asks for both and the pane's controls are
+       styled per theme. The SAVE half runs once: it is a fact about the wire,
+       not about a colour scheme, and running it twice would only write a second
+       revision. */
+    for (const theme of THEMES) {
+      const ctx = await browser.newContext({
+        viewport: { width: 1400, height: 1000 },
+        colorScheme: theme,
+        reducedMotion: "reduce",
+      });
+      await ctx.addInitScript((t) => {
+        try {
+          localStorage.setItem("yallo-theme", t);
+        } catch {}
+        const stamp = () =>
+          document.documentElement.setAttribute("data-theme", t);
+        stamp();
+        document.addEventListener("DOMContentLoaded", stamp);
+      }, theme);
+
+      if (!(await signIn(ctx))) {
+        blocking.push(
+          `R-27.5/R-27.6 ${theme}: sign-in did not produce a session, so neither the\n` +
+            "      attribute-bearing save nor the preview pane was exercised.",
+        );
+        await ctx.close();
+        continue;
+      }
+
+      const page = await ctx.newPage();
+      const broken = [];
+      page.on("response", (r) => {
+        if (r.status() >= 400)
+          broken.push(`${r.status()} ${r.request().method()} ${r.url()}`);
+      });
+
+      await page.goto(`${BASE}/admin/case-studies/${attrsFixtureId}`, {
+        waitUntil: "networkidle",
+        timeout: 45000,
+      });
+
+      const editable = page.locator('[contenteditable="true"]').first();
+      if ((await editable.count()) === 0) {
+        blocking.push(
+          `R-27.5 ${theme}: the editor did not mount on the fixture row, so nothing was measured.`,
+        );
+        await page.close();
+        await ctx.close();
+        continue;
+      }
+
+      if (theme === THEMES[0]) {
+        await editable.click();
+        /* To the END of the document, so the typing lands in the paragraph and
+           the heading stays a heading — the node under test must survive the
+           edit, not be typed over. */
+        await page.keyboard.press("ControlOrMeta+End");
+        await page.keyboard.type(ATTRS_MARKER);
+        await page
+          .waitForFunction(
+            () =>
+              document.querySelector("output[data-state]")?.dataset.state ===
+              "saved",
+            { timeout: 20000 },
+          )
+          .catch(() => {});
+
+        const stored = await sql`
+          select body from case_studies where id = ${attrsFixtureId}`;
+        const doc = stored[0]?.body ?? {};
+        const heading = (doc.content ?? []).find((n) => n?.type === "heading");
+        const text = JSON.stringify(doc);
+
+        if (broken.length) {
+          blocking.push(
+            "R-27.5: saving a body whose nodes carry attributes failed on the wire —\n" +
+              broken.map((b) => `      ${b}`).join("\n"),
+          );
+        }
+        if (!heading || typeof heading.attrs !== "object") {
+          blocking.push(
+            `R-27.5: the heading's attrs did not survive the server action as an object — ${JSON.stringify(heading?.attrs)}.\n` +
+              "      This is the temporary-reference defect: a null-prototype attrs object\n" +
+              '      crosses as "$T" and every server-side read of it throws.',
+          );
+        } else if (heading.attrs.level !== 2) {
+          blocking.push(
+            `R-27.5: the heading came back at level ${JSON.stringify(heading.attrs.level)} rather than 2.`,
+          );
+        }
+        if (!text.includes(ATTRS_MARKER.trim())) {
+          blocking.push(
+            "R-27.5: the typed sentence never reached the row, so the save did not complete.",
+          );
+        }
+      }
+
+      /* ── R-27.2: nothing sticky covers anything else sticky ────────────── */
+      /**
+       * Scrolled, then measured. This is the "1280 overlap" in its exact form:
+       * the cockpit bar and the editor's lifecycle rail were both
+       * `position: sticky; top: 0`, so the rail — the higher z-index — covered
+       * the whole bar the moment anyone scrolled, with the bar's ends showing
+       * either side of it. Asserted rather than eyeballed because the two rules
+       * live in two stylesheets and neither mentions the other.
+       */
+      /* THREE WIDTHS, because the second instance of this defect was invisible
+         at one. The toolbar's offset was a literal 52px against a rail that
+         wraps: 67px tall at 1280 and 107px at 800, so it covered the rail by
+         15px at one width and 55px at another. A one-width assertion would have
+         called the 1280 case a rounding error and never seen the 800 case. */
+      for (const width of [1400, 1024, 800]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.evaluate(() => window.scrollTo(0, 1200));
+        await page.waitForTimeout(400);
+        const stack = await page.evaluate(() => {
+          const boxes = {
+            "cockpit bar": document.querySelector('header[class*="bar"]'),
+            "lifecycle rail": document.querySelector('[class*="rail"]'),
+            "top toolbar": document.querySelector('[class*="toolbar"]'),
+          };
+          const missing = Object.entries(boxes)
+            .filter(([, el]) => !el)
+            .map(([name]) => name);
+          if (missing.length) return { missing };
+          const names = Object.keys(boxes);
+          const overlaps = [];
+          for (let i = 0; i < names.length; i += 1) {
+            for (let j = i + 1; j < names.length; j += 1) {
+              const a = boxes[names[i]].getBoundingClientRect();
+              const b = boxes[names[j]].getBoundingClientRect();
+              const y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+              const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+              if (y > 1 && x > 1)
+                overlaps.push(`${names[i]} and ${names[j]} by ${Math.round(y)}px`);
+            }
+          }
+          return { overlaps };
+        });
+        if (stack.missing) {
+          blocking.push(
+            `R-27.2 ${theme}/${width}: could not find ${stack.missing.join(", ")}, so the\n` +
+              "      sticky-overlap assertion measured nothing.",
+          );
+        } else if (stack.overlaps.length) {
+          blocking.push(
+            `R-27.2 ${theme}/${width}: scrolled, sticky boxes overlap — ${stack.overlaps.join("; ")}.\n` +
+              "      Two sticky boxes at the same offset in one scroll container overlap by\n" +
+              "      construction, and an offset guessed against a box that WRAPS is right at\n" +
+              "      one width and wrong at the next.",
+          );
+        }
+      }
+      await page.setViewportSize({ width: 1400, height: 1000 });
+      await page.evaluate(() => window.scrollTo(0, 0));
+
+      /* ── R-27.6: the whole page smaller, never a cropped page ──────────── */
+      await page
+        .getByRole("button", { name: "Preview", exact: true })
+        .click()
+        .catch(() => {});
+      const frameSelector = 'iframe[title="Preview in the published template"]';
+      const appeared = await page
+        .waitForSelector(frameSelector, { state: "visible", timeout: 15000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (!appeared) {
+        blocking.push(
+          `R-27.6 ${theme}: the preview pane showed no frame, so nothing about clipping was measured.`,
+        );
+      } else {
+        const openTab = page.getByRole("link", { name: "Open in new tab" });
+        if ((await openTab.count()) === 0) {
+          blocking.push(
+            `R-27.6 ${theme}: there is no "Open in new tab" beside the size controls.`,
+          );
+        } else {
+          const box = await openTab.first().boundingBox();
+          if (!box || box.height < 24 || box.width < 24) {
+            blocking.push(
+              `R-27.6 ${theme}: "Open in new tab" is ${box ? `${Math.round(box.width)}x${Math.round(box.height)}` : "not painted"}, below SC 2.5.8's 24px.`,
+            );
+          }
+        }
+
+        for (const width of [1280, 360]) {
+          /* Cleared before the click so the stability check below cannot be
+             satisfied by the previous size's reading. */
+          await page.evaluate(() => {
+            window.__yalloPreviewPainted = -1;
+          });
+          await page
+            .getByRole("button", { name: String(width), exact: true })
+            .click();
+          /* WAITED ON STABILITY, NOT ON THE THING UNDER TEST. The size toggle
+             re-keys the iframe, so a fixed sleep races a reload; and waiting on
+             the CSS width alone caught a real intermediate state — the new width
+             applied while the previous scale was still in place — which reported
+             a correctly scaled pane as cropped. Waiting on "the painted width
+             agrees with itself two polls running, at the right register" is
+             neither a race nor a restatement of the assertion. */
+          await page
+            .waitForFunction(
+              ({ selector, w }) => {
+                const el = document.querySelector(selector);
+                if (!el) return false;
+                if (
+                  Math.abs(Number.parseFloat(getComputedStyle(el).width) - w) >=
+                  2
+                )
+                  return false;
+                const painted = Math.round(el.getBoundingClientRect().width);
+                const previous = window.__yalloPreviewPainted;
+                window.__yalloPreviewPainted = painted;
+                return painted > 0 && previous === painted;
+              },
+              { selector: frameSelector, w: width },
+              { timeout: 15000 },
+            )
+            .catch(() => {});
+
+          const geometry = await page.evaluate((selector) => {
+            const frame = document.querySelector(selector);
+            /* By the CSS-module class rather than by walking up two parents: a
+               selector that counts wrappers breaks the next time one is added,
+               silently, by measuring the wrong box. */
+            const wrap = document.querySelector('[class*="previewFrameWrap"]');
+            if (!frame || !wrap) return null;
+            const fb = frame.getBoundingClientRect();
+            const wb = wrap.getBoundingClientRect();
+            /* NOT scrollWidth. A transform leaves the layout box at its true
+               width, so scrollWidth reports 1280 on a pane showing the whole
+               page correctly scaled — the first version of this assertion failed
+               a passing build for exactly that reason. What matters to a writer
+               is whether the pane CAN go sideways, so that is what is tried. */
+            const restore = wrap.scrollLeft;
+            wrap.scrollLeft = 9999;
+            const sideways = wrap.scrollLeft > 0;
+            wrap.scrollLeft = restore;
+            return {
+              /* The CSS width is the register the previewed page renders at;
+                 the painted width is what the pane actually shows. The point of
+                 the transform is that these differ. */
+              cssWidth: Number.parseFloat(getComputedStyle(frame).width),
+              paintedWidth: fb.width,
+              wrapWidth: wb.width,
+              overhangRight: fb.right - wb.right,
+              sideways,
+            };
+          }, frameSelector);
+
+          if (!geometry) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the preview frame could not be measured.`,
+            );
+            continue;
+          }
+          if (Math.abs(geometry.cssWidth - width) > 2) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the frame renders at ${Math.round(geometry.cssWidth)}px rather than ${width}px,\n` +
+                "      so the previewed page is at the wrong breakpoint. Narrowing the frame is\n" +
+                "      not the same as scaling it.",
+            );
+          }
+          if (geometry.sideways || geometry.overhangRight > 1) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the preview is CROPPED — the frame paints ${Math.round(geometry.paintedWidth)}px\n` +
+                `      into a ${Math.round(geometry.wrapWidth)}px pane, overhanging by ${Math.round(geometry.overhangRight)}px, and the pane\n` +
+                `      ${geometry.sideways ? "can be scrolled sideways" : "does not scroll sideways"}. The rule is the whole page smaller,\n` +
+                "      never a cropped page.",
+            );
+          }
+
+          /* And the previewed DOCUMENT itself must not push its own viewport:
+             a page that overflows 360 is a real defect in the template, and it
+             looks identical to a badly scaled pane from the outside. */
+          const inner = page
+            .frames()
+            .find((f) => f.url().includes("/admin/preview/"));
+          if (inner) {
+            const docOverflow = await inner
+              .evaluate(() => {
+                const d = document.documentElement;
+                return d.scrollWidth - d.clientWidth;
+              })
+              .catch(() => 0);
+            if (docOverflow > 0) {
+              blocking.push(
+                `R-27.6 ${theme}/${width}: the previewed document scrolls sideways by ${docOverflow}px inside its own frame.`,
+              );
+            }
+          }
+        }
+      }
+      await page.close();
+      await ctx.close();
+    }
+  } catch (err) {
+    blocking.push(
+      `R-27.5: the attribute-bearing save check threw rather than completing — ${err instanceof Error ? err.message : err}`,
+    );
+  } finally {
+    if (attrsFixtureId) {
+      await sql`delete from content_revisions where content_id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+      await sql`delete from content_audit where content_id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+      await sql`delete from case_studies where id = ${attrsFixtureId}`.catch(
+        () => {},
+      );
+    }
+  }
+}
+
 /* Closed here rather than after the env sweep: the role pass below opens its
    own contexts on this same browser. */
 await browser.close();
+
+/* PRINTED HERE, NOT BEFORE THE ROLE PASS. It used to run halfway up this file,
+   which meant every advisory the role pass and R-27.5's save check raise was
+   pushed onto a list nothing read again — including "NOT exercised, no
+   DATABASE_URL", the one line that tells an operator the run measured less than
+   it looks like it did. An abstention reported nowhere is the failure R10 names,
+   and this gate was committing it about its own two later passes. */
+if (advisory.length) {
+  console.log(`\n${advisory.length} advisory item(s):`);
+  for (const a of advisory.sort()) console.log(`  ${a}`);
+}
 
 if (blocking.length) {
   console.error(`\ncheck:admin-render FAILED with ${blocking.length} problem(s):\n`);

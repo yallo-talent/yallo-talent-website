@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import styles from "@/app/admin/Admin.module.css";
+import styles from "@/components/admin/Admin.module.css";
 
 /**
  * Drag and drop for the case-study order — design §8, "ordering is drag and

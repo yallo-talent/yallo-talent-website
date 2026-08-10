@@ -1,8 +1,8 @@
+import styles from "@/components/admin/Admin.module.css";
 import { requirePane } from "@/lib/admin/guard";
 import { type AssetUsage, allMedia, usageByAssetId } from "@/lib/db/media";
 import { MEDIA_WIDTHS } from "@/lib/media/config";
 import { readSpacesConfig } from "@/lib/media/spaces";
-import styles from "../../Admin.module.css";
 import { archiveAssetAction } from "./actions";
 import { MediaUpload } from "./MediaUpload";
 

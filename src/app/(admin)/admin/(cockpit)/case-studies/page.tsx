@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { RowTitle } from "@/app/admin/RowTitle";
+import styles from "@/components/admin/Admin.module.css";
 import { LifecycleHelp, NoticesStrip } from "@/components/admin/NoticesStrip";
+import { RowTitle } from "@/components/admin/RowTitle";
 import { requirePane } from "@/lib/admin/guard";
 import { noticesFor } from "@/lib/admin/notices";
 import { allCaseStudies } from "@/lib/db/content";
 import { publishedPaths } from "@/lib/published-routes";
-import styles from "../../Admin.module.css";
 import { setStatusAction } from "../articles/actions";
 import { moveAction, reorderAction } from "./actions";
 import { OrderList } from "./OrderList";

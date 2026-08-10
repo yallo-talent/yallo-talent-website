@@ -14,9 +14,46 @@
    cockpit follows the register the rest of the estate is in.
    -------------------------------------------------------------------------- */
 
+/**
+ * THE WRITING CANVAS IS A CARD — R-27.7, Sumeet's words: "a mix of white and
+ * grey so you can see what's what."
+ *
+ * Before this the cockpit was one flat ground from the bar to the foot of the
+ * page, so the writing surface, the rail above it, the preview beside it and the
+ * drawer had no edges between them: everything was the same tone and a person
+ * had to read the content to work out which region they were in.
+ *
+ * The hierarchy is three grounds from Layer 1 and nothing else — no new value,
+ * and it inverts correctly because each is an alias:
+ *
+ *   --bg              the page ground, and the rail's, so the rail reads as
+ *                     chrome ON the page rather than part of the canvas
+ *   --surface         this card, the lightest ground the system has
+ *   --surface-raised  the preview pane and the drawer, so an auxiliary pane is
+ *                     never mistaken for the thing being written
+ *
+ * The border is `--boundary`, the contrast-grade one: `--rule-strong` at 3.11:1
+ * in light and `--dk-line-strong` at 3.40:1 in dark. It was `--rule` first, and
+ * the impeccable pass measured why that was wrong — in the light block `--rule`
+ * and `--hairline` are the SAME value, so the choice did nothing there and gave
+ * a 1.34:1 edge against the page ground, while in dark it resolved to a
+ * near-white 11.8:1 line. One declaration, an invisible border in one register
+ * and a stark one in the other. Two grounds one step apart need an edge that is
+ * an edge in both.
+ */
 .shell {
+  /* The card's inset, declared once here and cancelled by the two sticky bars
+     inside it so their grounds reach the card's edges — otherwise the writing
+     stays visible in the gutters as it scrolls behind them. Three rules need
+     this number; written three times it goes wrong once. */
+  --canvas-pad: clamp(20px, 3vw, 40px);
+
   position: relative;
   margin-top: 24px;
+  padding-inline: var(--canvas-pad);
+  border: 1px solid var(--boundary);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
 }
 
 /* Full-screen writing mode. A fixed layer over the cockpit rather than the
@@ -495,12 +532,16 @@
 
 /* ── Preview ────────────────────────────────────────────────────────────── */
 
+/* ITS OWN GROUND, one step off the canvas — R-27.7. A preview pane the same
+   tone as the writing beside it is two documents with no boundary, which is what
+   this pane was. The bar above it carries the label, so the region is named as
+   well as toned. */
 .preview {
   position: sticky;
   top: 16px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
-  background: var(--surface);
+  background: var(--surface-raised);
   overflow: hidden;
 }
 
@@ -527,23 +568,69 @@
   gap: 6px;
 }
 
+/* A4's FILLED-CONTROL ROLE, not the meta role. These toggles carry
+   `aria-pressed`, and the pressed one takes `--accent-wash` — which makes it a
+   filled control, held to 15.5px rather than to the 14px meta floor. At
+   `--fs-caption` the two pressed toggles in this bar were a 14px filled
+   control the moment anyone opened the pane, and no gate had ever opened it.
+   `--fs-body-sm` is the token globals.css already annotates "buttons".
+
+   The min-height is SC 2.5.8's 24px stated rather than inferred from padding
+   plus a line box, and `inline-flex` is what lets the "Open in new tab" anchor
+   share this style without sitting a pixel off the buttons beside it. */
 .previewToggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   padding: 4px 10px;
+  font-size: var(--fs-body-sm);
+  text-decoration: none;
 }
 
 /* The frame is shown at its true CSS width and scaled to fit, so the 360
    register is measured at 360 rather than merely narrowed. A frame squeezed
-   into the pane would report the wrong breakpoint. */
+   into the pane would report the wrong breakpoint.
+
+   R-27.6: AND THE SCALING IS NOW ACTUALLY DONE. This comment described the
+   intention and the rule for a round while `overflow: auto` did the opposite —
+   at the 1280 setting the writer got the left two thirds of the template and a
+   horizontal scrollbar. `overflow-x: hidden` here is the assertion, not a
+   patch: nothing in this pane may extend past it, because the stage inside is
+   scaled to fit rather than clipped. */
 .previewFrameWrap {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   max-height: 78vh;
 }
 
+/**
+ * The stage is the SCALED size; the frame inside it keeps its true width.
+ *
+ * WHY THE TWO BOXES ARE SEPARATE, measured rather than assumed. A transform does
+ * not change a layout box: with the transform on a full-width stage, the stage
+ * stayed 1280 wide in layout while painting 592, so the pane could still be
+ * scrolled sideways to a strip of nothing — by a focus ring, if not by hand.
+ * `overflow-x: clip` does not fix it either: the spec makes `clip` USE `hidden`
+ * when the other axis scrolls, and this pane scrolls vertically. So the stage
+ * takes the painted size, the frame overflows it in layout only, and `clip` on
+ * BOTH axes here is a real clip because neither axis of this box scrolls.
+ *
+ * Centred, because the 360 register in a wide cockpit pinned to the left of a
+ * half-empty pane reads as a broken layout rather than as a phone.
+ */
+.previewStage {
+  overflow: clip;
+  margin-inline: auto;
+}
+
+/* Scaled from the TOP LEFT, so the page's own left margin is the stage's left
+   edge. The width, the height and the scale are set inline from the selected
+   size and the measured pane — CSS cannot compute any of them. */
 .previewFrame {
   display: block;
-  height: 1400px;
   border: none;
   background: var(--bg);
+  transform-origin: top left;
 }
 
 .previewEmpty {
@@ -800,17 +887,25 @@
 
 .toolbar {
   position: sticky;
-  /* Under the rail, not over it. The rail is 0; this sits at its height, and
-     the two never overlap because both are in normal flow. */
-  top: 52px;
+  /* Under the rail, not over it — and MEASURED, not guessed. This was
+     `top: 52px`, a literal against the rail's height, and the rail wraps: 67px
+     at 1280 and 107px at 800, so the toolbar sat 15px over the rail at one width
+     and 55px over it at another. `--rail-h` is written by EditorSurface from a
+     ResizeObserver on the rail itself. The fallback is the old literal, which is
+     wrong in the same way but no worse, and only applies for the single frame
+     before the first measurement. */
+  top: var(--rail-h, 52px);
   z-index: 25;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 14px;
-  padding: 8px 0;
+  /* Bled to the card's edges: a sticky bar inside a padded card leaves the
+     writing showing in the gutters as it scrolls underneath. */
+  margin-inline: calc(-1 * var(--canvas-pad));
+  padding: 8px var(--canvas-pad);
   border-bottom: 1px solid var(--hairline);
-  background: var(--bg);
+  background: var(--surface);
 }
 
 .toolGroup {
@@ -1038,15 +1133,18 @@
 /* The drawer that replaced the metadata scroll — A2. Sticky at desktop so the
    fields stay beside the paragraph they describe; in normal flow below 1000px,
    where there is no beside. */
+/* The same raised ground as the preview pane, and deliberately the same rather
+   than a third tone: both are auxiliary panes beside the canvas, and a reader
+   learns one distinction faster than two. Its labelled head is below. */
 .drawer {
   position: sticky;
   top: 96px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   padding: 18px 20px 24px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
-  background: var(--ground-2);
+  background: var(--surface-raised);
 }
 
 @media (max-width: 1000px) {
@@ -1553,12 +1651,15 @@ textarea.drawerInput {
    Each finding still names its field, because a finding a writer cannot locate
    is a finding they cannot act on. */
 
+/* A panel ON the page ground, below the canvas rather than inside it: the
+   findings are about the piece, not part of it. One step up from --bg with the
+   same edge the canvas card takes, for the same reason. */
 .checks {
   margin: 24px 0 0;
   padding: clamp(16px, 2vw, 22px);
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
-  background: var(--ground-2);
+  background: var(--surface);
 }
 
 .checkList {

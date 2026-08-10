@@ -1,10 +1,12 @@
 import { expect, test } from "@playwright/test";
 import { Extension, getSchema } from "@tiptap/core";
 import Heading from "@tiptap/extension-heading";
+import { Node as PmNode } from "@tiptap/pm/model";
 import StarterKit from "@tiptap/starter-kit";
 import {
   HEADING_LEVELS,
   normaliseHeadings,
+  toPlainDoc,
 } from "../src/lib/tiptap/schema.mjs";
 
 /**
@@ -75,6 +77,57 @@ test.describe("the editor schema", () => {
       HeadingDefaultTwo,
     ]);
     expect(fixed.nodes.heading.spec.attrs?.level.default).toBe(2);
+  });
+});
+
+/**
+ * R-27.5 — the crossing into a server action, asserted at its cause.
+ *
+ * The first test is the CONTROL and it is the whole point: it measures that
+ * ProseMirror really does hand out a null-prototype `attrs`. Without it,
+ * `toPlainDoc` would be a JSON round-trip nobody could tell was load-bearing,
+ * and the day a ProseMirror release starts returning plain objects this goes red
+ * and says so rather than leaving a defensive copy in place forever.
+ */
+test.describe("the server-action boundary", () => {
+  const docWithAttrs = {
+    type: "doc",
+    content: [
+      {
+        type: "heading",
+        attrs: { level: 2 },
+        content: [{ type: "text", text: "Client Context" }],
+      },
+    ],
+  };
+
+  const schema = () =>
+    getSchema([StarterKit.configure({ heading: false }), HeadingDefaultTwo]);
+
+  test("getJSON hands out attrs with a null prototype — the defect", () => {
+    const json = PmNode.fromJSON(schema(), docWithAttrs).toJSON();
+    expect(Object.getPrototypeOf(json.content[0].attrs)).toBe(null);
+  });
+
+  test("toPlainDoc makes every attrs a plain object", () => {
+    /* React's reply serialiser encodes only objects whose prototype is
+       Object.prototype. Anything else became a temporary reference on the wire —
+       `"attrs":"$T"` — and the first server-side read of `attrs.level` threw
+       with digest 2280395671 on the production host. */
+    const json = PmNode.fromJSON(schema(), docWithAttrs).toJSON();
+    const plain = toPlainDoc(json) as {
+      content: { attrs: Record<string, unknown> }[];
+    };
+    expect(Object.getPrototypeOf(plain.content[0].attrs)).toBe(
+      Object.prototype,
+    );
+    expect(plain.content[0].attrs.level).toBe(2);
+  });
+
+  test("it changes nothing else about the document", () => {
+    expect(JSON.stringify(toPlainDoc(docWithAttrs))).toBe(
+      JSON.stringify(docWithAttrs),
+    );
   });
 });
 

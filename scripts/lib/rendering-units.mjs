@@ -11,20 +11,38 @@ import { globSync, readFileSync } from "node:fs";
 const SHELLS =
   /\b(L1PageShell|L1HubShell|L2PageShell|ServicePageShell|LegalPageShell|PlatformModuleShell|EditorialShell)\b/;
 
+/**
+ * Every route template in the app tree to the file that renders it, route groups
+ * stripped from the URL and KEPT in the path.
+ *
+ * R-27.2 is why this is a map rather than two functions each doing their own
+ * string surgery. `shellOf` used to rebuild the file path from the stripped
+ * template, which worked only while no route sat inside a group at a depth the
+ * URL does not show. `/admin` now lives under `src/app/(admin)/`, and the public
+ * routes under `src/app/(site)/`, so every reconstruction would have missed —
+ * and missed SILENTLY, returning `bespoke:` for every template, which turns one
+ * shell into thirty units and makes check-a11y's one-per-shell sample the whole
+ * site. The mapping is built once from the glob that already knows both forms.
+ */
+function templateFiles() {
+  const map = new Map();
+  for (const file of globSync("src/app/**/page.tsx")) {
+    const url =
+      file.replace(/^src\/app/, "").replace(/\/page\.tsx$/, "") || "/";
+    map.set(url.replace(/\/\([^/]+\)/g, "") || "/", file);
+  }
+  return map;
+}
+
 /** Every route template in the app tree, route groups stripped. */
 export function routeTemplates() {
-  return globSync("src/app/**/page.tsx")
-    .map((f) => f.replace(/^src\/app/, "").replace(/\/page\.tsx$/, "") || "/")
-    .map((t) => t.replace(/\/\([^/]+\)/g, "") || "/")
-    .sort();
+  return [...templateFiles().keys()].sort();
 }
 
 /** The shared shell a template's page.tsx imports, or the template itself. */
 export function shellOf(template) {
-  const file =
-    template === "/"
-      ? "src/app/page.tsx"
-      : `src/app/${template.slice(1)}/page.tsx`;
+  const file = templateFiles().get(template);
+  if (!file) return `bespoke:${template}`;
   let src;
   try {
     src = readFileSync(file, "utf8");

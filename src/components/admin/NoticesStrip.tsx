@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styles from "@/app/admin/Admin.module.css";
+import styles from "@/components/admin/Admin.module.css";
 import type { Notice } from "@/lib/admin/notices";
 
 /**

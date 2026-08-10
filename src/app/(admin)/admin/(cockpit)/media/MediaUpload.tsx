@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import styles from "@/app/admin/Admin.module.css";
+import styles from "@/components/admin/Admin.module.css";
 import { ACCEPT_ATTRIBUTE, MAX_UPLOAD_BYTES } from "@/lib/media/config";
 
 /**

@@ -1,7 +1,7 @@
 import {
   indexableTaxonomySlugs,
   taxonomyLandingSlugs,
-} from "@/app/insights/_taxonomy";
+} from "@/app/(site)/insights/_taxonomy";
 import { aiRoleFamilySlugs } from "@/data/ai-talent";
 import { BLUEPRINT_BASE, blueprintSlugs } from "@/data/blueprint";
 import { capabilityRegistry } from "@/data/capabilities";

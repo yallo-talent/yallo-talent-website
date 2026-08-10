@@ -174,9 +174,20 @@ test.describe("only an owner may make an owner", () => {
 });
 
 test.describe("capabilities are narrower than the panes that contain them", () => {
-  test("ops reads briefs and is REFUSED writing them", () => {
+  /* R-27.1 CHANGED THIS ONE, and the earlier version is worth stating: ops read
+     briefs and was refused writing them. That was round 25 naming the capability
+     before a write path existed so the first one would arrive against an
+     admin-only rule; the rule then survived round 26 unchanged and the result
+     read badly out loud, so Sumeet widened it. What remains narrower than the
+     pane is the editor, which reaches neither. */
+  test("ops reads briefs AND writes them", () => {
     expect(canSee("ops", "briefs")).toBe(true);
-    expect(canDo("ops", "briefsWrite")).toBe(false);
+    expect(canDo("ops", "briefsWrite")).toBe(true);
+  });
+
+  test("an editor reaches neither the briefs pane nor the write", () => {
+    expect(canSee("editor", "briefs")).toBe(false);
+    expect(canDo("editor", "briefsWrite")).toBe(false);
   });
 
   test("an editor is REFUSED managing accounts", () => {
@@ -211,10 +222,22 @@ test.describe("round 26 — the funnel's reach", () => {
     expect(canDo("admin", "briefsWrite")).toBe(true);
   });
 
-  test("ops reads and exports every lead, and is REFUSED moving one", () => {
+  test("ops reads, exports AND moves a lead — R-27.1", () => {
     /* The export route asserts the pane, so pane reach IS export reach. */
     expect(canSee("ops", "briefs")).toBe(true);
-    expect(canDo("ops", "briefsWrite")).toBe(false);
+    expect(canDo("ops", "briefsWrite")).toBe(true);
+  });
+
+  /* The limit that did NOT move. Widening the pipeline write says nothing about
+     content, transcripts or accounts, and the point of transcribing it here is
+     that the next widening has to be its own deliberate act too. */
+  test("ops still reaches no content, no conversations and no users", () => {
+    expect(canSee("ops", "caseStudies")).toBe(false);
+    expect(canSee("ops", "articles")).toBe(false);
+    expect(canSee("ops", "conversations")).toBe(false);
+    expect(canSee("ops", "users")).toBe(false);
+    expect(canDo("ops", "usersManage")).toBe(false);
+    expect(canDo("ops", "ownerAssign")).toBe(false);
   });
 
   test("an editor is REFUSED the pane, so also the export and the write", () => {
@@ -230,10 +253,16 @@ test.describe("round 26 — the funnel's reach", () => {
     ]);
   });
 
-  test("exactly two roles may write them", () => {
+  /* Three since R-27.1, and the same three that reach the pane: reading a lead
+     and moving it are now one set. The editor is still outside both. */
+  test("exactly three roles may write them, and they are the pane's three", () => {
     expect(ROLES.filter((r) => canDo(r, "briefsWrite"))).toEqual([
       "owner",
       "admin",
+      "ops",
     ]);
+    expect(ROLES.filter((r) => canDo(r, "briefsWrite"))).toEqual(
+      ROLES.filter((r) => canSee(r, "briefs")),
+    );
   });
 });

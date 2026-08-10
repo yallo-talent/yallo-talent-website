@@ -66,13 +66,13 @@ const failures = [];
       'no MotionConfig reducedMotion="user" anywhere in src/ — Framer defaults to "never", so every animation ignores the user preference',
     );
   } else {
-    const layout = readFileSync("src/app/layout.tsx", "utf8");
+    const layout = readFileSync("src/app/(site)/layout.tsx", "utf8");
     // `<MotionProvider`, not the bare identifier: an unmounted provider leaves
     // its import line behind, and matching the identifier alone reported
     // "mounted" during an injection test where the JSX had been removed.
     if (!/<MotionProvider[\s>]/.test(layout)) {
       failures.push(
-        `${provider} declares reducedMotion="user" but src/app/layout.tsx does not mount it, so it covers nothing`,
+        `${provider} declares reducedMotion="user" but src/app/(site)/layout.tsx does not mount it, so it covers nothing`,
       );
     }
   }

@@ -35,7 +35,7 @@
 import { readFileSync } from "node:fs";
 
 const CSS_PATH = "src/components/blocks/editorial/EditorialLayout.module.css";
-const PAGE_PATH = "src/app/insights/[slug]/page.tsx";
+const PAGE_PATH = "src/app/(site)/insights/[slug]/page.tsx";
 
 const failures = [];
 

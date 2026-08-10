@@ -23,7 +23,7 @@
 import { readFileSync } from "node:fs";
 
 const RETENTION_JSON = "src/lib/assistant/retention.json";
-const PRIVACY_PAGE = "src/app/privacy/page.tsx";
+const PRIVACY_PAGE = "src/app/(site)/privacy/page.tsx";
 
 /** The one number the ratified sentence commits us to. */
 const RATIFIED_MONTHS = 12;

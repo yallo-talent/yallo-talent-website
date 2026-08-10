@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/admin/Admin.module.css";
+import styles from "@/components/admin/Admin.module.css";
 import type { PublishError } from "@/lib/admin/content-validation";
 import editor from "./Editor.module.css";
 
