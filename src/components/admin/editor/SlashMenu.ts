@@ -4,6 +4,7 @@ import type { Editor, Range } from "@tiptap/core";
 import { Extension } from "@tiptap/core";
 import type { SuggestionProps } from "@tiptap/suggestion";
 import Suggestion from "@tiptap/suggestion";
+import { BLOCK_INSERTS } from "./block-inserts";
 
 /**
  * The slash command, design §4.
@@ -12,9 +13,11 @@ import Suggestion from "@tiptap/suggestion";
  * keyboard without leaving the line you are writing. A writer who has to move
  * to a toolbar to insert a pull quote is a writer who drafts somewhere else.
  *
- * WHY THE COMMAND LIST IS DATA. The same list drives the menu and the search,
- * and a second copy for the search would be a block that exists but cannot be
- * found. Adding a block means adding one row here.
+ * THE LIST IS NO LONGER HERE — it is `block-inserts.ts`, and this derives from
+ * it. R-26.5 adds a permanent Blocks menu to the toolbar, so there are two
+ * surfaces offering the same set; two copies of the list would be a block
+ * reachable one way and not the other, which is the exact defect this file's
+ * own comment warned about when it was the only surface.
  *
  * THE MENU IS RENDERED BY REACT, not by this file. `Suggestion` owns the
  * matching, the keyboard handling and the caret position; the component owns
@@ -29,143 +32,18 @@ export interface SlashItem {
   run: (editor: Editor, range: Range) => void;
 }
 
-export const SLASH_ITEMS: SlashItem[] = [
-  {
-    title: "Heading 2",
-    hint: "A section heading. H1 is the title field.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setNode("heading", { level: 2 })
-        .run(),
-  },
-  {
-    title: "Heading 3",
-    hint: "A subheading inside a section.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .setNode("heading", { level: 3 })
-        .run(),
-  },
-  {
-    title: "Bulleted list",
-    hint: "An unordered list.",
-    run: (editor, range) =>
-      editor.chain().focus().deleteRange(range).toggleBulletList().run(),
-  },
-  {
-    title: "Numbered list",
-    hint: "An ordered list.",
-    run: (editor, range) =>
-      editor.chain().focus().deleteRange(range).toggleOrderedList().run(),
-  },
-  {
-    title: "Quote",
-    hint: "An indented quotation.",
-    run: (editor, range) =>
-      editor.chain().focus().deleteRange(range).toggleBlockquote().run(),
-  },
-  {
-    title: "Code block",
-    hint: "Preformatted text.",
-    run: (editor, range) =>
-      editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
-  },
-  {
-    title: "Divider",
-    hint: "A horizontal rule.",
-    run: (editor, range) =>
-      editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
-  },
-  {
-    title: "Pull quote",
-    hint: "A quotation set large, with an optional attribution.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({ type: "pullQuote", content: [] })
-        .run(),
-  },
-  {
-    title: "Key figure",
-    hint: "One number with its label and its source.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({ type: "keyFigure", content: [] })
-        .run(),
-  },
-  {
-    title: "FAQ",
-    hint: "Question and answer pairs. Emits FAQPage schema.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({
-          type: "faq",
-          attrs: { items: [{ question: "", answer: "" }] },
-        })
-        .run(),
-  },
-  {
-    title: "Related desk",
-    hint: "A card linking to an industry, platform or discipline desk.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({ type: "relatedDesk" })
-        .run(),
-  },
-  {
-    title: "PetalPlate divider",
-    hint: "The house mark as a section break.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({ type: "petalDivider" })
-        .run(),
-  },
-  {
-    title: "Image",
-    hint: "An image with a caption and required alt text.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({ type: "image" })
-        .run(),
-  },
-  {
-    title: "Chart",
-    hint: "A bar or line chart from typed rows, with its source.",
-    run: (editor, range) =>
-      editor
-        .chain()
-        .focus()
-        .deleteRange(range)
-        .insertContent({
-          type: "chart",
-          attrs: { rows: [{ label: "", value: 0 }] },
-        })
-        .run(),
-  },
-];
+/**
+ * The slash menu's items, projected from the registry.
+ *
+ * The slash menu offers EVERY block including the ones the toolbar shows as
+ * their own controls, because a person typing `/head` is not looking at the
+ * toolbar. `inBlocksMenu` narrows the toolbar's menu, never this.
+ */
+export const SLASH_ITEMS: SlashItem[] = BLOCK_INSERTS.map((block) => ({
+  title: block.label,
+  hint: block.note,
+  run: (editor: Editor, range: Range) => block.insert(editor, range),
+}));
 
 /** Case-insensitive prefix and substring match over title and hint. */
 export function filterSlashItems(query: string): SlashItem[] {

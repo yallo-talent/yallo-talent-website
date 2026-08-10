@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { RowTitle } from "@/app/admin/RowTitle";
+import { LifecycleHelp, NoticesStrip } from "@/components/admin/NoticesStrip";
 import { requirePane } from "@/lib/admin/guard";
+import { noticesFor } from "@/lib/admin/notices";
 import { allCaseStudies } from "@/lib/db/content";
+import { publishedPaths } from "@/lib/published-routes";
 import styles from "../../Admin.module.css";
 import { setStatusAction } from "../articles/actions";
 import { moveAction, reorderAction } from "./actions";
@@ -50,6 +53,12 @@ export default async function CaseStudiesPane({
 
   const published = studies.filter((s) => s.status === "published");
 
+  /* R-26.1's safety net, computed over the live rows rather than stored. */
+  const notices =
+    studies.length === 0
+      ? []
+      : noticesFor("case_study", studies, new Set(await publishedPaths()));
+
   return (
     <>
       <h1 className={styles.h1}>Case studies</h1>
@@ -71,6 +80,8 @@ export default async function CaseStudiesPane({
           /case-studies/{q.draft} is back to draft and is no longer served.
         </p>
       ) : null}
+
+      <NoticesStrip notices={notices} />
 
       {studies.length > 1 && (
         <>
@@ -96,7 +107,12 @@ export default async function CaseStudiesPane({
         {published.length} published
       </h2>
       {studies.length === 0 ? (
-        <p className={styles.empty}>No case studies yet.</p>
+        <>
+          <p className={styles.empty}>No case studies yet.</p>
+          {/* A1: the lifecycle, in two sentences, on a pane somebody is seeing
+              for the first time. */}
+          <LifecycleHelp noun="case study" />
+        </>
       ) : (
         <ul className={styles.rows}>
           {studies.map((study, i) => {

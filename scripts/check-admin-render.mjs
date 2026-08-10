@@ -30,6 +30,7 @@
  */
 import AxeBuilder from "@axe-core/playwright";
 import { chromium } from "@playwright/test";
+import { signInTo } from "./lib/admin-sign-in.mjs";
 import { CI_FIXTURE_PREFIX } from "./lib/ci-fixtures.mjs";
 
 const BASE = process.env.BASE_URL ?? process.argv[2] ?? "http://localhost:3115";
@@ -43,6 +44,13 @@ const PANES = [
   "/admin/case-studies",
   "/admin/conversations",
   "/admin/articles",
+  /* A4 names six panes and this was the missing one. `check:gate-coverage`
+     passed on it because check:admin-isolation VISITS /admin/media to assert
+     who may reach it — which is a different question from whether it obeys axe
+     and A4's type floors. Coverage by any gate is not coverage by the right
+     gate, and the pane a writer uploads every image from had never been
+     measured for contrast at 360. */
+  "/admin/media",
   "/admin/users",
 ];
 
@@ -116,40 +124,20 @@ let detailUnvisited = 0;
 /**
  * Signs in once per context and leaves the session cookie on it.
  *
- * Retried once. The very first sign-in against a freshly started `next start`
- * failed while the four that followed succeeded: the server action and its CSRF
- * cookie are not ready on the process's first POST, and a cold start is not the
- * defect this gate is looking for. A SECOND failure is reported, because a
- * credential that never works is exactly what it should catch.
+ * R-26.2: the readiness probe and the outcome wait live in
+ * `scripts/lib/admin-sign-in.mjs`, shared with every other signing-in gate.
+ * This gate's own version clicked submit and then slept for a fixed number of
+ * milliseconds, which is a race against a cold `next start` — and it lost that
+ * race in round 26 against a server four seconds old, reporting the credential
+ * as wrong when the wait was short.
  */
 async function signIn(ctx, email = EMAIL, password = PASSWORD) {
-  for (let attempt = 1; attempt <= 2; attempt++) {
-    const page = await ctx.newPage();
-    /* The retry this function documents never actually ran: `page.fill` threw
-       straight out of the loop, so a cold-start miss was a hard failure with a
-       Playwright stack instead of a second attempt. Measured in round 23, where
-       exactly that turned a passing gate into an uncaught TimeoutError. */
-    try {
-      await page.goto(`${BASE}/admin/sign-in`, { waitUntil: "networkidle" });
-      await page.fill('input[name="email"]', email);
-      await page.fill('input[name="password"]', password);
-      await Promise.all([
-        page.waitForLoadState("networkidle"),
-        page.click('button[type="submit"]'),
-      ]);
-      await page.waitForTimeout(attempt * 800);
-      const signedIn = !page.url().includes("/admin/sign-in");
-      await page.close();
-      if (signedIn) return true;
-    } catch (err) {
-      await page.close().catch(() => {});
-      if (attempt === 2) {
-        console.error(`\n  sign-in threw twice: ${err.message}\n`);
-        return false;
-      }
-    }
-  }
-  return false;
+  return signInTo(ctx, {
+    base: BASE,
+    email,
+    password,
+    onNote: (message) => console.error(`\n  ${message}\n`),
+  });
 }
 
 /* A4's floors, identical to scripts/check-rendered-type.mjs. Restated rather

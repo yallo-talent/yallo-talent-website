@@ -13,6 +13,7 @@ import {
   industriesIndex,
   platformsIndex,
 } from "@/data/l1/index";
+import { youtubeId } from "@/lib/tiptap/blocks";
 import styles from "./Editor.module.css";
 
 /** `renderHTML` is called with more than this; this is the part we use. */
@@ -539,6 +540,85 @@ export const YalloImage = Node.create({
   addNodeView: () => ReactNodeViewRenderer(ImageView),
 });
 
+/* ── YouTube, A2A's one new node ────────────────────────────────────────── */
+
+/**
+ * A reshared video.
+ *
+ * WHAT IS STORED IS AN ID. The field accepts a URL because that is what a person
+ * has to hand, and `youtubeId` reduces it the moment it is typed; the attribute
+ * never holds anything else, so the renderer composes an address it can trust
+ * rather than validating one it was given. An unparseable paste leaves the id
+ * empty and the block says so, which is the same shape as an image with no
+ * source.
+ *
+ * IT PREVIEWS AS A THUMBNAIL, NOT AS A PLAYER. A live embed inside a
+ * contenteditable is a document that steals the caret and plays audio at
+ * whoever is writing. The thumbnail proves the id resolves to the right video,
+ * which is the only question the writer is asking here.
+ */
+function YoutubeView({ node, updateAttributes, deleteNode }: NodeViewProps) {
+  const videoId = String(node.attrs.videoId ?? "");
+  const caption = String(node.attrs.caption ?? "");
+  const [typed, setTyped] = useState(videoId);
+  const resolved = youtubeId(typed);
+  return (
+    <BlockShell
+      name="YouTube video"
+      note="Embedded without cookies until a reader presses play"
+      onRemove={deleteNode}
+    >
+      <div contentEditable={false}>
+        <AttrInput
+          label="Video address or id"
+          onChange={(next) => {
+            setTyped(next);
+            updateAttributes({ videoId: youtubeId(next) ?? "" });
+          }}
+          placeholder="Paste the YouTube address"
+          required
+          value={typed}
+        />
+        {typed.trim() !== "" && resolved === null ? (
+          <span className={styles.blockNote}>
+            That is not a YouTube address this can read. A watch link, a share
+            link, a Shorts link or the eleven-character id all work.
+          </span>
+        ) : null}
+        {resolved ? (
+          // biome-ignore lint/performance/noImgElement: a third-party thumbnail at a fixed address, outside the image pipeline
+          <img
+            alt=""
+            className={styles.blockImage}
+            src={`https://i.ytimg.com/vi/${resolved}/hqdefault.jpg`}
+          />
+        ) : null}
+        <AttrInput
+          label="Caption"
+          onChange={(next) => updateAttributes({ caption: next })}
+          placeholder="What this video shows, for a reader who will not play it"
+          required
+          value={caption}
+        />
+      </div>
+    </BlockShell>
+  );
+}
+
+export const Youtube = Node.create({
+  name: "youtube",
+  group: "block",
+  atom: true,
+  draggable: false,
+  addAttributes: () => ({ videoId: { default: "" }, caption: { default: "" } }),
+  parseHTML: () => [{ tag: 'figure[data-type="youtube"]' }],
+  renderHTML: ({ HTMLAttributes }: RenderArgs) => [
+    "figure",
+    mergeAttributes(HTMLAttributes, { "data-type": "youtube" }),
+  ],
+  addNodeView: () => ReactNodeViewRenderer(YoutubeView),
+});
+
 /* ── Chart ──────────────────────────────────────────────────────────────── */
 
 interface ChartRowAttr {
@@ -640,7 +720,14 @@ export const Chart = Node.create({
   addNodeView: () => ReactNodeViewRenderer(ChartView),
 });
 
-/** Every Yallo block, in the order the slash menu offers them. */
+/**
+ * Every Yallo node the editor composes into its schema.
+ *
+ * ADDING ONE IS ADDING ONE LINE HERE plus the three declarations outside this
+ * file that `block-inserts.ts` names. Nothing already stored is touched: a body
+ * that does not carry the new node is unaffected by its existence, which is the
+ * whole of the A2A seam.
+ */
 export const YALLO_NODES = [
   PullQuote,
   KeyFigure,
@@ -648,5 +735,6 @@ export const YALLO_NODES = [
   RelatedDesk,
   PetalDivider,
   YalloImage,
+  Youtube,
   Chart,
 ];

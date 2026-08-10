@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { RowTitle } from "@/app/admin/RowTitle";
+import { LifecycleHelp, NoticesStrip } from "@/components/admin/NoticesStrip";
 import { FIXED_BYLINE } from "@/lib/admin/content-validation";
 import { requirePane } from "@/lib/admin/guard";
+import { noticesFor } from "@/lib/admin/notices";
 import { allArticles } from "@/lib/db/content";
+import { publishedPaths } from "@/lib/published-routes";
 import styles from "../../Admin.module.css";
 import { createArticleAction, setStatusAction } from "./actions";
 
@@ -48,6 +51,15 @@ export default async function ArticlesPane({
 
   const published = articles.filter((a) => a.status === "published");
 
+  /* R-26.1's safety net, computed over the live rows on every render rather
+     than stored. A stored finding is a finding that can be stale, and the whole
+     failure this guards against is somebody trusting a clean panel that was
+     computed before the piece was edited. */
+  const notices =
+    articles.length === 0
+      ? []
+      : noticesFor("article", articles, new Set(await publishedPaths()));
+
   return (
     <>
       <h1 className={styles.h1}>Articles</h1>
@@ -73,12 +85,19 @@ export default async function ArticlesPane({
         </p>
       ) : null}
 
+      <NoticesStrip notices={notices} />
+
       <h2 className={styles.h2}>
         {articles.length} article{articles.length === 1 ? "" : "s"},{" "}
         {published.length} published
       </h2>
       {articles.length === 0 ? (
-        <p className={styles.empty}>No articles yet.</p>
+        <>
+          <p className={styles.empty}>No articles yet.</p>
+          {/* A1: the lifecycle, in two sentences, on a pane somebody is seeing
+              for the first time. */}
+          <LifecycleHelp noun="article" />
+        </>
       ) : (
         <ul className={styles.rows}>
           {articles.map((article) => {

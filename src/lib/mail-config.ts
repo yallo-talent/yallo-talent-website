@@ -41,3 +41,26 @@ export function resendTo(): string[] {
     .map((addr) => addr.trim())
     .filter(Boolean);
 }
+
+/**
+ * The cockpit address of a captured lead, for the delivery email.
+ *
+ * WHY THE EMAIL CARRIES IT. cockpit-v3 §11 asks that the arrival notification
+ * name the cockpit URL of the new brief, and until round 26 it did not: the
+ * email listed the fields and left the reader to find the row themselves. A
+ * notification that tells somebody a lead exists and not where to work on it
+ * sends them to a list to search for their own email.
+ *
+ * AN ANCHOR RATHER THAN A ROUTE PER LEAD. Every lead is a card on one pane, and
+ * a detail route per submission would be a second place for the same card to be
+ * rendered. The fragment scrolls to it and the pane highlights it.
+ *
+ * IT FALLS BACK TO A RELATIVE PATH when the site URL is not configured, which
+ * is honest: a half-formed absolute URL in an email is a link that goes
+ * somewhere wrong, and a path at least says which pane.
+ */
+export function cockpitLeadUrl(submissionId: string): string {
+  const base = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const path = `/admin/briefs?lead=${encodeURIComponent(submissionId)}#lead-${encodeURIComponent(submissionId)}`;
+  return base ? `${base.replace(/\/$/, "")}${path}` : path;
+}

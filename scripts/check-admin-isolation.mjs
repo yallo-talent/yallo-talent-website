@@ -389,6 +389,9 @@ if (!process.env.DATABASE_URL) {
   roleReachRan = false;
 } else {
   const { chromium } = await import("@playwright/test");
+  /* Dynamic, like Playwright itself: the earlier half of this gate is a static
+     source read that must run on a machine with no browser installed. */
+  const { signInTo } = await import("./lib/admin-sign-in.mjs");
   const { execFileSync } = await import("node:child_process");
 
   const created = [];
@@ -404,25 +407,23 @@ if (!process.env.DATABASE_URL) {
       created.push(fixture.email);
 
       const ctx = await browser.newContext();
-      const page = await ctx.newPage();
-      await page.goto(`${BASE}${ADMIN_BASE}/sign-in`, {
-        waitUntil: "networkidle",
+      /* R-26.2, the same probe every signing-in gate uses. This one waited a
+         flat 900ms after the click, which is the same race by a different
+         number. */
+      const signedIn = await signInTo(ctx, {
+        base: BASE,
+        email: fixture.email,
+        password: fixture.password,
+        onNote: (message) => failures.push(`${role}: ${message}`),
       });
-      await page.fill('input[name="email"]', fixture.email);
-      await page.fill('input[name="password"]', fixture.password);
-      await Promise.all([
-        page.waitForLoadState("networkidle"),
-        page.click('button[type="submit"]'),
-      ]);
-      await page.waitForTimeout(900);
-
-      if (new URL(page.url()).pathname.startsWith(`${ADMIN_BASE}/sign-in`)) {
+      if (!signedIn) {
         failures.push(
           `A ${role} fixture account could not sign in at all, so role reach was never measured.`,
         );
         await ctx.close();
         continue;
       }
+      const page = await ctx.newPage();
 
       for (const pane of expect.denied) {
         await page.goto(`${BASE}${pane}`, { waitUntil: "networkidle" });

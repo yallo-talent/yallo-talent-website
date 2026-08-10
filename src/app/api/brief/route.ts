@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
 import { recordDelivery, recordSubmission } from "@/lib/db/submissions";
-import { resendFrom, resendTo } from "@/lib/mail-config";
+import { cockpitLeadUrl, resendFrom, resendTo } from "@/lib/mail-config";
 import { briefFormSchema } from "@/lib/schemas";
 
 /* Sumeet, direct instruction (chat, round 14): no talent.yallo.co — yallo.co
@@ -79,6 +79,11 @@ export async function POST(request: Request) {
     </ul>
     <p><b>Message:</b></p>
     <pre style="white-space:pre-wrap;font-family:inherit">${escapeHtml(v.message)}</pre>
+    <p style="margin-top:18px">
+      <b>In the cockpit:</b>
+      <a href="${cockpitLeadUrl(submissionId)}">${escapeHtml(cockpitLeadUrl(submissionId))}</a><br>
+      Move it through the pipeline, assign an owner and see the 72-hour clock there.
+    </p>
   `;
 
   // The row is already durable, so a missing key or a Resend failure is

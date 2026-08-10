@@ -95,7 +95,14 @@ test.describe("R-25b.4 — the action's decision", () => {
       );
       expect(message).not.toBeNull();
       expect(message).toContain(REAL_STUDY);
-      expect(message).toContain("two-hop");
+      /* R-26.1's second clause: this is the one refusal left in the cockpit, so
+         its message has to be an explanation carrying a single action rather
+         than a diagnosis in the vocabulary of the redirect table. "two-hop" was
+         what the old message said, and it is not a phrase the person clicking
+         Unpublish has any reason to know. */
+      expect(message).toContain("no longer served");
+      expect(message).toContain("The one action that resolves it");
+      expect(message).toContain("src/data/redirects.mjs");
     }
   });
 

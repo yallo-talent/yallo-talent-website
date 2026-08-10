@@ -276,6 +276,84 @@ export async function saveBody(
 }
 
 /**
+ * Save the title and the summary, which is what the canvas autosaves.
+ *
+ * WHY IT IS ITS OWN WRITER. R-26.5 moves the title and the subtitle onto the
+ * writing canvas as placeholder fields, and the subtitle IS the summary column.
+ * They therefore have to be saved on a debounce like the body, and they cannot
+ * go through `saveDraft`: that rewrites every column, so a title autosave would
+ * carry a stale body over whatever the editor had saved a second earlier. Three
+ * writers, three disjoint sets of columns, no races between them.
+ *
+ * IT WRITES A REVISION, like every other writer here. The revision row carries
+ * the title, the summary and the body together, so this one re-reads the body
+ * inside the transaction rather than accepting one from the caller: a revision
+ * assembled from a caller's idea of the body is a revision that restores a body
+ * that never existed.
+ *
+ * NO AUDIT ROW, deliberately, and this is the one writer without one. Audit
+ * records acts a person chose — save, publish, restore, slug — and a debounce
+ * firing every 1.5 seconds while somebody types a headline is not an act. The
+ * revision trail is what makes the change recoverable, and it is written.
+ */
+export async function saveFront(
+  type: ContentType,
+  id: string,
+  front: { title: string; summary: string },
+  actor: Signed,
+): Promise<void> {
+  const db = pool();
+  try {
+    const client = await db.connect();
+    try {
+      await client.query("begin");
+      const table = TABLE[type];
+      const res = await client.query(
+        `update ${table}
+            set title = $1, summary = $2, updated_at = now()
+          where id = $3
+        returning body, status, slug, industry, platform, discipline`,
+        [front.title, front.summary, id],
+      );
+      if (res.rowCount === 0) throw new Error("No such piece.");
+      const row = res.rows[0];
+      await client.query(
+        `insert into content_revisions
+           (content_type, content_id, title, summary, body, author_name)
+         values ($1,$2,$3,$4,$5,$6)`,
+        [
+          type,
+          id,
+          front.title,
+          front.summary,
+          JSON.stringify(row.body),
+          actor.name || actor.email,
+        ],
+      );
+      await client.query("commit");
+      /* A published piece's title is on its own page, on the index, on every
+         taxonomy archive it appears in and in the sitemap. A draft's reaches
+         nobody, and revalidating on each keystroke of one would be a cache
+         stampede for no reader. Same rule as `saveBody`. */
+      if (row.status === "published") {
+        revalidateFor(type, String(row.slug), [
+          row.industry ?? [],
+          row.platform ?? [],
+          row.discipline ?? [],
+        ]);
+      }
+    } catch (err) {
+      await client.query("rollback");
+      throw err;
+    } finally {
+      client.release();
+    }
+  } finally {
+    await db.end();
+  }
+}
+
+/**
  * Restore a revision's body onto the live row.
  *
  * THE RESTORE IS ITSELF A REVISION. The body being replaced is written to

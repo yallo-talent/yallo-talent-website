@@ -48,6 +48,30 @@ function bad(message: string, status = 400) {
  * because nobody hand-writes a `srcset`. Inserting from here carries all of it
  * across in one act.
  */
+/**
+ * What the editor is told about an asset — ONE shape, for the list and for a
+ * fresh upload.
+ *
+ * WHY IT IS A FUNCTION. A5 lets the editor upload without leaving the piece, so
+ * the POST response is now something the editor inserts from directly rather
+ * than a receipt it discards. The two responses described the same asset in two
+ * shapes, and the one the POST used had no `srcSet` — which would have placed a
+ * freshly uploaded image with no rendition set, spending the resizing pipeline
+ * backwards, and nobody would have noticed because the image renders.
+ */
+function forEditor(asset: Awaited<ReturnType<typeof allMedia>>[number]) {
+  return {
+    id: asset.id,
+    url: asset.url,
+    alt: asset.alt,
+    caption: asset.caption,
+    width: asset.width,
+    height: asset.height,
+    objectKey: asset.objectKey,
+    srcSet: srcSetFrom(asset.renditions)?.srcSet ?? "",
+  };
+}
+
 export async function GET() {
   try {
     await assertPane("media");
@@ -55,18 +79,7 @@ export async function GET() {
     return bad("You do not have access to media.", 403);
   }
   const assets = (await allMedia()).filter((a) => a.archivedAt === null);
-  return NextResponse.json({
-    assets: assets.map((a) => ({
-      id: a.id,
-      url: a.url,
-      alt: a.alt,
-      caption: a.caption,
-      width: a.width,
-      height: a.height,
-      objectKey: a.objectKey,
-      srcSet: srcSetFrom(a.renditions)?.srcSet ?? "",
-    })),
-  });
+  return NextResponse.json({ assets: assets.map(forEditor) });
 }
 
 export async function POST(request: Request) {
@@ -174,5 +187,7 @@ export async function POST(request: Request) {
     signed,
   );
 
-  return NextResponse.json({ asset }, { status: 201 });
+  /* The same shape the list returns, so the editor can insert what it just
+     uploaded without a second request. */
+  return NextResponse.json({ asset: forEditor(asset) }, { status: 201 });
 }

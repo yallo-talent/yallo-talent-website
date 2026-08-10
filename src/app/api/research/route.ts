@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { SYNTHESIS_PDF_PATH } from "@/data/research/synthesis";
 import { recordDelivery, recordSubmission } from "@/lib/db/submissions";
-import { resendFrom, resendTo } from "@/lib/mail-config";
+import { cockpitLeadUrl, resendFrom, resendTo } from "@/lib/mail-config";
 import { researchGateSchema } from "@/lib/schemas";
 
 /**
@@ -70,6 +70,11 @@ export async function POST(request: Request) {
       <li><b>Email:</b> ${escapeHtml(v.email)}</li>
       <li><b>Asset:</b> ${escapeHtml(v.asset)}</li>
     </ul>
+    <p style="margin-top:18px">
+      <b>In the cockpit:</b>
+      <a href="${cockpitLeadUrl(submissionId)}">${escapeHtml(cockpitLeadUrl(submissionId))}</a><br>
+      Move it through the pipeline, assign an owner and see the 72-hour clock there.
+    </p>
   `;
 
   /* The download is returned regardless of whether the notification email

@@ -381,11 +381,26 @@
 
 .filters .field {
   margin-top: 0;
+  /* A flex item's base size is its content, and a `<select>` sizes itself to
+     its WIDEST OPTION — an email address in the funnel's owner filter. Without
+     `min-width: 0` the label refuses to shrink below 395px and pushes the pane
+     sideways at 360, which is what SC 1.4.10 forbids and what
+     check:admin-render reported on four contexts. Capping the select alone did
+     not fix it: the parent was the one refusing to shrink. */
+  min-width: 0;
+  max-width: 100%;
 }
 
 .filters .input {
-  width: auto;
-  min-width: 150px;
+  width: 100%;
+  min-width: 0;
+  /* A `<select>` sizes itself to its WIDEST OPTION, and the funnel's owner
+     filter lists email addresses. At 360 that made one control 405px wide and
+     pushed the whole pane sideways by 74px, which check:admin-render reported
+     as an SC 1.4.10 reflow failure on four contexts. `max-width` caps it; the
+     browser truncates the option text, which is what a narrow screen has to do
+     with a long address. */
+  max-width: 100%;
 }
 
 .filters .submit {
@@ -542,4 +557,469 @@
      than widen the pane, and it must be selectable as one unit. */
   overflow-wrap: anywhere;
   user-select: all;
+}
+
+/* ── The notices strip — R-26.1's safety net on the pane ────────────────────
+   R-26.1 removed the publish refusal and recorded what it accepts: an
+   unsourced figure can now reach a reader past a warning. This is where the
+   re-validation of what is ALREADY LIVE comes back, and it is styled to be
+   read rather than dismissed: a signal-coloured edge, the count in the
+   heading, and every finding in full. */
+
+.notices {
+  margin: 20px 0 28px;
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  border-left: 3px solid var(--signal-text);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.noticesHead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-card-title);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.noticesLede {
+  margin: 8px 0 0;
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  color: var(--text-2);
+}
+
+.noticesList {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.noticeRow {
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.noticeHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+}
+
+.noticeTitle {
+  font-family: var(--font-display);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-strong);
+  color: var(--text);
+}
+
+.noticeLive {
+  /* 24px minimum, SC 2.5.8. A 13px mono line is a 20px box, and
+     check:admin-render counted one per published piece with a finding — nine
+     studies, eighteen failures across two themes. The padding is what makes
+     the target legal; the text size is the estate's data step and stays. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--text-3);
+}
+
+.noticeFindings {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: var(--fs-body-sm);
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.noticeField {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+/* ── The funnel — cockpit-v3 §11, round 26 item B ──────────────────────────
+   Briefs became a lead surface: a pipeline, a clock against the 72-hour
+   commitment the site publishes, and a card per lead rather than a payload.
+   Zero hardcoded colour, as everywhere. */
+
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pipelineStep {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 104px;
+  padding: 10px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+  text-decoration: none;
+}
+
+.pipelineStep:hover {
+  border-color: var(--accent-line);
+}
+
+.pipelineStep[data-current="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+
+.pipelineStep:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.pipelineCount {
+  font-family: var(--font-mono);
+  font-size: var(--fs-numeral-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.pipelineLabel {
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+}
+
+/* Won and Lost read differently from the three in flight: the pipeline is
+   read left to right and the two ends are where it stops. */
+.pipelineStep[data-state="won"] .pipelineCount {
+  color: var(--positive-text);
+}
+
+.pipelineStep[data-state="lost"] .pipelineCount {
+  color: var(--text-3-wash);
+}
+
+.savedViews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.savedView {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 5px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-pill);
+  font-size: var(--fs-caption);
+  color: var(--text-2);
+  text-decoration: none;
+}
+
+.savedView:hover {
+  border-color: var(--accent-line);
+  color: var(--text);
+}
+
+.savedView:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.viewBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.leadRow {
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--surface);
+}
+
+/* The lead the arrival email linked to. `scroll-margin-top` so the anchor does
+   not land it under the cockpit's own header. */
+.leadRow {
+  scroll-margin-top: 96px;
+}
+
+.leadRow[data-highlight="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+
+/* THE WORD IS THE STATE, never a tint alone: a colour that means Qualified to
+   whoever built this means nothing to whoever inherits it. */
+.statePill {
+  padding: 4px 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.statePill[data-state="won"] {
+  border-color: var(--positive-text);
+  color: var(--positive-text);
+}
+
+.statePill[data-state="lost"] {
+  color: var(--text-3-wash);
+}
+
+/* The clock against the published 72-hour commitment. Three bands a person can
+   name rather than a colour ramp they have to interpret, and each carries its
+   own words so the band survives a monochrome screen. */
+.slaPill {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  color: var(--text-3);
+}
+
+.slaPill[data-band="due"] {
+  color: var(--info-text);
+}
+
+.slaPill[data-band="late"] {
+  color: var(--signal-text);
+  font-weight: var(--fw-mono-strong);
+}
+
+.leadFields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px 20px;
+  margin: 14px 0 0;
+}
+
+.leadField {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.leadField dt {
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+}
+
+.leadField dd {
+  margin: 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.leadMessage {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--hairline);
+  font-size: var(--fs-body-sm);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: var(--text-2);
+}
+
+.leadNote {
+  margin: 12px 0 0;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.leadNoteLabel {
+  display: inline-block;
+  margin-right: 8px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-label);
+}
+
+.leadLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 14px 0 0;
+  font-size: var(--fs-caption);
+}
+
+.leadControls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--hairline);
+}
+
+.assignForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.assignLabel {
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+}
+
+.assignSelect {
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 0 0 0 var(--r-sm);
+  background: var(--bg);
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  color: var(--text);
+}
+
+.assignSelect:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 1px;
+}
+
+.payloadDisclosure {
+  margin-top: 14px;
+}
+
+.payloadDisclosure summary {
+  min-height: 24px;
+  padding: 2px 0;
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.payloadDisclosure summary:hover {
+  color: var(--text);
+}
+
+/* ── Origin analytics, on the conversations pane ────────────────────────── */
+
+.originPanel {
+  margin: 20px 0 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--hairline);
+  border-radius: 0 0 0 var(--r-md);
+  background: var(--ground-2);
+}
+
+.originTable {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+
+.originTable th,
+.originTable td {
+  padding: 7px 10px 7px 0;
+  border-bottom: 1px solid var(--hairline);
+  text-align: left;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.originTable th {
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  color: var(--text-3);
+}
+
+.originTable td:not(:first-child),
+.originTable th:not(:first-child) {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.originPath {
+  font-family: var(--font-mono);
+  font-size: var(--fs-data);
+  overflow-wrap: anywhere;
+}
+
+/* ── Round 26's narrow-width and target-size corrections ────────────────────
+   Both classes found by check:admin-render over the new funnel pane rather
+   than by looking: a select sized to its widest option, and mailto links at a
+   19px line box. */
+
+.leadRow,
+.leadFields,
+.leadField,
+.rowHead {
+  min-width: 0;
+}
+
+/* Every link on a lead card, and the conversations pane's link to the brief a
+   conversation produced, is a real target. 24px is SC 2.5.8's floor, and a 19px
+   line box is what an anchor around one line of 15.5px text produces. */
+.leadFields dd a,
+.leadLinks a,
+.noticeTitle,
+a.ok {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px 0;
+  overflow-wrap: anywhere;
+}
+
+.assignSelect,
+.assignForm {
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .leadFields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The assign control drops below the state buttons rather than sitting at
+     the end of a row that has already wrapped twice. */
+  .assignForm {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .originTable {
+    display: block;
+    overflow-x: auto;
+  }
 }

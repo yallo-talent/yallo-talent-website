@@ -183,3 +183,57 @@ test.describe("capabilities are narrower than the panes that contain them", () =
     expect(canDo("editor", "usersManage")).toBe(false);
   });
 });
+
+/**
+ * ROUND 26'S FUNNEL, transcribed by hand like everything else in this file.
+ *
+ * WHAT THE ROUND ADDED. `briefsWrite` had no write path until now — round 25
+ * named the capability with the reason recorded: "so that when one arrives it
+ * arrives against an existing admin-only entry rather than inheriting briefs'
+ * read rule by accident." Round 26 built that path (moving a lead through the
+ * pipeline, assigning an owner) and honoured the entry rather than widening it.
+ *
+ * AND THE CONSEQUENCE, ASSERTED RATHER THAN DISCOVERED: ops can read every lead
+ * and export the current view, and cannot move one. That is a real operational
+ * limit on the role whose whole job is following leads up, and it is written
+ * here so that changing it is a deliberate act against a red test rather than a
+ * quiet edit to CAPABILITY_ROLES.
+ *
+ * THE CSV EXPORT IS A READ. It sits at /api/admin/briefs/export, outside the
+ * (cockpit) route group, so no layout guard runs on its request and the route
+ * asserts the PANE itself. Reading a view and exporting the same view are the
+ * same act with a different destination, so the set is the pane's set:
+ * cockpit-v3 §11 says admin and ops, and owner reaches everything.
+ */
+test.describe("round 26 — the funnel's reach", () => {
+  test("owner and admin may move a lead through the pipeline", () => {
+    expect(canDo("owner", "briefsWrite")).toBe(true);
+    expect(canDo("admin", "briefsWrite")).toBe(true);
+  });
+
+  test("ops reads and exports every lead, and is REFUSED moving one", () => {
+    /* The export route asserts the pane, so pane reach IS export reach. */
+    expect(canSee("ops", "briefs")).toBe(true);
+    expect(canDo("ops", "briefsWrite")).toBe(false);
+  });
+
+  test("an editor is REFUSED the pane, so also the export and the write", () => {
+    expect(canSee("editor", "briefs")).toBe(false);
+    expect(canDo("editor", "briefsWrite")).toBe(false);
+  });
+
+  test("exactly three roles reach briefs, which is the export's set", () => {
+    expect(ROLES.filter((r) => canSee(r, "briefs"))).toEqual([
+      "owner",
+      "admin",
+      "ops",
+    ]);
+  });
+
+  test("exactly two roles may write them", () => {
+    expect(ROLES.filter((r) => canDo(r, "briefsWrite"))).toEqual([
+      "owner",
+      "admin",
+    ]);
+  });
+});
