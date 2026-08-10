@@ -108,6 +108,36 @@ export function EditorSurface(props: EditorSurfaceProps) {
   const save = useSaveStates();
   const saveBodyNow = useRef<(() => Promise<void>) | null>(null);
 
+  /**
+   * The rail's real height, published as `--rail-h` for the toolbar to stick
+   * below.
+   *
+   * THE IMPECCABLE PASS ON THIS ROUND FOUND THE SAME DEFECT ONE LEVEL DOWN from
+   * the one R-27.2 closed. The rail is sticky at 0 and the toolbar was sticky at
+   * a literal `top: 52px`, guessed against the rail's height. The rail wraps:
+   * measured, it is 67px at 1280 and 107px at 800, so the toolbar sat 15px over
+   * it at 1280 and 55px over it at 800. A hardcoded offset against a wrapping
+   * element is right at one width and wrong at every other.
+   *
+   * Measured on the ROOT rather than by wrapping the rail. A wrapper would
+   * become the rail's containing block and a sticky element cannot travel past
+   * its containing block, so the wrapper that made it measurable would be the
+   * thing that stopped it sticking. The ref callback runs after children mount,
+   * which is why querying down works here.
+   */
+  const [railHeight, setRailHeight] = useState(0);
+  const measureRail = useCallback((root: HTMLDivElement) => {
+    const rail = root.querySelector<HTMLElement>(`.${styles.rail}`);
+    if (!rail) return;
+    setRailHeight(Math.round(rail.getBoundingClientRect().height));
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries)
+        setRailHeight(Math.round(entry.target.getBoundingClientRect().height));
+    });
+    observer.observe(rail);
+    return () => observer.disconnect();
+  }, []);
+
   const frontSaver = useDebouncedSave<{ title: string; summary: string }>(
     saveFront,
     save.report("front"),
@@ -125,6 +155,21 @@ export function EditorSurface(props: EditorSurfaceProps) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [fullScreen]);
+
+  /* And Escape closes the drawer. The impeccable pass measured that full screen,
+     the rail's More menu and the slash popup all closed on Escape and the drawer
+     did not — one surface out of four behaving differently is the inconsistency,
+     not the missing feature. It stays non-modal: focus is not trapped and the
+     Close button remains, so this only adds the exit everything else already
+     had. */
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setDrawerOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [drawerOpen]);
 
   const flushAll = useCallback(async () => {
     await Promise.all([saveBodyNow.current?.(), frontSaver.flush()]);
@@ -171,7 +216,11 @@ export function EditorSurface(props: EditorSurfaceProps) {
     /* The full-screen layer wraps the RAIL as well as the canvas. A layer over
        the canvas alone hid the Saved pill and the way out, which is the failure
        full screen exists to avoid rather than to cause. */
-    <div className={fullScreen ? styles.fullScreenLayer : undefined}>
+    <div
+      className={fullScreen ? styles.fullScreenLayer : undefined}
+      ref={measureRail}
+      style={{ "--rail-h": `${railHeight}px` } as React.CSSProperties}
+    >
       <LifecycleRail
         backRoute={backRoute}
         drawerOpen={drawerOpen}

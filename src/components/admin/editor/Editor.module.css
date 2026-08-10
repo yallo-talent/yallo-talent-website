@@ -32,9 +32,14 @@
  *   --surface-raised  the preview pane and the drawer, so an auxiliary pane is
  *                     never mistaken for the thing being written
  *
- * The border is `--rule` rather than `--hairline` because the two grounds either
- * side of it are one step apart: at that separation the edge is doing the work,
- * and a decorative hairline is not an edge.
+ * The border is `--boundary`, the contrast-grade one: `--rule-strong` at 3.11:1
+ * in light and `--dk-line-strong` at 3.40:1 in dark. It was `--rule` first, and
+ * the impeccable pass measured why that was wrong — in the light block `--rule`
+ * and `--hairline` are the SAME value, so the choice did nothing there and gave
+ * a 1.34:1 edge against the page ground, while in dark it resolved to a
+ * near-white 11.8:1 line. One declaration, an invisible border in one register
+ * and a stark one in the other. Two grounds one step apart need an edge that is
+ * an edge in both.
  */
 .shell {
   /* The card's inset, declared once here and cancelled by the two sticky bars
@@ -46,7 +51,7 @@
   position: relative;
   margin-top: 24px;
   padding-inline: var(--canvas-pad);
-  border: 1px solid var(--rule);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   background: var(--surface);
 }
@@ -534,7 +539,7 @@
 .preview {
   position: sticky;
   top: 16px;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   background: var(--surface-raised);
   overflow: hidden;
@@ -882,9 +887,14 @@
 
 .toolbar {
   position: sticky;
-  /* Under the rail, not over it. The rail is 0; this sits at its height, and
-     the two never overlap because both are in normal flow. */
-  top: 52px;
+  /* Under the rail, not over it — and MEASURED, not guessed. This was
+     `top: 52px`, a literal against the rail's height, and the rail wraps: 67px
+     at 1280 and 107px at 800, so the toolbar sat 15px over the rail at one width
+     and 55px over it at another. `--rail-h` is written by EditorSurface from a
+     ResizeObserver on the rail itself. The fallback is the old literal, which is
+     wrong in the same way but no worse, and only applies for the single frame
+     before the first measurement. */
+  top: var(--rail-h, 52px);
   z-index: 25;
   display: flex;
   flex-wrap: wrap;
@@ -1132,7 +1142,7 @@
   max-height: calc(100vh - 120px);
   overflow-y: auto;
   padding: 18px 20px 24px;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   background: var(--surface-raised);
 }
@@ -1647,7 +1657,7 @@ textarea.drawerInput {
 .checks {
   margin: 24px 0 0;
   padding: clamp(16px, 2vw, 22px);
-  border: 1px solid var(--rule);
+  border: 1px solid var(--boundary);
   border-radius: 0 0 0 var(--r-md);
   background: var(--surface);
 }

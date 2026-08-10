@@ -738,30 +738,54 @@ if (!process.env.DATABASE_URL) {
        * either side of it. Asserted rather than eyeballed because the two rules
        * live in two stylesheets and neither mentions the other.
        */
-      await page.evaluate(() => window.scrollTo(0, 1200));
-      await page.waitForTimeout(400);
-      const stack = await page.evaluate(() => {
-        const bar = document.querySelector('header[class*="bar"]');
-        const rail = document.querySelector('[class*="rail"]');
-        if (!bar || !rail) return null;
-        const a = bar.getBoundingClientRect();
-        const b = rail.getBoundingClientRect();
-        const y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
-        const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
-        return { overlap: y > 0 && x > 0 ? Math.round(y) : 0 };
-      });
-      if (!stack) {
-        blocking.push(
-          `R-27.2 ${theme}: the cockpit bar or the lifecycle rail could not be found, so the\n` +
-            "      sticky-overlap assertion measured nothing.",
-        );
-      } else if (stack.overlap > 0) {
-        blocking.push(
-          `R-27.2 ${theme}: scrolled, the lifecycle rail covers ${stack.overlap}px of the cockpit bar.\n` +
-            "      Two sticky boxes at the same offset in one scroll container overlap by\n" +
-            "      construction; one of them has to give way.",
-        );
+      /* THREE WIDTHS, because the second instance of this defect was invisible
+         at one. The toolbar's offset was a literal 52px against a rail that
+         wraps: 67px tall at 1280 and 107px at 800, so it covered the rail by
+         15px at one width and 55px at another. A one-width assertion would have
+         called the 1280 case a rounding error and never seen the 800 case. */
+      for (const width of [1400, 1024, 800]) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.evaluate(() => window.scrollTo(0, 1200));
+        await page.waitForTimeout(400);
+        const stack = await page.evaluate(() => {
+          const boxes = {
+            "cockpit bar": document.querySelector('header[class*="bar"]'),
+            "lifecycle rail": document.querySelector('[class*="rail"]'),
+            "top toolbar": document.querySelector('[class*="toolbar"]'),
+          };
+          const missing = Object.entries(boxes)
+            .filter(([, el]) => !el)
+            .map(([name]) => name);
+          if (missing.length) return { missing };
+          const names = Object.keys(boxes);
+          const overlaps = [];
+          for (let i = 0; i < names.length; i += 1) {
+            for (let j = i + 1; j < names.length; j += 1) {
+              const a = boxes[names[i]].getBoundingClientRect();
+              const b = boxes[names[j]].getBoundingClientRect();
+              const y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+              const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+              if (y > 1 && x > 1)
+                overlaps.push(`${names[i]} and ${names[j]} by ${Math.round(y)}px`);
+            }
+          }
+          return { overlaps };
+        });
+        if (stack.missing) {
+          blocking.push(
+            `R-27.2 ${theme}/${width}: could not find ${stack.missing.join(", ")}, so the\n` +
+              "      sticky-overlap assertion measured nothing.",
+          );
+        } else if (stack.overlaps.length) {
+          blocking.push(
+            `R-27.2 ${theme}/${width}: scrolled, sticky boxes overlap — ${stack.overlaps.join("; ")}.\n` +
+              "      Two sticky boxes at the same offset in one scroll container overlap by\n" +
+              "      construction, and an offset guessed against a box that WRAPS is right at\n" +
+              "      one width and wrong at the next.",
+          );
+        }
       }
+      await page.setViewportSize({ width: 1400, height: 1000 });
       await page.evaluate(() => window.scrollTo(0, 0));
 
       /* ── R-27.6: the whole page smaller, never a cropped page ──────────── */

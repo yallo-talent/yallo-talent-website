@@ -57,6 +57,10 @@ export interface RailProps {
   setStatusAction: (formData: FormData) => Promise<void>;
 }
 
+/* One id, because exactly one primary action renders at a time — the three
+   branches below are the three lifecycle states, never two at once. */
+const PRIMARY_HINT_ID = "rail-primary-hint";
+
 const STATUS_LABEL: Record<string, string> = {
   draft: "Draft",
   published: "Published",
@@ -289,12 +293,25 @@ export function LifecycleRail(props: RailProps) {
           ) : null}
         </div>
 
+        {/* WHAT THE PRIMARY ACTION DOES, READABLE BY SOMETHING OTHER THAN A
+            MOUSE. The hint was carried only in `title`, which most browsers
+            never show on keyboard focus, no touch device shows at all, and no
+            screen reader reliably announces — on the one button that changes
+            whether a page is live. Visually hidden and referenced by
+            `aria-describedby` from all three forms of the button, so the
+            explanation reaches assistive technology and the rail keeps its
+            density. `title` stays for the pointer. */}
+        <span className={styles.visuallyHidden} id={PRIMARY_HINT_ID}>
+          {primary.hint}
+        </span>
+
         {/* THE ONE PRIMARY ACTION. Published pieces update through the same
             autosave everything else uses, so this flushes rather than posting:
             a second write path for "the same thing, deliberately" is a second
             place for the two to disagree. */}
         {status === "draft" ? (
           <button
+            aria-describedby={PRIMARY_HINT_ID}
             className={styles.primaryAction}
             onClick={onPublish}
             title={primary.hint}
@@ -304,6 +321,7 @@ export function LifecycleRail(props: RailProps) {
           </button>
         ) : status === "published" ? (
           <button
+            aria-describedby={PRIMARY_HINT_ID}
             className={styles.primaryAction}
             onClick={onSaveNow}
             title={primary.hint}
@@ -318,6 +336,7 @@ export function LifecycleRail(props: RailProps) {
             <input name="next" type="hidden" value="draft" />
             <input name="returnTo" type="hidden" value="editor" />
             <button
+              aria-describedby={PRIMARY_HINT_ID}
               className={styles.primaryAction}
               title={primary.hint}
               type="submit"

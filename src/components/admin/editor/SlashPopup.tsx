@@ -16,6 +16,19 @@ import { type SlashItem, type SlashState, slashCommand } from "./SlashMenu";
  * active row is marked with `aria-selected`, and the list is a real
  * `listbox` so a screen reader announces the count and the position.
  */
+/**
+ * The listbox and its options need stable ids, because the element that OWNS the
+ * keyboard is not this list — it is the editor, which keeps focus throughout.
+ *
+ * The impeccable pass measured the gap: arrow keys moved `aria-selected` between
+ * options, and nothing told a screen reader that the focused textbox had a popup
+ * open or which row was current, because `aria-activedescendant` was null and the
+ * selected option never receives focus. Editor.tsx writes the three attributes
+ * onto the ProseMirror node from these ids.
+ */
+export const SLASH_LIST_ID = "slash-menu-list";
+export const slashOptionId = (index: number) => `slash-menu-option-${index}`;
+
 export function useSlashRenderer() {
   /**
    * The open menu, or null, WITH its highlighted row.
@@ -105,6 +118,7 @@ export function SlashPopup({
       <div
         aria-label="Insert a block"
         className={styles.slashList}
+        id={SLASH_LIST_ID}
         role="listbox"
         tabIndex={-1}
       >
@@ -114,6 +128,7 @@ export function SlashPopup({
             className={
               i === state.active ? styles.slashItemActive : styles.slashItem
             }
+            id={slashOptionId(i)}
             key={item.title}
             onClick={() => state.select(i)}
             onKeyDown={(e) => {

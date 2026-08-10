@@ -12,7 +12,12 @@ import { toPlainDoc } from "@/lib/tiptap/schema.mjs";
 import { readingTimeMinutes, wordCount } from "@/lib/tiptap/text.mjs";
 import styles from "./Editor.module.css";
 import { SelectionToolbar } from "./SelectionToolbar";
-import { SlashPopup, useSlashRenderer } from "./SlashPopup";
+import {
+  SLASH_LIST_ID,
+  SlashPopup,
+  slashOptionId,
+  useSlashRenderer,
+} from "./SlashPopup";
 import { type SaveState, useDebouncedSave } from "./save-state";
 import { TopToolbar } from "./TopToolbar";
 import { YALLO_NODES } from "./YalloNodes";
@@ -85,6 +90,12 @@ import { YALLO_NODES } from "./YalloNodes";
  * another; and TiptapBody falls back to 2 rather than 3, so the writer and the
  * renderer agree about what a level-less heading is.
  */
+const HeadingDefaultTwo = Heading.extend({
+  addAttributes() {
+    return { ...this.parent?.(), level: { default: 2 } };
+  },
+}).configure({ levels: [2, 3] });
+
 /**
  * The preview frame's own viewport height, in CSS pixels of the PREVIEWED page.
  *
@@ -95,12 +106,6 @@ import { YALLO_NODES } from "./YalloNodes";
  * the pane.
  */
 const PREVIEW_FRAME_HEIGHT = 1400;
-
-const HeadingDefaultTwo = Heading.extend({
-  addAttributes() {
-    return { ...this.parent?.(), level: { default: 2 } };
-  },
-}).configure({ levels: [2, 3] });
 
 export type { SaveState };
 
@@ -289,6 +294,38 @@ export function Editor({
      wide inside a clipped box, where a guessed scale is a page that jumps. */
   const previewScale =
     paneWidth > 0 ? Math.min(1, paneWidth / previewWidth) : 1;
+
+  /**
+   * The slash menu, announced on the element that actually holds focus.
+   *
+   * The listbox is a sibling of the editor and the caret never leaves the
+   * editor, so `aria-selected` on an option that is never focused told a screen
+   * reader nothing: it needs `aria-activedescendant` on the focused textbox.
+   * Written to the DOM node rather than through `editorProps.attributes`
+   * because those are fixed at mount and this changes on every arrow key.
+   *
+   * NO `aria-expanded`, AND THE GATE IS WHY. The first version set it, and
+   * check:admin-render went red with a CRITICAL axe violation on the first run:
+   * `aria-expanded` is not in `textbox`'s supported set — it belongs to
+   * `combobox`, and this is a multiline rich-text field, not a combobox. Three
+   * attributes remain and all three are allowed on `textbox`:
+   * `aria-activedescendant` carries which row is current, `aria-autocomplete`
+   * says a list is offered, and `aria-controls` is global.
+   */
+  useEffect(() => {
+    const node = editor?.view.dom;
+    if (!node) return;
+    if (!slash.state) {
+      node.removeAttribute("aria-activedescendant");
+      return;
+    }
+    node.setAttribute("aria-controls", SLASH_LIST_ID);
+    node.setAttribute("aria-autocomplete", "list");
+    node.setAttribute(
+      "aria-activedescendant",
+      slashOptionId(slash.state.active),
+    );
+  }, [editor, slash.state]);
 
   /* Assigned in an effect rather than during render: a ref written during
      render is a write to shared state in a phase React may replay. The only
