@@ -85,6 +85,17 @@ import { YALLO_NODES } from "./YalloNodes";
  * another; and TiptapBody falls back to 2 rather than 3, so the writer and the
  * renderer agree about what a level-less heading is.
  */
+/**
+ * The preview frame's own viewport height, in CSS pixels of the PREVIEWED page.
+ *
+ * A number rather than a percentage because the frame is scaled: a transform
+ * needs a definite layout box to scale, and the scaled height is what the pane
+ * reserves. Tall enough that the first screens of a piece are all in the frame,
+ * so most reading happens by scrolling inside the frame rather than by dragging
+ * the pane.
+ */
+const PREVIEW_FRAME_HEIGHT = 1400;
+
 const HeadingDefaultTwo = Heading.extend({
   addAttributes() {
     return { ...this.parent?.(), level: { default: 2 } };
@@ -152,6 +163,23 @@ export function Editor({
     minutes: readingTimeMinutes(initialBody),
   }));
   const [previewNonce, setPreviewNonce] = useState(0);
+  /**
+   * How wide the pane actually is, so the frame can be scaled to fit it.
+   *
+   * R-27.6. The pane used to put the frame at its true width inside
+   * `overflow: auto`, which at the 1280 setting is a CROPPED page: the writer
+   * saw the left two thirds of the template and had to scroll sideways for the
+   * rest. The rule is the whole page smaller, never a cropped page — so the
+   * frame keeps its true viewport width, because that is what makes the 1280
+   * register render at 1280, and a transform scales it down to whatever the pane
+   * has.
+   *
+   * MEASURED RATHER THAN ASSUMED. The pane is half of a responsive grid inside a
+   * cockpit that can be 360px wide or 2000, and it collapses to full width under
+   * 1100. There is no number to hardcode, so a ResizeObserver reports the real
+   * one and the scale follows it.
+   */
+  const [paneWidth, setPaneWidth] = useState(0);
   /* Bumped on every transaction so the toolbar's pressed states describe where
      the caret actually is. ProseMirror's state is not React's, and a toolbar
      that only re-rendered when something else did would show the marks of
@@ -239,6 +267,29 @@ export function Editor({
     onTransaction: () => setSelectionRevision((n) => n + 1),
   });
 
+  /* A REF CALLBACK RATHER THAN AN EFFECT. The pane is mounted and unmounted by
+     the preview toggle, so an effect would need `showPreview` and
+     `previewReady` in its dependency list purely to re-run when the element
+     appears — dependencies it never reads, which is exactly what biome refuses
+     and for a good reason. React 19 lets a ref callback return its own cleanup,
+     so the observer attaches when the node exists and detaches when it does
+     not, with nothing to keep in step. */
+  const measurePane = useCallback((el: HTMLDivElement) => {
+    setPaneWidth(el.clientWidth);
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) setPaneWidth(entry.contentRect.width);
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  /* Never above 1, because a preview blown up past its own viewport width is
+     not what any reader would get. Before the first measurement the frame is
+     unscaled rather than hidden: one frame at 1:1 is a page that is briefly too
+     wide inside a clipped box, where a guessed scale is a page that jumps. */
+  const previewScale =
+    paneWidth > 0 ? Math.min(1, paneWidth / previewWidth) : 1;
+
   /* Assigned in an effect rather than during render: a ref written during
      render is a write to shared state in a phase React may replay. The only
      reader is the flush below, which runs from a click. */
@@ -325,20 +376,53 @@ export function Editor({
                 >
                   1280
                 </button>
+                {/* R-27.6. Beside the size controls, because that is where
+                    somebody already is when the scaled pane is too small for
+                    what they are checking. The same URL the frame loads, so the
+                    tab and the pane cannot show different things. */}
+                {previewReady ? (
+                  <a
+                    className={styles.previewToggle}
+                    href={`${previewPath}?theme=${previewTheme}&nonce=${previewNonce}`}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Open in new tab
+                  </a>
+                ) : null}
               </div>
             </div>
             {previewReady ? (
-              <div className={styles.previewFrameWrap}>
-                <iframe
-                  className={styles.previewFrame}
-                  /* The nonce is what makes the pane follow the writing.
-                     Without it the frame shows whatever was saved when the
-                     preview was opened, which is a preview that lies. */
-                  key={`${previewTheme}-${previewWidth}-${previewNonce}`}
-                  src={`${previewPath}?theme=${previewTheme}&nonce=${previewNonce}`}
-                  style={{ width: `${previewWidth}px` }}
-                  title="Preview in the published template"
-                />
+              /* THE PANE IS THE VIEWPORT AND IT NEVER SCROLLS SIDEWAYS — the
+                 whole of R-27.6. The stage below keeps the frame's true width
+                 and is scaled into this box; this box only ever scrolls down. */
+              <div className={styles.previewFrameWrap} ref={measurePane}>
+                <div
+                  className={styles.previewStage}
+                  style={{
+                    /* The PAINTED size, so the pane reserves what it shows and
+                       nothing overflows it in either axis. An unscaled layout
+                       box here left a tall strip of empty pane under every
+                       preview and a page that could be shunted sideways. */
+                    height: `${PREVIEW_FRAME_HEIGHT * previewScale}px`,
+                    width: `${previewWidth * previewScale}px`,
+                  }}
+                >
+                  <iframe
+                    className={styles.previewFrame}
+                    /* The nonce is what makes the pane follow the writing.
+                       Without it the frame shows whatever was saved when the
+                       preview was opened, which is a preview that lies. */
+                    key={`${previewTheme}-${previewWidth}-${previewNonce}`}
+                    src={`${previewPath}?theme=${previewTheme}&nonce=${previewNonce}`}
+                    style={{
+                      height: `${PREVIEW_FRAME_HEIGHT}px`,
+                      transform: `scale(${previewScale})`,
+                      width: `${previewWidth}px`,
+                    }}
+                    title="Preview in the published template"
+                  />
+                </div>
               </div>
             ) : (
               <p className={styles.previewEmpty}>

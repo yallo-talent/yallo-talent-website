@@ -632,18 +632,35 @@ if (!process.env.DATABASE_URL) {
       returning id`;
     attrsFixtureId = String(inserted[0].id);
 
-    const ctx = await browser.newContext({
-      viewport: { width: 1400, height: 1000 },
-      colorScheme: "light",
-      reducedMotion: "reduce",
-    });
+    /* BOTH THEMES, because R-27.6 asks for both and the pane's controls are
+       styled per theme. The SAVE half runs once: it is a fact about the wire,
+       not about a colour scheme, and running it twice would only write a second
+       revision. */
+    for (const theme of THEMES) {
+      const ctx = await browser.newContext({
+        viewport: { width: 1400, height: 1000 },
+        colorScheme: theme,
+        reducedMotion: "reduce",
+      });
+      await ctx.addInitScript((t) => {
+        try {
+          localStorage.setItem("yallo-theme", t);
+        } catch {}
+        const stamp = () =>
+          document.documentElement.setAttribute("data-theme", t);
+        stamp();
+        document.addEventListener("DOMContentLoaded", stamp);
+      }, theme);
 
-    if (!(await signIn(ctx))) {
-      blocking.push(
-        "R-27.5: sign-in did not produce a session, so the attribute-bearing save was\n" +
-          "      never exercised.",
-      );
-    } else {
+      if (!(await signIn(ctx))) {
+        blocking.push(
+          `R-27.5/R-27.6 ${theme}: sign-in did not produce a session, so neither the\n` +
+            "      attribute-bearing save nor the preview pane was exercised.",
+        );
+        await ctx.close();
+        continue;
+      }
+
       const page = await ctx.newPage();
       const broken = [];
       page.on("response", (r) => {
@@ -659,9 +676,14 @@ if (!process.env.DATABASE_URL) {
       const editable = page.locator('[contenteditable="true"]').first();
       if ((await editable.count()) === 0) {
         blocking.push(
-          "R-27.5: the editor did not mount on the fixture row, so nothing was saved.",
+          `R-27.5 ${theme}: the editor did not mount on the fixture row, so nothing was measured.`,
         );
-      } else {
+        await page.close();
+        await ctx.close();
+        continue;
+      }
+
+      if (theme === THEMES[0]) {
         await editable.click();
         /* To the END of the document, so the typing lands in the paragraph and
            the heading stays a heading — the node under test must survive the
@@ -693,7 +715,7 @@ if (!process.env.DATABASE_URL) {
           blocking.push(
             `R-27.5: the heading's attrs did not survive the server action as an object — ${JSON.stringify(heading?.attrs)}.\n` +
               "      This is the temporary-reference defect: a null-prototype attrs object\n" +
-              "      crosses as \"$T\" and every server-side read of it throws.",
+              '      crosses as "$T" and every server-side read of it throws.',
           );
         } else if (heading.attrs.level !== 2) {
           blocking.push(
@@ -706,9 +728,149 @@ if (!process.env.DATABASE_URL) {
           );
         }
       }
+
+      /* ── R-27.6: the whole page smaller, never a cropped page ──────────── */
+      await page
+        .getByRole("button", { name: "Preview", exact: true })
+        .click()
+        .catch(() => {});
+      const frameSelector = 'iframe[title="Preview in the published template"]';
+      const appeared = await page
+        .waitForSelector(frameSelector, { state: "visible", timeout: 15000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (!appeared) {
+        blocking.push(
+          `R-27.6 ${theme}: the preview pane showed no frame, so nothing about clipping was measured.`,
+        );
+      } else {
+        const openTab = page.getByRole("link", { name: "Open in new tab" });
+        if ((await openTab.count()) === 0) {
+          blocking.push(
+            `R-27.6 ${theme}: there is no "Open in new tab" beside the size controls.`,
+          );
+        } else {
+          const box = await openTab.first().boundingBox();
+          if (!box || box.height < 24 || box.width < 24) {
+            blocking.push(
+              `R-27.6 ${theme}: "Open in new tab" is ${box ? `${Math.round(box.width)}x${Math.round(box.height)}` : "not painted"}, below SC 2.5.8's 24px.`,
+            );
+          }
+        }
+
+        for (const width of [1280, 360]) {
+          /* Cleared before the click so the stability check below cannot be
+             satisfied by the previous size's reading. */
+          await page.evaluate(() => {
+            window.__yalloPreviewPainted = -1;
+          });
+          await page
+            .getByRole("button", { name: String(width), exact: true })
+            .click();
+          /* WAITED ON STABILITY, NOT ON THE THING UNDER TEST. The size toggle
+             re-keys the iframe, so a fixed sleep races a reload; and waiting on
+             the CSS width alone caught a real intermediate state — the new width
+             applied while the previous scale was still in place — which reported
+             a correctly scaled pane as cropped. Waiting on "the painted width
+             agrees with itself two polls running, at the right register" is
+             neither a race nor a restatement of the assertion. */
+          await page
+            .waitForFunction(
+              ({ selector, w }) => {
+                const el = document.querySelector(selector);
+                if (!el) return false;
+                if (
+                  Math.abs(Number.parseFloat(getComputedStyle(el).width) - w) >=
+                  2
+                )
+                  return false;
+                const painted = Math.round(el.getBoundingClientRect().width);
+                const previous = window.__yalloPreviewPainted;
+                window.__yalloPreviewPainted = painted;
+                return painted > 0 && previous === painted;
+              },
+              { selector: frameSelector, w: width },
+              { timeout: 15000 },
+            )
+            .catch(() => {});
+
+          const geometry = await page.evaluate((selector) => {
+            const frame = document.querySelector(selector);
+            /* By the CSS-module class rather than by walking up two parents: a
+               selector that counts wrappers breaks the next time one is added,
+               silently, by measuring the wrong box. */
+            const wrap = document.querySelector('[class*="previewFrameWrap"]');
+            if (!frame || !wrap) return null;
+            const fb = frame.getBoundingClientRect();
+            const wb = wrap.getBoundingClientRect();
+            /* NOT scrollWidth. A transform leaves the layout box at its true
+               width, so scrollWidth reports 1280 on a pane showing the whole
+               page correctly scaled — the first version of this assertion failed
+               a passing build for exactly that reason. What matters to a writer
+               is whether the pane CAN go sideways, so that is what is tried. */
+            const restore = wrap.scrollLeft;
+            wrap.scrollLeft = 9999;
+            const sideways = wrap.scrollLeft > 0;
+            wrap.scrollLeft = restore;
+            return {
+              /* The CSS width is the register the previewed page renders at;
+                 the painted width is what the pane actually shows. The point of
+                 the transform is that these differ. */
+              cssWidth: Number.parseFloat(getComputedStyle(frame).width),
+              paintedWidth: fb.width,
+              wrapWidth: wb.width,
+              overhangRight: fb.right - wb.right,
+              sideways,
+            };
+          }, frameSelector);
+
+          if (!geometry) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the preview frame could not be measured.`,
+            );
+            continue;
+          }
+          if (Math.abs(geometry.cssWidth - width) > 2) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the frame renders at ${Math.round(geometry.cssWidth)}px rather than ${width}px,\n` +
+                "      so the previewed page is at the wrong breakpoint. Narrowing the frame is\n" +
+                "      not the same as scaling it.",
+            );
+          }
+          if (geometry.sideways || geometry.overhangRight > 1) {
+            blocking.push(
+              `R-27.6 ${theme}/${width}: the preview is CROPPED — the frame paints ${Math.round(geometry.paintedWidth)}px\n` +
+                `      into a ${Math.round(geometry.wrapWidth)}px pane, overhanging by ${Math.round(geometry.overhangRight)}px, and the pane\n` +
+                `      ${geometry.sideways ? "can be scrolled sideways" : "does not scroll sideways"}. The rule is the whole page smaller,\n` +
+                "      never a cropped page.",
+            );
+          }
+
+          /* And the previewed DOCUMENT itself must not push its own viewport:
+             a page that overflows 360 is a real defect in the template, and it
+             looks identical to a badly scaled pane from the outside. */
+          const inner = page
+            .frames()
+            .find((f) => f.url().includes("/admin/preview/"));
+          if (inner) {
+            const docOverflow = await inner
+              .evaluate(() => {
+                const d = document.documentElement;
+                return d.scrollWidth - d.clientWidth;
+              })
+              .catch(() => 0);
+            if (docOverflow > 0) {
+              blocking.push(
+                `R-27.6 ${theme}/${width}: the previewed document scrolls sideways by ${docOverflow}px inside its own frame.`,
+              );
+            }
+          }
+        }
+      }
       await page.close();
+      await ctx.close();
     }
-    await ctx.close();
   } catch (err) {
     blocking.push(
       `R-27.5: the attribute-bearing save check threw rather than completing — ${err instanceof Error ? err.message : err}`,

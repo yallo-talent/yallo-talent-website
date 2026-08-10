@@ -527,23 +527,69 @@
   gap: 6px;
 }
 
+/* A4's FILLED-CONTROL ROLE, not the meta role. These toggles carry
+   `aria-pressed`, and the pressed one takes `--accent-wash` — which makes it a
+   filled control, held to 15.5px rather than to the 14px meta floor. At
+   `--fs-caption` the two pressed toggles in this bar were a 14px filled
+   control the moment anyone opened the pane, and no gate had ever opened it.
+   `--fs-body-sm` is the token globals.css already annotates "buttons".
+
+   The min-height is SC 2.5.8's 24px stated rather than inferred from padding
+   plus a line box, and `inline-flex` is what lets the "Open in new tab" anchor
+   share this style without sitting a pixel off the buttons beside it. */
 .previewToggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
   padding: 4px 10px;
+  font-size: var(--fs-body-sm);
+  text-decoration: none;
 }
 
 /* The frame is shown at its true CSS width and scaled to fit, so the 360
    register is measured at 360 rather than merely narrowed. A frame squeezed
-   into the pane would report the wrong breakpoint. */
+   into the pane would report the wrong breakpoint.
+
+   R-27.6: AND THE SCALING IS NOW ACTUALLY DONE. This comment described the
+   intention and the rule for a round while `overflow: auto` did the opposite —
+   at the 1280 setting the writer got the left two thirds of the template and a
+   horizontal scrollbar. `overflow-x: hidden` here is the assertion, not a
+   patch: nothing in this pane may extend past it, because the stage inside is
+   scaled to fit rather than clipped. */
 .previewFrameWrap {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   max-height: 78vh;
 }
 
+/**
+ * The stage is the SCALED size; the frame inside it keeps its true width.
+ *
+ * WHY THE TWO BOXES ARE SEPARATE, measured rather than assumed. A transform does
+ * not change a layout box: with the transform on a full-width stage, the stage
+ * stayed 1280 wide in layout while painting 592, so the pane could still be
+ * scrolled sideways to a strip of nothing — by a focus ring, if not by hand.
+ * `overflow-x: clip` does not fix it either: the spec makes `clip` USE `hidden`
+ * when the other axis scrolls, and this pane scrolls vertically. So the stage
+ * takes the painted size, the frame overflows it in layout only, and `clip` on
+ * BOTH axes here is a real clip because neither axis of this box scrolls.
+ *
+ * Centred, because the 360 register in a wide cockpit pinned to the left of a
+ * half-empty pane reads as a broken layout rather than as a phone.
+ */
+.previewStage {
+  overflow: clip;
+  margin-inline: auto;
+}
+
+/* Scaled from the TOP LEFT, so the page's own left margin is the stage's left
+   edge. The width, the height and the scale are set inline from the selected
+   size and the measured pane — CSS cannot compute any of them. */
 .previewFrame {
   display: block;
-  height: 1400px;
   border: none;
   background: var(--bg);
+  transform-origin: top left;
 }
 
 .previewEmpty {
