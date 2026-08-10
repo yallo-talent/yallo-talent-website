@@ -40,6 +40,15 @@
         ],
         "createdAt": "2026-08-02T06:22:45.707Z",
         "reason": "Canon 5 makes the hero grid load-bearing, not decorative: it is one of the named structural signatures of the ambient hero, drawn at 3 percent alpha (--wa03) behind a radial mask so it reads as texture under the H1 and fades before the copy. Sumeet ratified keeping it, 2 Aug 2026. Scoped to the three .heroGrid declarations that draw it; the rule stays live everywhere else."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/blocks/editorial/YalloBlocks.module.css"
+        ],
+        "createdAt": "2026-08-10T05:44:42.047Z",
+        "reason": "Sumeet ratified R-27.4. The rule targets a thick coloured border on one side of a CARD, which is a real tell. .pullQuote is not a card: it is a <figure> wrapping a <blockquote>, and a rule down the left edge of a quotation is the oldest convention in typesetting. The estate is already consistent about the distinction - .block in Editor.module.css carries a comment explicitly refusing a side tab on a card, and .prose blockquote uses the same left rule this does. Pre-existing since round 25b (f8dc9bf); the hook re-scanned the file because round 26 added the .embed rules to it. Scoped to this one file; the rule stays live everywhere else."
       }
     ]
   }
