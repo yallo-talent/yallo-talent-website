@@ -729,6 +729,41 @@ if (!process.env.DATABASE_URL) {
         }
       }
 
+      /* ── R-27.2: nothing sticky covers anything else sticky ────────────── */
+      /**
+       * Scrolled, then measured. This is the "1280 overlap" in its exact form:
+       * the cockpit bar and the editor's lifecycle rail were both
+       * `position: sticky; top: 0`, so the rail — the higher z-index — covered
+       * the whole bar the moment anyone scrolled, with the bar's ends showing
+       * either side of it. Asserted rather than eyeballed because the two rules
+       * live in two stylesheets and neither mentions the other.
+       */
+      await page.evaluate(() => window.scrollTo(0, 1200));
+      await page.waitForTimeout(400);
+      const stack = await page.evaluate(() => {
+        const bar = document.querySelector('header[class*="bar"]');
+        const rail = document.querySelector('[class*="rail"]');
+        if (!bar || !rail) return null;
+        const a = bar.getBoundingClientRect();
+        const b = rail.getBoundingClientRect();
+        const y = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+        const x = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+        return { overlap: y > 0 && x > 0 ? Math.round(y) : 0 };
+      });
+      if (!stack) {
+        blocking.push(
+          `R-27.2 ${theme}: the cockpit bar or the lifecycle rail could not be found, so the\n` +
+            "      sticky-overlap assertion measured nothing.",
+        );
+      } else if (stack.overlap > 0) {
+        blocking.push(
+          `R-27.2 ${theme}: scrolled, the lifecycle rail covers ${stack.overlap}px of the cockpit bar.\n` +
+            "      Two sticky boxes at the same offset in one scroll container overlap by\n" +
+            "      construction; one of them has to give way.",
+        );
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+
       /* ── R-27.6: the whole page smaller, never a cropped page ──────────── */
       await page
         .getByRole("button", { name: "Preview", exact: true })

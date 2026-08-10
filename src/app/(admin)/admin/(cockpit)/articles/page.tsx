@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { RowTitle } from "@/app/admin/RowTitle";
+import styles from "@/components/admin/Admin.module.css";
 import { LifecycleHelp, NoticesStrip } from "@/components/admin/NoticesStrip";
+import { RowTitle } from "@/components/admin/RowTitle";
 import { FIXED_BYLINE } from "@/lib/admin/content-validation";
 import { requirePane } from "@/lib/admin/guard";
 import { noticesFor } from "@/lib/admin/notices";
 import { allArticles } from "@/lib/db/content";
 import { publishedPaths } from "@/lib/published-routes";
-import styles from "../../Admin.module.css";
 import { createArticleAction, setStatusAction } from "./actions";
 
 /**

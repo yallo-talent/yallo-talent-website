@@ -147,7 +147,7 @@ const allFiles = walk("src");
 const disciplineFiles = allFiles.filter(
   (f) =>
     f.startsWith("src/data/capabilities/") ||
-    f.startsWith("src/app/capabilities/") ||
+    f.startsWith("src/app/(site)/capabilities/") ||
     f === join("src", "data", "l1", "index.ts"),
 );
 

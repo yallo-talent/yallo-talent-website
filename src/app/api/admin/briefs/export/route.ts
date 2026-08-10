@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { funnelView } from "@/app/admin/(cockpit)/briefs/page";
+import { funnelView } from "@/app/(admin)/admin/(cockpit)/briefs/page";
 import { csvRow, FUNNEL_LABELS, leadCard, slaFor } from "@/lib/admin/funnel";
 import { assertPane } from "@/lib/admin/guard";
 import { readBriefs } from "@/lib/admin/reads";

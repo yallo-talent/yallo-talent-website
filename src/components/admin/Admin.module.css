@@ -19,10 +19,25 @@
   padding: 16px clamp(16px, 3vw, 32px);
   border-bottom: 1px solid var(--hairline);
   background: var(--ground-2);
-  position: sticky;
-  top: 0;
-  z-index: 2;
 }
+
+/**
+ * NOT STICKY, and that is R-27.2's "the 1280 overlap gone".
+ *
+ * This bar was `position: sticky; top: 0; z-index: 2` and the editor's lifecycle
+ * rail is `position: sticky; top: 0; z-index: 30`. Two sticky boxes at the same
+ * offset in one scroll container overlap by construction, and the higher
+ * z-index wins: measured at 1280 while scrolled, the rail covered all 67px of
+ * this bar, with the bar's ends showing either side of it because the rail is
+ * inside `.main`'s measure and the bar is not.
+ *
+ * WHY THE BAR GIVES WAY RATHER THAN THE RAIL. Round 26 ruled that the state and
+ * the next action stay on screen at the foot of a four-thousand-word article;
+ * that is the rail's whole purpose. And an offset cannot fix this: the bar wraps
+ * to two and three rows as the viewport narrows, so any `top` written for the
+ * rail is right at one width and wrong at the next. The pane nav is a
+ * destination list, read on arrival at a pane, and it is one scroll away.
+ */
 
 .wordmark {
   margin: 0;

@@ -57,7 +57,11 @@ const roleReachCounts = {};
 /** Routes the cockpit actually serves, derived from the app tree rather than
     listed here — a hand-kept list is how a new pane escapes every assertion. */
 function adminRoutes() {
-  const dir = join(ROOT, "src/app/admin");
+  /* R-27.2 moved the cockpit under its own root-layout group. Derived from the
+     tree, so a group added or renamed tomorrow does not need this line edited:
+     the walk already treats a (group) as transparent in the URL, and the only
+     thing that had to change is where it starts. */
+  const dir = join(ROOT, "src/app/(admin)/admin");
   const found = new Set([ADMIN_BASE]);
   const walk = (abs, urlParts) => {
     for (const entry of readdirSync(abs, { withFileTypes: true })) {
@@ -80,7 +84,7 @@ function adminRoutes() {
 const ROUTES = adminRoutes();
 if (ROUTES.length < 2) {
   failures.push(
-    `Only ${ROUTES.length} admin route(s) found under src/app/admin. Either the\n` +
+    `Only ${ROUTES.length} admin route(s) found under src/app/(admin)/admin. Either the\n` +
       "      cockpit has been removed, or this gate can no longer see it and would\n" +
       "      pass whatever happened next.",
   );

@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import styles from "@/components/admin/Admin.module.css";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { auth, signOut } from "@/lib/admin/auth";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
 import { PANE_LABELS, PANE_ROUTES, panesFor } from "@/lib/admin/roles";
-import styles from "../Admin.module.css";
 
 /**
  * The cockpit shell, and the one place the session is enforced.
@@ -75,6 +76,11 @@ export default async function AdminLayout({
           {session.user.email}
           <span className={styles.roleTag}>{role ?? "no role"}</span>
         </p>
+        {/* R-27.2's cockpit-native theme control. The same component the public
+            nav mounts, because it is a view of one `data-theme` attribute rather
+            than a piece of site chrome — the cockpit needs the switch and does
+            not need the nav that used to carry it. */}
+        <ThemeToggle />
         <form
           action={async () => {
             "use server";
@@ -86,7 +92,10 @@ export default async function AdminLayout({
           </button>
         </form>
       </header>
-      <main className={styles.main}>{children}</main>
+      {/* A `div`, not a `main`. The admin root layout owns the one `main`
+          landmark for every surface under `/admin`, including sign-in and the
+          preview route, which sit outside this group. */}
+      <div className={styles.main}>{children}</div>
     </div>
   );
 }

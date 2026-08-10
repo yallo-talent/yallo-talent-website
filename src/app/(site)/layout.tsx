@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, Newsreader } from "next/font/google";
 import { AssistantLauncherMount } from "@/components/layout/AssistantLauncherMount";
 import { Footer } from "@/components/layout/Footer";
 import { MotionProvider } from "@/components/layout/MotionProvider";
@@ -7,60 +6,8 @@ import { NavBar } from "@/components/layout/NavBar";
 import { StickyBriefCTA } from "@/components/layout/StickyBriefCTA";
 import { AMBIENT_SCHEME, DEFAULT_THEME, themeInitScript } from "@/config/theme";
 import { organisationJsonLd, websiteJsonLd } from "@/lib/jsonld";
-import "./globals.css";
-
-/* Three faces, divided strictly by job: serif asserts, sans is read, mono was
-   measured. Newsreader carries optical sizing, so it holds at 72px without the
-   brittleness a display serif would show. */
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal"],
-  display: "swap",
-});
-
-/* round13-scope.md §4.5. `[MEASURED]` twice, independently: italic renders at
-   weight 600 only, 3 nodes, on exactly two routes (Hero.tsx and Close.tsx on
-   /, the platform hero's <em> on every /platforms/[platform] page) — a
-   third of the whole preload budget (63.0 KiB) to carry a variable font's
-   full 400-600 x normal-and-italic range for two short phrases. Split to a
-   second declaration at exactly the weight and style actually used. Still
-   preloaded, deliberately: both known instances are above the fold, so
-   `preload: false` would trade a flash of fallback italic for bytes this
-   split already recovers without one. */
-const newsreaderItalic = Newsreader({
-  variable: "--font-newsreader-italic",
-  subsets: ["latin"],
-  weight: ["600"],
-  style: ["italic"],
-  display: "swap",
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-});
-
-/* NOT preloaded, and the reason is measurable. The LCP element is a text node on
-   all eight measured routes — hero lede, hero sub or hero title — so LCP waits
-   on font and CSS delivery, and every byte preloaded ahead of it competes with
-   the byte that actually paints. Mono renders only small data labels: eyebrows,
-   metric units, table column heads. None of them is ever the LCP element, and
-   none is above the fold on any route measured. `display: swap` means the label
-   paints immediately in the fallback and reflows to Plex when it arrives, and
-   these labels are short enough that the swap is not a visible jolt — CLS
-   measured 0.000 on eight of eight routes before and after this change.
-   Two static faces, 19.6 KiB of the 186 KiB preload budget. */
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  display: "swap",
-  preload: false,
-});
+import { FONT_CLASSNAMES } from "../fonts";
+import "../globals.css";
 
 /**
  * The description does NOT enumerate the platform set, per
@@ -98,7 +45,7 @@ export default function RootLayout({
           mid-way on scroll-up" bug: the sub-nav was correct all along and the
           header was not. body keeps min-h-full, which is what the full-height
           layout actually needed. */
-      className={`${newsreader.variable} ${newsreaderItalic.variable} ${inter.variable} ${plexMono.variable} antialiased`}
+      className={FONT_CLASSNAMES}
       suppressHydrationWarning
     >
       <head>

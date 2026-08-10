@@ -1,4 +1,5 @@
-import { RowTitle } from "@/app/admin/RowTitle";
+import styles from "@/components/admin/Admin.module.css";
+import { RowTitle } from "@/components/admin/RowTitle";
 import { requirePane } from "@/lib/admin/guard";
 import {
   canAssignRole,
@@ -7,7 +8,6 @@ import {
   ROLES,
 } from "@/lib/admin/roles";
 import { listUsers } from "@/lib/db/users";
-import styles from "../../Admin.module.css";
 import {
   createUserAction,
   resetPasswordAction,

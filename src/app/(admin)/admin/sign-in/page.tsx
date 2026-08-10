@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import styles from "@/components/admin/Admin.module.css";
 import { adminConfigStatus, auth, signIn } from "@/lib/admin/auth";
 import { ADMIN_ROUTES } from "@/lib/admin/config";
-import styles from "../Admin.module.css";
 
 /**
  * Sign-in. One identity, no sign-up link, no password reset, no "remember me".
