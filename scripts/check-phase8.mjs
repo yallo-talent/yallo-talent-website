@@ -69,16 +69,31 @@ const GATE = {
    industry L1, one industry L2, one case study, and the conversion surface.
    Kept as a literal list because the point is comparability across rounds — a
    derived list would change under it and silently break the comparison. */
-const ROUTES = [
-  "/",
-  "/contract",
-  "/platforms/sap",
-  "/capabilities/data-analytics",
-  "/industries/retail",
-  "/industries/retail/customer-experience",
-  `/case-studies/${await sampleCaseStudySlug(BASE)}`,
-  "/brief",
-];
+/**
+ * A FUNCTION OF THE BASE, not a module-level constant.
+ *
+ * It was a constant, and it read `await sampleCaseStudySlug(BASE)` at module
+ * scope — where `BASE` does not exist, because the base is parsed out of argv
+ * forty lines further down. So this gate threw `ReferenceError: BASE is not
+ * defined` before running a single measurement, in every environment, and had
+ * done since the sampled route was introduced. Nothing caught it because
+ * check:phase8 is not in the CI workflow: it is a baseline an operator runs by
+ * hand between rounds, and a hand-run gate nobody ran is a gate nobody could
+ * have known was broken. Found by running the whole suite in one process for
+ * round 27.
+ */
+async function defaultRoutes(base) {
+  return [
+    "/",
+    "/contract",
+    "/platforms/sap",
+    "/capabilities/data-analytics",
+    "/industries/retail",
+    "/industries/retail/customer-experience",
+    `/case-studies/${await sampleCaseStudySlug(base)}`,
+    "/brief",
+  ];
+}
 
 function parseArgs(argv) {
   const out = {
@@ -104,7 +119,8 @@ function parseArgs(argv) {
     }
   }
   out.base = out.base.replace(/\/$/, "");
-  if (!out.routes.length) out.routes = ROUTES;
+  /* Left EMPTY here and resolved after parsing, because the default list needs
+     the base that this function is what determines. */
   if (!Number.isFinite(out.passes) || out.passes < 1) out.passes = 2;
   return out;
 }
@@ -213,6 +229,11 @@ if (!status) {
   );
   process.exit(2);
 }
+
+/* AFTER the reachability check, deliberately: the default list samples a real
+   published case study over HTTP, so it cannot be built until something is known
+   to be answering. Resolving it at module scope is what broke this gate. */
+if (!args.routes.length) args.routes = await defaultRoutes(args.base);
 
 const chromePath = resolveChromePath();
 const chrome = await chromeLauncher.launch({
