@@ -3,6 +3,8 @@ import type { ServicePageData } from "./types";
 
 export const managedDeliveryData: ServicePageData = {
   slug: "managed-delivery",
+  heroPlateSeed: "managed-delivery-arcs",
+  heroPlateVariant: "arcs",
   eyebrow: "Managed Delivery · Scoped workstreams",
   title: "Hand us the workstream.",
   emphasis: "We own the outcome.",

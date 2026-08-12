@@ -4,6 +4,8 @@ import type { ServicePageData } from "./types";
 
 export const eorData: ServicePageData = {
   slug: "eor",
+  heroPlateSeed: "eor-markets",
+  heroPlateVariant: "field",
   eyebrow: `Employer of Record · ${eorCountries.join(" · ")}`,
   title: "You choose the hire.",
   emphasis: "We carry the employment.",

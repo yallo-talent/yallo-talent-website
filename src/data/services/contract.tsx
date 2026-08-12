@@ -4,6 +4,8 @@ import type { ServicePageData } from "./types";
 
 export const contractData: ServicePageData = {
   slug: "contract",
+  heroPlateSeed: "contract-bench",
+  heroPlateVariant: "bloom",
   eyebrow: "Contract Workforce · Middle East · Europe · India",
   title: "Get contract specialists",
   emphasis: "shortlisted in 72 hours.",

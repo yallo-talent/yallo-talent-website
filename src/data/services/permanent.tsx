@@ -4,6 +4,8 @@ import type { ServicePageData } from "./types";
 
 export const permanentData: ServicePageData = {
   slug: "permanent",
+  heroPlateSeed: "permanent-strata",
+  heroPlateVariant: "strata",
   eyebrow: "Permanent Hiring · Middle East · Europe · India",
   title: "Build your permanent bench",
   emphasis: "with specialists placed to stay.",
