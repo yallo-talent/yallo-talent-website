@@ -22,6 +22,29 @@ import {
 } from "./nav-config";
 import { ThemeToggle } from "./ThemeToggle";
 
+/* Mega panel column stagger. `staggerChildren` and `delayChildren` propagate
+   through framer-motion via variants, so both container and child are declared
+   here as module-scope constants and consumed with `initial="hidden"` /
+   `animate="visible"` below. Cadence chosen so a 4-column panel finishes its
+   stagger at ~200ms after open, inside the panel's own 200ms opacity fade so
+   the two do not queue visibly. Under `prefers-reduced-motion: reduce`,
+   MotionProvider's `reducedMotion="user"` drops the y transform and keeps the
+   opacity leg, so the stagger still reads as a sequenced reveal. */
+const megaGridVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.04, delayChildren: 0.08 },
+  },
+};
+const megaColVariants = {
+  hidden: { opacity: 0, y: -6 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.22, ease: [0.2, 0.8, 0.2, 1] },
+  },
+};
+
 /* No per-item icon. Each row carried a 36x36 bordered tile with its own tinted
    ground, which meant twenty competing objects in one panel and a row height
    three times what the label needs. The menu's job is to let someone find a
@@ -494,15 +517,32 @@ export function NavBar() {
                         {activeGroup.description}
                       </div>
                     )}
-                    <div
+                    {/* Small column stagger on open. The panel handles its own
+                        entrance (opacity + 8px slide) above; this container
+                        adds a 40ms cascade across the columns so the reader's
+                        eye is walked left to right rather than shown every
+                        column at once. Uses variants because that is how
+                        `staggerChildren` propagates in framer-motion; the
+                        MotionProvider wrapper up in RootLayout carries
+                        `reducedMotion="user"`, which drops the transform and
+                        keeps the opacity fade under `prefers-reduced-motion:
+                        reduce`. No component-local opt-in. */}
+                    <motion.div
                       className={styles.megaGrid}
                       data-cols={
                         activeGroup.columns.length +
                         (activeGroup.featured ? 1 : 0)
                       }
+                      initial="hidden"
+                      animate="visible"
+                      variants={megaGridVariants}
                     >
                       {activeGroup.columns.map((col) => (
-                        <div key={col.heading} className={styles.megaCol}>
+                        <motion.div
+                          key={col.heading}
+                          className={styles.megaCol}
+                          variants={megaColVariants}
+                        >
                           <div className={styles.megaColHeading}>
                             {col.heading}
                           </div>
@@ -516,12 +556,12 @@ export function NavBar() {
                               </li>
                             ))}
                           </ul>
-                        </div>
+                        </motion.div>
                       ))}
                       {activeGroup.featured && (
                         <FeaturedCard featured={activeGroup.featured} />
                       )}
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               )}
