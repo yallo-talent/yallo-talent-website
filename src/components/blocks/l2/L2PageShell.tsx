@@ -77,7 +77,7 @@ export function L2PageShell({ sector, fn }: Props) {
 /* ============ HERO ============ */
 function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
-    <section className={`${styles.hero} amb-wash`}>
+    <section className={`${styles.hero} amb-wash amb-1`}>
       {/* B3, as on the L1. Seeded on the FUNCTION slug rather than the
           sector's, so sibling L2s under one sector each get their own field
           instead of twenty pages sharing one. */}
@@ -161,7 +161,7 @@ function L2Overview({
 }) {
   const copy = fn.overview ?? fn.blurb ?? "";
   return (
-    <section className={`${styles.overview} amb-wash`}>
+    <section className={styles.overview}>
       <div className={styles.overviewInner}>
         <div className={styles.overviewText}>
           <div className={styles.secLabel}>Function overview</div>
