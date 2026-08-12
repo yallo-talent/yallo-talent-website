@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { PlateVariant } from "@/components/ui/PetalPlate";
 
 export type ServiceHue =
   | "orange"
@@ -39,6 +40,18 @@ export interface ServiceProofItem {
 
 export interface ServicePageData {
   slug: string;
+  /**
+   * Optional overrides for the hero PetalPlate.
+   *
+   * Left unset, the plate seeds on `slug` and PetalPlate derives its variant
+   * via `hashSeed(slug) % 4`. With four services and four variants, the
+   * modulo collides in pairs: contract/permanent both landed on `arcs`,
+   * eor/managed-delivery both landed on `field`, so the four heroes read as
+   * two pairs. Set explicitly per service to break the pairing and give each
+   * pillar its own visual identity within the same drawn form.
+   */
+  heroPlateSeed?: string;
+  heroPlateVariant?: PlateVariant;
   eyebrow: string;
   title: string;
   emphasis: string;

@@ -86,7 +86,8 @@ function ServiceHero({ data }: Props) {
         <div className={styles.heroVisual}>
           <div className={styles.heroFrame}>
             <PetalPlate
-              seed={data.slug}
+              seed={data.heroPlateSeed ?? data.slug}
+              variant={data.heroPlateVariant}
               className={styles.heroImage}
               ratio={0.5}
             />
