@@ -298,7 +298,7 @@ const SCREENING_FALLBACK =
 
 function L2Screening({ fn }: { fn: L1ExpertiseCard }) {
   return (
-    <section className={`${styles.screening} amb-wash`}>
+    <section className={styles.screening}>
       <div className={styles.screeningInner}>
         <div className={styles.screeningIcon} aria-hidden="true">
           <svg
