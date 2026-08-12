@@ -231,7 +231,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   if (!fn.tools || fn.tools.length === 0) return null;
   const briefHref = `/brief?sector=${sector.slug}&fn=${fn.slug}`;
   return (
-    <section className={`${styles.tools} amb-wash`}>
+    <section className={`${styles.tools} amb-wash amb-3`}>
       <div className={styles.toolsInner}>
         <div className={styles.secLabel}>Tools we staff</div>
         <h2 className={styles.toolsH}>
