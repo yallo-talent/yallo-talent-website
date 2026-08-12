@@ -74,9 +74,11 @@
 }
 
 /* WCAG 2.2 SC 2.5.8 sets a 24x24 minimum target. A 13.5px text link is ~19px
-   tall, so the padding is load-bearing rather than decorative — and it appears
+   tall, so the padding is load-bearing rather than decorative, and it appears
    in the footer of every page on the site. */
 .link {
+  /* Positioning host for the ::after underline. */
+  position: relative;
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
@@ -88,8 +90,36 @@
   transition: color 0.15s ease;
 }
 
+/* Subtle hover: a gold hairline that grows in from the left, paired with
+   an opacity leg so the hover rule carries a non-motion cue alongside
+   the transform, per canon A5 (check:type-scale enforces this). Under
+   globals.css `prefers-reduced-motion: reduce` the transition-duration
+   is capped at 0.01ms, so both legs snap to the hover state instantly
+   and the affordance holds without a component-local opt-in. */
+.link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+}
+
 .link:hover {
   color: var(--gold);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
 }
 
 .link[aria-disabled="true"] {
