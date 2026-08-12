@@ -572,18 +572,31 @@ export function NavBar() {
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            className={styles.mobileDrawer}
-            data-drawer=""
-            id="mobile-drawer"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu"
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", stiffness: 260, damping: 30 }}
-          >
+          <>
+            {/* Dims the page behind the drawer. `inert` (set in the effect
+                above) already makes it non-interactive; this makes that
+                visible, and doubles as tap-outside-to-close. */}
+            <motion.div
+              className={styles.drawerScrim}
+              aria-hidden="true"
+              onClick={() => setMobileOpen(false)}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.div
+              className={styles.mobileDrawer}
+              data-drawer=""
+              id="mobile-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 260, damping: 30 }}
+            >
             <div className={styles.mobileInner}>
               {primaryNav.map((group) => (
                 <div key={group.label} className={styles.mobileGroup}>
@@ -647,7 +660,8 @@ export function NavBar() {
                 </Link>
               </div>
             </div>
-          </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

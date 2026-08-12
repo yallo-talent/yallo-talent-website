@@ -684,6 +684,21 @@
   border-radius: var(--r-micro);
 }
 
+/* The scrim behind the drawer. The drawer itself is deliberately a bounded
+   360px/88vw panel, not a full-viewport takeover — see the "no shadow, border
+   is the separation device" note below, that's an intentional choice. But
+   `inert` on the rest of the page makes it non-interactive WITHOUT dimming it,
+   so the page behind sat fully visible and un-dimmed, which reads as broken
+   rather than as a deliberate panel. This restores the visual half of what
+   `inert` only does structurally, and doubles as a click-outside-to-close
+   target. */
+.drawerScrim {
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  background: color-mix(in oklab, var(--ink) 55%, transparent);
+}
+
 .mobileDrawer {
   position: fixed;
   inset: 0 0 0 auto;
