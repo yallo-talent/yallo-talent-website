@@ -686,8 +686,15 @@
 
 .mobileDrawer {
   position: fixed;
-  inset: 0 0 0 auto;
-  width: min(360px, 88vw);
+  /* Full viewport, not a right-anchored side panel. NavBar.tsx's docstring calls
+     this a full-viewport modal and installs `inert` on every sibling of the
+     header for exactly that contract, but the box itself was capped at
+     `min(360px, 88vw)` and anchored right, so 88 per cent of the viewport was
+     covered at 375-390 and 47 per cent at 768. The page behind was visually
+     present, inert but still visible, which is the shape a modal is meant to
+     remove. Full inset makes the geometry match the semantics: nothing else
+     to see, so nothing else to reach for. */
+  inset: 0;
   z-index: 60;
   background: var(--surface);
   /* No shadow. The One Lift Rule reserves the system's only shadow for the hero
