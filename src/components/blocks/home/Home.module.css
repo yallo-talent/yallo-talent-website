@@ -1814,7 +1814,7 @@
    chips row above. This restores the panel's own rhythm without touching
    .btnSecondary, which is shared across the site. */
 .modelCta {
-  margin: 28px 0 0;
+  margin: 16px 0 0;
 }
 
 .modelMetric {
@@ -1881,6 +1881,7 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-3);
+  padding-bottom: 5px;
 }
 
 .chips {
