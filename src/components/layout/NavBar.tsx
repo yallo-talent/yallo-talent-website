@@ -14,7 +14,8 @@ import { allL1 } from "@/data/l1/index";
 import { Lockup } from "./Lockup";
 import styles from "./NavBar.module.css";
 import {
-  jobSeekersHref,
+  externalAnchorAttrs,
+  jobSeekersLink,
   type NavFeatured,
   type NavItem,
   primaryCTAHref,
@@ -128,8 +129,7 @@ function MegaItem({ item, onSelect }: { item: NavItem; onSelect: () => void }) {
       <a
         href={item.href}
         className={styles.megaLink}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...externalAnchorAttrs}
         onClick={onSelect}
       >
         <span className={styles.megaLinkHead}>
@@ -526,9 +526,16 @@ export function NavBar() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <Link href={jobSeekersHref} className={styles.jobsLink}>
-              Jobs
-            </Link>
+            {/* A plain <a>, not next/link: the client router owns /jobs as a
+                real route in this app and would render that page rather than
+                let the browser leave for the board production actually serves
+                there. See jobSeekersLink in nav-config.ts. */}
+            <a {...jobSeekersLink.anchorProps} className={styles.jobsLink}>
+              {jobSeekersLink.label}
+              <span className={styles.externalMark} aria-hidden="true">
+                ↗
+              </span>
+            </a>
           </nav>
 
           <div className={styles.actions}>
@@ -606,8 +613,7 @@ export function NavBar() {
                           key={item.href}
                           href={item.href}
                           className={styles.mobileLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          {...externalAnchorAttrs}
                           onClick={() => setMobileOpen(false)}
                         >
                           {item.label} ↗
@@ -631,13 +637,23 @@ export function NavBar() {
                   <span>Theme</span>
                   <ThemeToggle />
                 </div>
-                <Link
-                  href={jobSeekersHref}
+                {/* The href is restated from the same object the spread came
+                    from, and only on this one anchor. A spread is opaque to
+                    biome, so with an onClick beside it the element reads as a
+                    static div that someone hung a click handler on: three a11y
+                    errors, none of them true. The desktop and footer anchors
+                    carry no handler and need no restatement. */}
+                <a
+                  {...jobSeekersLink.anchorProps}
+                  href={jobSeekersLink.anchorProps.href}
                   className={styles.mobileLink}
                   onClick={() => setMobileOpen(false)}
                 >
-                  Jobs
-                </Link>
+                  {jobSeekersLink.label}
+                  <span className={styles.externalMark} aria-hidden="true">
+                    ↗
+                  </span>
+                </a>
                 <Link
                   href={primaryCTAHref}
                   className={styles.mobileCTA}

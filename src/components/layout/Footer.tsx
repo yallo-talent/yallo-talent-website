@@ -3,6 +3,14 @@ import { sectorNavEntries } from "@/lib/sectors";
 import styles from "./Footer.module.css";
 import { FOOTER_ID } from "./floating-affordances";
 import { Lockup } from "./Lockup";
+import { type ExternalLink, jobSeekersLink } from "./nav-config";
+
+interface FooterLink {
+  label: string;
+  href: string;
+  /** Present only on links that leave the site. See nav-config.ts. */
+  anchorProps?: ExternalLink["anchorProps"];
+}
 
 const serviceLinks = [
   { label: "Contract Workforce", href: "/contract" },
@@ -25,13 +33,18 @@ const industryLinks = sectorNavEntries()
   .filter((s) => s.published)
   .map(({ label, href }) => ({ label, href }));
 
-const quickLinks = [
+/* Jobs is the imported constant, not a sixth `{ label, href }` literal. It WAS
+   one — a hand-copied "/jobs" that no nav change could ever have reached — which
+   is why the same address rendered in the same tab here after both NavBar
+   consumers had been fixed. Anything carrying `anchorProps` renders as a plain
+   external anchor in FooterColumn below. */
+const quickLinks: FooterLink[] = [
   { label: "About Yallo", href: "/about" },
   { label: "Why Yallo", href: "/why-yallo" },
   { label: "Leadership", href: "/leadership" },
   { label: "Insights", href: "/insights" },
   { label: "Case studies", href: "/case-studies" },
-  { label: "Jobs", href: "/jobs" },
+  jobSeekersLink,
 ];
 
 /* Yallo AI Academy was withdrawn in round 12 (§4.4) because academy.yallo.co
@@ -138,7 +151,7 @@ export function Footer() {
 
 interface FooterColumnProps {
   heading: string;
-  links: { label: string; href: string }[];
+  links: FooterLink[];
 }
 
 function FooterColumn({ heading, links }: FooterColumnProps) {
@@ -148,9 +161,21 @@ function FooterColumn({ heading, links }: FooterColumnProps) {
       <ul className={styles.linkList}>
         {links.map((item) => (
           <li key={item.href}>
-            <Link href={item.href} className={styles.link}>
-              {item.label}
-            </Link>
+            {/* A plain <a> for anything that leaves: the router owns /jobs as a
+                real route in this app and next/link would render it rather than
+                let the browser go where production actually points. */}
+            {item.anchorProps ? (
+              <a {...item.anchorProps} className={styles.link}>
+                {item.label}
+                <span className={styles.externalMark} aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ) : (
+              <Link href={item.href} className={styles.link}>
+                {item.label}
+              </Link>
+            )}
           </li>
         ))}
       </ul>

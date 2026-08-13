@@ -139,6 +139,10 @@
 .jobsLink {
   display: inline-flex;
   align-items: center;
+  /* Same 6px the mega-menu row uses between a label and its `↗`, so the one
+     external mark in the register sits at the one spacing the menu below it
+     uses for the same mark. */
+  gap: 6px;
   padding: 10px 14px;
   color: var(--fg);
   font-family: inherit;
@@ -503,6 +507,19 @@
 
 .megaLink:hover .externalMark {
   transform: translate(2px, -2px);
+  opacity: 1;
+}
+
+/* The register and drawer marks take their LINK's colour, not the panel's gold.
+   check-rendered-contrast measures the glyph as a text run like any other and
+   has no exemption for aria-hidden, so --accent at 0.7 over the glass header
+   would be scored as a composite against a ground it was never tuned for. The
+   mega panel's mark keeps gold because it sits on the panel ground; inheriting
+   here means these two measure exactly what their own labels measure, and the
+   label's hover colour reaches the mark for free. */
+.jobsLink .externalMark,
+.mobileLink .externalMark {
+  color: inherit;
   opacity: 1;
 }
 
