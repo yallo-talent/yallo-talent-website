@@ -77,7 +77,7 @@ export function L2PageShell({ sector, fn }: Props) {
 /* ============ HERO ============ */
 function L2Hero({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   return (
-    <section className={`${styles.hero} amb-wash`}>
+    <section className={`${styles.hero} amb-wash amb-1`}>
       {/* B3, as on the L1. Seeded on the FUNCTION slug rather than the
           sector's, so sibling L2s under one sector each get their own field
           instead of twenty pages sharing one. */}
@@ -161,7 +161,7 @@ function L2Overview({
 }) {
   const copy = fn.overview ?? fn.blurb ?? "";
   return (
-    <section className={`${styles.overview} amb-wash`}>
+    <section className={styles.overview}>
       <div className={styles.overviewInner}>
         <div className={styles.overviewText}>
           <div className={styles.secLabel}>Function overview</div>
@@ -231,7 +231,7 @@ function L2Tools({ sector, fn }: { sector: L1PageData; fn: L1ExpertiseCard }) {
   if (!fn.tools || fn.tools.length === 0) return null;
   const briefHref = `/brief?sector=${sector.slug}&fn=${fn.slug}`;
   return (
-    <section className={`${styles.tools} amb-wash`}>
+    <section className={`${styles.tools} amb-wash amb-3`}>
       <div className={styles.toolsInner}>
         <div className={styles.secLabel}>Tools we staff</div>
         <h2 className={styles.toolsH}>
@@ -298,7 +298,7 @@ const SCREENING_FALLBACK =
 
 function L2Screening({ fn }: { fn: L1ExpertiseCard }) {
   return (
-    <section className={`${styles.screening} amb-wash`}>
+    <section className={styles.screening}>
       <div className={styles.screeningInner}>
         <div className={styles.screeningIcon} aria-hidden="true">
           <svg
