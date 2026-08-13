@@ -1,3 +1,4 @@
+import type { SectorIcon } from "@/data/home/place";
 import type { RoleIcon } from "@/data/home/roles";
 import type { ScreenIcon } from "@/data/home/screen";
 
@@ -42,6 +43,60 @@ export function RoleGlyph({ name }: { name: RoleIcon }) {
   return (
     <svg {...base} width="24" height="24" aria-hidden="true">
       {rolePaths[name]}
+    </svg>
+  );
+}
+
+/* Sector glyphs — a dedicated set so each of the seven sectors on WherePlace
+   reads as itself. The rail previously reused RoleGlyph, which carries the
+   eight discipline icons; only four of them (arch, biz, app, cloud) mapped
+   plausibly to sectors, so biz repeated three times (retail, manufacturing,
+   education) and arch twice (finance, government). One glyph per sector. */
+const sectorPaths: Record<SectorIcon, React.ReactNode> = {
+  retail: (
+    <>
+      <path d="M5 8h14l-1 12H6L5 8z" />
+      <path d="M9 8V6a3 3 0 016 0v2" />
+    </>
+  ),
+  finance: <path d="M4 20h16M6 20V14M10 20V10M14 20V6M18 20V13" />,
+  manufacturing: (
+    <>
+      <path d="M3 20V10l5 3V10l5 3V10l5 3v7z" />
+      <path d="M7 20v-4M12 20v-4M17 20v-4" />
+    </>
+  ),
+  government: (
+    <>
+      <path d="M3 20h18M3 18h18M5 18v-6M9 18v-6M13 18v-6M17 18v-6" />
+      <path d="M3 12h18v-2L12 5 3 10v2z" />
+    </>
+  ),
+  healthcare: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v10M7 12h10" />
+    </>
+  ),
+  telco: (
+    <>
+      <path d="M12 20V8M10.5 8h3" />
+      <path d="M8.5 12a5 5 0 017 0M5.5 8.5a9 9 0 0113 0" />
+    </>
+  ),
+  education: (
+    <>
+      <path d="M2 9l10-4 10 4-10 4L2 9z" />
+      <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+      <path d="M21 9v5" />
+    </>
+  ),
+};
+
+export function SectorGlyph({ name }: { name: SectorIcon }) {
+  return (
+    <svg {...base} width="24" height="24" aria-hidden="true">
+      {sectorPaths[name]}
     </svg>
   );
 }

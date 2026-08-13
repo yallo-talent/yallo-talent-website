@@ -119,7 +119,19 @@ export const platforms: PlatformAxis[] = [
   },
 ];
 
-export type SectorIcon = "biz" | "arch" | "app" | "cloud";
+/* One glyph per sector — the icon set now sits in icons.tsx as SectorGlyph.
+   Previously this borrowed four names from the role glyph set (biz, arch, app,
+   cloud), so biz stood in for retail, manufacturing and education while arch
+   stood in for finance and government, and the rail read as three or four
+   duplicated tiles rather than seven distinct sectors. */
+export type SectorIcon =
+  | "retail"
+  | "finance"
+  | "manufacturing"
+  | "government"
+  | "healthcare"
+  | "telco"
+  | "education";
 
 export interface SectorAxis {
   name: string;
@@ -134,42 +146,42 @@ export const sectors: SectorAxis[] = [
     name: taxonomyLabels("retail").label,
     slug: "retail",
     scope: "Commerce, POS, supply chain",
-    icon: "biz",
+    icon: "retail",
     published: true,
   },
   {
     name: taxonomyLabels("finance").label,
     slug: "finance",
     scope: "Core banking, payments, risk",
-    icon: "arch",
+    icon: "finance",
     published: true,
   },
   {
     name: taxonomyLabels("manufacturing").label,
     slug: "manufacturing",
     scope: "ERP, WMS, TMS",
-    icon: "biz",
+    icon: "manufacturing",
     published: true,
   },
   {
     name: taxonomyLabels("government").label,
     slug: "government",
     scope: "Digital delivery, data platforms",
-    icon: "arch",
+    icon: "government",
     published: true,
   },
   {
     name: taxonomyLabels("healthcare").label,
     slug: "healthcare",
     scope: "Clinical systems, EMR",
-    icon: "app",
+    icon: "healthcare",
     published: true,
   },
   {
     name: taxonomyLabels("telco").label,
     slug: "telco",
     scope: "OSS/BSS, network, data",
-    icon: "cloud",
+    icon: "telco",
     published: true,
   },
   {
@@ -178,7 +190,7 @@ export const sectors: SectorAxis[] = [
     name: taxonomyLabels("education").label,
     slug: "education",
     scope: "Student systems, research and campus platforms",
-    icon: "biz",
+    icon: "education",
     published: false,
   },
 ];

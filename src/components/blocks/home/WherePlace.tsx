@@ -6,7 +6,7 @@ import { derivePlatformList } from "@/lib/platforms";
 import { deriveSectorList } from "@/lib/sectors";
 import { ClientMark } from "../ClientMark";
 import styles from "./Home.module.css";
-import { RoleGlyph } from "./icons";
+import { SectorGlyph } from "./icons";
 import { SectionHead } from "./SectionHead";
 
 /**
@@ -140,7 +140,7 @@ export function WherePlace() {
                 const body = (
                   <div className={styles.axisItem}>
                     <span className={styles.axisMarkDrawn} aria-hidden="true">
-                      <RoleGlyph name={s.icon} />
+                      <SectorGlyph name={s.icon} />
                     </span>
                     <span>
                       <span className={styles.axisName}>{s.name}</span>
