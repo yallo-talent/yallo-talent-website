@@ -1809,6 +1809,14 @@
    the plate. Over the plate its legibility depended on whatever the drawing put
    underneath, and the plate is deterministic per route — so the contrast varied
    by model with nothing to guarantee it. On its own ground it is one pair. */
+/* Breathing room above the "See how X works" link. Global `p { margin: 0 }`
+   strips the wrapper's default block gap, so the CTA sat flush against the
+   chips row above. This restores the panel's own rhythm without touching
+   .btnSecondary, which is shared across the site. */
+.modelCta {
+  margin: 28px 0 0;
+}
+
 .modelMetric {
   display: inline-grid;
   gap: 2px;
