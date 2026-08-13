@@ -705,6 +705,8 @@
   width: min(360px, 88vw);
   z-index: 60;
   background: var(--surface);
+  display: flex;
+  flex-direction: column;
   /* No shadow. The One Lift Rule reserves the system's only shadow for the hero
      instrument; the border is the separation device here, and the drawer sits on
      an opaque surface so it needs nothing more. */
@@ -718,6 +720,15 @@
   height: 100%;
   padding: 88px 28px 32px;
   overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.mobileFooter {
+  flex: 0 0 auto;
+  padding: 16px 28px 28px;
+  border-top: 1px solid var(--boundary);
+  background: var(--surface);
 }
 
 .mobileGroup {
@@ -746,7 +757,6 @@
 }
 
 .mobileCTA {
-  margin-top: 12px;
   padding: 14px 18px;
   background: var(--accent-mark);
   color: var(--ink-950);

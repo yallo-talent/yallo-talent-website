@@ -354,8 +354,10 @@ export function NavBar() {
     const prevRoot = document.documentElement.style.overflow;
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
-    /* Everything except the drawer goes inert. The drawer is a sibling of
-       <header>, so the targets are the header and <main> plus the footer. */
+    /* Everything except the drawer AND its scrim goes inert — both carry
+       `data-drawer`, since both are siblings of <header> at the body level
+       (a fragment doesn't wrap them in a shared parent). Targets are the
+       header and <main> plus the footer. */
     const outside = [...document.body.children].filter(
       (el) => !el.hasAttribute("data-drawer"),
     );
@@ -575,9 +577,20 @@ export function NavBar() {
           <>
             {/* Dims the page behind the drawer. `inert` (set in the effect
                 above) already makes it non-interactive; this makes that
-                visible, and doubles as tap-outside-to-close. */}
+                visible, and doubles as tap-outside-to-close.
+
+                `data-drawer` here is load-bearing, not decorative: the effect
+                above exempts elements from `inert` by checking for this exact
+                attribute, and it was written when the drawer panel was the
+                only element in this position. Once the scrim became a sibling
+                of the panel rather than living inside it, it silently
+                inherited `inert` from that same effect — which disables
+                pointer events along with everything else `inert` does. The
+                tap-outside-to-close handler above was never broken; it simply
+                never ran, because its own element was non-interactive. */}
             <motion.div
               className={styles.drawerScrim}
+              data-drawer=""
               aria-hidden="true"
               onClick={() => setMobileOpen(false)}
               initial={{ opacity: 0 }}
@@ -597,60 +610,63 @@ export function NavBar() {
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 260, damping: 30 }}
             >
-            <div className={styles.mobileInner}>
-              {primaryNav.map((group) => (
-                <div key={group.label} className={styles.mobileGroup}>
-                  <div className="eyebrow">{group.label}</div>
-                  {group.columns.flatMap((col) =>
-                    col.items.map((item) => {
-                      if (item.published === false) {
-                        return (
-                          <span
+              <div className={styles.mobileInner}>
+                {primaryNav.map((group) => (
+                  <div key={group.label} className={styles.mobileGroup}>
+                    <div className="eyebrow">{group.label}</div>
+                    {group.columns.flatMap((col) =>
+                      col.items.map((item) => {
+                        if (item.published === false) {
+                          return (
+                            <span
+                              key={item.href}
+                              className={styles.mobileLink}
+                              aria-disabled="true"
+                            >
+                              {item.label}
+                            </span>
+                          );
+                        }
+                        return item.external ? (
+                          <a
                             key={item.href}
+                            href={item.href}
                             className={styles.mobileLink}
-                            aria-disabled="true"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {item.label} ↗
+                          </a>
+                        ) : (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className={styles.mobileLink}
+                            onClick={() => setMobileOpen(false)}
                           >
                             {item.label}
-                          </span>
+                          </Link>
                         );
-                      }
-                      return item.external ? (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          className={styles.mobileLink}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {item.label} ↗
-                        </a>
-                      ) : (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className={styles.mobileLink}
-                          onClick={() => setMobileOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                      );
-                    }),
-                  )}
+                      }),
+                    )}
+                  </div>
+                ))}
+                <div className={styles.mobileGroup}>
+                  <Link
+                    href={jobSeekersHref}
+                    className={styles.mobileLink}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Jobs
+                  </Link>
+                  <div className={styles.mobileThemeRow}>
+                    <span>Theme</span>
+                    <ThemeToggle />
+                  </div>
                 </div>
-              ))}
-              <div className={styles.mobileGroup}>
-                <div className={styles.mobileThemeRow}>
-                  <span>Theme</span>
-                  <ThemeToggle />
-                </div>
-                <Link
-                  href={jobSeekersHref}
-                  className={styles.mobileLink}
-                  onClick={() => setMobileOpen(false)}
-                >
-                  Jobs
-                </Link>
+              </div>
+              <div className={styles.mobileFooter}>
                 <Link
                   href={primaryCTAHref}
                   className={styles.mobileCTA}
@@ -659,7 +675,6 @@ export function NavBar() {
                   Start a brief →
                 </Link>
               </div>
-            </div>
             </motion.div>
           </>
         )}
