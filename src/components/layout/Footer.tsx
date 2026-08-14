@@ -167,9 +167,6 @@ function FooterColumn({ heading, links }: FooterColumnProps) {
             {item.anchorProps ? (
               <a {...item.anchorProps} className={styles.link}>
                 {item.label}
-                <span className={styles.externalMark} aria-hidden="true">
-                  ↗
-                </span>
               </a>
             ) : (
               <Link href={item.href} className={styles.link}>

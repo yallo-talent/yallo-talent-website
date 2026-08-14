@@ -92,17 +92,6 @@
   color: var(--gold);
 }
 
-/* The leaves-the-site mark. Mono because the sans face has no business deciding
-   how an arrow glyph looks, and no colour of its own: check-rendered-contrast
-   scores the glyph as a text run with no exemption for aria-hidden, so taking
-   the link's colour means it measures exactly what the label measures. No
-   opacity for the same reason: 0.8 of --dk-txt on this ground is a composite
-   that separates worse than the number implies, and the glyph is small. The 8px
-   from .link's own gap does the spacing. */
-.externalMark {
-  font-family: var(--font-mono);
-}
-
 .link[aria-disabled="true"] {
   color: var(--dk-txt-3);
   cursor: default;

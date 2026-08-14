@@ -532,9 +532,6 @@ export function NavBar() {
                 there. See jobSeekersLink in nav-config.ts. */}
             <a {...jobSeekersLink.anchorProps} className={styles.jobsLink}>
               {jobSeekersLink.label}
-              <span className={styles.externalMark} aria-hidden="true">
-                ↗
-              </span>
             </a>
           </nav>
 
@@ -650,9 +647,6 @@ export function NavBar() {
                   onClick={() => setMobileOpen(false)}
                 >
                   {jobSeekersLink.label}
-                  <span className={styles.externalMark} aria-hidden="true">
-                    ↗
-                  </span>
                 </a>
                 <Link
                   href={primaryCTAHref}
