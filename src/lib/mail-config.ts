@@ -35,6 +35,24 @@ export function resendFrom(fallback: string): string {
   return envOrDefault(process.env.RESEND_FROM, fallback);
 }
 
+/**
+ * The sign-in code's sender — R-28a.5, ratified 14 Aug 2026.
+ *
+ * A SEPARATE SENDER FROM THE BRIEFS PATH, ON PURPOSE. A credential-adjacent
+ * message and a lead notification should not share a reputation or a mailbox:
+ * one going to spam is an inconvenience, the other is a lockout, and a sender
+ * that sends both earns one reputation for two very different risks.
+ *
+ * It takes the same blank-is-unset rule as the two above, for the same reason
+ * measured in round 16: `RESEND_AUTH_FROM=` with nothing after it is a genuine
+ * override to the empty string, and `??` would accept it.
+ */
+export const AUTH_EMAIL_FROM_DEFAULT = "auth@yallo.co";
+
+export function authEmailFrom(): string {
+  return envOrDefault(process.env.RESEND_AUTH_FROM, AUTH_EMAIL_FROM_DEFAULT);
+}
+
 export function resendTo(): string[] {
   return envOrDefault(process.env.RESEND_TO, DEFAULT_RECIPIENTS)
     .split(",")

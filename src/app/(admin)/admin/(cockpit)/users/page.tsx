@@ -8,11 +8,7 @@ import {
   ROLES,
 } from "@/lib/admin/roles";
 import { listUsers } from "@/lib/db/users";
-import {
-  createUserAction,
-  resetPasswordAction,
-  setDisabledAction,
-} from "./actions";
+import { createUserAction, setDisabledAction } from "./actions";
 
 /**
  * Accounts. Admin only, at three layers: this pane's `requirePane`, the nav in
@@ -24,11 +20,12 @@ import {
  * gates create a fixture row and remove it again through
  * scripts/admin-fixture-user.mjs, never through this pane and never left behind.
  *
- * THE GENERATED PASSWORD IS DISPLAYED ONCE. It is not emailed, because the site
- * has one transactional sender pointed at the briefs inbox and adding a
- * credential-bearing message to it is a worse surface than reading a value off a
- * screen. It is not stored, so there is no second chance: the pane says so above
- * the value, and reset password is the recovery path.
+ * NO CREDENTIAL APPEARS ON THIS PANE — R-28a.1 and §2.4. Creating an account
+ * creates a row and says so; the person signs in with an emailed one-time code.
+ * The display-once password and the reset that regenerated it are both gone,
+ * because that flow put four colleagues out of the live cockpit on 13 Aug 2026
+ * when the value was shown, not captured, and could only be replaced by showing
+ * another one.
  */
 export const dynamic = "force-dynamic";
 
@@ -38,10 +35,8 @@ export default async function UsersPane({
   searchParams: Promise<{
     err?: string;
     created?: string;
-    reset?: string;
     disabled?: string;
     enabled?: string;
-    password?: string;
   }>;
 }) {
   const signed = await requirePane("users");
@@ -67,21 +62,13 @@ export default async function UsersPane({
       {q.err ? <p className={styles.error}>{q.err}</p> : null}
       {error ? <p className={styles.error}>{error}</p> : null}
 
-      {q.password ? (
+      {q.created ? (
         <div className={styles.notice}>
           <p>
-            <strong>
-              {q.created
-                ? `Account created for ${q.created}.`
-                : `Password reset for ${q.reset}.`}
-            </strong>{" "}
-            This password is shown once and is stored nowhere. Copy it into a
-            password manager now, then send it to its owner by a channel you
-            trust. Reloading this page loses it, and reset password is the only
-            way to get another.
-          </p>
-          <p>
-            <code>{q.password}</code>
+            <strong>Account created for {q.created}.</strong> Tell them the
+            address is live. There is nothing to send: they sign in by asking
+            the sign-in page for a one-time code, which arrives by email,
+            expires in ten minutes and works once.
           </p>
         </div>
       ) : null}
@@ -124,12 +111,9 @@ export default async function UsersPane({
                 <div className={styles.rowActions}>
                   {manageable ? (
                     <>
-                      <form action={resetPasswordAction}>
-                        <input type="hidden" name="id" value={user.id} />
-                        <button className={styles.rowButton} type="submit">
-                          Reset password
-                        </button>
-                      </form>
+                      {/* No reset control. There is no credential on this row
+                          to reset: the account signs in with an emailed code
+                          that it asks for itself. */}
                       <form action={setDisabledAction}>
                         <input type="hidden" name="id" value={user.id} />
                         <input
