@@ -121,7 +121,12 @@ export function structuralPaths(): string[] {
     "/intelligence",
     "/ai-talent",
     "/case-studies",
-    "/jobs",
+    /* No /jobs. The Volcanic board owns that address and this application does
+       not serve it; the candidate surface that used to sit there is parked at
+       /jobs-future, which is deliberately absent from this list so it stays out
+       of sitemap.xml, llms.txt, the OG generator and the assistant corpus. Same
+       treatment as the print surface, for the same reason: it renders, and no
+       discovery surface should name it. */
     "/privacy",
     "/terms",
     "/cookies",

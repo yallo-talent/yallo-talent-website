@@ -6,14 +6,45 @@ import { HeroAtmosphere } from "@/components/ui/HeroAtmosphere";
 import { desks } from "@/data/home/screen";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata({
-  seo: {
-    title: "Job Seekers · Yallo Talent",
-    description:
-      "Contract, permanent and EOR opportunities across the Middle East, Europe and India. Send your CV. We'll match you to your next enterprise programme.",
-  },
-  path: "/jobs",
-});
+/**
+ * THE CANDIDATE SURFACE THIS APPLICATION WILL EVENTUALLY SERVE, PARKED.
+ *
+ * It used to live at `/jobs`, and that was a collision rather than a route: the
+ * Volcanic board answers `/jobs` on the live estate, so two systems claimed one
+ * address and which one a person got depended on which host they arrived at.
+ * Measured 14 Aug 2026, the application's own ingress served THIS page at
+ * `/jobs` while `www.yallo.co/jobs` served the board, and at DNS cutover this
+ * page would have become the site's `/jobs`.
+ *
+ * Sumeet's ruling, 14 Aug 2026: the Volcanic board keeps `/jobs` and keeps the
+ * candidate relationship, including CV capture and applicant profiles, until the
+ * internal board and candidate portal are built as part of the talent engine.
+ * This page is that future surface, kept rather than deleted because the work in
+ * it is the starting point for the internal one, and moved rather than left in
+ * place because a second address for the same intent is what caused the problem.
+ *
+ * PARKED MEANS PARKED. `noindex, nofollow`, and absent from `publishedPaths()`,
+ * so it is out of sitemap.xml, llms.txt, the OG generator and the assistant's
+ * corpus, all four of which derive from that one list. Nothing links to it. The
+ * print surface at /intelligence/research/corridor/print is the precedent: a
+ * real route that renders and that no discovery surface names.
+ *
+ * The CV form below still posts. It is not wired to anything new here, and the
+ * board's own capture is what candidates actually reach today.
+ */
+/* `robots` is spread on rather than passed in: buildMetadata takes `seo` and
+   `path` only, and the print surface sets its own robots the same way. */
+export const metadata: Metadata = {
+  ...buildMetadata({
+    seo: {
+      title: "Job Seekers · Yallo Talent",
+      description:
+        "Contract, permanent and EOR opportunities across the Middle East, Europe and India. Send your CV. We'll match you to your next enterprise programme.",
+    },
+    path: "/jobs-future",
+  }),
+  robots: { index: false, follow: false },
+};
 
 export default function JobsPage() {
   return (

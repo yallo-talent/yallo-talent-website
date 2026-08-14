@@ -1,4 +1,5 @@
 import { capabilityNavEntries } from "@/data/capabilities";
+import { JOB_BOARD_URL } from "@/data/job-board.mjs";
 import { capabilitiesIndex } from "@/data/l1/index";
 import { publishedPlatformSlugs } from "@/data/platforms/derive";
 import { eorCorridorLabel } from "@/data/services/eor-countries";
@@ -332,20 +333,31 @@ function externalLink(label: string, href: string): ExternalLink {
 }
 
 /**
- * Jobs. In production `/jobs` is answered by the Volcanic job board rather than
- * by this application, so following it in the same tab replaces the site the
- * reader is standing on and there is no way back to it. It opens in a new tab
- * and is marked as leaving — Sumeet's ruling, 11 Aug 2026.
+ * Jobs, as the nav and footer render it. The address comes from
+ * `src/data/job-board.mjs`, which is the one place it is written; this module
+ * decides how it is presented and nothing more.
  *
- * THE PATH STAYS RELATIVE. Canon holds the apex canonical, and an absolute
- * `https://www.yallo.co/jobs` would bake the host hop filed in
- * docs/status/jobs-host-hop-for-raphy.md into the markup.
+ * IT OPENS IN A NEW TAB because it leaves for a different system, and it carries
+ * its accessible warning with it. The visible `↗` was removed on Sumeet's
+ * instruction, 14 Aug 2026, which leaves `aria-label` as the only warning rather
+ * than the second one.
+ *
+ * THE RELATIVE RULING IS SUPERSEDED. Round 27.1 ruled the path stays relative,
+ * reasoning that an absolute `www` host would bake in the hop filed in
+ * docs/status/jobs-host-hop-for-raphy.md. That reasoning assumed the target was
+ * a path this application serves. It is not. Measured 14 Aug 2026 with a browser
+ * user agent, `https://yallo-talent-ohog5.ondigitalocean.app/jobs` answered 200
+ * with THIS application's Job Seekers page: the edge rule that puts the board at
+ * `/jobs` belongs to the pre-cutover estate and never covered the application's
+ * own ingress, so the generated page was publicly reachable and would have
+ * become the site's `/jobs` at DNS cutover. Sumeet ruled directly on 14 Aug
+ * 2026: the application stays on the apex, the board keeps `www`.
  *
  * There is deliberately no bare href export beside this. The three consumers —
  * the desktop register, the mobile drawer and the footer Company column — each
  * read `anchorProps`; a loose string would let a fourth consumer render the
  * address in the same tab again, which is exactly how the footer copy got there.
  */
-export const jobSeekersLink = externalLink("Jobs", "/jobs");
+export const jobSeekersLink = externalLink("Jobs", JOB_BOARD_URL);
 
 export const primaryCTAHref = "/brief";

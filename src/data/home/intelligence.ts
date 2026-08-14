@@ -137,7 +137,12 @@ export const closeCopy = {
   },
   lede: "The more we know about the phase you are in and the gate you are working to, the sharper the calibration and the shorter the shortlist.",
   primaryCta: { label: "Start a brief", href: "/brief" },
-  jobsCta: { label: "Looking for a role instead?", href: "/jobs" },
+  /* Label only. The address left this file in round 28a: it is the job board's,
+     held once in src/data/job-board.mjs and read by Close.tsx through
+     jobSeekersLink, the same constant the nav and footer read. A fourth copy of
+     an address is the hand-copied class this repository lints for, and this was
+     the fourth copy. */
+  jobsCta: { label: "Looking for a role instead?" },
   checklistTitle: "What a complete brief contains",
   checklist: [
     "Platform and modules in scope",
