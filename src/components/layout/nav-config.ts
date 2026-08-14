@@ -286,5 +286,66 @@ export const primaryNav: NavGroup[] = [
   },
 ];
 
-export const jobSeekersHref = "/jobs";
+/**
+ * The `target`/`rel` pair every anchor that leaves the site carries.
+ *
+ * One source because a hand-copied pair is the class of defect that regresses
+ * on the NEXT consumer, not this one: the pair was written out by hand in three
+ * places before this, and the writer who forgets `noopener` is the fourth.
+ */
+export const externalAnchorAttrs = {
+  target: "_blank",
+  rel: "noopener noreferrer",
+} as const;
+
+export interface ExternalLink {
+  label: string;
+  href: string;
+  external: true;
+  /**
+   * Spread onto a plain `<a>`, never onto `next/link`. Carries the href, the
+   * `target`/`rel` pair and the accessible name together, so a consumer cannot
+   * take the address and leave the warning behind.
+   */
+  anchorProps: {
+    href: string;
+    target: "_blank";
+    rel: string;
+    "aria-label": string;
+  };
+}
+
+function externalLink(label: string, href: string): ExternalLink {
+  return {
+    label,
+    href,
+    external: true,
+    anchorProps: {
+      href,
+      ...externalAnchorAttrs,
+      /* Derived from the label, so the spoken name cannot drift from the
+         visible one. The `↗` beside the label is decoration and stays
+         aria-hidden; this is where the warning is actually said. */
+      "aria-label": `${label}, opens in a new tab`,
+    },
+  };
+}
+
+/**
+ * Jobs. In production `/jobs` is answered by the Volcanic job board rather than
+ * by this application, so following it in the same tab replaces the site the
+ * reader is standing on and there is no way back to it. It opens in a new tab
+ * and is marked as leaving — Sumeet's ruling, 11 Aug 2026.
+ *
+ * THE PATH STAYS RELATIVE. Canon holds the apex canonical, and an absolute
+ * `https://www.yallo.co/jobs` would bake the host hop filed in
+ * docs/status/jobs-host-hop-for-raphy.md into the markup.
+ *
+ * There is deliberately no bare href export beside this. The three consumers —
+ * the desktop register, the mobile drawer and the footer Company column — each
+ * read `anchorProps`; a loose string would let a fourth consumer render the
+ * address in the same tab again, which is exactly how the footer copy got there.
+ */
+export const jobSeekersLink = externalLink("Jobs", "/jobs");
+
 export const primaryCTAHref = "/brief";
