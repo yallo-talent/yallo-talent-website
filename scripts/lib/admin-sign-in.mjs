@@ -85,6 +85,22 @@ export async function signInTo(ctx, { base, email, password, onNote }) {
       await attemptPage.goto(`${base}/admin/sign-in`, {
         waitUntil: "domcontentloaded",
       });
+      /* The owner form the environment pair signs in with now sits behind a
+         closed `<details>` (round 28a's UI pass, 14 Aug 2026) so the primary
+         code flow is the only thing on screen by default. Opening it here is
+         adapting to a real UI change, not weakening what this helper proves:
+         it still drives the actual sign-in through the actual control, one
+         click earlier. Guarded on `.open` so a page that already reopened the
+         disclosure itself (a prior failed attempt) is not toggled shut by a
+         second click. Absent entirely on any page with no `<details>`, so
+         this is a no-op everywhere else this helper is used. */
+      const disclosure = attemptPage.locator("details").first();
+      if (await disclosure.count()) {
+        const isOpen = await disclosure.evaluate((el) => el.open).catch(() => true);
+        if (!isOpen) {
+          await disclosure.locator("summary").click().catch(() => {});
+        }
+      }
       /* The button is disabled until the server reports the cockpit is
          configured. Waiting for it is waiting for the page to be usable, which
          is a stronger readiness signal than the document having loaded. */
