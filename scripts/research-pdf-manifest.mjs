@@ -52,8 +52,39 @@ export const MANIFEST_PATH = "content/research-pdf.manifest.json";
 /* An immediately-invoked expression, not a function literal: Playwright treats a
    STRING passed to page.evaluate as an expression to evaluate, so a bare
    `() => {…}` evaluates to the function itself and the caller gets no text. */
+/**
+ * `main`, NOT `body`, and round 28a §3.1 is the ruling behind it.
+ *
+ * The print route sits inside the `(site)` group, so it renders with the header,
+ * the skip link, the assistant launcher, the sticky CTA and the footer around
+ * it. The page removes all of that from the DOCUMENT with
+ * `body > *:not(main) { display: none }` — round 21 §2, after exactly that
+ * chrome turned up in the shipped PDF. `textContent` does not read CSS, so the
+ * fingerprint went on counting text the PDF has not contained since.
+ *
+ * It surfaced when round 27.1 added one `↗` to the nav and one to the footer:
+ * the fingerprint moved by two characters, the gate failed, and its message said
+ * every figure on the site disagreed with the asset a stranger gave an email
+ * address for. No figure had moved. A gate that fails on a navigation edit is a
+ * gate about navigation, whatever its name says.
+ *
+ * Scoping to `main` makes the measured surface the same surface the PDF is: the
+ * document. A nav label, a footer column or a new layout component now changes
+ * this fingerprint by nothing at all, which is the correct answer rather than a
+ * tolerated one.
+ *
+ * It throws rather than falling back to `body`. A silent fallback would restore
+ * the defect the day someone changes the print page's wrapper, and a fingerprint
+ * of the wrong surface is worse than a gate that stops.
+ */
 export const EXTRACT_PRINT_TEXT = `(() => {
-  const clone = document.body.cloneNode(true);
+  const root = document.querySelector("main");
+  if (!root) {
+    throw new Error(
+      "No <main> on the print surface: the research document has no root to fingerprint.",
+    );
+  }
+  const clone = root.cloneNode(true);
   for (const el of clone.querySelectorAll("script, style, noscript, template")) {
     el.remove();
   }

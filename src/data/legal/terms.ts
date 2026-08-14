@@ -29,7 +29,7 @@ export const termsData: LegalPageData = {
     {
       heading: "Candidate submissions",
       body: [
-        "When you send us a CV — via the /jobs page, an application form, or by email — you confirm the information is accurate to the best of your knowledge and that you have the right to share it.",
+        "When you send us a CV — via an application form, or by email — you confirm the information is accurate to the best of your knowledge and that you have the right to share it.",
         "We handle candidate submissions under our Privacy notice. We won't submit you to any client without telling you first.",
       ],
     },

@@ -38,6 +38,7 @@
  * to the intermediate would be two hops, and a chain costs retrieval
  * eligibility with the real-time crawlers, per the discoverability scope §8.
  */
+import { JOB_BOARD_URL } from "./job-board.mjs";
 
 /* ---------------------------------------------------------------------------
    0. Destinations that only exist if the content does.
@@ -403,8 +404,17 @@ function standaloneEntries() {
     "/brief",
     "Conversion becomes programme-shaped: a brief, not a contact form.",
   );
-  add("/join-us", "/jobs", "One quiet punchout to the candidate side.");
-  add("/join-yallo", "/jobs", "Second published form of the same page.");
+  /* Both land on the job board, which is a different system on a different host.
+     They used to point at "/jobs", which this application no longer serves: the
+     candidate surface moved to /jobs-future and the board owns the address. A
+     legacy URL has to reach something that exists, so these carry the board's
+     absolute URL rather than a path into an application that would 404. */
+  add(
+    "/join-us",
+    JOB_BOARD_URL,
+    "One quiet punchout to the candidate side, which is the board.",
+  );
+  add("/join-yallo", JOB_BOARD_URL, "Second published form of the same page.");
   /* The one deliberate exception to "never 301 to the homepage" (game plan §7,
      ruled): /home-4/ IS a homepage, an indexable work-in-progress draft
      competing with the real one in search. Sending it anywhere else would be

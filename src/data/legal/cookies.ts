@@ -29,7 +29,7 @@ export const cookiesData: LegalPageData = {
       heading: "Third-party services",
       body: [
         "This site loads no third-party images and no third-party fonts. All imagery is drawn in the page itself, and font files are self-hosted from this domain, so no font or image CDN sees your request.",
-        "Form submissions from /brief and /jobs go through our email service (Resend). See our Privacy notice for how submissions are handled.",
+        "Form submissions from /brief go through our email service (Resend). See our Privacy notice for how submissions are handled.",
       ],
     },
     {

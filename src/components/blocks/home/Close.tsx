@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { jobSeekersLink } from "@/components/layout/nav-config";
 import { closeCopy } from "@/data/home/intelligence";
 import styles from "./Home.module.css";
 import { ArrowGlyph } from "./icons";
@@ -38,9 +39,25 @@ export function Close() {
                 {closeCopy.primaryCta.label}
                 <ArrowGlyph />
               </Link>
-              <Link className={styles.jobsLink} href={closeCopy.jobsCta.href}>
+              {/* A plain <a> carrying the shared anchor props, not next/link:
+                  the board is a different system on a different host, so this
+                  leaves the site and says so. The label is still the data
+                  file's; only the address moved out of it. */}
+              {/* href restated from the object the spread came from. A spread is
+                  opaque to biome, so without it the anchor reads as a generic
+                  element and aria-label reads as unsupported on it. Same
+                  accommodation as the mobile drawer's Jobs anchor. */}
+              <a
+                {...jobSeekersLink.anchorProps}
+                href={jobSeekersLink.anchorProps.href}
+                className={styles.jobsLink}
+                /* NOT the shared "Jobs, opens in a new tab": SC 2.5.3 wants the
+                   accessible name to contain the visible label, and this link's
+                   visible label is its own sentence. */
+                aria-label={`${closeCopy.jobsCta.label}, opens in a new tab`}
+              >
                 {closeCopy.jobsCta.label}
-              </Link>
+              </a>
             </div>
           </div>
 

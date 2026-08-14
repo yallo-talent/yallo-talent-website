@@ -64,14 +64,41 @@ async function mapLimit(items, limit, fn) {
 const probes = redirectProbes();
 const failures = [];
 
-/** The path a Location header points at, absolute or relative. */
-function locationPath(location) {
+/**
+ * A destination that leaves this application entirely.
+ *
+ * Round 28a introduced the first ones: /join-us and /join-yallo now land on the
+ * job board, which is a different system on a different host. Before that every
+ * entry in the table was a path this application serves, and the gate was built
+ * on that assumption throughout.
+ */
+function isOffSite(to) {
+  return /^https?:\/\//.test(to);
+}
+
+/**
+ * What a Location header points at, compared like for like with the entry.
+ *
+ * PATHNAME FOR AN INTERNAL TARGET, THE WHOLE URL FOR AN OFF-SITE ONE. This used
+ * to reduce every Location to a pathname, which is right while every
+ * destination is a path and silently wrong the moment one is not:
+ * `https://www.yallo.co/jobs` reduced to `/jobs`, which matched no entry, and
+ * the gate reported a redirect pointing somewhere it was not. The comparison has
+ * to be made in the same units the table is written in.
+ */
+function landedFor(location, to) {
   if (!location) return null;
   try {
-    return new URL(location, BASE).pathname;
+    const url = new URL(location, BASE);
+    return isOffSite(to) ? url.toString() : url.pathname;
   } catch {
     return location;
   }
+}
+
+/** Kept for the declared-exception walk below, which is internal by definition. */
+function locationPath(location) {
+  return landedFor(location, "/");
 }
 
 await mapLimit(probes, CONCURRENCY, async ({ from, to, why }) => {
@@ -92,13 +119,29 @@ await mapLimit(probes, CONCURRENCY, async ({ from, to, why }) => {
     return;
   }
 
-  const landed = locationPath(res.headers.get("location"));
+  const landed = landedFor(res.headers.get("location"), to);
   if (landed !== to) {
     failures.push(
       `${from}\n      301s to ${landed}, expected ${to}.\n      ${why}`,
     );
     return;
   }
+
+  /* AN OFF-SITE DESTINATION IS ASSERTED, NOT FOLLOWED, and the line is drawn
+     deliberately rather than for convenience. Everything below this point asks
+     "and does that page exist", by fetching it. For a host this repository does
+     not control, that question makes the gate's verdict depend on a third
+     party's uptime: the board being slow, rate-limiting CI's egress or briefly
+     down would fail a pull request that changed nothing. Worse, it would fail
+     intermittently, which is how a gate earns a reputation for flaking and gets
+     skipped.
+
+     What is still asserted, and it is the part this repository owns: the
+     redirect exists, answers 301, and names EXACTLY the URL the table names,
+     character for character including host and scheme. What is given up is
+     reachability of a system somebody else operates, which no gate in this
+     repository can honestly promise. */
+  if (isOffSite(to)) return;
 
   /* The one-hop assertion. A 301 to a URL that itself redirects is a chain,
      and the map's job is to name the final destination. The same response also

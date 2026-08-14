@@ -410,14 +410,12 @@ const STATIC_DOCS: CorpusDocument[] = [
     summary: "Yallo Talent's research and programme-staffing intelligence hub.",
     facts: [],
   },
-  {
-    path: "/jobs",
-    title: "Jobs",
-    linkLabel: "the jobs board",
-    summary:
-      "Yallo Talent's live roles, hosted on Volcanic. This assistant serves clients only and does not discuss candidates or vacancies.",
-    facts: [],
-  },
+  /* No /jobs entry. It was here, and it could not survive round 28a: this list
+     is filtered by `published.has(d.path)`, and /jobs left `publishedPaths()`
+     when the board took sole ownership of that address. An entry that the filter
+     always drops is dead code that reads as live configuration.
+     Candidates are routed to the board by name in system-prompt.ts, which holds
+     its address once via JOB_BOARD_URL rather than describing it here. */
 ];
 
 let cached: CorpusDocument[] | null = null;
