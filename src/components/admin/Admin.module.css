@@ -278,6 +278,26 @@
   border-radius: 0 0 0 var(--r-md);
 }
 
+/* The mark sits beside the heading, not inside it: YalloFlower is
+   `aria-hidden`, so keeping it a sibling rather than a child of `.h1` means it
+   cannot become part of the heading's accessible name the way the header
+   brand link's own mark once did (round 10, WCAG 2.5.3). */
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.brandRow .h1 {
+  margin: 0;
+}
+
+.brandMark {
+  flex: none;
+  color: var(--accent-mark);
+}
+
 .field {
   display: block;
   margin-top: 18px;
@@ -292,6 +312,27 @@
   text-transform: uppercase;
   color: var(--text-3);
   margin-bottom: 6px;
+}
+
+/* A plain checkbox and its label, deliberately NOT set in `.fieldLabel`'s mono
+   caps: "KEEP ME SIGNED IN FOR 15 DAYS" shouted in tracked-out capitals is
+   register for a field name, not for a sentence a person reads and decides
+   on. Inter at body-sm, sentence case, is the earned-familiar version of the
+   same control every other sign-in form on the web already uses. */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: var(--fs-body-sm);
+  color: var(--text-2);
+}
+
+.checkboxRow input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  accent-color: var(--accent-mark);
 }
 
 .input {
@@ -310,6 +351,20 @@
   outline-offset: 2px;
 }
 
+/* The code is a reference number, not a sentence — the Three Jobs Rule's mono
+   face, set large enough and letter-spaced enough to read as six distinct
+   digits rather than a six-character password. The trailing letter-spacing
+   pushes the glyphs right of centre exactly as it does on the wordmark
+   (NavBar.module.css `.brand`); the same compensating padding fixes it here. */
+.codeInput {
+  font-family: var(--font-mono);
+  font-size: var(--fs-subtitle);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5em;
+  text-align: center;
+  padding-right: calc(12px + 0.5em);
+}
+
 .submit {
   margin-top: 24px;
   width: 100%;
@@ -321,6 +376,70 @@
   font-size: var(--fs-body-sm);
   font-weight: var(--fw-strong);
   cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.submit:hover:not(:disabled) {
+  background: var(--accent-line);
+  border-color: var(--accent-line);
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* A link back to step one, quiet enough that the step-two form stays the one
+   thing asking for attention. */
+.backLink {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: var(--accent-label);
+}
+
+/* The owner sign-in, collapsed. Same convention as `.payloadDisclosure` on the
+   briefs pane: native `<details>`, no custom marker, the browser's own
+   triangle. Closed by default so the primary code flow is the only thing on
+   screen; `open` is still a plain HTML attribute, so a failed owner sign-in
+   can reopen it server-side with no client state. */
+.ownerDisclosure {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+}
+
+.ownerDisclosure summary {
+  min-height: 24px;
+  padding: 2px 0;
+  font-size: var(--fs-caption);
+  color: var(--text-3);
+  cursor: pointer;
+}
+
+.ownerDisclosure summary:hover {
+  color: var(--text);
+}
+
+.ownerDisclosure form {
+  margin-top: 16px;
 }
 
 .error {
