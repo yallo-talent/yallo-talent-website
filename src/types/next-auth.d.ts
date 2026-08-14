@@ -25,11 +25,34 @@ declare module "next-auth" {
 
   interface User {
     role?: Role | null;
+    /**
+     * Whether this sign-in asked to be kept signed in for fifteen days
+     * (R-28a.3). Present only on the OTP provider's return value, and read only
+     * by the jwt callback on the sign-in call, which is the whole lifetime it
+     * needs: Auth.js passes `user` to that callback once and never again.
+     */
+    remember?: boolean;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     role?: Role;
+    /**
+     * Epoch seconds after which this token is refused, or absent when the person
+     * asked for the fifteen-day session.
+     *
+     * WHY A CLAIM RATHER THAN A SHORTER COOKIE. Auth.js configures `maxAge`
+     * statically, verified against @auth/core 0.41.3, so per-sign-in duration is
+     * not a native feature. The configured window is therefore the long one and
+     * this claim is what makes the short one real, refused in the jwt callback.
+     */
+    shortWindowEndsAt?: number;
+    /**
+     * The `users` row this session belongs to, for the per-request disabled
+     * check R-28a.4 requires. Absent for the environment break-glass, which has
+     * no row to look up.
+     */
+    userId?: string;
   }
 }

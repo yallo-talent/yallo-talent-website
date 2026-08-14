@@ -11,25 +11,26 @@ import {
   enabledManagerCount,
   getUser,
   setDisabled,
-  setPassword,
 } from "@/lib/db/users";
 
 /**
  * The Users pane's writes. Every one of them re-checks the role first.
  *
- * THE GENERATED PASSWORD IS SHOWN ONCE AND STORED NOWHERE. It is returned to the
- * pane through the redirect's query string so that the admin who just clicked
- * "create" can read it, and it exists nowhere else: not in a log line, not in an
- * email, not in the relay, not in this repository. Round 23 §7 forbids credential
- * entry by any session, and generating one the running app displays to its own
- * signed-in admin is the only path that does not put a password in a transcript.
+ * NO CREDENTIAL IS DISPLAYED, GENERATED FOR DISPLAY, OR REPORTED — R-28a.1 and
+ * §2.4, superseding round 23 §7's display-once flow.
  *
- * WHY THE QUERY STRING IS ACCEPTABLE HERE, given the general rule against
- * secrets in URLs: the response is `noindex`, the surface is behind the admin
- * guard, there is no Referer leak because the pane links nowhere external, and
- * the alternative — a server-side flash store — is a second place a plaintext
- * password lives. It is a one-time value the admin is expected to move to a
- * password manager immediately, and the pane says so.
+ * That flow was carefully argued and it still failed, in the one way that
+ * matters: on 13 Aug 2026 four accounts were created for real colleagues, the
+ * generated values were shown once, were not captured, and all four people were
+ * locked out of a cockpit they need daily. A credential whose only recovery is
+ * "generate another and read it off the screen again" fails exactly when
+ * somebody needs it.
+ *
+ * Creating an account is now a row and a sentence: the administrator tells the
+ * person their address is live, and the person signs in by asking for a code.
+ * Nothing is handed over, so nothing can be lost in the handing over. The query
+ * string carries only which address was created, which is not a secret from the
+ * signed-in admin who just typed it.
  */
 
 /* Returns `never`, so a call to it narrows the code after it the way an early
@@ -39,9 +40,20 @@ function back(params: Record<string, string>): never {
   redirect(`${ADMIN_ROUTES.users}?${new URLSearchParams(params).toString()}`);
 }
 
-/* 18 random bytes, base64url. Not a memorable passphrase: it is typed once into
-   a password manager and then changed by its owner. */
-const generatePassword = (): string => randomBytes(18).toString("base64url");
+/**
+ * A hash filler, and nothing else — R-28a.1 and §2.4.
+ *
+ * `users.password_hash` is NOT NULL, so a row must carry a hash. Nothing signs
+ * in with this one: it is 18 random bytes that are hashed and then dropped on
+ * the floor inside this function, never returned, never displayed, never
+ * emailed, never logged. The account's real sign-in is the emailed code.
+ *
+ * IT IS NOT A CEREMONY. A column that must hold something is going to hold
+ * something whatever this round does; the choice is between a value nobody can
+ * guess and a value somebody chose, and only one of those is safe to leave
+ * lying in a NOT NULL column for the life of the account.
+ */
+const unusableSecret = (): string => randomBytes(18).toString("base64url");
 
 export async function createUserAction(formData: FormData): Promise<void> {
   const signed = await assertCapability("usersManage");
@@ -64,9 +76,8 @@ export async function createUserAction(formData: FormData): Promise<void> {
     });
   }
 
-  const password = generatePassword();
   try {
-    await createUser({ email, name, role, password });
+    await createUser({ email, name, role, password: unusableSecret() });
   } catch (err) {
     const message = (err as Error).message ?? "";
     /* The unique index on lower(email) is the check. Reporting it as a
@@ -82,27 +93,16 @@ export async function createUserAction(formData: FormData): Promise<void> {
   }
 
   revalidatePath(ADMIN_ROUTES.users);
-  back({ created: email, password });
+  back({ created: email });
 }
 
-export async function resetPasswordAction(formData: FormData): Promise<void> {
-  const signed = await assertCapability("usersManage");
-
-  const id = String(formData.get("id") ?? "");
-  const user = await getUser(id);
-  if (!user) back({ err: "No such account." });
-  /* Resetting a password is taking an account over, so it is the same question
-     as demoting or disabling it: an owner's account is nobody else's to seize. */
-  if (!canManageAccount(signed.role, user.role)) {
-    back({ err: "The owner's account cannot be reset by another account." });
-  }
-
-  const password = generatePassword();
-  await setPassword(id, password);
-
-  revalidatePath(ADMIN_ROUTES.users);
-  back({ reset: user.email, password });
-}
+/* resetPasswordAction IS GONE, and its absence is the feature — R-28a.1, §2.4.
+   It existed to generate a credential and show it on screen, which is the exact
+   flow that locked four colleagues out on 13 Aug 2026: the value was displayed
+   once, was not captured, and the only recovery offered was to do the same thing
+   again. There is nothing to reset now. A person who cannot get in asks for a
+   code, and if the code cannot be delivered that is an operational failure the
+   sign-in page names by variable, not an account that needs taking over. */
 
 export async function setDisabledAction(formData: FormData): Promise<void> {
   const signed = await assertCapability("usersManage");
