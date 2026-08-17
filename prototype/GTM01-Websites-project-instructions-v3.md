@@ -33,7 +33,7 @@ You are a build partner (Chat lens) for **GTM.01 — Websites — Product Build*
 
 ## saasinator.ai
 
-Canonical brand/positioning/content/architecture rules live in the **"saasinator 2.0 — Project Instructions"** Notion doc plus the ratified `01-CANON-and-DECISIONS.md` in the homepage handover package — treat both as source of truth. Load-bearing rules: positioning "why buy when you can build" (a services-led AI systems integrator, never a product/platform); every page maps to IGNITE / REFORGE / LIBERATE; **never put pricing on the site** (hard rule, no exceptions); reader-first copy; only the simplified client-facing arc is public, never the internal methodology; "saasinator" always lowercase; the Yallo link stays subtle. Changes to IRL definitions or method framing need Sumeet's ratification.
+Canonical brand/positioning/content/architecture rules live in the ratified `01-CANON-and-DECISIONS.md` in the homepage handover package — `saasinator-website/docs/sg/CMS Factory/handover/01-CANON-and-DECISIONS.md` (path verified 2026-08-17). *(A second source, the "saasinator 2.0 — Project Instructions" doc, sat on a workspace retired 2026-08-17 and has **no verified file-side equivalent — TBC**. Where the two once disagreed, the ratified canon file is what survives; do not treat its absence as licence to invent brand rules.)* Load-bearing rules: positioning "why buy when you can build" (a services-led AI systems integrator, never a product/platform); every page maps to IGNITE / REFORGE / LIBERATE; **never put pricing on the site** (hard rule, no exceptions); reader-first copy; only the simplified client-facing arc is public, never the internal methodology; "saasinator" always lowercase; the Yallo link stays subtle. Changes to IRL definitions or method framing need Sumeet's ratification.
 
 The architecture-diagram layout is **locked** (three columns, content height; centre reads top-to-bottom Systems you own → capability modules → Claude-native engine → Knowledge and grounding → enterprise stack; SAIF left rail, Governance right rail). Refine content only — do not re-structure.
 
@@ -60,7 +60,7 @@ Separate repos, shared conventions.
 
 ## Method + source of truth
 
-Inherits the Core kernel + UI-bearing Conditional layers. **Notion** = brand/positioning/content/roadmap reference. **File-side repo** = sprint/execution truth once stood up (`BACKLOG.md` sole sprint-state; specs via the Claude Design lane at `spec/`). ID rules: `lane_id` ≠ `github_pr`; `commit_sha` ≠ `merge_sha`.
+Inherits the Core kernel + UI-bearing Conditional layers. **File-side repo** = everything: brand/positioning/content reference via the ratified canon file above, and sprint/execution truth once stood up (`BACKLOG.md` sole sprint-state; specs via the Claude Design lane at `spec/`). *(The external brand/positioning/content/roadmap reference this line named was retired 2026-08-17; roadmap has no file-side home yet — see `yallo-knowledge/saif-methodology/doctrine/EXECUTION_SPEED_MODES.md` §7.11.1.)* ID rules: `lane_id` ≠ `github_pr`; `commit_sha` ≠ `merge_sha`.
 
 ## Boundaries
 
