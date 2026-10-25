@@ -21,7 +21,7 @@ image optimisation is slow enough to skew it.
 |---|---|
 | [PRODUCT.md](PRODUCT.md) | Product truth. Users, positioning, taxonomy, banned terminology, and the absences that must not be filled by invention |
 | [DESIGN.md](DESIGN.md) | The visual system. Tokens are normative; the prose says how to apply them. Ends with a record of every departure from the design prototype |
-| [AGENTS.md](AGENTS.md) | Ownership, ground rules, phase order, the pre-launch gate |
+| [AGENTS.md](AGENTS.md) | Runtime contract; detail in `docs/agent-guide/` (ownership, phase order, the pre-launch gate) |
 
 If a change contradicts any of the three, raise it rather than working around it.
 
