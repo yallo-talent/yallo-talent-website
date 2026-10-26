@@ -649,7 +649,11 @@
    sits in. A link that is the ONLY thing in its paragraph is not inline prose,
    it is a control, and that distinction is exactly what the selector encodes.
    No enumerated list of link classes, because an enumerated list is what the
-   next pane gets left off. */
+   next pane gets left off.
+
+   MIN-WIDTH TOO, because a row title is visitor text. A conversation whose
+   opening question was "hi" painted a 12x24 link on /admin/conversations and
+   failed this gate on main from data alone. Height was never the only edge. */
 .wordmark a,
 .rowTitle a,
 .rowActions a,
@@ -657,6 +661,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 24px;
+  min-width: 24px;
 }
 
 /* An important, non-error notice: the generated password, shown once.
